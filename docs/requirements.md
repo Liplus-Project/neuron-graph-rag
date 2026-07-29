@@ -33,7 +33,7 @@
 - GNN 学習、自動正誤判定、分散実行、GitHub 専用 UI は対象外とする。
 - reinforcement は成功の申告でのみ発火し、単なる retrieval impression を学習信号にしない。
 - 経路は循環を避け、最大 hop 数と結果ごとの最大説明経路数で計算量を制限する。
-- edge weight の強化には上限を設ける。
+- edge weight の強化には上限を設ける。ただし、既存 weight が上限を超えている場合も強化処理で現在値を引き下げない。
 
 ## 5. Acceptance verification
 

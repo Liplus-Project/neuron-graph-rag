@@ -130,6 +130,30 @@ class EngineTest(unittest.TestCase):
 
         self.assertEqual(self.engine.store.count_feedback(), 0)
 
+    def test_reinforcement_never_reduces_weight_above_ceiling(self) -> None:
+        with NeuronGraphRAG(
+            config=EngineConfig(
+                sparse_weight=1.0,
+                dense_weight=0.0,
+                seed_count=1,
+                max_hops=1,
+            )
+        ) as engine:
+            engine.add_document("source", "alpha source")
+            engine.add_document("target", "unrelated target")
+            engine.add_edge("source", "target", "supports", weight=3.0)
+            trace = engine.search("alpha", limit=2, now=1_000.0)
+
+            receipt = engine.record_success(
+                trace.trace_id, ["target"], now=1_001.0
+            )
+            reinforced = receipt.reinforced_edges[0]
+            stored = engine.store.edge("source", "target", "supports")
+
+            self.assertEqual(reinforced.old_weight, 3.0)
+            self.assertEqual(reinforced.new_weight, 3.0)
+            self.assertEqual(stored.weight, 3.0)
+
 
 class PersistenceTest(unittest.TestCase):
     def test_nodes_edges_and_history_survive_reopen(self) -> None:

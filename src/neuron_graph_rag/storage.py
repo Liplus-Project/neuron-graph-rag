@@ -296,7 +296,10 @@ class SQLiteStore:
                         f"Unknown edge: {source_id} -> {target_id} ({edge_type})"
                     )
                 old_weight = float(row["weight"])
-                new_weight = min(maximum, old_weight + increment)
+                new_weight = max(
+                    old_weight,
+                    min(maximum, old_weight + increment),
+                )
                 connection.execute(
                     """
                     UPDATE edges
