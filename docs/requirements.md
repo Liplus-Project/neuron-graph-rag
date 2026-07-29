@@ -8,6 +8,7 @@
 
 - 公開 API は特定のデータ源に依存しない。
 - コアは Python 標準ライブラリだけで動作する。
+- MCP 接続は同一 repository 内の任意 adapter とし、コアの必須依存にしない。
 - sparse 検索は BM25、dense 検索は決定論的な feature-hashing encoder を既定実装とする。
 - dense encoder は差し替え可能とし、既定実装を意味埋め込みモデルとは見なさない。
 - グラフは型付き有向エッジであり、重みと事実性を別々に保持する。
@@ -27,11 +28,18 @@
 10. 活性値は半減期に従って時間減衰する。
 11. 活性減衰はノード確信度とエッジ事実性を変更しない。
 12. 同一コーパスで通常のハイブリッド検索とグラフ統合検索を比較できる。
+13. 任意 MCP adapter の `search`、`record_source_use`、`record_outcome` 契約を、実装と transport から独立して定義する。
+14. source-use を `retrieved`、`selected`、`validated`、`used` に分け、新規 `used` への遷移だけを即時 reinforcement に接続する。
+15. `corrected`、`rolled_back` などの delayed outcome を source-use と別に記録し、初期契約では edge weight を自動変更しない。
+16. MCP adapter は trace、node、enum、stage 順序、idempotency を境界で検証する。
+17. 各 MCP tool の model-facing description 自体が、feedback の呼び分けと reinforcement 条件を consuming AI へ伝える。
+18. persistent core の trace は自動 expiry しない。retention を設ける deployment は `search` description と output に期限を明示し、expiry 後の feedback を `unknown_trace` とする。
 
 ## 4. Constraints
 
 - GNN 学習、自動正誤判定、分散実行、GitHub 専用 UI は対象外とする。
 - reinforcement は成功の申告でのみ発火し、単なる retrieval impression を学習信号にしない。
+- MCP SDK、transport、認証、remote deployment はコア要件に含めない。
 - 経路は循環を避け、最大 hop 数と結果ごとの最大説明経路数で計算量を制限する。
 - edge weight の強化には上限を設ける。ただし、既存 weight が上限を超えている場合も強化処理で現在値を引き下げない。
 
@@ -41,3 +49,4 @@
 - `python -m neuron_graph_rag demo` が取り込み、検索、成功フィードバック、再検索を実演する。
 - `python -m neuron_graph_rag eval` が baseline hybrid と graph retrieval の比較指標を出力する。
 - CI が editable install、test、eval を新規環境で実行する。
+- [Optional MCP Feedback Interface](optional-mcp-interface.md) が tool semantics、input、output、failure、core mapping、依存境界、repository 分離条件を定義する。

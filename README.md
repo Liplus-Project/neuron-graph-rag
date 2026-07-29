@@ -147,6 +147,12 @@ rag = NeuronGraphRAG("knowledge.db", dense_encoder=my_encoder)
 
 同じ encoder 呼び出し内で常に同じ次元数を返す必要があります。
 
+## Optional MCP interface
+
+MCP 対応 AI との接続は、コアへ MCP SDK を追加せず、同一 repository 内の任意 adapter として設計します。`search`、source-use の `retrieved / selected / validated / used`、`used` だけの即時 reinforcement、`corrected / rolled_back` などの delayed outcome を含む実装前の契約は [docs/optional-mcp-interface.md](docs/optional-mcp-interface.md) にあります。
+
+契約には、接続した AI が `tools/list` だけから feedback 行動を判断できる model-facing description literal と、trace retention / expiry の表示規則も含みます。MCP server、認証、transport、remote deployment はまだ実装・確定していません。
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。
