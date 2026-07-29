@@ -29,6 +29,12 @@ tool 名は `search`、`record_source_use`、`record_outcome` とする。すべ
 
 別 version は同じ tool 名の silent reinterpretation ではなく、明示的な compatibility 判断を必要とする。
 
+### 2.1 Model-facing description rule
+
+tool の意味をこの文書だけに閉じ込めない。MCP client が `tools/list` から渡す `description` 自体に、consuming AI が feedback loop を正しく実行するための規則を含める。
+
+各 tool の節にある英語 literal を model-facing `description` としてそのまま使う。英語にするのは、接続する model の対話言語に依存せず同じ行動契約を渡すためである。deployment 固有の trace retention だけは、`search` 節で定義する最終 sentence を具体的な実値へ置き換える。
+
 推奨 annotation は次の通り。
 
 | tool | `readOnlyHint` | `destructiveHint` | `idempotentHint` | `openWorldHint` |
@@ -69,6 +75,19 @@ tool 名は `search`、`record_source_use`、`record_outcome` とする。すべ
 - score は有限の JSON number とし、`NaN`、正負の infinity を拒否する
 - input array は記載した上限を超えた時点で call 全体を拒否し、部分適用しない
 
+### 3.5 Trace handle retention
+
+永続 SQLite database を使う現在の NGR core は retrieval trace を時間で自動削除せず、TTL も持たない。したがって標準の persistent deployment では `trace_id` に自動 expiry はない。database の削除、置換、明示的な cleanup は保存状態そのものを失わせるため、その後の feedback は `unknown_trace` になる。
+
+adapter または deployment が独自 retention を設ける場合は、次をすべて満たす。
+
+- retention duration または expiry rule を `search` の model-facing description に具体的に書く
+- `search` output の `trace_expires_at` に expiry の Unix timestamp seconds を返す
+- expiry 後の `record_source_use` と `record_outcome` は、idempotency replay より先に expiry を判定して `unknown_trace` を返す
+- expired trace を同じ identifier で復活または再利用しない
+
+retention を hidden server configuration にしない。model は `search` の description と output だけで、feedback をいつまでに返す必要があるかを判断できなければならない。
+
 ## 4. Source-use stages
 
 source-use は一つの順序付き状態として扱う。
@@ -90,7 +109,23 @@ source-use は一つの順序付き状態として扱う。
 
 query に対して NGR core の hybrid retrieval と graph activation propagation を実行し、検索 trace と説明可能な hit を返す。候補が返ったことは `retrieved` の観測であり、source-use や成功を意味しない。
 
-### 5.2 Input
+### 5.2 Normative model-facing description
+
+自動 expiry を持たない標準の persistent core では、次を exact `description` とする。
+
+```text
+Search Neuron Graph RAG and return ranked source candidates with a trace_id. Returned hits are only retrieved candidates: retrieval does not mean a source was selected, validated, or used, and search alone never reinforces graph weights. Retain trace_id until feedback is complete. After a returned source is actually used in a downstream answer, implementation decision, or review, call record_source_use with that trace_id and node_id using stage used; record selected and validated when those earlier transitions occur. In the persistent NGR core, trace handles do not expire automatically.
+```
+
+deployment が retention を設ける場合は、上の最後の sentence だけを、具体値を含む次の形へ置き換える。`<retention policy>` を literal のまま公開してはならない。
+
+```text
+In this deployment, trace handles expire <retention policy>; feedback after expiry returns unknown_trace.
+```
+
+例えば 24 時間 retention なら、最後の sentence は `In this deployment, trace handles expire 24 hours after search; feedback after expiry returns unknown_trace.` となる。
+
+### 5.3 Input
 
 ```json
 {
@@ -106,7 +141,7 @@ query に対して NGR core の hybrid retrieval と graph activation propagatio
 | `query` | yes | trim 後 1 文字以上 8192 文字以下 |
 | `limit` | no | integer、1 以上 100 以下、default `5` |
 
-### 5.3 Output
+### 5.4 Output
 
 ```json
 {
@@ -114,6 +149,7 @@ query に対して NGR core の hybrid retrieval と graph activation propagatio
   "trace_id": "0123456789abcdef0123456789abcdef",
   "query": "How was decision D17 implemented?",
   "created_at": 1785312000.0,
+  "trace_expires_at": null,
   "hits": [
     {
       "node_id": "pr-42",
@@ -153,12 +189,15 @@ query に対して NGR core の hybrid retrieval と graph activation propagatio
 
 `hits` は `rank` 昇順で、最大 `limit` 件とする。hit がない場合は空 array を返してよい。空 corpus は正常な空検索とは区別し、`empty_corpus` error とする。
 
-### 5.4 Core mapping
+`trace_expires_at` は自動 expiry がなければ `null`、retention があれば Unix timestamp seconds とする。
+
+### 5.5 Core mapping
 
 | MCP field or behavior | Current NGR API |
 | --- | --- |
 | `query`, `limit` | `NeuronGraphRAG.search(query, limit=limit)` |
 | `trace_id`, `query`, `created_at` | `SearchTrace` |
+| `trace_expires_at` | persistent core は `null`、retention を持つ adapter が計算 |
 | `node_id`, `text`, `metadata`, `confidence` | `SearchHit.node` |
 | `scores`, `paths` | `SearchHit.explain()` と score field |
 | `rank` | `SearchTrace.hits` の 1-based 順序 |
@@ -172,7 +211,15 @@ adapter は core の test 用 `now` parameter を MCP input に公開しない�
 
 consuming AI が、検索結果をどこまで判断材料として利用したかを記録する。`used` への新規遷移だけを NGR core の即時 reinforcement に接続する。
 
-### 6.2 Input
+### 6.2 Normative model-facing description
+
+次を exact `description` とする。
+
+```text
+Record ordered source-use transitions for candidates from one Neuron Graph RAG search trace. Use selected only when a source is chosen for inspection, validated only after its exact source is checked and accepted as usable, and used only after it becomes an actual basis of a downstream answer, implementation decision, or review. Transitions must occur in order. Only a newly recorded used source triggers immediate graph reinforcement; retrieved, selected, validated, retries, and duplicate stages do not reinforce. If the trace handle has expired or does not exist, this tool returns unknown_trace.
+```
+
+### 6.3 Input
 
 ```json
 {
@@ -207,7 +254,7 @@ consuming AI が、検索結果をどこまで判断材料として利用した�
 
 event は array 順に評価する。同一 call の途中で一件でも不正なら、stage ledger と reinforcement の両方を call 前の状態に保つ。
 
-### 6.3 Output
+### 6.4 Output
 
 ```json
 {
@@ -254,7 +301,7 @@ event は array 順に評価する。同一 call の途中で一件でも不正�
 
 新規 `used` がない場合、`newly_used_node_ids` は空 array、`feedback` は `null` とする。
 
-### 6.4 Core mapping
+### 6.5 Core mapping
 
 - `selected` と `validated` は adapter-owned stage ledger に保存し、core method を呼ばない。
 - 一つの call で新しく `used` へ到達した node 群だけを `NeuronGraphRAG.record_success(trace_id, newly_used_node_ids)` へ一度渡す。
@@ -269,7 +316,15 @@ event は array 順に評価する。同一 call の途中で一件でも不正�
 
 source を利用した判断や artifact に後から判明した結果を、即時 source-use とは別軸で記録する。v1 では評価用の履歴であり、edge weight を自動変更しない。
 
-### 7.2 Outcome enum
+### 7.2 Normative model-facing description
+
+次を exact `description` とする。
+
+```text
+Record a delayed outcome for sources that were already marked used, such as confirmed, corrected, rolled_back, or superseded. In v1, delayed outcomes are audit and evaluation records only: they do not add, subtract, undo, or otherwise change graph weights. Do not use this tool instead of record_source_use for immediate source-use feedback. If the trace handle has expired or does not exist, this tool returns unknown_trace.
+```
+
+### 7.3 Outcome enum
 
 | outcome | 意味 |
 | --- | --- |
@@ -280,7 +335,7 @@ source を利用した判断や artifact に後から判明した結果を、即
 
 `corrected` と `rolled_back` を即時の負の reinforcement に変換しない。query、index、source selection、source 自体、実装のどこに原因があるかを一件の outcome だけで判別できないためである。`confirmed` も `used` の reinforcement を重複加算しない。
 
-### 7.3 Input
+### 7.4 Input
 
 ```json
 {
@@ -307,7 +362,7 @@ source を利用した判断や artifact に後から判明した結果を、即
 | `summary` | yes | trim 後 1 文字以上 2000 文字以下 |
 | `external_ref` | no | absolute `https` URL、2048 文字以下 |
 
-### 7.4 Output
+### 7.5 Output
 
 ```json
 {
@@ -325,7 +380,7 @@ source を利用した判断や artifact に後から判明した結果を、即
 
 `reinforcement_applied` は v1 では常に `false` とする。将来 delayed outcome を学習へ接続する場合は、原因帰属、weight rollback、再計算可能性を別の versioned policy として定義する。
 
-### 7.5 Core mapping
+### 7.6 Core mapping
 
 現在の NGR public API に delayed outcome method はない。v1 adapter は outcome ledger にだけ保存し、`record_success`、edge update、activation update を呼ばない。
 
@@ -348,7 +403,7 @@ error の text content は、次の object を JSON 直列化する。
 | `unsupported_contract_version` | version literal が一致しない | false |
 | `invalid_argument` | schema、長さ、pattern、enum、number が不正 | false |
 | `empty_corpus` | 検索対象 node がない | false |
-| `unknown_trace` | 保存済み trace がない | false |
+| `unknown_trace` | 保存済み trace がない、または retention により expiry 済み | false |
 | `node_not_in_trace` | node が指定 trace の hit ではない | false |
 | `source_not_used` | outcome 対象が `used` に到達していない | false |
 | `invalid_stage_transition` | source-use の順序違反または後退 | false |
@@ -403,4 +458,7 @@ MCP であることだけを理由に別 repository へ分離しない。次の�
 - retry と duplicate stage が reinforcement を重複させない
 - `corrected`、`rolled_back` を含む delayed outcome が weight を変更しない
 - invalid trace、trace 外 node、enum、stage 順序、idempotency conflict を拒否する
+- `tools/list` の description だけから feedback 順序、reinforcement 条件、delayed outcome 非変更規則を判断できる
+- persistent core では `trace_expires_at` が `null`、retention deployment では具体的な description と timestamp が一致する
+- retention expiry 後は両 feedback tool が `unknown_trace` を返す
 - core test、demo、eval が adapter なしで引き続き通る
