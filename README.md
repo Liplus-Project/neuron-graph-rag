@@ -173,3 +173,7 @@ rag = NeuronGraphRAG("knowledge.db", dense_encoder=my_encoder)
 - eval corpus は機構確認用の小規模 fixture であり、一般的な retrieval 品質を保証しません。
 
 受け入れ要件の詳細は [docs/requirements.md](docs/requirements.md) にあります。
+
+## License
+
+本プロジェクトは [Apache License 2.0](LICENSE) の下で提供されます。帰属情報は [NOTICE](NOTICE) を参照してください。
