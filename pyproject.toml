@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neuron-graph-rag"
+version = "0.1.0"
+description = "Transparent hybrid retrieval with typed graph activation and success feedback."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Liplus Project" }]
+dependencies = []
+
+[project.scripts]
+neuron-graph-rag = "neuron_graph_rag.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
