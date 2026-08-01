@@ -1,0 +1,110 @@
+{
+  "baselines": [
+    "current",
+    "recurrent-balanced"
+  ],
+  "contamination_audit": {
+    "artifact": "d1_liplus_local_competition.contamination.json",
+    "artifact_sha256": "sha256:a24a181790fce353e970d20f8050ffff26c0e7fe84d6a4f9f4f612efab337cc2"
+  },
+  "development": {
+    "fixture": "d1_liplus_local_competition_development.json",
+    "fixture_sha256": "sha256:27e5018f489d7602cf1753a3bda688f3db82c69ce8ee9eef0401caf72b40acfa",
+    "gold": "d1_liplus_local_competition_development.gold.json",
+    "gold_sha256": "sha256:75cc6074dfd91b58690f50a2247e30749f2f5203e11ba6b29364be79bcf0baa6",
+    "provenance": "d1_liplus_local_competition_development.provenance.json",
+    "provenance_sha256": "sha256:942bb2a44bfdd7f0c67649111c578d53a80616acf919b24f5ffefbc913503e22"
+  },
+  "experiment_id": "d1-liplus-local-recurrent-competition-v1",
+  "holdout": {
+    "fixture": "d1_liplus_local_competition_holdout.json",
+    "fixture_sha256": "sha256:94b0e311546aee39b8aac114e1387aada465f058d0e14d32e7b7c7aa53b50f62",
+    "gold": "d1_liplus_local_competition_holdout.gold.json",
+    "gold_sha256": "sha256:6176716841d0e87bd7168752b8700a9a0cf378da4e95dda11fa7e5ded2cc6880",
+    "provenance": "d1_liplus_local_competition_holdout.provenance.json",
+    "provenance_sha256": "sha256:8ff0b32d0066d2741db754397fddfce314b9f85f7eb91daea5f658903732a8c7"
+  },
+  "maximum_variants": 6,
+  "selection_rule": {
+    "candidate_gate": "relation MRR must strictly exceed current and recurrent-balanced; direct and negative-control MRR must not regress from current; every relation path must match; feedback must be isolated",
+    "candidate_ids": [
+      "local-neighbor",
+      "local-neighbor-query",
+      "local-neighbor-path",
+      "local-neighbor-query-path"
+    ],
+    "tie_break": [
+      "highest_worst_cohort_mrr",
+      "highest_relation_mrr",
+      "fewest_mean_expansions",
+      "lowest_structural_complexity",
+      "lexicographic_variant_id"
+    ]
+  },
+  "shared_config": {
+    "activation_budget": 1.0,
+    "dense_weight": 0.45,
+    "entry_weight": 0.25,
+    "graph_weight": 0.75,
+    "hop_decay": 0.7,
+    "inhibition_ratio": 0.1,
+    "limit": 9,
+    "max_active_paths_per_node": 4,
+    "max_hops": 2,
+    "query_transmission_floor": 0.4,
+    "recurrent_decay": 0.5,
+    "recurrent_steps": 2,
+    "seed_count": 1,
+    "sparse_weight": 0.55
+  },
+  "stop_rule": {
+    "development_no_candidate": "keep current default and do not open holdout",
+    "holdout_adoption": "adopt only when the selected candidate passes the same two-baseline relation gate, current direct and negative non-regression, every relation path, and feedback isolation",
+    "holdout_open_count": 1,
+    "holdout_variants": [
+      "current",
+      "recurrent-balanced",
+      "selected-development-candidate"
+    ],
+    "post_observation_changes": "forbidden for fixture, gold, doc paths, thresholds, selection rule, stop rule, or variant parameters"
+  },
+  "variants": [
+    {
+      "family": "current_positive_additive",
+      "id": "current",
+      "parameters": {},
+      "structural_complexity": 0
+    },
+    {
+      "family": "recurrent_competition",
+      "id": "recurrent-balanced",
+      "parameters": {},
+      "structural_complexity": 4
+    },
+    {
+      "family": "local_neighbor_competition",
+      "id": "local-neighbor",
+      "parameters": {},
+      "structural_complexity": 5
+    },
+    {
+      "family": "local_neighbor_query_competition",
+      "id": "local-neighbor-query",
+      "parameters": {},
+      "structural_complexity": 6
+    },
+    {
+      "family": "local_neighbor_path_competition",
+      "id": "local-neighbor-path",
+      "parameters": {},
+      "structural_complexity": 6
+    },
+    {
+      "family": "local_neighbor_query_path_competition",
+      "id": "local-neighbor-query-path",
+      "parameters": {},
+      "structural_complexity": 7
+    }
+  ],
+  "schema_version": 2
+}

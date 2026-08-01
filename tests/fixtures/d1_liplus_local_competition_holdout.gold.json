@@ -1,0 +1,102 @@
+{
+  "cases": [
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:olXiVvvbZ-vt7i3d86QzRmoXUUYb6uMAHxXeyMt9ppc",
+      "id": "local-holdout-direct-token-expiration",
+      "query": "GitHub App user-to-server token expiration stale token Bad credentials opt-out",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/github-app-user-to-server-token-expiration"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:OVYHbi2gJccrdwAM5OhCDG_Iyhje2ss_Usnd77qV5Q4",
+      "id": "local-holdout-direct-emotion-vector",
+      "query": "prompt emotion vector controller persona reward structure steering",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/prompt-as-emotion-vector-controller"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:tD0scULBBnZ2S6HMFJfM0eOGUlyRroqPH5dSv54ftPo",
+      "id": "local-holdout-direct-sidebar",
+      "query": "wiki sync Sidebar integrity assertion drift STOP escalate missing references",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/wiki-sync-sidebar-integrity-check"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:9YD_Bg2jL6OQ0m0EgcnSK_fnAdTKYEWWj6P9hCUyFCs",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:tD0scULBBnZ2S6HMFJfM0eOGUlyRroqPH5dSv54ftPo",
+          "target_id": "w:9YD_Bg2jL6OQ0m0EgcnSK_fnAdTKYEWWj6P9hCUyFCs"
+        }
+      ],
+      "id": "local-holdout-relation-sidebar-drift",
+      "query": "Sidebar integrity assertion release wiki sync missing reference stop escalation",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/wiki-sync-sidebar-integrity-check",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/wiki-sync-drift-targeted-mirror"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+          "target_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ"
+        }
+      ],
+      "id": "local-holdout-relation-home-roles",
+      "query": "Li+ Wiki language program interactive compiler requirements layers reference documents",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/Home",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/H.-Roles-and-Evaluation"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:kGjCRlatYm5V2rtN2Zh28MuqaFgRe97m9LcuGqEOnt4",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:hNK341HNHtUVc2JfHxaiBj7hzvI606pMOpP01bgzhJU",
+          "target_id": "w:kGjCRlatYm5V2rtN2Zh28MuqaFgRe97m9LcuGqEOnt4"
+        }
+      ],
+      "id": "local-holdout-relation-optin-migration",
+      "query": "Character Instance opt-in configuration surface scope configured human-facing binding",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/character-instance-opt-in-and-surface-scope",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/character-instance-output-styles-migration"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50",
+      "id": "local-holdout-negative-character-history",
+      "query": "Character Instance evolution history structural layer attribution observation separation anti anonymity",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/character-instance-evolution-history"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ",
+      "id": "local-holdout-negative-roles",
+      "query": "roles evaluation AI implementation CI production human final judgment dialogue scope record scope",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/H.-Roles-and-Evaluation"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+      "id": "local-holdout-negative-home",
+      "query": "Li+ highest-level programming language program runtime interactive compiler governance layers",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/Home"
+    }
+  ],
+  "fixture": "d1_liplus_local_competition_holdout.json",
+  "schema_version": 1
+}
