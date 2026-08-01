@@ -1,0 +1,70 @@
+{
+  "cases": [
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:qKOCJPUx4TED1ssSNT2w6MNscIM_8IrUXrRa1Bd1kDA",
+      "id": "anchored-holdout-direct-industry",
+      "query": "Decision Structure industry positioning ARCHITECTURE md philosophy decision domain graph not ADR",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-industry-positioning"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:_kVJIHr_mo4RZvS5O1gTsVzeQhpibUZkbCI5UxAtShc",
+      "id": "anchored-holdout-direct-structural-beauty",
+      "query": "subtractive structural beauty observable load-bearing property not internal aesthetic taste",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/subtractive-structural-beauty-framing"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:lFUOmiFlZ2k65JNT3tmNPR_BCrcyjyUgQI3vTwhcQ8Q",
+          "target_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c"
+        }
+      ],
+      "id": "anchored-holdout-relation-state-rename",
+      "query": "state form edge binding convert on touch supersede conflict event entries",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-state-form-edge-binding",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-rename-rationale"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:4OfahC-0QgTGXSu9Xo4Wm3-qEEhO-d3kNy05TbKguK8",
+          "target_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c"
+        }
+      ],
+      "id": "anchored-holdout-relation-writer-rename",
+      "query": "writer surface autonomous Decision Structure Wiki memory autonomy reader writer pair",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-writer-surface-activation",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-rename-rationale"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+      "id": "anchored-holdout-negative-rename",
+      "query": "Decision Log renamed Decision Structure state resolution supersedes event history meaning shift",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-rename-rationale"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:4OfahC-0QgTGXSu9Xo4Wm3-qEEhO-d3kNy05TbKguK8",
+      "id": "anchored-holdout-negative-writer",
+      "query": "AI autonomous writer surface Decision Structure Wiki judgment settlement no permission ask",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-writer-surface-activation"
+    }
+  ],
+  "fixture": "d1_liplus_anchored_hybrid_holdout.json",
+  "schema_version": 1
+}

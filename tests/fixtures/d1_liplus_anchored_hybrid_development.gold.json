@@ -1,0 +1,70 @@
+{
+  "cases": [
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+      "id": "anchored-dev-direct-model-floor",
+      "query": "parallel subagent evaluator model floor per-call explicit sonnet inheritance brake",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-model-floor"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+      "id": "anchored-dev-direct-delegation",
+      "query": "implementation always delegated parent does not implement subagent PR open CI green",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/implementation-always-delegated"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+          "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+        }
+      ],
+      "id": "anchored-dev-relation-floor-copy",
+      "query": "brake evaluator model floor explicit per-call spawn custom agent not pinned",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-model-floor",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/brake1-operational-copy-target-conditional"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+          "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+        }
+      ],
+      "id": "anchored-dev-relation-copy-integrity",
+      "query": "operational copy target conditional rules injected context skill lazy load probe evaluator",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/brake1-operational-copy-target-conditional",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/brake-evaluator-baseline-integrity"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA",
+      "id": "anchored-dev-negative-single-round",
+      "query": "brake one N equals three single round no revalidation round fixed trial",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/brake1-single-round-cap"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+      "id": "anchored-dev-negative-baseline-integrity",
+      "query": "evaluator baseline integrity instruction materials PR URL no shared clone path tool authority unchanged",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/brake-evaluator-baseline-integrity"
+    }
+  ],
+  "fixture": "d1_liplus_anchored_hybrid_development.json",
+  "schema_version": 1
+}

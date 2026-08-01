@@ -96,8 +96,10 @@ def propagate(
         "local_neighbor_query_competition",
         "local_neighbor_path_competition",
         "local_neighbor_query_path_competition",
+        "anchored_local_competition",
+        "anchored_local_query_competition",
     }:
-        return _local_recurrent(
+        result = _local_recurrent(
             query=query,
             seed_ids=seed_ids,
             entry=entry,
@@ -105,6 +107,9 @@ def propagate(
             outgoing_edges=outgoing_edges,
             settings=settings,
         )
+        if settings.strategy.startswith("anchored_"):
+            return _without_zero_hop_anchor(result, seed_ids, entry, settings)
+        return result
     if settings.strategy == "recurrent_competition":
         return _recurrent(
             query=query,
@@ -372,6 +377,7 @@ def _local_recurrent(
     query_conditioned = settings.strategy in {
         "local_neighbor_query_competition",
         "local_neighbor_query_path_competition",
+        "anchored_local_query_competition",
     }
     path_conditioned = settings.strategy in {
         "local_neighbor_path_competition",
@@ -507,6 +513,39 @@ def _local_recurrent(
             competition_sets=tuple(competition_sets),
         ),
     )
+
+
+def _without_zero_hop_anchor(
+    result: PropagationResult,
+    seed_ids: list[str],
+    entry: dict[str, float],
+    settings: DynamicsSettings,
+) -> PropagationResult:
+    """Remove the decayed zero-hop seed residual from an anchored graph signal."""
+    residual_factor = settings.recurrent_decay ** result.diagnostics.steps
+    activation = dict(result.activation)
+    for seed_id in seed_ids:
+        remaining = activation.get(seed_id, 0.0) - entry[seed_id] * residual_factor
+        if remaining > 1e-15:
+            activation[seed_id] = remaining
+        else:
+            activation.pop(seed_id, None)
+    paths = {
+        node_id: [path for path in node_paths if path.steps]
+        for node_id, node_paths in result.paths.items()
+    }
+    paths = {node_id: node_paths for node_id, node_paths in paths.items() if node_paths}
+    diagnostics = PropagationDiagnostics(
+        strategy=result.diagnostics.strategy,
+        steps=result.diagnostics.steps,
+        expansions=result.diagnostics.expansions,
+        activation_total=sum(activation.values()),
+        converged=result.diagnostics.converged,
+        stop_reason=result.diagnostics.stop_reason,
+        active_path_count=sum(len(node_paths) for node_paths in paths.values()),
+        competition_sets=result.diagnostics.competition_sets,
+    )
+    return PropagationResult(activation, paths, diagnostics)
 
 
 def _local_path_recurrent(

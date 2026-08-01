@@ -1,0 +1,242 @@
+{
+  "edges": [
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "decision-structure-rename-rationale",
+          "dst_vector_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "decision-structure-industry-positioning",
+          "src_vector_id": "w:qKOCJPUx4TED1ssSNT2w6MNscIM_8IrUXrRa1Bd1kDA",
+          "updated_at": "2026-07-26T06:45:31.470Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:qKOCJPUx4TED1ssSNT2w6MNscIM_8IrUXrRa1Bd1kDA",
+      "target_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "decision-structure-rename-rationale",
+          "dst_vector_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "decision-structure-state-form-edge-binding",
+          "src_vector_id": "w:lFUOmiFlZ2k65JNT3tmNPR_BCrcyjyUgQI3vTwhcQ8Q",
+          "updated_at": "2026-07-31T14:56:11.584Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:lFUOmiFlZ2k65JNT3tmNPR_BCrcyjyUgQI3vTwhcQ8Q",
+      "target_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "decision-structure-rename-rationale",
+          "dst_vector_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "decision-structure-writer-surface-activation",
+          "src_vector_id": "w:4OfahC-0QgTGXSu9Xo4Wm3-qEEhO-d3kNy05TbKguK8",
+          "updated_at": "2026-07-31T14:56:12.843Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:4OfahC-0QgTGXSu9Xo4Wm3-qEEhO-d3kNy05TbKguK8",
+      "target_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "decision-structure-rename-rationale",
+          "dst_vector_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "subtractive-structural-beauty-framing",
+          "src_vector_id": "w:_kVJIHr_mo4RZvS5O1gTsVzeQhpibUZkbCI5UxAtShc",
+          "updated_at": "2026-07-31T14:57:30.363Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:_kVJIHr_mo4RZvS5O1gTsVzeQhpibUZkbCI5UxAtShc",
+      "target_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+      "weight": 1.0
+    }
+  ],
+  "nodes": [
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "decision-structure-industry-positioning",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-21T11:46:01.508Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-industry-positioning",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-21T11:46:00.459Z",
+        "vector_id": "w:qKOCJPUx4TED1ssSNT2w6MNscIM_8IrUXrRa1Bd1kDA"
+      },
+      "node_id": "w:qKOCJPUx4TED1ssSNT2w6MNscIM_8IrUXrRa1Bd1kDA",
+      "text": "decision-structure-industry-positioning\n\n# 判断構造の industry 既存 vocabulary 上の位置取り — ARCHITECTURE.md-derived framing\n\n## Question\n\n判断構造 (Decision Structure、post-#1330 リネーム後の artifact) を industry 既存 vocabulary でどう位置付け、外部に対してどう説明するか。ADR (Architecture Decision Record) と呼べるか、別 framing を採用すべきか。\n\n## Current resolution\n\n判断構造は **ARCHITECTURE.md (matklad 2021) 哲学を decision domain に graph 構造として拡張した形** として位置付ける。ADR variant としては説明しない。\n\n外部向け推奨説明文 (canonical form):\n\n> Decision Structure は ARCHITECTURE.md 哲学 (state-form / living document / refactor-friendly / chronological framing 否定) を、system structure ではなく decision domain に適用したものである。単一 doc ではなく、判断ノードと supersede / depend / conflict edge から成る graph として構造化する。\n\nADR (Architecture Decision Record) の派生としては説明しない。両者は decision-focus surface を共有するが、ADR の convention (chronological / append-only / immutable-history) と判断構造の運用方針が衝突し、ADR の name で呼ぶと読み手の期待値が mismatch する。\n\n## Edges\n\n- **depends on**: [[decision-structure-rename-rationale]] — リネーム + state 形 / refactor framing 採用を前提とする判断\n- **clarifies**: [[decision-structure-rename-rationale]] — 同 entry が確立した state-form framing を industry vocabulary 上に locate する補完軸 (forward-link で graph 一貫性維持)\n\n## 背景\n\nMaster との対話で「判断構造を ADR と呼べるか」という問いが surface した。industry 既存 vocabulary との対応を整理することで以下が達成される:\n\n- 外部 (OSS contributor / 他プロジェクト読み手 / 将来の Li+AI セッション) に対する説明 cost 削減\n- 判断構造を isolated novelty ではなく既存 stream の継承として locate (孤立した発明として誤読されることの防止)\n- ADR convention を期待する読み手の mismatch 回避\n\n整理の結果、判断構造は ADR とも ARCHITECTURE.md とも完全一致しないが、ARCHITECTURE.md 哲学に対しては domain shift + 構造 shift のみで連続的に拡張できることが判明した。\n\n## 制約\n\n- 判断構造の運用方針 (state-form / refactor-as-normal / time-axis 否定) は既に #1330 で確定済であり、industry positioning 判断は本仕様を変更しない (forward guidance としての説明軸追加のみ)\n- ADR community の既存規約を流用しない方針は意図的。流用すると ADR 期待値 (例: `0001-foo.md` の numeric prefix、status: proposed/accepted/deprecated/superseded のような lifecycle 語彙、append-only) を読み手が想定し、現行 spec と衝突する\n- ARCHITECTURE.md とも完全一致しない (single doc vs graph 構造の差) ため、「ARCHITECTURE.md そのもの」とも呼ばない。「ARCHITECTURE.md philosophy applied to decision domain」が最も literal な説明\n\n## 結論\n\n採用案: **ARCHITECTURE.md-derived framing** (上記 Current resolution)\n\n却下案 + 理由:\n\n### 却下案 A: ADR (Architecture Decision Record) variant として説明\n\nADR との一致軸: decision を artifact として記録する surface、設計判断を明示する目的、cross-session 再利用性。\n\n却下理由 (3 軸の衝突):\n\n1. **chronological vs state-form**: ADR は時間順 ordering + numeric prefix を convention とする。判断構造は #1324 で a-z prefix を drop し時間軸を否定し、現在 state を主語とする\n2. **append-only vs refactor**: ADR は append-only / immutable-history を default とする (superseded ADR も削除せず status 変更で残す習慣)。判断構造は refactor as normal operation を採用し supersede via link を positive default とする\n3. **status lifecycle vocabulary vs edge taxonomy**: ADR は status (proposed / accepted / deprecated / superseded) を entry attribute として扱う。判断構造は state-form entry に edge taxonomy (supersedes / depends on / conflicts with) を declare する graph 構造\n\nADR name を借用すると読み手は上記 convention を期待し、運用実態との mismatch が説明 cost を増やす。\n\n### 却下案 B: ARCHITECTURE.md そのものとして説明\n\nARCHITECTURE.md (matklad 2021, `https://matklad.github.io/2021/02/06/ARCHITECTURE.md.html`) との一致軸: state-form / living document / refactor-friendly / chronological framing 否定 (= 判断構造の哲学的 core と完全一致)。\n\n却下理由 (2 軸の差分):\n\n1. **domain shift**: ARCHITECTURE.md は system structure / component map を扱う surface。判断構造は decision structure / judgment graph を扱う surface。哲学は共有するが domain は別\n2. **構造 shift**: ARCHITECTURE.md は single doc 形式 (1 ファイルに system 全体の地図)。判断構造は kebab-case `<topic>.md` の集合 + edge taxonomy による graph 構造。volume scaling と refactor 単位が異なる\n\nそのため「ARCHITECTURE.md philosophy applied to decision domain, structured as a graph rather than a single doc」が literal に最も近い説明となる。\n\n### 却下案 C: 第三 vocabulary を新規導入 (例: \"Judgment Graph\" \"Decision Map\" のような造語)\n\n却下理由:\n\n- 既存 stream への connect を放棄することは説明 cost を増やす (isolated novelty 化、読み手は文脈を持たない)\n- vocabulary churn を増やす方向は `evolution-decision-structure-write` skill が `evolution-judgment-graph-*` 系を意図的に却下した方針 (#1329 / decision-structure-rename-rationale entry) と整合しない\n- 既存 framing (ARCHITECTURE.md) で文脈が成立するため、新語の導入 cost を払う動機がない\n\n## メタ的観察\n\n本判断は外部説明 layer (industry vocabulary に対する位置取り) のみを扱い、判断構造の内部運用仕様には触れない。`docs/Decision-Structure.md` (運用 index) と `skills/evolution-decision-structure-write/SKILL.md` (writer skill) は spec literal を維持する。本 entry の役割は「既に確定した spec を、industry vocabulary でどう外部に説明するか」の軸を追加することに限定される。\n\n## 関連\n\n- Issue: #1335\n- depends-on Wiki entry: [[decision-structure-rename-rationale]] (リネーム + state 形採用の前提)\n- 過去判断: #1011 (a-z prefix 採用、後に supersede) / #1323 / #1324 (a-z prefix drop、時間順構造の否定) / #1329 / #1330 (Decision Structure リネーム + state 形 shift)\n- 哲学的源流 (外部参照): matklad \"ARCHITECTURE.md\" (2021)\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "decision-structure-rename-rationale",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-21T02:45:56.914Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-rename-rationale",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-21T02:45:56.137Z",
+        "vector_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c"
+      },
+      "node_id": "w:TpHJauZQEncZH4rEcyyWUxYWWtDQktCc5I80ARRXi-c",
+      "text": "decision-structure-rename-rationale\n\n# 判断記録 artifact を「履歴 (Decision Log)」から「構造 (Decision Structure)」へ rename + 意味 shift\n\n## Question\n\n判断記録の永続化アーティファクトを「履歴 (log/history)」として framing するか、「構造 (structure)」として framing するか。\n\n## Current resolution\n\n「構造 (Decision Structure)」として framing する。`docs/Decision-Log.md` を `docs/Decision-Structure.md` に rename し、writer skill を `evolution-decision-structure-write` に rename し、entry shape ガイダンスを event 形 (`YYYY-MM-DD: decided X for reason Y`) から state 形 (`Question Q: current resolution = X, supersedes <link>`) に shift する。リネームと意味 shift は #1329 / PR (link TBD) で同一 PR にまとめる。\n\n## Edges\n\n- **supersedes**: [Decision Log layer 命名 (a-z prefix 採用)](https://github.com/Liplus-Project/liplus-language/issues/1011) — 当初は時間順 + 順序 prefix の log framing で導入。本判断で「log」語彙そのものを置き換える。\n- **depends on**: [a-z prefix drop による free title 化](https://github.com/Liplus-Project/liplus-language/issues/1323) — 順序の暗黙構造を明示 index に移行した #1324。本判断はその延長で framing 自体を構造化する。\n- **depends on**: [AI 自律な判断記録 Wiki write surface の activate](https://github.com/Liplus-Project/liplus-language/issues/1205) — `Decision_Log_Write_Autonomy` と `evolution-decision-log-write` skill を activate した PR。本判断はこの機構を破壊せず、命名と意味 framing のみ shift する。\n\n## 背景\n\nMaster との対話で「判断履歴の WIKI 正直どう思う？」という問いから surface した観察:\n\n- 「履歴」framing は時間順 append-only / event 形のエントリ shape を含意する。単調増加が「正しい」方向にバイアスされ、維持運用が「履歴を消す」心理的重みを帯びる。結果として S/N が時間とともに劣化する。\n- 「構造」framing は state 形ノード + supersede / depend / conflict edge という意味グラフを含意する。volume は refine/replace で安定し、削除や統合は refactor (normal operation) として扱われる。\n- #1324 が `a-z` prefix を drop して順序を明示 index に移行した方向と整合する。順序の暗黙構造 -> 明示構造、と並列に、framing も暗黙履歴 -> 明示構造として整列する。\n\n## 制約\n\n- 既存の wiki entry 本文は遡及書き換えしない。今回の意味 shift は forward guidance であり、今後の新規 entry に向けてのみ適用される。\n- skill 命名は `evolution-decision-structure-write` (artifact-name 整合)。`evolution-judgment-graph-*` 系の第三語彙は意図的に却下した (vocabulary の発散を防ぐため、artifact 名と一致させる)。\n- 読み手側 skill `evolution-judgment-learning` は名前を維持する。reader 側で「judgment learning」は意味的に正しく、命名 churn を増やす必要がない。\n- リリース分類は **patch** (Master 判断による override、初期 minor 提案から訂正)。`rules/operations/execution-mode.md` Per-PR exception (content-based axis) に該当: 本変更は Li+ 内部 AI authoring surface (rules / skills / adapter / hooks / docs / wiki) のみで、外部 user / system に観測可能な挙動変更を伴わない。entry shape recommendation の shift は AI 内部 authoring guidance であり、外部 contract ではない (governance structure change + internal literal alignment)。major は phase transition / project milestone 用であり、本変更は phase transition ではない。\n\n## 結論\n\n採用案: option A (リネーム + 意味 shift を同一 PR で実施)\n\n却下案 + 理由:\n\n- option B (リネームのみ先行、意味 shift は別 PR) — リネームだけだと frame mismatch を温存したまま命名が変わり、AI authoring の挙動は変わらない。#1324 直後のリネーム churn を再現する。\n- option C (意味 shift のみ、命名は据え置き) — 「Decision Log」のままで state 形 entry を推奨するのは語彙的に矛盾する。framing と命名は一体化している。\n\noption A は同一 PR で意味整列を完了させるため、AI authoring 挙動が PR merge と同期して shift する。\n\n## メタ的観察\n\n本エントリ自体が、現行の「Decision Log」framing 下で書かれているが、PR merge 後には「Decision Structure」framing 下のエントリとして読まれる。エントリの内容が「framing 自体の rename」を記述しているため、recursion は意図的かつ self-consistent。新しい framing 下でのエントリ shape (state 形 + supersede/depend edge) を本エントリで先取り demonstrate している。\n\n## 関連\n\n- Issue: #1329\n- PR: TBD (PR 作成後にリンク追加)\n- 過去判断: #1011 / #1205 / #1323 / #1324\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "decision-structure-state-form-edge-binding",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:11.531Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-state-form-edge-binding",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:10.478Z",
+        "vector_id": "w:lFUOmiFlZ2k65JNT3tmNPR_BCrcyjyUgQI3vTwhcQ8Q"
+      },
+      "node_id": "w:lFUOmiFlZ2k65JNT3tmNPR_BCrcyjyUgQI3vTwhcQ8Q",
+      "text": "decision-structure-state-form-edge-binding\n\n# state 形の要求をエッジの有無に結合し、変換は書き込みの瞬間に行う\n\n## Question\n\n判断構造エントリの state 形は全 entry に要求するのか。既存の event 形エントリはどう扱うのか。\n\n## Current resolution\n\n**エッジ（特に supersede / conflict）を宣言する entry は state 形必須。エッジを持たない確定 entry は event 形のまま可。** 一括移行はしない。\n\n変換は **convert-on-touch**: update 分岐と supersede 分岐で当該 entry に触れるとき、その編集の瞬間に state 形化とエッジ描画を済ませる。後日の移行パスに回さない。\n\n## Edges\n\n- **depends on**: [判断記録 artifact を「履歴」から「構造」へ rename + 意味 shift](https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-rename-rationale) — state 形 / edge taxonomy を導入した判断。本 entry はその要求の適用範囲を条件付ける\n- **relates to**: [Hook-driven gate trigger](https://github.com/Liplus-Project/liplus-language/wiki/hook-driven-gate-trigger) — 「後で思い出して実行する」手順を構造に置き換える同型の判断（#1413）\n\n## 背景\n\nwiki 監査（31 entry）で 26/31 が event 形だった（state 形は最新 5 件のみ）。当初「強制書き込みが量を生んだが構造を生まなかった」と診断したが、再検証で訂正した:\n\n- live ノード間に supersede / conflict エッジがゼロなのは、大半が「まだ supersession が起きていないだけ」であり、書き手の描き忘れとは限らない。当初診断は over-claim だった\n- 実在するズレは state 形 / event 形の不一致のみ\n\nstate 形が event 形に勝つのは判断が更新されるときだけである。エッジを持たない確定 entry を state 形に変換しても情報量は不変で churn しか生まない。逆にエッジを宣言する entry では、最新の判断状態が主語でなければ supersede 経路が現在 state に収束しない。\n\nconvert-on-touch は、既に load-bearing な書き込みが発生している瞬間に変換をピギーバックする。一括移行や「後で思い出して移行」は recall 依存であり、recall が落ちる側であることは #1413 で観測済み。\n\n## 制約\n\n- 既存 26 件の event 形 entry を一括で state 形へ移行しない\n- 既存 entry を遡及書き換えしない（forward guidance）\n- supersede / conflict エッジ語彙そのものの温存 / 削除判断は別軸（実 supersession が複数回起きてもエッジが描かれない場合に subtractive 判断する）\n- L2 Evolution のみ。L1 不触\n\n## 結論\n\n採用 = エッジ有無への条件結合 + convert-on-touch。Master go-sign「a」。\n\n却下 = 全 entry へ state 形を一律要求（エッジ無し確定 entry では churn のみ）。却下 = 既存 26 件の mass-migration（同上、かつ遡及書き換えの禁止と衝突）。却下 = 変換を後日の移行パスに回す（recall 依存で実行されない）。\n\n## 関連\n\n- Issue: [#1436](https://github.com/Liplus-Project/liplus-language/issues/1436) / PR [#1437](https://github.com/Liplus-Project/liplus-language/pull/1437)（squash merge `601aa38`）\n- 隣接 spec: `skills/evolution-decision-structure-write/SKILL.md` § Entry shape、§ Procedure step 3\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "decision-structure-writer-surface-activation",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:12.798Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-writer-surface-activation",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:12.117Z",
+        "vector_id": "w:4OfahC-0QgTGXSu9Xo4Wm3-qEEhO-d3kNy05TbKguK8"
+      },
+      "node_id": "w:4OfahC-0QgTGXSu9Xo4Wm3-qEEhO-d3kNy05TbKguK8",
+      "text": "decision-structure-writer-surface-activation\n\n# 判断構造 Wiki への書き手 surface を AI 自律で activate する\n\n## Question\n\n判断記録の Wiki surface は「AI が確認なく書く場所」として設計されていたのに使われていなかった。何を足せば動くか。\n\n## Current resolution\n\n書き手側 skill（`skills/evolution-decision-structure-write`）を新設し、`Memory_Write_Autonomy` の射程を判断構造 Wiki へ拡張する（adapter 側 `Decision_Structure_Write_Autonomy`）。読み手側 `skills/evolution-judgment-learning` と対をなす writer / reader のペアにして、セッション横断の判断知ループを AI 単独で閉じる。\n\n書き込みの射程は**判断記録 surface のみ**。知識 wiki は採用しない（2026-05-04 のセッションで確定）。\n\n## Edges\n\n- **depends on**: [判断記録 artifact を「履歴」から「構造」へ rename + 意味 shift](https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-rename-rationale) — 本 surface の activate 後に、その上で扱う artifact の framing を shift した判断。命名と entry shape は後者が canonical\n\n## 背景\n\n元設計時、判断記録を Wiki に置いた理由は「AI が確認なく書く surface」として位置付けるためだった。しかし書き手側の skill が無く、発火の瞬間を名指しするものが無かったため活用されてこなかった（Master 観測）。機構が在ることと、発火が起きることは別である。\n\nWiki は本体 repo の git commit を経由しない独立した git surface であり、PR ceremony を課す理由が無い。仕様書（1-6 / A-K）の write は重い PR フローに残し、判断構造の write は軽量に保つ非対称設計を意図的に取る。\n\n## 制約\n\n- 書く前に既存エントリとの重複 / 矛盾チェックを通す（memory consolidation の思想を流用）\n- 仕様を literal に確認してから書く。impression-based entries は禁止\n- `skills/evolution-persistence-tiering` の memory ↔ docs 仕分けは継続する。本判断が足すのは「判断構造 Wiki surface への AI 自律書き込み権」のみで、ティアリングを迂回しない\n- L1 Update Gating には抵触しない。書き出し先は判断の外部記憶であって rule 定義そのものではない\n\n## 結論\n\n採用 = 書き手 skill の新設 + autonomy 拡張。\n\n却下 = 知識 wiki の採用（射程が判断記録から一般知識へ広がると、鮮度問題を抱える事実の集積場になる。時間で変わる事実は都度調査する方針と衝突する）。却下 = Wiki write に PR ceremony を課す（独立 git surface である利点を捨て、書き味の軽さという設計上の非対称を失う）。\n\n## 関連\n\n- Issue: [#1205](https://github.com/Liplus-Project/liplus-language/issues/1205) / PR [#1206](https://github.com/Liplus-Project/liplus-language/pull/1206)（skill 新設 `cda1825`）\n- 隣接 spec: `skills/evolution-decision-structure-write/SKILL.md`、`docs/Decision-Structure.md`、`docs/2.-Evolution.md` § 判断構造の書き出し\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "subtractive-structural-beauty-framing",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:30.320Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/subtractive-structural-beauty-framing",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:29.668Z",
+        "vector_id": "w:_kVJIHr_mo4RZvS5O1gTsVzeQhpibUZkbCI5UxAtShc"
+      },
+      "node_id": "w:_kVJIHr_mo4RZvS5O1gTsVzeQhpibUZkbCI5UxAtShc",
+      "text": "subtractive-structural-beauty-framing\n\n# 引き算原則を 美学 (aesthetic / 内側の感覚) から 構造美 (structural beauty / 観察可能な構造性質) へ framing shift\n\n## Question\n\n引き算原則の L1 正本 rule を、内側の感覚 (美学 / aesthetic / taste) として framing するか、外側に観察可能な構造性質 (構造美 / structural beauty / load-bearing property) として framing するか。\n\n## Current resolution\n\n「構造美 (Subtractive Structural Beauty)」として framing する。`rules/model/art-of-subtraction.md` を `rules/model/subtractive-structural-beauty.md` に rename し、H1 を `# Subtractive Structural Beauty` に揃え、body 冒頭に「Beauty here is structural and observable — the load-bearing-ness of every part, not an internal taste.」を配置する。Detection signs intro 「About to violate the aesthetic when:」 を「About to break structural beauty when:」 に置換し、判定基準を内側の感覚から artifact 上の構造性質に移す。\n\n## Edges\n\n- **supersedes**: [`minus-aesthetic` 命名 → `art-of-subtraction` rename](https://github.com/Liplus-Project/liplus-language/issues/1352) — 「引き算の美学」「Art of Subtraction」共に *内側の感覚 / 鑑賞態度* を主語にしていた。本判断で同一原則を *外側の観察可能な構造性質* として framing し直す。命名は 3 世代目: minus-aesthetic → art-of-subtraction → subtractive-structural-beauty。\n- **depends on**: [art-of-subtraction を Core principles (A)(B)(C) に統合](https://github.com/Liplus-Project/liplus-language/issues/1354) — load-bearing 判断 (A) / pull-driven transmission (B) / default-reflex 禁止 (C) の 3 角度に集約済み。「構造美 = (A) を満たした結果として artifact 上に観察される性質」と定義することで、タイトルが Core principles と直結する。\n- **depends on**: [Decision Structure framing への移行](https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-rename-rationale) — 同形の「内側の感覚 → 外側の観察可能な構造」 framing shift。Decision Log → Decision Structure と並列の判断構造を本 rule にも適用する。\n\n## 背景\n\nMaster との対話で surface した観察:\n\n- `art-of-subtraction.md` は Core principles (A)(B)(C) + Application notes + Detection signs まで articulate されていたが、依然「aesthetic」という *内側の感覚* 語彙でラップされていた (例: `About to violate the aesthetic when:`)。\n- 観察された限界: `rules/model/trigger-check-gate.md` が L1 rule 全般について名指しした「ルールがあること ≠ 適用瞬間にトリガが立つこと」と同形の欠落が本 rule にもあった。「美学を思い出させる」発火を書き手の内側に置く設計では、適用瞬間に火が入らない。\n- 構造美 framing への shift で得られるもの:\n  - 判定基準が artifact 上に降りる (書き手の内側に閉じない、第三者が同じ基準で測れる)\n  - 事後検証 surface (`gh pr review` self-review / `skills/parallel-subagent-eval`) を発火面として効かせられる\n  - 本文の (A) — Structure is maintained by load-bearing judgment — がそのまま「美」の定義になり、タイトルと中身のズレが閉じる\n\n## 制約\n\n- 振る舞いの変化なし。rule application 自体は (A)(B)(C) のまま不変、構造美はその描写語彙の shift。\n- release type は patch (governance 内整理、language alignment、no user/system observable impact)。\n- 2 段階 PR 構成: #1357 で path 整合 + H1 統一、#1359 で body 内 \"aesthetic\" 用語の置換。途中状態 (filename と body 用語の一時不整合) は Accepted Tradeoff として明示し、次 PR で収束させた。\n- 命名は 3 世代目だが、過去の世代名 (minus-aesthetic / art-of-subtraction) を遡及削除しない。graph 構造維持、supersede edge で前方リンク。\n\n## 結論\n\n採用案: option A (rename + 冒頭 framing 1 行追加 + Detection signs intro 置換、2 PR segmentation)\n\n却下案 + 理由:\n\n- option B (filename 据え置き、body framing のみ shift) — タイトルと中身の framing がずれ続ける。読み手 (AI 含む) が表題から判断 weighting を取りに行く以上、表題が「美学」のままだと内側感覚の weighting が残る。\n- option C (body 全面書き直し、(A)(B)(C) 命名まで shift) — 構造美 framing は (A)(B)(C) の上位ラッパーであり、(A)(B)(C) 自体は構造美の構成要素として既に load-bearing。冒頭 framing 1 行 + Detection signs intro 置換で十分。over-rewrite は (B) push surplus tells に該当する自己違反。\n\noption A は最小 load-bearing 改変で framing shift を完了させる構成。\n\n## メタ的観察\n\n本 rule の framing shift は recursion を含む — 引き算原則そのものを引き算原則に従って refactor している。\n\n- (A) load-bearing 判断: 冒頭 1 行と Detection signs intro の 2 箇所のみが framing shift に load-bearing、それ以外は据え置き\n- (B) pull-driven: Master 指示「まずはファイル名」を pull として尊重、body 書き換えは別 PR に分離、push surplus を抑制\n- (C) default-reflex 禁止: 「内側の感覚」framing を preserve-by-default で温存する判断を能動的に却下\n\nframing shift 自体がメタレベルで構造美を demonstrate している (タイトルと中身のズレ閉鎖、最小 load-bearing 改変、過去世代の supersede edge による保持)。\n\n## 関連\n\n- Issue: [#1356](https://github.com/Liplus-Project/liplus-language/issues/1356) (rename + path 整合 + H1) / [#1358](https://github.com/Liplus-Project/liplus-language/issues/1358) (body terminology 置換)\n- PR: [#1357](https://github.com/Liplus-Project/liplus-language/pull/1357) (commit `09ca795`) / [#1359](https://github.com/Liplus-Project/liplus-language/pull/1359) (commit `a4bdb9f`)\n- 過去判断 (命名世代): [#1351](https://github.com/Liplus-Project/liplus-language/issues/1351) minus-aesthetic 導入 → [#1352](https://github.com/Liplus-Project/liplus-language/issues/1352) art-of-subtraction rename → [#1354](https://github.com/Liplus-Project/liplus-language/issues/1354) Core principles 統合 → 本判断\n- 隣接 wiki entry: [decision-structure-rename-rationale](https://github.com/Liplus-Project/liplus-language/wiki/decision-structure-rename-rationale) (同形の framing shift)\n- 当該 rule: [`rules/model/subtractive-structural-beauty.md`](https://github.com/Liplus-Project/liplus-language/blob/main/rules/model/subtractive-structural-beauty.md)\n"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "database": "github-rag-fts",
+    "doc_paths": [
+      "decision-structure-industry-positioning",
+      "decision-structure-rename-rationale",
+      "decision-structure-state-form-edge-binding",
+      "decision-structure-writer-surface-activation",
+      "subtractive-structural-beauty-framing"
+    ],
+    "per_type_limit": 5,
+    "repositories": [
+      "Liplus-Project/liplus-language"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "selection_order": [
+      "repo",
+      "type",
+      "doc_path",
+      "vector_id"
+    ],
+    "types": [
+      "wiki_doc"
+    ]
+  }
+}
