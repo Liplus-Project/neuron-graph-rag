@@ -102,6 +102,12 @@ python -m neuron_graph_rag eval
 
 指標は mean reciprocal rank、hit at 3、baseline より expected node の rank が改善した query 数です。この eval は品質ベンチマークではなく、graph 経路が baseline と異なる順位信号を生むことを検証する最小 smoke test です。
 
+## D1 real-corpus fixture
+
+`tests/fixtures/d1_liplus_wiki.json` は github-rag-mcp の本番 D1 から read-only で取得した決定論的な小 fixture です。`diff` と `wiki_doc` の時系列 metadata、Decision Structure の `mention` edge、検索、graph activation、success feedback を統合テストで再現します。
+
+取得 tool は D1 の単一 `SELECT / WITH` だけを許可し、Wrangler が `rows_written=0` を返したことを query ごとに検証します。認証、再取得、schema fingerprint、coverage、既知 gap、完全性の限界は [docs/d1-corpus-fixture.md](docs/d1-corpus-fixture.md) を参照してください。
+
 ## Public API
 
 ```python

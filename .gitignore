@@ -7,3 +7,6 @@ __pycache__/
 build/
 dist/
 *.db
+*.d1-export.json
+artifacts/d1/
+tests/fixtures/.full-*
