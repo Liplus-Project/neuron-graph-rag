@@ -1,0 +1,91 @@
+{
+  "checks": {
+    "development_vs_prior_1": {
+      "doc_paths": [],
+      "node_ids": [],
+      "relation_endpoints": [],
+      "source_urls": []
+    },
+    "development_vs_prior_2": {
+      "doc_paths": [],
+      "node_ids": [],
+      "relation_endpoints": [],
+      "source_urls": []
+    },
+    "development_vs_prior_3": {
+      "doc_paths": [],
+      "node_ids": [],
+      "relation_endpoints": [],
+      "source_urls": []
+    },
+    "development_vs_prior_4": {
+      "doc_paths": [],
+      "node_ids": [],
+      "relation_endpoints": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_1": {
+      "doc_paths": [],
+      "node_ids": [],
+      "relation_endpoints": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_2": {
+      "doc_paths": [],
+      "node_ids": [],
+      "relation_endpoints": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_3": {
+      "doc_paths": [],
+      "node_ids": [],
+      "relation_endpoints": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_4": {
+      "doc_paths": [],
+      "node_ids": [],
+      "relation_endpoints": [],
+      "source_urls": []
+    },
+    "new_split_fixture_overlap": {
+      "doc_paths": [],
+      "node_ids": [],
+      "relation_endpoints": [],
+      "source_urls": []
+    },
+    "new_split_gold_overlap": {
+      "expected_node_ids": [],
+      "normalized_queries": [],
+      "relation_endpoints": [],
+      "source_urls": []
+    }
+  },
+  "inputs": {
+    "development_fixture_sha256": "sha256:7e71b6aba83d2ee6b080251a233f869d2cea85f48a3878b4b2f4e9910a991b9d",
+    "development_gold_sha256": "sha256:183c03febd3531fb2dd647546dba1572e2c0dd00d6c41b57b49772befb423a0b",
+    "holdout_fixture_sha256": "sha256:3f2a2c64df4841616f78da74b8a5bcb246c6b8a5fdda21618ab6a8870b4ae385",
+    "holdout_gold_sha256": "sha256:5ca0dd7a50068db1e03de2a185878727683ae92a8ee25dcd4213e71ab6bfe6cf",
+    "prior_fixtures": [
+      {
+        "fixture": "d1_liplus_benchmark.json",
+        "fixture_sha256": "sha256:b3b305aabb57803c2782c3998215e1cbcf9b5e6cdef0f641abc98520d4400cf9"
+      },
+      {
+        "fixture": "d1_liplus_dynamics_holdout.json",
+        "fixture_sha256": "sha256:4f7c444c408c3188323e754aa93141a8deaf1a4b15410ad915dd4c71be3a8081"
+      },
+      {
+        "fixture": "d1_liplus_local_competition_development.json",
+        "fixture_sha256": "sha256:27e5018f489d7602cf1753a3bda688f3db82c69ce8ee9eef0401caf72b40acfa"
+      },
+      {
+        "fixture": "d1_liplus_local_competition_holdout.json",
+        "fixture_sha256": "sha256:94b0e311546aee39b8aac114e1387aada465f058d0e14d32e7b7c7aa53b50f62"
+      }
+    ]
+  },
+  "passed": true,
+  "prior_usage": "fixture identifiers only; prior gold and result artifacts are not loaded",
+  "schema_version": 1
+}

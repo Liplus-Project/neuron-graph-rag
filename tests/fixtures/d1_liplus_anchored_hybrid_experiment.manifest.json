@@ -1,0 +1,121 @@
+{
+  "baselines": [
+    "current",
+    "bm25-only"
+  ],
+  "contamination_audit": {
+    "artifact": "d1_liplus_anchored_hybrid.contamination.json",
+    "artifact_sha256": "sha256:b05fccc2cff99a7942a54edb14957f51c0cefecfab383a5e203abd874f95c970"
+  },
+  "development": {
+    "fixture": "d1_liplus_anchored_hybrid_development.json",
+    "fixture_sha256": "sha256:7e71b6aba83d2ee6b080251a233f869d2cea85f48a3878b4b2f4e9910a991b9d",
+    "gold": "d1_liplus_anchored_hybrid_development.gold.json",
+    "gold_sha256": "sha256:183c03febd3531fb2dd647546dba1572e2c0dd00d6c41b57b49772befb423a0b",
+    "provenance": "d1_liplus_anchored_hybrid_development.provenance.json",
+    "provenance_sha256": "sha256:155ad4fe13e0008e3e4efb0a7a627650abfacdea48a534c7752055387427b1f6"
+  },
+  "experiment_id": "d1-liplus-anchored-bm25-graph-hybrid-v1",
+  "holdout": {
+    "fixture": "d1_liplus_anchored_hybrid_holdout.json",
+    "fixture_sha256": "sha256:3f2a2c64df4841616f78da74b8a5bcb246c6b8a5fdda21618ab6a8870b4ae385",
+    "gold": "d1_liplus_anchored_hybrid_holdout.gold.json",
+    "gold_sha256": "sha256:5ca0dd7a50068db1e03de2a185878727683ae92a8ee25dcd4213e71ab6bfe6cf",
+    "provenance": "d1_liplus_anchored_hybrid_holdout.provenance.json",
+    "provenance_sha256": "sha256:29ae3bae2903cc9563eba29aee2e8b2d99543c913faf0b2b191fc96a5971a278"
+  },
+  "maximum_variants": 6,
+  "selection_rule": {
+    "candidate_gate": "relation MRR must strictly exceed current; direct and negative-control MRR must not regress; every relation path must match; feedback must be isolated; entry anchor must be invariant; graph signal must exclude zero-hop paths",
+    "candidate_ids": [
+      "bm25-graph-additive",
+      "anchored-local",
+      "anchored-local-query",
+      "bm25-anchored-local"
+    ],
+    "tie_break": [
+      "highest_relation_mrr",
+      "highest_worst_cohort_mrr",
+      "fewest_mean_expansions",
+      "lowest_structural_complexity",
+      "lexicographic_variant_id"
+    ]
+  },
+  "shared_config": {
+    "activation_budget": 1.0,
+    "dense_weight": 0.45,
+    "entry_weight": 0.55,
+    "graph_weight": 0.45,
+    "hop_decay": 0.7,
+    "inhibition_ratio": 0.1,
+    "limit": 5,
+    "max_active_paths_per_node": 4,
+    "max_hops": 2,
+    "query_transmission_floor": 0.4,
+    "recurrent_decay": 0.5,
+    "recurrent_steps": 2,
+    "seed_count": 1,
+    "sparse_weight": 0.55
+  },
+  "stop_rule": {
+    "development_no_candidate": "keep current default and do not open holdout",
+    "holdout_adoption": "adopt only when the selected candidate passes the same anchored gate on unseen holdout",
+    "holdout_open_count": 1,
+    "holdout_variants": [
+      "current",
+      "bm25-only",
+      "selected-development-candidate"
+    ],
+    "post_observation_changes": "forbidden for fixture, gold, provenance, audit, doc paths, thresholds, selection rule, stop rule, or variant parameters"
+  },
+  "variants": [
+    {
+      "family": "current_positive_additive",
+      "id": "current",
+      "parameters": {},
+      "structural_complexity": 0
+    },
+    {
+      "family": "current_positive_additive",
+      "id": "bm25-only",
+      "parameters": {
+        "dense_weight": 0.0,
+        "graph_weight": 0.0,
+        "use_dense_retrieval": false,
+        "use_graph_propagation": false
+      },
+      "structural_complexity": 0
+    },
+    {
+      "family": "current_positive_additive",
+      "id": "bm25-graph-additive",
+      "parameters": {
+        "dense_weight": 0.0,
+        "use_dense_retrieval": false
+      },
+      "structural_complexity": 1
+    },
+    {
+      "family": "anchored_local_competition",
+      "id": "anchored-local",
+      "parameters": {},
+      "structural_complexity": 5
+    },
+    {
+      "family": "anchored_local_query_competition",
+      "id": "anchored-local-query",
+      "parameters": {},
+      "structural_complexity": 6
+    },
+    {
+      "family": "anchored_local_competition",
+      "id": "bm25-anchored-local",
+      "parameters": {
+        "dense_weight": 0.0,
+        "use_dense_retrieval": false
+      },
+      "structural_complexity": 5
+    }
+  ],
+  "schema_version": 3
+}

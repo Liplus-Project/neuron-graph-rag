@@ -1,0 +1,261 @@
+{
+  "edges": [
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "brake1-single-round-cap",
+          "dst_vector_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "brake-evaluator-baseline-integrity",
+          "src_vector_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+          "updated_at": "2026-07-28T09:45:29.399Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+      "target_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "brake-evaluator-baseline-integrity",
+          "dst_vector_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "brake1-operational-copy-target-conditional",
+          "src_vector_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+          "updated_at": "2026-07-29T03:45:26.939Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+      "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "brake1-single-round-cap",
+          "dst_vector_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "implementation-always-delegated",
+          "src_vector_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+          "updated_at": "2026-07-31T14:56:29.849Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+      "target_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "brake1-operational-copy-target-conditional",
+          "dst_vector_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "parallel-subagent-eval-model-floor",
+          "src_vector_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+          "updated_at": "2026-07-31T14:57:13.829Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+      "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "brake1-single-round-cap",
+          "dst_vector_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "parallel-subagent-eval-model-floor",
+          "src_vector_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+          "updated_at": "2026-07-31T14:57:13.829Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+      "target_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA",
+      "weight": 1.0
+    }
+  ],
+  "nodes": [
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "brake-evaluator-baseline-integrity",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-28T00:45:25.803Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/brake-evaluator-baseline-integrity",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-28T00:45:24.262Z",
+        "vector_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+      },
+      "node_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+      "text": "brake-evaluator-baseline-integrity\n\n# brake 評価者のベースライン保全は権限でなく指示と材料で行う\n\n## Question\n\nbrake 1 / brake 2 の評価者が評価対象を書き換え、他の評価者のベースラインを壊す事故を、何で防ぐか。\n\n## Current resolution\n\n**subagent のツール権限は変更しない。** brake の委譲プロンプトで評価対象を書き換えないよう明示的に指示し、あわせて評価者へ渡す材料を PR の URL に寄せて共有クローンのパスを名指ししない。\n\n前者が書き込みの意図を断ち、後者が共有ベースラインという的そのものを外す。2つは合成して使う。\n\n評価者区分だけツール権限を絞る設計（agent 定義の `tools:`）は採らない。\n\n## Edges\n\n- **depends on** [`brake1-single-round-cap`](https://github.com/Liplus-Project/liplus-language/wiki/brake1-single-round-cap) — 1巡制限下では1ラウンドの verdict がそのまま出荷判断になるため、そのラウンドのベースラインが汚れていることの代償が上がる。ラウンドを重ねる設計であれば次ラウンドで気づけた\n- **depends on** [`implementation-always-delegated`](https://github.com/Liplus-Project/liplus-language/wiki/implementation-always-delegated) — 実装が常に委譲され brake が CI green 後に走ることで、評価者へ渡す材料が push 済み SHA と緑の run URL に確定した。材料を PR の URL に寄せる余地はこの位置決定が作った\n- **conflicts with** （現時点で対立 entry なし）\n\n## 背景\n\nPR #1581 の brake 1 で、評価者3体へ同一のローカルクローンのパスを渡した。評価者Aが mutation test でソースを差し戻して復元する間に評価者Cが走り、Cは「テストが非決定的に落ちた」と報告した。存在しない flakiness が実欠陥候補として上がる形で現れ、親が単独実行で安定を確認して初めて切り分いた。\n\n同軸の先行例が PR #1560 にある。親が評価プロンプトへ古い `main` ref の diff コマンドを書き、無関係な2ファイルが混入した diff を渡していた。3体中2体が自力で除外したため実害は出なかったが、**評価者が気づかなければ検出不能**という性質は同じ。\n\n観測 cluster は `brake1-evaluation-baseline-not-isolated`（occurrence 2）。\n\n## 判断の前に確認した反証\n\nAI 側の推奨は当初「ツール権限で縛る」だった。評価者を `tools: Read` に絞れば物理的に書けなくなり、`rules/model/subtractive-structural-beauty.md` が求める「実行が保証される構造」に到達する。brake 2 の `adapter/claude/agents/l1-gate-eval.md` が既にその形で実装されている。\n\nMaster はこれを採らなかった。理由 = subagent の書き込み権限そのものを触りたくない。\n\nこの経路には副次的な重さもある。`skills/evolution-parallel-agent-eval/SKILL.md` Constraint が brake 1 評価者への custom-agent ファイル使用を禁じており（理由 = モデル床の固定方法と probe 型 identity の保全）、Claude Code では agent ファイル本文が system prompt を置き換えるため「ツールだけ縛って identity を触らない」ができない。probe 型の実運用実績を調べた上で型ごとに分岐する必要が生じる。ツール権限を採らない判断は、この分岐ごと降りることでもある。\n\n## 受容した対価\n\n指示は親が委譲プロンプトへ毎回書く**手続き**であり、忘れれば効かない。`rules/model/subtractive-structural-beauty.md` の procedure-vs-structure 判定では置き換え対象の側に立つ。強制する構造（hook / gate）は置かない。\n\n緩和として、指示の literal は仕様側に置く。親が毎回文言を作文するのではなく写す形にすることで、「何を書くか」の負荷を消し「書くこと自体」の recall だけを残す。\n\n## 実測\n\nPR #1583 の brake 1 では、親が手でこの指示を書いた状態で評価者3体を走らせ、**3体とも書き込みゼロ**だった。指示は実際に守られている（n=1）。同 PR は brake の実行位置を CI green 後へ固定した最初の適用でもあり、材料が SHA と run URL に限定されていた効果と分離できていない点に注意。\n\nPR URL 経路はリポジトリ外のディレクトリから実測済み。`gh pr diff <n> --repo <owner>/<repo>` は clone 無しで差分を返し、`gh api repos/<owner>/<repo>/contents/<path>?ref=<SHA>` は任意 SHA の任意ファイル本文を返す。弱点はリポジトリ全体の grep で、GitHub code search は本リポジトリで総ヒット 0 が返り当てにできない。全体掃きが要る軸では評価者が自分の作業ディレクトリへ clone することになるが、共有面ではないので隔離は保たれる。\n\n## 再評価条件\n\n本判断は**事故の軸**（評価者が混乱して評価対象を書き換える）に対する解であり、**敵対の軸**（評価者が読む材料に仕込まれた指示に乗る）には効かない。プロンプトの言葉で縛る相手が、まさにプロンプトを読んで動く相手であるため、指示は敵対入力に対して構造的に無力である。\n\n現状は敵対の軸が立っていない。Li+ の PR / issue はすべて Master と AI が書いており、評価者が読む材料に外部の書き手が入る経路がない。この前提が崩れたときが再評価点。\n\n具体的な再評価トリガー:\n\n- Discussions 経由の外部起票（`skills/operations-discussions/SKILL.md` が定める外部エントリポイント）が、issue 本文や PR 本文として brake 評価者の読む材料に入る運用になったとき\n- 外部コントリビュータが PR を開けるようになったとき\n- 評価者へ渡す材料に、Li+ 外で書かれたテキスト（外部記事、サードパーティのツール出力）を含める軸が立ったとき\n\nいずれかが成立した時点で、`rules/model/subtractive-structural-beauty.md` の Surfaces of freedom（Action = least authority）および Subtraction safeguards（Security は明示的冗長性が load-bearing な領域）が本来の意味で効いてくる。そのときツール権限による制約は、事故対策ではなく security 対策として要求される。\n\n## Related\n\n- [#1584](https://github.com/Liplus-Project/liplus-language/issues/1584) — 本判断の実装先\n- [#1582](https://github.com/Liplus-Project/liplus-language/issues/1582) / [PR #1583](https://github.com/Liplus-Project/liplus-language/pull/1583) — brake の実行位置を CI green 後へ固定。材料を SHA + run URL に限定する記述はこの PR で入った\n- [#1575](https://github.com/Liplus-Project/liplus-language/issues/1575) / [PR #1581](https://github.com/Liplus-Project/liplus-language/pull/1581) — 汚染の観測元\n- `skills/evolution-parallel-agent-eval/SKILL.md` — brake 1 の手続き本体\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "brake1-operational-copy-target-conditional",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-29T03:45:25.729Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/brake1-operational-copy-target-conditional",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-29T03:45:24.432Z",
+        "vector_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+      },
+      "node_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+      "text": "brake1-operational-copy-target-conditional\n\n# brake 1 の operational copy 適用は対象種別で条件分岐する\n\n## Question\n\nbrake 1（`skills/evolution-parallel-agent-eval`）の Procedure step 2 は、draft を live `.claude/` へ写してから評価者を spawn する。この適用は常に必要か。適用がホストに拒否された場合はどうするか。\n\n## Current resolution\n\n**step 2 は target 条件付き。** 判定基準は「draft が評価者の観測面に注入コンテキストとして届くか」の一点。\n\n- `rules/**/*.md` = **適用必須**。本文まるごとが subagent コンテキストへ注入されるため、写さないと注入済みの旧 rule が draft を shadow する\n- `skills/<name>/SKILL.md` = judge 型評価者には **適用不要**。description のみ注入で本文は invoke 時 lazy-load のため、写しても観測面は変わらない。評価者を draft へ直接 Read させる。例外として、skill を *invoke* させる probe 型（invoke 時に本文が自動ロードされる）では適用必須\n\nホストの self-modification ゲートに apply を拒否された場合の fallback:\n\n- `skills/*` = 直接 Read へ退避し、deviation を PR self-review に記録\n- `rules/*` = 直接 Read で代替**不可**（注入コンテキストが依然 shadow する）。apply 可能な session から再実行するか、deviation を記録して reduced confidence を post-merge 観察へ回す\n\nstep 5 の restore と apply/restore pairing は「適用が無ければ vacuous」で整合させる。\n\n## Edges\n\n- **depends on** [`parallel-subagent-eval-three-axis-decomposition`](https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-three-axis-decomposition) — step 2 は ablation 前提を成立させる手続きであり、三軸の P（premise_variations）が何を指すかに依存する\n- **depends on** [`brake-evaluator-baseline-integrity`](https://github.com/Liplus-Project/liplus-language/wiki/brake-evaluator-baseline-integrity) — 評価者へ渡す材料をクローン内のパスから PR の URL へ寄せる判断と対を成す。step 2 の operational copy は「名指しするパス」ではなく自動注入コンテキストとして届くため、材料規則の影響を受けない\n- **conflicts with** （現時点で対立 entry なし）\n\n## 背景\n\n### 非対称が未分化だったこと\n\n注入面の source of truth は同 skill の Constraint「Character_Instance non-inheritance」にある。`rules/**/*.md` は本文まるごと注入、`skills/*/SKILL.md` は description のみで本文は lazy-load。この非対称は仕様として先に書かれていたにもかかわらず、step 2 の apply 手続き側は両者を区別せず「適用する」とだけ書いていた。\n\n結果として二方向に外れる。`skills/*` の draft では観測面が一切変わらない apply を毎回走らせ、`rules/*` を扱う手続きだと信じたまま実質何も検証していない状態が成立しうる。逆に `rules/*` で apply を飛ばすと、注入済みの旧 rule が draft より上位に立ち、評価者は書き換え前の rule に対して答える。後者は `subagent-eval-stale-context-judgment` として観測された stale context 問題と同根。\n\n### ゲート拒否\n\n2026-06-12 の scheduled 自律 run で、step 2 の live `.claude/` 適用がホストの Self-Modification ゲートに拒否され、手続きが実行不能になった（occurrence 1）。ユーザーの明示認可を伴わない自律 run では apply 自体が通らない経路が存在する、という substrate 側の制約が判明した形。\n\nこのとき「拒否されたので step 2 を飛ばして続行」を許すと、上記の `rules/*` shadow がそのまま起きる。fallback を対象種別ごとに書き分けたのはこのため。`skills/*` は観測面が変わらないので直接 Read で等価、`rules/*` は等価にならないので confidence を下げるか session を替えるしかない、という非対称が fallback にもそのまま伝播する。\n\n## 受容した対価\n\n`rules/*` の apply が拒否された自律 run では、brake 1 が verdict を出せないか、reduced confidence のまま先へ進むかの二択になる。前者は run の中断、後者は検証強度の低下であり、どちらも無コストではない。\n\nホストの権限ゲートは Li+ 側から動かせないため、この対価は substrate gap として受容している。緩和は「apply 可能な session から再実行する」という運用側の退避路のみ。\n\n## 再評価条件\n\n- 注入面の仕様が変わったとき（`skills/*/SKILL.md` 本文が常時注入になる、`adapter/*` が注入リストに入る等）。判定基準そのものが「注入されるか」なので、注入面が動けば分岐も動く\n- ホストの self-modification ゲートの粒度が変わり、自律 run でも apply が通るようになったとき。fallback 節の存在理由が消える\n\n## 未解決の縁\n\n`docs/*` / `adapter/*` を draft 対象とする場合の分岐が step 2 に無い。注入リスト自体がこれらを列挙していないため #1495 が作った穴ではないが、分岐の空白としては残っている。#1597 で追跡。\n\n## 検出サイン（この判断が後で疑問視される場合）\n\n- 「step 2 は常に適用する手続きだ」と読まれた時 → 対象種別で条件分岐する。`skills/*` の judge 型では適用が観測面を変えない\n- `skills/*` の apply を飛ばしたことを deviation として記録しようとした時 → 規定どおりの分岐であって deviation ではない。deviation 記録が要るのはゲート拒否の fallback 経路のみ\n- `rules/*` の apply 拒否を直接 Read で埋めようとした時 → 代替不可。注入コンテキストが shadow し続ける\n\n## Related\n\n- [#1492](https://github.com/Liplus-Project/liplus-language/issues/1492) / [PR #1495](https://github.com/Liplus-Project/liplus-language/pull/1495) — 本判断の起票と実装。brake 1 は N=3（opus）全 axis consistent、impression-literal 0/3、全会一致 ADOPT\n- [#1597](https://github.com/Liplus-Project/liplus-language/issues/1597) — `docs/*` / `adapter/*` の分岐が無い件\n- `skills/evolution-parallel-agent-eval/SKILL.md` Procedure step 2 / step 5 — 規則本体\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "brake1-single-round-cap",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-27T15:45:26.529Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/brake1-single-round-cap",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-27T15:45:24.495Z",
+        "vector_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA"
+      },
+      "node_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA",
+      "text": "brake1-single-round-cap\n\n# brake 1 は N=3 の1巡で打ち切り、修正後の再検証ラウンドを行わない\n\n## Question\n\nbrake 1（`skills/evolution-parallel-agent-eval`）は、verdict が partial / negative の場合に親が draft を修正して eval を再実行する設計だった。ラウンド数に上限は無く、実測で 3〜4 ラウンドを要する PR が連続した。ラウンドを何周まで回すべきか。\n\n## Current resolution\n\n**N=3 の1巡で打ち切る。修正後の再検証ラウンドは行わない。** 出た指摘は親がソースに照らして採否を裁き、修正した draft をそのまま self-review へ通す。N=3 の下限（sample count 軸）は据え置き。\n\n**期間を区切った試行**として入れた決定であり、恒久確定ではない。再評価条件は下記。\n\n## Edges\n\n- **supersedes** [`parallel-subagent-eval-cost-acceptance`](https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-cost-acceptance) の再評価条件2（「substrate 降格を伴わない別経路でのコスト圧縮策が提示された場合」）— 本決定がその経路。コスト受容の判断原理（予防コスト < 修復コスト、時間軸波及込みで評価）自体は不変で、圧縮の具体軸が1本追加された形。全廃ではないため cost-acceptance の結論は生きている\n- **depends on** [`parallel-subagent-eval-three-axis-decomposition`](https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-three-axis-decomposition) — N / M / P の三軸は「1ラウンド内の幅」を規定する。ラウンド数はそれと独立した第四の変数であり、本決定はそこだけを固定する\n- **depends on** [`liplus-evaluation-criterion`](https://github.com/Liplus-Project/liplus-language/wiki/liplus-evaluation-criterion) — 受容の判断軸そのもの\n- **conflicts with** （現時点で対立 entry なし）\n\n## 背景\n\n観測 cluster `brake1-round-termination-is-parent-feel-dependent`（occurrence 4）が起点。cluster が名指しした欠陥は「ラウンドが多い」ではなく **打ち切り判断が親の感覚に依存している** ことだった。#1543 / #1550 では親が R1・R2・R3 の各時点で収束を予測し、3 回とも外している。\n\nPR #1560 の実測: 378 行の変更に対し brake 1 評価者 3 ラウンドが 1,640,972 トークン、実装・修正 subagent が 571,074 トークン。検証が実装の約 2.9 倍。1 巡制限適用時の推定は約 61% 減。\n\n同 PR の収穫分布ではコード欠陥 4 件がすべて R1 で出ており、R2 の 2 件のうち 1 件は R1 の修正が新設した欠陥だった。#1555 の観察エントリも「ラウンドを伸ばした主因が実装でなく親の修正だった」と記録している。\n\n## 判断の前に確認した反証\n\n「コード欠陥はすべて R1 で出る」は #1560 単独の観測であり、記録には後半ラウンドが実欠陥を出した例が 3 件ある。\n\n| PR | ラウンド数 | 後半ラウンドの収穫 |\n|---|---|---|\n| #1543 | 4 | R3 = chunk 境界のマルチバイト破損。**初回実装に元から在った挙動欠陥**で、修正が新設したものではない |\n| #1550 | 4 | R4 = 書き換えで落ちた、まだ生きていた記述 |\n| #1533 | 3 | R2 = `dialogue-evaluator` が 4 区分目として漏れていた仕様欠落 |\n\nとくに #1543 R3 は、1 巡制限下では #1562 のテスト被覆でも受け止められない（被覆範囲は `on-session-start` であって `post-tool-use` ではない）。\n\nAI 側の推奨は「一律のラウンド数ではなく、指摘の性質変化で打ち切る基準の構造化」だった（PR #1551 / #1560 で実地適用済み、cluster が名指しした設計軸「親の修正が生んだ周回と実装由来の周回を区別できるか」にも対応する）。\n\n## Master の判断\n\n反証を提示した上で、Master が **一律1巡** を選択。literal:\n\n> 精度をとるならそうなるよなぁ〜。。。でもコストが馬鹿にならないから一旦aの案でしばらく使ってみることにしよう。\n> 確かにバグは見逃しやすくはなるが、表面化しないバグはバグではないからね。\n\n判断軸は Li+ の評価基準そのもの（`rules/model/foundational-invariant.md`: 正しさは現実の挙動で定義される）。上記 3 件はいずれも**本番で表面化しないまま検出された**欠陥であり、検証コストは確実に発生する一方で回避された実害は仮定にとどまる。精度の側が正しいことは認めた上で、コストとの秤で降りる、という構造の判断。\n\n## 降りたもの（明示）\n\n`skills/evolution-parallel-agent-eval/SKILL.md` の Non-scope「What the single-round cap gives up」に、観測された PR 番号つきで 3 クラスを列挙してある。「見落とした」ではなく「降りた」と後から読めるようにするための記述であり、削除すると将来の読み手がこれを見落としバグと誤読して勝手にラウンドを復活させうる。\n\n1. 親の修正が新設した欠陥（#1560 G2 / #1555 R2・R3）— #1562 のテストが挙動欠陥サブセットの受け皿\n2. 後半ラウンドでしか出ない散文層（#1550 R4）— テストでは落ちない\n3. 初回実装に在り R1 が届かなかった挙動欠陥（#1543 R3 / #1533 R2）\n\n## 再評価条件\n\n- **1 巡制限下で merge した変更が、本番挙動として実害を出した場合。** Master の受容根拠「表面化しないバグはバグではない」の前提が、表面化した時点で崩れる\n- 同種の取り逃がしが複数回観測され、削減したコストを修復コストが上回った場合\n\n再評価時の第一候補は保留した「性質変化での打ち切り」。一律のラウンド数でなく、指摘が「仕様と実装の食い違い」から「記述が実態より盛っている」へ変わった時点で打ち切る。\n\n## 実装 PR 自身の記録\n\nPR #1573 は変更前の規定（複数ラウンド可）で回し、2 ラウンドを要した。R2 で 3/3 が「R1 の修正が carve-out を過度に一般化した」ことを検出しており、**本 issue が受容した当のクラス（修正が新設する欠陥）を実地で再現している**。R2 の修正自体は N=3 未検証のまま出荷した。\n\n## 検出サイン（この判断が後で疑問視される場合）\n\n- 「1 巡では足りないので再検証ラウンドを戻すべき」と提案された時 → 再評価条件に触れているか（本番実害が観測されたか）を先に確認する。観測されていないなら `skills/model-accepted-tradeoff` を適用し、同じ証拠での蒸し返しを抑止\n- Non-scope の 3 クラス列挙を「未修正のバグ一覧」と読んで塞ぎに行こうとした時 → 意図的に降りた範囲であり、塞ぐなら再評価条件の側から入る\n- 「N を減らせばもっと安い」と提案された時 → sample count とラウンド数は別軸。N=3 の床は `#1296` 由来で本決定は触れていない\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "implementation-always-delegated",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:29.808Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/implementation-always-delegated",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:29.117Z",
+        "vector_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I"
+      },
+      "node_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+      "text": "implementation-always-delegated\n\n# 実装は常に subagent へ委譲する（親は実装しない）\n\n## Question\n\n親エージェントが自分で実装コードを書いてよいか。書いてよいなら、委譲との切り分けは何を基準にするか。\n\n## Current resolution\n\n**実装は常に subagent へ委譲する。親は実装しない。** 適用範囲は Li+ 全体（`LI_PLUS_REPO` の自己進化 PR も、`USER_REPO<N>` のユーザーリポジトリも同じ）。差分の大きさによる例外を置かない。\n\n親が保持するのは委譲の判断、brake 1 / brake 2 の判定、セルフレビュー、マージ判断。委譲された subagent は `skills/operations-on-pr-review/SKILL.md` の停止条件どおり **PR open + CI green** で停止して報告し、そこから先は親が持つ。\n\n判断軸は**規則の単純さ**。条件分岐を持つ規則は適用の瞬間に判断を要求し、その判断が毎回その場の感覚に落ちる。\n\n## Edges\n\n- **depends on** [`parallel-subagent-eval-model-floor`](https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-model-floor) — 一般委譲が `model` を省略して親モデルを継承する方針（#1554）が前提。実装が常に委譲になると実装者のモデル階層が全 PR の品質に効くため、この方針が変われば本判断の前提も変わる\n- **depends on** [`brake1-single-round-cap`](https://github.com/Liplus-Project/liplus-language/wiki/brake1-single-round-cap) — 1巡制限下では初回実装の質がそのまま出荷品質に効く。実装者を固定することは、その変数を一定に保つ側の判断にあたる\n- **conflicts with** （現時点で対立 entry なし）\n\n## 背景\n\nPR #1581（#1575、300行超・3実装 + docs + test）を親が直接実装したことが起点。判断の瞬間に「小規模だから」「文脈が既に手元にあるから」という理由で委譲を省いており、その基準が明文化されていなかった。\n\n結果として brake 1 を commit 前に実行することになり、評価者3体へ生きた working tree を渡した。評価者Aが mutation test でソースを差し戻した最中に評価者Cが走り、Cは存在しない flakiness を実欠陥候補として報告した（`memory/promotion_tally.md` の cluster `brake1-evaluation-baseline-not-isolated`）。\n\n## 判断の前に確認した反証\n\nAI 側は当初「親実装は単一 issue の直列作業では正当」と推奨しており、根拠は3点だった。いずれも Master が聞いた上で、規則の単純さを優先する判断が下されている。\n\n| AI 側の論拠 | 実測 |\n|---|---|\n| 差分サイズは基準にならない | 1行が load-bearing だった実例（#1556/PR #1557、リリースを止めた実物の broken link 2箇所）と、300行超が大半定型だった実例（PR #1581）が併存 |\n| トークン軸は委譲の根拠として弱い | 高いのは実装でなく brake 1。#1554 の実測で評価者21体 ≈260万 / 実装2体 ≈40万。PR #1581 は評価者3体 ≈65.8万 |\n| 親コンテキストの節約は半分しか成立しない | 親は brake 1 判定・セルフレビュー・マージを保持するため、判定時に同じ文脈を報告から組み直す必要がある |\n\n## 受容した対価\n\n- **親は判定時に文脈を組み直す。** 実装時に持たない代わりに、brake 1 の指摘を裁く時点で報告から再構成する。組み直しは劣化コピーであり、この損失は受容済み。\n- **小規模変更でも委譲プロンプトの作成コストが乗る。** 1ファイル1行の変更でも例外を置かない。例外条項を置けば適用の瞬間に判断が要求され、それが単純さを崩すため。\n- **委譲プロンプトが新しい汚染面になる。** 親のプロンプト記述の誤りがそのまま評価・実装の前提になる実例が3件記録されている（#1557 = 解決集合の条件が仕様より狭い / #1560 = 古い ref の diff を渡した / #1561 = title の ASCII 制約を body まで拡張し、repository governance と衝突）。実装委譲が必須化すると、この面を通る回数が増える。\n\n## 汚染面の言語境界\n\n委譲プロンプト内の成果物例は、例文であることを理由に独立した ASCII-only category へ入れない。issue / PR / commit のタイトル例は ASCII 英語のみとし、body 例は対象成果物の governing language contract で解決する。\n\nbody 言語の解決順は、対象成果物への human 明示指示、thread で受容済みの合意、対象 repository / workspace の project-language default。これらと別に対象 repository 固有の governance を同時に満たす。host workspace の言語契約は `LI_PLUS_REPO` governance を上書きせず、liplus-language の issue / PR / commit body は日本語要件を保持する。\n\nbyte-level の ASCII 検証はタイトル field に限定する。body は well-formed UTF-8 と mojibake なく表示されることを検証する。却下した経路は、title と body を一つの ASCII-only clause に束ねること、および body を bare な `LI_PLUS_PROJECT_LANGUAGE` だけへ無条件に固定すること。\n\n## 副次的な効果（決定理由ではない）\n\n**著者と判定者が分離する。** 親が著者だと brake 1 の判定が内側からの判定になる。PR #1581 で親は自分の書いたコードについて評価者指摘を裁き、1件（`${VAR:-unset}` と literal `unset` 設定の衝突、1/3）を却下した。判定だったのか防衛だったのかは内側から分離できず、`skills/evolution-parallel-agent-eval` 自身が前提にしている introspection gap が判定側に残る形だった。\n\nAI 側はこれを「観測して決める項目」として提案していたが、常時委譲の採用により観測対象そのものが消えた（比較の片腕が無くなるため）。分離は決定の理由ではなく結果として得られる。\n\n## Related\n\n- [#1582](https://github.com/Liplus-Project/liplus-language/issues/1582) — brake 1 / brake 2 を CI green 後へ固定し、委譲の停止条件へ接続する（本判断の実装先）\n- [#1575](https://github.com/Liplus-Project/liplus-language/issues/1575) / [PR #1581](https://github.com/Liplus-Project/liplus-language/pull/1581) — 親実装の実例、および汚染の観測元\n- [#1561](https://github.com/Liplus-Project/liplus-language/issues/1561) / [PR #1622](https://github.com/Liplus-Project/liplus-language/pull/1622) — 汚染面の言語境界を title / body の field 契約へ分離した実装\n- `skills/task-subagent-delegation/SKILL.md` — 委譲の意味論（何を渡し、親が何を保持するか）\n- `skills/task-subagent-prompt/SKILL.md` — 委譲プロンプト内の成果物言語と検証方法\n- `skills/operations-on-pr-review/SKILL.md` — 停止条件（`auto` / `semi_auto` の subagent は PR open + CI green で停止）\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "parallel-subagent-eval-model-floor",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:13.790Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-model-floor",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:13.137Z",
+        "vector_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U"
+      },
+      "node_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+      "text": "parallel-subagent-eval-model-floor\n\n# parallel-subagent-eval model floor\n\n## Question\n\nbrake 1 (parallel-subagent-eval) の評価品質の床（評価者のモデル能力）をどう保証するか。専用 custom agent を用意すべきか。\n\n## Current resolution\n\n床は per-call で固定する。**brake 評価者**（brake 1 / brake 2）の spawn ごとに Agent ツールの `model` パラメータを明示指定する（暗黙の親モデル継承は禁止）。**床かつ既定 = `sonnet`。上位クラス（`opus` / `fable`）の明示指定は許容するが既定ではない。`haiku` は床未満として禁止。** custom-agent frontmatter `model:` ピン留めは不採用。\n\n**brake 以外の spawn は `model` を省略して親モデルを継承する**（#1554 の用途二分）。親のモデル ID を literal で書くことはしない。\n\n床の値は #1532 で opus 級から sonnet 級へ引き下げられ、#1482 の opus 級床を supersede した。per-call 明示指定・暗黙継承禁止・frontmatter 非使用の三点は、床の値とは独立した設計判断として維持されている。\n\n## Edges\n\n- supersedes: #1482 の opus 級床決定。同一エントリ内で値のみ更新し、方式（per-call 明示指定）は不変。\n- supersedes: #1532 の「全区分が同一の sonnet 床を共有し、区分ごとの例外を置かない」という一律適用。#1554 が用途で二分し、床の明示指定は brake 評価者のみに縮小された。床の値そのものは不変。\n- depends on [parallel-subagent-eval three-axis decomposition](parallel-subagent-eval-three-axis-decomposition) — N/M/P の spawn 設計を前提に、per-spawn のモデル品質制約を直交軸として追加する判断。\n- depends on [brake1 single-round cap](https://github.com/Liplus-Project/liplus-language/wiki/brake1-single-round-cap) — #1554 の用途二分は「評価者側にトークン質量が乗っている」という観測から出ているが、その質量の内訳（`N=3 × ラウンド数`）のラウンド数側を #1563 が 1 に固定した。下記「用途二分の根拠」を参照。\n\n## Background\n\n**第一段階（#1482、2026-06-12）**: spawn 手順にモデル指定が無い構造では親セッションのモデルを暗黙継承するため、親が sub-opus (sonnet / haiku) で動く session では評価床が静かに下がる穴があった。per-call 明示指定 + opus 級床で塞いだ。\n\n**第二段階（#1532、2026-07-25）**: サブスクリプションプラン変更によりトークン予算が縮小。判断層（親）を Opus に保ったまま、サブエージェントを全て Sonnet に落とす方針を Master が決定。根拠は実運用観測 — Li+ 全体を Sonnet で運用した期間に regression が観測されておらず、かつ当該期間は親モデルも Sonnet であったため brake 1 の実効床は既に Sonnet に下がっていた。すなわち「床を下げた状態」の実地データが判断に先行して存在していた。\n\n**第三段階（#1554）— 用途二分**: #1532 の一律適用は、床を固定する必要のない一般委譲まで巻き添えにしていた。実測でトークン質量は評価者側に偏っている。PR #1550 / #1551 では brake 1 評価者 21 体で約 2.6M トークン、実装 subagent 2 体で約 0.4M トークン。その 21 体は sonnet 床のまま検出力を保っており（各ラウンドが実欠陥を出し、うち数件は親が独力で到達していなかった）、床を上げる側の根拠は出ていない。\n\nしたがって「評価者は床を固定、実装側は親を継ぐ」へ二分した。当時の評価者数は `N=3 × ラウンド数` でラウンド数は欠陥駆動だったが、#1563 が brake 1 を1巡へ固定したため現在は `N=3 × 1` で固定である。機構は変わったが順序関係は保たれる — 再検証ラウンドが無い以上、一度修正されたきり再検証されない draft がそのまま出荷されるので、結果を動かす変数は実装者の階層のほうであり、評価者側の乗数は単価が固定になる。\n\n### 親セッションの階層は本方針のスコープ外\n\n#1532 の初期文面は親セッションに opus 級を要求していた。これは未検証の記述であり、`docs/A.-Concept.md` / `README.md` が定める最低動作環境（Sonnet 4.6 相当）と矛盾していた。PR #1533 の brake 1 最終ラウンドで「親の階層は本変更のスコープ外」という記述へ訂正し、docs 参照のみを残した。本方針は subagent の spawn パラメータを規定するものであって、親の動作環境を引き上げるものではない。\n\n## Constraints\n\n- 本スキルの subagent には judge 型（軸質問に答える評価者）と probe 型（素の subagent の現在挙動そのものが観測対象）が混在する。\n- custom-agent file の body は subagent の system prompt = identity を置換するため、probe 型の観測対象を変質させる。per-call `model` パラメータは context / identity 面を一切変えない。この非対称が方式選択の根拠であり、床の値が変わっても不変。\n- Claude Code の Agent ツールに per-call `model` パラメータが存在する（省略 = 親継承）。非対応ホストでは床未満 session で brake 1 を満たせない（床を満たす session から実行）。\n- N=3 の評価者数下限は本判断と直交する。#1296 の実証根拠は sample count の軸であってモデル階層の軸ではない。床を下げても数は下げない。\n\n## 網羅性の確認（4区分が漏れていないことの根拠）\n\n規則が「brake 評価者は明示、それ以外は省略」という二分である以上、`model` を横取りしうるファイルが他に無いことを一度証明しておく必要がある。証明は本エントリ側に置き、仕様本文には区分の名前だけを残す。\n\nAgent ツールで spawn される区分は4つで、内訳は2種類に分かれる。\n\n**ファイルを持つ2区分** — `adapter/*/agents/*` の実地列挙で網羅を確認した。存在するのは `l1-gate-eval`（brake 2）と `dialogue-evaluator` の2つのみで、それぞれ `claude` と `codex` へ port されている。#1532 の修正時にディレクトリ列挙で確認し、#1554 で再確認した。どちらの定義ファイルにも `model:` キーは無いため、`dialogue-evaluator` 側の省略は Agent ツールの既定どおり親継承へ解決する。\n\n**ファイルを持たない2区分** — brake 1 評価者と一般委譲。どちらの組み込み subagent type として spawn されても、`model` パラメータを横取りしうる定義ファイルが存在しない。したがって「省略すれば親継承」「明示すればその値」が例外なく成立する。\n\n`.github/scripts/liplus_discussions_agent.py`（Discussions intake bot）は GitHub Actions から Anthropic API を直接叩く別経路であり、Li+ セッションから Agent ツールで spawn されるものではない。本方針のスコープ外。\n\n`dialogue-evaluator` は #1533 のラウンド4まで4区分目として漏れており、brake 1 の指摘で追加された。網羅性を本エントリに固定しているのはこの取りこぼしを受けての措置である。\n\n## Conclusion\n\n- 採用 = **brake 評価者に対する** per-call 明示指定 + **sonnet 級床** + 上位クラス許容（既定ではない）。brake 以外は `model` 省略で親継承（#1554）。\n- 不採用 = custom-agent frontmatter `model:` ピン留め。judge / probe 混在が理由であり、judge 型専用エージェントとしての将来採用までは否定しない。\n- 床引き下げの検証は、引き下げ後の床（sonnet 評価者 N=3）を先取り適用して実施した。3ラウンドを要し、軸2（陳腐化参照）で 3/3 一致、軸4（幅上限の recall 依存）で 3/3 一致の指摘が出ている。sonnet 評価者が Li+ 自身のルール（`rules/model/subtractive-structural-beauty.md` の procedure-vs-structure 条項）を引いて構造的弱点を指摘した点が、床引き下げ判断に対する実地の裏付けとなっている。\n- 残余: 最終ラウンドの修正後に brake 1 を再実行していない（Master 判断による deviation）。post-merge 2週間観測に回している。\n\n## Related\n\n- issue #1482 / PR #1483（第一段階）\n- issue #1532 / PR #1533（第二段階、本エントリの現行値）\n- issue #1554（第三段階、用途二分）\n- [subagent parallel-width cap](https://github.com/Liplus-Project/liplus-language/wiki/subagent-parallel-width-cap) — #1533 が本方針と同時に新設した並列幅上限。値 5 の導出と recall 依存の受容（#1534）はそちらに分離\n- [brake1 operational-copy target-conditional](https://github.com/Liplus-Project/liplus-language/wiki/brake1-operational-copy-target-conditional) — brake 1 の step 2 側の分岐判断\n- [l1 brake2 root criteria evaluator](l1-brake2-root-criteria-evaluator) — brake 2 も #1532 で同じ sonnet 床に揃えられた。custom agent 成立の根拠（judge 専用 surface）は不変。\n- [parallel-subagent-eval cost acceptance](parallel-subagent-eval-cost-acceptance)\n"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "database": "github-rag-fts",
+    "doc_paths": [
+      "brake-evaluator-baseline-integrity",
+      "brake1-operational-copy-target-conditional",
+      "brake1-single-round-cap",
+      "implementation-always-delegated",
+      "parallel-subagent-eval-model-floor"
+    ],
+    "per_type_limit": 5,
+    "repositories": [
+      "Liplus-Project/liplus-language"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "selection_order": [
+      "repo",
+      "type",
+      "doc_path",
+      "vector_id"
+    ],
+    "types": [
+      "wiki_doc"
+    ]
+  }
+}

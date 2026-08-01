@@ -46,6 +46,8 @@ class EngineConfig:
     recurrent_decay: float = 0.5
     convergence_tolerance: float = 1e-9
     max_active_paths_per_node: int = 4
+    use_dense_retrieval: bool = True
+    use_graph_propagation: bool = True
 
     def __post_init__(self) -> None:
         for name in (
@@ -78,6 +80,8 @@ class EngineConfig:
             "local_neighbor_query_competition",
             "local_neighbor_path_competition",
             "local_neighbor_query_path_competition",
+            "anchored_local_competition",
+            "anchored_local_query_competition",
         }:
             raise ValueError("Unknown activation_strategy")
         if self.activation_budget <= 0.0:
@@ -98,6 +102,10 @@ class EngineConfig:
             raise ValueError("convergence_tolerance must be non-negative")
         if self.max_active_paths_per_node < 1:
             raise ValueError("max_active_paths_per_node must be positive")
+        if not self.use_dense_retrieval and self.dense_weight != 0.0:
+            raise ValueError("dense_weight must be zero when dense retrieval is disabled")
+        if not self.use_graph_propagation and self.graph_weight != 0.0:
+            raise ValueError("graph_weight must be zero when graph propagation is disabled")
 
 
 class NeuronGraphRAG:
@@ -176,7 +184,11 @@ class NeuronGraphRAG:
         timestamp = self._timestamp(now)
 
         sparse_raw = self.sparse_retriever.score(query, nodes)
-        dense_raw = self.dense_retriever.score(query, nodes)
+        dense_raw = (
+            self.dense_retriever.score(query, nodes)
+            if self.config.use_dense_retrieval
+            else {node.node_id: 0.0 for node in nodes}
+        )
         sparse = normalize_scores(sparse_raw)
         dense = normalize_scores(dense_raw)
         entry = {
@@ -195,29 +207,43 @@ class NeuronGraphRAG:
             )[: self.config.seed_count]
             if score > 0.0
         ]
-        propagation = propagate(
-            query=query,
-            seed_ids=seed_ids,
-            entry=entry,
-            nodes={node.node_id: node for node in nodes},
-            outgoing_edges=self.store.outgoing_edges,
-            settings=DynamicsSettings(
-                strategy=self.config.activation_strategy,
-                max_hops=self.config.max_hops,
-                hop_decay=self.config.hop_decay,
-                max_expansions=self.config.max_propagation_expansions,
-                activation_budget=self.config.activation_budget,
-                inhibition_ratio=self.config.inhibition_ratio,
-                inhibition_top_k=self.config.inhibition_top_k,
-                query_transmission_floor=self.config.query_transmission_floor,
-                query_transmission_power=self.config.query_transmission_power,
-                recurrent_steps=self.config.recurrent_steps,
-                recurrent_decay=self.config.recurrent_decay,
-                convergence_tolerance=self.config.convergence_tolerance,
-                max_active_paths_per_node=self.config.max_active_paths_per_node,
-            ),
-        )
-        graph_activation, paths = propagation.activation, propagation.paths
+        if self.config.use_graph_propagation:
+            propagation = propagate(
+                query=query,
+                seed_ids=seed_ids,
+                entry=entry,
+                nodes={node.node_id: node for node in nodes},
+                outgoing_edges=self.store.outgoing_edges,
+                settings=DynamicsSettings(
+                    strategy=self.config.activation_strategy,
+                    max_hops=self.config.max_hops,
+                    hop_decay=self.config.hop_decay,
+                    max_expansions=self.config.max_propagation_expansions,
+                    activation_budget=self.config.activation_budget,
+                    inhibition_ratio=self.config.inhibition_ratio,
+                    inhibition_top_k=self.config.inhibition_top_k,
+                    query_transmission_floor=self.config.query_transmission_floor,
+                    query_transmission_power=self.config.query_transmission_power,
+                    recurrent_steps=self.config.recurrent_steps,
+                    recurrent_decay=self.config.recurrent_decay,
+                    convergence_tolerance=self.config.convergence_tolerance,
+                    max_active_paths_per_node=self.config.max_active_paths_per_node,
+                ),
+            )
+            graph_activation, paths = propagation.activation, propagation.paths
+            propagation_diagnostics = propagation.diagnostics.as_dict()
+        else:
+            graph_activation, paths = {}, {}
+            propagation_diagnostics = {
+                "strategy": "graph_disabled",
+                "steps": 0,
+                "expansions": 0,
+                "activation_total": 0.0,
+                "converged": True,
+                "stop_reason": "graph_disabled",
+                "active_path_count": 0,
+                "competition_sets": [],
+            }
         normalized_activation = normalize_scores(
             {node.node_id: graph_activation.get(node.node_id, 0.0) for node in nodes}
         )
@@ -242,6 +268,11 @@ class NeuronGraphRAG:
                         key=lambda path: (-path.contribution, path.seed_id),
                     )[: self.config.max_paths_per_node]
                 ),
+                sparse_raw_score=sparse_raw[node.node_id],
+                dense_raw_score=dense_raw[node.node_id],
+                normalized_graph_activation=normalized_activation[node.node_id],
+                entry_anchor_before_competition=entry[node.node_id],
+                entry_anchor_after_competition=entry[node.node_id],
             )
             for node in nodes
         ]
@@ -266,12 +297,28 @@ class NeuronGraphRAG:
                 for rank, hit in enumerate(selected_hits, start=1)
             ),
         )
+        propagation_diagnostics.update(
+            {
+                "use_dense_retrieval": self.config.use_dense_retrieval,
+                "use_graph_propagation": self.config.use_graph_propagation,
+                "entry_anchor_invariant": all(
+                    hit.entry_anchor_before_competition
+                    == hit.entry_anchor_after_competition
+                    for hit in hits
+                ),
+                "graph_signal_excludes_zero_hop": all(
+                    path.steps
+                    for node_paths in paths.values()
+                    for path in node_paths
+                ),
+            }
+        )
         return SearchTrace(
             trace_id,
             query,
             timestamp,
             selected_hits,
-            propagation.diagnostics.as_dict(),
+            propagation_diagnostics,
         )
 
     def record_success(

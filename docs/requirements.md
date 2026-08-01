@@ -57,6 +57,14 @@
 39. development候補はrelation MRRで両baselineを厳密に上回り、direct / negative-control MRRがcurrentから退行せず、全relation pathとfeedback isolationを満たす場合だけ選択する。
 40. development候補がある場合だけ、未観測holdoutで`current`、`recurrent-balanced`、選択候補を一度評価する。resultの再実行と上書きを拒否する。
 41. local recurrent strategyは未観測holdoutで同じgateを通過した場合だけ既定候補になり、それ以外では`current_positive_additive`を維持する。
+42. entry retrievalはgraph競合の外側にzero-hop anchorとして保持でき、競合前後で同一値であることをtrace diagnosticsで検証できる。
+43. anchored graph signalは少なくとも1 edgeを通ったmessageだけで構成し、zero-hop seed residualとzero-hop pathを含めない。
+44. dense retrievalとgraph propagationを独立に無効化でき、BM25-only ablationではdense encoderとgraph traversalを実行しない。
+45. explanationはBM25 / denseのraw・normalized値、競合前後のentry anchor、graphのraw・normalized値、final score、zero-hop / graph path種別を区別して保持する。
+46. anchored hybrid experimentはproduction D1からread-only取得した新development / holdoutを、過去39 doc pathsを含む4 fixturesおよび相互間で分離し、provenanceとcontamination auditを結果観測前に固定する。
+47. anchored hybrid experimentは`current`、`bm25-only`、BM25+現行graph、BM25+dense anchorのlocal/query local、BM25 anchorのlocalを合わせた6 variantsだけを比較する。
+48. development候補はrelation MRRがcurrentを厳密に上回り、direct / negative-controlが退行せず、relation path、feedback isolation、anchor invariant、edge-only graph signalをすべて満たす場合だけ選択する。
+49. 候補がある場合だけ未観測holdoutで`current`、`bm25-only`、選択候補を一度評価し、同じgateを通過した場合だけdefault変更候補とする。
 
 ## 4. Constraints
 
@@ -79,3 +87,4 @@
 - [Real-corpus benchmark](real-corpus-benchmark.md) が gold freeze、判定規則、観測結果、外挿限界を定義する。
 - [Neural dynamics experiment](neural-dynamics-experiment.md) が development / holdout 分離、固定探索空間、候補選択、単一 holdout 開封、停止規則を定義する。
 - [Local recurrent competition experiment](neural-dynamics-local-competition-experiment.md) が新規D1 subgraph、contamination audit、query / path ablation、二baseline gateを定義する。
+- [Anchored BM25 and graph hybrid experiment](anchored-bm25-graph-hybrid-experiment.md) がzero-hop anchor、edge-only graph signal、BM25 ablation、新規D1 split、単一holdout gateを定義する。

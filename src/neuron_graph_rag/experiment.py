@@ -12,7 +12,7 @@ from .engine import EngineConfig, NeuronGraphRAG
 
 
 EXPERIMENT_SCHEMA_VERSION = 1
-SUPPORTED_EXPERIMENT_SCHEMA_VERSIONS = {1, 2}
+SUPPORTED_EXPERIMENT_SCHEMA_VERSIONS = {1, 2, 3}
 
 
 def read_manifest(path: str | Path) -> dict[str, Any]:
@@ -52,11 +52,18 @@ def read_manifest(path: str | Path) -> dict[str, Any]:
     overlap = sorted(development_paths & holdout_paths)
     if overlap:
         raise ValueError(f"Development and holdout doc paths overlap: {overlap!r}")
-    if schema_version == 2:
-        if ids[:2] != ["current", "recurrent-balanced"]:
-            raise ValueError("Schema v2 requires current and recurrent-balanced baselines")
+    if schema_version in {2, 3}:
+        expected_baselines = (
+            ["current", "recurrent-balanced"]
+            if schema_version == 2
+            else ["current", "bm25-only"]
+        )
+        if ids[:2] != expected_baselines:
+            raise ValueError(
+                f"Schema v{schema_version} requires its two frozen baselines"
+            )
         if len(variants) != int(manifest["maximum_variants"]):
-            raise ValueError("Schema v2 requires the exact frozen variant count")
+            raise ValueError("Experiment requires the exact frozen variant count")
         audit = manifest["contamination_audit"]
         audit_path = base / audit["artifact"]
         if _canonical_sha256(audit_path) != audit["artifact_sha256"]:
@@ -67,7 +74,7 @@ def read_manifest(path: str | Path) -> dict[str, Any]:
             str(item) for item in manifest["selection_rule"]["candidate_ids"]
         ]
         if ids != [*manifest["baselines"], *candidate_ids]:
-            raise ValueError("Schema v2 variant order differs from the frozen roles")
+            raise ValueError("Experiment variant order differs from the frozen roles")
         audit_payload = _read_json(audit_path)
         audit_inputs = audit_payload["inputs"]
         for split_name in ("development", "holdout"):
@@ -100,7 +107,11 @@ def run_development(manifest_path: str | Path) -> dict[str, Any]:
     selection = (
         _select_local_development(variants)
         if int(manifest["schema_version"]) == 2
-        else _select_development(variants)
+        else (
+            _select_anchored_development(variants)
+            if int(manifest["schema_version"]) == 3
+            else _select_development(variants)
+        )
     )
     return {
         "schema_version": int(manifest["schema_version"]),
@@ -143,10 +154,15 @@ def run_holdout(
     split = manifest["holdout"]
     base = manifest_path.parent
     gold = _read_gold(base / split["gold"])
+    schema_version = int(manifest["schema_version"])
     holdout_variant_ids = (
         ("current", "recurrent-balanced", selected_id)
-        if int(manifest["schema_version"]) == 2
-        else ("current", selected_id)
+        if schema_version == 2
+        else (
+            ("current", "bm25-only", selected_id)
+            if schema_version == 3
+            else ("current", selected_id)
+        )
     )
     evaluated = []
     for variant_id in holdout_variant_ids:
@@ -164,9 +180,15 @@ def run_holdout(
     selected = evaluated[-1]
     paths_match = _paths_match(selected)
     feedback_isolated = _feedback_isolated(selected)
-    if int(manifest["schema_version"]) == 2:
+    if schema_version == 2:
         recurrent = evaluated[1]
         gate = _local_candidate_gate(selected, current, recurrent)
+        no_cohort_regression = gate["direct_non_regression"] and gate[
+            "negative_non_regression"
+        ]
+        adopted = all(gate.values())
+    elif schema_version == 3:
+        gate = _anchored_candidate_gate(selected, current)
         no_cohort_regression = gate["direct_non_regression"] and gate[
             "negative_non_regression"
         ]
@@ -246,6 +268,7 @@ def _evaluate_variant(
                         if expected_path
                         else None
                     ),
+                    "scores": target.explain()["scores"],
                     "diagnostics": trace.diagnostics,
                 }
             )
@@ -277,6 +300,14 @@ def _evaluate_variant(
         ),
         "stop_reasons": dict(
             sorted(Counter(case["diagnostics"]["stop_reason"] for case in cases).items())
+        ),
+        "entry_anchor_invariant": all(
+            bool(case["diagnostics"].get("entry_anchor_invariant"))
+            for case in cases
+        ),
+        "graph_signal_excludes_zero_hop": all(
+            case["diagnostics"].get("graph_signal_excludes_zero_hop") is not False
+            for case in cases
         ),
     }
     return {
@@ -526,6 +557,74 @@ def _local_candidate_gate(
         >= _cohort_mrr(current, "negative_control"),
         "all_relation_paths_match": _paths_match(candidate),
         "feedback_isolated": _feedback_isolated(candidate),
+    }
+
+
+def _select_anchored_development(
+    variants: list[dict[str, Any]],
+) -> dict[str, Any]:
+    by_id = {str(variant["id"]): variant for variant in variants}
+    current = by_id["current"]
+    candidates: list[dict[str, Any]] = []
+    for variant in variants:
+        variant["relative_to_current"] = {
+            f"{cohort}_mrr_delta": (
+                _cohort_mrr(variant, cohort) - _cohort_mrr(current, cohort)
+            )
+            for cohort in COHORTS
+        }
+        gate = _anchored_candidate_gate(variant, current)
+        variant["candidate_gate"] = gate
+        variant["candidate_gate_passed"] = (
+            variant["id"] not in {"current", "bm25-only"}
+            and all(gate.values())
+        )
+        if variant["candidate_gate_passed"]:
+            candidates.append(variant)
+
+    if not candidates:
+        return {
+            "selected_variant_id": "current",
+            "reason": "no_anchored_variant_passed_frozen_gate",
+            "eligible_variant_ids": [],
+        }
+    selected = sorted(
+        candidates,
+        key=lambda variant: (
+            -_cohort_mrr(variant, "relation"),
+            -min(_cohort_mrr(variant, cohort) for cohort in COHORTS),
+            float(variant["diagnostics"]["mean_expansions"]),
+            int(variant["structural_complexity"]),
+            str(variant["id"]),
+        ),
+    )[0]
+    return {
+        "selected_variant_id": selected["id"],
+        "reason": "predeclared_anchored_gate_and_tie_break",
+        "eligible_variant_ids": sorted(
+            str(variant["id"]) for variant in candidates
+        ),
+    }
+
+
+def _anchored_candidate_gate(
+    candidate: dict[str, Any], current: dict[str, Any]
+) -> dict[str, bool]:
+    return {
+        "relation_strictly_above_current": _cohort_mrr(candidate, "relation")
+        > _cohort_mrr(current, "relation"),
+        "direct_non_regression": _cohort_mrr(candidate, "direct_lookup")
+        >= _cohort_mrr(current, "direct_lookup"),
+        "negative_non_regression": _cohort_mrr(candidate, "negative_control")
+        >= _cohort_mrr(current, "negative_control"),
+        "all_relation_paths_match": _paths_match(candidate),
+        "feedback_isolated": _feedback_isolated(candidate),
+        "entry_anchor_invariant": bool(
+            candidate["diagnostics"].get("entry_anchor_invariant")
+        ),
+        "graph_signal_excludes_zero_hop": bool(
+            candidate["diagnostics"].get("graph_signal_excludes_zero_hop")
+        ),
     }
 
 

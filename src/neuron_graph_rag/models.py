@@ -47,21 +47,38 @@ class SearchHit:
     graph_activation: float
     final_score: float
     paths: tuple[ActivationPath, ...] = ()
+    sparse_raw_score: float = 0.0
+    dense_raw_score: float = 0.0
+    normalized_graph_activation: float = 0.0
+    entry_anchor_before_competition: float = 0.0
+    entry_anchor_after_competition: float = 0.0
 
     def explain(self) -> dict[str, Any]:
         return {
             "node_id": self.node.node_id,
             "scores": {
                 "sparse": self.sparse_score,
+                "sparse_raw": self.sparse_raw_score,
                 "dense": self.dense_score,
+                "dense_raw": self.dense_raw_score,
                 "entry": self.entry_score,
+                "entry_anchor_before_competition": (
+                    self.entry_anchor_before_competition
+                ),
+                "entry_anchor_after_competition": (
+                    self.entry_anchor_after_competition
+                ),
                 "graph_activation": self.graph_activation,
+                "graph_activation_normalized": (
+                    self.normalized_graph_activation
+                ),
                 "final": self.final_score,
             },
             "paths": [
                 {
                     "seed_id": path.seed_id,
                     "contribution": path.contribution,
+                    "kind": "graph" if path.steps else "entry_zero_hop",
                     "steps": [
                         {
                             "source_id": step.source_id,

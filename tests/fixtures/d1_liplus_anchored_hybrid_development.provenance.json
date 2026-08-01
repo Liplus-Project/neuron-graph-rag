@@ -1,0 +1,82 @@
+{
+  "acquired_at": "2026-08-01T20:50:24.561294Z",
+  "coverage": [
+    {
+      "distinct_commit_count": 0,
+      "newest_updated_at": "2026-07-31T14:57:33.145Z",
+      "oldest_updated_at": "2026-05-01T06:45:41.178Z",
+      "repo": "Liplus-Project/liplus-language",
+      "source_count": 77,
+      "type": "wiki_doc"
+    }
+  ],
+  "known_gaps": [
+    "D1 is a lossy search snapshot; GitHub remains authoritative for byte-exact source content."
+  ],
+  "limits": [
+    "D1 is a lossy search snapshot; content may be truncated.",
+    "Binary and patchless files can be absent from diff indexing.",
+    "Use GitHub for byte-exact historical reconstruction."
+  ],
+  "read_only_evidence": {
+    "changed_db": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "changes": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "query_count": 5,
+    "rows_written": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "result": {
+    "edges_both_endpoints_missing": 146,
+    "edges_included": 5,
+    "edges_one_endpoint_missing": 4,
+    "fixture_redactions": 0,
+    "nodes_included": 5,
+    "provenance_redactions": 0,
+    "redactions": 0
+  },
+  "schema_version": 1,
+  "selection": {
+    "doc_paths": [
+      "brake-evaluator-baseline-integrity",
+      "brake1-operational-copy-target-conditional",
+      "brake1-single-round-cap",
+      "implementation-always-delegated",
+      "parallel-subagent-eval-model-floor"
+    ],
+    "order": [
+      "repo",
+      "type",
+      "doc_path",
+      "vector_id"
+    ],
+    "per_type_limit": 5
+  },
+  "source": {
+    "authoritative_history": "GitHub",
+    "database": "github-rag-fts",
+    "repositories": [
+      "Liplus-Project/liplus-language"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "types": [
+      "wiki_doc"
+    ]
+  }
+}
