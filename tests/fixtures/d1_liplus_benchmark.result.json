@@ -1,0 +1,479 @@
+{
+  "benchmark": {
+    "baseline_config": {
+      "entry_weight": 1.0,
+      "graph_weight": 0.0,
+      "max_hops": 2,
+      "max_paths_per_node": 8,
+      "seed_count": 1
+    },
+    "feedback_case_id": "relation-model-evolution",
+    "graph_config": {
+      "entry_weight": 0.25,
+      "graph_weight": 0.75,
+      "max_hops": 2,
+      "max_paths_per_node": 8,
+      "seed_count": 1
+    },
+    "limit": 12
+  },
+  "case_count": 12,
+  "cases": [
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 1,
+      "cohort": "direct_lookup",
+      "graph_rank": 1,
+      "id": "direct-model",
+      "outcome": "equal",
+      "rank_delta": 0
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 1,
+      "cohort": "direct_lookup",
+      "graph_rank": 1,
+      "id": "direct-notifications",
+      "outcome": "equal",
+      "rank_delta": 0
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 1,
+      "cohort": "direct_lookup",
+      "graph_rank": 1,
+      "id": "direct-behavior-first",
+      "outcome": "equal",
+      "rank_delta": 0
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 1,
+      "cohort": "direct_lookup",
+      "graph_rank": 1,
+      "id": "direct-sheepdog",
+      "outcome": "equal",
+      "rank_delta": 0
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 1,
+      "cohort": "negative_control",
+      "graph_rank": 3,
+      "id": "negative-configuration",
+      "outcome": "worsened",
+      "rank_delta": -2
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 1,
+      "cohort": "negative_control",
+      "graph_rank": 2,
+      "id": "negative-installation",
+      "outcome": "worsened",
+      "rank_delta": -1
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 1,
+      "cohort": "negative_control",
+      "graph_rank": 1,
+      "id": "negative-decision-structure",
+      "outcome": "equal",
+      "rank_delta": 0
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 1,
+      "cohort": "negative_control",
+      "graph_rank": 1,
+      "id": "negative-operations",
+      "outcome": "equal",
+      "rank_delta": 0
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 3,
+      "cohort": "relation",
+      "graph_rank": 2,
+      "id": "relation-model-evolution",
+      "outcome": "improved",
+      "rank_delta": 1
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 3,
+      "cohort": "relation",
+      "graph_rank": 2,
+      "id": "relation-operations-notifications",
+      "outcome": "improved",
+      "rank_delta": 1
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 5,
+      "cohort": "relation",
+      "graph_rank": 5,
+      "id": "relation-evolution-notifications",
+      "outcome": "equal",
+      "rank_delta": 0
+    },
+    {
+      "acceptable_rank": 3,
+      "baseline_rank": 6,
+      "cohort": "relation",
+      "graph_rank": 3,
+      "id": "relation-behavior-concept",
+      "outcome": "improved",
+      "rank_delta": 3
+    }
+  ],
+  "cohort_counts": {
+    "direct_lookup": 4,
+    "negative_control": 4,
+    "relation": 4
+  },
+  "corpus": {
+    "edge_count": 26,
+    "edge_types": [
+      "mention"
+    ],
+    "node_count": 12,
+    "source": {
+      "database": "github-rag-fts",
+      "doc_paths": [
+        "1.-Model",
+        "2.-Evolution",
+        "4.-Operations",
+        "5.-Notifications",
+        "6.-Adapter",
+        "A.-Concept",
+        "B.-Configuration",
+        "C.-Update",
+        "D.-Installation",
+        "Decision-Structure",
+        "F.-Behavior-First",
+        "G.-Sheepdog-Engineering"
+      ],
+      "per_type_limit": 12,
+      "repositories": [
+        "Liplus-Project/liplus-language"
+      ],
+      "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+      "selection_order": [
+        "repo",
+        "type",
+        "doc_path",
+        "vector_id"
+      ],
+      "types": [
+        "wiki_doc"
+      ]
+    }
+  },
+  "explanations": [
+    {
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:HpN7_JiNj-_IM2orPv5jwJgaVXnxz_8uTzVW4sebCAw",
+          "target_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo"
+        }
+      ],
+      "id": "relation-model-evolution",
+      "matched": true,
+      "observed_paths": [
+        {
+          "seed_id": "w:HpN7_JiNj-_IM2orPv5jwJgaVXnxz_8uTzVW4sebCAw",
+          "steps": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HpN7_JiNj-_IM2orPv5jwJgaVXnxz_8uTzVW4sebCAw",
+              "target_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:huXuRzvViRxgYAx6woJe7TD7l2A-qOnrJrSHr9nJges",
+          "target_id": "w:d5dysDOn1wQ7fmDyyxRoLdTM8Q48yijoAUKsVXDRvUQ"
+        }
+      ],
+      "id": "relation-operations-notifications",
+      "matched": true,
+      "observed_paths": [
+        {
+          "seed_id": "w:huXuRzvViRxgYAx6woJe7TD7l2A-qOnrJrSHr9nJges",
+          "steps": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:huXuRzvViRxgYAx6woJe7TD7l2A-qOnrJrSHr9nJges",
+              "target_id": "w:d5dysDOn1wQ7fmDyyxRoLdTM8Q48yijoAUKsVXDRvUQ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+          "target_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q"
+        },
+        {
+          "edge_type": "mention",
+          "source_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q",
+          "target_id": "w:d5dysDOn1wQ7fmDyyxRoLdTM8Q48yijoAUKsVXDRvUQ"
+        }
+      ],
+      "id": "relation-evolution-notifications",
+      "matched": true,
+      "observed_paths": [
+        {
+          "seed_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+          "steps": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+              "target_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q"
+            },
+            {
+              "edge_type": "mention",
+              "source_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q",
+              "target_id": "w:d5dysDOn1wQ7fmDyyxRoLdTM8Q48yijoAUKsVXDRvUQ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:Axw8AcyiCOqJNo3g58761JbhjgawHIizQGU4b4zGIrY",
+          "target_id": "w:XMfZ3DGq4oP-YDzHpYD4lUbS-Do6OZlpZiaiCp6nwGM"
+        },
+        {
+          "edge_type": "mention",
+          "source_id": "w:XMfZ3DGq4oP-YDzHpYD4lUbS-Do6OZlpZiaiCp6nwGM",
+          "target_id": "w:GODYOdBe67l1iAepF4wf2NHRzDjEB0520kLpK3Lr2cw"
+        }
+      ],
+      "id": "relation-behavior-concept",
+      "matched": true,
+      "observed_paths": [
+        {
+          "seed_id": "w:Axw8AcyiCOqJNo3g58761JbhjgawHIizQGU4b4zGIrY",
+          "steps": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:Axw8AcyiCOqJNo3g58761JbhjgawHIizQGU4b4zGIrY",
+              "target_id": "w:XMfZ3DGq4oP-YDzHpYD4lUbS-Do6OZlpZiaiCp6nwGM"
+            },
+            {
+              "edge_type": "mention",
+              "source_id": "w:XMfZ3DGq4oP-YDzHpYD4lUbS-Do6OZlpZiaiCp6nwGM",
+              "target_id": "w:GODYOdBe67l1iAepF4wf2NHRzDjEB0520kLpK3Lr2cw"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "feedback": {
+    "case_id": "relation-model-evolution",
+    "changed_edges": [
+      {
+        "edge_type": "mention",
+        "new_weight": 1.14,
+        "old_weight": 1.0,
+        "source_id": "w:HpN7_JiNj-_IM2orPv5jwJgaVXnxz_8uTzVW4sebCAw",
+        "target_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo"
+      }
+    ],
+    "credited_edges": [
+      {
+        "edge_type": "mention",
+        "new_weight": 1.14,
+        "old_weight": 1.0,
+        "source_id": "w:HpN7_JiNj-_IM2orPv5jwJgaVXnxz_8uTzVW4sebCAw",
+        "target_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo"
+      }
+    ],
+    "non_target_rank_changes": [],
+    "target_node_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+    "target_rank_after": 2,
+    "target_rank_before": 2,
+    "uncredited_edge_changes": []
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "status": "supported"
+    },
+    {
+      "id": "H2",
+      "status": "unsupported"
+    },
+    {
+      "id": "H3",
+      "status": "supported"
+    },
+    {
+      "id": "H4",
+      "status": "supported"
+    }
+  ],
+  "inputs": {
+    "fixture_sha256": "sha256:b3b305aabb57803c2782c3998215e1cbcf9b5e6cdef0f641abc98520d4400cf9",
+    "gold_sha256": "sha256:a10af7a1a4ec5f0ef66a228b05e14fe0160e4ff5f9b3209073f38fdb90028c71"
+  },
+  "metrics": {
+    "baseline_hybrid": {
+      "cohorts": {
+        "direct_lookup": {
+          "cases": 4,
+          "hit_at_3": 1.0,
+          "mean_reciprocal_rank": 1.0,
+          "ranks": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "negative_control": {
+          "cases": 4,
+          "hit_at_3": 1.0,
+          "mean_reciprocal_rank": 1.0,
+          "ranks": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "relation": {
+          "cases": 4,
+          "hit_at_3": 0.5,
+          "mean_reciprocal_rank": 0.25833333333333336,
+          "ranks": [
+            3,
+            3,
+            5,
+            6
+          ]
+        }
+      },
+      "overall": {
+        "cases": 12,
+        "hit_at_3": 0.8333333333333334,
+        "mean_reciprocal_rank": 0.7527777777777778,
+        "ranks": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          3,
+          3,
+          5,
+          6
+        ]
+      }
+    },
+    "comparison": {
+      "cohorts": {
+        "direct_lookup": {
+          "equal": 4,
+          "improved": 0,
+          "rank_delta_sum": 0,
+          "worsened": 0
+        },
+        "negative_control": {
+          "equal": 2,
+          "improved": 0,
+          "rank_delta_sum": -3,
+          "worsened": 2
+        },
+        "relation": {
+          "equal": 1,
+          "improved": 3,
+          "rank_delta_sum": 5,
+          "worsened": 0
+        }
+      },
+      "overall": {
+        "equal": 7,
+        "improved": 3,
+        "rank_delta_sum": 2,
+        "worsened": 2
+      }
+    },
+    "graph_integrated": {
+      "cohorts": {
+        "direct_lookup": {
+          "cases": 4,
+          "hit_at_3": 1.0,
+          "mean_reciprocal_rank": 1.0,
+          "ranks": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "negative_control": {
+          "cases": 4,
+          "hit_at_3": 1.0,
+          "mean_reciprocal_rank": 0.7083333333333333,
+          "ranks": [
+            3,
+            2,
+            1,
+            1
+          ]
+        },
+        "relation": {
+          "cases": 4,
+          "hit_at_3": 0.75,
+          "mean_reciprocal_rank": 0.3833333333333333,
+          "ranks": [
+            2,
+            2,
+            5,
+            3
+          ]
+        }
+      },
+      "overall": {
+        "cases": 12,
+        "hit_at_3": 0.9166666666666666,
+        "mean_reciprocal_rank": 0.6972222222222223,
+        "ranks": [
+          1,
+          1,
+          1,
+          1,
+          3,
+          2,
+          1,
+          1,
+          2,
+          2,
+          5,
+          3
+        ]
+      }
+    }
+  },
+  "schema_version": 1
+}

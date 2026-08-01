@@ -69,9 +69,10 @@ def validate_read_only_sql(sql: str) -> str:
         normalized = normalized[:-1].rstrip()
     if not normalized or ";" in normalized:
         raise ValueError("Exactly one SQL statement is allowed")
-    if not re.match(r"^(?:SELECT|WITH)\b", normalized, re.IGNORECASE):
+    executable = re.sub(r"'(?:''|[^'])*'", "''", normalized)
+    if not re.match(r"^(?:SELECT|WITH)\b", executable, re.IGNORECASE):
         raise ValueError("Only a SELECT or WITH query is allowed")
-    if FORBIDDEN_SQL.search(normalized):
+    if FORBIDDEN_SQL.search(executable):
         raise ValueError("Mutating or administrative SQL is not allowed")
     return normalized
 
@@ -271,8 +272,13 @@ def write_json(path: Path, value: Any) -> None:
 def acquire(args: argparse.Namespace) -> None:
     repositories = sorted(set(args.repo))
     types = sorted(set(args.type))
+    doc_paths = sorted(set(getattr(args, "doc_path", [])))
     if not repositories or not types or args.per_type_limit < 1:
         raise ValueError("At least one repo/type and a positive limit are required")
+    if doc_paths and (len(repositories) != 1 or types != ["wiki_doc"]):
+        raise ValueError(
+            "--doc-path requires exactly one repository and --type wiki_doc"
+        )
     repo_filter = ", ".join(sql_literal(value) for value in repositories)
     type_filter = ", ".join(sql_literal(value) for value in types)
     command = tuple(args.wrangler_command)
@@ -298,20 +304,39 @@ def acquire(args: argparse.Namespace) -> None:
 
     selected_columns = ", ".join(f'"{column}"' for column in SEARCH_DOC_COLUMNS)
     search_rows: list[dict[str, Any]] = []
-    for repository in repositories:
-        for doc_type in types:
-            rows, meta = wrangler_select(
-                args.database,
-                f"SELECT {selected_columns} FROM search_docs "
-                f"WHERE \"repo\" = {sql_literal(repository)} "
-                f"AND \"type\" = {sql_literal(doc_type)} "
-                "ORDER BY \"repo\", \"type\", \"updated_at\", \"vector_id\" "
-                f"LIMIT {args.per_type_limit}",
-                cwd=cwd,
-                wrangler_command=command,
-            )
-            metas.append(meta)
-            search_rows.extend(rows)
+    if doc_paths:
+        doc_path_filter = ", ".join(sql_literal(value) for value in doc_paths)
+        rows, meta = wrangler_select(
+            args.database,
+            f"SELECT {selected_columns} FROM search_docs "
+            f"WHERE \"repo\" = {sql_literal(repositories[0])} "
+            "AND \"type\" = 'wiki_doc' "
+            f"AND \"doc_path\" IN ({doc_path_filter}) "
+            "ORDER BY \"doc_path\", \"vector_id\"",
+            cwd=cwd,
+            wrangler_command=command,
+        )
+        metas.append(meta)
+        observed_paths = {str(row["doc_path"]) for row in rows}
+        missing_paths = sorted(set(doc_paths) - observed_paths)
+        if missing_paths:
+            raise RuntimeError(f"Requested wiki documents are missing: {missing_paths!r}")
+        search_rows.extend(rows)
+    else:
+        for repository in repositories:
+            for doc_type in types:
+                rows, meta = wrangler_select(
+                    args.database,
+                    f"SELECT {selected_columns} FROM search_docs "
+                    f"WHERE \"repo\" = {sql_literal(repository)} "
+                    f"AND \"type\" = {sql_literal(doc_type)} "
+                    "ORDER BY \"repo\", \"type\", \"updated_at\", \"vector_id\" "
+                    f"LIMIT {args.per_type_limit}",
+                    cwd=cwd,
+                    wrangler_command=command,
+                )
+                metas.append(meta)
+                search_rows.extend(rows)
 
     edge_columns = ", ".join(f'"{column}"' for column in DOC_EDGE_COLUMNS)
     edge_rows, meta = wrangler_select(
@@ -333,16 +358,25 @@ def acquire(args: argparse.Namespace) -> None:
     metas.append(meta)
 
     fixture, statistics = transform(search_rows, edge_rows)
+    if getattr(args, "require_connected", False):
+        assert_connected(fixture)
     schema_bytes = json.dumps(schema, sort_keys=True, separators=(",", ":")).encode()
     schema_fingerprint = "sha256:" + hashlib.sha256(schema_bytes).hexdigest()
+    selection_order = (
+        ["repo", "type", "doc_path", "vector_id"]
+        if doc_paths
+        else ["repo", "type", "updated_at", "vector_id"]
+    )
     fixture["source"] = {
         "database": args.database,
         "repositories": repositories,
         "types": types,
         "per_type_limit": args.per_type_limit,
-        "selection_order": ["repo", "type", "updated_at", "vector_id"],
+        "selection_order": selection_order,
         "schema_fingerprint": schema_fingerprint,
     }
+    if doc_paths:
+        fixture["source"]["doc_paths"] = doc_paths
     report = {
         "schema_version": PROVENANCE_SCHEMA_VERSION,
         "acquired_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
@@ -355,7 +389,7 @@ def acquire(args: argparse.Namespace) -> None:
         },
         "selection": {
             "per_type_limit": args.per_type_limit,
-            "order": ["repo", "type", "updated_at", "vector_id"],
+            "order": selection_order,
         },
         "coverage": coverage_rows,
         "result": statistics,
@@ -372,9 +406,36 @@ def acquire(args: argparse.Namespace) -> None:
             "Use GitHub for byte-exact historical reconstruction.",
         ],
     }
+    if doc_paths:
+        report["selection"]["doc_paths"] = doc_paths
     fixture, report = redact_final_payloads(fixture, report)
     write_json(args.output, fixture)
     write_json(args.provenance_output, report)
+
+
+def assert_connected(fixture: dict[str, Any]) -> None:
+    node_ids = {str(node["node_id"]) for node in fixture["nodes"]}
+    if not node_ids:
+        raise RuntimeError("Connected fixture must contain at least one node")
+    neighbors = {node_id: set() for node_id in node_ids}
+    for edge in fixture["edges"]:
+        source_id = str(edge["source_id"])
+        target_id = str(edge["target_id"])
+        neighbors[source_id].add(target_id)
+        neighbors[target_id].add(source_id)
+    visited: set[str] = set()
+    pending = [min(node_ids)]
+    while pending:
+        node_id = pending.pop()
+        if node_id in visited:
+            continue
+        visited.add(node_id)
+        pending.extend(sorted(neighbors[node_id] - visited, reverse=True))
+    if visited != node_ids:
+        raise RuntimeError(
+            "Selected fixture is not weakly connected; unreachable nodes: "
+            f"{sorted(node_ids - visited)!r}"
+        )
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
@@ -385,6 +446,17 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--repo", action="append", required=True)
     parser.add_argument("--type", action="append", required=True)
     parser.add_argument("--per-type-limit", type=int, default=3)
+    parser.add_argument(
+        "--doc-path",
+        action="append",
+        default=[],
+        help="Select an exact wiki doc_path (repeatable; requires one repo/wiki_doc).",
+    )
+    parser.add_argument(
+        "--require-connected",
+        action="store_true",
+        help="Fail unless the selected fixture is weakly connected.",
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--provenance-output", type=Path, required=True)
     parser.add_argument("--known-gap", action="append", default=[])

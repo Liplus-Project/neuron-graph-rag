@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .engine import EngineConfig, NeuronGraphRAG
+from .benchmark import run_benchmark, write_benchmark_result
 from .evaluation import evaluate
 from .sample import load_sample_corpus
 
@@ -83,12 +84,22 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional SQLite path. The default uses an in-memory database.",
     )
     subparsers.add_parser("eval", help="Compare hybrid and graph retrieval")
+    benchmark_parser = subparsers.add_parser(
+        "benchmark", help="Run a frozen real-corpus benchmark"
+    )
+    benchmark_parser.add_argument("--fixture", type=Path, required=True)
+    benchmark_parser.add_argument("--gold", type=Path, required=True)
+    benchmark_parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args(argv)
 
     if args.command == "demo":
         result = run_demo(args.db or ":memory:")
-    else:
+    elif args.command == "eval":
         result = evaluate()
+    else:
+        result = run_benchmark(args.fixture, args.gold)
+        if args.output is not None:
+            write_benchmark_result(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 

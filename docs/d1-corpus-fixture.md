@@ -38,6 +38,8 @@ python tools/acquire_d1_fixture.py `
 
 選択順は `(repo, type, updated_at, vector_id)` で固定する。同一 snapshot と引数から fixture JSON は byte-identical になる。取得時刻は provenance report だけに置く。credential らしい文字列は、node / edge だけでなく source 引数と既知 gap を含む最終 fixture / provenance 全体で `[REDACTED_SECRET]` へ決定論的に置換する。fixture、provenance、合計の置換件数を report に残す。
 
+評価用 connected fixture は `--doc-path` を反復指定し、単一 repository の `wiki_doc` を `(repo, type, doc_path, vector_id)` 順で取得する。`--require-connected` は `doc_edges` を無向に見た時に全 node が接続されていなければ出力前に失敗する。SQL guard は quoted literal 内の語を命令として解釈せず、literal 外の write / administration keyword は従来どおり拒否する。
+
 完全 export や作業中の raw JSON は commit しない。`.gitignore` は `*.d1-export.json`、`artifacts/d1/`、`tests/fixtures/.full-*` を除外する。
 
 ## Provenance と coverage 監査

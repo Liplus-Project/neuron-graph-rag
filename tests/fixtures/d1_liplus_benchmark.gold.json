@@ -1,0 +1,180 @@
+{
+  "benchmark": {
+    "baseline_config": {
+      "entry_weight": 1.0,
+      "graph_weight": 0.0,
+      "max_hops": 2,
+      "max_paths_per_node": 8,
+      "seed_count": 1
+    },
+    "feedback_case_id": "relation-model-evolution",
+    "graph_config": {
+      "entry_weight": 0.25,
+      "graph_weight": 0.75,
+      "max_hops": 2,
+      "max_paths_per_node": 8,
+      "seed_count": 1
+    },
+    "limit": 12
+  },
+  "cases": [
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:HpN7_JiNj-_IM2orPv5jwJgaVXnxz_8uTzVW4sebCAw",
+      "id": "direct-model",
+      "query": "L1 Model layer rules foundational invariant role separation",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/1.-Model"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:d5dysDOn1wQ7fmDyyxRoLdTM8Q48yijoAUKsVXDRvUQ",
+      "id": "direct-notifications",
+      "query": "notification ownership inspect claim ack consume mention cleanup transport",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/5.-Notifications"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:Axw8AcyiCOqJNo3g58761JbhjgawHIizQGU4b4zGIrY",
+      "id": "direct-behavior-first",
+      "query": "Behavior-First foundational invariant observed behavior ceiling by design",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/F.-Behavior-First"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:XMfZ3DGq4oP-YDzHpYD4lUbS-Do6OZlpZiaiCp6nwGM",
+      "id": "direct-sheepdog",
+      "query": "Sheepdog Engineering harness pal Lilayer Character Instance",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/G.-Sheepdog-Engineering"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:WYol2T5WRtB0nhHDVstoqa4XndHkcatu-jI43oT8QP0",
+      "id": "negative-configuration",
+      "query": "USER_REPOn URL format configuration reference LI_PLUS_REPO execution mode",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/B.-Configuration"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:ssFUz7EOs1C2VAmsi9C89EKEdXRHU27whcoeGJ8U_S8",
+      "id": "negative-installation",
+      "query": "Quickstart Windows winget install gh CLI GitHub Personal Access Token",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/D.-Installation"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:sLjWn1Vav9JStQuz4WamNT7C6A72zuwZQcqQVBeJ_r4",
+      "id": "negative-decision-structure",
+      "query": "Decision Structure kebab-case wiki supersede depend conflict judgment nodes",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/Decision-Structure"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:huXuRzvViRxgYAx6woJe7TD7l2A-qOnrJrSHr9nJges",
+      "id": "negative-operations",
+      "query": "operations branch commit pull request merge release skill trigger",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/4.-Operations"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:HpN7_JiNj-_IM2orPv5jwJgaVXnxz_8uTzVW4sebCAw",
+          "target_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo"
+        }
+      ],
+      "id": "relation-model-evolution",
+      "query": "1.-Model responsibility categories rule duty autonomy follow its referenced self-rewrite layer",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/1.-Model",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/2.-Evolution"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:d5dysDOn1wQ7fmDyyxRoLdTM8Q48yijoAUKsVXDRvUQ",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:huXuRzvViRxgYAx6woJe7TD7l2A-qOnrJrSHr9nJges",
+          "target_id": "w:d5dysDOn1wQ7fmDyyxRoLdTM8Q48yijoAUKsVXDRvUQ"
+        }
+      ],
+      "id": "relation-operations-notifications",
+      "query": "4.-Operations event driven triggers branch commit pull request merge release L5 owner",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/4.-Operations",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/5.-Notifications"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:d5dysDOn1wQ7fmDyyxRoLdTM8Q48yijoAUKsVXDRvUQ",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+          "target_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q"
+        },
+        {
+          "edge_type": "mention",
+          "source_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q",
+          "target_id": "w:d5dysDOn1wQ7fmDyyxRoLdTM8Q48yijoAUKsVXDRvUQ"
+        }
+      ],
+      "id": "relation-evolution-notifications",
+      "query": "2.-Evolution observation evaluation distillation rule rewrite through the adapter transport owner",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/2.-Evolution",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/5.-Notifications"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:GODYOdBe67l1iAepF4wf2NHRzDjEB0520kLpK3Lr2cw",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:Axw8AcyiCOqJNo3g58761JbhjgawHIizQGU4b4zGIrY",
+          "target_id": "w:XMfZ3DGq4oP-YDzHpYD4lUbS-Do6OZlpZiaiCp6nwGM"
+        },
+        {
+          "edge_type": "mention",
+          "source_id": "w:XMfZ3DGq4oP-YDzHpYD4lUbS-Do6OZlpZiaiCp6nwGM",
+          "target_id": "w:GODYOdBe67l1iAepF4wf2NHRzDjEB0520kLpK3Lr2cw"
+        }
+      ],
+      "id": "relation-behavior-concept",
+      "query": "F.-Behavior-First OOP UNIX contract observed behavior through Sheepdog origin requirements language",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/F.-Behavior-First",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/A.-Concept"
+    }
+  ],
+  "fixture": "d1_liplus_benchmark.json",
+  "hypotheses": [
+    {
+      "decision_rule": "relation MRR must increase and improved cases must outnumber worsened cases; the inverse is unsupported, otherwise inconclusive",
+      "id": "H1"
+    },
+    {
+      "decision_rule": "all direct and negative-control cases must stay within acceptable_rank and none may worsen; rank loss greater than one or rank beyond the bound is unsupported, otherwise mixed results are inconclusive",
+      "id": "H2"
+    },
+    {
+      "decision_rule": "every relation case must expose the exact frozen endpoint and edge-type path",
+      "id": "H3"
+    },
+    {
+      "decision_rule": "feedback must change at least one credited edge, no uncredited edge, and no non-target case rank; contamination is unsupported and no changed edge is inconclusive",
+      "id": "H4"
+    }
+  ],
+  "schema_version": 1
+}

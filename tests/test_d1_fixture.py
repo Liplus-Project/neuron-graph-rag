@@ -30,6 +30,10 @@ class ReadOnlyGuardTest(unittest.TestCase):
             validate_read_only_sql("WITH rows AS (SELECT 1) SELECT * FROM rows"),
             "WITH rows AS (SELECT 1) SELECT * FROM rows",
         )
+        self.assertEqual(
+            validate_read_only_sql("SELECT * FROM docs WHERE slug = 'C.-Update'"),
+            "SELECT * FROM docs WHERE slug = 'C.-Update'",
+        )
 
     def test_rejects_writes_administration_and_multiple_statements(self) -> None:
         for sql in (
