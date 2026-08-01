@@ -1,0 +1,128 @@
+{
+  "development": {
+    "fixture": "d1_liplus_benchmark.json",
+    "fixture_sha256": "sha256:b3b305aabb57803c2782c3998215e1cbcf9b5e6cdef0f641abc98520d4400cf9",
+    "gold": "d1_liplus_benchmark.gold.json",
+    "gold_sha256": "sha256:a10af7a1a4ec5f0ef66a228b05e14fe0160e4ff5f9b3209073f38fdb90028c71"
+  },
+  "experiment_id": "d1-liplus-dynamics-v1",
+  "holdout": {
+    "fixture": "d1_liplus_dynamics_holdout.json",
+    "fixture_sha256": "sha256:4f7c444c408c3188323e754aa93141a8deaf1a4b15410ad915dd4c71be3a8081",
+    "gold": "d1_liplus_dynamics_holdout.gold.json",
+    "gold_sha256": "sha256:229175676b23d47a7fe85005a5e00aa2c72f419419349d5be0bf0e8af259ce54",
+    "provenance": "d1_liplus_dynamics_holdout.provenance.json",
+    "provenance_sha256": "sha256:e0c60cac6ba8cdf359be1d376172cfb85ab22c7fbb717d8fb0dd8cb848b4e5e4"
+  },
+  "maximum_variants": 24,
+  "selection_rule": {
+    "candidate_gate": "relation MRR and negative-control MRR must each be at least current, and at least one must be strictly greater",
+    "pareto_axes": [
+      "relation_mean_reciprocal_rank",
+      "negative_control_mean_reciprocal_rank"
+    ],
+    "tie_break": [
+      "highest_worst_cohort_mrr",
+      "fewest_mean_expansions",
+      "lowest_structural_complexity",
+      "lexicographic_variant_id"
+    ]
+  },
+  "shared_config": {
+    "dense_weight": 0.45,
+    "entry_weight": 0.25,
+    "graph_weight": 0.75,
+    "hop_decay": 0.7,
+    "limit": 12,
+    "max_hops": 2,
+    "seed_count": 1,
+    "sparse_weight": 0.55
+  },
+  "stop_rule": {
+    "development_no_candidate": "keep current default and do not open holdout",
+    "holdout_adoption": "adopt only when no cohort MRR regresses from current, every relation path matches, at least one credited feedback edge changes, and no uncredited edge or non-target rank changes",
+    "holdout_open_count": 1,
+    "post_observation_changes": "forbidden for fixture, gold, doc paths, thresholds, selection rule, stop rule, or variant parameters"
+  },
+  "variants": [
+    {
+      "family": "current_positive_additive",
+      "id": "current",
+      "parameters": {},
+      "structural_complexity": 0
+    },
+    {
+      "family": "finite_activation_budget",
+      "id": "budget-025",
+      "parameters": {"activation_budget": 0.25},
+      "structural_complexity": 1
+    },
+    {
+      "family": "finite_activation_budget",
+      "id": "budget-050",
+      "parameters": {"activation_budget": 0.5},
+      "structural_complexity": 1
+    },
+    {
+      "family": "finite_activation_budget",
+      "id": "budget-100",
+      "parameters": {"activation_budget": 1.0},
+      "structural_complexity": 1
+    },
+    {
+      "family": "lateral_inhibition",
+      "id": "inhibition-010",
+      "parameters": {"inhibition_ratio": 0.1},
+      "structural_complexity": 2
+    },
+    {
+      "family": "lateral_inhibition",
+      "id": "inhibition-025",
+      "parameters": {"inhibition_ratio": 0.25},
+      "structural_complexity": 2
+    },
+    {
+      "family": "lateral_inhibition",
+      "id": "inhibition-top4",
+      "parameters": {"inhibition_ratio": 0.1, "inhibition_top_k": 4},
+      "structural_complexity": 2
+    },
+    {
+      "family": "query_conditioned_transmission",
+      "id": "query-floor-020",
+      "parameters": {"query_transmission_floor": 0.2},
+      "structural_complexity": 3
+    },
+    {
+      "family": "query_conditioned_transmission",
+      "id": "query-floor-040",
+      "parameters": {"query_transmission_floor": 0.4},
+      "structural_complexity": 3
+    },
+    {
+      "family": "query_conditioned_transmission",
+      "id": "query-floor-060",
+      "parameters": {"query_transmission_floor": 0.6},
+      "structural_complexity": 3
+    },
+    {
+      "family": "recurrent_competition",
+      "id": "recurrent-balanced",
+      "parameters": {"activation_budget": 1.0, "inhibition_ratio": 0.1, "query_transmission_floor": 0.4, "recurrent_decay": 0.5, "recurrent_steps": 2},
+      "structural_complexity": 4
+    },
+    {
+      "family": "recurrent_competition",
+      "id": "recurrent-selective",
+      "parameters": {"activation_budget": 0.75, "inhibition_ratio": 0.2, "query_transmission_floor": 0.25, "recurrent_decay": 0.5, "recurrent_steps": 3},
+      "structural_complexity": 4
+    },
+    {
+      "family": "recurrent_competition",
+      "id": "recurrent-conservative",
+      "parameters": {"activation_budget": 0.5, "inhibition_ratio": 0.1, "query_transmission_floor": 0.6, "recurrent_decay": 0.7, "recurrent_steps": 3},
+      "structural_complexity": 4
+    }
+  ],
+  "schema_version": 1
+}

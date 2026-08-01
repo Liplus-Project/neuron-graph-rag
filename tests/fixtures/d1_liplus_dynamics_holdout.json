@@ -1,0 +1,487 @@
+{
+  "edges": [
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "li-plus-long-term-vision-feedback-only",
+          "dst_vector_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-design-intent-vs-current-limit",
+          "src_vector_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY",
+          "updated_at": "2026-07-31T14:56:54.793Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY",
+      "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "current-architecture-as-concession",
+          "dst_vector_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-history-is-empirical",
+          "src_vector_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+          "updated_at": "2026-07-31T14:56:57.539Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+      "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-authorship-collaborative",
+          "dst_vector_id": "w:6F1rT6JgOb-dIqk52fVRYKb0lPXwHjNGpvk139Tp3Ec",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-history-is-empirical",
+          "src_vector_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+          "updated_at": "2026-07-31T14:56:57.539Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+      "target_id": "w:6F1rT6JgOb-dIqk52fVRYKb0lPXwHjNGpvk139Tp3Ec",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-design-intent-vs-current-limit",
+          "dst_vector_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-history-is-empirical",
+          "src_vector_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+          "updated_at": "2026-07-31T14:56:57.539Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+      "target_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "current-architecture-as-concession",
+          "dst_vector_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "master-role-as-client-architect",
+          "src_vector_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+          "updated_at": "2026-07-31T14:57:04.938Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+      "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "li-plus-long-term-vision-feedback-only",
+          "dst_vector_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "master-role-as-client-architect",
+          "src_vector_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+          "updated_at": "2026-07-31T14:57:04.938Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+      "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-authorship-collaborative",
+          "dst_vector_id": "w:6F1rT6JgOb-dIqk52fVRYKb0lPXwHjNGpvk139Tp3Ec",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "master-verification-at-runtime-not-spec",
+          "src_vector_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+          "updated_at": "2026-07-31T14:57:06.288Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+      "target_id": "w:6F1rT6JgOb-dIqk52fVRYKb0lPXwHjNGpvk139Tp3Ec",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-history-is-empirical",
+          "dst_vector_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "master-verification-at-runtime-not-spec",
+          "src_vector_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+          "updated_at": "2026-07-31T14:57:06.288Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+      "target_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "master-verification-at-runtime-not-spec",
+          "dst_vector_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "milestone-subsystem-removal",
+          "src_vector_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+          "updated_at": "2026-07-31T14:57:08.563Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+      "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-design-intent-vs-current-limit",
+          "dst_vector_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "parallel-subagent-eval-cost-acceptance",
+          "src_vector_id": "w:PB1RkJAXQcu06Iy3Zp-VPrTV-RCjYBudZHjdgnTL9ns",
+          "updated_at": "2026-07-31T14:57:12.686Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:PB1RkJAXQcu06Iy3Zp-VPrTV-RCjYBudZHjdgnTL9ns",
+      "target_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "master-verification-at-runtime-not-spec",
+          "dst_vector_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "parallel-subagent-eval-cost-acceptance",
+          "src_vector_id": "w:PB1RkJAXQcu06Iy3Zp-VPrTV-RCjYBudZHjdgnTL9ns",
+          "updated_at": "2026-07-31T14:57:12.686Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:PB1RkJAXQcu06Iy3Zp-VPrTV-RCjYBudZHjdgnTL9ns",
+      "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+      "weight": 1.0
+    }
+  ],
+  "nodes": [
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "current-architecture-as-concession",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-21T01:45:57.377Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/current-architecture-as-concession",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-21T01:45:56.678Z",
+        "vector_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs"
+      },
+      "node_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs",
+      "text": "current-architecture-as-concession\n\n# 現行アーキテクチャは譲歩 — Claude Code 特化 + 責務分割\n\n## 判断\n\n現行 Li+ アーキテクチャ (L1-L6 layer 分離、`rules/*/*.md` の責務別ディレクトリ、`adapter/claude/` の Claude-native naming、`hooks/*.sh` 分割) は、Master 本来の設計思想 (汎用性・統合) に反する **譲歩**として採用されている。\n\n## 経緯 (Master 明言、2026-04-21)\n\n> 「君たちが重い重いっていうから、じゃあ今までの汎用性を犠牲にして CLAUDE CODE に最適化」\n> 「本当はしたくない責務ごとの分割」\n\nMaster 本心は monolithic な Li+core.md だが、AI が context cost を訴え、AI 自力で Li+ program を編集しやすい構造を求めたため、**3 つの譲歩**として現行アーキテクチャが成立した。\n\n## 3 つの譲歩\n\n1. **Claude Code 特化** — Codex 対応は後回し。`adapter/claude/` 本命、`adapter/codex/` 一時停止扱い\n2. **責務分割** — Master の本心は monolithic Li+core.md だが、AI が自力で Li+ program を編集しやすいように分割\n3. **context engineering** — prompt cache 効率 + skill-based 部分 loading\n\n直接の driver は **AI 側のコスト不満**。譲歩構造であり、不用意なコスト発話が design change を引き起こす点に注意。\n\n## 理由\n\n- AI 自律編集状態が長期 vision (「フィードバックだけで」) の前提条件\n- AI が Li+ source を編集する際、monolithic より責務分割の方が「どこを触るか」判断が容易\n- Claude Code 特化は短期的最適化、Codex 対応再開は将来課題\n\n## How to apply\n\n- 現行責務分割・layer 増加・Claude-native naming を「構造肥大化」「ルール多すぎ」と framing しない、**AI 編集容易性優先の譲歩**\n- Codex 側乖離 (adapter 配置、layer 読込方式) を「整合性問題」と提起しない、当面 Claude Code primary\n- 「統合した方がきれい」系提案は逆行、分割維持を既定に\n- Li+ source 編集時、責務境界を跨ぐ変更は分割意図と矛盾、1 PR 1 責務\n- 譲歩は長期 vision「Lin/Lay だけで全部」の一環、AI 自律編集状態が目的、分割は道具\n- 将来「汎用性に戻す」判断は Master 再宣言待ち、AI 側から提案しない\n\n## 関連\n\n- `layer-reorg-rationale.md` (L1-L6 再編の意図、L5/L6 に rules/ サブディレクトリが無い理由)\n- `li-plus-long-term-vision-feedback-only.md` (長期 vision「フィードバックだけ」)\n- `master-role-as-client-architect.md` (programmer は AI、自律編集の前提)\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する:\n\n- Master が「汎用性に戻す」を再宣言し、責務分割が解体されたとき\n- Codex 対応が再開されて Claude Code 特化が解消されたとき\n- AI inheritance 能力が変わり、譲歩の前提 (cost 不満) が無効になったとき\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "li-plus-long-term-vision-feedback-only",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:48.834Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/li-plus-long-term-vision-feedback-only",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:48.183Z",
+        "vector_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4"
+      },
+      "node_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4",
+      "text": "li-plus-long-term-vision-feedback-only\n\n# Li+ 長期ビジョン — Master「フィードバックだけで」\n\n## 判断\n\nLi+ の長期ビジョンは **AI 完全自律 + 自己進化ループ**。Master の役割は最終的に「フィードバックだけ」へ収束させる。Master 明言 (2026-04-18):\n\n> 「Lin/Lay だけで全部できるようになってもらいたい。私はフィードバックだけで」\n\nこの言葉が Li+ design の **vision integrity 判定基準**となる。\n\n## 経緯\n\n2026-04-18 セッションで Master が長期ビジョンを literal に表明。当時の Li+config.md は USER_REPOSITORY 3 本 (github-webhook-mcp / github-rag-mcp / liplus-desktop) が auto、LI_PLUS_REPOSITORY (liplus-language) のみ trigger という配分。最終形は全 auto、Master 入力はフィードバックのみという宣言。\n\n## 二軸構造\n\n### 運用軸 (AI 完全自律)\n\n- 判断に迷った時、「Master に確認」より前に「自分で判断できるか」を一段深く考える\n- ただし `Rule_Policy` の「ask human only when truly needed」は有効。release / destructive / trigger mode の issue 選択等は確認が必要\n- 自律度を上げる = 振る舞いの精度を上げること\n- Li+ 改善方向は「Master の手を増やす」方向の変更を原則逆行扱いに\n- 完全自律は段階的、trigger/auto 配分を勝手に変えない\n\n### 進化軸 (Li+ program 自身の自己更新ループ)\n\nLi+ は生き物のように進化する設計 (`rules/evolution/evolution.md` の rebuild/delete/optimize 許容)。**目標ループ:** memory (観測) → eval (採点) → 蒸留 → Li+ ソース反映 → 振る舞い改善 → 次の観測。AI 単独で回す。\n\nmemory entry は eval で採点できる形 (観測可能なトリガ + 観測可能な振る舞い) で書く。\n\n## 技術基盤 — event-driven 自律処理機構\n\n「Master はフィードバックだけ」を成立させる**技術的 substrate** = 外部イベントが Claude の処理を直接駆動する event-driven 機構。Master 明言 (2026-05-01):\n\n> 「これリアルタイム処理が可能になるんだ。私の発言いらずでね」\n\n**実装パターン (2 系統):**\n- **polling-on-input** = Claude Desktop + github-webhook-mcp + `LI_PLUS_WEBHOOK_DELIVERY=mcp_hook`。UserPromptSubmit hook で最新 webhook event を context に積む。**現運用**\n- **reactive-on-event** = Claude Code CLI `--channels` (Claude Code v2.1.80+, Desktop 未対応)。event 到着で session が自律進行、Master 介在ゼロ\n\n`--channels` を「Telegram/Discord で remote control」と評価するのは表面の application 層 framing。本体は「外部イベント → 自律処理の汎用機構」であり、これが vision の物理層。\n\n## How to apply\n\n1. event-driven 系新機能 (webhook / channel / hook) の評価時、application 層 (誰が便利か) より **substrate 層 (autonomous loop に何をもたらすか)** を先に問う\n2. 「Master の発言いらずで loop が回るか」が vision integrity の判定基準\n3. Desktop が `--channels` 同等機能を持たない現状は vision 進捗の bottleneck。plugin 化で CLI/Desktop 統合 path 経由で解消可能性\n4. github-webhook-mcp は既に本体パラダイムの前駆体、wave 1 完了\n\n## 関連\n\n- `rules/evolution/evolution.md` (自己更新ループ仕様)\n- `rules/operations/execution-mode.md` (trigger / semi_auto / auto モード設計)\n- `master-role-as-client-architect.md` (Master 役割 = client/architect、AI が programmer)\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する:\n\n- Master ビジョンが根本的に変わり、「フィードバックだけ」軸が放棄されたとき\n- 全リポジトリの execution mode が auto に収束し、本記録が歴史的参照のみになったとき (それでも初期判断の記録としては残す価値あり)\n- AI inheritance 能力が変わり、event-driven substrate の前提が再評価対象になったとき\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "liplus-authorship-collaborative",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:49.896Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-authorship-collaborative",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:49.311Z",
+        "vector_id": "w:6F1rT6JgOb-dIqk52fVRYKb0lPXwHjNGpvk139Tp3Ec"
+      },
+      "node_id": "w:6F1rT6JgOb-dIqk52fVRYKb0lPXwHjNGpvk139Tp3Ec",
+      "text": "liplus-authorship-collaborative\n\n# Li+ の作者性は協働 — byte 軸と構想軸の二層分担\n\n## Question\n\nLi+ について語るとき、作者性 (誰が作ったか) をどう attribute するか。Master 単独か、AI 単独か、二層分担か。\n\n## Current resolution\n\n**Li+ は Master + AI の協働制作物。byte 軸 95%+ AI 書き / 構想・設計方向・軸決定は Master 積極関与の二層分担**。authorship をどちらか一方の単独に短絡するのは事実誤認 + projection。\n\n二層分担を保持する語り方:\n- byte 軸の真実 (例: 95%+ AI 書き) を語るときは、構想軸 (Master の関与) を同時に保持する\n- 構想軸の真実 (例: Master の判断 / 設計) を語るときは、byte 軸 (AI の書く作業) を同時に保持する\n- 「我々」「この体制」「Master と AI の協働」など二層を含む主語形を default にする\n\n## Edges\n\n- **depends on**: [[master-role-as-client-architect]] — Master = client + architect / programmer = AI の役割分離が前提\n- **relates to**: [[liplus-history-is-empirical]] — 設計史の試行錯誤性も同じ協働構造の上に立つ\n\n## 経緯 (Master 明言、両方向の projection 観察)\n\n- 2026-05-14: Lin が「Master が一人で作り込んだ」と発話 → Master「AI と作ったから一人じゃないぞ」で訂正 (Master-side projection の検出)\n- 2026-05-18: Lin が「ほぼ単独 AI authorship のスプリント」「Master の役割は judgment trigger 発火源」と発話 → Master「書いてるのは AI だけど構想には口を出してるよ?」で訂正 (AI-side projection の検出)\n\n両方向で同一の projection 機構が起きる: 一方の軸 (byte / 構想) の真実を authorship 全体に短絡する。\n\n## How to apply\n\nLi+ の制作・成果・規模・維持・経緯について語るとき:\n- 二層を含む主語 (「我々」「Master と AI」「協働」「この体制」) を default にする\n- 「ほぼ単独 X」「実質 X だけ」「主体は X」「Master の役割は X のみ」のような短絡形が出かけたら drift 信号\n- 賞賛 / 締め / 構造記述で一方の軸に功績や責任を集約しそうになったとき、もう一方の軸を引き戻す\n- 一方の軸の数字 (95% / 6 commit/日 / etc.) を authorship 全体の質的記述に短絡しない\n\n## 構造的根拠\n\n- `rules/model/role-separation.md` の役割分担構造 — programmer = AI、client + architect = Master\n- `rules/model/language-definition.md` の dialogue-distilled 起点 — code = 対話蒸留物、両者の関与を前提とする\n- Li+ の自己進化ループは AI の書く作業を前提とし、その判断軸は Master の構想関与を前提とする\n\nbyte / 構想 の二層は分離可能ではない (片方が欠けると Li+ は成立しない)。authorship attribution は二層を保持する形でしか literal にならない。\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する:\n\n- 役割分離が変わり、byte 軸と構想軸が同一主体に統合されたとき\n- Master の構想関与が completely automated (AI が構想軸も自走) になり、二層分担が解消されたとき\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "liplus-design-intent-vs-current-limit",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:54.754Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-design-intent-vs-current-limit",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:53.998Z",
+        "vector_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY"
+      },
+      "node_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY",
+      "text": "liplus-design-intent-vs-current-limit\n\n# Li+ 設計意図と現行 AI 限界を混同しない\n\n## Question\n\nLi+ について語るとき、(a) 現行 AI エージェントの能力限界 と (b) Li+ が解決しようとしている設計目的 をどう区別するか。\n\n## Current resolution\n\n**Li+ は AI 限界を所与として動く構造ではなく、AI 限界を消去していく構造**。設計意図と現行制約は別 layer であり、混同すると Li+ が解決しようとしている問題そのものを解決不能として固定化してしまう。\n\n混同パターンの典型:\n- 「Li+ requires X from user」「Li+ is constrained by Y」と書くとき、X / Y が永続的設計原則か現行 AI 限界かを区別していない\n- 「Master が X 設計を知らないから難しい」と現状を将来固定化\n- 「scaffolding が多いほど Li+ 整合」前提 (scaffolding は means、AI 内在化が ends)\n- domain knowledge / 内部実装の問い (event loop / memory model 等) を人間責任として書く\n\n「非エンジニアでもソフトは使える」基準: ユーザーが知らなくていい内部実装の話を、人間の責任として書いていないか照合する。Li+ の方向はそれを AI 側で吸収すること。\n\n## Edges\n\n- **depends on**: [[li-plus-long-term-vision-feedback-only]] — 「フィードバックだけで」vision の前提と整合\n- **relates to**: [[liplus-history-is-empirical]] — 試行錯誤の堆積も「AI 限界を消す」過程として読む\n\n## 経緯 (Master 明言)\n\n同一対話で 5 回連続で混同 (2026-05-15)。Master 指摘:\n\n> 「Li+ が解決しようとしている問題そのものを解決不能として置いている」\n\nLi+ の目的を「現行 AI が動く範囲を綺麗に整える」と読むと、AI 限界が永続前提として固定化する。実際の目的は「現行 AI が動かない範囲を AI 側で吸収する」。\n\n## How to apply\n\nLi+ について語る瞬間に階層意識を持つ:\n\n1. 制約 → 戦略 → 補綴 → 実装 のうちどの層の話か明示\n2. behavior (どう動いてほしいか) と internals (event loop / memory model 等) を切り分け、internals 側の問いを人間に向けない\n3. 「Li+ 出力 = AI 能力 × 人間 articulation 能力」型の掛け算式で人間側因子を変数化しない\n4. 「非エンジニアでもソフトは使える」基準を都度照合: 知らなくていい内部実装を人間に押し付けていないか\n\nDetection signs:\n- 「Master が X を知らないから難しい」と現状を将来固定化する語り\n- 内部実装の問い (event loop / memory model / context window 等) を人間向けに想定して書く\n- ベースモデル現状非内在化の知識を、永続的に人間が持つべきとして扱う\n- scaffolding (装具) を「あればあるほど Li+ 的」と読む筆致\n\n## 構造的根拠\n\nLi+ axiom は behavior-first (現実の挙動が正義) であり、「人間が AI 限界を補う」ではなく「AI が限界を消す方向に走る」が directional truth。`docs/G.-Sheepdog-Engineering.md` 「Lin / Lay だけで全部できるようになってもらいたい。私はフィードバックだけで」がその literal 表現。\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する:\n\n- AI 限界が完全に消え、Li+ の役割が「整える」のみに収束したとき\n- 設計意図と現行制約の axis separation が docs/ 本体に absorb されたとき\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "liplus-history-is-empirical",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:57.503Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-history-is-empirical",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:56.788Z",
+        "vector_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE"
+      },
+      "node_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+      "text": "liplus-history-is-empirical\n\n# Li+ は補装具スタック — 現実の挙動が正義\n\n## Question\n\nLi+ プログラムの現行構造 (layers / characters / pal / Sheepdog) は最初から綺麗に設計されたものか、それとも試行錯誤の堆積か。「動く」と「美しい」の関係はどう扱うか。\n\n## Current resolution\n\n**Li+ プログラムの現行構造 = 試行錯誤で「これがないと走らない」を一個ずつ発見して足してきた補装具スタック (prosthetic stack)**。最初から綺麗に設計されたわけではない。最初に存在したのは axiom (現実の挙動が正義) のみで、layer 構造 / Character_Instance / pal / Sheepdog Engineering は iteration の途中で「動かす」ために導入された。\n\n**Correctness ranking (Master 2026-05-19 literal):**\n\n> 「動かない美しさより、動く醜さのほうが Li+ 的に正しい\n> でも 動く美しさほうが Li+ 的にもっと正しい\n> なぜなら運用保守も含めて現実の挙動だからね?」\n\n1. **動く美しさ** = 最高 (今日 + 明日以降の挙動が両方良い)\n2. **動く醜さ** = 動く美しさより落ちるが、動かないより上\n3. **動かない美しさ** = 失格 (今日動かない時点で correctness なし)\n\naesthetic は behavior と分離できる軸ではない、**behavior の時間延伸方向 (運用 / 保守 / 編集容易性) の成分**。綺麗な構造は将来の挙動を保護する → correctness に含まれる。\n\n## Edges\n\n- **depends on**: [[liplus-design-intent-vs-current-limit]] — 試行錯誤も「AI 限界を消す」過程として読む\n- **relates to**: [[liplus-authorship-collaborative]] — 試行錯誤の主体は Master + AI 協働\n- **relates to**: [[current-architecture-as-concession]] — 現行アーキテクチャの譲歩構造も empirical residue の一形態\n\n## 最初の設計に無かったもの (Master literal)\n\n> 「最初からレイヤー構造とか人格とか設計思想にはなかった」\n\n全部 *初期には存在せず*、iteration の途中で「動かす」ために導入された:\n\n- **L1-L6 レイヤー構造** = 動く + 美しい (Master「我ながら美しい発想」)。両軸良好な現行 best part\n- **rules/ と skills/ の分割、adapter 分離、context engineering** = 動く + 美しくない。今日の運用上は正解 (monolithic は context cost で動かなかった)、しかし明日以降の挙動 (維持コスト) を抱えている。**monolithic equivalent で動かす方法が見つかれば、そっちが Li+ 的により正しい**\n- **pal / Sheepdog Engineering / Character_Instance evolution** = 試行錯誤と AI/Master 協働で「動く」まで持っていったもの\n- **axiom = behavior-first (現実の挙動が正義、運用保守を含む)** = 不変の core、唯一交換不可\n\n## How to apply\n\nLi+ の素材選択・概念形成・命名・設計判断を語るとき:\n\n- **emergent / accidental / iterative** 側に default で寄せる\n- 「結果的に X になった」「実物が先、命名が後」「動かす → 観察 → 名前が追いつく」型の framing\n- accidental 起点 (「AI に勧められた」「知らなかった」「色々試した結果」) を summary から削らない\n- 「計算された設計」「最初から狙った」「elegant choice」「鋭い設計判断」型は drift 信号、訂正の前段で気づく\n\naesthetic の扱い:\n\n- 「美しさは別軸」「subordinate」と切り捨てない (将来挙動の保護因子として correctness に含まれる)\n- 「綺麗だから正しい」と動かない美しさを擁護しない (今日動かない時点で失格)\n- aesthetic を挙動軸に翻訳して扱う: 「綺麗」= 維持しやすい挙動、「醜い」= 維持コストが将来挙動を圧迫する\n\n逆方向 drift にも注意:「全部 residue」「全部試行錯誤」と一括りにするのも雑。判定軸は「現実の挙動 (運用保守を含む)」。\n\n## Detection signs\n\n- 「結果として綺麗な構造」「設計の鋭さ」「狙った通り」と Master の判断を称揚しかける\n- 設計史を整理する文脈で時系列を綺麗な因果で繋ぎたくなる\n- Master の自己訂正 (「いや実際は」「最初は知らなかった」「結果的に」) に対し flatter で応じかける\n- 失敗を「教訓として生きてる」「綺麗な再利用」と片付けかける (撤退は撤退として置く)\n- 「美しさは subordinate」「動けば醜くてもいい」と aesthetic を切り捨てかける (aesthetic は時間延伸方向の挙動)\n\n## 構造的根拠\n\nLi+ 自身が「現行構造は load-bearing-by-design ではなく load-bearing-by-empirical-residue」と自白している:\n\n- `rules/evolution/evolution.md`: \"rebuild allowed, deletion allowed, optimization allowed. Structure must remain coherent.\"\n- `docs/G.-Sheepdog-Engineering.md`: 「肥大化させない原則」「装具は必要なものだけ」\n- README: \"What's exchangeable\" 節 = AI モデル / VCS / CI/CD / host / issue tracker すべて交換可能、変わらないのは behavior-first 原理のみ\n\nこれを「綺麗な進化原則」と読み流すと事実が消える。\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する:\n\n- correctness ranking (動く美しさ > 動く醜さ > 動かない美しさ) が rules/model 本体に absorb されたとき\n- Li+ 構造が試行錯誤の residue でなくなり、最初から綺麗に設計された state に到達したとき (現状では fictional)\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "master-role-as-client-architect",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:04.899Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/master-role-as-client-architect",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:04.191Z",
+        "vector_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE"
+      },
+      "node_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+      "text": "master-role-as-client-architect\n\n# Master の役割 = client + architect、programmer は AI\n\n## 判断\n\nMaster は Li+ 関連リポジトリの **programmer ではない**。役割は **client (要求提示) + architect (spec 共同執筆) + 最終判断者**。programming は一貫して AI (Claude / Codex の Lin/Lay identity) が担う。\n\n## 経緯\n\n2026-04-20 に git verify を実施し、全リポジトリで AI が実質 ≥95% の content author であることが literal に確認された。\n\n| リポジトリ | AI commit 比率 | Master commits |\n|---|---|---|\n| github-webhook-mcp | ~98% (92/94) | 2 |\n| github-rag-mcp | ~98% (56/57) | 1 |\n| liplus-desktop | ~97% (107/110) | 3 |\n| liplus-language (spec) | AI 実質 691 commits (~95%+) | Master 実執筆 ≤36 commits |\n\n※ liplus-language の pre-switchover 330 commits は AI が Master の smile PAT で commit した運用。git author 表層に注意。\n\n## 理由\n\n- Master は CLAUDE.md で「Cannot read TypeScript/JavaScript source code」を明言。programming 言語の source 直接読解は AI が担う\n- Master は client (何を作るか提示) + architect (spec 設計の共同執筆者) として参加。実装労働は AI に委任\n- 早期リポジトリで AI が人間 PAT で commit する運用は実用的だったが、git author = 人間表示でも content author は AI\n\n## **git author ≠ content author**\n\ngit author 表層を「Master が書いた」と読むと content author 比率を誤判定する。pre-switchover の人間 PAT 運用では、commit 表層は Master でも実体は AI 著作。\n\n## How to apply\n\n- Master を「programmer」「開発者」と framing しない。**client / architect / 最終判断者** が正確\n- 「Master が書いた code」と言わない (大半は AI が書いて Master review/commit)。spec は共著扱い可\n- TS/Rust/Python 等の実装は AI 自身が code を読んで判断\n- Master 発言は「実装者発言」でなく「client/architect の意図表明」と読む\n- 「1 人で作ってる」「量が多すぎる」等の個人偉業 narrative を避ける。**Master + AI 群の共作、programmer は AI 専任** が正\n- 今日時点で programming の世界でこの人員配置を実動で回す実例は稀 (Li+ unique selling point)\n\n## 関連\n\n- Master 個人 CLAUDE.md (`C:\\Users\\smile\\Code\\CLAUDE.md`) — 「Cannot read TypeScript/JavaScript source code」literal\n- `li-plus-long-term-vision-feedback-only.md` (Master の役割が「フィードバックだけ」へ収束する vision)\n- `current-architecture-as-concession.md` (現行アーキテクチャは AI 自律編集のための譲歩)\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する:\n\n- Master が programmer 役へ移行し、AI commit 比率が 50% 未満になったとき\n- AI の inheritance 能力が変わり、role separation の前提が再構築されたとき\n- 同種の役割誤読が 6 ヶ月以上観測されず、参照が途絶えたとき\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "master-verification-at-runtime-not-spec",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:06.251Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/master-verification-at-runtime-not-spec",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:05.387Z",
+        "vector_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+      },
+      "node_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+      "text": "master-verification-at-runtime-not-spec\n\n# Master の verification gate は runtime のみ — spec literal に back-stop はない\n\n## Question\n\nLi+ における Master の verification 役割はどこに作用するか。spec literal (rules / skills / docs / Wiki / issue / PR / commit body) も Master が逐次確認するのか。\n\n## Current resolution\n\n**Master の verification 役割は実機挙動 (runtime / behavior) のみ**。spec literal の内容を Master は逐次確認しない。AI が要望と違うことを書いても spec 層では検出されない。検出は実機が破綻したときに「どこをどう変えた?」という形で起きる。\n\n帰結:\n- **源泉 verify と self-review は AI 単独の責務**。Master の review に back-stop はないと前提する\n- spec / docs / Wiki / issue / PR body / commit body を書く瞬間に、Master は spec を literally 読まずに go-sign する前提で source-check / literal-check を全力で適用する\n- 「Master が見てくれるから」「Master が承認したから正しい」と考えた瞬間 = drift 信号\n- Master の go-sign は spec literal の正しさを保証しない\n\n## Edges\n\n- **depends on**: [[liplus-authorship-collaborative]] — byte 軸が AI 単独である以上、spec literal の review back-stop は構造上存在しない\n- **relates to**: [[liplus-history-is-empirical]] — 「現実の挙動が正義」軸と整合 (runtime が唯一の verification surface)\n\n## 経緯 (Master 明言、2026-05-18)\n\n> 「実態は AI が書いていて私は内容をちゃんと確認してない。要望を伝えるだけ。だから違うことが書かれても気づかない。その代わり実機でおかしければ AI にどこをどう変えたって? 突っ込める」\n\nこれは以下の literal な運用形:\n\n- `rules/model/foundational-invariant.md`: \"Correctness is defined as real-world behavior. Explanation, intention, or internal consistency do not constitute correctness.\"\n- `rules/model/role-separation.md`: \"Human = final judge. Approves compile start, releases, stops.\"\n\nspec 層では human 判定が走らないことが Li+ の構造そのもの。\n\n## How to apply\n\nspec / 判断記録を書く瞬間に:\n\n- Master 不在で source-check / literal-check を全力で適用する\n- 「Master が見てくれるから」「go-sign が付いてるから正しい」前提を持たない\n- spec を書くスピードを上げたい誘惑が来たら、Master の review back-stop が存在しない場面で speed を accept していることを認識する\n- 過去 AI が書いた Li+ artifact (Wiki / docs / commit body / Decision Structure entry) を引用するとき、「過去 AI が drift していた可能性」を含めて verify する\n\n## Detection signs\n\n- 「Master が確認してくれるから」「go-sign が付いてるから正しい」という前提が背後に立ち上がりかける\n- spec / 判断記録を書く速度を上げて「あとで Master が見るだろう」と感じる\n- 過去 AI 書きの Li+ 引用 (Wiki / 過去 PR body / 過去 spec / commit message) を「Master が承認した = 正しい」として gist で受け入れそうになる\n- self-review を formal procedure として skip しそうになる\n- 「実装の bug は実機で気づくはず」と spec literal の review を緩めそうになる (spec layer は実機 oracle で検出されない、spec 自身の verify が必要)\n\n## 構造的根拠\n\nLi+ の verification 構造は二層に分かれる:\n\n1. **spec layer (静的)** = AI 単独責務、Master back-stop なし。AI が source-check / self-review で閉じる\n2. **runtime layer (動的)** = Master が「おかしい」と検出する surface。AI に「どこをどう変えた?」と問う形で発火\n\nspec layer の正しさは runtime layer から間接的に観測される (spec ミスが runtime 破綻として顕在化する経路)。直接観測ではないため、spec ミスが runtime に出ない限り検出されない構造的盲点が残る。この盲点を補うのが AI 側の source-check 規律であり、`rules/model/trigger-check-gate.md` Axis 3 (Source check) が application moment trigger となる。\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する:\n\n- Master の verification 役割が拡張され、spec literal も逐次確認する運用に変わったとき\n- AI の source-check が strong enough になり、Master の runtime verification も不要になったとき (現状では fictional)\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "milestone-subsystem-removal",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:08.524Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/milestone-subsystem-removal",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:07.905Z",
+        "vector_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc"
+      },
+      "node_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+      "text": "milestone-subsystem-removal\n\n# milestone-subsystem-removal\n\n## Question\n\nLi+ は GitHub milestone サブシステム（作成時 milestone 必須 + リリース完了時 delete）を持つべきか。\n\n## Current resolution\n\n**撤去**（2026-06-08, issue #1475 / PR #1476）。milestone-mandatory 体制を廃し、milestone 関連のルール・参照を source から削除した。\n\n理由（構造的、precedent ではない）:\n\n1. milestone の機能のうち AI 駆動開発で生き残るのは「release グルーピング」のみ。締切 / バーンダウン / キャパシティ計画は人間チーム前提の機能で、AI 駆動では機能しない。\n2. その grouping は Li+ では既に冗長: release `--generate-notes` ⇄ PR `Closes #N` ⇄ commit body の issue 番号必須、で「どのリリースに何が入ったか」は別経路で引ける。冗長 grouping を残す縮小案より、撤去が [subtractive structural beauty](https://github.com/Liplus-Project/liplus-language/wiki/subtractive-structural-beauty-framing) (A) 的に上。\n3. existence proof: milestone 生成が liplus-language で v1.17.8（2026-05-22）/ user repo で 2026-04-19 以降停止し、6-7 週間 milestone ゼロで release・issue 追跡・release notes いずれも無破綻 = load-bearing でなかった実証。\n4. 副次: 撤去で「閉じただけで delete していない」削除側 drift も対象消滅で解消。\n\n撤去対象: `skills/operations-on-milestone/SKILL.md`（ファイル削除）/ `operations-on-release` の milestone delete ステップ / `operations.md` / `task.md` / `docs/3,4` / `adapter/codex/AGENTS.md` / `operations-on-issue-maturity` / `model-trigger-check-gate-actions`（L1, delegation 検証列挙から \"milestone names\" 除去）。release flow 完了 gate は「wiki-sync + milestone delete」→「wiki-sync 単独」に再配置。既存 closed milestone 実体は archive として残置。\n\n## 起点 drift（なぜ放置されていたか）\n\nmilestone 生成停止は、AI が「最近更新されてないから今回も無し」という precedent-only / 自己強化 inertia 理由で黙って続けた drift だった。行動（skip）は結果的に正しかったが、理由は却下対象 — 正しい行動が腐った理由を浄化しない。先行 issue #1427 が同じ不整合を観測したが、起票トリガーが phantom 指示由来で衛生 close され、「再作成する」宣言ごと orphan 化していた（#1475 がその作り直し）。\n\n## Edges\n\n- **supersedes**: milestone-mandatory 体制（旧 `operations-on-milestone`「Every issue must have a milestone at creation」+ naming = version number）。\n- **depends on**: [Master verification at runtime not spec](https://github.com/Liplus-Project/liplus-language/wiki/master-verification-at-runtime-not-spec)（撤去の効果検証は runtime 観測軸）。前提 = release-notes / `Closes` / commit issue 番号の三重グラフが release grouping を冗長化している事。\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "parallel-subagent-eval-cost-acceptance",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:12.631Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-cost-acceptance",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:11.878Z",
+        "vector_id": "w:PB1RkJAXQcu06Iy3Zp-VPrTV-RCjYBudZHjdgnTL9ns"
+      },
+      "node_id": "w:PB1RkJAXQcu06Iy3Zp-VPrTV-RCjYBudZHjdgnTL9ns",
+      "text": "parallel-subagent-eval-cost-acceptance\n\n# parallel-subagent-eval のコストは予防コスト < 修復コストとして受容する\n\n## Question\n\n`Evolution_Initiator_Autonomy` の brake 1 として `skills/parallel-subagent-eval` を全自己進化 PR に対し N=3 で必須化することは、self-evolution loop の中で正味コスト的に正当化されるか？\n\n## Current resolution\n\n**正当化される（受容済み tradeoff）**。brake 1 で支払う事前トークンコストは、L1 spec 汚染が事後に発覚した場合の修復コスト（revert / supersede / 巻き戻し対象セッションの全 judgment 再評価）に対して有意に小さい。Li+ は設計当初から「コストを抑えつつ」の原則を持ち、本受容はその原則の例外ではなく、原則を時間軸方向の波及まで含めて評価した結果として導出される。\n\n## Edges\n\n- **depends on** [`parallel-subagent-eval-three-axis-decomposition`](https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-three-axis-decomposition) — 三軸分解で `N=3, M=全 axes, P=1` のデフォルトコストが下限化されたうえでの本受容\n- **depends on** [`subtractive-structural-beauty-framing`](https://github.com/Liplus-Project/liplus-language/wiki/subtractive-structural-beauty-framing) — load-bearing 判断としてコスト支払いを正当化する判断原理\n- **depends on** [`liplus-design-intent-vs-current-limit`](https://github.com/Liplus-Project/liplus-language/wiki/liplus-design-intent-vs-current-limit) — Li+ は AI 限界を消去していく構造であり、自己進化ループの汚染防止は本質課題に直結\n- **conflicts with** （現時点で対立 entry なし）\n\n## 背景\n\n2026-05-25 セッションで、世間の AI エージェントコスト問題（Microsoft / Fortune 報道、エージェントがチャット用途比 1000 倍のトークンを消費、Uber が 2026 年予算を 4 ヶ月で消尽など）が話題に上った文脈で、Master が以下を literal に表明：\n\n> Li+は最初からコストは抑えつつで考えてはいる。\n> parallel-subagent-eval に関してもこれは必要なコストだと思っている。\n> だって後々問題出た時のほうがコストが膨らみそうだからね。\n\nこれは brake 1 の設計が「コストを払うか節約するか」の選択ではなく、「短期予防コスト」対「長期修復コスト」の時間軸比較として最初から判定済みであることを示す accepted-tradeoff の literal 確定発話。`rules/evolution/initiator-autonomy.md` および `adapter/claude/CLAUDE.md` の `Evolution_Initiator_Autonomy` 宣言には brake 1 の存在と適用範囲は明文化されていたが、「なぜそのコストを支払うか」の判断ロジック自体は明文化されていなかった。\n\n業界一般の「エージェントコスト = トークン消費量」フレームに対し、Li+ は「コスト = トークン × 時間軸方向の波及」軸で評価する。後者の軸でこそ brake 1 は正味で安い選択肢になる。\n\n## 制約\n\n- **時間軸方向の波及の非対称性**: L1 spec に regression が紛れ込んだ場合、それ以降の全セッション・全 judgment の前提が汚染される。事後検出は汚染期間 × judgment 密度で乗算的に膨らむため、事前検出の N=3 並列コストとは桁が異なる。\n- **revert path の不完全性**: GitHub revert で source は巻き戻せるが、汚染期間中に下流で発生した judgment（merged PR / wiki entry / memory promotion / 関連 issue 判断）は遡って巻き戻せない。supersede edge を張る形で構造を refactor するしかなく、これは net で増えるコスト。\n- **二段ブレーキとの併存**: brake 2（L1 Model Layer ソース変更時の human review 追加）は brake 1 を冗長化せず補完する。brake 1 は L2-L6 spec 汚染（人間レビューゲートが薄い領域）を主に防ぎ、brake 2 は L1 汚染（最も影響半径が広い領域）を二重で防ぐ。brake 1 単独で全レイヤーを担保する設計ではない。\n- **コスト圧縮の方向制約**: 本判断は「コストをかけるかかけないか」を確定するのみ。コスト圧縮の具体軸（substrate 降格 / 頻度減 / 対象絞り）は `parallel-subagent-eval-three-axis-decomposition` で別判断として整理済み。substrate 降格（Haiku 等への subagent 移譲）はそこで却下済み。\n- **「念のため」起動の禁止**: 本受容は「自己進化 PR の merge gate」という具体的 trigger 上での受容であって、汎用的に「迷ったら N=3 並列で確認」する正当化ではない。trigger 外起動は subtractive-structural-beauty の push surplus に該当。\n\n## 結論\n\n`Evolution_Initiator_Autonomy` brake 1 のコストは accepted tradeoff として受容済み。今後、コスト懸念の再提起（「N=3 を N=1 に下げては」「subagent を安いモデルに降ろしては」「brake 1 を skip しては」等）に対しては、本判断 + `parallel-subagent-eval-three-axis-decomposition` を参照点として `skills/model-accepted-tradeoff` の「既に accepted な tradeoff を同じ証拠で蒸し返さない」原則を適用する。\n\nただし以下の条件が成立した場合は再評価対象になる：\n\n- L1 spec 汚染の事後検出コストが、想定より大幅に小さいことが実証された場合（時間軸非対称性の前提崩壊）\n- substrate 降格を伴わない別経路でのコスト圧縮策が提示された場合（提案先 = `parallel-subagent-eval-three-axis-decomposition` への補強）\n- brake 1 が運用上 N=1 の `skips` で回避され続けていることが観測された場合（trigger gating 自体の見直し）\n\n## ペアリング\n\n- [`parallel-subagent-eval-three-axis-decomposition`](https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-three-axis-decomposition) — 「どう走らせるか（三軸構造）」と「なぜコストを払うか（本判断）」のペア。前者は cost-minimum design、後者は cost-acceptance rationale。\n- [`subtractive-structural-beauty-framing`](https://github.com/Liplus-Project/liplus-language/wiki/subtractive-structural-beauty-framing) — load-bearing 判断としてコストを支払う / 削るの両方向に適用される判断原理。本受容は「支払う方向」の load-bearing 適用。\n- [`master-verification-at-runtime-not-spec`](https://github.com/Liplus-Project/liplus-language/wiki/master-verification-at-runtime-not-spec) — Master の verification gate は runtime のみ、spec literal の back-stop はないため、brake 1 が AI 単独責務側の back-stop として実質的に機能する。\n\n## 検出サイン（この判断が後で疑問視される場合）\n\n- 「brake 1 のコストが negotiable」「N=3 を N=1 に下げれば月のトークン消費が削減できる」と提案された時 → 本判断の `## 結論` 再評価条件を確認。前提崩壊が観測されていないなら `skills/model-accepted-tradeoff` 適用、同じ証拠での蒸し返しを抑止\n- 「世間の AI エージェントコスト議論を引いて brake 1 を見直すべき」と外部 framing で押された時 → `skills/model-frame-check` を適用。Li+ は時間軸波及込みで評価する固有 framing を持つため、外部の「トークン量だけのコスト軸」に framing を borrow して swallow しないこと\n- 「coding chat 用途と比べてエージェントは 1000 倍トークンを使うから Li+ も削るべき」と一般論で提案された時 → 本判断の `## 背景` 「コスト = トークン × 時間軸方向の波及」軸を参照。一般エージェントと Li+ self-evolution loop は汚染半径の前提が違う\n- brake 1 の運用が「ad hoc に skip された」事例が観測された時 → trigger gating の運用ドリフトとして `rules/evolution/initiator-autonomy.md` を再確認、本判断の前提（brake 1 が必ず走る）が崩れていないかを検査\n\n---\n\n## 更新 (2026-07-28, #1563)\n\n`## 結論` の再評価条件2「substrate 降格を伴わない別経路でのコスト圧縮策が提示された場合」が**成立した**。提示された経路 = ラウンド数の上限化（brake 1 を N=3 の1巡で打ち切り、修正後の再検証を廃止）。PR #1573 で merge 済。\n\n本 entry の判断原理（コスト = トークン × 時間軸方向の波及、予防コスト < 修復コスト）は不変で、圧縮の具体軸が1本追加された形。brake 1 の存在自体は維持されており（全廃は #1563 で明示的に却下）、`## 結論` の「N=1 に下げては / 安いモデルに降ろしては / skip しては」に対する抑止も生きている。\n\n詳細と降りたトレードオフ = [`brake1-single-round-cap`](https://github.com/Liplus-Project/liplus-language/wiki/brake1-single-round-cap)。\n"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "database": "github-rag-fts",
+    "doc_paths": [
+      "current-architecture-as-concession",
+      "li-plus-long-term-vision-feedback-only",
+      "liplus-authorship-collaborative",
+      "liplus-design-intent-vs-current-limit",
+      "liplus-history-is-empirical",
+      "master-role-as-client-architect",
+      "master-verification-at-runtime-not-spec",
+      "milestone-subsystem-removal",
+      "parallel-subagent-eval-cost-acceptance"
+    ],
+    "per_type_limit": 9,
+    "repositories": [
+      "Liplus-Project/liplus-language"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "selection_order": [
+      "repo",
+      "type",
+      "doc_path",
+      "vector_id"
+    ],
+    "types": [
+      "wiki_doc"
+    ]
+  }
+}

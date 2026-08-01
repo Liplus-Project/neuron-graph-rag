@@ -43,6 +43,12 @@
 25. baseline hybrid と graph-integrated retrieval を同一 corpus、encoder、query で実行し、全体・cohort 別の MRR、Hit@3、rank delta、改善・同値・悪化件数を機械可読に出力できる。
 26. relation の説明は score だけでなく、固定した one-hop / two-hop の endpoint と edge type に対して照合する。
 27. success feedback 前後で edge weight と全 gold case の rank を比較し、credited path 外の edge 変更と非対象 case の rank 変更を明示する。
+28. 活性伝播は共通 interface の下で、現行正方向加算、有限活性 budget、側方抑制、query-conditioned transmission、反復競合を選択できる。
+29. 各検索 trace は strategy、伝播 step 数、展開数、活性総量、収束有無、停止理由を決定論的な diagnostics として保持する。
+30. neural dynamics experiment は development と doc path が重ならない connected holdout、gold、探索空間、最大 variant 数、選択規則、停止規則を結果観測前に固定する。
+31. 候補選択は development result だけで行い、relation MRR と negative-control MRR の Pareto gate、worst-cohort MRR、展開数、構造複雑度、variant ID の順で一意に決める。
+32. development gate を通る候補がない場合は holdout を開かず既定を変更しない。候補がある場合だけ holdout を一度評価し、cohort 退行、path 不一致、feedback 汚染のいずれかがあれば採用しない。
+33. experiment result は gate 不合格、Pareto 支配、holdout 不採用を含む全 variant を上書きせず versioned artifact として保存する。
 
 ## 4. Constraints
 
@@ -63,3 +69,4 @@
 - `tests/fixtures/d1_liplus_wiki.json` が実 D1 形状から ingest、検索、時系列 metadata、graph activation、success feedback を再現する。
 - [D1 corpus fixture](d1-corpus-fixture.md) が read-only 取得、認証境界、provenance、coverage 比較、再取得手順を定義する。
 - [Real-corpus benchmark](real-corpus-benchmark.md) が gold freeze、判定規則、観測結果、外挿限界を定義する。
+- [Neural dynamics experiment](neural-dynamics-experiment.md) が development / holdout 分離、固定探索空間、候補選択、単一 holdout 開封、停止規則を定義する。
