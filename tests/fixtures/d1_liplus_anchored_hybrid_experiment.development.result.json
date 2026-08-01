@@ -1,0 +1,2880 @@
+{
+  "experiment_id": "d1-liplus-anchored-bm25-graph-hybrid-v1",
+  "holdout_status": "not_opened_no_candidate",
+  "inputs": {
+    "fixture_sha256": "sha256:7e71b6aba83d2ee6b080251a233f869d2cea85f48a3878b4b2f4e9910a991b9d",
+    "gold_sha256": "sha256:183c03febd3531fb2dd647546dba1572e2c0dd00d6c41b57b49772befb423a0b"
+  },
+  "manifest_sha256": "sha256:a894a82fb79a5724458f2cbee03a56902d0143c7ebe145a3152018dcfcc8b5d7",
+  "schema_version": 3,
+  "selection": {
+    "eligible_variant_ids": [],
+    "reason": "no_anchored_variant_passed_frozen_gate",
+    "selected_variant_id": "current"
+  },
+  "stage": "development",
+  "variant_count": 6,
+  "variants": [
+    {
+      "candidate_gate": {
+        "all_relation_paths_match": true,
+        "direct_non_regression": true,
+        "entry_anchor_invariant": true,
+        "feedback_isolated": true,
+        "graph_signal_excludes_zero_hop": false,
+        "negative_non_regression": true,
+        "relation_strictly_above_current": false
+      },
+      "candidate_gate_passed": false,
+      "cases": [
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 2.8899999999999997,
+            "active_path_count": 4,
+            "competition_sets": [],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 3,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-model-floor",
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 1.0,
+            "dense_raw": 0.46548184905729684,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 1.0,
+            "graph_activation_normalized": 1.0,
+            "sparse": 1.0,
+            "sparse_raw": 11.509264813224446
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 1.6588860057340518,
+            "active_path_count": 2,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 1,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 1,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-delegation",
+          "observed_paths": [
+            {
+              "seed_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 0.9462562166458193,
+            "dense_raw": 0.24187280065515898,
+            "entry": 0.9758152974906187,
+            "entry_anchor_after_competition": 0.9758152974906187,
+            "entry_anchor_before_competition": 0.9758152974906187,
+            "final": 0.9866984136198402,
+            "graph_activation": 0.9758152974906187,
+            "graph_activation_normalized": 1.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.967732331882885
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 2.8899999999999997,
+            "active_path_count": 4,
+            "competition_sets": [],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 3,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 2,
+          "scores": {
+            "dense": 0.3892935997209144,
+            "dense_raw": 0.12303305089805984,
+            "entry": 0.2506642023588408,
+            "entry_anchor_after_competition": 0.2506642023588408,
+            "entry_anchor_before_competition": 0.2506642023588408,
+            "final": 0.45286531129736246,
+            "graph_activation": 0.7,
+            "graph_activation_normalized": 0.7,
+            "sparse": 0.1372401499716896,
+            "sparse_raw": 1.6026208932583876
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 2.19,
+            "active_path_count": 3,
+            "competition_sets": [],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 2,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "observed_paths": [
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 2,
+          "scores": {
+            "dense": 0.4019005239716757,
+            "dense_raw": 0.19260361706365253,
+            "entry": 0.30947302618130523,
+            "entry_anchor_after_competition": 0.30947302618130523,
+            "entry_anchor_before_competition": 0.30947302618130523,
+            "final": 0.48521016439971787,
+            "graph_activation": 0.7,
+            "graph_activation_normalized": 0.7,
+            "sparse": 0.23385052798918393,
+            "sparse_raw": 2.6396290046400135
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 1.0,
+            "active_path_count": 1,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 0,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-single-round",
+          "observed_paths": [
+            {
+              "seed_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 1.0,
+            "dense_raw": 0.2650517974706636,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 1.0,
+            "graph_activation_normalized": 1.0,
+            "sparse": 1.0,
+            "sparse_raw": 2.538494796770332
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 1.7,
+            "active_path_count": 2,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 1,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 1,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-baseline-integrity",
+          "observed_paths": [
+            {
+              "seed_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 1.0,
+            "dense_raw": 0.23123955716362696,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 1.0,
+            "graph_activation_normalized": 1.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.920978889888637
+          }
+        }
+      ],
+      "diagnostics": {
+        "competition_set_count": 0,
+        "entry_anchor_invariant": true,
+        "graph_signal_excludes_zero_hop": false,
+        "mean_activation_total": 2.0548143342890084,
+        "mean_active_path_count": 2.6666666666666665,
+        "mean_expansions": 1.6666666666666667,
+        "mean_steps": 1.3333333333333333,
+        "stop_reasons": {
+          "frontier_exhausted": 3,
+          "max_hops": 3
+        }
+      },
+      "explanations": [
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "family": "current_positive_additive",
+      "feedback": {
+        "case_id": "anchored-dev-relation-floor-copy",
+        "changed_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.14,
+            "old_weight": 1.0,
+            "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+            "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+          }
+        ],
+        "credited_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.14,
+            "old_weight": 1.0,
+            "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+            "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+          }
+        ],
+        "non_target_rank_changes": [],
+        "target_node_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+        "target_rank_after": 2,
+        "target_rank_before": 2,
+        "uncredited_edge_changes": []
+      },
+      "id": "current",
+      "metrics": {
+        "cohorts": {
+          "direct_lookup": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1
+            ]
+          },
+          "negative_control": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1
+            ]
+          },
+          "relation": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 0.5,
+            "ranks": [
+              2,
+              2
+            ]
+          }
+        },
+        "overall": {
+          "cases": 6,
+          "hit_at_3": 1.0,
+          "mean_reciprocal_rank": 0.8333333333333334,
+          "ranks": [
+            1,
+            1,
+            2,
+            2,
+            1,
+            1
+          ]
+        }
+      },
+      "parameters": {},
+      "relative_to_current": {
+        "direct_lookup_mrr_delta": 0.0,
+        "negative_control_mrr_delta": 0.0,
+        "relation_mrr_delta": 0.0
+      },
+      "structural_complexity": 0
+    },
+    {
+      "candidate_gate": {
+        "all_relation_paths_match": false,
+        "direct_non_regression": true,
+        "entry_anchor_invariant": true,
+        "feedback_isolated": false,
+        "graph_signal_excludes_zero_hop": true,
+        "negative_non_regression": true,
+        "relation_strictly_above_current": false
+      },
+      "candidate_gate_passed": false,
+      "cases": [
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 0.0,
+            "active_path_count": 0,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 0,
+            "stop_reason": "graph_disabled",
+            "strategy": "graph_disabled",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": false
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-model-floor",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 11.509264813224446
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 0.0,
+            "active_path_count": 0,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 0,
+            "stop_reason": "graph_disabled",
+            "strategy": "graph_disabled",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": false
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-delegation",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.967732331882885
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 0.0,
+            "active_path_count": 0,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 0,
+            "stop_reason": "graph_disabled",
+            "strategy": "graph_disabled",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": false
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "observed_paths": [],
+          "path_matched": false,
+          "rank": 4,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 0.1372401499716896,
+            "entry_anchor_after_competition": 0.1372401499716896,
+            "entry_anchor_before_competition": 0.1372401499716896,
+            "final": 0.1372401499716896,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 0.1372401499716896,
+            "sparse_raw": 1.6026208932583876
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 0.0,
+            "active_path_count": 0,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 0,
+            "stop_reason": "graph_disabled",
+            "strategy": "graph_disabled",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": false
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "observed_paths": [],
+          "path_matched": false,
+          "rank": 3,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 0.2338505279891839,
+            "entry_anchor_after_competition": 0.2338505279891839,
+            "entry_anchor_before_competition": 0.2338505279891839,
+            "final": 0.2338505279891839,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 0.23385052798918393,
+            "sparse_raw": 2.6396290046400135
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 0.0,
+            "active_path_count": 0,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 0,
+            "stop_reason": "graph_disabled",
+            "strategy": "graph_disabled",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": false
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-single-round",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 2.538494796770332
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 0.0,
+            "active_path_count": 0,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 0,
+            "stop_reason": "graph_disabled",
+            "strategy": "graph_disabled",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": false
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-baseline-integrity",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.920978889888637
+          }
+        }
+      ],
+      "diagnostics": {
+        "competition_set_count": 0,
+        "entry_anchor_invariant": true,
+        "graph_signal_excludes_zero_hop": true,
+        "mean_activation_total": 0.0,
+        "mean_active_path_count": 0.0,
+        "mean_expansions": 0.0,
+        "mean_steps": 0.0,
+        "stop_reasons": {
+          "graph_disabled": 6
+        }
+      },
+      "explanations": [
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "matched": false,
+          "observed_paths": []
+        },
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "matched": false,
+          "observed_paths": []
+        }
+      ],
+      "family": "current_positive_additive",
+      "feedback": {
+        "case_id": "anchored-dev-relation-floor-copy",
+        "changed_edges": [],
+        "credited_edges": [],
+        "non_target_rank_changes": [],
+        "target_node_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+        "target_rank_after": 4,
+        "target_rank_before": 4,
+        "uncredited_edge_changes": []
+      },
+      "id": "bm25-only",
+      "metrics": {
+        "cohorts": {
+          "direct_lookup": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1
+            ]
+          },
+          "negative_control": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1
+            ]
+          },
+          "relation": {
+            "cases": 2,
+            "hit_at_3": 0.5,
+            "mean_reciprocal_rank": 0.29166666666666663,
+            "ranks": [
+              4,
+              3
+            ]
+          }
+        },
+        "overall": {
+          "cases": 6,
+          "hit_at_3": 0.8333333333333334,
+          "mean_reciprocal_rank": 0.763888888888889,
+          "ranks": [
+            1,
+            1,
+            4,
+            3,
+            1,
+            1
+          ]
+        }
+      },
+      "parameters": {
+        "dense_weight": 0.0,
+        "graph_weight": 0.0,
+        "use_dense_retrieval": false,
+        "use_graph_propagation": false
+      },
+      "relative_to_current": {
+        "direct_lookup_mrr_delta": 0.0,
+        "negative_control_mrr_delta": 0.0,
+        "relation_mrr_delta": -0.20833333333333337
+      },
+      "structural_complexity": 0
+    },
+    {
+      "candidate_gate": {
+        "all_relation_paths_match": true,
+        "direct_non_regression": true,
+        "entry_anchor_invariant": true,
+        "feedback_isolated": true,
+        "graph_signal_excludes_zero_hop": false,
+        "negative_non_regression": true,
+        "relation_strictly_above_current": false
+      },
+      "candidate_gate_passed": false,
+      "cases": [
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 2.8899999999999997,
+            "active_path_count": 4,
+            "competition_sets": [],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 3,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-model-floor",
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 1.0,
+            "graph_activation_normalized": 1.0,
+            "sparse": 1.0,
+            "sparse_raw": 11.509264813224446
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 1.7,
+            "active_path_count": 2,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 1,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 1,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-delegation",
+          "observed_paths": [
+            {
+              "seed_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 1.0,
+            "graph_activation_normalized": 1.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.967732331882885
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 2.8899999999999997,
+            "active_path_count": 4,
+            "competition_sets": [],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 3,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 2,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 0.1372401499716896,
+            "entry_anchor_after_competition": 0.1372401499716896,
+            "entry_anchor_before_competition": 0.1372401499716896,
+            "final": 0.3904820824844293,
+            "graph_activation": 0.7,
+            "graph_activation_normalized": 0.7,
+            "sparse": 0.1372401499716896,
+            "sparse_raw": 1.6026208932583876
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 2.19,
+            "active_path_count": 3,
+            "competition_sets": [],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 2,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "observed_paths": [
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 2,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 0.2338505279891839,
+            "entry_anchor_after_competition": 0.2338505279891839,
+            "entry_anchor_before_competition": 0.2338505279891839,
+            "final": 0.44361779039405114,
+            "graph_activation": 0.7,
+            "graph_activation_normalized": 0.7,
+            "sparse": 0.23385052798918393,
+            "sparse_raw": 2.6396290046400135
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 1.0,
+            "active_path_count": 1,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 0,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-single-round",
+          "observed_paths": [
+            {
+              "seed_id": "w:AKhLEFdc8byq8XYV_9D3LbktieV1Xk5tzPxhsFNSOaA",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 1.0,
+            "graph_activation_normalized": 1.0,
+            "sparse": 1.0,
+            "sparse_raw": 2.538494796770332
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 1.7,
+            "active_path_count": 2,
+            "competition_sets": [],
+            "converged": true,
+            "entry_anchor_invariant": true,
+            "expansions": 1,
+            "graph_signal_excludes_zero_hop": false,
+            "steps": 1,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "current_positive_additive",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-baseline-integrity",
+          "observed_paths": [
+            {
+              "seed_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 1.0,
+            "graph_activation": 1.0,
+            "graph_activation_normalized": 1.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.920978889888637
+          }
+        }
+      ],
+      "diagnostics": {
+        "competition_set_count": 0,
+        "entry_anchor_invariant": true,
+        "graph_signal_excludes_zero_hop": false,
+        "mean_activation_total": 2.0616666666666665,
+        "mean_active_path_count": 2.6666666666666665,
+        "mean_expansions": 1.6666666666666667,
+        "mean_steps": 1.3333333333333333,
+        "stop_reasons": {
+          "frontier_exhausted": 3,
+          "max_hops": 3
+        }
+      },
+      "explanations": [
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "family": "current_positive_additive",
+      "feedback": {
+        "case_id": "anchored-dev-relation-floor-copy",
+        "changed_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.14,
+            "old_weight": 1.0,
+            "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+            "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+          }
+        ],
+        "credited_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.14,
+            "old_weight": 1.0,
+            "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+            "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+          }
+        ],
+        "non_target_rank_changes": [],
+        "target_node_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+        "target_rank_after": 2,
+        "target_rank_before": 2,
+        "uncredited_edge_changes": []
+      },
+      "id": "bm25-graph-additive",
+      "metrics": {
+        "cohorts": {
+          "direct_lookup": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1
+            ]
+          },
+          "negative_control": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1
+            ]
+          },
+          "relation": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 0.5,
+            "ranks": [
+              2,
+              2
+            ]
+          }
+        },
+        "overall": {
+          "cases": 6,
+          "hit_at_3": 1.0,
+          "mean_reciprocal_rank": 0.8333333333333334,
+          "ranks": [
+            1,
+            1,
+            2,
+            2,
+            1,
+            1
+          ]
+        }
+      },
+      "parameters": {
+        "dense_weight": 0.0,
+        "use_dense_retrieval": false
+      },
+      "relative_to_current": {
+        "direct_lookup_mrr_delta": 0.0,
+        "negative_control_mrr_delta": 0.0,
+        "relation_mrr_delta": 0.0
+      },
+      "structural_complexity": 1
+    },
+    {
+      "candidate_gate": {
+        "all_relation_paths_match": true,
+        "direct_non_regression": false,
+        "entry_anchor_invariant": true,
+        "feedback_isolated": true,
+        "graph_signal_excludes_zero_hop": true,
+        "negative_non_regression": false,
+        "relation_strictly_above_current": true
+      },
+      "candidate_gate_passed": false,
+      "cases": [
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 1.35,
+            "active_path_count": 5,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 1.0,
+                "message_total_before": 1.4,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.35,
+                "message_total_before": 0.35,
+                "neighbor_count": 1,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U>w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 2
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.5,
+                "message_total_before": 0.7,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 5,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-model-floor",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 3,
+          "scores": {
+            "dense": 1.0,
+            "dense_raw": 0.46548184905729684,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 0.55,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 11.509264813224446
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 0.6830707082434331,
+            "active_path_count": 2,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.6830707082434331,
+                "message_total_before": 0.6830707082434331,
+                "neighbor_count": 1,
+                "path_identity": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "source_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.34153535412171654,
+                "message_total_before": 0.34153535412171654,
+                "neighbor_count": 1,
+                "path_identity": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "source_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 2,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-delegation",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 2,
+          "scores": {
+            "dense": 0.9462562166458193,
+            "dense_raw": 0.24187280065515898,
+            "entry": 0.9758152974906187,
+            "entry_anchor_after_competition": 0.9758152974906187,
+            "entry_anchor_before_competition": 0.9758152974906187,
+            "final": 0.5366984136198403,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.967732331882885
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 1.35,
+            "active_path_count": 5,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 1.0,
+                "message_total_before": 1.4,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.35,
+                "message_total_before": 0.35,
+                "neighbor_count": 1,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U>w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 2
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.5,
+                "message_total_before": 0.7,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 5,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 1,
+          "scores": {
+            "dense": 0.3892935997209144,
+            "dense_raw": 0.12303305089805984,
+            "entry": 0.2506642023588408,
+            "entry_anchor_after_competition": 0.2506642023588408,
+            "entry_anchor_before_competition": 0.2506642023588408,
+            "final": 0.5878653112973624,
+            "graph_activation": 0.5,
+            "graph_activation_normalized": 1.0,
+            "sparse": 0.1372401499716896,
+            "sparse_raw": 1.6026208932583876
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 1.19,
+            "active_path_count": 3,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.7,
+                "message_total_before": 0.7,
+                "neighbor_count": 1,
+                "path_identity": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.35,
+                "message_total_before": 0.35,
+                "neighbor_count": 1,
+                "path_identity": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 2
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.48999999999999994,
+                "message_total_before": 0.48999999999999994,
+                "neighbor_count": 1,
+                "path_identity": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0>w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "source_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 3,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "observed_paths": [
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 1,
+          "scores": {
+            "dense": 0.4019005239716757,
+            "dense_raw": 0.19260361706365253,
+            "entry": 0.30947302618130523,
+            "entry_anchor_after_competition": 0.30947302618130523,
+            "entry_anchor_before_competition": 0.30947302618130523,
+            "final": 0.6202101643997179,
+            "graph_activation": 0.7,
+            "graph_activation_normalized": 1.0,
+            "sparse": 0.23385052798918393,
+            "sparse_raw": 2.6396290046400135
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 0,
+            "active_path_count": 0,
+            "competition_sets": [],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-single-round",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 1.0,
+            "dense_raw": 0.2650517974706636,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 0.55,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 2.538494796770332
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 0.7,
+            "active_path_count": 2,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.7,
+                "message_total_before": 0.7,
+                "neighbor_count": 1,
+                "path_identity": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "source_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.35,
+                "message_total_before": 0.35,
+                "neighbor_count": 1,
+                "path_identity": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "source_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 2,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-baseline-integrity",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 2,
+          "scores": {
+            "dense": 1.0,
+            "dense_raw": 0.23123955716362696,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 0.55,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.920978889888637
+          }
+        }
+      ],
+      "diagnostics": {
+        "competition_set_count": 13,
+        "entry_anchor_invariant": true,
+        "graph_signal_excludes_zero_hop": true,
+        "mean_activation_total": 0.8788451180405722,
+        "mean_active_path_count": 2.8333333333333335,
+        "mean_expansions": 2.8333333333333335,
+        "mean_steps": 2.0,
+        "stop_reasons": {
+          "recurrent_step_limit": 6
+        }
+      },
+      "explanations": [
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "family": "anchored_local_competition",
+      "feedback": {
+        "case_id": "anchored-dev-relation-floor-copy",
+        "changed_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.1,
+            "old_weight": 1.0,
+            "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+            "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+          }
+        ],
+        "credited_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.1,
+            "old_weight": 1.0,
+            "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+            "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+          }
+        ],
+        "non_target_rank_changes": [],
+        "target_node_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+        "target_rank_after": 1,
+        "target_rank_before": 1,
+        "uncredited_edge_changes": []
+      },
+      "id": "anchored-local",
+      "metrics": {
+        "cohorts": {
+          "direct_lookup": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 0.41666666666666663,
+            "ranks": [
+              3,
+              2
+            ]
+          },
+          "negative_control": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 0.75,
+            "ranks": [
+              1,
+              2
+            ]
+          },
+          "relation": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1
+            ]
+          }
+        },
+        "overall": {
+          "cases": 6,
+          "hit_at_3": 1.0,
+          "mean_reciprocal_rank": 0.7222222222222222,
+          "ranks": [
+            3,
+            2,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      "parameters": {},
+      "relative_to_current": {
+        "direct_lookup_mrr_delta": -0.5833333333333334,
+        "negative_control_mrr_delta": -0.25,
+        "relation_mrr_delta": 0.5
+      },
+      "structural_complexity": 5
+    },
+    {
+      "candidate_gate": {
+        "all_relation_paths_match": true,
+        "direct_non_regression": false,
+        "entry_anchor_invariant": true,
+        "feedback_isolated": true,
+        "graph_signal_excludes_zero_hop": true,
+        "negative_non_regression": false,
+        "relation_strictly_above_current": true
+      },
+      "candidate_gate_passed": false,
+      "cases": [
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 0.6619573807138677,
+            "active_path_count": 5,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 0.4532547885218021,
+                "message_total_after": 0.5709203402941594,
+                "message_total_before": 0.6345567039305229,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 0.4541530361073883,
+                "message_total_after": 0.09103704041970828,
+                "message_total_before": 0.09103704041970828,
+                "neighbor_count": 1,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U>w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 2
+              },
+              {
+                "mean_query_relevance": 0.4532547885218021,
+                "message_total_after": 0.2854601701470797,
+                "message_total_before": 0.31727835196526144,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 5,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_query_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-model-floor",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 3,
+          "scores": {
+            "dense": 1.0,
+            "dense_raw": 0.46548184905729684,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 0.55,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 11.509264813224446
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 0.293618706044732,
+            "active_path_count": 2,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 0.4298511157062997,
+                "message_total_after": 0.293618706044732,
+                "message_total_before": 0.293618706044732,
+                "neighbor_count": 1,
+                "path_identity": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "source_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 0.4298511157062997,
+                "message_total_after": 0.146809353022366,
+                "message_total_before": 0.146809353022366,
+                "neighbor_count": 1,
+                "path_identity": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "source_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 2,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_query_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-delegation",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 2,
+          "scores": {
+            "dense": 0.9462562166458193,
+            "dense_raw": 0.24187280065515898,
+            "entry": 0.9758152974906187,
+            "entry_anchor_after_competition": 0.9758152974906187,
+            "entry_anchor_before_competition": 0.9758152974906187,
+            "final": 0.5366984136198403,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.967732331882885
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 0.645308238134214,
+            "active_path_count": 5,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 0.44079006251888353,
+                "message_total_after": 0.5552570782863255,
+                "message_total_before": 0.6171060875264369,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 0.4622171016838255,
+                "message_total_after": 0.09005115984788843,
+                "message_total_before": 0.09005115984788843,
+                "neighbor_count": 1,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U>w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 2
+              },
+              {
+                "mean_query_relevance": 0.44079006251888353,
+                "message_total_after": 0.27762853914316277,
+                "message_total_before": 0.30855304376321846,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 5,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_query_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 1,
+          "scores": {
+            "dense": 0.3892935997209144,
+            "dense_raw": 0.12303305089805984,
+            "entry": 0.2506642023588408,
+            "entry_anchor_after_competition": 0.2506642023588408,
+            "entry_anchor_before_competition": 0.2506642023588408,
+            "final": 0.5878653112973624,
+            "graph_activation": 0.2783205415805015,
+            "graph_activation_normalized": 1.0,
+            "sparse": 0.1372401499716896,
+            "sparse_raw": 1.6026208932583876
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 0.41146463164537816,
+            "active_path_count": 3,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 0.45184758473652126,
+                "message_total_after": 0.3162933093155649,
+                "message_total_before": 0.3162933093155649,
+                "neighbor_count": 1,
+                "path_identity": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 0.45184758473652126,
+                "message_total_after": 0.15814665465778244,
+                "message_total_before": 0.15814665465778244,
+                "neighbor_count": 1,
+                "path_identity": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 2
+              },
+              {
+                "mean_query_relevance": 0.4298511157062997,
+                "message_total_after": 0.09517132232981332,
+                "message_total_before": 0.09517132232981332,
+                "neighbor_count": 1,
+                "path_identity": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0>w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "source_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 3,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_query_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "observed_paths": [
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 1,
+          "scores": {
+            "dense": 0.4019005239716757,
+            "dense_raw": 0.19260361706365253,
+            "entry": 0.30947302618130523,
+            "entry_anchor_after_competition": 0.30947302618130523,
+            "entry_anchor_before_competition": 0.30947302618130523,
+            "final": 0.6202101643997179,
+            "graph_activation": 0.3162933093155649,
+            "graph_activation_normalized": 1.0,
+            "sparse": 0.23385052798918393,
+            "sparse_raw": 2.6396290046400135
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 0,
+            "active_path_count": 0,
+            "competition_sets": [],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_query_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-single-round",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 1.0,
+            "dense_raw": 0.2650517974706636,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 0.55,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 2.538494796770332
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 0.2993457340450698,
+            "active_path_count": 2,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 0.42763676292152836,
+                "message_total_after": 0.2993457340450698,
+                "message_total_before": 0.2993457340450698,
+                "neighbor_count": 1,
+                "path_identity": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "source_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 0.42763676292152836,
+                "message_total_after": 0.1496728670225349,
+                "message_total_before": 0.1496728670225349,
+                "neighbor_count": 1,
+                "path_identity": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "source_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 2,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_query_competition",
+            "use_dense_retrieval": true,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-baseline-integrity",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 2,
+          "scores": {
+            "dense": 1.0,
+            "dense_raw": 0.23123955716362696,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 0.55,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.920978889888637
+          }
+        }
+      ],
+      "diagnostics": {
+        "competition_set_count": 13,
+        "entry_anchor_invariant": true,
+        "graph_signal_excludes_zero_hop": true,
+        "mean_activation_total": 0.38528244843054366,
+        "mean_active_path_count": 2.8333333333333335,
+        "mean_expansions": 2.8333333333333335,
+        "mean_steps": 2.0,
+        "stop_reasons": {
+          "recurrent_step_limit": 6
+        }
+      },
+      "explanations": [
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "family": "anchored_local_query_competition",
+      "feedback": {
+        "case_id": "anchored-dev-relation-floor-copy",
+        "changed_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.0556641083161002,
+            "old_weight": 1.0,
+            "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+            "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+          }
+        ],
+        "credited_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.0556641083161002,
+            "old_weight": 1.0,
+            "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+            "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+          }
+        ],
+        "non_target_rank_changes": [],
+        "target_node_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+        "target_rank_after": 1,
+        "target_rank_before": 1,
+        "uncredited_edge_changes": []
+      },
+      "id": "anchored-local-query",
+      "metrics": {
+        "cohorts": {
+          "direct_lookup": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 0.41666666666666663,
+            "ranks": [
+              3,
+              2
+            ]
+          },
+          "negative_control": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 0.75,
+            "ranks": [
+              1,
+              2
+            ]
+          },
+          "relation": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1
+            ]
+          }
+        },
+        "overall": {
+          "cases": 6,
+          "hit_at_3": 1.0,
+          "mean_reciprocal_rank": 0.7222222222222222,
+          "ranks": [
+            3,
+            2,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      "parameters": {},
+      "relative_to_current": {
+        "direct_lookup_mrr_delta": -0.5833333333333334,
+        "negative_control_mrr_delta": -0.25,
+        "relation_mrr_delta": 0.5
+      },
+      "structural_complexity": 6
+    },
+    {
+      "candidate_gate": {
+        "all_relation_paths_match": true,
+        "direct_non_regression": false,
+        "entry_anchor_invariant": true,
+        "feedback_isolated": true,
+        "graph_signal_excludes_zero_hop": true,
+        "negative_non_regression": false,
+        "relation_strictly_above_current": true
+      },
+      "candidate_gate_passed": false,
+      "cases": [
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 1.35,
+            "active_path_count": 5,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 1.0,
+                "message_total_before": 1.4,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.35,
+                "message_total_before": 0.35,
+                "neighbor_count": 1,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U>w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 2
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.5,
+                "message_total_before": 0.7,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 5,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-model-floor",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 2,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 0.55,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 11.509264813224446
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 0.7,
+            "active_path_count": 2,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.7,
+                "message_total_before": 0.7,
+                "neighbor_count": 1,
+                "path_identity": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "source_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.35,
+                "message_total_before": 0.35,
+                "neighbor_count": 1,
+                "path_identity": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "source_id": "w:iuw1thXyGzHDY-S4Bz7bi4VLjR5qT4ilGxVuz3Pec8I",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 2,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-direct-delegation",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 2,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 0.55,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.967732331882885
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 1.35,
+            "active_path_count": 5,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 1.0,
+                "message_total_before": 1.4,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.35,
+                "message_total_before": 0.35,
+                "neighbor_count": 1,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U>w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 2
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.5,
+                "message_total_before": 0.7,
+                "neighbor_count": 2,
+                "path_identity": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 5,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 2,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 0.1372401499716896,
+            "entry_anchor_after_competition": 0.1372401499716896,
+            "entry_anchor_before_competition": 0.1372401499716896,
+            "final": 0.5254820824844293,
+            "graph_activation": 0.5,
+            "graph_activation_normalized": 1.0,
+            "sparse": 0.1372401499716896,
+            "sparse_raw": 1.6026208932583876
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 1.19,
+            "active_path_count": 3,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.7,
+                "message_total_before": 0.7,
+                "neighbor_count": 1,
+                "path_identity": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.35,
+                "message_total_before": 0.35,
+                "neighbor_count": 1,
+                "path_identity": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                "step": 2
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.48999999999999994,
+                "message_total_before": 0.48999999999999994,
+                "neighbor_count": 1,
+                "path_identity": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0>w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "source_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 3,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "observed_paths": [
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 1,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 0.2338505279891839,
+            "entry_anchor_after_competition": 0.2338505279891839,
+            "entry_anchor_before_competition": 0.2338505279891839,
+            "final": 0.5786177903940511,
+            "graph_activation": 0.7,
+            "graph_activation_normalized": 1.0,
+            "sparse": 0.23385052798918393,
+            "sparse_raw": 2.6396290046400135
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 0,
+            "active_path_count": 0,
+            "competition_sets": [],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 0,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-single-round",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 1,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 0.55,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 2.538494796770332
+          }
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 0.7,
+            "active_path_count": 2,
+            "competition_sets": [
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.7,
+                "message_total_before": 0.7,
+                "neighbor_count": 1,
+                "path_identity": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "source_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "step": 1
+              },
+              {
+                "mean_query_relevance": 1.0,
+                "message_total_after": 0.35,
+                "message_total_before": 0.35,
+                "neighbor_count": 1,
+                "path_identity": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "source_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk",
+                "step": 2
+              }
+            ],
+            "converged": false,
+            "entry_anchor_invariant": true,
+            "expansions": 2,
+            "graph_signal_excludes_zero_hop": true,
+            "steps": 2,
+            "stop_reason": "recurrent_step_limit",
+            "strategy": "anchored_local_competition",
+            "use_dense_retrieval": false,
+            "use_graph_propagation": true
+          },
+          "expected_path": [],
+          "id": "anchored-dev-negative-baseline-integrity",
+          "observed_paths": [],
+          "path_matched": null,
+          "rank": 2,
+          "scores": {
+            "dense": 0.0,
+            "dense_raw": 0.0,
+            "entry": 1.0,
+            "entry_anchor_after_competition": 1.0,
+            "entry_anchor_before_competition": 1.0,
+            "final": 0.55,
+            "graph_activation": 0.0,
+            "graph_activation_normalized": 0.0,
+            "sparse": 1.0,
+            "sparse_raw": 8.920978889888637
+          }
+        }
+      ],
+      "diagnostics": {
+        "competition_set_count": 13,
+        "entry_anchor_invariant": true,
+        "graph_signal_excludes_zero_hop": true,
+        "mean_activation_total": 0.8816666666666667,
+        "mean_active_path_count": 2.8333333333333335,
+        "mean_expansions": 2.8333333333333335,
+        "mean_steps": 2.0,
+        "stop_reasons": {
+          "recurrent_step_limit": 6
+        }
+      },
+      "explanations": [
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+            }
+          ],
+          "id": "anchored-dev-relation-floor-copy",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+                  "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+            }
+          ],
+          "id": "anchored-dev-relation-copy-integrity",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            },
+            {
+              "seed_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+                  "target_id": "w:FcEjodDgp-NEkP_DO1KGgzxSPgLoF7lkdNc4w44PNEk"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "family": "anchored_local_competition",
+      "feedback": {
+        "case_id": "anchored-dev-relation-floor-copy",
+        "changed_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.1,
+            "old_weight": 1.0,
+            "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+            "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+          }
+        ],
+        "credited_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.1,
+            "old_weight": 1.0,
+            "source_id": "w:HxQA3q8GhwSSpQuK0KAqYSr05sWrswKR6C4l34czp8U",
+            "target_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0"
+          }
+        ],
+        "non_target_rank_changes": [],
+        "target_node_id": "w:82DX6alNeWXM2065tsvQxiBSO2JS2PFUyzfQXCx_ZY0",
+        "target_rank_after": 2,
+        "target_rank_before": 2,
+        "uncredited_edge_changes": []
+      },
+      "id": "bm25-anchored-local",
+      "metrics": {
+        "cohorts": {
+          "direct_lookup": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 0.5,
+            "ranks": [
+              2,
+              2
+            ]
+          },
+          "negative_control": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 0.75,
+            "ranks": [
+              1,
+              2
+            ]
+          },
+          "relation": {
+            "cases": 2,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 0.75,
+            "ranks": [
+              2,
+              1
+            ]
+          }
+        },
+        "overall": {
+          "cases": 6,
+          "hit_at_3": 1.0,
+          "mean_reciprocal_rank": 0.6666666666666666,
+          "ranks": [
+            2,
+            2,
+            2,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      "parameters": {
+        "dense_weight": 0.0,
+        "use_dense_retrieval": false
+      },
+      "relative_to_current": {
+        "direct_lookup_mrr_delta": -0.5,
+        "negative_control_mrr_delta": -0.25,
+        "relation_mrr_delta": 0.25
+      },
+      "structural_complexity": 5
+    }
+  ]
+}

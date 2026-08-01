@@ -77,6 +77,19 @@ uv run python tools/run_dynamics_experiment.py development `
 
 候補がある場合だけholdoutを一度実行し、候補がなければholdout resultを作成しない。
 
-## 観測前状態
+## 観測結果
 
-fixture / gold / provenance / audit / manifestは凍結準備済みであり、development / holdout resultはまだ存在しない。結果の記録はfreeze commit hashとpush後の実行回数を追記する。
+fixture / gold / provenance / audit / manifest / implementation / tests / 規則をfreeze commit `6400466`としてpushした後、developmentを一度だけ実行した。
+
+| variant | direct MRR | relation MRR | negative MRR | gate |
+| --- | ---: | ---: | ---: | --- |
+| `current` | 1.0000 | 0.5000 | 1.0000 | baseline |
+| `bm25-only` | 1.0000 | 0.2917 | 1.0000 | relation非改善、path / feedbackなし |
+| `bm25-graph-additive` | 1.0000 | 0.5000 | 1.0000 | relation非改善、zero-hopを含む |
+| `anchored-local` | 0.4167 | 1.0000 | 0.7500 | direct / negative退行 |
+| `anchored-local-query` | 0.4167 | 1.0000 | 0.7500 | direct / negative退行 |
+| `bm25-anchored-local` | 0.5000 | 0.7500 | 0.7500 | direct / negative退行 |
+
+anchored 3 variantsは全relation path、feedback isolation、entry anchor invariant、edge-only graph signalを満たし、relation MRRを厳密に改善した。しかしdirect lookupとnegative-controlの両方が`current`から退行したため、固定gateを通る候補は0件だった。
+
+selectionは`current`、理由は`no_anchored_variant_passed_frozen_gate`である。停止規則に従ってholdoutは開封せず、holdout resultを作成しない。defaultは`current_positive_additive`のままとする。

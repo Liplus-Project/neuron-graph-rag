@@ -17,6 +17,10 @@ DEVELOPMENT_GOLD = FIXTURES / "d1_liplus_anchored_hybrid_development.gold.json"
 HOLDOUT = FIXTURES / "d1_liplus_anchored_hybrid_holdout.json"
 HOLDOUT_GOLD = FIXTURES / "d1_liplus_anchored_hybrid_holdout.gold.json"
 AUDIT = FIXTURES / "d1_liplus_anchored_hybrid.contamination.json"
+DEVELOPMENT_RESULT = (
+    FIXTURES / "d1_liplus_anchored_hybrid_experiment.development.result.json"
+)
+HOLDOUT_RESULT = FIXTURES / "d1_liplus_anchored_hybrid_experiment.holdout.result.json"
 PRIOR_FIXTURES = [
     FIXTURES / "d1_liplus_benchmark.json",
     FIXTURES / "d1_liplus_dynamics_holdout.json",
@@ -191,6 +195,43 @@ class AnchoredSelectionTest(unittest.TestCase):
         self.assertEqual(selection["selected_variant_id"], "anchored")
         self.assertFalse(variants[2]["candidate_gate_passed"])
         self.assertTrue(variants[3]["candidate_gate_passed"])
+
+
+class AnchoredResultAuditTest(unittest.TestCase):
+    def test_development_records_tradeoff_and_stops_before_holdout(self) -> None:
+        result = json.loads(DEVELOPMENT_RESULT.read_text(encoding="utf-8"))
+        manifest = read_manifest(MANIFEST)
+        self.assertEqual(result["schema_version"], 3)
+        self.assertEqual(result["variant_count"], 6)
+        self.assertEqual(
+            [variant["id"] for variant in result["variants"]],
+            [variant["id"] for variant in manifest["variants"]],
+        )
+        self.assertEqual(result["selection"]["selected_variant_id"], "current")
+        self.assertEqual(result["selection"]["eligible_variant_ids"], [])
+        self.assertEqual(
+            result["selection"]["reason"],
+            "no_anchored_variant_passed_frozen_gate",
+        )
+        self.assertEqual(result["holdout_status"], "not_opened_no_candidate")
+        self.assertFalse(HOLDOUT_RESULT.exists())
+
+    def test_relation_gain_does_not_hide_control_regressions(self) -> None:
+        result = json.loads(DEVELOPMENT_RESULT.read_text(encoding="utf-8"))
+        by_id = {variant["id"]: variant for variant in result["variants"]}
+        for variant_id in (
+            "anchored-local",
+            "anchored-local-query",
+            "bm25-anchored-local",
+        ):
+            gate = by_id[variant_id]["candidate_gate"]
+            self.assertTrue(gate["relation_strictly_above_current"])
+            self.assertTrue(gate["all_relation_paths_match"])
+            self.assertTrue(gate["feedback_isolated"])
+            self.assertTrue(gate["entry_anchor_invariant"])
+            self.assertTrue(gate["graph_signal_excludes_zero_hop"])
+            self.assertFalse(gate["direct_non_regression"])
+            self.assertFalse(gate["negative_non_regression"])
 
 
 if __name__ == "__main__":

@@ -142,7 +142,9 @@ freeze後のdevelopmentでは、queryなしのlocal variantsがrelationを改善
 
 entry retrievalを競合外のzero-hop anchorとして保持し、graph scoreを1 edge以上通過したmessageだけに限定するanchored local strategyを追加しました。BM25-onlyはdense encoderとgraph traversalを呼ばない真のablationです。
 
-production D1からread-only取得した新しい5-node development / holdoutは、過去4 fixturesの39 doc pathsおよび相互間から分離しています。固定した6 variants、raw / normalized score trace、contamination audit、候補gate、one-time holdout停止規則は[Anchored BM25 and graph hybrid experiment](docs/anchored-bm25-graph-hybrid-experiment.md)を参照してください。結果観測前のため、既定strategyは`current_positive_additive`のままです。
+production D1からread-only取得した新しい5-node development / holdoutは、過去4 fixturesの39 doc pathsおよび相互間から分離しています。固定した6 variants、raw / normalized score trace、contamination audit、候補gate、one-time holdout停止規則は[Anchored BM25 and graph hybrid experiment](docs/anchored-bm25-graph-hybrid-experiment.md)を参照してください。
+
+freeze後のdevelopmentでは、anchored 3 variantsがrelation MRRを`current`の0.5000から0.7500–1.0000へ改善しましたが、direct lookupとnegative-controlがともに退行しました。候補gate通過は0件だったためholdoutは開かず、既定strategyは`current_positive_additive`のままです。
 
 ## Public API
 
