@@ -136,6 +136,8 @@ PR #12のglobal recurrent tradeoffを受け、競合を同じsourceのsibling ne
 
 production D1から取得した新しいdevelopment / holdoutは、旧development、開封済み旧holdout、相互間でdoc pathとnode IDを分離しています。両provenance、contamination audit、二baseline gate、one-time holdout停止規則は[Local recurrent competition experiment](docs/neural-dynamics-local-competition-experiment.md)を参照してください。
 
+freeze後のdevelopmentでは、queryなしのlocal variantsがrelationを改善した一方でdirect / negative-controlを退行させ、query variantsはnegative-controlを維持した一方でbest prior recurrentのrelationを上回れませんでした。候補gate通過は0件だったためholdoutは開かず、既定strategyは`current_positive_additive`のままです。
+
 ## Public API
 
 ```python

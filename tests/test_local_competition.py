@@ -18,6 +18,12 @@ DEVELOPMENT_GOLD = (
 )
 HOLDOUT = FIXTURES / "d1_liplus_local_competition_holdout.json"
 HOLDOUT_GOLD = FIXTURES / "d1_liplus_local_competition_holdout.gold.json"
+DEVELOPMENT_RESULT = (
+    FIXTURES / "d1_liplus_local_competition_experiment.development.result.json"
+)
+HOLDOUT_RESULT = (
+    FIXTURES / "d1_liplus_local_competition_experiment.holdout.result.json"
+)
 
 
 class LocalCompetitionFixtureTest(unittest.TestCase):
@@ -190,6 +196,48 @@ class LocalCompetitionSelectionTest(unittest.TestCase):
         self.assertEqual(selection["selected_variant_id"], "local-neighbor-query")
         self.assertFalse(variants[2]["candidate_gate_passed"])
         self.assertTrue(variants[3]["candidate_gate_passed"])
+
+
+class LocalCompetitionResultAuditTest(unittest.TestCase):
+    def test_development_records_all_variants_and_stops_before_holdout(self) -> None:
+        result = json.loads(DEVELOPMENT_RESULT.read_text(encoding="utf-8"))
+        manifest = read_manifest(MANIFEST)
+        self.assertEqual(result["schema_version"], 2)
+        self.assertEqual(result["variant_count"], 6)
+        self.assertEqual(
+            [variant["id"] for variant in result["variants"]],
+            [variant["id"] for variant in manifest["variants"]],
+        )
+        self.assertEqual(result["selection"]["selected_variant_id"], "current")
+        self.assertEqual(result["selection"]["eligible_variant_ids"], [])
+        self.assertEqual(
+            result["selection"]["reason"],
+            "no_local_variant_passed_frozen_gate",
+        )
+        self.assertEqual(result["holdout_status"], "not_opened_no_candidate")
+        self.assertFalse(HOLDOUT_RESULT.exists())
+
+    def test_relation_gain_does_not_hide_control_regressions(self) -> None:
+        result = json.loads(DEVELOPMENT_RESULT.read_text(encoding="utf-8"))
+        by_id = {variant["id"]: variant for variant in result["variants"]}
+        for variant_id in ("local-neighbor", "local-neighbor-path"):
+            gate = by_id[variant_id]["candidate_gate"]
+            self.assertTrue(gate["relation_strictly_above_current"])
+            self.assertTrue(gate["relation_strictly_above_recurrent_balanced"])
+            self.assertFalse(gate["direct_non_regression"])
+            self.assertFalse(gate["negative_non_regression"])
+        for variant_id in (
+            "local-neighbor-query",
+            "local-neighbor-query-path",
+        ):
+            gate = by_id[variant_id]["candidate_gate"]
+            self.assertTrue(gate["negative_non_regression"])
+            self.assertFalse(gate["direct_non_regression"])
+            self.assertFalse(gate["relation_strictly_above_recurrent_balanced"])
+        for variant in result["variants"]:
+            self.assertTrue(all(item["matched"] for item in variant["explanations"]))
+            self.assertEqual(variant["feedback"]["uncredited_edge_changes"], [])
+            self.assertEqual(variant["feedback"]["non_target_rank_changes"], [])
 
 
 if __name__ == "__main__":

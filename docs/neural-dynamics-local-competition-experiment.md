@@ -91,8 +91,23 @@ freeze後の順序は次に限定する。
 
 ## 観測結果
 
-freeze commit push後に追記する。追記時に固定入力、variant、gate、停止規則を変更しない。
+freeze commit `3562c0f` のpush後、developmentを一度実行した。全結果は`tests/fixtures/d1_liplus_local_competition_experiment.development.result.json`に保存する。
+
+| variant | direct MRR | relation MRR | negative MRR | path | feedback | gate |
+|---|---:|---:|---:|---:|---:|---|
+| `current` | 1.0000 | 0.3167 | 1.0000 | 3/3 | pass | reference |
+| `recurrent-balanced` | 0.6667 | 0.3611 | 1.0000 | 3/3 | pass | baseline |
+| `local-neighbor` | 0.4444 | 0.5278 | 0.8333 | 3/3 | pass | fail |
+| `local-neighbor-query` | 0.8333 | 0.3333 | 1.0000 | 3/3 | pass | fail |
+| `local-neighbor-path` | 0.4444 | 0.5278 | 0.8333 | 3/3 | pass | fail |
+| `local-neighbor-query-path` | 0.8333 | 0.3333 | 1.0000 | 3/3 | pass | fail |
+
+全variantでrelation path 3/3とfeedback isolationは成立した。
+
+query conditioningなしのlocal variantsはrelation MRRで両baselineを上回ったが、direct MRRとnegative-control MRRが`current`から退行した。query-conditioned variantsはnegative-controlを維持したが、relation MRRが`recurrent-balanced`を上回らず、direct MRRも退行した。path-conditioned variantsは対応するnode-aggregated variantsと同じrankになり、この9-node topologyでは追加の識別信号を生まなかった。
+
+固定gateを通る候補は0件だった。selectionは`current`、理由は`no_local_variant_passed_frozen_gate`である。停止規則に従ってholdoutは開封せず、holdout resultも作成しない。defaultは`current_positive_additive`のままとする。
 
 ## 適用限界
 
-9-nodeの固定Li+ wiki subsetとfeature-hashing encoderだけを対象とする。D1 snapshot、別graph topology、learned embedding、一般corpusへ結果を外挿しない。
+9-nodeの固定Li+ wiki subsetとfeature-hashing encoderだけを対象とする。path ablationが同値だったことは、このfixtureで複数active pathが最終rankを分離しなかったという観測に限られる。D1 snapshot、別graph topology、learned embedding、一般corpusへ結果を外挿しない。
