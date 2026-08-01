@@ -34,6 +34,10 @@
 16. MCP adapter は trace、node、enum、stage 順序、idempotency を境界で検証する。
 17. 各 MCP tool の model-facing description 自体が、feedback の呼び分けと reinforcement 条件を consuming AI へ伝える。
 18. persistent core の trace は自動 expiry しない。retention を設ける deployment は `search` description と output に期限を明示し、expiry 後の feedback を `unknown_trace` とする。
+19. github-rag-mcp の D1 `search_docs` を正本として、repo / type / per-type limit と固定順から決定論的な小 fixture を生成できる。
+20. `search_docs.vector_id / content` を node ID / text へ、`doc_edges` の両端と `edge_kind` を typed edge へ変換し、欠損 endpoint は node を捏造せず除外理由を記録できる。
+21. D1 取得は単一 SELECT / WITH query のみに制限し、各 query の `rows_written=0`、`changes=0`、`changed_db=false` を検証できる。
+22. fixture と分離した provenance report に schema fingerprint、coverage、取得時刻、既知 gap、redaction 件数を記録し、再取得前後の count / commit / 最新時刻を比較できる。
 
 ## 4. Constraints
 
@@ -50,3 +54,5 @@
 - `python -m neuron_graph_rag eval` が baseline hybrid と graph retrieval の比較指標を出力する。
 - CI が editable install、test、eval を新規環境で実行する。
 - [Optional MCP Feedback Interface](optional-mcp-interface.md) が tool semantics、input、output、failure、core mapping、依存境界、repository 分離条件を定義する。
+- `tests/fixtures/d1_liplus_wiki.json` が実 D1 形状から ingest、検索、時系列 metadata、graph activation、success feedback を再現する。
+- [D1 corpus fixture](d1-corpus-fixture.md) が read-only 取得、認証境界、provenance、coverage 比較、再取得手順を定義する。

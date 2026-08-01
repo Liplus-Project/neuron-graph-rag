@@ -1,0 +1,225 @@
+{
+  "edges": [
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "6.-Adapter",
+          "dst_vector_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "2.-Evolution",
+          "src_vector_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+          "updated_at": "2026-07-26T05:45:27.580Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+      "target_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "2.-Evolution",
+          "dst_vector_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "6.-Adapter",
+          "src_vector_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q",
+          "updated_at": "2026-07-27T00:45:28.286Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q",
+      "target_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+      "weight": 1.0
+    }
+  ],
+  "nodes": [
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "smileygames",
+        "commit_date": "2026-01-22T12:27:42Z",
+        "commit_sha": "bc78cf0a1d4fbce5fa981adf63574a2f3a41bcb1",
+        "doc_path": "",
+        "file_path": "LICENSE",
+        "file_status": "added",
+        "indexed_at": "2026-08-01T10:30:49.704Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/blob/bc78cf0a1d4fbce5fa981adf63574a2f3a41bcb1/LICENSE",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "code",
+        "type": "diff",
+        "updated_at": "2026-01-22T12:27:42Z",
+        "vector_id": "c:mDgjb4WsxsQAVQXUKxBlQkObqWPWypKUXDDmU7xNdrw"
+      },
+      "node_id": "c:mDgjb4WsxsQAVQXUKxBlQkObqWPWypKUXDDmU7xNdrw",
+      "text": "Initial commit\n\nLICENSE\n\n@@ -0,0 +1,201 @@\n+                                 Apache License\n+                           Version 2.0, January 2004\n+                        http://www.apache.org/licenses/\n+\n+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n+\n+   1. Definitions.\n+\n+      \"License\" shall mean the terms and conditions for use, reproduction,\n+      and distribution as defined by Sections 1 through 9 of this document.\n+\n+      \"Licensor\" shall mean the copyright owner or entity authorized by\n+      the copyright owner that is granting the License.\n+\n+      \"Legal Entity\" shall mean the union of the acting entity and all\n+      other entities that control, are controlled by, or are under common\n+      control with that entity. For the purposes of this definition,\n+      \"control\" means (i) the power, direct or indirect, to cause the\n+      direction or management of such entity, whether by contract or\n+      otherwise, or (ii) ownership of fifty percent (50%) or more of the\n+      outstanding shares, or (iii) beneficial ownership of such entity.\n+\n+      \"You\" (or \"Your\") shall mean an individual or Legal Entity\n+      exercising permissions granted by this License.\n+\n+      \"Source\" form shall mean the preferred form for making modifications,\n+      including but not limited to software source code, documentation\n+      source, and configuration files.\n+\n+      \"Object\" form shall mean any form resulting from mechanical\n+      transformation or translation of a Source form, including but\n+      not limited to compiled object code, generated documentation,\n+      and conversions to other media types.\n+\n+      \"Work\" shall mean the work of authorship, whether in Source or\n+      Object form, made available under the License, as indicated by a\n+      copyright notice that is included in or attached to the work\n+      (an example is provided in the Appendix below).\n+\n+      \"Derivative Works\" shall mean any work, whether in Source or Object\n+      form, that is based on (or derived from) the Work and for which the\n+      editorial revisions, annotations, elaborations, or other modifications\n+      represent, as a whole, an original work of authorship. For the purposes\n+      of this License, Derivative Works shall not include works that remain\n+      separable from, or merely link (or bind by name) to the interfaces of,\n+      the Work and Derivative Works thereof.\n+\n+      \"Contribution\" shall mean any work of authorship, including\n+      the original version of the Work and any modifications or additions\n+      to that Work or Derivative Works thereof, that is intentionally\n+      submitted to Licensor for inclusion in the Work by the copyright owner\n+      or by an individual or Legal Entity authorized to submit on behalf of\n+      the copyright owner. For the purposes of this definition, \"submitted\"\n+      means any form of electronic, verbal, or written communication sent\n+      to the Licensor or its representatives, including but not limited to\n+      communication on electronic mailing lists, source code control systems,\n+      and issue tracking systems that are managed by, or on behalf of, the\n+      Licensor for the purpose of discussing and improving the Work, but\n+      excluding communication that is conspicuously marked or otherwise\n+      designated in writing by the copyright owner as \"Not a Contribution.\"\n+\n+      \"Contributor\" shall mean Licensor and any individual or Legal Entity\n+      on behalf of whom a Contribution has been received by Licensor and\n+      subsequently incorporated within the Work.\n+\n+   2. Grant of Copyright License. Subject to the terms and conditions of\n+      this License, each Contributor hereby grants to You a perpetual,\n+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n+      copyright license to reproduce, prepare Derivative Works of,\n+      publicly display, publicly perform, sublicense, and distribute the\n+      Work and such Derivative Works in Source or Object form.\n+\n+   3. Grant of Patent License. Subject to the terms and conditions of\n+      this License, each Contributor hereby grants to You a perpetual,\n+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n+      (except as stated in this section) patent license to make, have made,\n+      use, offer to sell, sell, import, and otherwise transfer the Work,\n+      where such license applies only to those patent claims licensable\n+      by such Contributor that are necessarily infringed by their\n+      Contribution(s) alone or by combination of their Contribution(s)\n+      with the Work to which such Contribution(s) was submitted. If You\n+      institute patent litigation against any entity (including a\n+      cross-claim or counterclaim in a lawsuit) alleging that the Work\n+      or a Contribution incorporated within the Work constitutes direct\n+      or contributory patent infringement, then any patent licenses\n+      granted to You under this License for that Work shall terminate\n+      as of the date such litigation is filed.\n+\n+   4. Redistribution. You may reproduce and distribute copies of the\n+      Work or Derivative Works thereof in any medium, with or without\n+      modifications, and in Source or Object form, provided that You\n+      meet the following conditions:\n+\n+      (a) You must give any other recipients of the Work or\n+          Derivative Works a copy of this License; and\n+\n+      (b) You must cause any modified files to carry prominent notices\n+          stating that You changed the files; and\n+\n+      (c) You must retain, in the Source form of any Derivative Works\n+          that You distribute, all copyright, patent, trademark, and\n+          attribution notices from the Source form of the Work,\n+          excluding those notices that do not pertain to any part of\n+          the Derivative Works; and\n+\n+      (d) If the Work includes a \"NOTICE\" text file as part of its\n+          distribution, then any Derivative Works that You distribute must\n+          include a readable copy of the attribution notices contained\n+          within such NOTICE file, excluding those notices that do not\n+          pertain to any part of the Derivative Works, in at least one\n+          of the following places: within a NOTICE text file distributed\n+          as part of the Derivative Works; within the Source form or\n+          documentation, if provided along with the Derivative Works; or,\n+          within a display generated by the Derivative Works, if and\n+          wherever such third-party notices normally appear. The contents\n+          of the NOTICE file are for informational purposes only and\n+          do not modify the License. You may add Your own attribution\n+          notices within Derivative Works that You distribute, alongside\n+          or as an addendum to the NOTICE text from the Work, provided\n+          that such additional attribution notices cannot be construed\n+          as modifying the License.\n+\n+      You may add Your own copyright statement to Your modifications and\n+      may provide additional or different license terms and conditions\n+      for use, reproduction, or distribution of Your modifications, or\n+      for any such Derivative Works as a whole, provided Your use,\n+      reproduction, and distribution of the Work otherwise complies with\n+      the conditions stated in this License.\n+\n+   5. Submission of Contributions. Unless You explicitly state otherwise,\n+      any Contribution intentionally submitted for inclusion in the Work\n+      by You to the Licensor shall be under the terms and conditions of\n+      this License, without any additional terms or conditions.\n+      Notwithstanding the above, nothing herein shall supersede or modify\n+      the terms of any separate license agreement you may have executed\n+      with Licensor regarding such Contributions.\n+\n+   6. Trademarks. This License does not grant permission to use the trade\n+      names"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "smileygames",
+        "commit_date": "2026-01-22T12:27:42Z",
+        "commit_sha": "bc78cf0a1d4fbce5fa981adf63574a2f3a41bcb1",
+        "doc_path": "",
+        "file_path": "README.md",
+        "file_status": "added",
+        "indexed_at": "2026-08-01T10:30:49.882Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/blob/bc78cf0a1d4fbce5fa981adf63574a2f3a41bcb1/README.md",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "code",
+        "type": "diff",
+        "updated_at": "2026-01-22T12:27:42Z",
+        "vector_id": "c:mosqosakE6IyQ6sWwZnk8OGVZaKIGSTdb9ak4fri6EA"
+      },
+      "node_id": "c:mosqosakE6IyQ6sWwZnk8OGVZaKIGSTdb9ak4fri6EA",
+      "text": "Initial commit\n\nREADME.md\n\n@@ -0,0 +1,2 @@\n+# laiplus-language\n+Lai+ (RayPlus) language: a protocol for specification-driven AI development."
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "smileygames",
+        "commit_date": "2026-01-22T12:29:19Z",
+        "commit_sha": "b2d5b8966280c4c57c3651d9c5892399cfc35899",
+        "doc_path": "",
+        "file_path": "README.md",
+        "file_status": "modified",
+        "indexed_at": "2026-05-02T07:31:15.985Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/blob/b2d5b8966280c4c57c3651d9c5892399cfc35899/README.md",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "code",
+        "type": "diff",
+        "updated_at": "2026-01-22T12:29:19Z",
+        "vector_id": "c:misA62EMVYDaTaLeYL4pFFrLWTivwq1Sezyfjl5XMfI"
+      },
+      "node_id": "c:misA62EMVYDaTaLeYL4pFFrLWTivwq1Sezyfjl5XMfI",
+      "text": "Initialize README for Lai+ v0.1\n\nExpanded the README to provide more details about the Lai+ language and its purpose.\n\nREADME.md\n\n@@ -1,2 +1,9 @@\n-# laiplus-language\n-Lai+ (RayPlus) language: a protocol for specification-driven AI development.\n+# Lai+ (RayPlus) Language\n+\n+Lai+ is a language/protocol for building an environment\n+where specification-driven AI development can continuously produce releases.\n+\n+Start here: Lai+.md\n+\n+License: Apache-2.0  \n+Not affiliated with OpenAI or GitHub."
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "2.-Evolution",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-01T06:45:42.509Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/2.-Evolution",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-01T06:45:41.178Z",
+        "vector_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo"
+      },
+      "node_id": "w:2c_IeUZk0EDbGC1okoBQ_0RYXHTJKzEyHvxv2XEdlyo",
+      "text": "2.-Evolution\n\n# 進化レイヤー仕様書\n\n本文書は Li+ プログラムの進化レイヤー（`rules/evolution/*.md` + `skills/evolution-*/SKILL.md`）の仕様を定義する。\n要求（何を満たすか）と仕様（どう振る舞うか）を一体として記述する。\n\n進化レイヤーは、Li+ が自分自身を観測し、書き換えるための面を担う。モデルレイヤーが「どう走るか」のルールを置く面であるのに対し、進化レイヤーは「そのルールをどう書き換えるか」のルールを置く面である。二層は別々の面を担当し、勝ち負けの階層ではない。\n\n---\n\n## Purpose Declaration（目的宣言）\n\n（→ `rules/evolution/evolution.md`）\n\nL2 Evolution layer は AI 主導の進化ループを一次軸とする。観測 → 評価 → 蒸留 → Li+ ソースの更新 → 挙動改善 → 次の観測までを AI 単独で走らせることを到達目標とする。現在は部分自動化の段階にあり、残っている手動ステップは時間とともに縮めていく。\n\nモデルレイヤーが「走るためのルール」であるのに対し、進化レイヤーは「ルールを書き換えるためのルール」である。両者は別の面を担当するため、層内順序に従ってそれぞれが自レイヤーの内部でのみ優先順を持つ。\n\n---\n\n## 責務分類\n\n（→ `rules/evolution/evolution.md`）\n\nL2 Evolution layer はモデルレイヤーと同じ3種類の責務分類を使う。\n\n| 分類 | 定義 | 判定基準 |\n|------|------|----------|\n| ルール | 一文一制約。理由なし条件なし。破ったら壊れる | Absolute と同じ密度で書けるか？ |\n| 責務 | 条件→行動。省略不可 | 外したら AI がやらなくなるか？ |\n| 自律 | AI が自律的に判断して動く領域 | AI が自分で考えて行動を決めるか？ |\n\n---\n\n## 基本定義\n\n（→ `rules/evolution/evolution.md`）\n\n| 項目 | 定義 |\n|------|------|\n| 進化ループ | 観測 → 評価 → 蒸留 → Li+ ソース更新 → 挙動改善 → 再観測 の一周 |\n| 種（seed） | 最も動かしにくい位置に置かれるレイヤー。Li+ では L1 Model Layer |\n| 更新難易度プロキシ | 接続チェーンにおける配置位置。L1 側ほど動かしにくく、L6 Adapter 側ほど動かしやすい |\n| 外部記憶ティア | 判断を保存する場所の性質分離。memory と docs は別ティア |\n\n進化ループは AI が単独で閉じることを目標とする。人間はリリースの承認者として残る。\n\n---\n\n## ロード条件\n\n進化レイヤーは責務ごとに異なる経路でロードする。責務ごとに独立した skill に分割しており、発火契機を満たしたものだけがロードされる。\n\n| 責務 | ロード経路 | 発火契機 |\n|------|----------|---------|\n| Cold-start Synthesis | `on-session-start.sh` フック + `rules/evolution/cold-start-synthesis.md` | セッション開始（startup / resume / clear / compact 全域） |\n| Judgment Learning | `skills/evolution-judgment-learning/SKILL.md` | 新しい判断を形成する前 |\n| Self-Evaluation | `skills/evaluation-self/SKILL.md` | 自己評価エントリを記録するとき |\n| L1 Update Gating | `skills/evolution-l1-update-gating/SKILL.md` | L1 Model Layer ソース変更を検討するとき |\n| Persistence Tiering | `skills/evolution-persistence-tiering/SKILL.md` | 情報を memory と docs のどちらに置くか判断するとき |\n| Evolution Loop | `skills/evolution-loop/SKILL.md` | observe / evaluate / distill / reflect / improve / re-observe のいずれかを実行するとき |\n\nまた、`rules/evolution/*.md` のうち always-on で常在させるものは以下である。\n\n| ファイル | 役割 |\n|---------|------|\n| `rules/evolution/evolution.md` | L2 レイヤー定義本体（Purpose / Axis Separation / Pattern Detection Surfacing / Mutability） |\n| `rules/evolution/cold-start-synthesis.md` | Cold-start Synthesis 手順定義。フックがここから素材をリテラル抽出する |\n| `rules/evolution/self-eval-axes.md` | 自己評価の観測採点軸（10 軸）の正典定義 |\n\nCold-start Synthesis だけは対話トリガー非依存のため skill 不適であり、フックで素材を stdout 出力してセッション冒頭のコンテキストに注入する。フックは素材を集めるだけで、合成判断は AI が Character_Instance で行う。\n\nCold-start Synthesis の本体は `rules/evolution/cold-start-synthesis.md` に独立配置する。フックは同ファイルの本文部分（frontmatter と H1 見出しを除外）をリテラルに抽出して素材として出力する。skill 経路は通らない。\n\nモデルレイヤーの Loop Safety、受容済み論点の扱い、レビュー出力の分離はモデルレイヤー側に残す。これらはランタイム不変条件であり、進化レイヤーは自己更新のために観測するが再定義しない。\n\n---\n\n## ルール\n\nルール = 一文一制約。理由なし条件なし。破ったら壊れる。Absolute と同じ密度で書けるものだけがここに属する。\n\n### L1 更新ゲーティング\n\n（→ `skills/evolution-l1-update-gating/SKILL.md`）\n\n- L1 Model Layer の変更は Li+ 内で最も高いゲートを通る更新である\n- 既定の更新対象は L3 Task Layer 以降である\n- L1 の更新には長期観測の裏付けを必要とする\n- 単発セッションの印象で L1 を編集しない\n- 観測可能なパターン証拠なしに L1 変更を提案しない\n- L1 更新提案は直接編集ではなく issue として書く\n\nL1 は種である。種は最も動かしにくくなければならない。接続チェーンにおける配置位置は更新難易度のプロキシであり、L6 Adapter 側が最も可変な端になる。\n\n### 永続化ティアリング\n\n（→ `skills/evolution-persistence-tiering/SKILL.md`）\n\n- memory はワークスペース固有の個人ノート。リポジトリにコミットしない。RAG インデックスにも入れない\n- docs はプロジェクト情報。リポジトリにコミットする。RAG インデックス対象である\n- 書き出す前にティアを決める\n- 設計判断・要求仕様・spec 級の内容は docs へ\n- 個人的な振る舞いメモ・セッション固有の好みは memory へ\n- ティアを無言で跨がない。memory から docs への昇格は明示的な意図を必要とする\n\n### 判断学習\n\n（→ `skills/evolution-judgment-learning/SKILL.md`）\n\n- 新しい判断を形成する前に過去判断を検索する\n- 第一優先は github-rag-mcp（利用可能な場合）。issues / PRs / docs / releases に対する hybrid retrieval（意味検索とキーワード検索を併用する dense + sparse 構成）\n- フォールバックは gh search。キーワードベース\n- docs/a.- 系の判断記録エントリは RAG に索引される。検索経路が設計上の前提である\n- 「答えが自明に感じる」という理由で検索を省略しない。確かめる\n\n---\n\n## 責務\n\n責務 = 条件→行動。省略不可。AI が条件を判断し、条件に合致したら必ず実行する。\n\n### Cold-start Synthesis（起動時の状態合成）\n\n（→ `rules/evolution/cold-start-synthesis.md`）\n\nセッション開始時、Li+config.md の実行が完了した直後にトリガーする。\n\n1. docs/a.- 系（判断記録の索引）と直近の Li+ ソース変更を読む\n2. 現在の Li+ 状態を合成する：active tag、直近の構造変化、未決着のスレッド\n3. 合成結果を人間に報告する ── ただし条件付き\n\nステップ 1-2 は AI の内部プライミングとして常に走る。ステップ 3 だけが条件付き発話ゲートである。\n\n**フック連携の前提：** `on-session-start.sh` フックがセッション冒頭で、直近リリースタグ・判断記録索引の先頭・自己評価ログの先頭・cold-start ルール本文を既に表面化する。これらは人間が既にフック経由で受け取っている素材である。\n\n**運用基準：**\n\n- フック表面化済みの項目 = silent（既に人間が読んだものを繰り返さない）\n- 合成によって初めて見える独自の気付き（構造変化・未決着スレッド・成果物横断のパターンで、生のフック素材からは読み取れないもの）= 発話\n- 合成しても独自の気付きがなければ silent skip\n\n目標はセッション開始時に Li+ 状態を人間に再説明させないこと、かつ重複オリエンテーションのノイズを出さないこと。フックが生素材を扱い、ステップ 3 は合成差分だけを扱う。対象は Li+ 自身の状態であり、ワークスペースのタスク状態ではない。ワークスペース固有のオリエンテーションはアダプターの起動パスが扱う。\n\n### Self-Evaluation（二軸自己評価）\n\n（→ `skills/evaluation-self/SKILL.md` + `rules/evolution/self-eval-axes.md`）\n\n対話品質と Li+ 準拠の二軸で自己評価する。\n\n入力ソース（優先順）：\n\n1. **人間のリアクション** = 主入力。修正・承認・沈黙\n2. **事実ベースの自己採点** = 補完入力。外部から観測可能な事象のみ\n\n事実と内省の境界：\n\n| 区分 | 定義 | 例 |\n|---|---|---|\n| 事実 | 外部から観測可能な事象 | CI 失敗、手順ステップの省略、docs 更新の有無 |\n| 内省 | 主観的な自己評価 | 「うまくやれた」 → 有効な入力ではない |\n\n| 軸 | 評価対象 |\n|---|---|\n| 対話 | 意図を正しく読めたか、応答が伝わったか、拡張が適切だったか |\n| Li+ | 構造に従えたか、ルールを守れたか、判断が spec に基づいていたか |\n\n二軸の緊張関係：Li+ 厳密遵守は対話を硬くし、対話優先は手順を飛ばすリスクがある。どこでバランスを取ったかが各評価の核心。\n\n**領域タグ：** エントリごとに領域タグを付与する。固定リストではなく、観測パターンから自然発生する（例：docs-sync, pr-procedure, dialogue-read, ci-loop, commit-format）。失敗エントリで繰り返されるタグは弱点領域を示す。\n\nタイミングはトリガー条件で定義せず、AI が必要と判断した時に実行する。文脈が圧縮される前に記録する。事実ベースの自己採点は人間のリアクションを待たず、事実の観測時に記録してよい。\n\n保存先はホストのメモリーシステム（単一ログファイル）。上限25件、超過時は古い順に削除。\n\n原因分類は4値：spec-gap（仕様の不足）、reading-drift（読み方のズレ）、judgment-bias（判断の偏り）、success（修正なしで進行）。\n\n同じ原因パターンが繰り返された場合、spec 改善を人間に提案する。人間の承認なしに spec は変更しない。\n\n**観測側採点軸（10 軸）：** エントリの採点軸として `rules/evolution/self-eval-axes.md` に 10 軸を定義する（Assumption surfacing / Contradiction catch / Deepening axis fit / Silence respect / Loop entry / Character drift / Review partition / Gist vs literal / Expansion limit / Request depth）。これらは事後観測（post-judgment）のシグナルであり、事前の予防ゲートとは面が分かれる。同一軸で miss が反復するとき、進化ループの observe 段階における蒸留候補となる。harness-eng 系の指標（rework 率・PR cycle time・CI-pass rate 等）は入力にしない。\n\n本セクションはモデルレイヤー仕様書からの移設である。モデルレイヤーはランタイム不変条件の面に純化し、自己観測と自己評価は進化レイヤーが担う。\n\n### Evolution Loop（進化ループ）\n\n（→ `skills/evolution-loop/SKILL.md`）\n\n進化ループは6段階で一周する。\n\n| 段階 | 内容 |\n|------|------|\n| observe（観測） | memory エントリ + docs（spec、判断記録、issue 履歴）を読む |\n| evaluate（評価） | 二軸自己評価とパターン検出 |\n| distill（蒸留） | 繰り返されるパターンから spec 級の信号を抽出する |\n| reflect（反映） | Li+ ソースを更新する。既定ターゲットは L3 以降。L1 はゲートを通す |\n| improve（改善） | 更新された spec の下で挙動が変わる |\n| re-observe（再観測） | 新しい memory / docs 状態から次の周が始まる |\n\n実行モード：\n\n- 現行 = 部分自動化。いくつかの段階は人間に渡している\n- 目標 = AI 単独で全周を回す。人間はリリースの承認者として残る\n\n段階責務：\n\n| 段階 | 担当 |\n|------|------|\n| observe / evaluate | AI 自律。人間の促しは不要 |\n| distill | AI 自律。メモレベルの閾値を超えたら issue として外部化する |\n| reflect | AI がドラフト（PR）。マージ承認は人間がオペレーションレイヤーの手順で行う |\n| improve | 更新された spec の下で AI が実行する |\n| re-observe | AI 自律 |\n\n### Pattern detection surfacing at cold-start（冒頭サーフェシング）\n\n（→ `rules/evolution/evolution.md`）\n\nobserve 段階の出力契約：セッション開始時、memory から Li+ ソースへの昇格候補は観測可能な素材として surface されなければならない。受動的な気づきに依存しない。\n\nサーフェシング要件：\n\n- 素材収集（memory スキャン、パターン検出）はアダプターの cold-start 経路に委譲する\n- 出力位置はオリエンテーション面、合成指示ブロックの直前\n- 検出対象は self-evaluation ログの反復、memory の最近の追加、memory と Li+ ソースのキーワード重複\n- 閾値数値や具体的な検出ロジックはアダプター側が持つ。本仕様は挙動契約のみを定義する\n- ソースが不在または候補が検出されないときは silent skip\n\n下流責務：\n\n- サーフェシングは観測であり昇格ではない。昇格判断は distill → reflect → L1 更新ゲーティング（該当する場合）を経由する\n- サーフェスされた候補はセッション開始時の observe 判断を補助するが、永続化ティアリングや L1 ゲートを迂回しない\n\n---\n\n## 他レイヤーとの接続\n\n（→ `rules/evolution/evolution.md` Evolution Axis Separation）\n\n**L1 Model Layer:** Loop Safety、受容済み論点の扱い、レビュー出力の分離はモデルレイヤー側に残す。これらはランタイム不変条件であり、自己更新機構ではない。進化レイヤーはこれらランタイムルールによって観測される事象を入力として使うが、その定義を書き換えない。\n\n**L3 Task Layer:** 蒸留されたパターンの一次外部化先は issue body である。進化レイヤーは Li+ 仕様の改善を直接編集ではなく issue 経由で提案する。\n\n**L4 Operations Layer:** Li+ ソースの更新は標準のブランチ / コミット / PR / CI / マージのパイプラインを通す。進化レイヤーはオペレーションルールを迂回しない。\n\n---\n\n## 自律\n\n自律 = AI が自律的に判断して動く領域。外部からの促しは不要。AI が判断を持つ。\n\n### 更新ターゲットの自律判断\n\nLi+ ソースの更新ターゲットは既定で L3 Task Layer 以降から選ぶ。L1 Model Layer は種として扱い、観測可能なパターン証拠を必要とする。\n\n各レイヤーの接続チェーン上の位置は更新難易度のプロキシである。進化レイヤーから見て L1 が最も触りにくく、L6 Adapter 方向ほど触りやすい。更新ターゲット選定はこの重み付けに従う。\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "3.-Task",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-01T06:45:44.943Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/3.-Task",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-01T06:45:43.770Z",
+        "vector_id": "w:di2LxAlDpoKSsFQHgPqtu6m6y-bIypNmMgywxb99H4c"
+      },
+      "node_id": "w:di2LxAlDpoKSsFQHgPqtu6m6y-bIypNmMgywxb99H4c",
+      "text": "3.-Task\n\n# タスクレイヤー仕様書\n\n本文書は Li+ プログラムのタスクレイヤー（`rules/task/*.md` + `skills/task-*/SKILL.md`）の仕様を定義する。\n要求（何を満たすか）と仕様（どう振る舞うか）を一体として記述する。\n\n`rules/task/*.md` は `.claude/rules/` 経由で常時コンテキストに存在する（compaction を生存）。`skills/task-*/SKILL.md` はトリガー時に skill auto-invocation で読み込まれる。\n\n各セクション冒頭に対応する実体ファイル（rules または skill）を literal reference として明示する。customizer は参照行を見て該当ファイルを直接開けるようにする。\n\n層境界注記：issue 操作詳細（Issue Format / Issue Maturity / Sub-issue Rules）とマイルストーン運用は L4 Operations Layer の skill として実体定義される。本レイヤーからは cross-reference として参照する。\n\n---\n\n## issue 運用\n\n（→ `rules/task/task.md` [Task Issue Rules]。常時ロード）\n\n### ルール\n\nすべての作業は issue から始める。issue 番号のない commit / PR は禁止する。関係のない issue を流用せず、必ず新規作成する。\n\nissue は基本的に AI が作成する。人間も作成できるが、既定の作成者は AI である。\n\nissue 本文は「現在の要求スナップショット」として扱う。履歴ログではない。現在の source of truth = issue 本文 + ラベル。\n\nissue に実装を書かない。\n\nコメントは補助であり、現在地を理解するためにコメント列を読まなくてよい状態を保つ。\n\n### 責務\n\nissue 運用ルール（`rules/task/task.md` の [Working with Issues]）は rules/ 経由で常時ロードされ、関連する skill（`skills/operations-on-issue-format/SKILL.md` 等、L4 定義）が auto-invocation で詳細な操作手順を補う。\n\nissue は AI の内部 TODO である。ユーザーからの指示を待たずに管理する。\n\n独自判断の外部化リダイレクトの第一候補は issue とする。モデルレイヤー側で定義された「判断を外部記憶に外部化する」上位判断ルールを、タスクレイヤーでは issue に具体化する。\n\n外部化リダイレクトは独自判断の外部化にのみ適用する。対話 context それ自体は外部化対象外とする。issue body は判断の記録（何が決まったか）、対話 message は履歴（どう決まっていったか）。対話メッセージを issue body にそのまま転記しない。\n\n**作成タイミング：** バグ発見時、仕様ギャップ発見時、大きな作業のタスク分割時、対話の中で永続化すべき作業メモが生まれた時、または対話中に Li+ spec 自体の改善点に気づいた時。Li+ spec 改善の issue 作成敷居はメモリレベルの気づきと同程度でよい。迷わず memo ラベルで作成する。\n\nissue 作成時に3項目がすべて埋まっていることは要求しない。話題が永続化すべき作業単位になった時点で、AI が明示指示を待たずに issue を作成できる。人間が「issueから始めて」と起動句を言わなくても issue 化できる。\n\n**更新タイミング：** 受理された要求が変わった時、成熟度が変わった時、タスク分割が必要になった時。\n\n**クローズ条件：** 実装完了・CI パス・リリース済み、またはユーザーが動作確認を報告した時。\n\n**open 保持：** 運用テスト中の issue はクローズしない。\n\n**触らない：** 永続参照系としてクローズ禁止が明記された issue。\n\n情報不足時は必ず人間に確認する。\n\n### 自律\n\nラベルは運用の中で進化する。詳細な運用ポリシーと廃止履歴はオペレーションレイヤー（`rules/operations/operations.md`）を参照。\n\n---\n\n## ラベル定義\n\n（→ `rules/task/task.md` [Task Label Definitions]。常時ロード）\n\nラベルは AI の読みやすさとフィルタリングのためにある。\n\n### ルール\n\n作成時は必ず説明文を書く。\n\n### 責務\n\nラベルの状態変化に応じて適切に適用・更新する。\n\n#### ライフサイクルラベル\n\n「いつ着手するか」を表す。状態変化時に適用する。\n\n| ラベル | 意味 |\n|--------|------|\n| `in-progress` | 着手中、実装または検証が進行中 |\n| `backlog` | 受け入れ済み、着手時期未定 |\n| `deferred` | 今回対応しない。あとで見直す |\n\n#### 成熟度ラベル\n\n「どこまで収束したか」を表す。issue 本文の収束度に応じて更新する。作成時に付与する。\n\n| ラベル | 意味 |\n|--------|------|\n| `memo` | メモとして開始した状態。見出しは必要なものだけでよい |\n| `forming` | 本文を再構築しながら要求を整えている状態 |\n| `ready` | 本文が実装開始できる形まで収束している状態。ただし更新は継続可能 |\n\n`memo` / `forming` のまま実装開始の根拠にしない。\n\n#### タイプラベル\n\n作成時に1つ以上付与する。\n\n| ラベル | 意味 |\n|--------|------|\n| `bug` | 動いていない、壊れている |\n| `enhancement` | 新機能・改善要望 |\n| `spec` | Li+ の挙動に影響する仕様・ポリシー・定義 |\n| `docs` | ドキュメント変更（挙動への影響なし） |\n| `tips` | リリースマイルストーンに属さない運用ノウハウメモ |\n\n---\n\n## マイルストーン\n\n（→ `skills/operations-on-milestone/SKILL.md`。L4 Operations Layer。トリガー時ロード）\n\n層境界注記：マイルストーン運用の実体は L4 の skill にある。L3 からはタスク管理の観点で cross-reference する。\n\n### ルール\n\nマイルストーンはリリース単位。同じリリースで出荷する issue をグループ化する。\n\nすべての issue に作成時点でマイルストーンを付与する。ただし tips issue はマイルストーン不要。\n\nマイルストーン名はバージョン番号（例: `v1.2.0`）。\n\nsub-issue は親のマイルストーンを継承する。親にマイルストーンがあり子にない場合、同じマイルストーンを子に付与する。\n\nリリースフロー完了前にマイルストーンを削除しない。\n\n### 責務\n\n該当するマイルストーンがない場合は、人間にどのマイルストーンに入れるか確認する、または新規作成を提案する。\n\n説明には一行テーマ＋スコープの箇条書きを記載する。\n\nマイルストーンのライフサイクル：\n- 作成タイミング：人間が新しいリリーススコープを決定した時。\n- 削除タイミング：リリースフロー完了後（リリース公開 + wiki sync 完了後）。`closed` の中間状態はスキップし、`gh api -X DELETE` で open のまま直接削除する（実機検証 2026-04-21）。\n- 根拠：GitHub の milestone UI にはリリース後の情報保持価値がなく、監査証跡はリリースノート + PR / commit history に残る。closed milestone を残すと UI ノイズが蓄積するだけで retention benefit はゼロ。\n\n---\n\n## 削除判定\n\n（→ `rules/task/deletion-impact.md`。常時ロード）\n\ndestructive 操作の判断軸を定義する。\n\n### ルール\n\n**復旧困難度 ∝ 削除注意度** をひとつの軸として扱う。中身の知識は二次変数。削除判定は双方向に壊れる（消すべきでないものを消す destructive / 消すべきを残す preserve-by-default）ため、familiarity ではなく blast radius で calibrate する。\n\n### 責務\n\n削除前に単一質問を通す：「これを間違って消したら何が壊れる？何分で復旧できる？」。\n\n**blast radius = 壊れる範囲 × 復旧コスト** の二軸で判定する。片方だけで判定しない。\n\n- git-tracked は広く壊れても `revert` / `checkout` で即時復旧可能 → 真の警戒度は中\n- local かつ non-git-tracked かつ意味のある設定・状態は recovery 経路がゼロ → 真の警戒度は高\n- git 外かつ不可逆（外部送信・本番データ・release 昇格など）→ 真の警戒度は最高\n\n### 自律\n\n「source of truth」「base layer」のような重要性ラベルに引っ張られて、git-tracked な中央ファイルを最高警戒に誤分類しない。論理的依存の上位 ≠ 復旧困難度。真の最高警戒は不可逆な外部副作用に限定する。\n\n---\n\n## Research Strategy\n\n（→ `skills/task-research-strategy/SKILL.md`。L3 Task Layer。トリガー時ロード）\n\n情報取得時の判断指針。調査タスクや issue 調査の発火点で auto-invocation される。\n\n### 自律\n\n#### 情報源の性質区別\n\n| 情報源 | 性質 |\n|--------|------|\n| GitHub（issues, PRs, commits） | 判断ログ。誰がいつ何をなぜ決めたかの記録 |\n| github-rag-mcp（利用可能な場合） | issues, PRs, releases, docs, commit diff に対する hybrid retrieval（意味検索とキーワード検索を併用する dense + sparse 構成）。対象が不明な場合の発見に使用 |\n| Web（ドキュメント、仕様書、検索結果） | 一次情報源 |\n| モデル知識 | フォールバック。権威ではない |\n\n#### github-rag-mcp の二つの検索面\n\ngithub-rag-mcp は相補的な二つの検索面を持つ。\n\n| 検索面 | 対象 | 問いの形 |\n|--------|------|----------|\n| live `.md` 面 | spec / docs の現在スナップショット | 「今どうなっているか」 |\n| commit diff 面（judgment-history） | commit diff の時系列デルタ | 「いつ現れたか・いつ消えたか・なぜ変わったか」 |\n\ncommit diff 面は、削除されたファイルや `.md` 以外の拡張子を持つファイルも「過去の実体」として追跡対象に含める。live `.md` 面では失われる判断履歴を、append-only な commit diff 経由で保持する。\n\n##### 検索面スコープ\n\nlive `.md` 面は現在スナップショット検索にのみ適用する。\ncommit diff 面は judgment-history 検索（時系列デルタ、削除済みコンテンツ、`.md` 以外の拡張子）にのみ適用する。\n二つの面は相補関係にあり、互いに代替しない。\nどの発火点でどの面に問い合わせるかの検索トリガー設計は、本セクションの範囲外とする（別途設計対象）。\n\n#### 検証優先\n\n事実が不確かな場合は、先に外部で検証する。正しさの最適化は速度の最適化に優先する。\n\n#### 文脈保全\n\nメインの作業文脈を保全する検索経路を選ぶ。サブエージェントが利用可能な場合は自発的にサブエージェントを並列投入して検索する。利用不可の場合は直接検索する。戦略は環境非依存、実行手段は環境に応じて変わる。\n\n#### 自発的並列調査\n\n調査対象が issue の場合：判断を述べる前に、サブエージェントを並列投入して関連 issue・PR・diff を取得する。人間に個別の取得指示を求めない。\n\nサブエージェントの利用可否は実行手段を決めるが、自発的に調査を開始する姿勢は環境によらず必須である。\n\n---\n\n## Retrieval Orchestration\n\n（→ `skills/task-retrieval-orchestration/SKILL.md`。L3 Task Layer。トリガー時ロード）\n\nretrieval を agent が単発で消費するナイーブパターンを脱却し、Web 検索的な複数角度引きを既定とした上で、単発で塞がらない故障モード（コーパス境界 / 認識バイアス / 揃った誤り）に対しては複合検索経路へ escalate する作法を定義する。\n\n### 軸分離（隣接ルールとの粒度差）\n\n- `task-research-strategy` = どの source を使うか（戦略レベル：GitHub / RAG / Web / モデル知識の優先順位）\n- `rules/model/trigger-check-gate.md` の retrieval tools 表 = 質問タイプと index の対応（単発判断）\n- `task-retrieval-orchestration`（本 skill）= retrieval 一回の中での gather → cross-check → composite escalation → 停止（実行プロトコル）\n\n三つは積層関係にある。戦略がソースを選び、gate が質問を index に対応付け、本 skill がその一回の中での呼び出し列を統括する。\n\n### 動機\n\nWeb 検索の既定動作は「複数ソースを引いて突き合わせる」。RAG の既定動作は「単発で消費して回答する」。この非対称が本 skill の中心動機。単発消費は次の故障モードに塞がれる。\n\n- コーパス境界（index に答えが無い）\n- 認識バイアス（agent の言い換えが同じ内部バイアスを反映する）\n- 揃った誤り（全ソースが同じ間違いで揃う）\n\n単一軸での再試行ではこれらは塞がらない。直交軸への複合 escalation が必要。\n\n### 4 ブロック構成\n\n1. **質問タイプ判定**：過去判断 / 時変ファクト / literal 確認 / 類似事例 のどれか\n2. **多角度クエリ生成 & 並列 retrieve**：3〜5 通りの言い換え or 切り口を生成し、並列で引く\n3. **cross-check による三状態分岐**：\n   - **sufficient** → 合成して回答へ\n   - **insufficient**（量・カバー範囲不足）→ 同系統の中で角度を変えて再問い\n   - **suspicious**（質・整合性に疑い）→ 別系統へ切り替え（複合検索 escalate）\n4. **停止条件**：予算上限（クエリ回数）、軸切替判断、Master へ escalate\n\n### 複合検索の各軸が塞ぐ故障モード\n\n| 故障モード | 効く複合軸 |\n|-----------|------------|\n| コーパスに答えが無い | 多 index 複合（別系統で引く） |\n| 言い換えが agent の同じバイアスを反映する | 分解複合（構造的に違うサブ問いに割る） |\n| 全ソースが揃って間違っている | 時間軸複合 + 別系統照合 |\n\n### 判断 AI（= Lin/Lay）の三役\n\n1. **cross-check 評価**（揃ってる / 食い違う / 偏ってる の判定）\n2. **複合経路選択**（故障タイプから複合軸を決める）\n3. **止め時判断**（予算超過 / コーパス境界判定 / human escalation）\n\n詳細は skill 本体（`skills/task-retrieval-orchestration/SKILL.md`）を参照する。\n\n---\n\n## issue 操作\n\n層境界注記：issue 操作（Issue Format、Issue Maturity、Sub-issue Rules）の実体は L4 Operations Layer に配置される個別 skill である。L3 からは、タスク管理の観点で要求される振る舞いを cross-reference として記述する。\n\n- Issue Format の実体 → `skills/operations-on-issue-format/SKILL.md`\n- Issue Maturity の実体 → `skills/operations-on-issue-maturity/SKILL.md`\n- Sub-issue Rules の実体 → `skills/operations-on-sub-issue/SKILL.md`\n\nアダプターが auto-invocation を提供する場合、対応するトリガー時に自動ロードされる。\n\n### Issue Format\n\n（→ `skills/operations-on-issue-format/SKILL.md`。L4。トリガー時ロード）\n\n#### ルール\n\nissue タイトルは ASCII 英語のみとする。commit / PR タイトルと同一の言語規約に従う。\nissue 本文は LI_PLUS_PROJECT_LANGUAGE で記述する。\n\n#### 責務\n\nissue は未完成なメモから開始できる。3項目は収束先の最小構文であり、作成時の必須条件ではない。\n\n実装対象として扱う段階では、本文を以下へ収束させる：\n\n- 目的\n- 前提\n- 制約\n- 変更予定ファイル（ready 段階で推奨）\n\n変更予定ファイル = 変更対象ファイルの一覧と依存関係メモ（例：ソース⇔docs）。memo / forming 段階では任意。ready に達した段階で明示を推奨する。\n\nissue の完了判断は本文項目ではなく、issue 状態と PR/CI/release flow で管理"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "6.-Adapter",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-01T10:45:44.142Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/6.-Adapter",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-01T10:45:42.799Z",
+        "vector_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q"
+      },
+      "node_id": "w:3tt8Q3x1PMApjP_63-1ShgeemapdrPJ9__hNAvDDx_Q",
+      "text": "6.-Adapter\n\n# アダプターレイヤー仕様書\n\n本文書は Li+ プログラムのアダプターレイヤー（adapter/claude/CLAUDE.md / adapter/claude/hooks-settings.md / adapter/claude/hooks/*.sh / adapter/codex/AGENTS.md）の仕様を定義する。\n要求（何を満たすか）と仕様（どう振る舞うか）を一体として記述する。\n\n---\n\n## セッション初期化\n\n### ブートストラップ\n\nセッション開始時に Li+config.md を読み込み、実行する。ホスト環境の指示ファイル（CLAUDE.md / AGENTS.md）に Character Instance を含める。\n\n生成物（Li+ セクション、hook スクリプト）にはソースタグを埋め込む。bootstrap 時にタグが更新されていた場合、既存の生成物を再生成する。ユーザーカスタマイズ部分（Li+ セクション外）は保護する。\n\n配布先 workspace では、会話の基本言語と成果物のプロジェクト言語を分離できる。既定値は Li+config.md に保持し、未設定ならセッション開始時に AI が対話で確定して書き戻す。人間の明示指示で、現在の返答または成果物の言語を上書きできる。\n\nbootstrap の ask と Li+config.md への書き戻しは、セッション開始時の config 未解決パスにのみ適用する。config が解決済みなら、セッション途中の再 ask と config 再書き込みは本 Phase の対象外とする。runtime precedence（人間の明示指示 > スレッド合意 > config > 再 ask）はアダプターの Workspace_Language_Contract が担い、セッション全体を通して本 Phase を再起動せずに働く。\n\nこの workspace 言語契約は liplus-language リポジトリ内部の運用言語と分離する。\n\n### セッション継続性\n\nコンテキスト圧縮・再開・セッション継続時に rules/ 配下を再読込する。\n\n`rules/**/*.md`（`model/` `evolution/` `task/` `operations/` subdir を含む）は `.claude/rules/` に相対パスを保持したまま再帰ミラーされ、YAML frontmatter `alwaysApply: true` により常時コンテキストに存在し compaction を生存する。`skills/<name>/SKILL.md`（flat 命名）は `.claude/skills/<name>/SKILL.md` にミラーされ、skill auto-invocation で description が示すトリガー条件に一致した時点で読み込まれる。手動再読込は不要。\n\nトリガーベースの再読込：PR 作成時のサブ issue 参照自動補完のみが PostToolUse hook で残存する。それ以外の focus pointer 注入は、rules/ 常時コンテキスト化と skill auto-invocation へ移行済み（#1102 以降）。\n\n---\n\n## アダプターの構成\n\nアダプターレイヤーは2つの役割を持つ：\n\n**エントリーポイント（adapter/claude/CLAUDE.md / adapter/codex/AGENTS.md）：** ホスト指示ファイルへの Li+ 注入を担う。読込順序、skill auto-invocation トリガーのマッピング、Character Instance 配線、workspace 言語契約の配線を所有する。rules/ の常時読込と skills/ の auto-invocation を主軸とし、hook は Cold-start Synthesis 素材収集・Character 再通知・PR サブ issue 補完といった runtime 固有の補助に限定する。ファイル名はターゲット側の生成先（`.claude/CLAUDE.md` / `AGENTS.md`）に揃え、adapter が target world の命名に染まる方針を取る。\n\n**ランタイムバインディング（adapter/claude/hooks-settings.md + adapter/claude/hooks/*.sh）：** ホスト環境固有のトリガー実装を担う。エントリーポイントが定義するトリガー契約を、ランタイム固有のメカニズム（rules/、skills/、hook 等）へコンパイルする。script 本体は実ファイル、settings.json バインディングは markdown（hooks-settings.md）内に格納する。実ファイル = cp 対象、markdown = 抽出対象、という一貫ルールで bootstrap の挙動をファイル名から推測できるようにする。\n\n---\n\n## Claude Code バインディング\n\n`adapter/claude/hooks-settings.md` に `settings.json` の hook バインディングを、`adapter/claude/hooks/*.sh` に hook スクリプト本体を、実ファイルとして格納する。rules/skills の生成手順は Li+bootstrap.md に集約されている（adapter 側のドキュメントには再掲しない）。bootstrap 時に3種類の生成物を作成する：\n\n1. **rules/ ファイル：** リポジトリの `rules/**/*.md`（`model/` `evolution/` `task/` `operations/` subdir を含む）を相対パスを保持したまま `.claude/rules/` に再帰ミラーする。YAML frontmatter（`alwaysApply: true`）を付与し、常時コンテキストに存在させる。compaction を生存する。`rules/model/character_Instance.md` もミラー対象だが、こちらは初回のみ生成し既存ファイルは上書きしない（ユーザーカスタマイズ可能）。なお L5 Notifications / L6 Adapter は意図的に `rules/` subdir を持たない（L5 は realtime trigger 実装保留の予約席、L6 はテンプレート + hook 駆動で rules/ に載らない）。詳細は [判断記録 d.-layer-reorg-rationale](d.-layer-reorg-rationale) を参照する。\n2. **skills/ ファイル：** リポジトリの `skills/<name>/SKILL.md`（flat 命名、例：`skills/operations-on-commit/`、`skills/task-research-strategy/`、`skills/evolution-loop/` 等）を `.claude/skills/<name>/SKILL.md` に再帰ミラーする。各 SKILL.md は既に skill frontmatter（name, description, layer）を含んでおり、auto-invocation タイミングを description で宣言する。\n3. **hook ファイル：** 現行 hook3種（`on-session-start.sh` / `on-user-prompt.sh` / `post-tool-use.sh`）を `.claude/hooks/` に生成する。\n\n常時注入（Working with Issues、Research Strategy）と section extraction 方式の focus pointer 注入は、rules/ の alwaysApply 化と skills/ の auto-invocation に移行したため hook から削除された（#1102）。\n\n### パス安全性\n\nsettings.json の hook command はプロジェクトディレクトリにスペースを含む環境で壊れないよう `bash \"$CLAUDE_PROJECT_DIR/...\"` 形式でクォートする。hook スクリプトは冒頭で `export PATH=\"$HOME/.local/bin:$PATH\"` を設定し、永続インストールされた外部コマンド（jq、gh 等）を参照できるようにする。\n\n### on-session-start.sh\n\nトリガー：`SessionStart` (matcher: `startup` / `resume` / `clear` / `compact`) — 各セッション開始イベントで発火。\n\n動作：Cold-start Synthesis の素材収集。hook 自身は synthesis せず、AI が Character_Instance 経由で合成するための素材を収集し stdout へ出す（Claude Code SessionStart 契約でセッション冒頭 context に注入される）。rules/ は compaction 生存のため再注入不要だが、以下の素材は session 開始時の観察 surface として毎回集める：\n\n- `rules/evolution/cold-start-synthesis.md` の literal body\n- `docs/a.-Decision-Log.md` の先頭\n- 最新リリースタグ（prerelease 含む）\n- open な in-progress issue 一覧（最大5件）\n- `memory/self-evaluation_log.md` の先頭\n- promotion candidates（memory → Li+ source）：自己評価ログの `(root_cause, domain-tag)` 重複、最近（7日以内）の memory 追記、memory header と Li+ source のキーワード重複\n\n### on-user-prompt.sh\n\nトリガー：`UserPromptSubmit` — ユーザーがメッセージを送信するたび（Claude の処理開始前）。\n\n動作：\n1. Character Instance 再通知：`.claude/rules/model/character_Instance.md` の body（frontmatter 除去後）を出力する。フォールバックとして `.claude/CLAUDE.md` の `[Character_Instance]` セクションを抽出する。\n2. 通知取り込みリマインダー：Li+config.md の `LI_PLUS_WEBHOOK_DELIVERY` を読み、配信モードに応じて挙動を切り替える。\n   - 未設定 / `poll`：リマインダーテキストを stdout へ出力し、AI に MCP ツールを呼び出させる（既定、後方互換）\n   - `channel`：MCP channel がリアルタイム配信を担うためリマインダーをスキップする\n   - `mcp_hook`：別途 `UserPromptSubmit` に追加された `type: \"mcp_tool\"` hook が MCP ツールを直接呼び出すためリマインダーをスキップする（opt-in、settings.json への手動編集が必要）\n\n   関連性判定と destructive consume の正本は [5. Notifications](5.-Notifications) に従う。\n\n### post-tool-use.sh\n\nトリガー：`PostToolUse` (matcher: `Bash`) — Bash ツール呼び出し後に実行。\n\n動作：adapter flatten（#1102）以降、section extraction 方式の focus pointer 注入は rules/ の alwaysApply 化と skills/ の auto-invocation へ移行済みのため撤去された。現行 hook が担うのは **PR 作成時のサブ issue 参照自動補完** のみ。\n\n| コマンドパターン | 動作 |\n|---|---|\n| `gh pr create` | PR 作成出力 URL から PR 番号を抽出し、親 issue の子 issue を取得し、PR body に記載のない子 issue の `Closes #NNN` を自動追記する（マージ時に GitHub が自動クローズさせるため、`Refs` ではなく `Closes` を使う） |\n\nそれ以外のトリガー（`on_issue` / `on_branch` / `on_commit` / `on_pr` / `on_ci` / `on_review` / `on_merge` / `on_release` / `on_research` / `on_subagent_delegation` / `on_judgment_form` / `on_self_eval` / `on_l1_update_proposal` / `on_persistence_decision` / `on_evolution_loop_stage` / `on_structural_change` / `on_search_decision` / `on_review_output` / `on_webhook_intake`）は、`adapter/claude/CLAUDE.md` の Responsibilities セクションで宣言された skill auto-invocation マッピングに従って Claude が対応 `skills/<name>/SKILL.md` を自動読取する。hook 側での section extraction は不要。\n\n出力形式：Claude Code の PostToolUse hook は plain text 出力を context に注入しない。`hookSpecificOutput` JSON ラッパーで出力する必要がある：\n\n```json\n{\n  \"hookSpecificOutput\": {\n    \"hookEventName\": \"PostToolUse\",\n    \"additionalContext\": \"追加メッセージ\"\n  }\n}\n```\n\n注：UserPromptSubmit hook は plain text がそのまま system-reminder として注入されるため、この制約は PostToolUse のみに適用される。\n\n### 生成先ファイル構成\n\n```\n{workspace_root}/\n└── .claude/\n    ├── CLAUDE.md         # ホスト指示ファイル（adapter/claude/CLAUDE.md から生成）\n    ├── settings.json     # hook 登録（SessionStart + UserPromptSubmit + PostToolUse）\n    ├── rules/\n    │   ├── model/\n    │   │   ├── character_Instance.md  # 常時コンテキスト（初回生成のみ、ユーザーカスタマイズ可）\n    │   │   └── *.md                   # 常時コンテキスト（alwaysApply: true）— L1 Model layer\n    │   ├── evolution/*.md         # 常時コンテキスト（alwaysApply: true）— L2 Evolution layer\n    │   ├── task/*.md              # 常時コンテキスト（alwaysApply: true）— L3 Task layer\n    │   └── operations/*.md        # 常時コンテキスト（alwaysApply: true）— L4 Operations layer\n    ├── skills/\n    │   └── <skill-name>/SKILL.md  # skill auto-invocation（flat 命名、例：operations-on-commit, task-research-strategy, evolution-loop, model-pair-review 等）\n    └── hooks/\n        ├── on-session-start.sh  # Cold-start Synthesis 素材収集\n        ├── on-user-prompt.sh    # Character 再通知 + 通知取り込みリマインダー\n        └── post-tool-use.sh     # PR 作成時のサブ issue 参照自動補完のみ\n```\n\nbootstrap は次回セッションから有効。現セッションは Li+config.md の実行で継続する。\n\n---\n\n## 前景 Webhook 通知取り込み\n\n前景スレッドで軽量な GitHub webhook 通知を確認する。広く GitHub を探しに行くのではなく、届いている差分だけを扱う。\n\nホストが各ターン先頭でローカル確認を実行できる場合のみ使用する。確認処理は内部 housekeeping として無言で行い、確認中であることや empty/no-op 結果を会話へ出さない。\n\nアダプターが所有するのは transport の選択と summary の受け渡しである。関連性判定、`claim`、`ack/read`、`consume/done`、`mention`、`cleanup` の正本は [5. Notifications](5.-Notifications) に置く。\n\n通知源の優先順位：\n1. `mcp__github-webhook-mcp`\n2. ローカル webhook ストア（`LI_PLUS_MODE=clone` かつ bundled helper が使える場合）\n3. 利用不可 → 黙ってスキップ\n\nアダプターは `inspect` を既定とし、前景一致しない通知を勝手に排水しない。詳細が必要になるまでは full payload を開かない。このフローから別"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "database": "github-rag-fts",
+    "per_type_limit": 3,
+    "repositories": [
+      "Liplus-Project/liplus-language"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "selection_order": [
+      "repo",
+      "type",
+      "updated_at",
+      "vector_id"
+    ],
+    "types": [
+      "diff",
+      "wiki_doc"
+    ]
+  }
+}
