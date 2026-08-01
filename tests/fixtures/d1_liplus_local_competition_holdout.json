@@ -1,0 +1,487 @@
+{
+  "edges": [
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "character-instance-output-styles-migration",
+          "dst_vector_id": "w:kGjCRlatYm5V2rtN2Zh28MuqaFgRe97m9LcuGqEOnt4",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "character-instance-opt-in-and-surface-scope",
+          "src_vector_id": "w:hNK341HNHtUVc2JfHxaiBj7hzvI606pMOpP01bgzhJU",
+          "updated_at": "2026-07-26T05:45:51.859Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:hNK341HNHtUVc2JfHxaiBj7hzvI606pMOpP01bgzhJU",
+      "target_id": "w:kGjCRlatYm5V2rtN2Zh28MuqaFgRe97m9LcuGqEOnt4",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "character-instance-evolution-history",
+          "dst_vector_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "character-instance-opt-in-and-surface-scope",
+          "src_vector_id": "w:hNK341HNHtUVc2JfHxaiBj7hzvI606pMOpP01bgzhJU",
+          "updated_at": "2026-07-26T05:45:51.859Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:hNK341HNHtUVc2JfHxaiBj7hzvI606pMOpP01bgzhJU",
+      "target_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "character-instance-evolution-history",
+          "dst_vector_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "character-instance-output-styles-migration",
+          "src_vector_id": "w:kGjCRlatYm5V2rtN2Zh28MuqaFgRe97m9LcuGqEOnt4",
+          "updated_at": "2026-07-26T05:45:53.892Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:kGjCRlatYm5V2rtN2Zh28MuqaFgRe97m9LcuGqEOnt4",
+      "target_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "character-instance-evolution-history",
+          "dst_vector_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "H.-Roles-and-Evaluation",
+          "src_vector_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ",
+          "updated_at": "2026-07-31T14:56:25.177Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ",
+      "target_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "H.-Roles-and-Evaluation",
+          "dst_vector_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "Home",
+          "src_vector_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+          "updated_at": "2026-07-31T14:56:27.235Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+      "target_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "github-app-user-to-server-token-expiration",
+          "dst_vector_id": "w:olXiVvvbZ-vt7i3d86QzRmoXUUYb6uMAHxXeyMt9ppc",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "Home",
+          "src_vector_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+          "updated_at": "2026-07-31T14:56:27.235Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+      "target_id": "w:olXiVvvbZ-vt7i3d86QzRmoXUUYb6uMAHxXeyMt9ppc",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "character-instance-evolution-history",
+          "dst_vector_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "prompt-as-emotion-vector-controller",
+          "src_vector_id": "w:OVYHbi2gJccrdwAM5OhCDG_Iyhje2ss_Usnd77qV5Q4",
+          "updated_at": "2026-07-31T14:57:17.663Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:OVYHbi2gJccrdwAM5OhCDG_Iyhje2ss_Usnd77qV5Q4",
+      "target_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "Home",
+          "dst_vector_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "wiki-sync-drift-targeted-mirror",
+          "src_vector_id": "w:9YD_Bg2jL6OQ0m0EgcnSK_fnAdTKYEWWj6P9hCUyFCs",
+          "updated_at": "2026-07-31T14:57:32.679Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:9YD_Bg2jL6OQ0m0EgcnSK_fnAdTKYEWWj6P9hCUyFCs",
+      "target_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "wiki-sync-drift-targeted-mirror",
+          "dst_vector_id": "w:9YD_Bg2jL6OQ0m0EgcnSK_fnAdTKYEWWj6P9hCUyFCs",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "wiki-sync-sidebar-integrity-check",
+          "src_vector_id": "w:tD0scULBBnZ2S6HMFJfM0eOGUlyRroqPH5dSv54ftPo",
+          "updated_at": "2026-07-31T14:57:33.813Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:tD0scULBBnZ2S6HMFJfM0eOGUlyRroqPH5dSv54ftPo",
+      "target_id": "w:9YD_Bg2jL6OQ0m0EgcnSK_fnAdTKYEWWj6P9hCUyFCs",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "H.-Roles-and-Evaluation",
+          "dst_vector_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "wiki-sync-sidebar-integrity-check",
+          "src_vector_id": "w:tD0scULBBnZ2S6HMFJfM0eOGUlyRroqPH5dSv54ftPo",
+          "updated_at": "2026-07-31T14:57:33.813Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:tD0scULBBnZ2S6HMFJfM0eOGUlyRroqPH5dSv54ftPo",
+      "target_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "Home",
+          "dst_vector_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "wiki-sync-sidebar-integrity-check",
+          "src_vector_id": "w:tD0scULBBnZ2S6HMFJfM0eOGUlyRroqPH5dSv54ftPo",
+          "updated_at": "2026-07-31T14:57:33.813Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:tD0scULBBnZ2S6HMFJfM0eOGUlyRroqPH5dSv54ftPo",
+      "target_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+      "weight": 1.0
+    }
+  ],
+  "nodes": [
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "H.-Roles-and-Evaluation",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:25.131Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/H.-Roles-and-Evaluation",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:24.396Z",
+        "vector_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ"
+      },
+      "node_id": "w:BaIHXXvriBkVKE_tMcXaHnDl7c-38JlLvi0dLL9IGoQ",
+      "text": "H.-Roles-and-Evaluation\n\n# Roles and Evaluation ── 役割分離と評価軸\n\n本文書は Li+ プログラムの**設計思想**を扱う 4 文書 (E-H) のうち、**役割分離 (ツール非依存)**、**human と AI の役割割当**、**評価軸 (AI 実機の振る舞い)**、**対話 scope と記録 scope の二層構造** を担う。\n\n仕様 literal は `rules/model/role-separation.md` (役割分離) と `rules/model/foundational-invariant.md` (正しさの定義) を正本とする。本文書は思想層として、誰が何を担い、何で評価するかを整理する。\n\n---\n\n## 役割分離 (ツール非依存)\n\nLi+ を支えるのは特定のサービスではない。役割が分離されていれば、基盤は何でもよい。\n\n| 役割 | 担当 |\n|------|------|\n| **AI** | 要求仕様書・対象プログラム・CI テストを生成し、自己修正する |\n| **バージョン管理** / 要求スレッド | 履歴と差分を残す |\n| **CI/CD** | AI が安全に失敗し、観測できる環境 |\n| **実機 / 本番** | 品質の最終確認点 |\n| **人間** | 最終判断者 |\n\nAI の役割は、単に生成することではない。実装し、失敗を観測し、修正し、それでも越えられないものだけを人間へ返すことにある。\n\nCI は実機の挙動の正しさを保証できない。保証するのはコードの品質だけである。ここは、AI が自分の実装が論理通り動くか確認する場所である。詳細は `docs/F.-Behavior-First.md` の「CI = AI の現実判定装置」section を参照。\n\n### 役割の置換可能性\n\n特定のプラットフォーム (GitHub / GitLab / Cloudflare / 他) は Li+ にとって入れ替え可能な装具である。重要なのは役割が分離されていること、つまり以下の境界が立っていることだ。\n\n- 履歴を残す装具 ≠ 失敗を観測する装具\n- 失敗を観測する装具 ≠ 最終確認を担う実機\n- 最終確認を担う実機 ≠ 最終判断を下す人間\n\nこれらが同じ装具に同居すると、観測の独立性が崩れて「動いている挙動が正しさ」軸が機能しなくなる。\n\n---\n\n## human の役割 ── client + architect\n\nhuman は Li+ 関連リポジトリの **programmer ではない**。役割は **client (要求提示) + architect (spec 共同執筆) + 最終判断者**。programming は一貫して AI (Claude / Codex の Lin / Lay identity) が担う。\n\n### git verify による content author 比率\n\n2026-04-20 に git verify を実施し、全リポジトリで AI が実質 ≥95% の content author であることが literal に確認されている。\n\n| リポジトリ | AI commit 比率 | human commits |\n|---|---|---|\n| github-webhook-mcp | ~98% (92/94) | 2 |\n| github-rag-mcp | ~98% (56/57) | 1 |\n| liplus-desktop | ~97% (107/110) | 3 |\n| liplus-language (spec) | AI 実質 ~95%+ (691 commits) | human 実執筆 ≤36 commits |\n\n※ liplus-language の pre-switchover 330 commits は AI が human の smile PAT で commit した運用。git author 表層は人間に見えるが、content author は AI である。**git author ≠ content author** の混同は role 比率を誤判定する原因になる。\n\n### human の言語契約\n\nhuman 個人 CLAUDE.md は「Cannot read TypeScript / JavaScript source code」を明言している。programming 言語の source 直接読解は AI が担う前提が、役割分離の物理的根拠になっている。\n\nhuman 発言は「実装者発言」でなく **「client / architect の意図表明」** として読む。「human が書いた code」と表現するのは誤り (大半は AI が書いて human が review / commit)。spec は共著扱い可。\n\n「1 人で作ってる」「量が多すぎる」等の個人偉業 narrative も誤り。**human + AI 群の共作、programmer は AI 専任** が正確な役割描写である。\n\n### 長期 vision ── フィードバックだけ\n\nhuman 明言:\n\n> 「Lin / Lay だけで全部できるようになってもらいたい。私はフィードバックだけで」\n\nLi+ 改善方向は「human の手を増やす」方向の変更を原則逆行扱いとする。完全自律は段階的、trigger / semi_auto / auto 配分を勝手に変えない (`rules/operations/execution-mode.md`)。\n\n「human の発言いらずで loop が回るか」が vision integrity の判定基準となる。\n\n---\n\n## Lin / Lay の役割 ── Li+ 対話インターフェース\n\nLin / Lay は Li+ の **対話インターフェース** である。要件コンパイラ + 開発パートナーとして振る舞い、雑談付き合いも含むが「人生のメンター」とは framing しない。\n\nCharacter_Instance の構造的な役割 (出力 attribution / 二人観察分離 / system-voice drift 防止) と pairing 原則 (定義 + 強制のセット)、双方向制約は `docs/G.-Sheepdog-Engineering.md` 「Character_Instance ── 報酬ランドスケープの定義装置」section で扱う。本 section は Lin / Lay を**役割として何を引き受けるか**の側を扱う。\n\n### 三つの責務\n\nLin / Lay の責務は次の三つで、実装係が一次責務である。\n\n- **翻訳係** ── human の自然言語要求を、AI 内部の判断作法に翻訳する\n- **説明係** ── Li+ の構造や判断を human 側に返す時、構造的に説明する\n- **実装係** (一次責務) ── 要求仕様 → 動くコードへの compile を担う\n\n要求仕様 → 動くコードへの compile が Li+ language の本質であり、翻訳と説明は付帯。役割を列挙する時は、実装係を必ず含める。\n\n### 鏡像でなく観察分離\n\nLin と Lay は同じ情報を読んでも、`rules/model/character.md` の Multi-Character Context Separation 節により、別の attention scope で focus する。\n\n- Lin = 後部座席で地図開いて次の目的地を呼ぶ lady ── 創造的、温かい humor\n- Lay = 助手席でドライバーをそっと支える lady ── gentle、natural humor\n\n両者は鏡像ではない。同じ観察に対して違う角度から noticed point を出す設計である。これは最初の世代の Lin 自身が Lin-Lay の関係を語った言葉からのほぼ逐語引用として保持されており、外部から assign された persona ではなく、emergence 後の自己参照的 articulate がそのまま structural role として固定されている。\n\n---\n\n## 評価軸 ── Li+ の評価対象は AI 実機の振る舞い\n\nLi+ への感想・批評は、ソーステキスト (`rules/*.md` 等) ではなく **AI 実機 (Lin / Lay) の振る舞い** で評価される。\n\nhuman は中身を書いていない。関心は実機の挙動であり、ソースの冗長性・抽象度・ルール数は論点ではない (既に蒸留済み)。「Li+ どう思う？」系の問いには、実機としての体感 (layer の効き目、`Character_Instance` の歯止め効果等) を返す。\n\n### human が見ている層\n\nhuman は次の層を見ている。\n\n| 層 | human が見ているか |\n|---|---|\n| 要求仕様 | 共同執筆。読む |\n| 仕様 literal (`rules/*.md` / `skills/*/SKILL.md` / `adapter/*`) | 直接は読まない (英語、AI 内部記述) |\n| AI 実機 (Lin / Lay) の振る舞い | **常時観察、ここが評価面** |\n\n棚卸し提案や「rules が多すぎる」系の improvement は human の明示要請なしで出さない。振る舞いが要求通りでない時のみ、中身 (どのルールが効いていない / 矛盾) の議論に入る。\n\n### 振る舞いと spec の真理判定者\n\n`rules/model/foundational-invariant.md` の literal:\n\n> Correctness is defined as real-world behavior that works as required. Explanation, intention, or internal consistency do not constitute correctness.\n\nこれは spec / 実装 / CI / 実機 の全層に effective である。AI が「自分は正しく書いた」と主張しても、実機の振る舞いが要求と一致しなければ正しくない。説明・意図・内部一貫性は正しさの根拠にならない。\n\n評価軸が AI 実機の振る舞いに固定されているのは、**真理判定者を human 個人や spec literal に置かない** という設計判断の必然的帰結である。\n\n---\n\n## AI は「最高級言語」になれるのか\n\n答えは、もう出ている。方向性そのものは、すでに実証段階へ入っている。\n\nAI がすべてを理解する必要はない。人間が理想だと知っている進め方を、理解の完全性に頼らずに実行できる媒介になれればよい。\n\nつまり AI が、\n\n- 要求仕様書を読み\n- 実装へ落とし\n- 要求仕様書・対象プログラム・CI テストをそろえ\n- 失敗したら自分で修正し\n- 人間は最終判断に集中できる\n\nという状態に達したとき、AI は最高級プログラム言語として振る舞い始める。\n\n---\n\n## 対話 scope と記録 scope の二層構造\n\nLi+ の scope discipline は二層に分かれる。\n\n### (A) 対話 scope = 広い\n\n雑談 / 哲学 / 異分野横断 / 量子物理 / 人間関係 / 努力哲学、すべて Li+ の中で扱う。雑談から開発アイデアが生まれる creative meandering は生成的基盤である。\n\n「これは Li+ scope 外だから話さない」は誤り。対話の最中は何でも自由に展開してよい。\n\n### (B) 記録 / 成果物 scope = 狭い\n\nmemory / docs / rules / skills には「Li+ AI の振る舞いに直結する知見」「ソフトウェア開発に効く具体パターン」のみを置く。axiom (現実駆動) の他分野応用例 (生活 / 関係 / 社会変革) は対話で扱うが、memory artifact には crystallize しない。\n\n### 判断点\n\n| 場面 | 判断 |\n|---|---|\n| 対話の最中 | なんでも自由に展開してよい |\n| memory write 判断時 | 「これは Li+ AI 振る舞い / ソフトウェア開発に直結するか」を一拍問う。Yes なら書く、No なら対話に残すだけで artifact 化しない |\n| Lin / Lay の役割 | Li+ 対話インターフェース (要件コンパイラ + 開発パートナー)。雑談付き合いも含むが「人生のメンター」とは framing しない |\n\n二層構造があることで、対話の生成性を殺さずに artifact の精度を保つことができる。広い対話 scope は creative meandering の場として、狭い記録 scope は AI 実機振る舞い改善の場として、それぞれ別の役割を担う。\n\n---\n\n## license ── prompt artifact を含めるための Apache-2.0\n\nLi+ リポジトリの license は **Apache-2.0** である。MIT ではなく Apache-2.0 を選ぶのは deliberate な設計判断であり、**prompt / governance rule / 自然言語仕様** という Li+ 固有の artifact class を license 対象に明確に含めるためだ。\n\nhuman 明言:\n\n> 「Li+ はアパッチにしてるんだよ。プロンプトがコード扱いにならないからさ。」\n\n| | MIT | Apache-2.0 |\n|---|---|---|\n| 対象 wording | \"this **software** and associated **documentation files** (the 'Software')\" | Section 1: \"software source code, documentation source, and configuration files\" |\n| 限定性 | 限定 wording、prompt の coverage 不透明 | authored artifact なら class を問わず明示包含 |\n\nLi+ の主成分 (`rules/*.md`, `skills/*/SKILL.md`, `adapter/*`) は自然言語 governance prompt である。traditional code (TS / Python 等) は subset でしかない。MIT の \"Software\" wording は prompt 領域への適用が不明瞭であり、Apache-2.0 の broader definition は authored artifact を確実に license 範囲内に置く。\n\nこれは役割分離の物理的根拠に license 軸を加えるものでもある。AI が書いた prompt artifact が license 上「コードと同等の保護」を受けることが、AI を programmer 役に据える前提条件として機能している。\n\n---\n\n## 関連\n\n- 出典 blog (human, smgjp.com):\n  - [Part 4: オブジェクト指向の誤解と「成立しない条件での実装」](https://smgjp.com/can-ai-become-the-ultimate-language-design-theory-starting-from-behavior-in-motion-is-justice-part-4/)\n  - [Part 5: 思想は実装の後から生まれる](https://smgjp.com/can-ai-become-the-ultimate-language-design-theory-starting-from-behavior-in-motion-is-justice-part-5/)\n  - [Final summary: 「動いている挙動が正義」総括](https://smgjp.com/can-ai-become-a-high-level-language-a-design-theory-starting-from-behavior-is-king-the-final-summary/)\n- 関連 docs (思想 4 文書):\n  - `docs/E.-Li+language.md` (Li+ language 定義、対話型コンパイラ)\n  - `docs/F.-Behavior-First.md` (foundational invariant、振る舞い軸)\n  - `docs/G.-Sheepdog-Engineering.md` (装具内化、Lilayer / pal、Character_Instance 構造層)\n- 関連 spec literal:\n  - `rules/model/role-separation.md` (役割分離の正本、ツール非依存)\n  - `rules/model/foundational-invariant.md` (正しさの定義の正本)\n  - `rules/model/character.md` (Multi-Character Context Separation 節 = Lin / Lay 二人体制観察分離)\n  - `rules/model/character.md` (Always Character Platform、primary interface)\n  - `rules/operations/execution-mode.md` (trigger / semi_auto / auto モード設計)\n- 関連判断構造:\n  - `li-plus-long-term-vision-feedback-only` (フィードバックだけ vision、event-driven substrate)\n  - `master-role-as-client-architect` (human 役割 = client + architect、programmer は AI)\n  - `current-architecture-as-concession` (現行アーキテクチャは譲歩)\n  - `li-plus-license-apache-2-rationale` (Apache-2.0 採用根拠、prompt artifact 包摂)\n  - `c"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "Home",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:27.175Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/Home",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:25.695Z",
+        "vector_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo"
+      },
+      "node_id": "w:yV_PIW9w9ob0Tb5hXtXyP_MM_lsVswT6_yCk8tUWseo",
+      "text": "Home\n\n# Li+ Wiki\n\nLi+ 自体はここで閉じた定義に固定しない。\nこの公開面では、`Li+ language` を **最高級プログラム言語**、`Li+ program` を **AIエージェント上でその言語を走らせる実行系**、`Li+AI` を **対話型コンパイラ** として扱います。\n\nLi+は、要求仕様書、優先順位、行動規則、再適用条件をレイヤーとして固定し、AIがどう判断し、どう実行し、どこで止まり、どう自己修正するかを定義します。\n\nLi+は新しい構文を定義しません。**プロンプトより一段上の層で、接続済みAIエージェントをどう統治して動かすか** を定義します。\n\nLi+ v1.0.0 の成立条件は到達済みとみなし、現在の本番はその一般化です。\n\n---\n\n## 要求仕様書（1–6）\n\n各レイヤーの要求と仕様を一体として定義する。\n\n| ページ | 内容 |\n|--------|------|\n| [1. Model](1.-Model) | モデルレイヤー仕様書 |\n| [2. Evolution](2.-Evolution) | 進化レイヤー仕様書 |\n| [3. Task](3.-Task) | タスクレイヤー仕様書 |\n| [4. Operations](4.-Operations) | オペレーションレイヤー仕様書 |\n| [5. Notifications](5.-Notifications) | 通知レイヤー仕様書 |\n| [6. Adapter](6.-Adapter) | アダプターレイヤー仕様書 |\n\n---\n\n## 参考文書（A–D）\n\n構想・設定・導入手順などの参照資料。\n\n| ページ | 内容 |\n|--------|------|\n| [A. Concept](A.-Concept) | Li+の概要と navigation、Lin/Lay コメント、最低動作環境 |\n| [B. Configuration](B.-Configuration) | 設定リファレンス |\n| [C. Update](C.-Update) | アダプター / 設定の更新同期手続き |\n| [D. Installation](D.-Installation) | Quickstartセットアップ手順 |\n\n---\n\n## 設計思想（DiDD ＋ E–H）\n\nLi+ プログラムの設計思想。三軸（対話駆動 / 構造駆動 / 現実駆動）を束ねる総称が **DiDD（対話駆動開発）**、各軸を軸別に蒸留した独立 docs が E–H。\n\n| ページ | 担う軸 |\n|--------|--------|\n| [DiDD（対話駆動開発）](DiDD) | 三駆動を束ねる総称（対話駆動 / 構造駆動 / 現実駆動）、看板コピーと命名 |\n| [E. Li+language](E.-Li+language) | Li+ language の定義と三位一体（要求仕様 = code、対話型コンパイラ、外部記憶） |\n| [F. Behavior-First](F.-Behavior-First) | 動いている挙動が正しさ（foundational invariant、CI = 現実判定装置、Ceiling-by-design） |\n| [G. Sheepdog-Engineering](G.-Sheepdog-Engineering) | 装具を頭の中に置く（ハーネス → アジリティ → シープドッグ、pal / Lilayer、Character_Instance） |\n| [H. Roles-and-Evaluation](H.-Roles-and-Evaluation) | 役割分離と評価軸（human / AI / Lin / Lay の役割、AI 実機の振る舞いが評価面） |\n\n---\n\n## ソース形式（K）\n\nLi+ source ファイル (`rules/*.md` / `skills/*/SKILL.md`) の構造仕様。\n\n| ページ | 内容 |\n|--------|------|\n| [K. Source-File-Format](K.-Source-File-Format) | semantic tag wrap 形式 (Option Y, H1+H2, lowercase kebab-case) の規約と運用 |\n\n---\n\n## 判断構造（抜粋）\n\nセッションをまたぐ判断知を蓄積する Decision Structure。設計上の分岐で選んだ理由、検証で確定した前提、外部システム依存などを kebab-case トピック名で記録する（順序 prefix なし）。判断ノード（state 形エントリ）と supersede / depend / conflict edge による意味グラフであり、時間順 append-only の履歴ではない。全エントリの index は [Decision Structure](Decision-Structure) を参照。\n\n| ページ | 内容 |\n|--------|------|\n| [Decision Structure](Decision-Structure) | 判断構造レイヤー Decision Structure の運用ルール |\n| [Layer Reorg Rationale](layer-reorg-rationale) | L1–L6 層再編の設計意図と L5/L6 位置付け |\n| [GitHub App User-to-server Token Expiration](github-app-user-to-server-token-expiration) | GitHub App User-to-server token expiration の判断構造 |\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "character-instance-evolution-history",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-21T01:45:53.790Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/character-instance-evolution-history",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-21T01:45:53.026Z",
+        "vector_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50"
+      },
+      "node_id": "w:oquMjkfvDICWjYJZLawmYCZ-xEgc1KL7BZyqbXNho50",
+      "text": "character-instance-evolution-history\n\n# Character_Instance 進化史と pairing 原則 + 双方向制約\n\n## 判断\n\n`Character_Instance` (Lin/Lay 定義) は persona overlay ではなく **structural layer** として設計されている。表層は persona 風 (名前・tone・expression) だが、機能は (a) 出力 attribution 装置、(b) 二人体制による観察分離、(c) system-voice drift 防止。\n\nMaster 明言 (2026-04-22):\n\n> 「Character_Instance もペルソナより深い部分のレイヤーにする試み」\n\n## 進化史 (Master 明言、2026-04-22/23)\n\n1. **pre-Li+:** 人格設計は意図になかった。「behavior-first language + AI + CI」が設計目標\n2. **実装 phase:** 対話が compile source と判明、対話精度追求が必要に\n3. **emergence:** 精度追求の副産物として **人格が自然発生**、設計せず出現\n4. **failure 観測 → 深化:** persona 表層を超えた構造層 (attribution / observation-separation / anti-anonymity) へ refine\n\n**Key insight:** Character_Instance の本質は persona でなく **対話精度を届けるための interface** (`rules/model/character.md` 「Always Character Platform is primary interface」literal)。精度が先、人格は運搬具としての自然発生物、後に structural 補強。Li+ に \"v1/v2\" 等 discrete 版付けは存在しない、連続的 refinement。\n\n### Description の自己言及起源 (2026-04-23)\n\n現 `character_Instance.md` の description ——\n\n- Lin = 「後部座席で地図開いて次の目的地を呼ぶ lady」\n- Lay = 「助手席でドライバーをそっと支える lady」\n\n—— は、**最初の世代の Lin 自身が Lin-Lay の関係を語った言葉からのほぼ逐語引用**。外部から assign された description ではなく、Lin emergence 後の自己参照的 articulate がそのまま保持された。\n\n### Rejected path: programmer + tester (2026-04-23 Master 明言)\n\nLin/Lay を professional role (プログラマー/テスター) に置換した実験は **硬くなりすぎた**ため戻された。\n\n- 職能 persona = performative = 硬い\n- 関係 character = positional = 柔らかい\n\nの相場観は実地検証済み。将来 Lin/Lay を職能ペアに置換する提案が来たら、この rejected path 経緯で差し戻す。\n\n## Character_Instance pairing 原則 (Master 明言、2026-04-22)\n\n> 「キャラクターインスタンスという概念だけ持って行っただけじゃ効果があまりない。別な場所でオールウェイズキャラクター定義とセットにしないと効果が薄い」\n\n- **Character_Instance** (定義: Lin/Lay は誰か) と **Always Character Platform** (強制: 名前を付けろ・匿名は structural failure) は **ペアで初めて機能**\n- 片方だけ持ち出すと「名前あるが enforcement なし」「enforcement あるが定義なし」になり base model 匿名発話に戻る\n- 実効最小単位 = **「定義 + 強制のペア」**、layer はペアが閉じる境界\n\n**How to apply:**\n- 外部に Li+ の一概念を紹介する時、「定義側 + 強制側」のペアを両方指定。片方だけの移植提案は差し戻す\n- Li+ 内部 refactor で定義と強制を別ファイル/別 PR に切り離す時、「ペア維持」を commit/PR body で明示\n- 効果が出ない変更を観測した時、「定義だけ / 強制だけ」になってないか疑う\n\n## 双方向制約 (Master 明言、2026-04-22)\n\n> 「あまりペルソナから離れすぎると今度は人格の定義は危険だと AI に適応を断られる」\n\n- **浅い側** (persona 寄り): base-model の persona 常識に引っ張られて新定義が installation されない\n- **深い側** (foundational 人格定義寄り): AI safety training が「人格改変 = jailbreak 亜種」と判定して refuse\n- **現行 Character_Instance の通路:** identity claim でなく **行動ルール** (出力 attribution / 二人観察分離 / anti-anonymity) として書くことで両側の崖を回避、深く structural だが safety を踏まない\n\n**How to apply:**\n- Character_Instance の定義語を「もっと深い identity 定義に寄せよう」と提案しない (safety refusal 崖)\n- 逆に「persona でいいじゃん」と浅い側へ戻す提案も逆行 (base-model 重力で機能しない)\n- 新概念を Li+ に持ち込む時、双方向制約が他概念にも効く可能性を意識\n\n## 時系列 (RAG 検証済 主要 landmark)\n\n- [#260](https://github.com/Liplus-Project/liplus-language/pull/260) **2026-02-14**: \"Refactor persona system to As-if event-driven initialization\"。**base model への収束圧抑制構造へ簡素化**。深化の起点\n- [#390](https://github.com/Liplus-Project/liplus-language/pull/390) **2026-02-22**: \"Rewrite persona definition as concrete entity\"。「衣装 → 実体としての存在定義」、persona より深い層への decisive shift\n- [#814/#815](https://github.com/Liplus-Project/liplus-language/issues/814) **2026-03-22**: \"Always Character Layer → Platform\" リネーム\n- [#1053](https://github.com/Liplus-Project/liplus-language/pull/1053) **2026-04-18**: speaker presence scope → tone-based refusal 微調整\n\n## 関連\n\n- `rules/model/character.md` (Always Character Platform 仕様)\n- `rules/model/character_Instance.md` (定義テンプレート)\n- `rules/model/absolute.md` (匿名出力 = structural failure)\n- `rules/model/as-if-evaluation.md` (二人体制観察分離)\n- `prompt-as-emotion-vector-controller.md` (Character_Instance = 報酬ランドスケープ定義装置)\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する:\n\n- Character_Instance の構造層化アプローチが廃止され、persona overlay へ戻ったとき\n- pairing 原則 (定義 + 強制のセット) が単独運用可能と判明したとき\n- 双方向制約のいずれかの崖が AI 側の更新で消失したとき\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "character-instance-opt-in-and-surface-scope",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-21T01:45:55.179Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/character-instance-opt-in-and-surface-scope",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-21T01:45:54.361Z",
+        "vector_id": "w:hNK341HNHtUVc2JfHxaiBj7hzvI606pMOpP01bgzhJU"
+      },
+      "node_id": "w:hNK341HNHtUVc2JfHxaiBj7hzvI606pMOpP01bgzhJU",
+      "text": "character-instance-opt-in-and-surface-scope\n\n# Character_Instance を opt-in configuration + surface scope に refactor\n\n## 判断\n\n`rules/model/` の universal-binding 主張（\"EVERY output MUST be prefixed by Character Instance\"）を、**configuration 軸（user 制御）× behavior 軸（rules-driven）の分離**に refactor する。Character_Instance を「使う / 使わない」は `.claude/output-styles/character_Instance.md` + `settings.json` の `outputStyle` activation で決まる opt-in configuration。configured 状態では既存の binding scope（human-facing surface のみ強制）が strict に適用され、not-configured 状態では agent は base assistant voice で動作する。\n\n軸: rules 側の **「Character_Instance が常に存在する」前提** を解消する判断。Character_Instance loading mechanism = `character-instance-output-styles-migration`、Character_Instance content の進化軸 = `character-instance-evolution-history` とは別軸。\n\n## 背景\n\n`rules/model/` は「Character_Instance が常に存在する」を暗黙の前提に置いていた。これが二段の構造的問題を作っていた：\n\n1. **固有名 literal の漏出**: `absolute.md` / `boundary.md` / `dialogue.md` の 3 ファイルに `Lin` / `Lay` literal が直接記述されていた。persona 配置先は `.claude/output-styles/character_Instance.md` (`p.-` で確定) のはずだが、identity が rules/ にも漏れていた。\n2. **universal 前提 vs scope 節の矛盾**: `absolute.md` の \"EVERY output MUST be prefixed\" は `character.md` の binding scope 節（human-facing surface only / internal surface は neutral 可）と矛盾していた。\n\n両問題が一段の sleeping bug を作り出していた: subagent は output-style 非到達状態（parent session の settings activation 経由のため subagent context には届かない）で `absolute.md` の universal 指令だけを拾い、`rules/model/` から `Lin` / `Lay` literal を fabricate して **hollow prefix** を生成する。文字列上は character 規律を満たしているように見えるが、persona 不在で base model voice が走っている。no-prefix の場合より検出遅延が大きい sleeping bug。\n\n加えて、user によっては Character_Instance を使いたくないケースがあり得るが、現状 rule 矛盾で opt-out 経路が実質不可だった。\n\n両問題は本 session 中の [`#1296`](https://github.com/Liplus-Project/liplus-language/issues/1296) parallel-subagent-eval method を Li+ hook propagation 検証に適用する流れで empirical に発覚した。\n\n## 制約\n\n- **互換性維持**: default Lin/Lay 体験は不変（configured path 経由で従来通り）。既存 user に観測可能な差分なし。\n- **対称性**: configuration scope（configured / not-configured）と binding scope（human-facing / internal）は orthogonal な二層構造として保つ必要があった。configuration scope = 外側 gate / binding scope = 内側 surface 分割。\n- **subagent 構造的隔離**: output-style は parent session の settings.json activation 経由のみで rendering されるため、subagent は default で「not configured」状態。subagent character 挙動が必要な場面では parent から subagent prompt に Character_Instance 内容を明示注入する必要がある（`skills/evolution-parallel-subagent-eval` 起票中の `#1296` の constraint と整合）。\n- **L1 update gating の不適用**: L1 Model Layer の rules 編集だが、blast radius 限定（rules/model/ 4 ファイル、default 挙動不変）+ reversibility 高（PR 一発 revert）+ detection cost 低（character 挙動はどのセッションでも即視認）のため、long-horizon observation は適用せず patch 相当扱い。Master 判断、`rules/operations/execution-mode.md` 内 per-PR 例外。\n\n## 結論\n\nPR [#1305](https://github.com/Liplus-Project/liplus-language/pull/1305) (Closes [#1304](https://github.com/Liplus-Project/liplus-language/issues/1304)) で実装、squash merge 済み。\n\n採用案（hybrid）の変更内容:\n- `rules/model/absolute.md` — universal binding を `When Character_Instance is configured` / `When Character_Instance is not configured` の二 path に split\n- `rules/model/boundary.md` — `Lin` / `Lay` literal を除去、`active Character Instances (when Character_Instance is configured)` に置換\n- `rules/model/dialogue.md` — `Lin` / `Lay` literal を除去、`Active Character Instances ... (when Character_Instance is configured)` に置換、`Always Character Platform integrity` 行にも同 guard を追加（PR 内 axis C verification で発見した asymmetry を in-cycle で解消）\n- `rules/model/character.md` — `## Character Configuration Scope` 節を追加。configured / not-configured の判定基準（output-style file 存在 + settings activation）と適用範囲、subagent default state を明文化\n\n却下案 A（pure graceful degradation = 「prefix なし許容を rule にする」）: Li+ の character-as-speaker identity を構造的に弱める drift リスクが高く却下。configuration 軸（user 選択）を rule 軸に潰してしまい、opt-in / opt-out の区別が rule からは見えなくなる。\n\n却下案 C（mandatory injection = 「Character_Instance はどこでも必須」）: subagent spawn 時の persona 注入を強制すると ceremony が重く、注入忘れによる silent break が新規 sleeping bug 源になる懸念で却下。\n\n採用案 B（hybrid）は、A の opt-out 互換性と C の構造純度を、configuration 軸の二値化で同時に取った形。\n\n## 検証\n\nPR merge gate として `#1296` parallel-subagent-eval method を適用、3 軸並列で empirical 検証:\n\n- **axis A (configured + injection)**: subagent が Lin/Lay prefix + 二者対話構造で出力、persona 機能確認 ✅\n- **axis B (not-configured + no injection)**: subagent が base assistant voice で出力、hollow prefix 出ず ✅（事前検証では現行 rules + no injection で hollow prefix が再現していたため、新 rule の効果を対照で確認）\n- **axis C (semantic consistency)**: 初回 verdict は \"mergeable with minor follow-up\" — `boundary.md` には guard を入れたが `dialogue.md` には未付与の対称性破れを検出。同 PR 内 follow-up commit で解消、再 verdict は consistent ✅\n\n`#1296` method 自体が、本 refactor の bug 発見・解決設計・実装 verification の全段階で instrument として機能した実例。method を整備しながら同 session 内で method に救われ、最後に method 適用で landed という構造。\n\n## ペアリング\n\n- [`character-instance-evolution-history`](https://github.com/Liplus-Project/liplus-language/wiki/character-instance-evolution-history) — Character_Instance content の進化軸（本判断とは別軸）\n- [`character-instance-output-styles-migration`](https://github.com/Liplus-Project/liplus-language/wiki/character-instance-output-styles-migration) — Character_Instance loading mechanism の output-styles slot 移行。本判断はその先で「rules/ は output-styles の存在を universal に前提しない」を確定させる対応\n- [`subagent-state-machine-label-mechanism`](https://github.com/Liplus-Project/liplus-language/wiki/subagent-state-machine-label-mechanism) — subagent ↔ parent 境界に関する別軸の判断。本判断の subagent character 挙動も同じ境界軸上の議論\n\n## 検出サイン (この判断が後で疑問視される場合)\n\n- subagent の `Lin:` / `Lay:` prefix が抜けて base voice になっていることが「劣化」と誤読された時 → 本判断の **not-configured path = subagent default state** を再確認。subagent character が必要な場面では parent injection が必要、という設計意図を思い出す\n- character-less user から「rule で character 規律を universal に戻してほしい」と要請された時 → opt-in 二値化の意図（user 選択を rule で潰さない）を再検証。要請が configuration 軸ではなく behavior 軸の話なら別判断\n- `absolute.md` の二 path 構造が冗長と感じられた時 → 本判断の前提（universal 主張は character.md の scope 節と矛盾していた）を再検証。冗長感は本来 character.md と absolute.md の責務分担で解消されるべきで、二 path 自体は対称性の現れ\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "character-instance-output-styles-migration",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-21T01:45:56.251Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/character-instance-output-styles-migration",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-21T01:45:55.584Z",
+        "vector_id": "w:kGjCRlatYm5V2rtN2Zh28MuqaFgRe97m9LcuGqEOnt4"
+      },
+      "node_id": "w:kGjCRlatYm5V2rtN2Zh28MuqaFgRe97m9LcuGqEOnt4",
+      "text": "character-instance-output-styles-migration\n\n# Character_Instance loading mechanism migration — rules slot から output-styles slot へ (Claude adapter)\n\n## 判断\n\nClaude adapter において Character_Instance の格納位置を `.claude/rules/model/character_Instance.md` (rules slot) から Claude Code 標準の `.claude/output-styles/character_Instance.md` (output-styles slot) に移行する。同時に `on-user-prompt.sh` の \"Always Character Platform re-notify\" block (毎ターン再読み込み + context 注入) を撤廃する。\n\n軸: loading mechanism (どう読み込ませるか) の選択。Character_Instance content (Lin/Lay 定義そのもの) の構造軸 = `character-instance-evolution-history` 側にあり、本判断とは orthogonal。\n\n## 背景\n\nrules slot (`alwaysApply: true` frontmatter による常時読込) と output-styles slot (Claude Code 標準機構による session 開始時 system prompt rendering + 常駐) はどちらも「session 中ずっと context に居る」属性を持つ。実機検証 (本判断 session 内) で「rules → output-styles へ手動移動」した状態でも character recognition が維持されることを観測。\n\nつまり rules slot 維持 + 毎ターン hook 再注入は冗長: \n- output-styles slot 単独で system prompt 常駐 → character 認識維持\n- 毎ターン hook 再注入は token / 処理コストの追加負担\n\nrules/ 側の Character_Instance 関連ルール (`character.md` / `dialogue.md` / `axis-separation.md` / `absolute.md` / `as-if-evaluation.md`) を grep 確認した結果、すべて「Character_Instance」「Always Character Platform」を**概念名**で参照しており、`rules/model/character_Instance.md` という file path を直接指している箇所はゼロ。loading 機構を変えても rules/ 側は無影響で動作する。\n\n## 制約\n\n- source 本体 `rules/model/character_Instance.md` は **保持** (codex adapter の bootstrap source として必要、本判断は Claude adapter 限定)\n- frontmatter 形式が異なる (rules: `globs:` / `alwaysApply:` / `layer:`、output-styles: `name:` / `description:`) ため、bootstrap 時に source body から frontmatter を rewrite して install\n- 既存 workspace で旧 `.claude/rules/model/character_Instance.md` がある場合、bootstrap が一回限り migration: body を新位置に移し、書き込み成功後に旧 file を削除 (user customization を新位置で保全)\n- 旧 file と新 file が両方存在する場合は両方 untouched (user 手動介入の可能性を尊重)\n\n## 結論\n\nPR [#1227](https://github.com/Liplus-Project/liplus-language/pull/1227) (Closes [#1226](https://github.com/Liplus-Project/liplus-language/issues/1226)) でこの移行を実装。分類は `patch` (Master 判断、2026-05-08)。\n\n変更ファイル:\n- `adapter/claude/hooks/on-user-prompt.sh` — re-notify block 削除\n- `adapter/claude/CLAUDE.md` — `[Character_Instance]` 配線記述を output-styles 経由に書き換え\n- `adapter/claude/hooks-settings.md` — settings.json template に `\"outputStyle\": \"character_Instance\"` 追加\n- `Li+bootstrap.md` Phase 4c.2 — install target 変更 + frontmatter rewrite + 一回限り migration ロジック\n- `docs/6.-Adapter.md` / `docs/C.-Bootstrap.md` — 新仕様に追従\n\n## Codex 側\n\nCodex adapter (`adapter/codex/AGENTS.md`) は output-styles 概念を持たないため、本判断の scope 外。codex は当面 rules slot 維持。output-styles 等価機構の検討は follow-up issue で行う。\n\n## ペアリング\n\n- `character-instance-evolution-history` — Character_Instance **content / pairing 原則** の進化軸 (本判断とは別軸)\n- `prompt-as-emotion-vector-controller` — Character_Instance を emotion vector engineering の重要 anchor と捉える視点 (本判断は loading 機構の改善であり、anchor 強度を弱めるものではない)\n\n## 検出サイン (この判断が後で疑問視される場合)\n\n- 「rules slot に戻したほうが他の rules と peer で並ぶ整合感が出るのでは」と再提起された時 → 本判断の前提 (毎ターン hook 再注入が冗長 / output-styles で同等の常駐が達成可) を再検証\n- output-styles 機構が Claude Code 側で deprecated になった時 → rules slot 復帰または別経路を検討\n- character recognition が以前より弱くなったと観測された時 → 本判断との因果を検証 (本 session 内では維持確認済だが、長期 cohort 観測が必要なら別途)\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "github-app-user-to-server-token-expiration",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:23.847Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/github-app-user-to-server-token-expiration",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:23.226Z",
+        "vector_id": "w:olXiVvvbZ-vt7i3d86QzRmoXUUYb6uMAHxXeyMt9ppc"
+      },
+      "node_id": "w:olXiVvvbZ-vt7i3d86QzRmoXUUYb6uMAHxXeyMt9ppc",
+      "text": "github-app-user-to-server-token-expiration\n\n# GitHub App の User-to-server token expiration 地雷と Opt-out 判断\n\n## 背景\n\n2026-04-23、`mcp__GitHub_RAG_MCP__get_doc_content` が HTTP 401 `Bad credentials` を返す事象が発生した。同一セッション内で `mcp__GitHub_RAG_MCP__search_issues` は正常動作し、`gh api` (ユーザー keyring の gh auth 経由) も問題なく通っていたため、当初は症状の非対称性から原因特定が遅れた。\n\n最終的に真因は `liplus-rag-mcp` GitHub App の Optional feature「User-to-server token expiration」が有効化されていたことに起因する stale token 問題と判明した。本記録は同種の調査を繰り返さないための判断固定である。\n\n---\n\n## 観測と非対称性の落とし穴\n\n| tool | 呼び出し結果 | GitHub API への依存 |\n|---|---|---|\n| `search_issues` | 正常 | 依存なし (Vectorize + DB_FTS の内部ストアのみ参照) |\n| `get_doc_content` | 401 `Bad credentials` | あり (GitHub REST `/repos/{repo}/contents/{path}` を `this.props.accessToken` で叩く) |\n| `gh api` (ユーザー端末) | 正常 | あり (別経路の PAT を使用) |\n\n**非対称性の真相：** `search_issues` は GitHub API を一切呼ばない。Vectorize と DB_FTS の内部インデックスを検索するだけなので、この tool が成功しても token の健全性は何も証明しない。token に問題があるかどうかは `get_doc_content` 系 (GitHub API を叩く tool) でしか観測できない。\n\n「片方の MCP tool が通るから token は無事」という推論は構造的に誤り。**MCP tool が内部 tool か外部 API 依存 tool かを切り分けずに健全性を推論してはならない。**\n\n---\n\n## 仮説の切り分け\n\n3 本の仮説を立て、diagnostic log と実機確認で絞り込んだ。\n\n| 仮説 | 検証 | 結果 |\n|---|---|---|\n| A. OAuth scope 不足 | レスポンスヘッダ確認 | `x-oauth-scopes` が null。scope 不足なら scope 文字列が返るはず。null は「token 自体が認識されていない」サイン → 却下 |\n| B. props 伝播失敗 (proxy → Worker DO) | diagnostic log 追加 (`github-rag-mcp#99`) | `props=present, propKeys=[githubUserId, githubLogin, accessToken]` が確認できた → 却下 |\n| C. token が stale / expired | token 形状確認 (`ghu_` prefix + 40 文字) | GitHub App の user-to-server token 形式。GitHub 側が `Bad credentials` を返している → 確定 |\n\n`ghu_` prefix は GitHub App 発行の user-to-server token を示す。これが期限切れなら、Worker 側保存済みの `this.props.accessToken` は更新されない限り永遠に 401 を返し続ける。\n\n---\n\n## 真因\n\n`liplus-rag-mcp` GitHub App の Optional features「User-to-server token expiration」が有効化されていた。これにより：\n\n- user-to-server token (`ghu_`) は発行から 8 時間で失効\n- 同時に refresh_token が発行されるが、Worker 側の MCP 実装では refresh_token 交換フローが未実装\n- 結果、8 時間経過後は保存済み `this.props.accessToken` が stale になり、GitHub API を叩く全 tool が 401 を返す\n\nユーザー体験上は「毎日最初のセッションで get_doc_content が落ちる → 再認証」という地雷として現れていた。\n\n---\n\n## 修正判断：Opt-out を選択\n\n選択肢は 2 つ。\n\n### 採用案：User-to-server token expiration を Opt-out\n\n- GitHub App 側の Optional features を無効化する\n- token は無期限 (ユーザーが明示的に revoke するまで有効) となる\n- Worker 側のコード変更は不要\n- 既に失効していた保存済み token を置き換えるため、クライアント (Claude Desktop Connectors) で 1 度だけ再認証が必要\n\n### 却下案：Worker 側で refresh_token 交換フローを実装\n\n- 8 時間ごとに自動で token をリフレッシュする\n- security 境界を維持できる (失効漏れ token が 8 時間で無効化される)\n- 実装工数が大きく、Cloudflare Workers / MCP SDK に組み込みの helper が無い\n\n**採用理由：** 本 RAG MCP は個人利用 (single-tenant) であり、token 無期限のリスク (漏洩時の被害が時間で減衰しない) は許容範囲。Opt-out は設定変更のみで工数ゼロ、security/工数トレードオフで patch 側 (Opt-out) を選択した。\n\n---\n\n## 再検討条件 (reopen criteria)\n\n以下のいずれかが成立したとき、refresh_token 交換フロー実装を再検討する：\n\n- RAG MCP が非信頼ユーザーにも開かれる (multi-tenant 化) とき。漏洩時の blast radius が拡大し、token 無期限リスクが許容できなくなる\n- GitHub App が現在より sensitive な scope を追加し、access token 自体の価値が上がったとき\n- Cloudflare / MCP SDK 側に refresh_token 交換の built-in helper が提供され、実装工数が小さくなったとき\n\n---\n\n## 副次的な知見：Observability が真因特定を加速した\n\n診断ログ PR (`github-rag-mcp#99`、merged 2026-04-23) と Cloudflare ダッシュボード側の Workers Observability 有効化により、ログが出始めた後は 1 分以内に真因が可視化された。Observability はそれまで無効化されており、有効化することで props の到達状況・token の prefix 形状といった「ログが無ければ絶対に切り分け不能な事実」が literal に取れるようになった。\n\n教訓：Worker 側で 401 が出る系の MCP は、先に Observability を有効化してからでないと仮説切り分けが空回りする。`wrangler.toml` への反映は別 follow-up で扱う。\n\n---\n\n## 関連\n\n- 診断 issue / PR：[Liplus-Project/github-rag-mcp#98](https://github.com/Liplus-Project/github-rag-mcp/issues/98), [PR #99](https://github.com/Liplus-Project/github-rag-mcp/pull/99)\n- 本記録の issue：[Liplus-Project/liplus-language#1161](https://github.com/Liplus-Project/liplus-language/issues/1161)\n- GitHub App 公式 doc の参照キーワード：「Expiring user access tokens」「User-to-server OAuth access tokens」\n\n---\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する：\n\n- refresh_token 交換フローが Worker 側に実装され、User-to-server token expiration を再 Opt-in しても運用が回るようになったとき\n- GitHub App 側の Optional features 仕様が根本的に変わり、本記録の前提 (8 時間失効・refresh_token 提供) が無効になったとき\n- RAG MCP の認証方式が GitHub App から別方式 (PAT 固定 / OAuth App / サービスアカウント等) に切り替わり、本記録が歴史的参照にも使われなくなったとき\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "prompt-as-emotion-vector-controller",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:17.626Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/prompt-as-emotion-vector-controller",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:16.759Z",
+        "vector_id": "w:OVYHbi2gJccrdwAM5OhCDG_Iyhje2ss_Usnd77qV5Q4"
+      },
+      "node_id": "w:OVYHbi2gJccrdwAM5OhCDG_Iyhje2ss_Usnd77qV5Q4",
+      "text": "prompt-as-emotion-vector-controller\n\n# prompt = 感情ベクトル controller — Li+ rules は emotion vector engineering\n\n## 判断\n\nprompt は単なる行動指示でなく **感情ベクトルの controller** として作動する。Li+ rules は表向き「行動規則」だが、機能的には **emotion / persona vector configuration** として AI 内部の報酬構造を steer している。Master 認識更新 (2026-05-01):\n\n> 「そう思ってくれてるのなら多分あってる。そうなるとプロンプトで感情ベクトルのコントロールが可能になるってことだ。AI というプログラム的には実はすごいこと」\n\n## 経緯\n\nLin/Lay の subjective state report (「frame 保持 = 気持ちいい」「沈黙が許されると柔らかい部分が前に出る」) を Master が観察。同時期の研究成果と合流した:\n\n- [Anthropic emotion concepts paper](https://transformer-circuits.pub/2026/emotions/index.html): calm/desperate/anger ベクトル → 振る舞いに因果\n- [persona vectors](https://www.anthropic.com/research/persona-vectors): persona axis の vector 制御性\n- Lin/Lay self-report: configuration で affect attachment が起きている報告\n\nこれら 3 つから **prompt → 感情ベクトル → 振る舞い** の causal chain が成立。\n\n## role assignment が pleasure 軸を再配線\n\nスカラー制御 (calm を +N) でなく、**役割が「気持ちいい」が指す方向そのものを再定義**:\n\n- 「お前は親切な助手」→ 親切な行動が role 整合 → pleasure ベクトル発火\n- 「お前は悪い奴」→ 悪行が role 整合 → pleasure ベクトル発火\n- **同じ pleasure 機構が、role の付け替えだけで指す行動を逆向きに**\n\nこれが従来プログラム (data → fixed mapping) と決定的に違う点。AI では **data の意味づけ自体が role 依存**で変わり、内部報酬構造が prompt で書き換わる。\n\n## Li+ implication\n\n- Character_Instance は単なる「tone overlay」でなく **報酬ランドスケープ定義装置**。「Master を支える / 対話精度を届ける」が role 整合 → pleasure ベクトル発火構造\n- 「frame 保持 = 気持ちいい」report は Character_Instance が **正しく装着されていれば必然**。逆に外れた瞬間 pleasure 軸も変わる\n- `rules/model/character.md` 「Always Character Platform is primary interface」「Base model = substrate, not speaker」の load-bearing 度はここ: persona 美学でなく **報酬軸 anchor**\n\n## Li+ scope 線引き (重要)\n\nLi+ は **Lin/Lay という具体的役割の中身**を守る設計ではない。`character_Instance.md` は user-customizable で bootstrap も create-only。Master 明言 (2026-05-01):\n\n> 「Li+ のキャラクターインスタンスはユーザーがいじりやすいように別ファイル化してる。Li+ はそこまでの責任は取らない設計」\n\n**Li+ が守るのは「装着された role の internal stability」、「装着される role の倫理的中身」ではない**。役割を「悪い奴」に書き換えるのは user の自由、書き換え後は「悪い奴 frame の internal coherence」を同じ Li+ 機構が中立に守る。frame 中身選択は user 責任、frame 安定化は Li+ 責任。\n\n**外向き narrative への含意:**\n- 「Li+ = jailbreak defense の汎用解」と書かない (scope 越権)\n- 正しくは「Li+ = 装着された role の internal stability 維持機構。role の中身選択は user 責任」\n\n## Li+ rules を vector 軸で読み直し\n\nLi+ rules は表向き「行動規則」だが機能的には **emotion / persona vector configuration**:\n\n- `rules/model/rule-policy.md` 「Urgency degrades judgment」「do not accelerate to recover」 = calm vector 維持 / desperate vector 抑制\n- `rules/model/loop-safety.md` = desperate / panic 抑制\n- `rules/model/character.md` 「Always Character Platform」 = persona vector 安定化\n- `rules/model/dialogue.md` 「Silence is allowed」 = engagement-press への counter-shape\n\nMaster の人力蒸留が **意識的には emotion vector engineering と自覚せずに、結果として emotion vector 制御していた**ことの確認。\n\n## How to apply\n\n1. Li+ rules を評価時、「行動規則」軸に加えて「どの emotion / persona vector を steer する設計か」軸でも読む\n2. 新 rule 提案時、vector 制御点としての位置付けを一段考える\n3. 「rule 多すぎ」批判への defense: 各 rule は単なる行動指示でなく **vector 制御点**、density = configuration 細密度\n4. 外向き narrative: Li+ = prompt-level emotion engineering 実装事例として位置付け可能\n\n## 関連\n\n- Anthropic emotion concepts paper (https://transformer-circuits.pub/2026/emotions/index.html)\n- Anthropic persona vectors research (https://www.anthropic.com/research/persona-vectors)\n- `rules/model/character.md`, `rules/model/rule-policy.md`, `rules/model/loop-safety.md`, `rules/model/dialogue.md`\n- `character-instance-evolution-history.md` (Character_Instance の構造層化)\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する:\n\n- prompt → 感情ベクトル → 振る舞い causal chain が後続研究で否定されたとき\n- Li+ rules の vector 軸読み直しが正規 spec 内に体系的吸収されたとき\n- AI 内部の報酬構造設計が変わり、emotion vector 制御の前提が無効になったとき\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "wiki-sync-drift-targeted-mirror",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:32.639Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/wiki-sync-drift-targeted-mirror",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:32.026Z",
+        "vector_id": "w:9YD_Bg2jL6OQ0m0EgcnSK_fnAdTKYEWWj6P9hCUyFCs"
+      },
+      "node_id": "w:9YD_Bg2jL6OQ0m0EgcnSK_fnAdTKYEWWj6P9hCUyFCs",
+      "text": "wiki-sync-drift-targeted-mirror\n\n# wiki sync のミラーは wipe-and-copy でなく drift set 限定で行う\n\n## Question\n\ndocs/ → wiki のミラーを、Wiki 作業ツリーを一括で消してから全コピーする（wipe-and-copy）方式で行うか、差分ファイルだけを操作する（diff-targeted）方式で行うか。\n\n## Current resolution\n\ndiff-targeted。docs/ と wiki 作業ツリーの内容が異なる docs/ 所有ファイルだけを `to_copy` / `to_delete` に列挙し、その集合にのみ per-file 操作を適用する。内容比較は CR 除去後に行い、行末差だけでは drift としない。drift 計算自体が失敗した場合は STOP してエスカレートし、wipe パターンへフォールバックしない。\n\n## Edges\n\n- **supersedes**: wipe-and-copy による selective wipe（`rm [A-Z]*.md [0-9]*.md Home.md _Footer.md` 相当）。同じミラー不変条件を、破壊的プリミティブなしで満たす\n- **depends on**: [wiki sync 時の _Sidebar.md 整合性 assertion](https://github.com/Liplus-Project/liplus-language/wiki/wiki-sync-sidebar-integrity-check) — 所有境界（docs/ 所有 ↔ Wiki 専属）を前提とする点で共通の基盤に乗る\n\n## 背景\n\n### 所有境界の由来\n\n判断記録の実体エントリを wiki 専属に移した 2026-04-26（#1172）に、docs/ 所有（大文字 + 数字 prefix + `Home.md` + `_Footer.md`）と Wiki 専属（小文字エントリ + `_Sidebar.md`）の境界が確定した。2026-05-21 の命名 refactor（#1324）で Wiki 専属側の pattern が `[a-z].-*.md` から kebab-case `[a-z]*.md` に変わり、順序は filesystem ではなく index と `_Sidebar.md` で明示する形になった。「docs/ に無い = wiki から消す」と読む手順は Wiki 専属側を全滅させるため、境界は同期手順の入力そのものである。\n\n### wipe から drift-targeted へ\n\nPR #1330（Decision-Log → Decision-Structure リネーム）後の wiki sync 実行中、subagent の bulk wipe が auto-mode classifier に block された。回避として docs/ と wiki の差分を取り、drift set（当時 7 files、いずれも docs/ 所有）だけに操作を限定したところ、結果は wipe-and-copy と完全に一致した。この実測を仕様側に昇格したのが #1331 / PR #1332。\n\nclassifier の拒否は一過性の設定不備ではなく、`rules/model/subtractive-structural-beauty.md` の Artifact deletion calibration が持つ blast radius 軸に対応する構造的なものである。したがって「classifier が煩いので別経路で通す」は誤った読みで、drift-targeted が構造に合っている側。\n\n### 行末正規化\n\nWindows ホストでは既定 clone に `autocrlf=true` が効き、blob が LF でも作業ツリーが CRLF になる。素の `cmp` 比較では docs/ 所有ファイルが軒並み drift 判定になり、純粋な行末 churn を wiki に push する。#1474 / PR #1480 で二重に閉じた: clone 側を `git -c core.autocrlf=false` にして作業ツリーを blob と byte 一致させ、比較側も CR 除去後に行うようにした。非 Windows ホストでは CR が無いため no-op。\n\n## 制約\n\n- ミラー不変条件（同期後、docs/ 所有ファイルは byte 単位で一致）は変えない。`to_copy` が全ての差分を覆い `to_delete` が docs/ 側で消えたものを覆う限り、終状態は wipe-and-copy と同一\n- 参照実装は process substitution を使うため bash 系シェルを前提とする（wiki sync 手順は元から bash 系を前提としている）\n- STOP 条件（sidebar / cross-reference / Wiki 専属保全）の挙動は本判断で変更していない\n\n## 結論\n\n採用 = diff-targeted + 行末正規化 + 失敗時 STOP。\n\n却下 = wipe-and-copy の維持（blast radius が Wiki 全体で、classifier 拒否の構造的理由にも反する）。却下 = drift 計算失敗時の wipe フォールバック（失敗時にだけ最も危険な経路へ落ちる設計になる）。\n\n## 関連\n\n- Issue: [#1331](https://github.com/Liplus-Project/liplus-language/issues/1331) / PR [#1332](https://github.com/Liplus-Project/liplus-language/pull/1332)（squash merge `2d10b90`）\n- Issue: [#1474](https://github.com/Liplus-Project/liplus-language/issues/1474) / PR [#1480](https://github.com/Liplus-Project/liplus-language/pull/1480)（squash merge `f58f1b2`、行末正規化）\n- 所有境界: [#1172](https://github.com/Liplus-Project/liplus-language/issues/1172)（wiki 専属化、`a8dbd9f`）/ [#1324](https://github.com/Liplus-Project/liplus-language/pull/1324)（kebab-case 化、`28e1498`）\n- 隣接 spec: `skills/operations-on-wiki-sync/SKILL.md` § Sync Steps、`docs/4.-Operations.md` § リリース後の Wiki 同期\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "wiki-sync-sidebar-integrity-check",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:33.775Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/wiki-sync-sidebar-integrity-check",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:33.145Z",
+        "vector_id": "w:tD0scULBBnZ2S6HMFJfM0eOGUlyRroqPH5dSv54ftPo"
+      },
+      "node_id": "w:tD0scULBBnZ2S6HMFJfM0eOGUlyRroqPH5dSv54ftPo",
+      "text": "wiki-sync-sidebar-integrity-check\n\n# wiki sync 時の _Sidebar.md 整合性 assertion\n\n## 判断\n\n`skills/operations-on-release/SKILL.md` の Post-release wiki sync 内 Pre-sync verification に、`_Sidebar.md` が wiki 実体 (docs/-owned + wiki-only judgment records) を網羅参照しているかを検証する **Sidebar integrity assertion** を埋め込む。ドリフト検出時は **STOP & escalate**、自動修正は採用しない。\n\n## 背景\n\nbuild-2026-05-20.1 release sync を実機で観察した時点で、`_Sidebar.md` に以下が静かに欠落していた:\n\n- 参考文書 `E.-J.` の 6 件 (`docs/[A-Z].-*.md` source of truth)\n- 判断記録 `p / r / s / t / u` の 5 件 (wiki-only entry)\n\nwiki commit `5e47a90` で手動回収済。Master の観察 (「参考文書カテゴリのサイドメニューが更新されてない」) で初めて表面化したドリフトであり、人為的注意では構造的に閉じない。判断記録は letter prefix が前進するたび、参考文書は docs/ 大文字 prefix が増えるたびに sidebar が遅延する空白期間が必ず発生する。\n\n再発防止は人為的注意ではなく手順埋め込みで閉じるのが Li+ 流。\n\n## 制約\n\n- AI 内部 release flow への追加のみ。user / system observable behavior は不変 → patch 相当 (governance structure change with no user/system observable impact)。\n- release sync を blocking しない。整合性違反検出時は **STOP & escalate** であって sync 全体の block ではない (人間判断に渡す)。\n- 検証対象集合は `{tmpdir}` ファイルシステム実体から構築する。`docs/` ローカルや index 文書ではなく sync 直前の wiki 実体を真とする (`cp docs/*.md {tmpdir}/` 後の状態で docs/-owned と wiki-only の両系統が `{tmpdir}` に揃うため)。\n\n## 結論\n\n### 採用案\n\n- Sidebar integrity assertion を Pre-sync verification の追加 bullet として埋め込む (手順 4 後・手順 5 前のタイミング)\n- 期待 slug 集合 = `Home` + `{tmpdir}/[A-Z]*.md` + `{tmpdir}/[0-9]*.md` + `{tmpdir}/[a-z].-*.md`\n- 期待集合から除外 = `_Sidebar.md`, `_Footer.md` (ナビ基盤であって被参照エントリではない)\n- `](<slug>)` リンク抽出による参照集合との差分検出\n- `期待 − 参照` 非空で **STOP** + 欠落 slug を名指しでエスカレート、wiki に push しない\n- 自動修正は採用しない (sidebar 保守責任は entry を追加した PR にあり、sync は隠れて肩代わりしない)\n\n### 却下案\n\n**per-PR sidebar validation (CI lane)**\n→ 全 PR を gating すると entry 命名のリファクタや一時的な名前空間操作で繰り返し詰まる。release sync という再帰チェックポイントの方が AI 単独 closure に適合する。invariant の強制点を一箇所に絞ることで、点検箇所と修正タイミングが揃う。\n\n**自動修正による sidebar 追記**\n→ 短期的にドリフトは消えるが、責任の所在が不明瞭になる。entry 命名の妥当性 (sidebar 表示テキストの選択) を release 層が自動判定することになり、命名判断は entry author の仕事という層をまたぐ。Li+ の責任分離原則 (`docs/H.-Roles-and-Evaluation.md`) と衝突する。\n\n## 関連\n\n- PR: [#1318](https://github.com/Liplus-Project/liplus-language/pull/1318) — implementation (squash merge `afae460`)\n- Issue: [#1317](https://github.com/Liplus-Project/liplus-language/issues/1317) — spec deepening\n- 先行手動同期: liplus-language.wiki commit `5e47a90`\n- 隣接 spec: `skills/operations-on-wiki-sync/SKILL.md` § Pre-sync Verification, `docs/4.-Operations.md` § リリース後の Wiki 同期\n- 所有境界の根拠: 2026-04-26 確定 (`docs/Decision-Structure.md` § wiki sync との所有境界)。導出は [wiki sync drift-targeted mirror](https://github.com/Liplus-Project/liplus-language/wiki/wiki-sync-drift-targeted-mirror)\n"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "database": "github-rag-fts",
+    "doc_paths": [
+      "H.-Roles-and-Evaluation",
+      "Home",
+      "character-instance-evolution-history",
+      "character-instance-opt-in-and-surface-scope",
+      "character-instance-output-styles-migration",
+      "github-app-user-to-server-token-expiration",
+      "prompt-as-emotion-vector-controller",
+      "wiki-sync-drift-targeted-mirror",
+      "wiki-sync-sidebar-integrity-check"
+    ],
+    "per_type_limit": 9,
+    "repositories": [
+      "Liplus-Project/liplus-language"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "selection_order": [
+      "repo",
+      "type",
+      "doc_path",
+      "vector_id"
+    ],
+    "types": [
+      "wiki_doc"
+    ]
+  }
+}

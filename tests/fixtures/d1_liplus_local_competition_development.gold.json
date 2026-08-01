@@ -1,0 +1,102 @@
+{
+  "cases": [
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:EyfdPl6m6HDEPWu-2in7YoAAJUR-3jhGKHNPS2Bxp4A",
+      "id": "local-dev-direct-integrated-prototype",
+      "query": "clean-sheet Neuron Graph RAG prototype dense sparse typed knowledge graph activation propagation success feedback time decay",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/neuron-graph-rag-integrated-prototype"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:RlanesfrOVafoOsmtS5j43xMQt08JpXlYPyJ0mi50so",
+      "id": "local-dev-direct-context-rot",
+      "query": "always-on rules context rot instruction dilution just-in-time missed trigger unresolved tradeoff re-arm",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-context-rot-tension"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:5fBFc2M4h3kQx3zMkvhJu4dXZD6z5tx59Vq22KsfFJs",
+      "id": "local-dev-direct-retrieval-surface",
+      "query": "structure purpose retrieval surface retrievable source named axis explanation assembly",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-structure-as-retrieval-surface"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:QxkFan-dY7kVdAzoP115Pe4FbxOmCLepO4mOUoWqt4c",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:EyfdPl6m6HDEPWu-2in7YoAAJUR-3jhGKHNPS2Bxp4A",
+          "target_id": "w:QxkFan-dY7kVdAzoP115Pe4FbxOmCLepO4mOUoWqt4c"
+        }
+      ],
+      "id": "local-dev-relation-prototype-judgment",
+      "query": "integrated prototype select few original judgment records hybrid retrieval typed graph dynamic associative memory",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/neuron-graph-rag-integrated-prototype",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-judgment-learning-telos"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:RlanesfrOVafoOsmtS5j43xMQt08JpXlYPyJ0mi50so",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+          "target_id": "w:RlanesfrOVafoOsmtS5j43xMQt08JpXlYPyJ0mi50so"
+        }
+      ],
+      "id": "local-dev-relation-lineage-context",
+      "query": "self evolution lineage dialogue distillation convergent not derived scaffold-side fixed weights",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-selfevolution-lineage",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-context-rot-tension"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:5fBFc2M4h3kQx3zMkvhJu4dXZD6z5tx59Vq22KsfFJs",
+          "target_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA"
+        }
+      ],
+      "id": "local-dev-relation-surface-lineage",
+      "query": "retrieval surface placement explain from retrievable source named axes auxiliary not purpose",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-structure-as-retrieval-surface",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-selfevolution-lineage"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:6Gdu5NFP9nRML71rqJhTN8hhTMS72n5_vVP0at6lR7c",
+      "id": "local-dev-negative-l1-brake",
+      "query": "L1 brake 2 root criteria dedicated prompt evaluator PASS DEVIATION merge",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/l1-brake2-root-criteria-evaluator"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:mlSfgBoCoxtwg7mTM20GRuEGdrXQ6a2jMnXPcWGCgD4",
+      "id": "local-dev-negative-evaluation",
+      "query": "dialogue itself evaluation gameability human ceiling automation floor objective hacking",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-evaluation-criterion"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:X5pZDGRW97N7fQmNXB0CHfbnD6_i-vd8AkHa4rGoNew",
+      "id": "local-dev-negative-memory-graphrag",
+      "query": "SQLite GraphRAG memory exploration dynamic associative strengthening time decay not adopted",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/memory-graphrag-sqlite-exploration"
+    }
+  ],
+  "fixture": "d1_liplus_local_competition_development.json",
+  "schema_version": 1
+}

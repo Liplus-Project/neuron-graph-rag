@@ -12,12 +12,14 @@ from .engine import EngineConfig, NeuronGraphRAG
 
 
 EXPERIMENT_SCHEMA_VERSION = 1
+SUPPORTED_EXPERIMENT_SCHEMA_VERSIONS = {1, 2}
 
 
 def read_manifest(path: str | Path) -> dict[str, Any]:
     manifest_path = Path(path)
     manifest = _read_json(manifest_path)
-    if manifest.get("schema_version") != EXPERIMENT_SCHEMA_VERSION:
+    schema_version = int(manifest.get("schema_version", 0))
+    if schema_version not in SUPPORTED_EXPERIMENT_SCHEMA_VERSIONS:
         raise ValueError("Unsupported dynamics experiment schema version")
     variants = manifest.get("variants")
     if not isinstance(variants, list) or not variants:
@@ -38,14 +40,44 @@ def read_manifest(path: str | Path) -> dict[str, Any]:
                 raise ValueError(
                     f"Frozen {split_name} {field} hash mismatch: {actual}"
                 )
-    holdout = manifest["holdout"]
-    if _canonical_sha256(base / holdout["provenance"]) != holdout["provenance_sha256"]:
-        raise ValueError("Frozen holdout provenance hash mismatch")
+    for split_name in ("development", "holdout"):
+        split = manifest[split_name]
+        if "provenance" in split and (
+            _canonical_sha256(base / split["provenance"])
+            != split["provenance_sha256"]
+        ):
+            raise ValueError(f"Frozen {split_name} provenance hash mismatch")
     development_paths = _doc_paths(base / manifest["development"]["fixture"])
     holdout_paths = _doc_paths(base / manifest["holdout"]["fixture"])
     overlap = sorted(development_paths & holdout_paths)
     if overlap:
         raise ValueError(f"Development and holdout doc paths overlap: {overlap!r}")
+    if schema_version == 2:
+        if ids[:2] != ["current", "recurrent-balanced"]:
+            raise ValueError("Schema v2 requires current and recurrent-balanced baselines")
+        if len(variants) != int(manifest["maximum_variants"]):
+            raise ValueError("Schema v2 requires the exact frozen variant count")
+        audit = manifest["contamination_audit"]
+        audit_path = base / audit["artifact"]
+        if _canonical_sha256(audit_path) != audit["artifact_sha256"]:
+            raise ValueError("Frozen contamination audit hash mismatch")
+        if not _read_json(audit_path).get("passed"):
+            raise ValueError("Frozen contamination audit did not pass")
+        candidate_ids = [
+            str(item) for item in manifest["selection_rule"]["candidate_ids"]
+        ]
+        if ids != [*manifest["baselines"], *candidate_ids]:
+            raise ValueError("Schema v2 variant order differs from the frozen roles")
+        audit_payload = _read_json(audit_path)
+        audit_inputs = audit_payload["inputs"]
+        for split_name in ("development", "holdout"):
+            split = manifest[split_name]
+            for field in ("fixture", "gold"):
+                if audit_inputs[f"{split_name}_{field}_sha256"] != split[
+                    f"{field}_sha256"
+                ]:
+                    raise ValueError("Contamination audit input differs from manifest")
+            _validate_gold_membership(base / split["fixture"], base / split["gold"])
     return manifest
 
 
@@ -65,9 +97,13 @@ def run_development(manifest_path: str | Path) -> dict[str, Any]:
         )
         for variant in manifest["variants"]
     ]
-    selection = _select_development(variants)
+    selection = (
+        _select_local_development(variants)
+        if int(manifest["schema_version"]) == 2
+        else _select_development(variants)
+    )
     return {
-        "schema_version": EXPERIMENT_SCHEMA_VERSION,
+        "schema_version": int(manifest["schema_version"]),
         "experiment_id": manifest["experiment_id"],
         "stage": "development",
         "manifest_sha256": _canonical_sha256(manifest_path),
@@ -107,8 +143,13 @@ def run_holdout(
     split = manifest["holdout"]
     base = manifest_path.parent
     gold = _read_gold(base / split["gold"])
+    holdout_variant_ids = (
+        ("current", "recurrent-balanced", selected_id)
+        if int(manifest["schema_version"]) == 2
+        else ("current", selected_id)
+    )
     evaluated = []
-    for variant_id in ("current", selected_id):
+    for variant_id in holdout_variant_ids:
         variant = variant_by_id[variant_id]
         evaluated.append(
             _evaluate_variant(
@@ -119,22 +160,31 @@ def run_holdout(
                 int(manifest["shared_config"]["limit"]),
             )
         )
-    current, selected = evaluated
-    no_cohort_regression = all(
-        selected["metrics"]["cohorts"][cohort]["mean_reciprocal_rank"]
-        >= current["metrics"]["cohorts"][cohort]["mean_reciprocal_rank"]
-        for cohort in COHORTS
-    )
-    paths_match = all(item["matched"] for item in selected["explanations"])
-    feedback = selected["feedback"]
-    feedback_isolated = (
-        bool(feedback["credited_edges"])
-        and not feedback["uncredited_edge_changes"]
-        and not feedback["non_target_rank_changes"]
-    )
-    adopted = no_cohort_regression and paths_match and feedback_isolated
+    current = evaluated[0]
+    selected = evaluated[-1]
+    paths_match = _paths_match(selected)
+    feedback_isolated = _feedback_isolated(selected)
+    if int(manifest["schema_version"]) == 2:
+        recurrent = evaluated[1]
+        gate = _local_candidate_gate(selected, current, recurrent)
+        no_cohort_regression = gate["direct_non_regression"] and gate[
+            "negative_non_regression"
+        ]
+        adopted = all(gate.values())
+    else:
+        no_cohort_regression = all(
+            selected["metrics"]["cohorts"][cohort]["mean_reciprocal_rank"]
+            >= current["metrics"]["cohorts"][cohort]["mean_reciprocal_rank"]
+            for cohort in COHORTS
+        )
+        gate = {
+            "no_cohort_regression": no_cohort_regression,
+            "all_relation_paths_match": paths_match,
+            "feedback_isolated": feedback_isolated,
+        }
+        adopted = all(gate.values())
     return {
-        "schema_version": EXPERIMENT_SCHEMA_VERSION,
+        "schema_version": int(manifest["schema_version"]),
         "experiment_id": manifest["experiment_id"],
         "stage": "holdout",
         "manifest_sha256": expected_manifest_hash,
@@ -151,6 +201,7 @@ def run_holdout(
             "no_cohort_regression": no_cohort_regression,
             "all_relation_paths_match": paths_match,
             "feedback_isolated": feedback_isolated,
+            "gate": gate,
             "adopted": adopted,
             "default_variant_id": selected_id if adopted else "current",
         },
@@ -217,6 +268,13 @@ def _evaluate_variant(
             float(case["diagnostics"]["activation_total"]) for case in cases
         )
         / len(cases),
+        "mean_active_path_count": sum(
+            int(case["diagnostics"].get("active_path_count", 0)) for case in cases
+        )
+        / len(cases),
+        "competition_set_count": sum(
+            len(case["diagnostics"].get("competition_sets", [])) for case in cases
+        ),
         "stop_reasons": dict(
             sorted(Counter(case["diagnostics"]["stop_reason"] for case in cases).items())
         ),
@@ -391,6 +449,101 @@ def _select_development(variants: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _select_local_development(
+    variants: list[dict[str, Any]],
+) -> dict[str, Any]:
+    by_id = {str(variant["id"]): variant for variant in variants}
+    current = by_id["current"]
+    recurrent = by_id["recurrent-balanced"]
+    candidates: list[dict[str, Any]] = []
+    for variant in variants:
+        variant["relative_to_baselines"] = {
+            "relation_mrr_delta_from_current": (
+                _cohort_mrr(variant, "relation")
+                - _cohort_mrr(current, "relation")
+            ),
+            "relation_mrr_delta_from_recurrent_balanced": (
+                _cohort_mrr(variant, "relation")
+                - _cohort_mrr(recurrent, "relation")
+            ),
+            "direct_mrr_delta_from_current": (
+                _cohort_mrr(variant, "direct_lookup")
+                - _cohort_mrr(current, "direct_lookup")
+            ),
+            "negative_mrr_delta_from_current": (
+                _cohort_mrr(variant, "negative_control")
+                - _cohort_mrr(current, "negative_control")
+            ),
+        }
+        gate = _local_candidate_gate(variant, current, recurrent)
+        variant["candidate_gate"] = gate
+        variant["candidate_gate_passed"] = (
+            variant["id"] not in {"current", "recurrent-balanced"}
+            and all(gate.values())
+        )
+        if variant["candidate_gate_passed"]:
+            candidates.append(variant)
+
+    if not candidates:
+        return {
+            "selected_variant_id": "current",
+            "reason": "no_local_variant_passed_frozen_gate",
+            "eligible_variant_ids": [],
+        }
+    selected = sorted(
+        candidates,
+        key=lambda variant: (
+            -min(_cohort_mrr(variant, cohort) for cohort in COHORTS),
+            -_cohort_mrr(variant, "relation"),
+            float(variant["diagnostics"]["mean_expansions"]),
+            int(variant["structural_complexity"]),
+            str(variant["id"]),
+        ),
+    )[0]
+    return {
+        "selected_variant_id": selected["id"],
+        "reason": "predeclared_local_gate_and_tie_break",
+        "eligible_variant_ids": sorted(
+            str(variant["id"]) for variant in candidates
+        ),
+    }
+
+
+def _local_candidate_gate(
+    candidate: dict[str, Any],
+    current: dict[str, Any],
+    recurrent: dict[str, Any],
+) -> dict[str, bool]:
+    relation = _cohort_mrr(candidate, "relation")
+    return {
+        "relation_strictly_above_current": relation
+        > _cohort_mrr(current, "relation"),
+        "relation_strictly_above_recurrent_balanced": relation
+        > _cohort_mrr(recurrent, "relation"),
+        "direct_non_regression": _cohort_mrr(candidate, "direct_lookup")
+        >= _cohort_mrr(current, "direct_lookup"),
+        "negative_non_regression": _cohort_mrr(candidate, "negative_control")
+        >= _cohort_mrr(current, "negative_control"),
+        "all_relation_paths_match": _paths_match(candidate),
+        "feedback_isolated": _feedback_isolated(candidate),
+    }
+
+
+def _paths_match(variant: dict[str, Any]) -> bool:
+    return bool(variant["explanations"]) and all(
+        item["matched"] for item in variant["explanations"]
+    )
+
+
+def _feedback_isolated(variant: dict[str, Any]) -> bool:
+    feedback = variant["feedback"]
+    return (
+        bool(feedback["credited_edges"])
+        and not feedback["uncredited_edge_changes"]
+        and not feedback["non_target_rank_changes"]
+    )
+
+
 def _dominates(left: dict[str, Any], right: dict[str, Any]) -> bool:
     left_axes = (
         _cohort_mrr(left, "relation"),
@@ -434,6 +587,30 @@ def _read_gold(path: Path) -> dict[str, Any]:
         if not str(case.get("source_url", "")).startswith("https://github.com/"):
             raise ValueError(f"Gold case {case.get('id')} lacks a public source URL")
     return gold
+
+
+def _validate_gold_membership(fixture_path: Path, gold_path: Path) -> None:
+    fixture = read_fixture(fixture_path)
+    node_ids = {str(node["node_id"]) for node in fixture["nodes"]}
+    edges = {
+        (str(edge["source_id"]), str(edge["target_id"]), str(edge["edge_type"]))
+        for edge in fixture["edges"]
+    }
+    gold = _read_gold(gold_path)
+    counts = Counter(str(case["cohort"]) for case in gold["cases"])
+    if len(set(counts.values())) != 1:
+        raise ValueError("Schema v2 gold cohorts must be balanced")
+    for case in gold["cases"]:
+        if str(case["expected_node_id"]) not in node_ids:
+            raise ValueError(f"Gold target is outside fixture: {case['id']}")
+        for step in case.get("expected_path", []):
+            key = (
+                str(step["source_id"]),
+                str(step["target_id"]),
+                str(step["edge_type"]),
+            )
+            if key not in edges:
+                raise ValueError(f"Gold path edge is outside fixture: {case['id']}")
 
 
 def _feedback_case_id(cases: list[dict[str, Any]]) -> str:

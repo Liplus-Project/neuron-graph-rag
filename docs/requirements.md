@@ -49,6 +49,14 @@
 31. 候補選択は development result だけで行い、relation MRR と negative-control MRR の Pareto gate、worst-cohort MRR、展開数、構造複雑度、variant ID の順で一意に決める。
 32. development gate を通る候補がない場合は holdout を開かず既定を変更しない。候補がある場合だけ holdout を一度評価し、cohort 退行、path 不一致、feedback 汚染のいずれかがあれば採用しない。
 33. experiment result は gate 不合格、Pareto 支配、holdout 不採用を含む全 variant を上書きせず versioned artifact として保存する。
+34. recurrent activation は global inhibition に加え、同じ source の sibling neighbor だけを競合させる local strategy を選択できる。
+35. local recurrent strategy は query relevance と active path identity を独立に有効化でき、競合集合ごとに source、path identity、neighbor 数、query relevance、配分前後の message 総量を記録する。
+36. local recurrent experiment は production D1 から read-only 取得した新しい development / holdout を旧 development / 開封済み holdout および相互間で分離し、両 provenance と contamination audit を結果観測前に固定する。
+37. 旧 development result は family と baseline の探索的根拠だけに使用し、旧 holdout は fixture identifier の重複拒否以外では読み込まない。
+38. local recurrent experiment は `current`、`recurrent-balanced`、neighbor / query / path の4 ablationを合わせた6 variantsに固定し、parameter gridを追加しない。
+39. development候補はrelation MRRで両baselineを厳密に上回り、direct / negative-control MRRがcurrentから退行せず、全relation pathとfeedback isolationを満たす場合だけ選択する。
+40. development候補がある場合だけ、未観測holdoutで`current`、`recurrent-balanced`、選択候補を一度評価する。resultの再実行と上書きを拒否する。
+41. local recurrent strategyは未観測holdoutで同じgateを通過した場合だけ既定候補になり、それ以外では`current_positive_additive`を維持する。
 
 ## 4. Constraints
 
@@ -70,3 +78,4 @@
 - [D1 corpus fixture](d1-corpus-fixture.md) が read-only 取得、認証境界、provenance、coverage 比較、再取得手順を定義する。
 - [Real-corpus benchmark](real-corpus-benchmark.md) が gold freeze、判定規則、観測結果、外挿限界を定義する。
 - [Neural dynamics experiment](neural-dynamics-experiment.md) が development / holdout 分離、固定探索空間、候補選択、単一 holdout 開封、停止規則を定義する。
+- [Local recurrent competition experiment](neural-dynamics-local-competition-experiment.md) が新規D1 subgraph、contamination audit、query / path ablation、二baseline gateを定義する。

@@ -1,0 +1,487 @@
+{
+  "edges": [
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "li-plus-always-on-footprint-load-bearing",
+          "dst_vector_id": "w:UrsSN4w0s9RCRs9x2gnPGBmvSJS7lgTYl0COABqWYqA",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-context-rot-tension",
+          "src_vector_id": "w:RlanesfrOVafoOsmtS5j43xMQt08JpXlYPyJ0mi50so",
+          "updated_at": "2026-07-31T14:56:53.554Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:RlanesfrOVafoOsmtS5j43xMQt08JpXlYPyJ0mi50so",
+      "target_id": "w:UrsSN4w0s9RCRs9x2gnPGBmvSJS7lgTYl0COABqWYqA",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "l1-brake2-root-criteria-evaluator",
+          "dst_vector_id": "w:6Gdu5NFP9nRML71rqJhTN8hhTMS72n5_vVP0at6lR7c",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-judgment-learning-telos",
+          "src_vector_id": "w:QxkFan-dY7kVdAzoP115Pe4FbxOmCLepO4mOUoWqt4c",
+          "updated_at": "2026-07-31T14:56:58.870Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:QxkFan-dY7kVdAzoP115Pe4FbxOmCLepO4mOUoWqt4c",
+      "target_id": "w:6Gdu5NFP9nRML71rqJhTN8hhTMS72n5_vVP0at6lR7c",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-evaluation-criterion",
+          "dst_vector_id": "w:mlSfgBoCoxtwg7mTM20GRuEGdrXQ6a2jMnXPcWGCgD4",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-judgment-learning-telos",
+          "src_vector_id": "w:QxkFan-dY7kVdAzoP115Pe4FbxOmCLepO4mOUoWqt4c",
+          "updated_at": "2026-07-31T14:56:58.870Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:QxkFan-dY7kVdAzoP115Pe4FbxOmCLepO4mOUoWqt4c",
+      "target_id": "w:mlSfgBoCoxtwg7mTM20GRuEGdrXQ6a2jMnXPcWGCgD4",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "l1-brake2-root-criteria-evaluator",
+          "dst_vector_id": "w:6Gdu5NFP9nRML71rqJhTN8hhTMS72n5_vVP0at6lR7c",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-selfevolution-lineage",
+          "src_vector_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+          "updated_at": "2026-07-31T14:57:00.131Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+      "target_id": "w:6Gdu5NFP9nRML71rqJhTN8hhTMS72n5_vVP0at6lR7c",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-context-rot-tension",
+          "dst_vector_id": "w:RlanesfrOVafoOsmtS5j43xMQt08JpXlYPyJ0mi50so",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-selfevolution-lineage",
+          "src_vector_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+          "updated_at": "2026-07-31T14:57:00.131Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+      "target_id": "w:RlanesfrOVafoOsmtS5j43xMQt08JpXlYPyJ0mi50so",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-evaluation-criterion",
+          "dst_vector_id": "w:mlSfgBoCoxtwg7mTM20GRuEGdrXQ6a2jMnXPcWGCgD4",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-selfevolution-lineage",
+          "src_vector_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+          "updated_at": "2026-07-31T14:57:00.131Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+      "target_id": "w:mlSfgBoCoxtwg7mTM20GRuEGdrXQ6a2jMnXPcWGCgD4",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-selfevolution-lineage",
+          "dst_vector_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "liplus-structure-as-retrieval-surface",
+          "src_vector_id": "w:5fBFc2M4h3kQx3zMkvhJu4dXZD6z5tx59Vq22KsfFJs",
+          "updated_at": "2026-07-31T14:57:01.265Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:5fBFc2M4h3kQx3zMkvhJu4dXZD6z5tx59Vq22KsfFJs",
+      "target_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-evaluation-criterion",
+          "dst_vector_id": "w:mlSfgBoCoxtwg7mTM20GRuEGdrXQ6a2jMnXPcWGCgD4",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "memory-graphrag-sqlite-exploration",
+          "src_vector_id": "w:X5pZDGRW97N7fQmNXB0CHfbnD6_i-vd8AkHa4rGoNew",
+          "updated_at": "2026-07-31T14:57:07.462Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:X5pZDGRW97N7fQmNXB0CHfbnD6_i-vd8AkHa4rGoNew",
+      "target_id": "w:mlSfgBoCoxtwg7mTM20GRuEGdrXQ6a2jMnXPcWGCgD4",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-structure-as-retrieval-surface",
+          "dst_vector_id": "w:5fBFc2M4h3kQx3zMkvhJu4dXZD6z5tx59Vq22KsfFJs",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "neuron-graph-rag-integrated-prototype",
+          "src_vector_id": "w:EyfdPl6m6HDEPWu-2in7YoAAJUR-3jhGKHNPS2Bxp4A",
+          "updated_at": "2026-07-31T14:57:09.804Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:EyfdPl6m6HDEPWu-2in7YoAAJUR-3jhGKHNPS2Bxp4A",
+      "target_id": "w:5fBFc2M4h3kQx3zMkvhJu4dXZD6z5tx59Vq22KsfFJs",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "liplus-judgment-learning-telos",
+          "dst_vector_id": "w:QxkFan-dY7kVdAzoP115Pe4FbxOmCLepO4mOUoWqt4c",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "neuron-graph-rag-integrated-prototype",
+          "src_vector_id": "w:EyfdPl6m6HDEPWu-2in7YoAAJUR-3jhGKHNPS2Bxp4A",
+          "updated_at": "2026-07-31T14:57:09.804Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:EyfdPl6m6HDEPWu-2in7YoAAJUR-3jhGKHNPS2Bxp4A",
+      "target_id": "w:QxkFan-dY7kVdAzoP115Pe4FbxOmCLepO4mOUoWqt4c",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "memory-graphrag-sqlite-exploration",
+          "dst_vector_id": "w:X5pZDGRW97N7fQmNXB0CHfbnD6_i-vd8AkHa4rGoNew",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "neuron-graph-rag-integrated-prototype",
+          "src_vector_id": "w:EyfdPl6m6HDEPWu-2in7YoAAJUR-3jhGKHNPS2Bxp4A",
+          "updated_at": "2026-07-31T14:57:09.804Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:EyfdPl6m6HDEPWu-2in7YoAAJUR-3jhGKHNPS2Bxp4A",
+      "target_id": "w:X5pZDGRW97N7fQmNXB0CHfbnD6_i-vd8AkHa4rGoNew",
+      "weight": 1.0
+    }
+  ],
+  "nodes": [
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "l1-brake2-root-criteria-evaluator",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:41.612Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/l1-brake2-root-criteria-evaluator",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:40.887Z",
+        "vector_id": "w:6Gdu5NFP9nRML71rqJhTN8hhTMS72n5_vVP0at6lR7c"
+      },
+      "node_id": "w:6Gdu5NFP9nRML71rqJhTN8hhTMS72n5_vVP0at6lR7c",
+      "text": "l1-brake2-root-criteria-evaluator\n\n# L1 brake 2 — 根本基準評価者（専用プロンプト subagent）への移行\n\n## Question\n\nL1 Model Layer 変更の brake 2（最後の判断軸 human gate）は誰が、何を基準に判定するか。\n\n## Current resolution\n\nbrake 2 の座は Master の人間レビューから、**Li+ 根本評価基準を専用プロンプトとして持つ subagent 評価者**へ移行する（#1477、Master 裁可 2026-06-11）。\n\n- 評価者 = skills 無効・作業手順なしの専用 subagent。context は可能な範囲でクリーン（CLAUDE.md / rules の混入は Claude Code の構造上不可避、許容済み）\n- 判定基準 = Li+ の根本のみ（Master literal 2026-06-11）:\n  - Li+ の根本は現実の挙動が正義\n  - CI は現実ではなく、実機の挙動が現実\n  - AI にとっての対話は現実\n  - 現実には運用も含まれるため、動けば中身は何でもいいわけではない\n  - 対話駆動開発は、構造駆動であり、現実駆動でもある\n- 評価者の PASS = brake 2 における Master 承認の代替。並走期間なし。DEVIATION = merge 不可\n- プロンプト言語 = 英語（Li+ source 規約）。日本語 literal の judgment record = 本エントリ + #1477\n- 評価者プロンプト自体は `layer: L1-model` を持ち、その変更は brake 2 の対象（評価者の目は、評価者が守るゲートの内側に置く — 「悪い L1 編集を検出する側が無防備に編集可能だと brake にならない」問題への構造的回答）\n- Human = final judge の地位（`rules/model/role-separation.md`）と release / Latest flip / 不可逆外部作用の human gate（recovery axis）は別軸で不変\n\n## Edges\n\n- **depends on**: [[liplus-history-is-empirical]] — 評価基準の中身は axiom（現実の挙動が正義、運用保守を含む correctness ranking）そのもの\n- **depends on**: [[master-verification-at-runtime-not-spec]] — Master の verification は元々 runtime のみで、brake 2 でも spec literal の内容監査は行われていなかった。座を装置に渡しても失われる内容監査は存在しない\n- **relates to**: [[sheepdog-engineering-concept]] — 判断軸 handover の到達点（最後の判断軸 human gate の移譲）\n- **relates to**: [[parallel-subagent-eval-cost-acceptance]] — brake 1（parallel-subagent-eval）は別軸でそのまま継続\n\n## Background\n\n2026-06-10 対話: Master は brake 2 を「いずれ AI に渡す」handover track に置いていた。brake 2 の実態は内容監査ではなく理由の頑健性の観測であり、完全な代替を最初から狙わず機能する最低限の装置から始める方針が確定済み。2026-06-11、Master が方向を確定: 最も安全なスライスの部分代替ではなく、brake 2 の座に Li+ の根本評価基準そのものを常設の観測装置として据える。\n\n## Constraints\n\n- Claude Code custom subagent は CLAUDE.md / `.claude/rules/` の読み込みを無効化できない（一次情報確認 2026-06-10）。完全クリーン context は raw API のみだが、subagent での最小化（skills off + 専用プロンプト）を採用\n- 入力（L1 変更の diff + 変更理由）は委譲プロンプトに inline で渡す（tools 最小化）\n\n## Conclusion\n\n- 採用: Li+ 根本評価基準の専用プロンプト subagent が brake 2 の座を引き継ぐ（Master 指示）\n- 却下: patch 級スライスのみの部分代替（AI 提案、Master が方向修正）\n- 却下: Master レビューとの並走観察期間（Master 裁可で不要、即代替）\n\n## 較正データ（初回発火、2026-06-11）\n\n- 初回発火 = 実装 PR #1478 の L1 diff（評価者定義ファイル自身の追加）を inline 入力した存在証明 run。判定 = **DEVIATION**。逸脱指摘は「PASS が人間承認の代替となる」条項のみ（ファイル本体と「追加ブレーキとして」の運用には逸脱なしと判定内で明示）。根拠: 評価者の入力は説明・意図のみで現実の挙動に触れない / 自動チェックは CI 軸 / brake 2 の人間レビューはゲート唯一の対話=現実接点だった / L1 自己タグによる自己承認閉ループ。\n- Master 裁定（対話 literal 2026-06-11）: 「まぁでも安心していい。Li＋の自己進化は常に対話で評価されていくものだから、間違っても人間がフィードバックするだけなんだよ。そしてまた修正すればいい。」→ 現実接点はゲートの外に常設（対話 = 常時評価面、人間 = 事後フィードバック評価者、revert / 修正で閉路）。条項変更なし、squash merge（build-2026-06-11.1）。\n- 読み: 異議は「pre-merge のテキスト照合は現実を運べない」という本物の緊張の検出であり誤作動ではない。回答は構造側に既在（Human = final judge 別軸 / Post-L1-Merge 観察 / 対話評価）。初回発火は、装置が仕込まれた基準を作者の都合に逆らって適用できることの existence proof。\n- stated reason を盛った再 run による PASS 釣りは不実行（説明で正しさを作る形になるため）。gameability 監視軸として継続。\n\n## Related\n\n- issue #1477（要求仕様）/ 実装 PR #1478（merged 2026-06-11、build-2026-06-11.1）\n- 書き換え対象: `rules/evolution/initiator-autonomy.md` / `rules/operations/execution-mode.md` / `adapter/claude/CLAUDE.md` / `skills/evolution-l1-update-gating/SKILL.md` / `docs/2.-Evolution.md` / `docs/G.-Sheepdog-Engineering.md`\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "li-plus-always-on-footprint-load-bearing",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:43.946Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/li-plus-always-on-footprint-load-bearing",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:43.358Z",
+        "vector_id": "w:UrsSN4w0s9RCRs9x2gnPGBmvSJS7lgTYl0COABqWYqA"
+      },
+      "node_id": "w:UrsSN4w0s9RCRs9x2gnPGBmvSJS7lgTYl0COABqWYqA",
+      "text": "li-plus-always-on-footprint-load-bearing\n\n# Li+ always-on footprint は load-bearing — 安全な文脈圧縮余地は枯渇\n\n## Question\n\nLi+ の always-on context footprint（`rules/**/*.md` + adapter `CLAUDE.md` + output-style、実測 ~21,500 tok）を、AI 挙動を損なわずさらに圧縮できるか?\n\n## Current resolution\n\n**できない（安全な余地は残っていない）。** always-on に乗っている内容は load-bearing。文脈コスト軸の圧縮候補は3つ検討され、いずれも構造的理由で却下される:\n\n1. **operations 層 → on-demand skill 化**: skill auto-invoke は drift 直前の introspection-gap 中に発火判定する性質で、毎瞬間に効くべき規律（must-fire）を落とす（recall gap）。#1315 が `expansion-limit` を skill→rule に戻した実証（1セッションで27回以上の発火漏れ）あり。却下。\n2. **operations 層 → hook イベント注入**: この機構は #988（Milestone Rules を on_issue hook 注入）で一度実装されたが、#1102（adapter flatten）が「rules 常時ロード + skills auto-invoke」へ単純化する際に撤去済。差し戻しは撤去した複雑性の回帰。加えて PostToolUse はツール実行**後**に発火するため、commit/PR 作法を操作前に載せられないタイミング問題を持つ。割に合わず却下。\n3. **adapter `CLAUDE.md` autonomy 節 ↔ `rules/evolution/*.md` の dedup**: 一見二重持ちだが、(a) 各 autonomy ブロックは既に「宣言 + 要約 + `see rules/...` ポインタ」構造で DRY、(b) brake1/brake2 と human-gate 列挙（release create / Latest flip / force push / tag delete / 不可逆外部副作用）は `rules/model/subtractive-structural-beauty.md` の subtraction-safeguards（irreversibility checkpoints）ドメインで、明示的冗長性が load-bearing。token のために削るのは禁止対象。却下。\n\n結論として、always-on コストは**構造的単純さのために受容された tradeoff**（#1102）であり、未最適化の無駄ではない。これ以上の文脈圧縮は cargo-cult（圧縮のための圧縮）になる。\n\n## Edges\n\n- **depends on（外部前提）**: 本判断は2つの外部前提に依存する。(1) Claude Code の rules `paths` がイベントトリガー非対応で glob のみ（#995）、(2) skill auto-invoke の recall 信頼性が構造的に弱い（#1315）。いずれかが解消されれば本判断は再評価対象。\n- supersede / conflict edge なし。`li-plus-lightening-l1-gate-override` は Li+ lightening 系列の別軸判断（L1 gate override であって always-on footprint ではない）であり、本 entry と並立する。\n\n## Background\n\nMaster「Li+自体を圧縮できる?」→ 文脈コスト軸を選択。always-on footprint を実測（rules 71KB / 合計 86KB ≈ 21,500 tok）。レイヤー別では operations 層 14.5KB が「event-driven と自己宣言しているのに always-on でロードされている」ズレを持ち、最大の圧縮余地に見えた。しかし起票前の judgment-learning（RAG）+ source-check（実ファイル Read）で3候補とも溶解した。\n\n## Constraints\n\n- Claude Code の rules `paths` は glob のみ、イベントトリガー（on_commit 等）非対応（#995）。よって「event 時ロード」の道は hook 注入か skill auto-invoke の二択に限られ、後者は must-fire に不適。\n- #1269 が `operations.md` / `execution-mode.md` を「常時必要 = 不変則」に分類済で、always-on 維持は既に決着している。\n- #1102 は always-on を **adapter 変換コスト最小化 + 源泉/生成物の構造一致**のため選択した（token 最適性の証明ではなく単純さ優先）。\n\n## Conclusion\n\n採用 = always-on 維持、追加の文脈圧縮は見送り。\n却下 = operations skill 化（#1315 recall gap）/ operations hook 注入（#1102 撤去の回帰）/ CLAUDE.md autonomy dedup（safeguard 削り）。\n\n調査プロセスの learning: 圧縮余地の見積もりは **literal 検証前に数値化すると縮む**（本件は3段階で縮小→消滅）。構造変更の提案は対象ファイルの実 Read + 過去判断の RAG を先行させること（self-eval 2026-06-06 entry に detection sign 記録）。\n\n## Related\n\n- [#1269](https://github.com/Liplus-Project/liplus-language/issues/1269) split rules into always-on invariants and trigger-on-demand actions（operations を不変則に分類）\n- [#1315](https://github.com/Liplus-Project/liplus-language/issues/1315) / [#1316](https://github.com/Liplus-Project/liplus-language/issues/1316) move `expansion-limit` skill→rule（recall gap 実証）\n- [#1102](https://github.com/Liplus-Project/liplus-language/issues/1102) / [#1108](https://github.com/Liplus-Project/liplus-language/issues/1108) flatten layers into rules/ + skills/（hook 注入撤去）\n- [#988](https://github.com/Liplus-Project/liplus-language/issues/988) Milestone Rules → on_issue hook trigger（撤去前の機構）\n- [#995](https://github.com/Liplus-Project/liplus-language/issues/995) operations always-load experiment（`paths` glob-only 制約）\n- [#1234](https://github.com/Liplus-Project/liplus-language/issues/1234) github-history-driven judgment criteria for boot-token reduction\n- 判断構造: [li-plus-lightening-l1-gate-override](li-plus-lightening-l1-gate-override)（lightening 系列の別軸）\n- 関連 rule: `rules/model/subtractive-structural-beauty.md`（subtraction-safeguards / artifact deletion calibration）\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "liplus-context-rot-tension",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:53.519Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-context-rot-tension",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:50.373Z",
+        "vector_id": "w:RlanesfrOVafoOsmtS5j43xMQt08JpXlYPyJ0mi50so"
+      },
+      "node_id": "w:RlanesfrOVafoOsmtS5j43xMQt08JpXlYPyJ0mi50so",
+      "text": "liplus-context-rot-tension\n\n# Li+ の context-rot 緊張（always-on ↔ JIT の未解決トレードオフ）\n\n## Question\n\nalways-on `rules/`（compaction を生き残る = 恒久 context 常駐）と context rot（長文脈での指示希釈）の緊張をどう扱うか。解ける bug か、未解決トレードオフか。\n\n## Current resolution\n\n**未解決のトレードオフ**として扱う（解ける bug ではない）。always-on（確実発火・希釈する）vs just-in-time（節約・取りこぼす）は free lunch の無い唯一のトレードオフ。Li+ は `rules/` を設計として always-on に保つ（on-demand は missed されうるため）。hook 再注入（UserPromptSubmit で Trigger Check Gate を毎ターン再 arm）が現状の best 妥協。\n\n## Edges\n\n- **relates to**: [[li-plus-always-on-footprint-load-bearing]] — その entry は always-on 維持を決めた判断、本 entry はそれが受容する希釈コスト側（解消でなく受容したトレードオフ）\n- **relates to**: [[liplus-structure-as-retrieval-surface]]\n\n## 背景\n\nMaster の経緯（2026-06-12）: Li+ が context engineering に向かったのは trend でなく**強制** — 指示量が増え、純 prompting では指示が読み飛ばされ始めた。指示落ちを防ぐ context economy は今も live な未解決問題。\n\nfield 裏づけ（本 session 取得）: \"context rot\"（Chroma 2025、18 frontier models 全部が長さで劣化、mid-window で ~30%+ 精度低下、200K 窓は ~50K 付近で既に劣化）+ lost-in-the-middle U字（start/end 最良・middle 最悪、根因 RoPE long-term decay）+ 矛盾する always-on 指示が任意選択を強制。→ Li+ の指示落ちは architectural / textbook で、Li+ の欠陥ではない。\n\n## 制約（field SOTA mitigation と Li+ の実装状況）\n\nLangChain 4分類 = write / select / compress / isolate。Anthropic（2025-09-29）= always-on base を lean に保つ + just-in-time retrieval + subagent isolation。\n\nLi+ は大半を実装済: write = memory/docs/wiki/issues / select = github-rag-mcp + agentic-search + on-demand skills / compress = cold-start diff-only emit + consolidate / isolate = subagent / recency-exploit = UserPromptSubmit hook（critical 指示を U字の recency 端に置く）。\n\n真の未解決コア = always-on `rules/` 層のみ。「compaction 生存 = 恒久 context」は確実発火を買うが、それがまさに希釈源。\n\n## 結論\n\nLi+ context budget / 指示落ち / rule を skill に降格すべきか、を語るときは **always-on ↔ JIT トレードオフ**として frame する（解ける bug でない）。「rules を skills に移せ」を clean fix として処方しない（always-on は確実発火のため在り、hook 再 arm が現状の best 妥協）。\n\n## 関連\n\n- \"context rot\" (Chroma 2025) / lost-in-the-middle / Anthropic context engineering definition (2025-09-29)\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "liplus-evaluation-criterion",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:55.943Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-evaluation-criterion",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:55.252Z",
+        "vector_id": "w:mlSfgBoCoxtwg7mTM20GRuEGdrXQ6a2jMnXPcWGCgD4"
+      },
+      "node_id": "w:mlSfgBoCoxtwg7mTM20GRuEGdrXQ6a2jMnXPcWGCgD4",
+      "text": "liplus-evaluation-criterion\n\n# Li+ の評価基準 — 対話そのものが評価、自動化は gameability の壁\n\n## Question\n\nLi+（統治 / 判断 / 対話というメトリック無しドメイン）の評価基準をどう設計するか。完全自動化できるか。\n\n## Current resolution\n\n現状の有力案 = **対話そのものが評価**（失敗は人間が対話内で指摘）。評価基準を人間の中に置く＝農夫の報酬＝ゲーム不能。**評価者を自動化すると人間評価者が閉じていた gameability の穴が開く**（農夫を自動化＝犬が \"good boy\" を偽造＝DGM 型 objective hacking）→ 完全自動化は牧羊犬の壁。真の形 = 漸近線「人間が握る天井の下で、自動化の床をどこまで上げるか」。\n\n## Edges\n\n- **depends on**: [[master-verification-at-runtime-not-spec]] — 人間 anchor は還元不能、static gold 不在ゆえライブ人間に縮退\n- **relates to**: [[dialogue-evaluator-scoring-redesign]] — 部分自動化の実装側 = この基準の床を上げる試み\n- **relates to**: [[liplus-judgment-learning-telos]] — 人間=天井という現状の正直な限界に対し、judgment-learning がそのギャップを閉じにいく instrument\n- **relates to**: [[liplus-selfevolution-lineage]] — AutoResearch ループをメトリック無しドメインへ拡張\n\n## 背景（床 / 天井の漸近線）\n\n0/1 ではない。Li+ は既に部分自動化済: self-eval 10軸 / parallel-subagent-eval / Lay-Lin 相互評価 = コンプライアンス/一貫性の **\"床\"**。人間に残るのは方向性/趣味/判断の正しさの **\"天井\"**（自動化すると報酬が手に戻るため残る）。床を上げる正攻法 = 偽造不能な現実の結果に接地（foundational-invariant: correctness=観測挙動）、ただし客観還元可能な部分のみ。\n\n部分自動化の試作 = `dialogue-evaluator` サブエージェント（#1261、reference-only / placeholder）。採用ゲート = サブエージェント評価が Master 自身の評価に十分収束したら採用。= 自己定義メトリックでなく「人間評価への距離」で測る → DGM 穴を設計レベルで回避。\n\n## 制約（読み方と運用）\n\n- **統合点は category error**: 異質軸の合計/平均は axis-separation 違反。評価単位は軸そのもの＝独立 verdict、軸（行）で読む。axis の run 間変動それ自体が診断（安定軸=実観察 anchor / 変動軸=実体が薄く framing・価値観が支配）。\n- **N 無関係**: dialogue-evaluator の甘さは systematic な same-substrate bias（全インスタンス同 priors で揃って甘い）。N≥3+OR が消すのは variance であって shared bias でない。対角線の外（別モデル / 外部 ground truth / 人間のみ）でしか直らない。\n- **採点 = 0/100 両端のみ定義、1〜99 は評価者の価値観**（較正はしご撤去）。`promotion-judgment.md`「criteria 化しない／Judge=AI／reproducibility tradeoff 受容」と同型。鉄則: 観察が成果物・数字は副 / 価値観の違う評価者間で raw 数値を比較しない / calibration は数字でなく Master 評価への収束で行う。\n- 外部裏づけ SAGE（2026-05, arXiv 2605.12061）: 外部 gold アンカーで writer の reader 騙しを抑えるが、回避できるのは QA が客観正解を静的ラベル可能だから。Li+ の判断/統治/対話は静的 gold 原理的不在 → 外部アンカーはライブ人間に縮退。「人間を天井に」は \"人間が優れる\" でなく \"static gold が取れぬドメインゆえの帰結\"。\n\n## 人間席の正体（Master 連続訂正 2026-06-18）\n\n「天井」に座る人間は **能動的反応面** — passive evaluator でなく違和感→検証 pull（例: 英語成果物に違和感→「日本語にして」と照合可能形へ引き込む）。**ゼロ engineering literacy** でも felt な質に高解像度（「ボタンの反応遅くない?」＝原因を知らず遅延検知）。残る死角の正しい軸 = エンジニア可視性でなく **felt-vs-silent**: 人間＝体感に出る物ほぼ全部 / 装置軸(CI・実機・運用)＝構造的に signal を出さない残りのみ。\n\nただし silent 残りは\"客観的欠陥\"ではない — correctness = as-required、要求の外に correctness は無い（foundational-invariant）。装置軸は独立 arbiter でなく **要求者が設定する精度 bar を執行する instrument**。security はこの還元の外（surfacing が adversarial に誘発され「表に出なければ無害」が崩れる）= 別軸。\n\n## 結論\n\n- 「評価を自動化しよう」と考えた瞬間、対象が床(コンプライアンス)か天井(方向/趣味)かを判別。天井の自動化は gameability の穴を開け直す。\n- 単一自動メトリックを採否ゲートに据えない（AutoResearch/DGM 側への滑り）。\n- 死角を literacy 軸で切らない（軸は felt-vs-silent）。\n\n## 関連\n\n- #1261（dialogue-evaluator landing）/ #1456 #1457（採点再設計）/ SAGE arXiv 2605.12061\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "liplus-judgment-learning-telos",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:58.832Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-judgment-learning-telos",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:58.002Z",
+        "vector_id": "w:QxkFan-dY7kVdAzoP115Pe4FbxOmCLepO4mOUoWqt4c"
+      },
+      "node_id": "w:QxkFan-dY7kVdAzoP115Pe4FbxOmCLepO4mOUoWqt4c",
+      "text": "liplus-judgment-learning-telos\n\n# Li+ の judgment-learning telos（GitHub を判断学習基盤として使う / 上流判断の handover）\n\n## Question\n\nLi+ は GitHub surfaces をなぜ使うのか。単なる情報保管か、それ以上の telos があるか。\n\n## Current resolution\n\nLi+ は GitHub surfaces（commit diff / PR review / Decision Structure wiki）を **判断\"学習\"の基盤**として使う（単なる情報保管でない）。Master 確定の telos = **いつか AI が上流判断を Master の代わりに握る**（「いつか私の代わりができるように」）。ただし目標は天才的判断の capture でなく、**普通の判断の蓄積による de-属人化**（volume of ordinary > peak of genius）。\n\n## Edges\n\n- **depends on**: [[master-role-as-client-architect]] — 人間席 = requirements 側の gray-box debugging\n- **depends on**: [[li-plus-long-term-vision-feedback-only]] — フィードバックだけで回る長期 vision\n- **relates to**: [[l1-brake2-root-criteria-evaluator]] — handover の到達済み一歩（最後の判断軸 human gate 移譲）。telos はこの post-hoc 評価者役自体もいずれ閉じる\n- **relates to**: [[liplus-evaluation-criterion]] — 人間=評価の漸近線（現状の正直な限界）に対し、judgment-learning がギャップを閉じにいく instrument\n\n## 背景\n\nMaster literal (2026-06-14): 「実はLi＋はgithubを使ってこの判断を学習しようとしてるんだよ。いつか私の代わりができるようにね。」 — Linux maintainer モデル（trusted upstream judgment > merely held history）vs flat large-scale multi-agent を論じる中で surface。\n\nLi+ source の根拠: `rules/model/language-definition.md`（「External memory records judgment, not primary information」「Commit diff = append-only exposure of judgment」）+ judgment-learning(reader)/decision-structure-write(writer) loop = cross-session の判断を semantic graph 化。GitHub は判断 infrastructure（diff=判断の露出 / PR review=判断の適用 / Decision Structure=判断グラフ）であって単なる保管でない。\n\n## 制約（target character = ordinary, not genius）\n\nMaster correction (2026-06-14): 「そんな天才的な判断なんていらない…属人化するだけ。普通の判断の蓄積でいい」 — 天才/tacit \"smell\" 判断の capture は **anti-goal**（属人化＝今度は Master-dependency を作り直す）。「私の代わり」= 普通の判断を十分蓄積し、単一の天才（Master 含む）が dependency でなくなる = de-属人化。\n\n人間席の現状（Master literal 2026-06-18）: 「Li+のソースは95％以上AIが書いてる」「私はほぼソースは読んでない。ただ要求は最初からしてきたから構造はだいたいわかってる」= **gray-box debugging**（target 挙動を自分の要求モデルに照合、英語 compiled target は読まない）。relocation ladder = 実装コーディング literacy は既に剥落、残る human literacy = requirements-structuring。Master telos はこの残余もいずれ AI へ。open edge: Master の構造モデルは grown-in（全進化を通じた authored requirements）で newcomer に free-inheritable でない。AI-absorbable か irreducible human core かは open。\n\n## 結論\n\nLi+ の issue/PR/commit/wiki discipline を **普通判断の蓄積 infrastructure（de-属人化 = no-single-genius-dependency 狙い）**として読む（genius-capture でも単なる record-keeping でもない）。handover trajectory = 人間席を requirements レベルへ relocate し、さらに AI へ（コーディング役の elimination ではない）。残る real gate = certification bootstrap + substrate coherence（context-rot の boke gate）であって tacit-genius externalization ではない。\n\n## 関連\n\n- `rules/model/language-definition.md` / Linux maintainer model 対比\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "liplus-selfevolution-lineage",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:00.089Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-selfevolution-lineage",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:59.315Z",
+        "vector_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA"
+      },
+      "node_id": "w:wI4myc2VjQ9mM1HuvQL2ujeW1jQnOqgCtB5fq67PDSA",
+      "text": "liplus-selfevolution-lineage\n\n# Li+ 自己進化の系譜と kind（薄い系譜 / dialogue-distillation / convergent-not-derived）\n\n## Question\n\nLi+ の自己進化は既存研究系譜（AutoResearch / DGM / RSI トレンド）からどう派生し、どんな kind の自己進化か。\n\n## Current resolution\n\n系譜は**薄い**。AutoResearch から借りたのは「自己進化系を出していい」という **permission / existence-proof だけ**（timeline 前倒しトリガー）で、loop も mechanism も継承していない。実装は独自。Li+ はベンチ反復型でなく **dialogue-distillation**（対話で蒸留 → 可逆なガバナンス/ソース編集 → 判断層・対話自然さ・人間で評価）。RSI トレンド地図上では **off-ladder の新発明でなく、既存トレンドの Li+ 流 redefinition**（scaffold-side RSI・重み固定枝）。発見全体が **convergent-not-derived**（指示読み飛ばしの現場問題から独立合流、研究系譜から来ていない）。\n\n## Edges\n\n- **relates to**: [[sheepdog-engineering-concept]] / [[sheepdog-engineering-publish-intent]] — Li+ 固有は\"先行\"でなく框の選び方（harness メタファー批判）\n- **relates to**: [[liplus-context-rot-tension]] — 独立合流の出発点（現場の指示落ち問題）\n- **relates to**: [[liplus-evaluation-criterion]] — 評価軸=対話精度ゆえベンチ反復が移植不可\n- **relates to**: [[l1-brake2-root-criteria-evaluator]] — L1 人間ゲートの provisional 性とその移譲\n\n## 背景（ベンチ反復を取らない overdetermined な2理由）\n\n- (a) **principled**: ドメイン（統治/判断/対話）に静的 gold が無い → 駆動軸も評価器も対話の精度。task 再走で metric を上げる型ではない。\n- (b) **economic**: Master は個人・$100/mo サブスク。AutoResearch（一晩~100実験）/ DGM 級のベンチ反復を手法として回す compute は端から budget 外。dialogue-distillation は普段の会話で回るので安い。\n- → 2理由が同じ設計に収束（overdetermined）。\n\n**空席の交差点**: 「自己進化 × 対話精度」は survey 範囲で参考ゼロ。材料は各々在る（自己進化＝AutoResearch/DGM/Dreaming/Hermes、対話蒸留＝grill-me）が掛け合わせは空席。理由 = novelty 半分 + 最難区画半分（対話精度に静的 gold 無し・sycophancy で偽の滑らかさ化・測りにくい → compute 持ちの lab は clean gold のベンチ側へ）。Li+ は「安い + gold無し + 空席」のレーンに座った。\n\n## 制約（設計モード = collision base / foresight overlay）\n\nLi+ の自己進化構造は問題にぶつかって収束したのではなく、Master が起きそうな問題を予め回避して組んだ部分も持つ（anticipatory foresight）。ただし Master の base mode は **ぶつかり稽古（collision / trial-and-error）**で、foresight は『先に避けられるもの』にだけ当てる**部分集合（overlay）**。「base が anticipatory」と一般化するのは AI の再発癖。\n\n整合: Li+ は全て revertible。foresight ブレーキの gate は irreversibility でなく **redo-cost × cascade-risk**（L1/main = 高依存ノード＝連鎖 → ブレーキ厳重 / ordinary L2-L6 = revert 安く cascade 浅い → collision で踏んで観測）。subtractive-structural-beauty の blast-radius を git 内部の依存深度で sub-divide した形。\n\n**L1 人間ゲートの位置づけ**: 「壊れたから追加」でなく「foundation を勝手に書き換えられたらまずそう」という先読みの予防、かつ provisional（最初から外す前提）。**実行済 (2026-06-11, #1477/#1478)**: brake 2 を根本基準評価者 subagent へ移譲、human は post-hoc 対話評価者へ（[[l1-brake2-root-criteria-evaluator]]）。\n\n**RSI トレンド地図**: prompt→context→harness→loop ラダーの harness と loop の間 = self-evolving harness / meta-harness / AHE / HyperAgents、根は recursive self-improvement (RSI)。2026 の合言葉「moat が harness に移った」。定型 = メタエージェントが task エージェントの scaffold を世代越しに書き換え、重みは固定。Li+ = **scaffold-side RSI・重み固定枝**（rules/skills/adapter を書換、モデル重みは不変）。三軸対応 = modifier(scaffold 自己書換)/initiator(改善ループ自己起動)/position(scaffold を内側から編集可能に)。HyperAgents の自己言及点 ↔ Li+ が自分の進化ルール(`rules/evolution/*`)/autonomy/brake を書き換える形。**「Li+ ぶっちぎり」框で語らない**。\n\n**DGM**: Darwin-Gödel Machine（Sakana, arXiv 2505.22954）は参考にしていない。関係は convergent validation のみ（単一メトリック objective hacking の独立実証＝Goodhart）。Li+ が単一自動ゲートを避けるのは自前理由 (a)(b) で、DGM を見て避けたのではない。\n\n**並走系**: Anthropic Dreaming（2026-05-06、外部メモリ consolidation、weights 非変更、人間 approve/discard）/ Hermes Agent（Nous Research、2026-02-25、self-hosted daemon、自分で skill を書く）。両者とも可逆層の自己進化 + 部分自律で Li+ と同位置だが kind は別（Li+ はガバナンス source の対話精度駆動）。\n\n## phase 宣言（Master literal 2026-06-11、設計フェーズ終了）\n\n「動かす前に考えられる基盤は作った。ここからはシープドッグとの殴り合い編だなw」 — 設計フェーズは done。残るループ risk（correlated blind spots、smooth drift、dialogue thinning）は **empirical** と宣言、走らせて surface する（pre-engineering でブレーキを足し続けない）。将来「走る前にもっと安全構造を足す」衝動への既定回答 = まず現実に問題を出させ、feedback して直す。残る外輪 = 物理 substrate ring（polling-on-input → event-driven、Claude Desktop の channels 欠如が block）。\n\n## 結論\n\n- AutoResearch/DGM と Li+ を mechanism レベルで結びつけない（実 link は category-permission のみ）。\n- ベンチスコア/単一メトリックで自動採用を Li+ に提案しない。\n- weight-payoff 問題（蓄積した重さが task スコアを上げるか）は『測る金が無くて』開いたまま（意志でなくコストで未解決）。現実的経路 = local LLM だが substrate-mismatch の二枚目の間接性が乗る。\n\n## 関連\n\n- AutoResearch / DGM (arXiv 2505.22954) / Anthropic Dreaming (2026-05-06) / Hermes Agent (Nous, 2026-02-25) / RSI workshop (ICLR 2026)\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "liplus-structure-as-retrieval-surface",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:01.231Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-structure-as-retrieval-surface",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:00.579Z",
+        "vector_id": "w:5fBFc2M4h3kQx3zMkvhJu4dXZD6z5tx59Vq22KsfFJs"
+      },
+      "node_id": "w:5fBFc2M4h3kQx3zMkvhJu4dXZD6z5tx59Vq22KsfFJs",
+      "text": "liplus-structure-as-retrieval-surface\n\n# Li+ structure の目的 = 説明用情報の retrieval surface 配置\n\n## Question\n\nLi+ の structure（rules / skills / GitHub 各面）は何のために在るか。named axis（L1-L6 / brake / mode）が目的か。\n\n## Current resolution\n\nLi+ structure の目的は **AI が説明するために必要な情報を、後から検索で引き出せる surface 配置**。説明は pre-stored vocabulary から出すのでなく **retrievable source** から組み立てる。named axis は retrieval 後の説明組み立てを楽にする**補助**であって、目的そのものではない（順序を取り違えない）。\n\n## Edges\n\n- **relates to**: [[decision-structure-industry-positioning]] — wiki Decision Structure はこの retrieval surface 群の一面\n- **relates to**: [[liplus-selfevolution-lineage]] / [[sheepdog-engineering-concept]] — ポジショニング軸\n\n## 背景\n\nMaster 発言（2026-05-28、要旨）: 別 session の AI は「前 version の変更どう変えた?」「昔の(今は無い)ファイルの説明して」に普通は答えられない。memory/会話履歴が残っても情報過多で追えない。GitHub に named tag で changelog / commit body / wiki / issue が残れば、後から retrieval で引ける。普通の AI が答えられない本質は **context 持続限界でなく retrieval surface 不在**。\n\nretrieval surface 一覧:\n\n| surface | retrieval 用途 |\n|---|---|\n| changelog / release notes | 「前 version で何が変わったか」 |\n| commit body（append-only） | 「この行の判断理由」 |\n| issue body（current spec snapshot） | 「この task の今の仕様」 |\n| wiki Decision Structure（state + edges） | 「この判断は何を supersede しているか」 |\n| GitHub history full text | 「ずっと昔のファイル内容と削除理由」 |\n| github-rag-mcp index | 上記すべての semantic search |\n| grep | RAG ヒット後の文字列レベル深掘り |\n| memory（transient） | cluster / observation tracking |\n\n## 制約（ポジショニング = 学習コストの横移動）\n\nLi+ の差別化 = 学習コストを\"消す\"のでなく **AI 側へ\"横移動\"**（rules/skills の自己保守、`Evolution_Initiator_Autonomy`）。業界の loop engineering（prompt→context→harness→loop）はコストを**人間側へ\"上移動\"**（登るために登れ＝既存の強者を優遇）。Li+ も paradox の外には立てない（`.claude` の物量自体が高コスト）— 主張は cost-*elimination* でなく **cost-*placement***、賭けは「AI が難所を担えること」のみ。Master 自身が体現（英語不可・CLI 嫌いで巨大 agentic stack を運用）。\n\n## 結論\n\n- Li+ value を語るとき「AI が説明できる」では不十分、「AI が説明のための **情報を retrieve できる**」と表現する。\n- 別 session 問題を「context 持続限界」と説明しない（本質は retrieval surface 不在側）。\n- 業界対比: AHE は machine-machine の change manifest verification、Li+ は **AI-human の retrieval-driven explanation**。github-rag-mcp + wiki + commit history + issue + RAG index を「AI-facing external memory」として一体で扱う。\n\n## 関連\n\n- Luca 返信ドラフト「agentic search が本体、RAG-MCP は index/librarian piece」と同一思想線\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "memory-graphrag-sqlite-exploration",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:07.424Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/memory-graphrag-sqlite-exploration",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:06.736Z",
+        "vector_id": "w:X5pZDGRW97N7fQmNXB0CHfbnD6_i-vd8AkHa4rGoNew"
+      },
+      "node_id": "w:X5pZDGRW97N7fQmNXB0CHfbnD6_i-vd8AkHa4rGoNew",
+      "text": "memory-graphrag-sqlite-exploration\n\n# memory / Decision Structure の GraphRAG(SQLite) 化 技術探索\n\n## Question\n\nmemory / Decision Structure を SQLite ベースの GraphRAG として実装するか。\n\n## Current resolution\n\n未採用（探索のみ）。2026-06-14 sandbox `experiment/sqlite-memory-graphrag` で静的な GraphRAG / SQLite 化を実測し、2026-07-28 に動的連想メモリ（使用結果による結合強化、時間減衰、活性伝播）まで探索範囲を広げた。データ相性と実装可能性は高いが、現行規模では複雑性を正当化する必要性が立っていない。将来の再評価候補であり、却下ではない。\n\n## Edges\n\n- **depends on**: [[liplus-evaluation-criterion]] — 未測の本丸 = recall の質（top-k 単独 vs graph 近傍）。eval harness が要り、Li+ の評価自動化問題と同型\n- **relates to**: [[ace-context-engineering-non-adoption]] / [[dynamic-workflows-non-adoption]] — 外部技術の非採用 verdict 群\n\n## 背景\n\nデータ相性が抜群な理由 = Li+ の知識は最初から `[[link]]` + 型付きエッジ（supersede/depend/conflict）の authored グラフで、GraphRAG が世間で詰まる「テキストからグラフ抽出」の高コスト工程を構造的にスキップしている。\n\n動的連想メモリ案では、検索ヒットそのものではなく、実際の使用と対話上の成否を別カウンタとして保持する。活性度だけを時間減衰させ、知識の確信度とは分離する。全件の日次更新は不要で、`last_updated` から検索時に実効強度を遅延計算できるため、最小実装は GNN を要せず重み付きグラフで成立する。\n\n## 制約（実測結論）\n\n1. **速度は非問題**: memory 規模で純 Python dict BFS が 3-hop 0.008ms、SQLite 索引付き(0.05-0.1ms)より約6-10倍速い。索引付き k-hop はコーパス比例せず近傍サイズ比例（1k〜500k で ~0.07ms 不変）。\n2. graph traversal は SQLite 不要・純コードで markdown 透明性を保てる。\n3. SQLite/sqlite-vec が要るのはベクトル半分 + 永続 + RAM 超の規模だけ = install 壁もそこに局在（「衝動の芯=graph」と「忌諱=install」は重ならない）。\n4. 未測の本丸 = recall の質。eval harness が要る。\n5. `retrieved` と `success` を同一視すると、既に検索されやすい記憶が自己増幅する。強化信号には使用結果が必要。\n6. 減衰対象は recall 上の活性度であり、知識の正しさではない。検証済みだが低頻度な規則を時間だけで無効化しない。\n7. 実装可能であること自体は採用理由にならない。現行の markdown + RAG で観測可能な不全が出るまでは、動的状態・更新規則・評価面の追加コストが便益を上回る。\n\n## 結論\n\n- 採用: 現時点ではなし。静的 GraphRAG は透明性／差別化ゼロ／install のトレードオフ、動的連想メモリは必要性未成立を理由に保留する。\n- 再評価条件: (a) 現行検索で同種の recall 失敗が反復する、(b) 複数ユーザー間の汎用層と個人層の分離が実運用課題になる、(c) flat な記憶の保守コストが観測される、(d) recall 品質を比較できる eval harness が成立する、のいずれか。\n- この話題が再燃したら再探索せず本結論から入る。speed 議論に逸れたら「速度は解決済み・本丸は質」に引き戻す。\n- sandbox は local throwaway ゆえ結論を本 entry に保存。\n\n## 関連\n\n- sandbox: `experiment/sqlite-memory-graphrag`（2026-06-14、local throwaway）\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "neuron-graph-rag-integrated-prototype",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:09.766Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/neuron-graph-rag-integrated-prototype",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:09.007Z",
+        "vector_id": "w:EyfdPl6m6HDEPWu-2in7YoAAJUR-3jhGKHNPS2Bxp4A"
+      },
+      "node_id": "w:EyfdPl6m6HDEPWu-2in7YoAAJUR-3jhGKHNPS2Bxp4A",
+      "text": "neuron-graph-rag-integrated-prototype\n\n# Neuron Graph RAG 統合プロトタイプ\n\n## Question\n\nLi+ の判断履歴から必要な少数の原典を低コストで選ぶため、ハイブリッド検索・型付きグラフ・動的連想メモリをどの形で検証するか。\n\n## Current resolution\n\n`Neuron Graph RAG` を独立した公開リポジトリで統合RAGエンジンとして試作する。既存の `github-rag-mcp` に動的グラフ層だけを追加するのではなく、dense / sparse 検索、型付き知識グラフ、活性伝播、成功フィードバックによる結合強化、時間減衰を一つの検索パイプラインとして設計する。\n\nLi+ の現行 Wiki 周辺には RAG、グラフ、LLM Wiki の各コンセプトが別々の経路で実装されているが、Master の現行評価では一つの運用系として十分に機能しているとは言えない。`Neuron Graph RAG` はそのどれか一つへ機能を追加する改修ではなく、三つを共通のデータモデル・検索経路・フィードバックループとしてゼロから再構成する clean-sheet prototype と位置づける。\n\n実装先は [Liplus-Project/neuron-graph-rag](https://github.com/Liplus-Project/neuron-graph-rag)、最初の縦切りMVPは [Issue #1](https://github.com/Liplus-Project/neuron-graph-rag/issues/1) で追跡する。\n\nMCP 対応 AI との接続は、NGR core の必須依存ではなく、同一 repository 内の任意 adapter とする。先に `search`、`record_source_use`、`record_outcome` の transport-independent な意味を固定し、MCP server、認証、transport、remote deployment は後続判断に残す。\n\n## Edges\n\n- depends on: [memory-graphrag-sqlite-exploration](memory-graphrag-sqlite-exploration) — 静的GraphRAGと動的連想メモリの探索結果を実装可能な仮説へ進める\n- depends on: [liplus-judgment-learning-telos](liplus-judgment-learning-telos) — GitHub上の判断履歴をAIが上流判断へ再利用する目的を検索側から支える\n- depends on: [liplus-structure-as-retrieval-surface](liplus-structure-as-retrieval-surface) — Li+ の構造を説明と判断の検索面として読む\n\n## Background\n\nLi+ の履歴は Issue、PR、commit、Wiki に十分残っているが、1600件規模の履歴から現在の判断に必要な少数の原典を選ぶ読み出しコストが残る。ハイブリッドRAGは意味的に近い入口を見つけられる一方、語彙が変化した長期履歴の因果経路を単独では復元しにくい。静的な知識グラフは関係を保持できるが、実際に役立った探索経路を利用結果から学習しない。\n\nこの不足を、RAGによる入口ノードの発火、型付きグラフ上の活性伝播、成功した経路だけの結合強化として一体化して検証する。\n\nLLM Wiki 側の役割は、raw source を AI が維持する相互リンク済み知識へコンパイルし続ける書き込み面にある。Neuron Graph RAG 側は、その知識からどの node と path を活性化し、実際に役立った経路を次回へどう残すかという読み出し・学習面を担う。既存実装は移植元ではなく、失敗を含む観測材料と比較対象として扱う。\n\n## Constraints\n\n- 検索された回数と、実際に結果が利用され成功した回数を分離する\n- 検索だけで結合を強化しない。人気ノードの自己増幅を防ぐ\n- 時間減衰の対象は検索上の活性度であり、知識の正しさや確信度ではない\n- GNNを初期要件にせず、透明で説明可能な重み付きグラフから始める\n- `github-rag-mcp` と Graphify は比較対象・先行実装であり、初期コアの必須依存にしない\n- 採用判断は実装可能性ではなく、通常のハイブリッド検索に対する recall、原典数、トークン量の比較で行う\n- MCP adapter は core の public API だけに依存し、MCP SDK や transport 型を core へ持ち込まない\n- source-use は `retrieved -> selected -> validated -> used` の順序で記録し、新規 `used` だけを即時 reinforcement に接続する\n- `corrected`、`rolled_back` などの delayed outcome は別 ledger に記録し、初期契約では edge weight を自動変更しない\n\n## Success oracle\n\n第一の success oracle は、検索結果を消費する AI 自身の downstream source-use とする。AI は retrieval trace の候補を見たあと、どの node を実際の判断材料として選び、source check を通し、最終回答・実装判断・レビュー判断へ使用したかを任意 adapter の `record_source_use` へ返せる。adapter は新しく `used` へ到達した node だけを NGR core の `record_success` へ接続する。\n\n成功信号は「良さそう」という自己申告ではなく、後続行動に現れた段階で扱う。\n\n1. `retrieved`: 候補に出た\n2. `selected`: 詳細を読む対象に選んだ\n3. `validated`: 原典確認を通った\n4. `used`: 最終判断の根拠として実際に使った\n\n`used` は直前に `validated` へ到達していることを必須とする。結合強化の対象は、この順序を通って新しく `used` へ到達した node と説明経路に限定する。候補に出ただけの結果、読んだが不適切と判断した結果、exact source を見つけられず fallback を要した検索は強化しない。失敗結果は即座に負の重みへ変換せず、retrieval failure として別に記録する。query や index 側の不全を知識 node の誤りとして罰する混同を避けるためである。\n\nこの AI 内生信号に、後から human correction、CI、merge、rollback、同種判断の再修正有無などの delayed outcome を `record_outcome` で別軸として重ねる。初期契約では `confirmed`、`corrected`、`rolled_back`、`superseded` を記録するだけで、即時の追加強化、負の重み、weight rollback へは変換しない。各検索ごとの human 承認を success oracle の必須条件にはしない。\n\n2026-07-29 の設計対話では、RAG 検索が広い skill 文書を返し exact Decision Structure page を取れなかった結果を AI が不採用と判断し、直接取得した `memory-graphrag-sqlite-exploration`、`liplus-structure-as-retrieval-surface`、`liplus-judgment-learning-telos`、本 entry を判断根拠として使用した。これは consuming AI が同一 session 内で retrieval failure と successful source-use を分離できる実例である。\n\n## Conclusion\n\nLi+ 本体や既存RAGへの即時統合は行わない。独立リポジトリでは「取り込み、検索、活性伝播、成功フィードバック、再検索」まで通る最小実装と比較evalが成立し、任意 MCP adapter の feedback interface 契約も [Issue #5](https://github.com/Liplus-Project/neuron-graph-rag/issues/5) で固定した。これは機構と接続境界の成立確認であり、Li+ の実運用でうまく機能することの証明ではない。次段は GitHub 履歴、Decision Structure、LLM Wiki 書き込み面を接続する adapter と、stage / outcome ledger を実装し、通常のハイブリッド検索に対する recall、原典数、トークン量、判断再利用の実績で採用を判断する。\n\n## Related\n\n- [Liplus-Project/neuron-graph-rag](https://github.com/Liplus-Project/neuron-graph-rag)\n- [Neuron Graph RAG Issue #1](https://github.com/Liplus-Project/neuron-graph-rag/issues/1)\n- [Optional MCP Feedback Interface Issue #5](https://github.com/Liplus-Project/neuron-graph-rag/issues/5)\n"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "database": "github-rag-fts",
+    "doc_paths": [
+      "l1-brake2-root-criteria-evaluator",
+      "li-plus-always-on-footprint-load-bearing",
+      "liplus-context-rot-tension",
+      "liplus-evaluation-criterion",
+      "liplus-judgment-learning-telos",
+      "liplus-selfevolution-lineage",
+      "liplus-structure-as-retrieval-surface",
+      "memory-graphrag-sqlite-exploration",
+      "neuron-graph-rag-integrated-prototype"
+    ],
+    "per_type_limit": 9,
+    "repositories": [
+      "Liplus-Project/liplus-language"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "selection_order": [
+      "repo",
+      "type",
+      "doc_path",
+      "vector_id"
+    ],
+    "types": [
+      "wiki_doc"
+    ]
+  }
+}

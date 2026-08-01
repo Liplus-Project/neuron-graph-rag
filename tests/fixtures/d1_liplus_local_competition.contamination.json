@@ -1,0 +1,45 @@
+{
+  "checks": {
+    "development_vs_prior_development": {
+      "doc_paths": [],
+      "node_ids": [],
+      "source_urls": []
+    },
+    "development_vs_prior_holdout": {
+      "doc_paths": [],
+      "node_ids": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_development": {
+      "doc_paths": [],
+      "node_ids": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_holdout": {
+      "doc_paths": [],
+      "node_ids": [],
+      "source_urls": []
+    },
+    "new_split_fixture_overlap": {
+      "doc_paths": [],
+      "node_ids": [],
+      "source_urls": []
+    },
+    "new_split_gold_overlap": {
+      "expected_node_ids": [],
+      "normalized_queries": [],
+      "relation_endpoints": []
+    }
+  },
+  "inputs": {
+    "development_fixture_sha256": "sha256:27e5018f489d7602cf1753a3bda688f3db82c69ce8ee9eef0401caf72b40acfa",
+    "development_gold_sha256": "sha256:75cc6074dfd91b58690f50a2247e30749f2f5203e11ba6b29364be79bcf0baa6",
+    "holdout_fixture_sha256": "sha256:94b0e311546aee39b8aac114e1387aada465f058d0e14d32e7b7c7aa53b50f62",
+    "holdout_gold_sha256": "sha256:6176716841d0e87bd7168752b8700a9a0cf378da4e95dda11fa7e5ded2cc6880",
+    "prior_development_fixture_sha256": "sha256:b3b305aabb57803c2782c3998215e1cbcf9b5e6cdef0f641abc98520d4400cf9",
+    "prior_holdout_fixture_sha256": "sha256:4f7c444c408c3188323e754aa93141a8deaf1a4b15410ad915dd4c71be3a8081"
+  },
+  "old_holdout_usage": "fixture identifiers only; old holdout gold and result are not loaded",
+  "passed": true,
+  "schema_version": 1
+}

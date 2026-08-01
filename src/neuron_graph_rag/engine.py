@@ -45,6 +45,7 @@ class EngineConfig:
     recurrent_steps: int = 3
     recurrent_decay: float = 0.5
     convergence_tolerance: float = 1e-9
+    max_active_paths_per_node: int = 4
 
     def __post_init__(self) -> None:
         for name in (
@@ -73,6 +74,10 @@ class EngineConfig:
             "lateral_inhibition",
             "query_conditioned_transmission",
             "recurrent_competition",
+            "local_neighbor_competition",
+            "local_neighbor_query_competition",
+            "local_neighbor_path_competition",
+            "local_neighbor_query_path_competition",
         }:
             raise ValueError("Unknown activation_strategy")
         if self.activation_budget <= 0.0:
@@ -91,6 +96,8 @@ class EngineConfig:
             raise ValueError("recurrent_decay must be between 0 and 1")
         if self.convergence_tolerance < 0.0:
             raise ValueError("convergence_tolerance must be non-negative")
+        if self.max_active_paths_per_node < 1:
+            raise ValueError("max_active_paths_per_node must be positive")
 
 
 class NeuronGraphRAG:
@@ -207,6 +214,7 @@ class NeuronGraphRAG:
                 recurrent_steps=self.config.recurrent_steps,
                 recurrent_decay=self.config.recurrent_decay,
                 convergence_tolerance=self.config.convergence_tolerance,
+                max_active_paths_per_node=self.config.max_active_paths_per_node,
             ),
         )
         graph_activation, paths = propagation.activation, propagation.paths
