@@ -1,13 +1,20 @@
 from __future__ import annotations
 
 import json
+import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
 
 from neuron_graph_rag import EngineConfig, NeuronGraphRAG
 from neuron_graph_rag.d1_fixture import load_fixture, read_fixture
-from tools.acquire_d1_fixture import redact, transform, validate_read_only_sql
+from tools.acquire_d1_fixture import (
+    build_coverage_query,
+    redact,
+    redact_final_payloads,
+    transform,
+    validate_read_only_sql,
+)
 from tools.compare_d1_provenance import compare_reports
 
 
@@ -50,6 +57,53 @@ class ReadOnlyGuardTest(unittest.TestCase):
 
 
 class FixtureTransformTest(unittest.TestCase):
+    def test_coverage_does_not_count_empty_commit_sha_sentinel(self) -> None:
+        connection = sqlite3.connect(":memory:")
+        connection.row_factory = sqlite3.Row
+        self.addCleanup(connection.close)
+        connection.execute(
+            "CREATE TABLE search_docs "
+            "(repo TEXT, type TEXT, updated_at TEXT, commit_sha TEXT)"
+        )
+        connection.executemany(
+            "INSERT INTO search_docs VALUES (?, ?, ?, ?)",
+            [
+                ("owner/repo", "wiki_doc", "2026-01-01", ""),
+                ("owner/repo", "wiki_doc", "2026-01-02", ""),
+                ("owner/repo", "diff", "2026-01-01", "abc"),
+                ("owner/repo", "diff", "2026-01-02", "abc"),
+                ("owner/repo", "diff", "2026-01-03", "def"),
+            ],
+        )
+
+        rows = connection.execute(
+            build_coverage_query(["owner/repo"], ["diff", "wiki_doc"])
+        ).fetchall()
+        counts = {row["type"]: row["distinct_commit_count"] for row in rows}
+
+        self.assertEqual(counts, {"diff": 2, "wiki_doc": 0})
+
+    def test_final_payload_redaction_covers_source_and_known_gap(self) -> None:
+        secret = "GITHUB_TOKEN=abcdefghijklmnop1234"
+        fixture = {
+            "source": {"repositories": [secret]},
+            "nodes": [],
+            "edges": [],
+        }
+        report = {
+            "known_gaps": [secret],
+            "result": {"redactions": 0},
+        }
+
+        redacted_fixture, redacted_report = redact_final_payloads(fixture, report)
+        combined = json.dumps([redacted_fixture, redacted_report])
+
+        self.assertNotIn("abcdefghijklmnop1234", combined)
+        self.assertEqual(combined.count("[REDACTED_SECRET]"), 2)
+        self.assertEqual(redacted_report["result"]["fixture_redactions"], 1)
+        self.assertEqual(redacted_report["result"]["provenance_redactions"], 1)
+        self.assertEqual(redacted_report["result"]["redactions"], 2)
+
     def test_missing_edge_endpoints_are_counted_without_fabricating_nodes(self) -> None:
         row = {
             "vector_id": "node-a",
@@ -163,8 +217,14 @@ class RealCorpusFixtureTest(unittest.TestCase):
         self.assertEqual(
             {row["type"] for row in report["coverage"]}, {"diff", "wiki_doc"}
         )
+        coverage = {row["type"]: row for row in report["coverage"]}
+        self.assertEqual(coverage["wiki_doc"]["distinct_commit_count"], 0)
+        self.assertGreater(coverage["diff"]["distinct_commit_count"], 0)
         self.assertEqual(report["result"]["nodes_included"], 6)
         self.assertEqual(report["result"]["edges_included"], 2)
+        self.assertEqual(report["result"]["redactions"], 0)
+        self.assertEqual(report["result"]["fixture_redactions"], 0)
+        self.assertEqual(report["result"]["provenance_redactions"], 0)
         self.assertTrue(report["known_gaps"])
         self.assertTrue(
             all(value == 0 for value in report["read_only_evidence"]["rows_written"])

@@ -1,5 +1,5 @@
 {
-  "acquired_at": "2026-08-01T10:35:33.027322Z",
+  "acquired_at": "2026-08-01T10:45:09.552049Z",
   "coverage": [
     {
       "distinct_commit_count": 494,
@@ -10,7 +10,7 @@
       "type": "diff"
     },
     {
-      "distinct_commit_count": 1,
+      "distinct_commit_count": 0,
       "newest_updated_at": "2026-07-31T14:57:33.145Z",
       "oldest_updated_at": "2026-05-01T06:45:41.178Z",
       "repo": "Liplus-Project/liplus-language",
@@ -57,7 +57,9 @@
     "edges_both_endpoints_missing": 137,
     "edges_included": 2,
     "edges_one_endpoint_missing": 16,
+    "fixture_redactions": 0,
     "nodes_included": 6,
+    "provenance_redactions": 0,
     "redactions": 0
   },
   "schema_version": 1,

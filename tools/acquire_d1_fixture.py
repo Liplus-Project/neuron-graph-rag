@@ -167,12 +167,25 @@ def source_url(row: dict[str, Any]) -> str:
     return f"https://github.com/{repo}"
 
 
+def build_coverage_query(
+    repositories: Sequence[str], types: Sequence[str]
+) -> str:
+    repo_filter = ", ".join(sql_literal(value) for value in repositories)
+    type_filter = ", ".join(sql_literal(value) for value in types)
+    return validate_read_only_sql(
+        "SELECT repo, type, COUNT(*) AS source_count, "
+        "MIN(updated_at) AS oldest_updated_at, MAX(updated_at) AS newest_updated_at, "
+        "COUNT(DISTINCT NULLIF(commit_sha, '')) AS distinct_commit_count "
+        f"FROM search_docs WHERE repo IN ({repo_filter}) AND type IN ({type_filter}) "
+        "GROUP BY repo, type ORDER BY repo, type"
+    )
+
+
 def transform(
     search_rows: list[dict[str, Any]], edge_rows: list[dict[str, Any]]
 ) -> tuple[dict[str, Any], dict[str, int]]:
     nodes: list[dict[str, Any]] = []
     node_ids: set[str] = set()
-    redaction_count = 0
     for row in search_rows:
         node_id = str(row["vector_id"])
         if node_id in node_ids:
@@ -185,15 +198,12 @@ def transform(
         }
         metadata["source_table"] = "search_docs"
         metadata["source_url"] = source_url(row)
-        node, replaced = redact(
-            {
-                "node_id": node_id,
-                "text": str(row.get("content") or ""),
-                "metadata": metadata,
-                "confidence": 1.0,
-            }
-        )
-        redaction_count += replaced
+        node = {
+            "node_id": node_id,
+            "text": str(row.get("content") or ""),
+            "metadata": metadata,
+            "confidence": 1.0,
+        }
         if not str(node["text"]).strip():
             raise ValueError(f"Source row has empty content: {node_id}")
         nodes.append(node)
@@ -207,20 +217,17 @@ def transform(
         if missing:
             excluded["one_endpoint_missing" if missing == 1 else "both_endpoints_missing"] += 1
             continue
-        edge, replaced = redact(
-            {
-                "source_id": source_id,
-                "target_id": target_id,
-                "edge_type": str(row["edge_kind"]),
-                "weight": 1.0,
-                "factuality": 1.0,
-                "metadata": {
-                    "source_table": "doc_edges",
-                    "source_record": {key: row.get(key) for key in DOC_EDGE_COLUMNS},
-                },
-            }
-        )
-        redaction_count += replaced
+        edge = {
+            "source_id": source_id,
+            "target_id": target_id,
+            "edge_type": str(row["edge_kind"]),
+            "weight": 1.0,
+            "factuality": 1.0,
+            "metadata": {
+                "source_table": "doc_edges",
+                "source_record": {key: row.get(key) for key in DOC_EDGE_COLUMNS},
+            },
+        }
         edges.append(edge)
 
     fixture = {
@@ -233,9 +240,23 @@ def transform(
         "edges_included": len(edges),
         "edges_one_endpoint_missing": excluded["one_endpoint_missing"],
         "edges_both_endpoints_missing": excluded["both_endpoints_missing"],
-        "redactions": redaction_count,
+        "redactions": 0,
+        "fixture_redactions": 0,
+        "provenance_redactions": 0,
     }
     return fixture, statistics
+
+
+def redact_final_payloads(
+    fixture: dict[str, Any], report: dict[str, Any]
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    redacted_fixture, fixture_redactions = redact(fixture)
+    redacted_report, provenance_redactions = redact(report)
+    result = redacted_report.setdefault("result", {})
+    result["fixture_redactions"] = fixture_redactions
+    result["provenance_redactions"] = provenance_redactions
+    result["redactions"] = fixture_redactions + provenance_redactions
+    return redacted_fixture, redacted_report
 
 
 def write_json(path: Path, value: Any) -> None:
@@ -305,11 +326,7 @@ def acquire(args: argparse.Namespace) -> None:
 
     coverage_rows, meta = wrangler_select(
         args.database,
-        "SELECT repo, type, COUNT(*) AS source_count, "
-        "MIN(updated_at) AS oldest_updated_at, MAX(updated_at) AS newest_updated_at, "
-        "COUNT(DISTINCT commit_sha) AS distinct_commit_count "
-        f"FROM search_docs WHERE repo IN ({repo_filter}) AND type IN ({type_filter}) "
-        "GROUP BY repo, type ORDER BY repo, type",
+        build_coverage_query(repositories, types),
         cwd=cwd,
         wrangler_command=command,
     )
@@ -355,6 +372,7 @@ def acquire(args: argparse.Namespace) -> None:
             "Use GitHub for byte-exact historical reconstruction.",
         ],
     }
+    fixture, report = redact_final_payloads(fixture, report)
     write_json(args.output, fixture)
     write_json(args.provenance_output, report)
 

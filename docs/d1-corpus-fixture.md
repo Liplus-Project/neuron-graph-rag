@@ -35,7 +35,7 @@ python tools/acquire_d1_fixture.py `
   --wrangler-project C:\path\to\github-rag-mcp
 ```
 
-選択順は `(repo, type, updated_at, vector_id)` で固定する。同一 snapshot と引数から fixture JSON は byte-identical になる。取得時刻は provenance report だけに置く。credential らしい文字列は `[REDACTED_SECRET]` へ決定論的に置換し、件数を report に残す。
+選択順は `(repo, type, updated_at, vector_id)` で固定する。同一 snapshot と引数から fixture JSON は byte-identical になる。取得時刻は provenance report だけに置く。credential らしい文字列は、node / edge だけでなく source 引数と既知 gap を含む最終 fixture / provenance 全体で `[REDACTED_SECRET]` へ決定論的に置換する。fixture、provenance、合計の置換件数を report に残す。
 
 完全 export や作業中の raw JSON は commit しない。`.gitignore` は `*.d1-export.json`、`artifacts/d1/`、`tests/fixtures/.full-*` を除外する。
 
@@ -44,7 +44,7 @@ python tools/acquire_d1_fixture.py `
 `tests/fixtures/d1_liplus_wiki.provenance.json` は次を保持する。
 
 - source database、repo、type、source schema fingerprint
-- type 別の source count、最古 / 最新 `updated_at`、distinct commit count
+- type 別の source count、最古 / 最新 `updated_at`、空文字 sentinel を除外した distinct commit count
 - fixture の node / edge 数と欠損 endpoint 除外数
 - query ごとの zero-write evidence
 - 取得日時、既知 gap、完全性の限界、redaction 件数
