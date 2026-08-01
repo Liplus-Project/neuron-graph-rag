@@ -10,6 +10,7 @@
 - provenance: `tests/fixtures/d1_liplus_benchmark.provenance.json`
 - gold: `tests/fixtures/d1_liplus_benchmark.gold.json`
 - 12 wiki node / 26 `mention` edge の弱連結 graph
+- provenance の `known_gaps` は空配列。取得対象は `wiki_doc` だけであり、取得時点でこの固定 subset に関係する未解消 gap はない
 - direct lookup / relation / negative control 各4件
 - relation は独立した endpoint 組の one-hop 2件と two-hop 2件
 - baseline は `entry_weight=1.0`、`graph_weight=0.0`
@@ -17,6 +18,8 @@
 - 両者とも同じ feature-hashing encoder、`seed_count=1`、`max_hops=2`
 
 fixture の node 集合、gold query、許容 rank、期待 path、判定規則は品質結果を見る前に固定する。結果を見た後に変更が必要になった場合は、旧契約と旧結果を残し、別 version として理由を記録する。
+
+初回観測後の provenance 再監査でも fixture SHA-256 は `b3b305aabb57803c2782c3998215e1cbcf9b5e6cdef0f641abc98520d4400cf9`、gold SHA-256 は `a10af7a1a4ec5f0ef66a228b05e14fe0160e4ff5f9b3209073f38fdb90028c71` のまま byte-identical だった。再監査では、wiki-only capture と無関係な diff tracker を `known_gaps` から除き、取得時点で関連する未解消 gap だけを記録する #7 の契約へ戻した。freeze commit `befe245` と初回 result は変更していない。
 
 ## 仮説判定
 

@@ -71,6 +71,8 @@ class RealCorpusBenchmarkContractTest(unittest.TestCase):
         )
         self.assertFalse(any(report["read_only_evidence"]["changed_db"]))
         self.assertTrue(report["source"]["schema_fingerprint"].startswith("sha256:"))
+        self.assertEqual(report["source"]["types"], ["wiki_doc"])
+        self.assertEqual(report["known_gaps"], [])
 
     def test_checked_result_matches_frozen_inputs(self) -> None:
         checked = json.loads(RESULT.read_text(encoding="utf-8"))

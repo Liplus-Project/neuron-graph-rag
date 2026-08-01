@@ -1,5 +1,5 @@
 {
-  "acquired_at": "2026-08-01T13:15:07.370951Z",
+  "acquired_at": "2026-08-01T13:25:55.447277Z",
   "coverage": [
     {
       "distinct_commit_count": 0,
@@ -10,9 +10,7 @@
       "type": "wiki_doc"
     }
   ],
-  "known_gaps": [
-    "Diff indexing may be incomplete pending https://github.com/Liplus-Project/github-rag-mcp/issues/178"
-  ],
+  "known_gaps": [],
   "limits": [
     "D1 is a lossy search snapshot; content may be truncated.",
     "Binary and patchless files can be absent from diff indexing.",
