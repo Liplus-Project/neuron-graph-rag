@@ -120,6 +120,8 @@ python -m neuron_graph_rag benchmark \
 
 同一 corpus・encoder・query 上の baseline / graph の MRR、Hit@3、rank delta に加え、one-hop / two-hop の説明経路と success feedback の局所性を検査します。品質結果は CI 合格条件にせず、固定 JSON と [観測記録](docs/real-corpus-benchmark.md) に支持・不支持・判定不能をそのまま残します。
 
+初回観測では relation 改善と説明経路・feedback isolation は支持されましたが、negative control の2件が悪化したため非対象の過剰押し上げ仮説は不支持でした。詳細値と適用限界は観測記録を参照してください。
+
 ## Public API
 
 ```python

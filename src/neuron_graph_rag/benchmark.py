@@ -29,6 +29,8 @@ def read_gold(path: str | Path) -> dict[str, Any]:
     if any(not case_id for case_id in case_ids) or len(case_ids) != len(set(case_ids)):
         raise ValueError("Benchmark case ids must be non-empty and unique")
     counts = Counter(str(case.get("cohort", "")) for case in cases)
+    if set(counts) != set(COHORTS):
+        raise ValueError(f"Unknown benchmark cohort; expected only {COHORTS!r}")
     if any(counts[cohort] == 0 for cohort in COHORTS):
         raise ValueError(f"Benchmark must cover every cohort: {COHORTS!r}")
     for case in cases:

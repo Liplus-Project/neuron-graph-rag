@@ -5,7 +5,7 @@ import unittest
 from collections import Counter
 from pathlib import Path
 
-from neuron_graph_rag.benchmark import read_gold
+from neuron_graph_rag.benchmark import read_gold, run_benchmark
 from neuron_graph_rag.d1_fixture import read_fixture
 from tools.acquire_d1_fixture import assert_connected
 
@@ -14,6 +14,7 @@ FIXTURES = Path(__file__).parent / "fixtures"
 FIXTURE = FIXTURES / "d1_liplus_benchmark.json"
 GOLD = FIXTURES / "d1_liplus_benchmark.gold.json"
 PROVENANCE = FIXTURES / "d1_liplus_benchmark.provenance.json"
+RESULT = FIXTURES / "d1_liplus_benchmark.result.json"
 
 
 class RealCorpusBenchmarkContractTest(unittest.TestCase):
@@ -70,6 +71,28 @@ class RealCorpusBenchmarkContractTest(unittest.TestCase):
         )
         self.assertFalse(any(report["read_only_evidence"]["changed_db"]))
         self.assertTrue(report["source"]["schema_fingerprint"].startswith("sha256:"))
+
+    def test_checked_result_matches_frozen_inputs(self) -> None:
+        checked = json.loads(RESULT.read_text(encoding="utf-8"))
+        regenerated = run_benchmark(FIXTURE, GOLD)
+        canonical = (
+            json.dumps(checked, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+        )
+
+        self.assertEqual(RESULT.read_text(encoding="utf-8"), canonical)
+        self.assertEqual(regenerated, checked)
+        self.assertEqual(
+            {item["id"]: item["status"] for item in checked["hypotheses"]},
+            {
+                "H1": "supported",
+                "H2": "unsupported",
+                "H3": "supported",
+                "H4": "supported",
+            },
+        )
+        self.assertTrue(all(item["matched"] for item in checked["explanations"]))
+        self.assertEqual(checked["feedback"]["uncredited_edge_changes"], [])
+        self.assertEqual(checked["feedback"]["non_target_rank_changes"], [])
 
 
 if __name__ == "__main__":

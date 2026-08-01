@@ -38,7 +38,21 @@ CI は gold schema、fixture / provenance、metric 計算、path 照合、feedba
 
 ## 観測結果
 
-初回実行前。gold freeze commit 後に、生成 JSON の数値と H1-H4 の支持 / 不支持 / 判定不能をそのまま追記する。
+gold / fixture / 判定規則を commit `befe245` で固定した後に初回実行した。機械可読な全結果は `tests/fixtures/d1_liplus_benchmark.result.json` に保存する。
+
+| cohort | baseline MRR | graph MRR | baseline Hit@3 | graph Hit@3 | 改善 / 同値 / 悪化 |
+|---|---:|---:|---:|---:|---:|
+| direct lookup | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 0 / 4 / 0 |
+| relation | 0.2583 | 0.3833 | 0.5000 | 0.7500 | 3 / 1 / 0 |
+| negative control | 1.0000 | 0.7083 | 1.0000 | 1.0000 | 0 / 2 / 2 |
+| overall | 0.7528 | 0.6972 | 0.8333 | 0.9167 | 3 / 7 / 2 |
+
+- H1: **支持**。relation は3件改善・0件悪化で、MRR と Hit@3 が上昇した。
+- H2: **不支持**。negative-configuration は rank 1 → 3、negative-installation は rank 1 → 2 に悪化した。両方とも許容 rank 3 内だが、事前規則の「悪化ゼロ」を満たさず、前者は2 rank 悪化の不支持条件にも該当する。
+- H3: **支持**。one-hop 2件と two-hop 2件の全4件で、固定した endpoint / `mention` path が説明に存在した。
+- H4: **支持**。`1.-Model` → `2.-Evolution` の credited `mention` edge だけが weight 1.0 → 1.14 に変化した。非 credited edge と非対象 case rank は不変だった。対象 case 自体の rank は2 → 2であり、強化は起きたが即時 rank 改善は観測されなかった。
+
+relation cohort では graph 統合の有用性が観測された一方、negative control の悪化により overall MRR は低下した。したがって「graph 統合は常に baseline より良い」という結論は支持しない。
 
 ## 適用限界
 
