@@ -31,9 +31,10 @@ python tools/acquire_d1_fixture.py `
   --per-type-limit 3 `
   --output tests/fixtures/d1_liplus_wiki.json `
   --provenance-output tests/fixtures/d1_liplus_wiki.provenance.json `
-  --known-gap "github-rag-mcp#178: forward-gap backfill status at capture time" `
   --wrangler-project C:\path\to\github-rag-mcp
 ```
+
+この例は取得時点で未解消の既知 gap がないため、`--known-gap` を指定しない。未解消の gap がある場合だけ、その issue と取得時点の状態を `--known-gap` で追加する。
 
 選択順は `(repo, type, updated_at, vector_id)` で固定する。同一 snapshot と引数から fixture JSON は byte-identical になる。取得時刻は provenance report だけに置く。credential らしい文字列は、node / edge だけでなく source 引数と既知 gap を含む最終 fixture / provenance 全体で `[REDACTED_SECRET]` へ決定論的に置換する。fixture、provenance、合計の置換件数を report に残す。
 
