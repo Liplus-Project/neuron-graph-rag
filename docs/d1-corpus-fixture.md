@@ -49,6 +49,8 @@ python tools/acquire_d1_fixture.py `
 - query ごとの zero-write evidence
 - 取得日時、既知 gap、完全性の限界、redaction 件数
 
+`known_gaps` は取得時点で未解消の gap だけを保持し、確認済みの gap がない場合は空配列にする。
+
 backfill 完了後は同じ引数で別 path へ再取得し、次で coverage を比較する。
 
 ```powershell

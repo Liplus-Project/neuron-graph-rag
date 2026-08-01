@@ -211,7 +211,7 @@ class RealCorpusFixtureTest(unittest.TestCase):
                 edge["metadata"]["source_record"]["edge_kind"], "mention"
             )
 
-    def test_provenance_records_coverage_gaps_and_zero_writes(self) -> None:
+    def test_provenance_records_coverage_gap_state_and_zero_writes(self) -> None:
         report = json.loads(PROVENANCE.read_text(encoding="utf-8"))
 
         self.assertEqual(
@@ -225,7 +225,10 @@ class RealCorpusFixtureTest(unittest.TestCase):
         self.assertEqual(report["result"]["redactions"], 0)
         self.assertEqual(report["result"]["fixture_redactions"], 0)
         self.assertEqual(report["result"]["provenance_redactions"], 0)
-        self.assertTrue(report["known_gaps"])
+        self.assertIsInstance(report["known_gaps"], list)
+        self.assertTrue(
+            all(isinstance(value, str) and value for value in report["known_gaps"])
+        )
         self.assertTrue(
             all(value == 0 for value in report["read_only_evidence"]["rows_written"])
         )

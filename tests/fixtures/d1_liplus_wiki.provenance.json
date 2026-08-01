@@ -1,5 +1,5 @@
 {
-  "acquired_at": "2026-08-01T10:45:09.552049Z",
+  "acquired_at": "2026-08-01T12:41:51.044291Z",
   "coverage": [
     {
       "distinct_commit_count": 494,
@@ -18,9 +18,7 @@
       "type": "wiki_doc"
     }
   ],
-  "known_gaps": [
-    "github-rag-mcp#178: forward-gap backfill was in progress at the initial 2026-08-01 capture; recapture after completion and compare coverage."
-  ],
+  "known_gaps": [],
   "limits": [
     "D1 is a lossy search snapshot; content may be truncated.",
     "Binary and patchless files can be absent from diff indexing.",
