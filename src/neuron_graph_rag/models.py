@@ -84,6 +84,7 @@ class SearchTrace:
     query: str
     created_at: float
     hits: tuple[SearchHit, ...]
+    diagnostics: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass(frozen=True, slots=True)

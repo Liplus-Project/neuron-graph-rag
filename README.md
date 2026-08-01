@@ -122,6 +122,14 @@ python -m neuron_graph_rag benchmark \
 
 初回観測では relation 改善と説明経路・feedback isolation は支持されましたが、negative control の2件が悪化したため非対象の過剰押し上げ仮説は不支持でした。詳細値と適用限界は観測記録を参照してください。
 
+## Neural dynamics experiment
+
+正方向加算、有限活性 budget、側方抑制、query-conditioned transmission、反復競合の13 variants を、PR #10 の development set と非重複9-node holdout で比較しました。manifest、holdout、gold、選択規則、停止規則は result 観測前の commit `4f240dd` で固定しています。
+
+development では `budget-025` が relation MRR 0.3833 を維持し、negative-control MRR を 0.7083 から 1.0000 へ改善して選択されました。holdout を一度だけ開封した結果、direct / negative-control、path 3/3、feedback isolation は維持した一方、relation MRR が 0.3611 から 0.3254 へ退行しました。固定 stop rule に従って不採用とし、既定 strategy は `current_positive_additive` のままです。
+
+全13 variants の gate 不合格と tradeoff、選択理由、holdout 判定は [Neural dynamics experiment](docs/neural-dynamics-experiment.md) と versioned result JSON に保存しています。現在の holdout は再選択や parameter 調整に再利用しません。
+
 ## Public API
 
 ```python

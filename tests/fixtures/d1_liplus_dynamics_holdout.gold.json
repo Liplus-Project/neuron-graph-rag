@@ -1,0 +1,102 @@
+{
+  "cases": [
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+      "id": "holdout-direct-milestone-removal",
+      "query": "milestone subsystem removal generate notes Closes commit issue number redundant release grouping",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/milestone-subsystem-removal"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:6F1rT6JgOb-dIqk52fVRYKb0lPXwHjNGpvk139Tp3Ec",
+      "id": "holdout-direct-collaborative-authorship",
+      "query": "collaborative authorship byte axis 95 percent AI design direction Master two layer attribution",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-authorship-collaborative"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY",
+      "id": "holdout-direct-design-intent",
+      "query": "design intent current AI limitations eliminate scaffolding means internalization ends",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-design-intent-vs-current-limit"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+          "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+        }
+      ],
+      "id": "holdout-relation-milestone-runtime",
+      "query": "milestone mandatory removal release grouping generate notes issue links empirical no-breakage",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/milestone-subsystem-removal",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/master-verification-at-runtime-not-spec"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+          "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs"
+        }
+      ],
+      "id": "holdout-relation-history-architecture",
+      "query": "prosthetic stack behavior correctness working beauty maintenance accumulated iteration",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-history-is-empirical",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/current-architecture-as-concession"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+          "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4"
+        }
+      ],
+      "id": "holdout-relation-role-vision",
+      "query": "client architect programmer AI content author git verify source implementation labor",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/master-role-as-client-architect",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/li-plus-long-term-vision-feedback-only"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+      "id": "holdout-negative-empirical-history",
+      "query": "Li+ prosthetic stack working ugliness working beauty behavior over initial clean design",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/liplus-history-is-empirical"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+      "id": "holdout-negative-client-architect",
+      "query": "Master role client architect final judge programmer AI 95 percent content author",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/master-role-as-client-architect"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:PB1RkJAXQcu06Iy3Zp-VPrTV-RCjYBudZHjdgnTL9ns",
+      "id": "holdout-negative-eval-cost",
+      "query": "parallel subagent evaluation prevention token cost cheaper than later repair rollback contamination",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-cost-acceptance"
+    }
+  ],
+  "fixture": "d1_liplus_dynamics_holdout.json",
+  "schema_version": 1
+}

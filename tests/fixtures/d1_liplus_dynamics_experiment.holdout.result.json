@@ -1,0 +1,821 @@
+{
+  "decision": {
+    "adopted": false,
+    "all_relation_paths_match": true,
+    "default_variant_id": "current",
+    "feedback_isolated": true,
+    "no_cohort_regression": false,
+    "selected_variant_id": "budget-025"
+  },
+  "development_result_sha256": "sha256:0d4d228b71bf1d2f8764057f738632a63eae6dc7688b0b506957220c8bf90a3c",
+  "experiment_id": "d1-liplus-dynamics-v1",
+  "holdout_open_count": 1,
+  "inputs": {
+    "fixture_sha256": "sha256:4f7c444c408c3188323e754aa93141a8deaf1a4b15410ad915dd4c71be3a8081",
+    "gold_sha256": "sha256:229175676b23d47a7fe85005a5e00aa2c72f419419349d5be0bf0e8af259ce54",
+    "provenance_sha256": "sha256:e0c60cac6ba8cdf359be1d376172cfb85ab22c7fbb717d8fb0dd8cb848b4e5e4"
+  },
+  "manifest_sha256": "sha256:9267dfae42f908bbd7e22e0bc0807baffe275ad687f939ec384c4112ed11c865",
+  "schema_version": 1,
+  "stage": "holdout",
+  "variants": [
+    {
+      "cases": [
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 2.6799999999999997,
+            "converged": false,
+            "expansions": 3,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive"
+          },
+          "expected_path": [],
+          "id": "holdout-direct-milestone-removal",
+          "observed_paths": [
+            {
+              "seed_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 1.0,
+            "converged": true,
+            "expansions": 0,
+            "steps": 0,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "current_positive_additive"
+          },
+          "expected_path": [],
+          "id": "holdout-direct-collaborative-authorship",
+          "observed_paths": [
+            {
+              "seed_id": "w:6F1rT6JgOb-dIqk52fVRYKb0lPXwHjNGpvk139Tp3Ec",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 1.7,
+            "converged": true,
+            "expansions": 1,
+            "steps": 1,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "current_positive_additive"
+          },
+          "expected_path": [],
+          "id": "holdout-direct-design-intent",
+          "observed_paths": [
+            {
+              "seed_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 2.6799999999999997,
+            "converged": false,
+            "expansions": 3,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive"
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+              "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+            }
+          ],
+          "id": "holdout-relation-milestone-runtime",
+          "observed_paths": [
+            {
+              "seed_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+                  "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 2
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 3.5899999999999994,
+            "converged": false,
+            "expansions": 4,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive"
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+              "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs"
+            }
+          ],
+          "id": "holdout-relation-history-architecture",
+          "observed_paths": [
+            {
+              "seed_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+                  "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 4
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 2.4,
+            "converged": true,
+            "expansions": 2,
+            "steps": 1,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "current_positive_additive"
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+              "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4"
+            }
+          ],
+          "id": "holdout-relation-role-vision",
+          "observed_paths": [
+            {
+              "seed_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+                  "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 3
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 3.5899999999999994,
+            "converged": false,
+            "expansions": 4,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive"
+          },
+          "expected_path": [],
+          "id": "holdout-negative-empirical-history",
+          "observed_paths": [
+            {
+              "seed_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 2.4,
+            "converged": true,
+            "expansions": 2,
+            "steps": 1,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "current_positive_additive"
+          },
+          "expected_path": [],
+          "id": "holdout-negative-client-architect",
+          "observed_paths": [
+            {
+              "seed_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 3.869999999999999,
+            "converged": false,
+            "expansions": 5,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "current_positive_additive"
+          },
+          "expected_path": [],
+          "id": "holdout-negative-eval-cost",
+          "observed_paths": [
+            {
+              "seed_id": "w:PB1RkJAXQcu06Iy3Zp-VPrTV-RCjYBudZHjdgnTL9ns",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        }
+      ],
+      "diagnostics": {
+        "mean_activation_total": 2.6566666666666663,
+        "mean_expansions": 2.6666666666666665,
+        "mean_steps": 1.4444444444444444,
+        "stop_reasons": {
+          "frontier_exhausted": 4,
+          "max_hops": 5
+        }
+      },
+      "explanations": [
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+              "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+            }
+          ],
+          "id": "holdout-relation-milestone-runtime",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+                  "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+              "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs"
+            }
+          ],
+          "id": "holdout-relation-history-architecture",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+                  "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+              "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4"
+            }
+          ],
+          "id": "holdout-relation-role-vision",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+                  "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "family": "current_positive_additive",
+      "feedback": {
+        "case_id": "holdout-relation-milestone-runtime",
+        "changed_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.14,
+            "old_weight": 1.0,
+            "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+            "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+          }
+        ],
+        "credited_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.14,
+            "old_weight": 1.0,
+            "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+            "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+          }
+        ],
+        "non_target_rank_changes": [],
+        "target_node_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+        "target_rank_after": 2,
+        "target_rank_before": 2,
+        "uncredited_edge_changes": []
+      },
+      "id": "current",
+      "metrics": {
+        "cohorts": {
+          "direct_lookup": {
+            "cases": 3,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1,
+              1
+            ]
+          },
+          "negative_control": {
+            "cases": 3,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1,
+              1
+            ]
+          },
+          "relation": {
+            "cases": 3,
+            "hit_at_3": 0.6666666666666666,
+            "mean_reciprocal_rank": 0.3611111111111111,
+            "ranks": [
+              2,
+              4,
+              3
+            ]
+          }
+        },
+        "overall": {
+          "cases": 9,
+          "hit_at_3": 0.8888888888888888,
+          "mean_reciprocal_rank": 0.787037037037037,
+          "ranks": [
+            1,
+            1,
+            1,
+            2,
+            4,
+            3,
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "parameters": {},
+      "structural_complexity": 0
+    },
+    {
+      "cases": [
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 1.5,
+            "converged": false,
+            "expansions": 3,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "finite_activation_budget"
+          },
+          "expected_path": [],
+          "id": "holdout-direct-milestone-removal",
+          "observed_paths": [
+            {
+              "seed_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 1.0,
+            "converged": true,
+            "expansions": 0,
+            "steps": 0,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "finite_activation_budget"
+          },
+          "expected_path": [],
+          "id": "holdout-direct-collaborative-authorship",
+          "observed_paths": [
+            {
+              "seed_id": "w:6F1rT6JgOb-dIqk52fVRYKb0lPXwHjNGpvk139Tp3Ec",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "direct_lookup",
+          "diagnostics": {
+            "activation_total": 1.25,
+            "converged": true,
+            "expansions": 1,
+            "steps": 1,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "finite_activation_budget"
+          },
+          "expected_path": [],
+          "id": "holdout-direct-design-intent",
+          "observed_paths": [
+            {
+              "seed_id": "w:tT8sq276CvE72QWLcSIn6G1DQzdoLWAUqOofpqTjeJY",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 1.5,
+            "converged": false,
+            "expansions": 3,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "finite_activation_budget"
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+              "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+            }
+          ],
+          "id": "holdout-relation-milestone-runtime",
+          "observed_paths": [
+            {
+              "seed_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+                  "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 2
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 1.3083333333333331,
+            "converged": false,
+            "expansions": 4,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "finite_activation_budget"
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+              "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs"
+            }
+          ],
+          "id": "holdout-relation-history-architecture",
+          "observed_paths": [
+            {
+              "seed_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+                  "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 7
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "relation",
+          "diagnostics": {
+            "activation_total": 1.25,
+            "converged": true,
+            "expansions": 2,
+            "steps": 1,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "finite_activation_budget"
+          },
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+              "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4"
+            }
+          ],
+          "id": "holdout-relation-role-vision",
+          "observed_paths": [
+            {
+              "seed_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+                  "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4"
+                }
+              ]
+            }
+          ],
+          "path_matched": true,
+          "rank": 3
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 1.3083333333333331,
+            "converged": false,
+            "expansions": 4,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "finite_activation_budget"
+          },
+          "expected_path": [],
+          "id": "holdout-negative-empirical-history",
+          "observed_paths": [
+            {
+              "seed_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 1.25,
+            "converged": true,
+            "expansions": 2,
+            "steps": 1,
+            "stop_reason": "frontier_exhausted",
+            "strategy": "finite_activation_budget"
+          },
+          "expected_path": [],
+          "id": "holdout-negative-client-architect",
+          "observed_paths": [
+            {
+              "seed_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        },
+        {
+          "acceptable_rank": 3,
+          "cohort": "negative_control",
+          "diagnostics": {
+            "activation_total": 1.4999999999999998,
+            "converged": false,
+            "expansions": 5,
+            "steps": 2,
+            "stop_reason": "max_hops",
+            "strategy": "finite_activation_budget"
+          },
+          "expected_path": [],
+          "id": "holdout-negative-eval-cost",
+          "observed_paths": [
+            {
+              "seed_id": "w:PB1RkJAXQcu06Iy3Zp-VPrTV-RCjYBudZHjdgnTL9ns",
+              "steps": []
+            }
+          ],
+          "path_matched": null,
+          "rank": 1
+        }
+      ],
+      "diagnostics": {
+        "mean_activation_total": 1.3185185185185186,
+        "mean_expansions": 2.6666666666666665,
+        "mean_steps": 1.4444444444444444,
+        "stop_reasons": {
+          "frontier_exhausted": 4,
+          "max_hops": 5
+        }
+      },
+      "explanations": [
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+              "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+            }
+          ],
+          "id": "holdout-relation-milestone-runtime",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+                  "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+              "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs"
+            }
+          ],
+          "id": "holdout-relation-history-architecture",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:S3jX8geyVvaMiqQmpXzWyS1u2v1AAcaLE-BXhPMcjGE",
+                  "target_id": "w:-NNqHe09ZIcq9RpapZcI3gx5BJzeBizTjGMLtp4t-cs"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expected_path": [
+            {
+              "edge_type": "mention",
+              "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+              "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4"
+            }
+          ],
+          "id": "holdout-relation-role-vision",
+          "matched": true,
+          "observed_paths": [
+            {
+              "seed_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+              "steps": [
+                {
+                  "edge_type": "mention",
+                  "source_id": "w:vuiyK6EjvKblECPln3aQuTdyJa7XmYhyS-Y3dLgKhpE",
+                  "target_id": "w:73vMfZxas4ufkIRTuWft9CRNZQHgqTmOJJ44iBQgLQ4"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "family": "finite_activation_budget",
+      "feedback": {
+        "case_id": "holdout-relation-milestone-runtime",
+        "changed_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.05,
+            "old_weight": 1.0,
+            "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+            "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+          }
+        ],
+        "credited_edges": [
+          {
+            "edge_type": "mention",
+            "new_weight": 1.05,
+            "old_weight": 1.0,
+            "source_id": "w:C75IEx3PhIuTjqSnikilDVlA15Cm3ADdiSn1WEts_bc",
+            "target_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs"
+          }
+        ],
+        "non_target_rank_changes": [],
+        "target_node_id": "w:y4906JaATA0s_x42CfVsUgM8AZfLeR5mzu5DZVbhHcs",
+        "target_rank_after": 2,
+        "target_rank_before": 2,
+        "uncredited_edge_changes": []
+      },
+      "id": "budget-025",
+      "metrics": {
+        "cohorts": {
+          "direct_lookup": {
+            "cases": 3,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1,
+              1
+            ]
+          },
+          "negative_control": {
+            "cases": 3,
+            "hit_at_3": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "ranks": [
+              1,
+              1,
+              1
+            ]
+          },
+          "relation": {
+            "cases": 3,
+            "hit_at_3": 0.6666666666666666,
+            "mean_reciprocal_rank": 0.32539682539682535,
+            "ranks": [
+              2,
+              7,
+              3
+            ]
+          }
+        },
+        "overall": {
+          "cases": 9,
+          "hit_at_3": 0.8888888888888888,
+          "mean_reciprocal_rank": 0.7751322751322751,
+          "ranks": [
+            1,
+            1,
+            1,
+            2,
+            7,
+            3,
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "parameters": {
+        "activation_budget": 0.25
+      },
+      "structural_complexity": 1
+    }
+  ]
+}

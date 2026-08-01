@@ -417,4 +417,12 @@ def _edge_key(edge: Any) -> tuple[str, str, str]:
 
 
 def _sha256(path: Path) -> str:
-    return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+    if path.suffix == ".json":
+        with path.open(encoding="utf-8") as stream:
+            value = json.load(stream)
+        payload = (
+            json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+        ).encode("utf-8")
+    else:
+        payload = path.read_bytes()
+    return "sha256:" + hashlib.sha256(payload).hexdigest()

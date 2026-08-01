@@ -3,22 +3,20 @@ from __future__ import annotations
 import math
 import time
 import uuid
-from collections import defaultdict, deque
 from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
 from .models import (
-    ActivationPath,
     DocumentNode,
     FeedbackReceipt,
-    PathStep,
     ReinforcedEdge,
     SearchHit,
     SearchTrace,
     TypedEdge,
 )
+from .dynamics import DynamicsSettings, propagate
 from .retrieval import BM25Retriever, DenseEncoder, DenseRetriever, normalize_scores
 from .storage import SQLiteStore
 
@@ -38,6 +36,15 @@ class EngineConfig:
     maximum_activation: float = 10.0
     max_paths_per_node: int = 4
     max_propagation_expansions: int = 10_000
+    activation_strategy: str = "current_positive_additive"
+    activation_budget: float = 1.0
+    inhibition_ratio: float = 0.0
+    inhibition_top_k: int = 0
+    query_transmission_floor: float = 0.4
+    query_transmission_power: float = 1.0
+    recurrent_steps: int = 3
+    recurrent_decay: float = 0.5
+    convergence_tolerance: float = 1e-9
 
     def __post_init__(self) -> None:
         for name in (
@@ -60,6 +67,30 @@ class EngineConfig:
             raise ValueError("activation half-life must be positive")
         if self.feedback_learning_rate <= 0.0:
             raise ValueError("feedback learning rate must be positive")
+        if self.activation_strategy not in {
+            "current_positive_additive",
+            "finite_activation_budget",
+            "lateral_inhibition",
+            "query_conditioned_transmission",
+            "recurrent_competition",
+        }:
+            raise ValueError("Unknown activation_strategy")
+        if self.activation_budget <= 0.0:
+            raise ValueError("activation_budget must be positive")
+        if not 0.0 <= self.inhibition_ratio < 1.0:
+            raise ValueError("inhibition_ratio must be in [0, 1)")
+        if self.inhibition_top_k < 0:
+            raise ValueError("inhibition_top_k must be non-negative")
+        if not 0.0 <= self.query_transmission_floor <= 1.0:
+            raise ValueError("query_transmission_floor must be between 0 and 1")
+        if self.query_transmission_power <= 0.0:
+            raise ValueError("query_transmission_power must be positive")
+        if self.recurrent_steps < 1:
+            raise ValueError("recurrent_steps must be positive")
+        if not 0.0 <= self.recurrent_decay <= 1.0:
+            raise ValueError("recurrent_decay must be between 0 and 1")
+        if self.convergence_tolerance < 0.0:
+            raise ValueError("convergence_tolerance must be non-negative")
 
 
 class NeuronGraphRAG:
@@ -157,7 +188,28 @@ class NeuronGraphRAG:
             )[: self.config.seed_count]
             if score > 0.0
         ]
-        graph_activation, paths = self._propagate(seed_ids, entry)
+        propagation = propagate(
+            query=query,
+            seed_ids=seed_ids,
+            entry=entry,
+            nodes={node.node_id: node for node in nodes},
+            outgoing_edges=self.store.outgoing_edges,
+            settings=DynamicsSettings(
+                strategy=self.config.activation_strategy,
+                max_hops=self.config.max_hops,
+                hop_decay=self.config.hop_decay,
+                max_expansions=self.config.max_propagation_expansions,
+                activation_budget=self.config.activation_budget,
+                inhibition_ratio=self.config.inhibition_ratio,
+                inhibition_top_k=self.config.inhibition_top_k,
+                query_transmission_floor=self.config.query_transmission_floor,
+                query_transmission_power=self.config.query_transmission_power,
+                recurrent_steps=self.config.recurrent_steps,
+                recurrent_decay=self.config.recurrent_decay,
+                convergence_tolerance=self.config.convergence_tolerance,
+            ),
+        )
+        graph_activation, paths = propagation.activation, propagation.paths
         normalized_activation = normalize_scores(
             {node.node_id: graph_activation.get(node.node_id, 0.0) for node in nodes}
         )
@@ -206,7 +258,13 @@ class NeuronGraphRAG:
                 for rank, hit in enumerate(selected_hits, start=1)
             ),
         )
-        return SearchTrace(trace_id, query, timestamp, selected_hits)
+        return SearchTrace(
+            trace_id,
+            query,
+            timestamp,
+            selected_hits,
+            propagation.diagnostics.as_dict(),
+        )
 
     def record_success(
         self,
@@ -297,66 +355,6 @@ class NeuronGraphRAG:
             return 0.0
         value, updated_at = state
         return self._decayed(value, updated_at, self._timestamp(now))
-
-    def _propagate(
-        self, seed_ids: list[str], entry: dict[str, float]
-    ) -> tuple[dict[str, float], dict[str, list[ActivationPath]]]:
-        activation: dict[str, float] = defaultdict(float)
-        paths: dict[str, list[ActivationPath]] = defaultdict(list)
-        queue: deque[
-            tuple[str, str, float, tuple[PathStep, ...], frozenset[str], int]
-        ] = deque()
-        for seed_id in seed_ids:
-            contribution = entry[seed_id]
-            activation[seed_id] += contribution
-            path = ActivationPath(seed_id, contribution)
-            paths[seed_id].append(path)
-            queue.append(
-                (seed_id, seed_id, contribution, (), frozenset({seed_id}), 0)
-            )
-
-        expansions = 0
-        while queue and expansions < self.config.max_propagation_expansions:
-            seed_id, current_id, contribution, steps, visited, depth = queue.popleft()
-            if depth >= self.config.max_hops:
-                continue
-            for edge in self.store.outgoing_edges(current_id):
-                if edge.target_id in visited:
-                    continue
-                next_contribution = (
-                    contribution
-                    * edge.weight
-                    * edge.factuality
-                    * self.config.hop_decay
-                )
-                if next_contribution <= 0.0:
-                    continue
-                step = PathStep(
-                    edge.source_id,
-                    edge.target_id,
-                    edge.edge_type,
-                    edge.weight,
-                    edge.factuality,
-                )
-                next_steps = steps + (step,)
-                activation[edge.target_id] += next_contribution
-                paths[edge.target_id].append(
-                    ActivationPath(seed_id, next_contribution, next_steps)
-                )
-                queue.append(
-                    (
-                        seed_id,
-                        edge.target_id,
-                        next_contribution,
-                        next_steps,
-                        visited | {edge.target_id},
-                        depth + 1,
-                    )
-                )
-                expansions += 1
-                if expansions >= self.config.max_propagation_expansions:
-                    break
-        return dict(activation), dict(paths)
 
     def _record_activation(
         self, activation: dict[str, float], timestamp: float
