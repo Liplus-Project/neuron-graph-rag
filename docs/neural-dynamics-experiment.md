@@ -70,3 +70,42 @@ freeze commit より前に development / holdout runner を実行しない。fre
 5. 採用または不採用を frozen stop rule から機械的に記録する。
 
 品質数値を CI 合格閾値にはしない。CI は manifest hash、入力分離、determinism、再生成一致、停止規則の適用を検証する。
+
+## 観測結果
+
+freeze commit `4f240dd` の push 後、development stage を一度実行した。全結果は `tests/fixtures/d1_liplus_dynamics_experiment.development.result.json` に保存する。
+
+| variant | direct MRR | relation MRR | negative MRR | candidate gate | Pareto |
+|---|---:|---:|---:|---|---|
+| `current` | 1.0000 | 0.3833 | 0.7083 | reference | - |
+| `budget-025` | 1.0000 | 0.3833 | 1.0000 | pass | frontier |
+| `budget-050` | 1.0000 | 0.3833 | 1.0000 | pass | frontier |
+| `budget-100` | 1.0000 | 0.3833 | 1.0000 | pass | frontier |
+| `inhibition-010` | 1.0000 | 0.3833 | 0.7083 | fail | - |
+| `inhibition-025` | 1.0000 | 0.3833 | 0.6667 | fail | - |
+| `inhibition-top4` | 1.0000 | 0.3750 | 0.7083 | fail | - |
+| `query-floor-020` | 1.0000 | 0.3333 | 1.0000 | fail | - |
+| `query-floor-040` | 1.0000 | 0.3833 | 1.0000 | pass | frontier |
+| `query-floor-060` | 1.0000 | 0.3833 | 1.0000 | pass | frontier |
+| `recurrent-balanced` | 0.7083 | 0.6333 | 0.5417 | fail | - |
+| `recurrent-selective` | 0.8750 | 0.4524 | 0.6667 | fail | - |
+| `recurrent-conservative` | 0.6250 | 0.6333 | 0.5417 | fail | - |
+
+Pareto 支配された gate 通過候補はなかった。5候補は relation / negative-control 軸で同値の frontier になり、平均展開数と構造複雑度も同値だったため、最後の辞書順 tie-break で `budget-025` を選択した。recurrent family は relation を改善した一方で direct / negative-control を退行させたため、候補 gate を通らなかった。この tradeoff を失敗結果として保持する。
+
+## Holdout 判定
+
+development 選択後、holdout stage を一度だけ実行した。全結果は `tests/fixtures/d1_liplus_dynamics_experiment.holdout.result.json` に保存する。
+
+| variant | direct MRR | relation MRR | negative MRR | path | feedback isolation |
+|---|---:|---:|---:|---:|---:|
+| `current` | 1.0000 | 0.3611 | 1.0000 | 3/3 | pass |
+| `budget-025` | 1.0000 | 0.3254 | 1.0000 | 3/3 | pass |
+
+`budget-025` は `holdout-relation-history-architecture` を rank 4 から rank 7 へ退行させた。他2 relation case は rank 2 と rank 3 のままだった。全 relation path は一致し、credited edge 1本だけが変化し、uncredited edge と非対象 rank の変更はなかった。
+
+しかし relation cohort MRR が current 0.3611 から 0.3254 へ退行したため、固定 stop rule の `no_cohort_regression` を満たさない。`budget-025` は不採用とし、既定は `current_positive_additive` のまま変更しない。holdout を見た後の parameter、gold、doc path、閾値の調整は行わない。
+
+## 適用限界
+
+development と holdout はいずれも固定 Li+ wiki subset と feature-hashing encoder に限定される。D1 は損失あり search snapshot であり、一般 corpus、learned embedding、別 graph topology へ外挿しない。今回の結果は有限 budget が development negative control を回復できても、独立 subgraph の relation 品質を維持する一般則にはならなかったことを示す。

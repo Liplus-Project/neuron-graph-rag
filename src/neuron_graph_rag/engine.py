@@ -3,17 +3,14 @@ from __future__ import annotations
 import math
 import time
 import uuid
-from collections import defaultdict
 from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
 from .models import (
-    ActivationPath,
     DocumentNode,
     FeedbackReceipt,
-    PathStep,
     ReinforcedEdge,
     SearchHit,
     SearchTrace,

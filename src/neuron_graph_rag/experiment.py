@@ -116,7 +116,7 @@ def run_holdout(
                 gold,
                 _variant_config(manifest, variant),
                 variant,
-                len(read_fixture(base / split["fixture"])["nodes"]),
+                int(manifest["shared_config"]["limit"]),
             )
         )
     current, selected = evaluated

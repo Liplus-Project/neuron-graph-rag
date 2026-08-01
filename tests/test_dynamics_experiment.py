@@ -15,6 +15,8 @@ MANIFEST = FIXTURES / "d1_liplus_dynamics_experiment.manifest.json"
 HOLDOUT = FIXTURES / "d1_liplus_dynamics_holdout.json"
 HOLDOUT_GOLD = FIXTURES / "d1_liplus_dynamics_holdout.gold.json"
 HOLDOUT_PROVENANCE = FIXTURES / "d1_liplus_dynamics_holdout.provenance.json"
+DEVELOPMENT_RESULT = FIXTURES / "d1_liplus_dynamics_experiment.development.result.json"
+HOLDOUT_RESULT = FIXTURES / "d1_liplus_dynamics_experiment.holdout.result.json"
 DEVELOPMENT = FIXTURES / "d1_liplus_benchmark.json"
 
 
@@ -175,6 +177,60 @@ class DevelopmentSelectionRuleTest(unittest.TestCase):
         selection = _select_development(variants)  # type: ignore[arg-type]
         self.assertEqual(selection["selected_variant_id"], "current")
         self.assertEqual(selection["reason"], "no_variant_passed_candidate_gate")
+
+
+class FrozenResultAuditTest(unittest.TestCase):
+    def test_development_result_preserves_every_variant_and_selection(self) -> None:
+        manifest = read_manifest(MANIFEST)
+        result = json.loads(DEVELOPMENT_RESULT.read_text(encoding="utf-8"))
+        self.assertEqual(result["stage"], "development")
+        self.assertEqual(result["variant_count"], 13)
+        self.assertEqual(
+            [variant["id"] for variant in result["variants"]],
+            [variant["id"] for variant in manifest["variants"]],
+        )
+        self.assertEqual(result["selection"]["selected_variant_id"], "budget-025")
+        self.assertEqual(
+            result["selection"]["eligible_variant_ids"],
+            [
+                "budget-025",
+                "budget-050",
+                "budget-100",
+                "query-floor-040",
+                "query-floor-060",
+            ],
+        )
+        self.assertEqual(
+            sum(variant["candidate_gate_passed"] for variant in result["variants"]),
+            5,
+        )
+        self.assertEqual(
+            sum(
+                variant["pareto_status"] == "failed_gate"
+                for variant in result["variants"]
+            ),
+            8,
+        )
+
+    def test_holdout_result_records_single_open_and_rejects_regression(self) -> None:
+        result = json.loads(HOLDOUT_RESULT.read_text(encoding="utf-8"))
+        self.assertEqual(result["stage"], "holdout")
+        self.assertEqual(result["holdout_open_count"], 1)
+        self.assertEqual(
+            [variant["id"] for variant in result["variants"]],
+            ["current", "budget-025"],
+        )
+        current, candidate = result["variants"]
+        self.assertLess(
+            candidate["metrics"]["cohorts"]["relation"]["mean_reciprocal_rank"],
+            current["metrics"]["cohorts"]["relation"]["mean_reciprocal_rank"],
+        )
+        self.assertTrue(all(item["matched"] for item in candidate["explanations"]))
+        self.assertEqual(candidate["feedback"]["uncredited_edge_changes"], [])
+        self.assertEqual(candidate["feedback"]["non_target_rank_changes"], [])
+        self.assertFalse(result["decision"]["adopted"])
+        self.assertFalse(result["decision"]["no_cohort_regression"])
+        self.assertEqual(result["decision"]["default_variant_id"], "current")
 
 
 if __name__ == "__main__":
