@@ -108,6 +108,18 @@ python -m neuron_graph_rag eval
 
 取得 tool は D1 の単一 `SELECT / WITH` だけを許可し、Wrangler が `rows_written=0` を返したことを query ごとに検証します。認証、再取得、schema fingerprint、coverage、既知 gap、完全性の限界は [docs/d1-corpus-fixture.md](docs/d1-corpus-fixture.md) を参照してください。
 
+## Real-corpus benchmark
+
+`tests/fixtures/d1_liplus_benchmark.json` と `.gold.json` は、12 wiki node の connected fixture と、結果を見る前に固定した 12 query（direct lookup / relation / negative control 各4件）です。
+
+```bash
+python -m neuron_graph_rag benchmark \
+  --fixture tests/fixtures/d1_liplus_benchmark.json \
+  --gold tests/fixtures/d1_liplus_benchmark.gold.json
+```
+
+同一 corpus・encoder・query 上の baseline / graph の MRR、Hit@3、rank delta に加え、one-hop / two-hop の説明経路と success feedback の局所性を検査します。品質結果は CI 合格条件にせず、固定 JSON と [観測記録](docs/real-corpus-benchmark.md) に支持・不支持・判定不能をそのまま残します。
+
 ## Public API
 
 ```python
@@ -183,6 +195,7 @@ MCP 対応 AI との接続は、コアへ MCP SDK を追加せず、同一 repos
 - reinforcement は credit assignment の最小実装として、成功結果の最大寄与経路を選びます。
 - graph propagation は決定論的な重み付き探索であり、GNN 学習ではありません。
 - eval corpus は機構確認用の小規模 fixture であり、一般的な retrieval 品質を保証しません。
+- real-corpus benchmark も learned semantic embedding ではない現行 MVP 構成だけを評価し、Li+ D1 は損失あり snapshot であるため一般的な corpus / embedding 品質へ外挿できません。
 
 受け入れ要件の詳細は [docs/requirements.md](docs/requirements.md) にあります。
 

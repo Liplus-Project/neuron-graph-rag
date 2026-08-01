@@ -38,6 +38,11 @@
 20. `search_docs.vector_id / content` を node ID / text へ、`doc_edges` の両端と `edge_kind` を typed edge へ変換し、欠損 endpoint は node を捏造せず除外理由を記録できる。
 21. D1 取得は単一 SELECT / WITH query のみに制限し、各 query の `rows_written=0`、`changes=0`、`changed_db=false` を検証できる。
 22. fixture と分離した provenance report に schema fingerprint、coverage、取得時刻、取得時点で未解消の既知 gap、redaction 件数を記録し、再取得前後の count / commit / 最新時刻を比較できる。未解消の既知 gap がない場合は空配列を記録する。
+23. 実 D1 の明示的な wiki doc path 集合から、弱連結で決定論的な評価 fixture を生成できる。gold case と品質結果を見た後に選択集合を変更しない。
+24. 12 件以上の gold query を direct lookup、relation、negative control に分け、query、期待 node、許容 rank、source URL、relation 時の期待 endpoint / edge type を保持できる。
+25. baseline hybrid と graph-integrated retrieval を同一 corpus、encoder、query で実行し、全体・cohort 別の MRR、Hit@3、rank delta、改善・同値・悪化件数を機械可読に出力できる。
+26. relation の説明は score だけでなく、固定した one-hop / two-hop の endpoint と edge type に対して照合する。
+27. success feedback 前後で edge weight と全 gold case の rank を比較し、credited path 外の edge 変更と非対象 case の rank 変更を明示する。
 
 ## 4. Constraints
 
@@ -52,7 +57,9 @@
 - `python -m unittest discover -s tests -v` が単体テストと統合テストを通過する。
 - `python -m neuron_graph_rag demo` が取り込み、検索、成功フィードバック、再検索を実演する。
 - `python -m neuron_graph_rag eval` が baseline hybrid と graph retrieval の比較指標を出力する。
+- `python -m neuron_graph_rag benchmark --fixture ... --gold ...` が固定実コーパス上の比較、説明経路、feedback isolation、仮説判定を出力する。
 - CI が editable install、test、eval を新規環境で実行する。
 - [Optional MCP Feedback Interface](optional-mcp-interface.md) が tool semantics、input、output、failure、core mapping、依存境界、repository 分離条件を定義する。
 - `tests/fixtures/d1_liplus_wiki.json` が実 D1 形状から ingest、検索、時系列 metadata、graph activation、success feedback を再現する。
 - [D1 corpus fixture](d1-corpus-fixture.md) が read-only 取得、認証境界、provenance、coverage 比較、再取得手順を定義する。
+- [Real-corpus benchmark](real-corpus-benchmark.md) が gold freeze、判定規則、観測結果、外挿限界を定義する。
