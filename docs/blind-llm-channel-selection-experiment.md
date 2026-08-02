@@ -130,3 +130,28 @@ packet SHA-256は`9b7e26fc74ce9b84e382e607fad9dcaf34b4def75a234028d7aa6be09fb46c
 capture段階で全response validity gateが不合格になったため、majority aggregation、accuracy、channel accuracy、selected-node MRR、path照合は実行していない。これらを0値として解釈せず、`not_evaluated_gates`と`metrics_status=not_computed_invalid_judge_response`で未評価を記録する。
 
 Development gateは不合格であり、`holdout_status=not_opened_invalid_judge_response`で停止した。停止規則の確認ではholdout packet生成がexit 1となり、holdout packet / resultは存在しない。prompt、packet、judge数、response、集約規則、matcher、threshold、gateを観測後に変更せず、既存`search()`とdefault、`search_channels()`の非validated状態を維持する。
+
+## Post-freeze portability correction
+
+PR #22の最初のLinux CI run `30731318651`では、Windowsでfreezeしたv1 text artifactのCRLF checkout byte hashと、GitHub ActionsのLF checkout byte hashが一致せず、`d1_liplus_channels.contamination.json`のfreeze auditで停止した。内容差ではなく、Gitのtext checkout変換だけが原因である。
+
+観測後変更を一般化せず、v1 text-byte verificationだけを次の順序へ限定修正した。
+
+1. checkout raw bytesのSHA-256を最初に照合する。
+2. raw不一致時だけ、全改行がLF一種類ならCRLFへ、CRLF一種類ならLFへexact変換する。
+3. alternate bytesのSHA-256が固定manifest値と一致した場合だけ許可する。
+4. 本文差分、mixed newline、bare CR、その他のbyte差を拒否する。
+
+manifest、prompt、packet、judge artifact、development result、gate、stop rule、観測結果は再生成・変更していない。correction前後で維持したworking-tree SHA-256は次の通りである。
+
+| artifact | SHA-256 |
+| --- | --- |
+| blind manifest | `ae6f639a8a17d91c405df86c240be4cd63264c4dfe3b8bf1855ac612218c47a7` |
+| judge prompt | `5d825eea83d2321a11fc69156066c7cebcac56ca7d7e970be3d63d393c05d28c` |
+| development packet | `9b7e26fc74ce9b84e382e607fad9dcaf34b4def75a234028d7aa6be09fb46c1b` |
+| judge 1 | `b808975131466cc2a98fdcb6d649ab40267f1f4871c80d3b29361e7b3be0a12b` |
+| judge 2 | `9efd813d10b549e69ee79d28c9f08dda0ed3cfcb10018f20e72e560d9074c76c` |
+| judge 3 raw | `977d2dfcab55a822be9aa6a60eee5b00562400e8fc1c061fbf815d0745db0305` |
+| development result | `1f1c25ba3d29aa01acf97a364cfe303178a08defa7fc39e688ffaf1b389b6d88` |
+
+このcorrectionはjudge response validity失敗を再評価せず、retry、aggregation、metric計算、holdout開封を許可しない。

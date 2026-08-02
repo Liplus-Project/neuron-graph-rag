@@ -9,6 +9,7 @@ from pathlib import Path
 
 from neuron_graph_rag.blind_selection import (
     _evaluate_majority,
+    _matches_frozen_text_bytes,
     aggregate_blind_results,
     capture_judge_response,
     generate_blind_packet,
@@ -142,6 +143,25 @@ class BlindFreezeContractTest(unittest.TestCase):
         self.assertEqual(len(manifest["gate"]), 12)
         self.assertEqual(manifest["judge_count"], 3)
         self.assertTrue(manifest["stop_rule"]["refuse_overwrite"])
+
+    def test_v1_hash_allows_only_exact_lf_crlf_checkout_transform(self) -> None:
+        frozen = b"alpha\r\nbeta\r\n"
+        expected = "sha256:" + hashlib.sha256(frozen).hexdigest()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "frozen.txt"
+            path.write_bytes(frozen)
+            self.assertTrue(_matches_frozen_text_bytes(path, expected))
+            path.write_bytes(b"alpha\nbeta\n")
+            self.assertTrue(_matches_frozen_text_bytes(path, expected))
+            path.write_bytes(b"alpha changed\nbeta\n")
+            self.assertFalse(_matches_frozen_text_bytes(path, expected))
+            path.write_bytes(b"alpha\r\nbeta\n")
+            self.assertFalse(_matches_frozen_text_bytes(path, expected))
+            path.write_bytes(b"alpha\rbeta\r")
+            self.assertFalse(_matches_frozen_text_bytes(path, expected))
+            expected_lf = "sha256:" + hashlib.sha256(b"alpha\nbeta\n").hexdigest()
+            path.write_bytes(frozen)
+            self.assertTrue(_matches_frozen_text_bytes(path, expected_lf))
 
     def test_holdout_packet_stops_before_opening_on_development_failure(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

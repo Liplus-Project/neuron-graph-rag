@@ -559,8 +559,25 @@ def _audit_v1_hashes(manifest_path: Path, manifest: dict[str, Any]) -> None:
     if not isinstance(entries, list) or not entries:
         raise ValueError("Blind manifest must freeze v1 byte hashes")
     for entry in entries:
-        if _byte_sha256(root / entry["path"]) != entry["sha256"]:
+        if not _matches_frozen_text_bytes(
+            root / entry["path"], str(entry["sha256"])
+        ):
             raise ValueError(f"Frozen v1 byte hash mismatch: {entry['path']}")
+
+
+def _matches_frozen_text_bytes(path: Path, expected_sha256: str) -> bool:
+    raw = path.read_bytes()
+    if _bytes_sha256(raw) == expected_sha256:
+        return True
+    if b"\r" not in raw:
+        alternate = raw.replace(b"\n", b"\r\n")
+    elif b"\r" not in raw.replace(b"\r\n", b"") and b"\n" not in raw.replace(
+        b"\r\n", b""
+    ):
+        alternate = raw.replace(b"\r\n", b"\n")
+    else:
+        return False
+    return alternate != raw and _bytes_sha256(alternate) == expected_sha256
 
 
 def _validate_prompt(prompt: str) -> None:
@@ -627,7 +644,11 @@ def _read_json(path: Path) -> dict[str, Any]:
 
 
 def _byte_sha256(path: Path) -> str:
-    return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+    return _bytes_sha256(path.read_bytes())
+
+
+def _bytes_sha256(raw: bytes) -> str:
+    return "sha256:" + hashlib.sha256(raw).hexdigest()
 
 
 def _json_sha256(value: Any) -> str:
