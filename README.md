@@ -227,6 +227,8 @@ rag.record_success(channels.relation.trace_id, ["related-node"])
 
 callerは両laneを検査し、下流判断で実際に使用したlaneの`trace_id`と`node_id`をfeedbackへ渡します。channel文字列を後から自己申告せず、保存済みtrace provenanceがreinforcement有無を決めます。固定D1 split、4-case hard gate、one-time holdout規則は[Independent retrieval channels experiment](docs/independent-retrieval-channels-experiment.md)を参照してください。
 
+凍結後のdevelopmentではrelation MRR改善、lane parity、feedback帰属を含む10/12 gateが成立しましたが、rank-1 lexical controlとfrozen path-shape matcherの2 gateが不合格でした。停止規則に従ってholdoutは開かず、`search_channels()`へvalidated判定を付与していません。既存`search()`が引き続きdefaultです。
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。

@@ -90,4 +90,24 @@ uv run python tools/run_channel_experiment.py development `
 
 ## 観測結果
 
-result-free freeze後に記録する。
+fixture、gold、provenance、audit、manifest、implementation、tests、規則をfreeze commit `0404e9b`としてpushした後、developmentを一度だけ実行した。
+
+補助指標:
+
+| metric | value |
+| --- | ---: |
+| intended-lane MRR | 0.8750 |
+| intended-lane Hit@1 | 0.7500 |
+| relation BM25 MRR | 0.5000 |
+| relation lane MRR | 1.0000 |
+| union coverage | 1.0000 |
+| agreement rate | 0.5000 |
+
+12 gate中10件が通過した。lexical / relation isolated parity、relationのBM25比改善、独立trace、非融合envelope、search edge不変、lexical feedback非強化、relation feedbackのcredited edge限定強化、cross-lane拒否、決定性は成立した。
+
+不合格は次の2件である。
+
+1. frozen direct-target queryはBM25 / lexicalの両方でtarget rank 2となり、`acceptable_rank=1`の個別controlを満たさなかった。lane parity自体は成立しており、実装によるBM25退行ではないが、固定hard gateは不合格である。
+2. relation targetはrank 1となり、実際の`mention` edgeだけがfeedbackで強化された。しかしfrozen matcherはgoldのendpoint / edge typeだけのstepと、observed stepのweight / factualityを含むshapeを直接比較したため、`relation_paths_match_and_exclude_zero_hop=false`となった。観測後にmatcherを変更しない規則を優先し、不合格を維持する。
+
+selectionは`current`、理由は`channel_candidate_failed_frozen_gate`である。`holdout_status=not_opened_no_candidate`としてholdoutを開封せず、holdout resultを作成しない。`search_channels()`はadditive experimental APIとして残るが、本実験によるvalidated判定は付与しない。既存`search()`とdefaultは変更しない。

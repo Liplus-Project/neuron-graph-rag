@@ -6,7 +6,10 @@ import unittest
 from pathlib import Path
 
 from neuron_graph_rag import EngineConfig, NeuronGraphRAG
-from neuron_graph_rag.channel_experiment import read_channel_manifest
+from neuron_graph_rag.channel_experiment import (
+    read_channel_manifest,
+    run_channel_holdout,
+)
 from neuron_graph_rag.d1_fixture import read_fixture
 
 
@@ -168,9 +171,49 @@ class ChannelFreezeContractTest(unittest.TestCase):
         self.assertEqual(len(audit["inputs"]["prior_fixtures"]), 9)
         self.assertIn("prior gold and result artifacts are not loaded", audit["prior_usage"])
 
-    def test_result_artifacts_are_absent_before_freeze(self) -> None:
-        self.assertFalse(DEVELOPMENT_RESULT.exists())
+    def test_development_result_is_recorded_and_holdout_remains_absent(self) -> None:
+        self.assertTrue(DEVELOPMENT_RESULT.exists())
         self.assertFalse(HOLDOUT_RESULT.exists())
+
+
+class ChannelResultAuditTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.result = json.loads(DEVELOPMENT_RESULT.read_text(encoding="utf-8"))
+
+    def test_development_preserves_negative_result_and_stop_rule(self) -> None:
+        self.assertEqual(self.result["stage"], "development")
+        self.assertFalse(self.result["gate_passed"])
+        self.assertEqual(
+            self.result["selection"],
+            {
+                "reason": "channel_candidate_failed_frozen_gate",
+                "selected_candidate_id": "current",
+            },
+        )
+        self.assertEqual(self.result["holdout_status"], "not_opened_no_candidate")
+        passed = [name for name, value in self.result["gate"].items() if value]
+        failed = [name for name, value in self.result["gate"].items() if not value]
+        self.assertEqual(len(passed), 10)
+        self.assertEqual(
+            failed,
+            [
+                "lexical_controls_do_not_regress",
+                "relation_paths_match_and_exclude_zero_hop",
+            ],
+        )
+
+    def test_relation_gain_and_feedback_attribution_are_still_explicit(self) -> None:
+        metrics = self.result["metrics"]
+        self.assertEqual(metrics["relation_bm25_mrr"], 0.5)
+        self.assertEqual(metrics["relation_mrr"], 1.0)
+        self.assertEqual(metrics["union_coverage"], 1.0)
+        self.assertTrue(self.result["feedback"]["lexical_success_isolated"])
+        self.assertTrue(self.result["feedback"]["relation_success_isolated"])
+        self.assertTrue(self.result["feedback"]["cross_lane_misuse_rejected"])
+
+    def test_stop_rule_rejects_holdout_execution(self) -> None:
+        with self.assertRaisesRegex(ValueError, "Stop rule forbids opening"):
+            run_channel_holdout(MANIFEST, DEVELOPMENT_RESULT)
 
 
 if __name__ == "__main__":
