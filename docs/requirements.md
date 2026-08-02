@@ -71,6 +71,13 @@
 53. fusion calibration experimentはproduction D1の新しい3-node development / holdoutを、既存7 fixturesの50 unique doc pathsおよび相互間から分離し、provenance、balanced gold、contamination audit、6 variantsを結果観測前に固定する。
 54. development候補はrelation MRRをcurrentから厳密に改善し、少なくとも1 relation caseを個別改善し、direct / negative-controlのcohort MRRと全個別rankを退行させず、path、feedback、anchor、edge-only graph、formula auditを満たす場合だけ選択する。
 55. development候補がある場合だけ未観測holdoutでcurrentと選択候補を一度評価し、同じgateを通過した場合だけdefault変更候補とする。
+56. `search_channels`は同一queryからBM25 lexical laneとanchored edge-only relation laneを独立trace IDで同時返却し、cross-lane final score、combined rank、single winnerを生成しない。
+57. lexical laneはBM25だけで順位付けし、dense retrievalとgraph propagationをlane順位へ使用せず、保存hitへgraph pathを持たせない。
+58. relation laneはBM25+dense entryをseed選択だけに使い、`anchored_local_competition`で1 edge以上を通過したpositive graph nodeをraw activation降順・node ID昇順で順位付けする。
+59. channel provenanceはcallerのchannel自己申告でなく独立trace IDに保存し、`record_success`はlexical traceでedgeを変更せず、relation traceでは保存済みcredited pathだけを強化する。
+60. 同一nodeが両laneに現れる場合も各rankと説明を保持し、片方のtraceに保存されていないnodeへのfeedbackをatomicに拒否する。
+61. independent-channel experimentはproduction D1からread-only取得した相互disjointな2-node / 1-edge developmentとholdoutを、既存9 fixturesの全node pathから分離し、各splitの4-case hard gate、provenance、contamination audit、lane規則、feedback規則、停止規則を結果観測前に固定する。
+62. developmentでlane parity、relation個別改善、edge-only path、独立trace、edge不変、feedback帰属、cross-lane拒否、決定性の全hard gateを通過した場合だけholdoutを一度開き、同じgateを全通過した場合だけ`search_channels`をvalidatedと記録する。
 
 ## 4. Constraints
 
@@ -95,3 +102,4 @@
 - [Local recurrent competition experiment](neural-dynamics-local-competition-experiment.md) が新規D1 subgraph、contamination audit、query / path ablation、二baseline gateを定義する。
 - [Anchored BM25 and graph hybrid experiment](anchored-bm25-graph-hybrid-experiment.md) がzero-hop anchor、edge-only graph signal、BM25 ablation、新規D1 split、単一holdout gateを定義する。
 - [Anchored fusion calibration experiment](anchored-fusion-calibration-experiment.md) がgraph normalization、bottom-centered RRF、新規D1 split、個別case gateを定義する。
+- [Independent retrieval channels experiment](independent-retrieval-channels-experiment.md) が非融合lane、独立trace provenance、feedback帰属、4-case hard gate、単一holdout開封を定義する。

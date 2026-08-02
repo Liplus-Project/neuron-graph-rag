@@ -122,6 +122,73 @@ class SearchTrace:
 
 
 @dataclass(frozen=True, slots=True)
+class SearchChannelHit:
+    channel: str
+    node: DocumentNode
+    rank: int
+    channel_score: float
+    sparse_score: float
+    sparse_raw_score: float
+    dense_score: float = 0.0
+    dense_raw_score: float = 0.0
+    entry_score: float = 0.0
+    graph_activation: float = 0.0
+    paths: tuple[ActivationPath, ...] = ()
+
+    def explain(self) -> dict[str, Any]:
+        return {
+            "node_id": self.node.node_id,
+            "channel": self.channel,
+            "rank": self.rank,
+            "scores": {
+                "channel": self.channel_score,
+                "bm25": self.sparse_score,
+                "bm25_raw": self.sparse_raw_score,
+                "dense": self.dense_score,
+                "dense_raw": self.dense_raw_score,
+                "entry": self.entry_score,
+                "graph_activation": self.graph_activation,
+            },
+            "paths": [
+                {
+                    "seed_id": path.seed_id,
+                    "contribution": path.contribution,
+                    "kind": "graph",
+                    "steps": [
+                        {
+                            "source_id": step.source_id,
+                            "target_id": step.target_id,
+                            "edge_type": step.edge_type,
+                            "edge_weight": step.edge_weight,
+                            "factuality": step.factuality,
+                        }
+                        for step in path.steps
+                    ],
+                }
+                for path in self.paths
+            ],
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class SearchChannelTrace:
+    trace_id: str
+    query: str
+    created_at: float
+    channel: str
+    hits: tuple[SearchChannelHit, ...]
+    diagnostics: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True, slots=True)
+class SearchChannelsResult:
+    query: str
+    lexical: SearchChannelTrace
+    relation: SearchChannelTrace
+    agreement_node_ids: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
 class ReinforcedEdge:
     source_id: str
     target_id: str
@@ -136,3 +203,4 @@ class FeedbackReceipt:
     trace_id: str
     used_node_ids: tuple[str, ...]
     reinforced_edges: tuple[ReinforcedEdge, ...]
+    channel: str | None = None

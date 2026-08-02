@@ -12,6 +12,9 @@ from .models import (
     DocumentNode,
     FeedbackReceipt,
     ReinforcedEdge,
+    SearchChannelHit,
+    SearchChannelsResult,
+    SearchChannelTrace,
     SearchHit,
     SearchTrace,
     TypedEdge,
@@ -355,6 +358,203 @@ class NeuronGraphRAG:
             propagation_diagnostics,
         )
 
+    def search_channels(
+        self,
+        query: str,
+        *,
+        limit: int = 5,
+        now: datetime | float | None = None,
+    ) -> SearchChannelsResult:
+        if not query.strip():
+            raise ValueError("query must not be empty")
+        if limit < 1:
+            raise ValueError("limit must be positive")
+        nodes = self.store.list_nodes()
+        if not nodes:
+            raise ValueError("Cannot search an empty corpus")
+        timestamp = self._timestamp(now)
+        nodes_by_id = {node.node_id: node for node in nodes}
+
+        sparse_raw = self.sparse_retriever.score(query, nodes)
+        sparse = normalize_scores(sparse_raw)
+        lexical_order = sorted(
+            nodes,
+            key=lambda node: (-sparse_raw[node.node_id], node.node_id),
+        )[:limit]
+        lexical_hits = tuple(
+            SearchChannelHit(
+                channel="lexical",
+                node=node,
+                rank=rank,
+                channel_score=sparse_raw[node.node_id],
+                sparse_score=sparse[node.node_id],
+                sparse_raw_score=sparse_raw[node.node_id],
+                entry_score=sparse[node.node_id],
+            )
+            for rank, node in enumerate(lexical_order, start=1)
+        )
+
+        dense_raw = self.dense_retriever.score(query, nodes)
+        dense = normalize_scores(dense_raw)
+        entry = {
+            node.node_id: self._weighted_average(
+                sparse[node.node_id],
+                dense[node.node_id],
+                self.config.sparse_weight,
+                self.config.dense_weight,
+            )
+            for node in nodes
+        }
+        seed_ids = [
+            node_id
+            for node_id, score in sorted(
+                entry.items(), key=lambda item: (-item[1], item[0])
+            )[: self.config.seed_count]
+            if score > 0.0
+        ]
+        propagation = propagate(
+            query=query,
+            seed_ids=seed_ids,
+            entry=entry,
+            nodes=nodes_by_id,
+            outgoing_edges=self.store.outgoing_edges,
+            settings=DynamicsSettings(
+                strategy="anchored_local_competition",
+                max_hops=self.config.max_hops,
+                hop_decay=self.config.hop_decay,
+                max_expansions=self.config.max_propagation_expansions,
+                activation_budget=self.config.activation_budget,
+                inhibition_ratio=self.config.inhibition_ratio,
+                inhibition_top_k=self.config.inhibition_top_k,
+                query_transmission_floor=self.config.query_transmission_floor,
+                query_transmission_power=self.config.query_transmission_power,
+                recurrent_steps=self.config.recurrent_steps,
+                recurrent_decay=self.config.recurrent_decay,
+                convergence_tolerance=self.config.convergence_tolerance,
+                max_active_paths_per_node=self.config.max_active_paths_per_node,
+            ),
+        )
+        edge_paths = {
+            node_id: tuple(
+                sorted(
+                    (path for path in node_paths if path.steps),
+                    key=lambda path: (-path.contribution, path.seed_id),
+                )[: self.config.max_paths_per_node]
+            )
+            for node_id, node_paths in propagation.paths.items()
+        }
+        relation_order = sorted(
+            (
+                node_id
+                for node_id, activation in propagation.activation.items()
+                if activation > 0.0 and edge_paths.get(node_id)
+            ),
+            key=lambda node_id: (-propagation.activation[node_id], node_id),
+        )[:limit]
+        relation_hits = tuple(
+            SearchChannelHit(
+                channel="relation",
+                node=nodes_by_id[node_id],
+                rank=rank,
+                channel_score=propagation.activation[node_id],
+                sparse_score=sparse[node_id],
+                sparse_raw_score=sparse_raw[node_id],
+                dense_score=dense[node_id],
+                dense_raw_score=dense_raw[node_id],
+                entry_score=entry[node_id],
+                graph_activation=propagation.activation[node_id],
+                paths=edge_paths[node_id],
+            )
+            for rank, node_id in enumerate(relation_order, start=1)
+        )
+        self._record_activation(propagation.activation, timestamp)
+
+        lexical_trace_id = uuid.uuid4().hex
+        relation_trace_id = uuid.uuid4().hex
+        self._store_channel_trace(
+            lexical_trace_id, query, timestamp, "lexical", lexical_hits
+        )
+        self._store_channel_trace(
+            relation_trace_id, query, timestamp, "relation", relation_hits
+        )
+        lexical_diagnostics = {
+            "strategy": "bm25_only",
+            "use_dense_retrieval": False,
+            "use_graph_propagation": False,
+            "steps": 0,
+            "expansions": 0,
+            "active_path_count": 0,
+            "stop_reason": "lexical_complete",
+            "ordering_recomputable": True,
+        }
+        relation_diagnostics = propagation.diagnostics.as_dict()
+        relation_diagnostics.update(
+            {
+                "strategy": "anchored_local_competition",
+                "use_dense_retrieval": True,
+                "use_graph_propagation": True,
+                "seed_ids": seed_ids,
+                "edge_only": all(
+                    path.steps
+                    for hit in relation_hits
+                    for path in hit.paths
+                ),
+                "ordering_recomputable": True,
+            }
+        )
+        lexical_trace = SearchChannelTrace(
+            lexical_trace_id,
+            query,
+            timestamp,
+            "lexical",
+            lexical_hits,
+            lexical_diagnostics,
+        )
+        relation_trace = SearchChannelTrace(
+            relation_trace_id,
+            query,
+            timestamp,
+            "relation",
+            relation_hits,
+            relation_diagnostics,
+        )
+        lexical_ids = {hit.node.node_id for hit in lexical_hits}
+        relation_ids = {hit.node.node_id for hit in relation_hits}
+        return SearchChannelsResult(
+            query,
+            lexical_trace,
+            relation_trace,
+            tuple(sorted(lexical_ids & relation_ids)),
+        )
+
+    def _store_channel_trace(
+        self,
+        trace_id: str,
+        query: str,
+        timestamp: float,
+        channel: str,
+        hits: tuple[SearchChannelHit, ...],
+    ) -> None:
+        self.store.create_channel_retrieval(
+            trace_id,
+            query,
+            timestamp,
+            channel,
+            (
+                {
+                    "node_id": hit.node.node_id,
+                    "rank": hit.rank,
+                    "sparse_score": hit.sparse_score,
+                    "dense_score": hit.dense_score,
+                    "entry_score": hit.entry_score,
+                    "graph_activation": hit.graph_activation,
+                    "channel_score": hit.channel_score,
+                    "paths": hit.explain()["paths"],
+                }
+                for hit in hits
+            ),
+        )
+
     def record_success(
         self,
         trace_id: str,
@@ -433,6 +633,7 @@ class NeuronGraphRAG:
             trace_id,
             ordered_node_ids,
             tuple(reinforced),
+            self.store.retrieval_channel(trace_id),
         )
 
     def activation(

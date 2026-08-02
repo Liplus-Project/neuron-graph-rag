@@ -1,0 +1,60 @@
+{
+  "candidate_id": "dual-lane",
+  "contamination_audit": {
+    "artifact": "d1_liplus_channels.contamination.json",
+    "artifact_sha256": "sha256:97fbd385fcf495461ddb0c656828ae3b81fdc837f7f2bfd405af58bbaae12b00"
+  },
+  "development": {
+    "fixture": "d1_liplus_channels_development.json",
+    "fixture_sha256": "sha256:e634bdcb9a855b01f23259351b554543d47ffd8f82ca4debb0afdb04c8537be6",
+    "gold": "d1_liplus_channels_development.gold.json",
+    "gold_sha256": "sha256:f1d83e96e8d2b9d38c4a51b1861597f9f639308329f732382f62231d34909b9f",
+    "provenance": "d1_liplus_channels_development.provenance.json",
+    "provenance_sha256": "sha256:51efd68f986a85a0211c8348490baca2e3194e1219f6d251f4f8434e06b01e36"
+  },
+  "experiment_id": "d1-liplus-independent-retrieval-channels-v1",
+  "gate": [
+    "lexical_lane_matches_isolated_bm25",
+    "lexical_controls_do_not_regress",
+    "relation_lane_matches_isolated_anchored_graph",
+    "relation_strictly_improves_bm25",
+    "relation_paths_match_and_exclude_zero_hop",
+    "no_cross_lane_combined_result",
+    "independent_trace_ids_share_query",
+    "search_does_not_change_edges",
+    "lexical_success_does_not_change_edges",
+    "relation_success_changes_only_credited_edges",
+    "cross_lane_trace_misuse_rejected",
+    "deterministic_lane_results"
+  ],
+  "holdout": {
+    "fixture": "d1_liplus_channels_holdout.json",
+    "fixture_sha256": "sha256:18620641e0008f5cd273446ccc8cdf15acdd29230edbfb21b276d5ff27252b2e",
+    "gold": "d1_liplus_channels_holdout.gold.json",
+    "gold_sha256": "sha256:9cf9b4bfba88e316cb0cd27f21089cacb4dfa9e6b0626a2c8fe6b9e2fcd283ab",
+    "provenance": "d1_liplus_channels_holdout.provenance.json",
+    "provenance_sha256": "sha256:a6a5782c65603b6ba501fe1f54ad175a53e2ec702064a4821c30de778a2fe7a5"
+  },
+  "shared_config": {
+    "activation_budget": 1.0,
+    "dense_weight": 0.45,
+    "entry_weight": 0.55,
+    "graph_weight": 0.45,
+    "hop_decay": 0.7,
+    "inhibition_ratio": 0.1,
+    "limit": 2,
+    "max_active_paths_per_node": 4,
+    "max_hops": 1,
+    "recurrent_decay": 0.5,
+    "recurrent_steps": 2,
+    "seed_count": 1,
+    "sparse_weight": 0.55
+  },
+  "stop_rule": {
+    "development_failure": "keep existing search default and do not open holdout",
+    "holdout_adoption": "validate search_channels only when every frozen hard gate passes once on unseen holdout",
+    "holdout_open_count": 1,
+    "post_observation_changes": "forbidden for fixture, gold, provenance, audit, channel definitions, seed rule, rank rule, feedback rule, thresholds, gate, stop rule, result overwrite, or rerun"
+  },
+  "schema_version": 1
+}

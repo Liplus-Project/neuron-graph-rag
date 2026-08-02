@@ -205,6 +205,28 @@ MCP 対応 AI との接続は、コアへ MCP SDK を追加せず、同一 repos
 
 契約には、接続した AI が `tools/list` だけから feedback 行動を判断できる model-facing description literal と、trace retention / expiry の表示規則も含みます。MCP server、認証、transport、remote deployment はまだ実装・確定していません。
 
+## Independent retrieval channels
+
+`search_channels(query, limit=...)`は既存`search()`を変更せず、同一queryへ二つの独立した候補列を返します。
+
+- `lexical`: BM25だけの順位。graph pathを保存しない
+- `relation`: BM25+dense entryをseed選択にだけ使い、anchored edge-only graph activationだけで順位付けする
+- 各laneは独立`trace_id`を持ち、`agreement_node_ids`は両方へ現れたnodeを示す
+- cross-lane final score、combined rank、single winnerは返さない
+
+```python
+channels = rag.search_channels("How are these decisions related?", limit=5)
+for hit in channels.lexical.hits:
+    print("lexical", hit.explain())
+for hit in channels.relation.hits:
+    print("relation", hit.explain())
+
+# lexical traceならedge不変、relation traceなら保存済みpathだけを強化する
+rag.record_success(channels.relation.trace_id, ["related-node"])
+```
+
+callerは両laneを検査し、下流判断で実際に使用したlaneの`trace_id`と`node_id`をfeedbackへ渡します。channel文字列を後から自己申告せず、保存済みtrace provenanceがreinforcement有無を決めます。固定D1 split、4-case hard gate、one-time holdout規則は[Independent retrieval channels experiment](docs/independent-retrieval-channels-experiment.md)を参照してください。
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。

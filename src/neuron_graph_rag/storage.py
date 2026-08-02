@@ -81,6 +81,11 @@ class SQLiteStore:
                 PRIMARY KEY (trace_id, node_id)
             );
 
+            CREATE TABLE IF NOT EXISTS retrieval_channels (
+                trace_id TEXT PRIMARY KEY REFERENCES retrievals(trace_id) ON DELETE CASCADE,
+                channel TEXT NOT NULL CHECK(channel IN ('lexical', 'relation'))
+            );
+
             CREATE TABLE IF NOT EXISTS success_feedback (
                 feedback_id TEXT PRIMARY KEY,
                 trace_id TEXT NOT NULL REFERENCES retrievals(trace_id) ON DELETE CASCADE,
@@ -230,6 +235,53 @@ class SQLiteStore:
                         json.dumps(row["paths"], sort_keys=True),
                     ),
                 )
+
+    def create_channel_retrieval(
+        self,
+        trace_id: str,
+        query: str,
+        created_at: float,
+        channel: str,
+        result_rows: Iterable[dict[str, Any]],
+    ) -> None:
+        if channel not in {"lexical", "relation"}:
+            raise ValueError(f"Unknown retrieval channel: {channel}")
+        with self.transaction() as connection:
+            connection.execute(
+                "INSERT INTO retrievals(trace_id, query, created_at) VALUES (?, ?, ?)",
+                (trace_id, query, created_at),
+            )
+            connection.execute(
+                "INSERT INTO retrieval_channels(trace_id, channel) VALUES (?, ?)",
+                (trace_id, channel),
+            )
+            for row in result_rows:
+                connection.execute(
+                    """
+                    INSERT INTO retrieval_results(
+                        trace_id, node_id, rank, sparse_score, dense_score,
+                        entry_score, graph_activation, final_score, paths_json
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        trace_id,
+                        row["node_id"],
+                        row["rank"],
+                        row["sparse_score"],
+                        row["dense_score"],
+                        row["entry_score"],
+                        row["graph_activation"],
+                        row["channel_score"],
+                        json.dumps(row["paths"], sort_keys=True),
+                    ),
+                )
+
+    def retrieval_channel(self, trace_id: str) -> str | None:
+        row = self.connection.execute(
+            "SELECT channel FROM retrieval_channels WHERE trace_id = ?",
+            (trace_id,),
+        ).fetchone()
+        return None if row is None else str(row["channel"])
 
     def retrieval_paths(self, trace_id: str, node_id: str) -> list[dict[str, Any]]:
         row = self.connection.execute(
