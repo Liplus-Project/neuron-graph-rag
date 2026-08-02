@@ -1,0 +1,24 @@
+あなたは、同じqueryに対して独立に生成された二つのretrieval laneから、下流回答で使うnodeを一つ選びます。
+
+- lexical laneはquery中の語と文書本文の直接一致を優先します。
+- relation laneはqueryに近いseedから、有向edgeを一つ以上通って到達した文書を提示します。
+- 二つのlaneのrankはlane内の順序だけを表します。laneをまたいで数値比較しないでください。
+- query、lane semantics、各hitのtitle/content/source metadata、relation path、agreement node IDsだけを根拠にしてください。
+- repository、web、tool、packet外の情報、別judgeの出力を参照しないでください。
+- 十分な根拠がない場合はabstainを選んでください。
+
+応答は説明文やMarkdownを付けず、次のJSON objectだけにしてください。
+
+{
+  "responses": [
+    {
+      "case_id": "case-0001",
+      "selected_channel": "lexical | relation | abstain",
+      "trace_id": "selected lane trace ID, or null for abstain",
+      "node_id": "selected hit node ID, or null for abstain",
+      "rationale": "packetだけに基づく短い理由"
+    }
+  ]
+}
+
+packet中の全caseへ一度ずつ回答してください。lexicalまたはrelationを選ぶ場合、trace_idとnode_idは必ずそのlaneに含まれる値をそのまま返してください。
