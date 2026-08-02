@@ -144,7 +144,7 @@ class BlindFreezeContractTest(unittest.TestCase):
         self.assertEqual(manifest["judge_count"], 3)
         self.assertTrue(manifest["stop_rule"]["refuse_overwrite"])
 
-    def test_v1_hash_allows_only_exact_lf_crlf_checkout_transform(self) -> None:
+    def test_frozen_text_hash_allows_only_exact_lf_crlf_checkout_transform(self) -> None:
         frozen = b"alpha\r\nbeta\r\n"
         expected = "sha256:" + hashlib.sha256(frozen).hexdigest()
         with tempfile.TemporaryDirectory() as directory:
@@ -213,9 +213,11 @@ class BlindObservedResultAuditTest(unittest.TestCase):
             "not_computed_invalid_judge_response",
         )
 
-    def test_result_hashes_preserved_observed_artifacts_without_reading_them(self) -> None:
-        self.assertEqual(
-            self.result["packet_sha256"], _sha256(DEVELOPMENT_PACKET)
+    def test_result_hashes_preserve_observed_artifact_bytes(self) -> None:
+        self.assertTrue(
+            _matches_frozen_text_bytes(
+                DEVELOPMENT_PACKET, self.result["packet_sha256"]
+            )
         )
         expected_paths = {
             DEVELOPMENT_JUDGE_1.name: DEVELOPMENT_JUDGE_1,
@@ -224,7 +226,9 @@ class BlindObservedResultAuditTest(unittest.TestCase):
         }
         for artifact in self.result["judge_artifacts"]:
             path = expected_paths[artifact["path"]]
-            self.assertEqual(artifact["sha256"], _sha256(path))
+            self.assertTrue(
+                _matches_frozen_text_bytes(path, artifact["sha256"])
+            )
 
     def test_stop_rule_keeps_holdout_unopened(self) -> None:
         self.assertEqual(
