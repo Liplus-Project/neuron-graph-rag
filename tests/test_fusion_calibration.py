@@ -59,7 +59,6 @@ class FusionCalibrationFreezeTest(unittest.TestCase):
             assert_connected(fixture)
             self.assertEqual(len(fixture["nodes"]), 3)
             self.assertEqual(len(fixture["edges"]), 2)
-        self.assertFalse(DEVELOPMENT_RESULT.exists())
         self.assertFalse(HOLDOUT_RESULT.exists())
 
     def test_contamination_audit_covers_all_seven_prior_fixtures(self) -> None:
@@ -243,6 +242,54 @@ class FusionSelectionTest(unittest.TestCase):
         self.assertFalse(swapped["candidate_gate_passed"])
         self.assertTrue(passing["candidate_gate_passed"])
         self.assertEqual(selection["selected_variant_id"], "passing")
+
+
+class FusionResultAuditTest(unittest.TestCase):
+    def test_development_records_every_variant_and_stops_before_holdout(self) -> None:
+        result = json.loads(DEVELOPMENT_RESULT.read_text(encoding="utf-8"))
+        manifest = read_manifest(MANIFEST)
+        self.assertEqual(result["schema_version"], 4)
+        self.assertEqual(result["variant_count"], 6)
+        self.assertEqual(
+            [variant["id"] for variant in result["variants"]],
+            [variant["id"] for variant in manifest["variants"]],
+        )
+        self.assertEqual(result["selection"]["selected_variant_id"], "current")
+        self.assertEqual(result["selection"]["eligible_variant_ids"], [])
+        self.assertEqual(
+            result["selection"]["reason"],
+            "no_fusion_variant_passed_frozen_gate",
+        )
+        self.assertEqual(result["holdout_status"], "not_opened_no_candidate")
+        self.assertFalse(HOLDOUT_RESULT.exists())
+
+    def test_tradeoff_boundary_and_formula_audit_are_explicit(self) -> None:
+        result = json.loads(DEVELOPMENT_RESULT.read_text(encoding="utf-8"))
+        by_id = {variant["id"]: variant for variant in result["variants"]}
+        for variant in result["variants"]:
+            self.assertTrue(variant["diagnostics"]["final_order_recomputable"])
+            self.assertTrue(all(case["formula_recomputed"] for case in variant["cases"]))
+        for variant_id in (
+            "anchored-local-unscaled",
+            "anchored-rrf-balanced",
+        ):
+            gate = by_id[variant_id]["candidate_gate"]
+            self.assertTrue(gate["relation_strictly_above_current"])
+            self.assertTrue(gate["individual_relation_rank_improvement"])
+            self.assertFalse(gate["direct_non_regression"])
+            self.assertFalse(gate["negative_non_regression"])
+            self.assertFalse(gate["individual_control_rank_non_regression"])
+        for variant_id in (
+            "anchored-linear-conservative",
+            "anchored-linear-mass",
+            "anchored-rrf-conservative",
+        ):
+            gate = by_id[variant_id]["candidate_gate"]
+            self.assertTrue(gate["direct_non_regression"])
+            self.assertTrue(gate["negative_non_regression"])
+            self.assertTrue(gate["individual_control_rank_non_regression"])
+            self.assertFalse(gate["relation_strictly_above_current"])
+            self.assertFalse(gate["individual_relation_rank_improvement"])
 
 
 if __name__ == "__main__":

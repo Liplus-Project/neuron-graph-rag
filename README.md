@@ -150,7 +150,9 @@ freeze後のdevelopmentでは、anchored 3 variantsがrelation MRRを`current`�
 
 Issue #15で分離したentry anchorとedge-only graph signalは維持したまま、graph尺度とfinal fusionだけを比較します。graph normalizationは`max`、rawの`none`、`l1_mass`を選択でき、final fusionはlinearとpositive graph nodeだけを順位付けするbottom-centered weighted RRFを選択できます。
 
-production D1からread-only取得した新しい3-node development / holdoutは、既存7 fixturesの50 unique doc pathsおよび相互間から分離しています。固定6 variants、fusion formula、個別case non-regression gate、one-time holdout停止規則は[Anchored fusion calibration experiment](docs/anchored-fusion-calibration-experiment.md)を参照してください。result観測前のため、既定strategyは`current_positive_additive`のままです。
+production D1からread-only取得した新しい3-node development / holdoutは、既存7 fixturesの50 unique doc pathsおよび相互間から分離しています。固定6 variants、fusion formula、個別case non-regression gate、one-time holdout停止規則は[Anchored fusion calibration experiment](docs/anchored-fusion-calibration-experiment.md)を参照してください。
+
+freeze後のdevelopmentでは、unscaled linearとbalanced RRFがrelation MRRを0.4167から0.6667へ改善しましたがdirect / negative-controlを1.0000から0.7500へ退行させました。conservative linear、L1 mass、conservative RRFはcontrolsを維持した一方relationを改善しませんでした。候補0件のためholdoutは未開封で、既定strategyは`current_positive_additive`のままです。
 
 ## Public API
 

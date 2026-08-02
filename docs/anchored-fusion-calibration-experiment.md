@@ -88,6 +88,21 @@ uv run python tools/run_dynamics_experiment.py development `
 
 候補がある場合だけholdoutを一度実行する。候補がなければholdout resultを作成しない。
 
-## 観測前状態
+## 観測結果
 
-fixture / gold / provenance / audit / manifest / implementation / tests / 規則を独立freeze commitとしてpushするまでresultを生成しない。
+fixture / gold / provenance / audit / manifest / implementation / tests / 規則をfreeze commit `f801264`としてpushした後、developmentを一度だけ実行した。
+
+| variant | direct MRR | relation MRR | negative MRR | gate |
+| --- | ---: | ---: | ---: | --- |
+| `current` | 1.0000 | 0.4167 | 1.0000 | baseline |
+| `anchored-local-unscaled` | 0.7500 | 0.6667 | 0.7500 | control cohort / 個別rank退行 |
+| `anchored-linear-conservative` | 1.0000 | 0.4167 | 1.0000 | relation非改善 |
+| `anchored-linear-mass` | 1.0000 | 0.4167 | 1.0000 | relation非改善 |
+| `anchored-rrf-conservative` | 1.0000 | 0.4167 | 1.0000 | relation非改善 |
+| `anchored-rrf-balanced` | 0.7500 | 0.6667 | 0.7500 | control cohort / 個別rank退行 |
+
+全anchored variantsでrelation path、feedback isolation、entry anchor invariant、edge-only graph signal、formula / ordering再計算が成立した。
+
+unscaled linearとbalanced RRFはrelationを個別改善したが、direct / negative-controlのcohort MRRと個別rankを退行させた。conservative linear、L1 mass、conservative RRFは全controlを維持したがrelationを個別改善しなかった。固定gateを通る候補は0件だった。
+
+selectionは`current`、理由は`no_fusion_variant_passed_frozen_gate`である。停止規則に従ってholdoutを開封せず、holdout resultを作成しない。defaultは`current_positive_additive`のままとする。
