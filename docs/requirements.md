@@ -84,7 +84,7 @@
 66. relation pathはraw stepを保存したままendpoint / edge typeへ射影して照合し、zero-hopを拒否する。judge raw response、parse結果、model、agent type、実行時刻をimmutable artifactへ保存する。
 67. development packet / response / resultはresult-free commitのpush後に各一度だけ生成し、全12 gate通過時だけholdout packetを一度生成して異なるfresh judge 3体で判定する。全観測artifactは上書きと再生成を拒否する。
 68. development gate通過前のholdoutではpacket生成、`search_channels()`実行、judge提示、v2 gold照合を禁止する。byte hash、schema、既存contract testの非表示process readはselectionに使わず、holdout open countへ含めない。
-69. v1 text artifactのbyte hash監査はraw checkout bytesを最初に照合する。raw不一致時は全改行がLFまたはCRLFの一種類で、もう一方へのexact変換だけが固定hashと一致する場合に限ってcheckout変換を許可し、本文差分、mixed newline、bare CRを拒否する。
+69. v1 / v2 frozen text artifactのbyte hash監査はraw checkout bytesを最初に照合する。raw不一致時は全改行がLFまたはCRLFの一種類で、もう一方へのexact変換だけが固定hashと一致する場合に限ってcheckout変換を許可し、本文差分、mixed newline、bare CRを拒否する。
 
 ## 4. Constraints
 

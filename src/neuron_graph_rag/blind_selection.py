@@ -46,7 +46,9 @@ def read_blind_manifest(path: str | Path) -> dict[str, Any]:
         raise ValueError("Blind selection manifest must freeze twelve gates")
     _audit_v1_hashes(manifest_path, manifest)
     prompt_path = _repo_root(manifest_path) / manifest["judge_prompt"]["path"]
-    if _byte_sha256(prompt_path) != manifest["judge_prompt"]["sha256"]:
+    if not _matches_frozen_text_bytes(
+        prompt_path, str(manifest["judge_prompt"]["sha256"])
+    ):
         raise ValueError("Frozen judge prompt hash mismatch")
     _validate_prompt(prompt_path.read_text(encoding="utf-8"))
     return manifest

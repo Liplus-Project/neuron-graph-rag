@@ -233,7 +233,7 @@ callerは両laneを検査し、下流判断で実際に使用したlaneの`trace
 
 実装・prompt・schema・gateをresult-free commit `062c131`としてpushした後、development packetを一度生成し、fresh judge 3体で観測しました。3件目が必須4 caseのうち1件を欠いたためresponse validationで停止し、retry、replacement、majority集約、accuracy計算を行っていません。development gateは不合格でholdout packetも生成せず、defaultとvalidated状態は変更していません。詳細は[Blind LLM channel selection experiment](docs/blind-llm-channel-selection-experiment.md)を参照してください。
 
-最初のLinux CIでWindows CRLF checkoutとLinux LF checkoutのv1 raw byte hash差が判明したため、raw hashを優先し、完全なLF / CRLF相互変換だけをalternate verificationとして許可しました。本文差分やmixed newlineは拒否し、観測artifactと結果は変更していません。
+Linux CIとfresh Windows worktreeの間でv1 / v2 frozen text artifactにLF / CRLF checkout差が生じるため、raw hashを優先し、完全なLF / CRLF相互変換だけをalternate verificationとして許可しました。本文差分やmixed newlineは拒否し、観測artifactと結果は変更していません。
 
 ## Explanation model
 
