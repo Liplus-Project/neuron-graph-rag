@@ -1,0 +1,25 @@
+{
+  "responses": [
+    {
+      "case_id": "case-0001",
+      "selected_channel": "lexical",
+      "trace_id": "3786556fd50e43d3895dde557889a188",
+      "node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+      "rationale": "queryのumbrella naming、three drives、packagingを本文で直接かつ具体的に扱うhitである。"
+    },
+    {
+      "case_id": "case-0002",
+      "selected_channel": "lexical",
+      "trace_id": "3f35bc4943cf4fb6ba20ca6d6ccf9f14",
+      "node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+      "rationale": "PR #1468、supersede、既存三本柱のpackagingが本文に明記され、queryへ最も直接一致する。"
+    },
+    {
+      "case_id": "case-0004",
+      "selected_channel": "lexical",
+      "trace_id": "bc66a4b411ff4169a0d835b287f4d373",
+      "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "rationale": "Dialogue-Driven Developmentの手法ページとして三本柱を直接説明し、relation laneにはhitがない。"
+    }
+  ]
+}

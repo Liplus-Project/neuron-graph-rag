@@ -229,6 +229,12 @@ callerは両laneを検査し、下流判断で実際に使用したlaneの`trace
 
 凍結後のdevelopmentではrelation MRR改善、lane parity、feedback帰属を含む10/12 gateが成立しましたが、rank-1 lexical controlとfrozen path-shape matcherの2 gateが不合格でした。停止規則に従ってholdoutは開かず、`search_channels()`へvalidated判定を付与していません。既存`search()`が引き続きdefaultです。
 
+次段のblind selection protocolは、二つのlaneを変更せず、答えを示すfieldとlane scoreを除いたpacketをfresh judge 3体へ渡します。actual LLM callはparent orchestratorに限定し、repositoryはpacket生成、trace / node所属検証、raw response保存、majority集約、path射影、v1 byte hash監査、development失敗時のholdout停止だけを実装します。
+
+実装・prompt・schema・gateをresult-free commit `062c131`としてpushした後、development packetを一度生成し、fresh judge 3体で観測しました。3件目が必須4 caseのうち1件を欠いたためresponse validationで停止し、retry、replacement、majority集約、accuracy計算を行っていません。development gateは不合格でholdout packetも生成せず、defaultとvalidated状態は変更していません。詳細は[Blind LLM channel selection experiment](docs/blind-llm-channel-selection-experiment.md)を参照してください。
+
+最初のLinux CIでWindows CRLF checkoutとLinux LF checkoutのv1 raw byte hash差が判明したため、raw hashを優先し、完全なLF / CRLF相互変換だけをalternate verificationとして許可しました。本文差分やmixed newlineは拒否し、観測artifactと結果は変更していません。
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。

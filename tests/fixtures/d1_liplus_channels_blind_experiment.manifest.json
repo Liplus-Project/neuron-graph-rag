@@ -1,0 +1,106 @@
+{
+  "experiment_id": "d1-liplus-blind-channel-selection-v2",
+  "frozen_absent_paths": [
+    "tests/fixtures/d1_liplus_channels_blind.development.packet.json",
+    "tests/fixtures/d1_liplus_channels_blind.development.judge-1.json",
+    "tests/fixtures/d1_liplus_channels_blind.development.judge-2.json",
+    "tests/fixtures/d1_liplus_channels_blind.development.judge-3.json",
+    "tests/fixtures/d1_liplus_channels_blind.development.result.json",
+    "tests/fixtures/d1_liplus_channels_blind.holdout.packet.json",
+    "tests/fixtures/d1_liplus_channels_blind.holdout.judge-1.json",
+    "tests/fixtures/d1_liplus_channels_blind.holdout.judge-2.json",
+    "tests/fixtures/d1_liplus_channels_blind.holdout.judge-3.json",
+    "tests/fixtures/d1_liplus_channels_blind.holdout.result.json"
+  ],
+  "frozen_v1_baseline_commit": "b15e27882f013bd895032e6edd15489eb5206926",
+  "frozen_v1_bytes": [
+    {
+      "path": "tests/fixtures/d1_liplus_channels.contamination.json",
+      "sha256": "sha256:416264de187404da04a26d27a881c3ce6fa8c2ef00d51a524cb423c52e9f43a5"
+    },
+    {
+      "path": "tests/fixtures/d1_liplus_channels_development.json",
+      "sha256": "sha256:046cf0ebebbc4ffa54ec6b49a5eef6d189876ccaeeb93e8069c257eefb3f65b8"
+    },
+    {
+      "path": "tests/fixtures/d1_liplus_channels_development.gold.json",
+      "sha256": "sha256:b432788b8304149321df03ca47b7fc2657463211dd00e153c90cea23ad6fb269"
+    },
+    {
+      "path": "tests/fixtures/d1_liplus_channels_development.provenance.json",
+      "sha256": "sha256:866ee70ce3858cf410d592eebf5edaa3686127e386011b150fc37d982fa685f0"
+    },
+    {
+      "path": "tests/fixtures/d1_liplus_channels_experiment.manifest.json",
+      "sha256": "sha256:b5214b674c5d1751fc187a7456032d34e11189358c59d6ad4bab686aa0b00b4d"
+    },
+    {
+      "path": "tests/fixtures/d1_liplus_channels_experiment.development.result.json",
+      "sha256": "sha256:a5cd1517245dc6e7e2bf965701804c4b314c4eff74ffb5c90a894844cd3598b8"
+    },
+    {
+      "path": "tests/fixtures/d1_liplus_channels_holdout.json",
+      "sha256": "sha256:21b63b9669dd2fbf6874d10870e5fb5e610476aa7dcf281baf356b66e103ffa0"
+    },
+    {
+      "path": "tests/fixtures/d1_liplus_channels_holdout.gold.json",
+      "sha256": "sha256:047e772d63708d22395f0929689219032b6b6a614d6f85b489bb880520066ea3"
+    },
+    {
+      "path": "tests/fixtures/d1_liplus_channels_holdout.provenance.json",
+      "sha256": "sha256:e0e0a5062a36d944c00619480945bf05e736db3a3a4fb2068e2f68d2902c91fb"
+    },
+    {
+      "path": "src/neuron_graph_rag/channel_experiment.py",
+      "sha256": "sha256:44a4975ebb1947e6f38b316f9e9a91f7602970f543330b083c5687d1d175b1cf"
+    },
+    {
+      "path": "tools/run_channel_experiment.py",
+      "sha256": "sha256:635d2c084fe860551c714a45f0f8f34ea8e2bd3cf9c923e8e340bcb89d987664"
+    }
+  ],
+  "gate": [
+    "packet_and_prompt_exclude_answer_fields",
+    "judge_responses_are_valid_and_trace_bound",
+    "majority_exists_for_every_case",
+    "majority_selects_every_expected_node",
+    "lexical_controls_select_lexical",
+    "relation_case_selects_relation",
+    "relation_path_matches_after_projection",
+    "each_judge_selects_three_expected_nodes",
+    "no_cross_lane_score_comparison",
+    "search_does_not_change_edge_weights",
+    "v1_artifacts_match_frozen_bytes",
+    "observed_artifact_overwrite_is_refused"
+  ],
+  "judge_count": 3,
+  "judge_prompt": {
+    "path": "tests/fixtures/d1_liplus_channels_blind_judge_prompt.txt",
+    "sha256": "sha256:5d825eea83d2321a11fc69156066c7cebcac56ca7d7e970be3d63d393c05d28c"
+  },
+  "judge_response_schema": {
+    "case_id": "string",
+    "node_id": "string or null",
+    "rationale": "non-empty string",
+    "selected_channel": "lexical, relation, or abstain",
+    "trace_id": "string or null"
+  },
+  "metrics": [
+    "judge_expected_node_accuracy",
+    "majority_expected_node_accuracy",
+    "majority_channel_accuracy",
+    "majority_abstention_rate",
+    "unanimous_agreement_rate",
+    "selected_node_mrr",
+    "union_oracle_gap"
+  ],
+  "schema_version": 1,
+  "stop_rule": {
+    "development_failure": "do not generate the holdout packet",
+    "fresh_holdout_judges": true,
+    "holdout_packet_count": 1,
+    "refuse_overwrite": true,
+    "result_generation_count_per_stage": 1
+  },
+  "v1_manifest": "tests/fixtures/d1_liplus_channels_experiment.manifest.json"
+}

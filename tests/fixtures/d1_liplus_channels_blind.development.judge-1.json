@@ -1,0 +1,39 @@
+{
+  "agent_type": "default",
+  "executed_at": "2026-08-02T03:43:47.947306Z",
+  "judge_id": "blind-dev-judge-1",
+  "model": "inherited-parent-model",
+  "packet_sha256": "sha256:9b7e26fc74ce9b84e382e607fad9dcaf34b4def75a234028d7aa6be09fb46c1b",
+  "parsed_responses": [
+    {
+      "case_id": "case-0001",
+      "node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+      "rationale": "lexical首位はDiDDを三駆動の総称とする決定と既存三本柱のパッケージングを直接記述しており、queryへの一致が最も具体的。",
+      "selected_channel": "lexical",
+      "trace_id": "3786556fd50e43d3895dde557889a188"
+    },
+    {
+      "case_id": "case-0002",
+      "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "rationale": "relation hitのDiDD本文はDialogue-Driven Developmentと対話・構造・現実の三本柱を直接対応付け、両laneのagreement nodeでもある。",
+      "selected_channel": "relation",
+      "trace_id": "0c60e6fe9dd2479e952a043faee2fd79"
+    },
+    {
+      "case_id": "case-0003",
+      "node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+      "rationale": "lexical首位はPR #1468、旧namingのsupersede、三駆動のパッケージングをすべて明記し、query固有の要素を直接満たす。",
+      "selected_channel": "lexical",
+      "trace_id": "3f35bc4943cf4fb6ba20ca6d6ccf9f14"
+    },
+    {
+      "case_id": "case-0004",
+      "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "rationale": "relation laneは空であり、lexical首位のDiDD本文が手法ページとしてDialogue-Driven Developmentと三本柱を直接説明している。",
+      "selected_channel": "lexical",
+      "trace_id": "bc66a4b411ff4169a0d835b287f4d373"
+    }
+  ],
+  "raw_response": "{\n  \"responses\": [\n    {\n      \"case_id\": \"case-0001\",\n      \"selected_channel\": \"lexical\",\n      \"trace_id\": \"3786556fd50e43d3895dde557889a188\",\n      \"node_id\": \"w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k\",\n      \"rationale\": \"lexical首位はDiDDを三駆動の総称とする決定と既存三本柱のパッケージングを直接記述しており、queryへの一致が最も具体的。\"\n    },\n    {\n      \"case_id\": \"case-0002\",\n      \"selected_channel\": \"relation\",\n      \"trace_id\": \"0c60e6fe9dd2479e952a043faee2fd79\",\n      \"node_id\": \"w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs\",\n      \"rationale\": \"relation hitのDiDD本文はDialogue-Driven Developmentと対話・構造・現実の三本柱を直接対応付け、両laneのagreement nodeでもある。\"\n    },\n    {\n      \"case_id\": \"case-0003\",\n      \"selected_channel\": \"lexical\",\n      \"trace_id\": \"3f35bc4943cf4fb6ba20ca6d6ccf9f14\",\n      \"node_id\": \"w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k\",\n      \"rationale\": \"lexical首位はPR #1468、旧namingのsupersede、三駆動のパッケージングをすべて明記し、query固有の要素を直接満たす。\"\n    },\n    {\n      \"case_id\": \"case-0004\",\n      \"selected_channel\": \"lexical\",\n      \"trace_id\": \"bc66a4b411ff4169a0d835b287f4d373\",\n      \"node_id\": \"w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs\",\n      \"rationale\": \"relation laneは空であり、lexical首位のDiDD本文が手法ページとしてDialogue-Driven Developmentと三本柱を直接説明している。\"\n    }\n  ]\n}\n",
+  "schema_version": 1
+}
