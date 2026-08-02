@@ -235,6 +235,10 @@ callerは両laneを検査し、下流判断で実際に使用したlaneの`trace
 
 Linux CIとfresh Windows worktreeの間でv1 / v2 frozen text artifactにLF / CRLF checkout差が生じるため、raw hashを優先し、完全なLF / CRLF相互変換だけをalternate verificationとして許可しました。本文差分やmixed newlineは拒否し、観測artifactと結果は変更していません。
 
+Version 3のnode-first protocolは、一つのcase packetをfresh judge一体へ渡す12 independent invocationsとしてresponse completenessを構造化します。採否はchannelではなくnode IDの2/3 majorityで行い、同じnodeへlexical / relationの票が分かれてもcorrect evidenceとして扱います。channelは実traceのfeedback provenanceと補助分布として保持します。
+
+v1 / v2 artifactとinvalid resultは変更せず、v3 implementation、固定relation query、single-case prompt、12 gate、conditional holdoutをresult-free freezeしてから観測します。詳細は[Node-first blind selection experiment](docs/node-first-blind-selection-experiment.md)を参照してください。
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。

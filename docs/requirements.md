@@ -85,6 +85,13 @@
 67. development packet / response / resultはresult-free commitのpush後に各一度だけ生成し、全12 gate通過時だけholdout packetを一度生成して異なるfresh judge 3体で判定する。全観測artifactは上書きと再生成を拒否する。
 68. development gate通過前のholdoutではpacket生成、`search_channels()`実行、judge提示、v2 gold照合を禁止する。byte hash、schema、既存contract testの非表示process readはselectionに使わず、holdout open countへ含めない。
 69. v1 / v2 frozen text artifactのbyte hash監査はraw checkout bytesを最初に照合する。raw不一致時は全改行がLFまたはCRLFの一種類で、もう一方へのexact変換だけが固定hashと一致する場合に限ってcheckout変換を許可し、本文差分、mixed newline、bare CRを拒否する。
+70. node-first blind experimentはv1 / v2 manifest、prompt、packet、judge artifact、result、source、runner、tests、experiment docsをraw-firstかつLF / CRLFだけを許可するhash監査で固定し、v2 invalid responseをretry、補完、再集約しない。
+71. v3はv1のdirect / directional-negative queryを維持し、relation queryだけedge先targetを自然文で明示する固定overrideを使う。stage packetは4 caseを保持するが、judge用packetとresponseは一つのopaque caseだけを含む。
+72. developmentは4 case x fresh 3 judgesの12 independent invocationsとし、各agent contextを再利用せず、repo、web、tool、gold、他case、他judge、prior responseを渡さない。actual LLM invocationはparent orchestratorだけが行う。
+73. v3集約は`node_id`の2/3 majorityを採否の正本とし、同じnodeへ複数laneから投票した場合もnode correctnessを満たす。channel voteはtrace provenanceと分布だけに使い、gold channel gateを持たない。
+74. relation traceを選んだresponseはselected nodeのraw pathを保存し、endpoint / edge typeへの射影が固定relation pathと一致してzero-hopでないことを監査する。feedbackは実行せず、lexical / relation traceの強化provenanceだけを記録する。
+75. v3 implementation、prompt、manifest、query override、schema、集約、path audit、hash規則、gate、stop rule、testsをresult-free commitでpushした後、development stage / 4 case packet / 12 responses / resultを各一度だけ生成する。
+76. development全12 gate通過時だけholdout stageを一度生成し、異なるfresh 12 judgesで同じgateを評価する。packet、response、resultの上書き、観測後の規則変更、実LLM品質値のCI再生成を拒否する。
 
 ## 4. Constraints
 
@@ -111,3 +118,4 @@
 - [Anchored fusion calibration experiment](anchored-fusion-calibration-experiment.md) がgraph normalization、bottom-centered RRF、新規D1 split、個別case gateを定義する。
 - [Independent retrieval channels experiment](independent-retrieval-channels-experiment.md) が非融合lane、独立trace provenance、feedback帰属、4-case hard gate、単一holdout開封を定義する。
 - [Blind LLM channel selection experiment](blind-llm-channel-selection-experiment.md) がanswer-free packet、fresh judge分離、majority集約、path射影、result-free freeze、conditional holdoutを定義する。
+- [Node-first blind selection experiment](node-first-blind-selection-experiment.md) がsingle-case invocation、node-majority、channel provenance分離、v1 / v2不変監査、conditional holdoutを定義する。
