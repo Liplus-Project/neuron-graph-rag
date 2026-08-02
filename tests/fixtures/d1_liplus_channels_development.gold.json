@@ -1,0 +1,51 @@
+{
+  "cases": [
+    {
+      "acceptable_rank": 1,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+      "id": "channels-dev-direct-source",
+      "intended_channel": "lexical",
+      "query": "DiDD umbrella naming three drives packaging",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/didd-umbrella-naming"
+    },
+    {
+      "acceptable_rank": 1,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "id": "channels-dev-direct-target",
+      "intended_channel": "lexical",
+      "query": "Dialogue-Driven Development three pillars dialogue structure reality",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/DiDD"
+    },
+    {
+      "acceptable_rank": 1,
+      "cohort": "relation",
+      "expected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+          "target_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs"
+        }
+      ],
+      "id": "channels-dev-relation-source-target",
+      "intended_channel": "relation",
+      "query": "DiDD umbrella naming PR 1468 supersede packaging",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/didd-umbrella-naming",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/DiDD"
+    },
+    {
+      "acceptable_rank": 1,
+      "cohort": "directional_negative",
+      "expected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "expected_relation_empty": true,
+      "id": "channels-dev-negative-target-anchor",
+      "intended_channel": "lexical",
+      "query": "Dialogue-Driven Development method page three pillars",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/DiDD"
+    }
+  ],
+  "fixture": "d1_liplus_channels_development.json",
+  "schema_version": 1
+}

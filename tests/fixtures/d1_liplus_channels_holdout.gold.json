@@ -1,0 +1,51 @@
+{
+  "cases": [
+    {
+      "acceptable_rank": 1,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+      "id": "channels-holdout-direct-source",
+      "intended_channel": "lexical",
+      "query": "skill trigger declaration description when_to_use portability",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/skill-trigger-declaration-in-description"
+    },
+    {
+      "acceptable_rank": 1,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+      "id": "channels-holdout-direct-target",
+      "intended_channel": "lexical",
+      "query": "agentic search five phase refactor internal knowledge comparison baseline",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/agentic-search-five-phase-refactor"
+    },
+    {
+      "acceptable_rank": 1,
+      "cohort": "relation",
+      "expected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+          "target_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls"
+        }
+      ],
+      "id": "channels-holdout-relation-source-target",
+      "intended_channel": "relation",
+      "query": "skill trigger declaration description when_to_use adjacent entry",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/skill-trigger-declaration-in-description",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/agentic-search-five-phase-refactor"
+    },
+    {
+      "acceptable_rank": 1,
+      "cohort": "directional_negative",
+      "expected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+      "expected_relation_empty": true,
+      "id": "channels-holdout-negative-target-anchor",
+      "intended_channel": "lexical",
+      "query": "agentic search five phase retrieval architecture",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/agentic-search-five-phase-refactor"
+    }
+  ],
+  "fixture": "d1_liplus_channels_holdout.json",
+  "schema_version": 1
+}
