@@ -48,6 +48,9 @@ class EngineConfig:
     max_active_paths_per_node: int = 4
     use_dense_retrieval: bool = True
     use_graph_propagation: bool = True
+    graph_normalization: str = "max"
+    final_fusion_strategy: str = "linear"
+    rrf_k: int = 60
 
     def __post_init__(self) -> None:
         for name in (
@@ -106,6 +109,12 @@ class EngineConfig:
             raise ValueError("dense_weight must be zero when dense retrieval is disabled")
         if not self.use_graph_propagation and self.graph_weight != 0.0:
             raise ValueError("graph_weight must be zero when graph propagation is disabled")
+        if self.graph_normalization not in {"max", "none", "l1_mass"}:
+            raise ValueError("Unknown graph_normalization")
+        if self.final_fusion_strategy not in {"linear", "rrf"}:
+            raise ValueError("Unknown final_fusion_strategy")
+        if self.rrf_k < 1:
+            raise ValueError("rrf_k must be positive")
 
 
 class NeuronGraphRAG:
@@ -244,24 +253,36 @@ class NeuronGraphRAG:
                 "active_path_count": 0,
                 "competition_sets": [],
             }
-        normalized_activation = normalize_scores(
-            {node.node_id: graph_activation.get(node.node_id, 0.0) for node in nodes}
+        graph_values = {
+            node.node_id: graph_activation.get(node.node_id, 0.0) for node in nodes
+        }
+        normalized_activation = self._normalize_graph_activation(
+            graph_values, self.config.graph_normalization
         )
         self._record_activation(graph_activation, timestamp)
 
-        hits = [
-            SearchHit(
+        entry_ranks = self._rank_positive_or_all(entry, positive_only=False)
+        graph_ranks = self._rank_positive_or_all(
+            graph_values, positive_only=True
+        )
+        positive_graph_count = len(graph_ranks)
+
+        hits = []
+        for node in nodes:
+            entry_component, graph_component = self._fusion_components(
+                entry=entry[node.node_id],
+                normalized_graph=normalized_activation[node.node_id],
+                entry_rank=entry_ranks[node.node_id],
+                graph_rank=graph_ranks.get(node.node_id),
+                positive_graph_count=positive_graph_count,
+            )
+            hits.append(SearchHit(
                 node=node,
                 sparse_score=sparse[node.node_id],
                 dense_score=dense[node.node_id],
                 entry_score=entry[node.node_id],
                 graph_activation=graph_activation.get(node.node_id, 0.0),
-                final_score=self._weighted_average(
-                    entry[node.node_id],
-                    normalized_activation[node.node_id],
-                    self.config.entry_weight,
-                    self.config.graph_weight,
-                ),
+                final_score=entry_component + graph_component,
                 paths=tuple(
                     sorted(
                         paths.get(node.node_id, ()),
@@ -273,9 +294,13 @@ class NeuronGraphRAG:
                 normalized_graph_activation=normalized_activation[node.node_id],
                 entry_anchor_before_competition=entry[node.node_id],
                 entry_anchor_after_competition=entry[node.node_id],
-            )
-            for node in nodes
-        ]
+                entry_rank=entry_ranks[node.node_id],
+                graph_rank=graph_ranks.get(node.node_id),
+                entry_fusion_component=entry_component,
+                graph_fusion_component=graph_component,
+                final_fusion_strategy=self.config.final_fusion_strategy,
+                graph_normalization=self.config.graph_normalization,
+            ))
         hits.sort(key=lambda hit: (-hit.final_score, hit.node.node_id))
         selected_hits = tuple(hits[:limit])
         trace_id = uuid.uuid4().hex
@@ -310,6 +335,15 @@ class NeuronGraphRAG:
                     path.steps
                     for node_paths in paths.values()
                     for path in node_paths
+                ),
+                "graph_normalization": self.config.graph_normalization,
+                "final_fusion_strategy": self.config.final_fusion_strategy,
+                "rrf_k": self.config.rrf_k,
+                "positive_graph_node_count": positive_graph_count,
+                "final_order_recomputable": all(
+                    hit.final_score
+                    == hit.entry_fusion_component + hit.graph_fusion_component
+                    for hit in hits
                 ),
             }
         )
@@ -438,6 +472,70 @@ class NeuronGraphRAG:
     ) -> float:
         total_weight = left_weight + right_weight
         return (left * left_weight + right * right_weight) / total_weight
+
+    @staticmethod
+    def _normalize_graph_activation(
+        scores: dict[str, float], strategy: str
+    ) -> dict[str, float]:
+        positive = {key: max(0.0, value) for key, value in scores.items()}
+        if strategy == "none":
+            return positive
+        if strategy == "max":
+            return normalize_scores(positive)
+        if strategy == "l1_mass":
+            total = sum(positive.values())
+            if total <= 0.0:
+                return {key: 0.0 for key in positive}
+            return {key: value / total for key, value in positive.items()}
+        raise ValueError(f"Unknown graph normalization: {strategy}")
+
+    @staticmethod
+    def _rank_positive_or_all(
+        scores: dict[str, float], *, positive_only: bool
+    ) -> dict[str, int]:
+        ordered = sorted(
+            (
+                (node_id, score)
+                for node_id, score in scores.items()
+                if not positive_only or score > 0.0
+            ),
+            key=lambda item: (-item[1], item[0]),
+        )
+        return {
+            node_id: rank
+            for rank, (node_id, _) in enumerate(ordered, start=1)
+        }
+
+    def _fusion_components(
+        self,
+        *,
+        entry: float,
+        normalized_graph: float,
+        entry_rank: int,
+        graph_rank: int | None,
+        positive_graph_count: int,
+    ) -> tuple[float, float]:
+        if self.config.final_fusion_strategy == "linear":
+            total_weight = self.config.entry_weight + self.config.graph_weight
+            return (
+                entry * self.config.entry_weight / total_weight,
+                normalized_graph * self.config.graph_weight / total_weight,
+            )
+        entry_component = self.config.entry_weight / (
+            self.config.rrf_k + entry_rank
+        )
+        graph_component = 0.0
+        if graph_rank is not None:
+            graph_component = self.config.graph_weight * (
+                1.0 / (self.config.rrf_k + graph_rank)
+                - 1.0
+                / (
+                    self.config.rrf_k
+                    + positive_graph_count
+                    + 1
+                )
+            )
+        return entry_component, graph_component
 
     @staticmethod
     def _timestamp(value: datetime | float | None) -> float:

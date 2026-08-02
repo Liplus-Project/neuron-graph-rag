@@ -65,6 +65,12 @@
 47. anchored hybrid experimentは`current`、`bm25-only`、BM25+現行graph、BM25+dense anchorのlocal/query local、BM25 anchorのlocalを合わせた6 variantsだけを比較する。
 48. development候補はrelation MRRがcurrentを厳密に上回り、direct / negative-controlが退行せず、relation path、feedback isolation、anchor invariant、edge-only graph signalをすべて満たす場合だけ選択する。
 49. 候補がある場合だけ未観測holdoutで`current`、`bm25-only`、選択候補を一度評価し、同じgateを通過した場合だけdefault変更候補とする。
+50. graph activationは`max`、`none`、`l1_mass`を一般設定として選択でき、zero totalを決定論的に全0へ変換できる。
+51. final fusionは既存linearに加え、entry rankとpositive graph nodeだけのgraph rankを使うbottom-centered weighted RRFを選択できる。
+52. 各traceはentry / graph rank、entry / graph fusion component、normalization、fusion strategy、RRF k、positive graph node数を保持し、final orderingを機械的に再計算できる。
+53. fusion calibration experimentはproduction D1の新しい3-node development / holdoutを、既存7 fixturesの50 unique doc pathsおよび相互間から分離し、provenance、balanced gold、contamination audit、6 variantsを結果観測前に固定する。
+54. development候補はrelation MRRをcurrentから厳密に改善し、少なくとも1 relation caseを個別改善し、direct / negative-controlのcohort MRRと全個別rankを退行させず、path、feedback、anchor、edge-only graph、formula auditを満たす場合だけ選択する。
+55. development候補がある場合だけ未観測holdoutでcurrentと選択候補を一度評価し、同じgateを通過した場合だけdefault変更候補とする。
 
 ## 4. Constraints
 
@@ -88,3 +94,4 @@
 - [Neural dynamics experiment](neural-dynamics-experiment.md) が development / holdout 分離、固定探索空間、候補選択、単一 holdout 開封、停止規則を定義する。
 - [Local recurrent competition experiment](neural-dynamics-local-competition-experiment.md) が新規D1 subgraph、contamination audit、query / path ablation、二baseline gateを定義する。
 - [Anchored BM25 and graph hybrid experiment](anchored-bm25-graph-hybrid-experiment.md) がzero-hop anchor、edge-only graph signal、BM25 ablation、新規D1 split、単一holdout gateを定義する。
+- [Anchored fusion calibration experiment](anchored-fusion-calibration-experiment.md) がgraph normalization、bottom-centered RRF、新規D1 split、個別case gateを定義する。

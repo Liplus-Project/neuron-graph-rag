@@ -52,6 +52,12 @@ class SearchHit:
     normalized_graph_activation: float = 0.0
     entry_anchor_before_competition: float = 0.0
     entry_anchor_after_competition: float = 0.0
+    entry_rank: int = 0
+    graph_rank: int | None = None
+    entry_fusion_component: float = 0.0
+    graph_fusion_component: float = 0.0
+    final_fusion_strategy: str = "linear"
+    graph_normalization: str = "max"
 
     def explain(self) -> dict[str, Any]:
         return {
@@ -72,6 +78,17 @@ class SearchHit:
                 "graph_activation_normalized": (
                     self.normalized_graph_activation
                 ),
+                "final": self.final_score,
+            },
+            "ranks": {
+                "entry": self.entry_rank,
+                "graph": self.graph_rank,
+            },
+            "fusion": {
+                "strategy": self.final_fusion_strategy,
+                "graph_normalization": self.graph_normalization,
+                "entry_component": self.entry_fusion_component,
+                "graph_component": self.graph_fusion_component,
                 "final": self.final_score,
             },
             "paths": [

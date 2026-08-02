@@ -1,0 +1,132 @@
+{
+  "baselines": [
+    "current"
+  ],
+  "contamination_audit": {
+    "artifact": "d1_liplus_fusion_calibration.contamination.json",
+    "artifact_sha256": "sha256:e743fa51a2fe84918cb528281e96a0c21e33c48fd4cec6867991540b33bbb2ea"
+  },
+  "development": {
+    "fixture": "d1_liplus_fusion_calibration_development.json",
+    "fixture_sha256": "sha256:1f0ab101d643613a65b83be2585c410e203a9520b6a933b516203b371fdcd916",
+    "gold": "d1_liplus_fusion_calibration_development.gold.json",
+    "gold_sha256": "sha256:006e7f159e10d313ef91d3b3d85e1148e5291de17dc08c46cdf0906891189a6e",
+    "provenance": "d1_liplus_fusion_calibration_development.provenance.json",
+    "provenance_sha256": "sha256:a4b80cb059832d50c21554367244739df0db55039003b5b5278743d7de01ba86"
+  },
+  "experiment_id": "d1-liplus-anchored-fusion-calibration-v1",
+  "holdout": {
+    "fixture": "d1_liplus_fusion_calibration_holdout.json",
+    "fixture_sha256": "sha256:5e381fd671e5bbed543c0ae02938ffbb9d5e9278988fa81721669f737c8cd060",
+    "gold": "d1_liplus_fusion_calibration_holdout.gold.json",
+    "gold_sha256": "sha256:d4c3d3bdfb576bd2bd33634790ee0652e2343cc57f71191ad955da656a13aae6",
+    "provenance": "d1_liplus_fusion_calibration_holdout.provenance.json",
+    "provenance_sha256": "sha256:01ea43d93349d68bcd328f56d2eaf3e2526e36c9961ebbd6d3a920d0740c070d"
+  },
+  "maximum_variants": 6,
+  "selection_rule": {
+    "candidate_gate": "relation MRR must strictly exceed current with at least one individually improved relation case; direct and negative-control MRR and every individual control rank must not regress; every relation path must match; feedback must be isolated; entry anchor must be invariant; graph signal and rank must exclude zero-hop paths; final ordering must be mechanically recomputable",
+    "candidate_ids": [
+      "anchored-local-unscaled",
+      "anchored-linear-conservative",
+      "anchored-linear-mass",
+      "anchored-rrf-conservative",
+      "anchored-rrf-balanced"
+    ],
+    "tie_break": [
+      "highest_relation_mrr",
+      "highest_worst_cohort_mrr",
+      "most_individually_improved_cases",
+      "fewest_mean_expansions",
+      "lowest_structural_complexity",
+      "lexicographic_variant_id"
+    ]
+  },
+  "shared_config": {
+    "activation_budget": 1.0,
+    "dense_weight": 0.45,
+    "entry_weight": 0.55,
+    "graph_weight": 0.45,
+    "hop_decay": 0.7,
+    "inhibition_ratio": 0.1,
+    "limit": 3,
+    "max_active_paths_per_node": 4,
+    "max_hops": 2,
+    "query_transmission_floor": 0.4,
+    "recurrent_decay": 0.5,
+    "recurrent_steps": 2,
+    "seed_count": 1,
+    "sparse_weight": 0.55
+  },
+  "stop_rule": {
+    "development_no_candidate": "keep current default and do not open holdout",
+    "holdout_adoption": "adopt only when the selected candidate passes the same fusion gate on unseen holdout",
+    "holdout_open_count": 1,
+    "holdout_variants": [
+      "current",
+      "selected-development-candidate"
+    ],
+    "post_observation_changes": "forbidden for fixture, gold, provenance, audit, doc paths, normalization, weights, rrf_k, thresholds, selection rule, stop rule, or variant parameters"
+  },
+  "variants": [
+    {
+      "family": "current_positive_additive",
+      "id": "current",
+      "parameters": {},
+      "structural_complexity": 0
+    },
+    {
+      "family": "anchored_local_competition",
+      "id": "anchored-local-unscaled",
+      "parameters": {
+        "graph_normalization": "none"
+      },
+      "structural_complexity": 5
+    },
+    {
+      "family": "anchored_local_competition",
+      "id": "anchored-linear-conservative",
+      "parameters": {
+        "entry_weight": 0.8,
+        "graph_normalization": "max",
+        "graph_weight": 0.2
+      },
+      "structural_complexity": 6
+    },
+    {
+      "family": "anchored_local_competition",
+      "id": "anchored-linear-mass",
+      "parameters": {
+        "entry_weight": 0.7,
+        "graph_normalization": "l1_mass",
+        "graph_weight": 0.3
+      },
+      "structural_complexity": 7
+    },
+    {
+      "family": "anchored_local_competition",
+      "id": "anchored-rrf-conservative",
+      "parameters": {
+        "entry_weight": 0.8,
+        "final_fusion_strategy": "rrf",
+        "graph_normalization": "none",
+        "graph_weight": 0.2,
+        "rrf_k": 60
+      },
+      "structural_complexity": 7
+    },
+    {
+      "family": "anchored_local_competition",
+      "id": "anchored-rrf-balanced",
+      "parameters": {
+        "entry_weight": 0.65,
+        "final_fusion_strategy": "rrf",
+        "graph_normalization": "none",
+        "graph_weight": 0.35,
+        "rrf_k": 60
+      },
+      "structural_complexity": 7
+    }
+  ],
+  "schema_version": 4
+}

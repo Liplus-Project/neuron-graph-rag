@@ -1,0 +1,70 @@
+{
+  "cases": [
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:Jx1E3tt9TQOx3LPYukcNaq-20UIIyvP_ikrQWkm6Alw",
+      "id": "fusion-dev-direct-width-cap",
+      "query": "subagent parallel width upper limit in-flight five provisional no enforcement mechanism",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/subagent-parallel-width-cap"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:I2O_ySIUvMN7pK5tMMXi25BcDHItRAutNmVQJobSSxM",
+      "id": "fusion-dev-direct-three-axis",
+      "query": "parallel subagent evaluation three axes N M P safer-side OR aggregation",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-three-axis-decomposition"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:I2O_ySIUvMN7pK5tMMXi25BcDHItRAutNmVQJobSSxM",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:Jx1E3tt9TQOx3LPYukcNaq-20UIIyvP_ikrQWkm6Alw",
+          "target_id": "w:I2O_ySIUvMN7pK5tMMXi25BcDHItRAutNmVQJobSSxM"
+        }
+      ],
+      "id": "fusion-dev-relation-width-three-axis",
+      "query": "subagent parallel width cap lower-bound reference three-axis evaluation design",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/subagent-parallel-width-cap",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-three-axis-decomposition"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:fLMZ9XU84DzOyRVFU8EeB7wvjUzFcQBvXV2ZhFV-1-A",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:Jx1E3tt9TQOx3LPYukcNaq-20UIIyvP_ikrQWkm6Alw",
+          "target_id": "w:fLMZ9XU84DzOyRVFU8EeB7wvjUzFcQBvXV2ZhFV-1-A"
+        }
+      ],
+      "id": "fusion-dev-relation-width-dynamic",
+      "query": "subagent parallel width cap rejected host feature upper-scale reference",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/subagent-parallel-width-cap",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/dynamic-workflows-non-adoption"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:fLMZ9XU84DzOyRVFU8EeB7wvjUzFcQBvXV2ZhFV-1-A",
+      "id": "fusion-dev-negative-dynamic",
+      "query": "host dynamic workflows non-adoption completion window observer role source check",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/dynamic-workflows-non-adoption"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:Jx1E3tt9TQOx3LPYukcNaq-20UIIyvP_ikrQWkm6Alw",
+      "id": "fusion-dev-negative-width-binding",
+      "query": "in-flight subagent count maximum five binding condition next batch",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/subagent-parallel-width-cap"
+    }
+  ],
+  "fixture": "d1_liplus_fusion_calibration_development.json",
+  "schema_version": 1
+}

@@ -12,7 +12,7 @@ from .engine import EngineConfig, NeuronGraphRAG
 
 
 EXPERIMENT_SCHEMA_VERSION = 1
-SUPPORTED_EXPERIMENT_SCHEMA_VERSIONS = {1, 2, 3}
+SUPPORTED_EXPERIMENT_SCHEMA_VERSIONS = {1, 2, 3, 4}
 
 
 def read_manifest(path: str | Path) -> dict[str, Any]:
@@ -52,15 +52,15 @@ def read_manifest(path: str | Path) -> dict[str, Any]:
     overlap = sorted(development_paths & holdout_paths)
     if overlap:
         raise ValueError(f"Development and holdout doc paths overlap: {overlap!r}")
-    if schema_version in {2, 3}:
+    if schema_version in {2, 3, 4}:
         expected_baselines = (
             ["current", "recurrent-balanced"]
             if schema_version == 2
-            else ["current", "bm25-only"]
+            else (["current", "bm25-only"] if schema_version == 3 else ["current"])
         )
-        if ids[:2] != expected_baselines:
+        if ids[: len(expected_baselines)] != expected_baselines:
             raise ValueError(
-                f"Schema v{schema_version} requires its two frozen baselines"
+                f"Schema v{schema_version} requires its frozen baselines"
             )
         if len(variants) != int(manifest["maximum_variants"]):
             raise ValueError("Experiment requires the exact frozen variant count")
@@ -110,7 +110,11 @@ def run_development(manifest_path: str | Path) -> dict[str, Any]:
         else (
             _select_anchored_development(variants)
             if int(manifest["schema_version"]) == 3
-            else _select_development(variants)
+            else (
+                _select_fusion_development(variants)
+                if int(manifest["schema_version"]) == 4
+                else _select_development(variants)
+            )
         )
     )
     return {
@@ -193,6 +197,12 @@ def run_holdout(
             "negative_non_regression"
         ]
         adopted = all(gate.values())
+    elif schema_version == 4:
+        gate = _fusion_candidate_gate(selected, current)
+        no_cohort_regression = gate["direct_non_regression"] and gate[
+            "negative_non_regression"
+        ]
+        adopted = all(gate.values())
     else:
         no_cohort_regression = all(
             selected["metrics"]["cohorts"][cohort]["mean_reciprocal_rank"]
@@ -269,6 +279,20 @@ def _evaluate_variant(
                         else None
                     ),
                     "scores": target.explain()["scores"],
+                    "ranks": target.explain()["ranks"],
+                    "fusion": target.explain()["fusion"],
+                    "ranked_hits": [
+                        {
+                            "node_id": hit.node.node_id,
+                            "scores": hit.explain()["scores"],
+                            "ranks": hit.explain()["ranks"],
+                            "fusion": hit.explain()["fusion"],
+                        }
+                        for hit in trace.hits
+                    ],
+                    "formula_recomputed": _trace_formula_recomputable(
+                        trace, config
+                    ),
                     "diagnostics": trace.diagnostics,
                 }
             )
@@ -308,6 +332,24 @@ def _evaluate_variant(
         "graph_signal_excludes_zero_hop": all(
             case["diagnostics"].get("graph_signal_excludes_zero_hop") is not False
             for case in cases
+        ),
+        "final_order_recomputable": all(
+            bool(case["diagnostics"].get("final_order_recomputable"))
+            and bool(case["formula_recomputed"])
+            and _case_order_recomputable(case)
+            for case in cases
+        ),
+        "graph_normalizations": sorted(
+            {
+                str(case["diagnostics"].get("graph_normalization"))
+                for case in cases
+            }
+        ),
+        "final_fusion_strategies": sorted(
+            {
+                str(case["diagnostics"].get("final_fusion_strategy"))
+                for case in cases
+            }
         ),
     }
     return {
@@ -626,6 +668,180 @@ def _anchored_candidate_gate(
             candidate["diagnostics"].get("graph_signal_excludes_zero_hop")
         ),
     }
+
+
+def _select_fusion_development(
+    variants: list[dict[str, Any]],
+) -> dict[str, Any]:
+    current = next(variant for variant in variants if variant["id"] == "current")
+    candidates: list[dict[str, Any]] = []
+    for variant in variants:
+        improved_cases = _individually_improved_cases(variant, current)
+        variant["relative_to_current"] = {
+            f"{cohort}_mrr_delta": (
+                _cohort_mrr(variant, cohort) - _cohort_mrr(current, cohort)
+            )
+            for cohort in COHORTS
+        }
+        variant["relative_to_current"]["individually_improved_case_ids"] = (
+            improved_cases
+        )
+        gate = _fusion_candidate_gate(variant, current)
+        variant["candidate_gate"] = gate
+        variant["candidate_gate_passed"] = (
+            variant["id"] != "current" and all(gate.values())
+        )
+        if variant["candidate_gate_passed"]:
+            candidates.append(variant)
+
+    if not candidates:
+        return {
+            "selected_variant_id": "current",
+            "reason": "no_fusion_variant_passed_frozen_gate",
+            "eligible_variant_ids": [],
+        }
+    selected = sorted(
+        candidates,
+        key=lambda variant: (
+            -_cohort_mrr(variant, "relation"),
+            -min(_cohort_mrr(variant, cohort) for cohort in COHORTS),
+            -len(_individually_improved_cases(variant, current)),
+            float(variant["diagnostics"]["mean_expansions"]),
+            int(variant["structural_complexity"]),
+            str(variant["id"]),
+        ),
+    )[0]
+    return {
+        "selected_variant_id": selected["id"],
+        "reason": "predeclared_fusion_gate_and_tie_break",
+        "eligible_variant_ids": sorted(
+            str(variant["id"]) for variant in candidates
+        ),
+    }
+
+
+def _fusion_candidate_gate(
+    candidate: dict[str, Any], current: dict[str, Any]
+) -> dict[str, bool]:
+    current_ranks = {str(case["id"]): int(case["rank"]) for case in current["cases"]}
+    candidate_cases = {
+        str(case["id"]): case for case in candidate["cases"]
+    }
+    control_case_non_regression = all(
+        int(case["rank"]) <= current_ranks[case_id]
+        for case_id, case in candidate_cases.items()
+        if case["cohort"] in {"direct_lookup", "negative_control"}
+    )
+    relation_case_improvement = any(
+        int(case["rank"]) < current_ranks[case_id]
+        for case_id, case in candidate_cases.items()
+        if case["cohort"] == "relation"
+    )
+    return {
+        "relation_strictly_above_current": _cohort_mrr(candidate, "relation")
+        > _cohort_mrr(current, "relation"),
+        "direct_non_regression": _cohort_mrr(candidate, "direct_lookup")
+        >= _cohort_mrr(current, "direct_lookup"),
+        "negative_non_regression": _cohort_mrr(candidate, "negative_control")
+        >= _cohort_mrr(current, "negative_control"),
+        "individual_control_rank_non_regression": control_case_non_regression,
+        "individual_relation_rank_improvement": relation_case_improvement,
+        "all_relation_paths_match": _paths_match(candidate),
+        "feedback_isolated": _feedback_isolated(candidate),
+        "entry_anchor_invariant": bool(
+            candidate["diagnostics"].get("entry_anchor_invariant")
+        ),
+        "graph_signal_excludes_zero_hop": bool(
+            candidate["diagnostics"].get("graph_signal_excludes_zero_hop")
+        ),
+        "final_order_recomputable": bool(
+            candidate["diagnostics"].get("final_order_recomputable")
+        ),
+    }
+
+
+def _individually_improved_cases(
+    candidate: dict[str, Any], current: dict[str, Any]
+) -> list[str]:
+    current_ranks = {str(case["id"]): int(case["rank"]) for case in current["cases"]}
+    return sorted(
+        str(case["id"])
+        for case in candidate["cases"]
+        if int(case["rank"]) < current_ranks[str(case["id"])]
+    )
+
+
+def _case_order_recomputable(case: dict[str, Any]) -> bool:
+    ranked_hits = case.get("ranked_hits", [])
+    if not ranked_hits:
+        return False
+    for hit in ranked_hits:
+        fusion = hit["fusion"]
+        if abs(
+            float(fusion["entry_component"])
+            + float(fusion["graph_component"])
+            - float(fusion["final"])
+        ) > 1e-12:
+            return False
+    observed = [str(hit["node_id"]) for hit in ranked_hits]
+    recomputed = [
+        str(hit["node_id"])
+        for hit in sorted(
+            ranked_hits,
+            key=lambda hit: (
+                -float(hit["fusion"]["final"]),
+                str(hit["node_id"]),
+            ),
+        )
+    ]
+    return observed == recomputed
+
+
+def _trace_formula_recomputable(trace: Any, config: EngineConfig) -> bool:
+    positive_graph_count = int(
+        trace.diagnostics.get("positive_graph_node_count", 0)
+    )
+    recomputed: list[tuple[str, float]] = []
+    for hit in trace.hits:
+        if config.final_fusion_strategy == "linear":
+            total_weight = config.entry_weight + config.graph_weight
+            entry_component = (
+                hit.entry_score * config.entry_weight / total_weight
+            )
+            graph_component = (
+                hit.normalized_graph_activation
+                * config.graph_weight
+                / total_weight
+            )
+        else:
+            entry_component = config.entry_weight / (
+                config.rrf_k + hit.entry_rank
+            )
+            graph_component = 0.0
+            if hit.graph_rank is not None:
+                graph_component = config.graph_weight * (
+                    1.0 / (config.rrf_k + hit.graph_rank)
+                    - 1.0
+                    / (
+                        config.rrf_k
+                        + positive_graph_count
+                        + 1
+                    )
+                )
+        if (
+            abs(entry_component - hit.entry_fusion_component) > 1e-12
+            or abs(graph_component - hit.graph_fusion_component) > 1e-12
+            or abs(entry_component + graph_component - hit.final_score) > 1e-12
+        ):
+            return False
+        recomputed.append((hit.node.node_id, entry_component + graph_component))
+    expected_order = [
+        node_id
+        for node_id, _ in sorted(
+            recomputed, key=lambda item: (-item[1], item[0])
+        )
+    ]
+    return expected_order == [hit.node.node_id for hit in trace.hits]
 
 
 def _paths_match(variant: dict[str, Any]) -> bool:

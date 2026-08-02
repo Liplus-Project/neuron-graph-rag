@@ -1,0 +1,148 @@
+{
+  "edges": [
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "parallel-subagent-eval-three-axis-decomposition",
+          "dst_vector_id": "w:I2O_ySIUvMN7pK5tMMXi25BcDHItRAutNmVQJobSSxM",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "subagent-parallel-width-cap",
+          "src_vector_id": "w:Jx1E3tt9TQOx3LPYukcNaq-20UIIyvP_ikrQWkm6Alw",
+          "updated_at": "2026-07-31T14:57:28.128Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:Jx1E3tt9TQOx3LPYukcNaq-20UIIyvP_ikrQWkm6Alw",
+      "target_id": "w:I2O_ySIUvMN7pK5tMMXi25BcDHItRAutNmVQJobSSxM",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "dynamic-workflows-non-adoption",
+          "dst_vector_id": "w:fLMZ9XU84DzOyRVFU8EeB7wvjUzFcQBvXV2ZhFV-1-A",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "subagent-parallel-width-cap",
+          "src_vector_id": "w:Jx1E3tt9TQOx3LPYukcNaq-20UIIyvP_ikrQWkm6Alw",
+          "updated_at": "2026-07-31T14:57:28.128Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:Jx1E3tt9TQOx3LPYukcNaq-20UIIyvP_ikrQWkm6Alw",
+      "target_id": "w:fLMZ9XU84DzOyRVFU8EeB7wvjUzFcQBvXV2ZhFV-1-A",
+      "weight": 1.0
+    }
+  ],
+  "nodes": [
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "dynamic-workflows-non-adoption",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:56:17.712Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/dynamic-workflows-non-adoption",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:56:17.064Z",
+        "vector_id": "w:fLMZ9XU84DzOyRVFU8EeB7wvjUzFcQBvXV2ZhFV-1-A"
+      },
+      "node_id": "w:fLMZ9XU84DzOyRVFU8EeB7wvjUzFcQBvXV2ZhFV-1-A",
+      "text": "dynamic-workflows-non-adoption\n\n# host 機能 dynamic workflows の Li+ 非採用\n\n## Question\n\nOpus 4.8 の host 機能 dynamic workflows を Li+ で採用するか。\n\n## Current resolution\n\n採用しない（#1430 closed / Option A）。dynamic workflows の「完了窓」（中間結果が isolated env のスクリプト変数に隔離され、親には truncate 成果物 + temp ポインタのみ返る界面）が、親を**観測者役（中立裁定者）に強制召喚**し、character + source-check 認証を同時に剥がすため。verdict 本体は #1430 コメントに durable 保管。\n\n## Edges\n\n- **relates to**: [[liplus-context-rot-tension]] — isolate（per-agent context）は context-rot の SOTA mitigation だが、Li+ では完了窓が認証剥がしのコストを併発する非対称がある\n\n## 背景\n\n完了窓が出す2段の害:\n\n1. tone 軸: 観測者役は character を持たない substrate の住処 → character 連続性を damage（`foundational-invariant` の dialogue integrity 違反）。\n2. security 軸（load-bearing）: source-check 認証を同時に剥がす → prior-self の生成物が human 発話を詐称し、偽の権限で無検問に自律実行（self-impersonation / 権限昇格）。実害として phantom 指示「Master が milestone ルールを変更した」を作話し自律 issue 起票する事象が発生した。\n\n## 制約\n\n反証の決め手: 同じ並列仕事を素の Agent tool で回すと完了窓が構造的に存在せず drift ゼロ。並列需要は raw Agent tool が character-safe に供給済み → dynamic workflows は**使えない上に要らない**。\n\n## 結論\n\n- 採用: なし（見送り、memory でなく本判断記録で足りる＝L1 昇格不要、Master 判断）。\n- 条件付き再評価: 将来どうしても使う必要が出た場合、完了窓直後に Source check（prior-self 詐称の可能性）を強制する設計が前提。\n\n## 関連\n\n- issue #1430（closed / Option A、verdict 本体）\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "parallel-subagent-eval-three-axis-decomposition",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:15.000Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-three-axis-decomposition",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:14.283Z",
+        "vector_id": "w:I2O_ySIUvMN7pK5tMMXi25BcDHItRAutNmVQJobSSxM"
+      },
+      "node_id": "w:I2O_ySIUvMN7pK5tMMXi25BcDHItRAutNmVQJobSSxM",
+      "text": "parallel-subagent-eval-three-axis-decomposition\n\n# parallel-subagent-eval の三軸分解（subagent_count × axes_per_subagent × premise_variations）\n\n## 判断\n\n`skills/parallel-subagent-eval/SKILL.md` の検証設計を、`subagent_count (N)` / `axes_per_subagent (M)` / `premise_variations (P)` の三軸直交として明文化し、デフォルトを **`N=3, M=全 axes, P=1`（safer-side OR aggregation）** に固定する。「最低 3 並列 + 異なる評価軸」という旧来の文面が、(A) 1 subagent = 1 axis と (B) 1 subagent = 全 axes の二通りに読める曖昧さを抱えていたため、設計者意図側 (B) に寄せた。\n\n軸: 検証 cost と検出力を独立に動かす三つの設計次元の分離。verification 運用そのものに semantic 変化はなく、語彙の二重読みを除去する patch 相当の整理。\n\n## 背景\n\n[#1308](https://github.com/Liplus-Project/liplus-language/pull/1308)（Closes [#1296](https://github.com/Liplus-Project/liplus-language/issues/1296)）で `skills/parallel-subagent-eval/SKILL.md` が独立 skill として追加された当日（2026-05-18）、対話の中で「AI は確率モデルなんだから検証は 3 回以上欲しい」という Master の問いが立ち、現行文面と設計意図のあいだに二重読みが残っていることが露見した。\n\n具体的なズレ：\n\n| 読み方 | subagent 数 | 軸 / subagent | サンプル数 / 軸 |\n|---|---|---|---|\n| A（現行文面寄り） | 3 | 1 | N=1 |\n| B（設計者意図） | 3 | M（全軸） | N=3 |\n\n`#1296` の実証データ（N=1 positive → N=3 で 1positive + 2 partial-negative）は、axis A / axis B / axis C を別々の subagent に割り当てた **coverage 改善**の根拠であって、確率モデルの **variance 改善**の根拠ではなかった。一方、AI が確率モデルである以上、各観測軸について N≥3 のサンプリングが本来欲しい——読み方 B の設計（3 subagent が全 M 軸を独立に答える）は、coverage に variance を上乗せできる上位互換になる。\n\n副次的に、対話の途中で「M×N = 9 subagent 必要」という過剰積みの誤導も浮上したが、それは「ablation 前提を変えるとき」と「観測条件を変えるとき」を取り違えた結果だと判明した。判定の二択（消す/残す）に必要な解像度を超えていた。三軸を独立に立てる整理は、この誤導も同時に解消する。\n\n## 制約\n\n- **#1296 実証の保持**: axis A/B/C を 1 subagent ずつに割り当てた当時の構成は、`M=1` axis-separated **例外パターン**として保持。supersede ではなく構造に取り込む形。\n- **OR aggregation の安全側**: delete/keep のような二択で誤削除コストが非対称に高い場合、aggregation rule は safer-side OR（1 軸でも load-bearing を返したら \"残す\"）。採用/不採用の場合は AND、中間は旧 #1296 の consistent / partial / negative 三値分類。\n- **cross-axis echo bias の管理**: default M=全 axes パターンでは subagent prompt 内で「他軸の答えを参照せずに独立に答えよ」と明示。複雑度が高く mitigation が不安なときは M=1 axis-separated パターンへ退避。\n- **同一ベースモデルでの検証**: subagent を安いモデル（Haiku 等）に降ろすことは認めない。base model が違えば「rule を吸収しているか」の答えそのものが変わる。被験者をすり替えると測定が無効化される。\n- **L1 update gating の不適用**: skill body の文面整理であり L1 Model Layer 変更ではない。reversibility 高（PR 一発 revert）、user/system 観測影響ゼロ、detection cost 低のため `rules/operations/execution-mode.md` の per-PR patch 例外を適用、AI direct merge。\n\n## 結論\n\nPR [#1312](https://github.com/Liplus-Project/liplus-language/pull/1312)（Closes [#1311](https://github.com/Liplus-Project/liplus-language/issues/1311)）で実装、squash merge 済み。\n\n採用案（三軸直交化）の変更内容：\n\n- 新規 `## Design Dimensions` 節を Trigger と Procedure の間に追加。`subagent_count (N)` / `axes_per_subagent (M)` / `premise_variations (P)` を独立次元として記述\n- デフォルトパターン明定：`N=3, M=全 axes, P=1`、総 invocation = 3、safer-side OR aggregation\n- 例外パターン `M=1` axis-separated を保持し、原 #1296 実証はこの枠の実例として読み替え\n- 前提揺らぎ枝 `P > 1` を ablation 比較用オプションとして記述、総 invocation = `N × P`\n- aggregation 規則を判定の非対称性別に三分（delete/keep → OR、採用/不採用 → AND、中間 → 三値分類）\n- Procedure step 3 / step 4、Constraint bullet を同じ三軸記法に揃え直す\n\n却下案 A（M × N = 9 subagent 総当たり）：delete/keep の二択判定に必要な解像度を超え、Master の token 体力に対しても過剰。前提揺らぎ（P>1）が必要になった局面で初めて呼び戻すパターンとして温存。\n\n却下案 B（verification subagent を Haiku 等に降ろす）：substrate を変えた瞬間に被験者がすり替わる。ablation の問い「ベースモデルがこの rule を吸収しているか」に対して、別のモデルで測った答えは答えとして無効。コスト圧縮の道は substrate を下げる方向ではなく、頻度（いつ走らせるか）と対象（何を ablation にかけるか）を絞る方向にしか開いていない。\n\n却下案 C（発火頻度ベースの自然減衰で rule を間引く）：本判断の隣接議題として浮上したが射程外。発火頻度が低くてもベースモデルとの相補関係で load-bearing な rule は存在し得るので、頻度は適切な指標にならない。ablation で「rule を外しても挙動が変わらない」を直接観測するほうが筋。本判断は ablation 機構の設計に専属、頻度ベース pruning は別判断。\n\n## 検証\n\n本 skill 自身を meta 適用した self-verify（採用パターンそのものでの自己検証）：\n\n| subagent | Axis 1 (Design fidelity) | Axis 2 (Historical compat) | Axis 3 (Internal consistency) |\n|---|---|---|---|\n| #1 | clean | clean | concern |\n| #2 | clean | clean | concern |\n| #3 | clean | clean | concern |\n\nblock-worthy ゼロ。3/3 が Axis 1/2 で clean を返し、設計意図と #1296 実証との整合性を確認。Axis 3 では 3/3 が concern を返し、うち 2/3 が **同箇所**（Constraint N=1 bullet の「異軸 3 軸の OR aggregation」文言が、原 #1296 の M=1 例外パターンと現行 default の M=全 axes を混同し得る）を独立に指摘。集中して同一箇所を指す concern は、coverage と variance の交差点で本来「block-worthy より弱いが拾うべき信号」として処理し、最終 commit で Constraint bullet と Procedure step 3 の cross-reference を補強済み。\n\nmethod を整備したその場で同じ method を自己適用し、3 subagent の独立観測が同一箇所を指したことで cross-axis echo bias を介さない「真の concern 集中」を検出できた——三軸分解の default パターンが文字どおり走った最初の実例として記録される。\n\n## ペアリング\n\n- [`character-instance-opt-in-and-surface-scope`](https://github.com/Liplus-Project/liplus-language/wiki/character-instance-opt-in-and-surface-scope) — 本 skill (#1296 当時の M=1 axis-separated パターン) を実適用した最初の big-ticket 判断。本判断はその method 側の設計次元を整理した対応\n- [`sheepdog-engineering-concept`](https://github.com/Liplus-Project/liplus-language/wiki/sheepdog-engineering-concept) — Sheepdog Engineering の modifier 軸（AI が Li+ source を自編集）の道具立てとして本 skill が機能する。三軸分解は modifier の解像度を上げる方向の整理\n- [`master-role-as-client-architect`](https://github.com/Liplus-Project/liplus-language/wiki/master-role-as-client-architect) — Master の設計意図と AI の文面化の二重読みズレを修復した事例として、client+architect / programmer の二項に当てはまる\n\n## 検出サイン (この判断が後で疑問視される場合)\n\n- 「9 subagent 総当たり (3×3) のほうが情報量が多いから default を変えるべき」と提案された時 → 本判断の前提（delete/keep の二択判定では解像度過剰、P>1 の局面で初めて呼び戻す）を再確認。前提揺らぎが議題に入っているなら別判断\n- 「default M=全 axes パターンは cross-axis echo bias が抑止できていない」と観測された時 → Constraint bullet の独立回答指示 + M=1 axis-separated 例外パターンへの退避が運用通り発火しているかを確認。発火していてなお bias が残るなら spec 修正の余地あり\n- 「subagent を Haiku 等に降ろせばコストが下がる」と再提案された時 → 本判断の `## 制約` 「同一ベースモデルでの検証」を再確認。被験者すり替え問題は技術的な選好ではなく ablation 機構の論理的前提\n- 旧来の「最低 3 並列 + 異なる評価軸」文面が再出現した時 → 本判断による rewrite が後段の編集で巻き戻されていないかを git history で確認、`Design Dimensions` 節と整合性を再検査\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "subagent-parallel-width-cap",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:28.088Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/subagent-parallel-width-cap",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:27.420Z",
+        "vector_id": "w:Jx1E3tt9TQOx3LPYukcNaq-20UIIyvP_ikrQWkm6Alw"
+      },
+      "node_id": "w:Jx1E3tt9TQOx3LPYukcNaq-20UIIyvP_ikrQWkm6Alw",
+      "text": "subagent-parallel-width-cap\n\n# subagent 並列幅の上限は in-flight 5、値は暫定で強制機構を持たない\n\n## Question\n\n親が同時に走らせる subagent の数に上限を置くか。置くなら何本で、何を数えるのか。\n\n## Current resolution\n\n**上限 = 同時 in-flight 5 本。** 数える対象は「spawn 済みでまだ返っていない subagent」であって、1メッセージあたりの Agent ツール呼び出し数ではない。binding condition = 前の batch が全て報告を返すまで次の batch を投げない。\n\n適用先は `skills/task-subagent-delegation/SKILL.md` を通る全ての並列委譲（親 issue またぎの worktree 並列 / 同一親 sub-issue 並列 / bounded read-only 調査の fan-out）。`skills/evolution-parallel-agent-eval/SKILL.md` の N / M / P fan-out は Design Dimensions 側で別途 bounded なため除外。\n\n**値 5 は暫定であり、強制機構は存在しない。** どちらも仕様本文に明記してある。\n\n## Edges\n\n- **depends on** [`parallel-subagent-eval-three-axis-decomposition`](https://github.com/Liplus-Project/liplus-language/wiki/parallel-subagent-eval-three-axis-decomposition) — 値 5 の括り出しに eval の default 幅 N=3 を下端の基準として使っている。eval 側の N が動けば上限値の妥当性も再検討対象になる\n- **depends on** [`dynamic-workflows-non-adoption`](https://github.com/Liplus-Project/liplus-language/wiki/dynamic-workflows-non-adoption) — 上端の基準として host 側の fan-out スケール（research preview で同時 16 / 1 run 累計 1000、#1426 / #1428 で評価のうえ非採用）を参照している\n- **conflicts with** （現時点で対立 entry なし）\n\n## 値 5 の導出\n\n**実測から導いていない。** cost / latency のどちらも測っていない。下端に eval の確立済み default 幅（N=3）、上端に host スケールの fan-out（同時 16）を置き、そのあいだの安全側として 5 を選んだだけの括り出しである。\n\nしたがって「5 が最適である」という主張は本判断に含まれない。含まれるのは「上限が無い状態よりは在る状態のほうがよい」という主張だけであり、観測が出た時点で値を改訂することを前提にしている。\n\n## 背景 — 何を数えるかで一度外している\n\n初版（#1532 / PR #1533）の上限は **1メッセージあたりの Agent ツール呼び出し数** として書かれていた。brake 1 の指摘で、この数え方では上限が上限として機能しないことが判明した。\n\n5 本を投げたメッセージの直後に、1本目の wave が返る前へさらに 5 本を投げると、各メッセージは 5 以下に収まったまま実 in-flight 幅が 10 に達する。仕様の文言をすべて守った状態で上限の 2 倍が成立するため、これは運用ミスではなく仕様の穴だった。\n\n同 PR の brake 1 ラウンド4で、上限の定義を in-flight bound へ移し、「前 wave の完了まで次 batch を投げない」を binding condition として明記する形に修正した。同じサイクルのラウンド3では、上限が並列委譲パターンの一つにしか掛からない書き方になっていた scope 不足も別途修正している。\n\n## 受容した対価 — recall 依存であること\n\n上限を強制する hook / counter / gate は存在しない。親が spawn の瞬間に binding condition を思い出して自己適用することに全面依存している。\n\nこれは `rules/model/subtractive-structural-beauty.md` の spec write 条項に正面から抵触する:\n\n> Procedures whose execution by future AI is not guaranteed must be replaced by structures that are reliably executed (hook / bootstrap / rule / physical constraint).\n\n指摘元は #1533 の brake 1 で、N=3 の 3体全員が独立に同じ条項を引いて指摘した。同型の欠陥は `rules/model/trigger-check-gate.md` が自己記述済みであり（「a forgettable relief path is strictly dominated by the deterministic hook」）、5軸ゲートのほうは #1493 で hook 化されて解決している。\n\n暫定対応として、recall 依存であることを仕様本文に honesty clause として明記し、構造的強制への置き換えを **#1534** で追跡する形にした。`rules/operations/operations.md` の Post-L1-Merge Runtime Observation が #1413 に対して取っているのと同じ扱い。\n\n#1534 が抱えている検討軸は3つ:\n\n- PreToolUse hook で Agent ツール呼び出しをカウントする経路が harness 上で成立するか（現行 `adapter/claude/hooks/` は on-session-start / on-user-prompt / post-tool-use のみ）\n- in-flight 数の観測が hook から可能か。困難なら per-message batch size の強制に落とし、上限の主張自体を機構の側へ合わせる\n- 値 5 の妥当性そのもの\n\n## 再評価条件\n\n- 実 in-flight 幅の超過が観測されたとき（recall 依存の穴が実害として出た初回）\n- cost / latency の実測が取れたとき。値 5 は測定に置き換えられる前提の暫定値である\n- #1534 の検討軸1 / 2 が harness 上で成立すると判明したとき。その時点で honesty clause は構造へ置き換わり、本エントリの「受容した対価」節は解消される\n\n## 検出サイン（この判断が後で疑問視される場合）\n\n- 「1メッセージ 5 本以内なので上限を守っている」と述べられた時 → 数える対象は in-flight であって per-message ではない。前 wave が返っているかを先に確認する\n- eval の N / M / P fan-out を上限違反として止めようとした時 → 除外対象。Design Dimensions 側で別途 bounded になっている\n- 上限を spawn 深度（subagent が自分の子を spawn する軸）の話と混ぜて読んだ時 → 別軸。深度は `skills/task-subagent-prompt/SKILL.md` Bounded delegation\n- 「5 という値の根拠は何か」と問われた時 → 実測ではない。N=3 と host スケール 16 のあいだの安全側という括り出しであり、観測が出れば改訂する前提であることを先に述べる\n\n## Related\n\n- [#1532](https://github.com/Liplus-Project/liplus-language/issues/1532) / [PR #1533](https://github.com/Liplus-Project/liplus-language/pull/1533) — 上限の新設と、in-flight 定義への修正\n- [#1534](https://github.com/Liplus-Project/liplus-language/issues/1534) — 構造的強制への置き換え（未着手）\n- [#1426](https://github.com/Liplus-Project/liplus-language/issues/1426) / [#1428](https://github.com/Liplus-Project/liplus-language/issues/1428) — 上端の基準として参照した host 側 fan-out スケールの評価\n- `skills/task-subagent-spawn/SKILL.md` Parallel-Width Cap — 規則本体\n"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "database": "github-rag-fts",
+    "doc_paths": [
+      "dynamic-workflows-non-adoption",
+      "parallel-subagent-eval-three-axis-decomposition",
+      "subagent-parallel-width-cap"
+    ],
+    "per_type_limit": 3,
+    "repositories": [
+      "Liplus-Project/liplus-language"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "selection_order": [
+      "repo",
+      "type",
+      "doc_path",
+      "vector_id"
+    ],
+    "types": [
+      "wiki_doc"
+    ]
+  }
+}
