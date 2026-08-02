@@ -23,6 +23,23 @@ from neuron_graph_rag.blind_selection import (
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures"
 MANIFEST = FIXTURES / "d1_liplus_channels_blind_experiment.manifest.json"
+DEVELOPMENT_PACKET = (
+    FIXTURES / "d1_liplus_channels_blind.development.packet.json"
+)
+DEVELOPMENT_JUDGE_1 = (
+    FIXTURES / "d1_liplus_channels_blind.development.judge-1.json"
+)
+DEVELOPMENT_JUDGE_2 = (
+    FIXTURES / "d1_liplus_channels_blind.development.judge-2.json"
+)
+DEVELOPMENT_JUDGE_3_RAW = (
+    FIXTURES / "d1_liplus_channels_blind.development.judge-3.raw.json"
+)
+DEVELOPMENT_RESULT = (
+    FIXTURES / "d1_liplus_channels_blind.development.result.json"
+)
+HOLDOUT_PACKET = FIXTURES / "d1_liplus_channels_blind.holdout.packet.json"
+HOLDOUT_RESULT = FIXTURES / "d1_liplus_channels_blind.holdout.result.json"
 
 
 def _sha256(path: Path) -> str:
@@ -143,6 +160,59 @@ class BlindFreezeContractTest(unittest.TestCase):
                 generate_blind_packet(
                     MANIFEST, "holdout", development_result_path=result
                 )
+
+
+class BlindObservedResultAuditTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.result = json.loads(DEVELOPMENT_RESULT.read_text(encoding="utf-8"))
+
+    def test_invalid_third_response_stops_before_aggregation(self) -> None:
+        self.assertEqual(
+            self.result["freeze_commit"],
+            "062c1314c1b63ee34b8963b980b2c51eb2c3e9a0",
+        )
+        self.assertEqual(
+            self.result["failure"],
+            {
+                "phase": "capture-response",
+                "judge_id": "blind-dev-judge-3",
+                "error": "Judge must answer every packet case exactly once",
+                "expected_response_count": 4,
+                "observed_response_count": 3,
+                "missing_case_ids": ["case-0003"],
+            },
+        )
+        self.assertEqual(self.result["execution"]["valid_captured_responses"], 2)
+        self.assertEqual(self.result["execution"]["invalid_responses"], 1)
+        self.assertFalse(self.result["execution"]["aggregate_executed"])
+        self.assertFalse(self.result["execution"]["retry_performed"])
+        self.assertFalse(self.result["execution"]["replacement_judge_used"])
+        self.assertFalse(self.result["gate_passed"])
+        self.assertEqual(
+            self.result["metrics_status"],
+            "not_computed_invalid_judge_response",
+        )
+
+    def test_result_hashes_preserved_observed_artifacts_without_reading_them(self) -> None:
+        self.assertEqual(
+            self.result["packet_sha256"], _sha256(DEVELOPMENT_PACKET)
+        )
+        expected_paths = {
+            DEVELOPMENT_JUDGE_1.name: DEVELOPMENT_JUDGE_1,
+            DEVELOPMENT_JUDGE_2.name: DEVELOPMENT_JUDGE_2,
+            DEVELOPMENT_JUDGE_3_RAW.name: DEVELOPMENT_JUDGE_3_RAW,
+        }
+        for artifact in self.result["judge_artifacts"]:
+            path = expected_paths[artifact["path"]]
+            self.assertEqual(artifact["sha256"], _sha256(path))
+
+    def test_stop_rule_keeps_holdout_unopened(self) -> None:
+        self.assertEqual(
+            self.result["holdout_status"],
+            "not_opened_invalid_judge_response",
+        )
+        self.assertFalse(HOLDOUT_PACKET.exists())
+        self.assertFalse(HOLDOUT_RESULT.exists())
 
 
 class BlindPacketValidationTest(unittest.TestCase):

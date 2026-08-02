@@ -1,0 +1,39 @@
+{
+  "agent_type": "default",
+  "executed_at": "2026-08-02T03:43:48.063046Z",
+  "judge_id": "blind-dev-judge-2",
+  "model": "inherited-parent-model",
+  "packet_sha256": "sha256:9b7e26fc74ce9b84e382e607fad9dcaf34b4def75a234028d7aa6be09fb46c1b",
+  "parsed_responses": [
+    {
+      "case_id": "case-0001",
+      "node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+      "rationale": "queryのumbrella namingとthree drives packagingを、総称と既存三本柱のパッケージングとして直接説明している。",
+      "selected_channel": "lexical",
+      "trace_id": "3786556fd50e43d3895dde557889a188"
+    },
+    {
+      "case_id": "case-0002",
+      "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "rationale": "DiDD本文が対話・構造・現実の三本柱を表で直接定義し、naming文書からmention edgeで到達している。",
+      "selected_channel": "relation",
+      "trace_id": "0c60e6fe9dd2479e952a043faee2fd79"
+    },
+    {
+      "case_id": "case-0003",
+      "node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+      "rationale": "PR #1468、supersede、三本柱のpackagingを同じ文書内で直接扱っている。",
+      "selected_channel": "lexical",
+      "trace_id": "3f35bc4943cf4fb6ba20ca6d6ccf9f14"
+    },
+    {
+      "case_id": "case-0004",
+      "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "rationale": "DiDD method pageとして三本柱と各段の役割を直接説明しており、relation laneにはhitがない。",
+      "selected_channel": "lexical",
+      "trace_id": "bc66a4b411ff4169a0d835b287f4d373"
+    }
+  ],
+  "raw_response": "{\n  \"responses\": [\n    {\n      \"case_id\": \"case-0001\",\n      \"selected_channel\": \"lexical\",\n      \"trace_id\": \"3786556fd50e43d3895dde557889a188\",\n      \"node_id\": \"w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k\",\n      \"rationale\": \"queryのumbrella namingとthree drives packagingを、総称と既存三本柱のパッケージングとして直接説明している。\"\n    },\n    {\n      \"case_id\": \"case-0002\",\n      \"selected_channel\": \"relation\",\n      \"trace_id\": \"0c60e6fe9dd2479e952a043faee2fd79\",\n      \"node_id\": \"w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs\",\n      \"rationale\": \"DiDD本文が対話・構造・現実の三本柱を表で直接定義し、naming文書からmention edgeで到達している。\"\n    },\n    {\n      \"case_id\": \"case-0003\",\n      \"selected_channel\": \"lexical\",\n      \"trace_id\": \"3f35bc4943cf4fb6ba20ca6d6ccf9f14\",\n      \"node_id\": \"w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k\",\n      \"rationale\": \"PR #1468、supersede、三本柱のpackagingを同じ文書内で直接扱っている。\"\n    },\n    {\n      \"case_id\": \"case-0004\",\n      \"selected_channel\": \"lexical\",\n      \"trace_id\": \"bc66a4b411ff4169a0d835b287f4d373\",\n      \"node_id\": \"w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs\",\n      \"rationale\": \"DiDD method pageとして三本柱と各段の役割を直接説明しており、relation laneにはhitがない。\"\n    }\n  ]\n}\n",
+  "schema_version": 1
+}

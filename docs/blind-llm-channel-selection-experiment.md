@@ -121,6 +121,12 @@ response captureとaggregateはparent orchestrator境界でだけ実行する。
 
 補助指標はjudge別node accuracy、majority node / channel accuracy、abstention率、全員一致率、selected-node MRR、union oracle coverageとの差である。小さい2-node / 4-case splitのため、holdout通過時も主張は固定split上の限定的支持に留め、一般性能やdefault適格性へ外挿しない。
 
-## 観測状態
+## Development観測結果
 
-result-free freeze前であり、development packet、actual judge response、development resultは未生成である。holdoutは未開封である。
+result-free freeze commit `062c1314c1b63ee34b8963b980b2c51eb2c3e9a0`をpushした後、development packetを一度生成し、parent orchestratorがfresh blind judge 3体へ提示した。
+
+packet SHA-256は`9b7e26fc74ce9b84e382e607fad9dcaf34b4def75a234028d7aa6be09fb46c1b`である。3件のraw responseを受領し、先行2件はcapture validationを通過した。3件目は必須4 caseのうちopaque `case-0003`を返さず、3 caseだけだったため、`Judge must answer every packet case exactly once`でcaptureを拒否した。raw responseは上書きせず保存し、retryとreplacement judgeは実行していない。
+
+capture段階で全response validity gateが不合格になったため、majority aggregation、accuracy、channel accuracy、selected-node MRR、path照合は実行していない。これらを0値として解釈せず、`not_evaluated_gates`と`metrics_status=not_computed_invalid_judge_response`で未評価を記録する。
+
+Development gateは不合格であり、`holdout_status=not_opened_invalid_judge_response`で停止した。停止規則の確認ではholdout packet生成がexit 1となり、holdout packet / resultは存在しない。prompt、packet、judge数、response、集約規則、matcher、threshold、gateを観測後に変更せず、既存`search()`とdefault、`search_channels()`の非validated状態を維持する。

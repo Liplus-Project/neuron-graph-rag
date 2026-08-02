@@ -231,7 +231,7 @@ callerは両laneを検査し、下流判断で実際に使用したlaneの`trace
 
 次段のblind selection protocolは、二つのlaneを変更せず、答えを示すfieldとlane scoreを除いたpacketをfresh judge 3体へ渡します。actual LLM callはparent orchestratorに限定し、repositoryはpacket生成、trace / node所属検証、raw response保存、majority集約、path射影、v1 byte hash監査、development失敗時のholdout停止だけを実装します。
 
-実装・prompt・schema・gateをresult-free commitとしてpushするまではdevelopment packetを生成しません。development全12 gate通過時だけ、異なるfresh judgeでholdoutを一度判定します。現在はpre-observationであり、defaultとvalidated状態は変更していません。詳細は[Blind LLM channel selection experiment](docs/blind-llm-channel-selection-experiment.md)を参照してください。
+実装・prompt・schema・gateをresult-free commit `062c131`としてpushした後、development packetを一度生成し、fresh judge 3体で観測しました。3件目が必須4 caseのうち1件を欠いたためresponse validationで停止し、retry、replacement、majority集約、accuracy計算を行っていません。development gateは不合格でholdout packetも生成せず、defaultとvalidated状態は変更していません。詳細は[Blind LLM channel selection experiment](docs/blind-llm-channel-selection-experiment.md)を参照してください。
 
 ## Explanation model
 
