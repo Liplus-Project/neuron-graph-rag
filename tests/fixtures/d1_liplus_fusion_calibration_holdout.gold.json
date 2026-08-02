@@ -1,0 +1,70 @@
+{
+  "cases": [
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:6NvJ7tCF6jLd-1TIyAhibbVY0-pdBo3T_n3OQJM5Q80",
+      "id": "fusion-holdout-direct-publish",
+      "query": "Sheepdog Engineering paper published bilingual essay public repository June 2026",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/sheepdog-engineering-publish-intent"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "direct_lookup",
+      "expected_node_id": "w:uy3IicRvf2PKWmzDPIdeeL0el9QgCAR2tb_cu7iQhes",
+      "id": "fusion-holdout-direct-state-label",
+      "query": "subagent state-machine lifecycle labels in-progress done waiting blocked",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/subagent-state-machine-label-mechanism"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:6NvJ7tCF6jLd-1TIyAhibbVY0-pdBo3T_n3OQJM5Q80",
+          "target_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE"
+        }
+      ],
+      "id": "fusion-holdout-relation-publish-concept",
+      "query": "published Sheepdog Engineering paper depends on which naming concept",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/sheepdog-engineering-publish-intent",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/sheepdog-engineering-concept"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "relation",
+      "expected_node_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:uy3IicRvf2PKWmzDPIdeeL0el9QgCAR2tb_cu7iQhes",
+          "target_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE"
+        }
+      ],
+      "id": "fusion-holdout-relation-label-concept",
+      "query": "subagent state-machine labels align with which engineering initiator concept",
+      "seed_source_url": "https://github.com/Liplus-Project/liplus-language/wiki/subagent-state-machine-label-mechanism",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/sheepdog-engineering-concept"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE",
+      "id": "fusion-holdout-negative-concept",
+      "query": "lead-less rejected sheepdog adopted affirmative living metaphor",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/sheepdog-engineering-concept"
+    },
+    {
+      "acceptable_rank": 3,
+      "cohort": "negative_control",
+      "expected_node_id": "w:6NvJ7tCF6jLd-1TIyAhibbVY0-pdBo3T_n3OQJM5Q80",
+      "id": "fusion-holdout-negative-existence-proof",
+      "query": "existence proof paper follows adoption without pulling dissemination",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/sheepdog-engineering-publish-intent"
+    }
+  ],
+  "fixture": "d1_liplus_fusion_calibration_holdout.json",
+  "schema_version": 1
+}

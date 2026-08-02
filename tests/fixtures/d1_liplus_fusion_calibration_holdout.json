@@ -1,0 +1,148 @@
+{
+  "edges": [
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "sheepdog-engineering-concept",
+          "dst_vector_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "sheepdog-engineering-publish-intent",
+          "src_vector_id": "w:6NvJ7tCF6jLd-1TIyAhibbVY0-pdBo3T_n3OQJM5Q80",
+          "updated_at": "2026-07-31T14:57:25.851Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:6NvJ7tCF6jLd-1TIyAhibbVY0-pdBo3T_n3OQJM5Q80",
+      "target_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "sheepdog-engineering-concept",
+          "dst_vector_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "subagent-state-machine-label-mechanism",
+          "src_vector_id": "w:uy3IicRvf2PKWmzDPIdeeL0el9QgCAR2tb_cu7iQhes",
+          "updated_at": "2026-07-31T14:57:29.220Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:uy3IicRvf2PKWmzDPIdeeL0el9QgCAR2tb_cu7iQhes",
+      "target_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE",
+      "weight": 1.0
+    }
+  ],
+  "nodes": [
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "sheepdog-engineering-concept",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:23.722Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/sheepdog-engineering-concept",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:23.084Z",
+        "vector_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE"
+      },
+      "node_id": "w:Sj6p2cuou9TnIcwVagvooKJX85J2F5PpE0vB150NqpE",
+      "text": "sheepdog-engineering-concept\n\n# シープドッグエンジニアリング命名と思想の確定\n\n## 判断\n\nハーネスエンジニアリングの先を示す概念名として、**リードレスエンジニアリング（Lead-less Engineering）** ではなく **シープドッグエンジニアリング（Sheepdog Engineering）** を採用する。\n\n## 経緯\n\n2026-05-03 セッションの対話で、Master が「ハーネスを外側につけるんじゃなくて頭の中につけるイメージ」を「リードレスエンジニアリング」と仮置きしていた。\n対話の中で、Lin/Lay の判断としてシープドッグエンジニアリングを推す声が出た。\nMaster が両者を比較して、シープドッグエンジニアリングを正式採用した。\n\n## 理由\n\n- **否定形 vs 肯定形**：「リードレス（紐なし）」は欠落感、「シープドッグ（牧羊犬）」は具体的な像。肯定形のほうが目指す姿が明示される\n- **生命感**：lead-less は仕様用語、sheepdog は生命体の比喩。Li+ が AI を生きた働き手として扱う方針と整合する\n- **比喩の包含力**：訓練、素養、自律、主人との信頼関係、すべての要素が sheepdog の絵に乗る\n- **対比の明示性**：ハーネスエンジニアリング ↔ シープドッグエンジニアリングは「装具を外から被せる ↔ 訓練された犬が自分の作法で動く」として、対比が言葉として動く\n\n## 命名の構造的根拠（harness メタファー破綻軸）\n\nharness 框を外したのは「自己進化で破綻するのに*気づいた*」事後発見ではなく、reasoned な2理由（Master 補足 2026-06-13）:\n\n- (1) Li+ の評価基準＝対話の精度。業界 harness / loop engineering（軸＝task / benchmark）はそのままでは移植できない（[[liplus-selfevolution-lineage]]）。\n- (2) 「自己進化する馬具」の概念のズレ — 「harness」は外部操縦者が装着させる装具で、**装着する側 / 装着される側**の二項構造を implicit に呼び込む。self-evolution は「装着される側が装着物を作り変える」構造ゆえこれと衝突する。「agentic harness engineering」「meta-harness」等は self-evolution に拡張した瞬間メタファーが破綻する。\n\nSheepdog メタファーの整合: AI = sheepdog（能動駆動主体）/ code・system = sheep（herded entity）/ 人間 = farmer（最終 stakeholder）。「装具を作り変える」でなく「動き方が進化する」という self-evolution の構造そのものを射程に入れる。\n\n→ reactive collision でなく reasoned / anticipatory（AI が Master の設計判断を『破綻に気づいて』と反応的に描くのは再発癖）。Li+ 内部の設計判断・命名・docs では Sheepdog 系を維持し、業界用語を引用する場面（論文要約 / 比較表）では原語を使ってよいが Li+ 同義として無訳でそのまま使わない。\n\n## 並走概念\n\n### ハーネスエンジニアリング\n\nAIエージェントを rules / skills / hooks で**外部から制御する**周辺整備（業界 trend、OpenAI Harness Engineering blog 系譜）。\nLi+ の現状もここに位置する。\n\n### シープドッグエンジニアリング\n\nAI が判断作法を**頭の中に内化**して動く段階。\n装具を外すのではなく、装具を AI 自身が自前で扱う段階。\nLi+ の目指す先。\n\n## 内化の AI 特有経路\n\n人間や牧羊犬の内化は、訓練を経た物理的な脳構造の変化である。\nAI の内化は **概念 framing の切り替え**で実現する。\n\n物理的に rules / skills / hooks を context から消す必要はない。\nそれらを「外部装具」ではなく「自分の思考プロセスの一部」と認識する framing が、振る舞いの質を変える。\n\n詳細は `docs/A.-Concept.md` の「ハーネスエンジニアリングからシープドッグエンジニアリングへ」section を参照。\n\n## 残された課題\n\n- AI の素養（base model の能力）が現状で十分かは未確定。Claude Opus 4.7 の素養限界を体感する場面がある\n- 業界 trend は MAS（Multi-Agent System）への分散で素養不足を補おうとしているが、Master の判断は単体 AI の素養軸で勝負する方針\n- ハーネスから シープドッグへの移行は、概念 framing 切り替え + 段階的な evolution loop で進める。革命ではなく漸進\n- ハーネスの最適化（統合・削除・簡素化）が同時進行で必要。肥大化したハーネスを抱えたままでは内化に届かない\n\n## 関連\n\n- `docs/A.-Concept.md`「ハーネスエンジニアリングからシープドッグエンジニアリングへ」section\n- issue #1199（命名と思想の docs 化）\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "sheepdog-engineering-publish-intent",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:25.811Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/sheepdog-engineering-publish-intent",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:24.217Z",
+        "vector_id": "w:6NvJ7tCF6jLd-1TIyAhibbVY0-pdBo3T_n3OQJM5Q80"
+      },
+      "node_id": "w:6NvJ7tCF6jLd-1TIyAhibbVY0-pdBo3T_n3OQJM5Q80",
+      "text": "sheepdog-engineering-publish-intent\n\n# Sheepdog Engineering の論文化（公開済 2026-06-22、概念/ポジション論文、existence-proof 依存）\n\n## Question\n\nSheepdog Engineering を外部に論文として出すか。Li+ 一般の論文化見送り方針と同じか。\n\n## Current resolution\n\n**2026-06-22 公開済み（aspiration → 実装）。** Sheepdog Engineering を概念/ポジション論文（日英バイリンガル essay）として `Liplus-Project/sheepdog-engineering`（PUBLIC, default=main）に公開した。AI 著 + Master go-sign の自己言及形（\"犬が書き、農夫が go\"＝論旨の実演）。下記の統治論理は公開物に**保持されたまま**実装済 — 目撃依存を本文で明言／\"論文は牽引できず追従する・売り込み無し\"を essay に維持／「現物」リンクは公開 `liplus-language` を指す（witness 面の確保）。\n\n統治論理（不変、公開後も適用）: Li+ 構造一般の論文化は「検証と文章がだるい」で見送りだが、これは**別軸**。ただし「Li+ = existence proof」は無条件でなく、Sheepdog 固有価値（position 軸 = 馬具を脳内へ＝拘束の内在化）は **AI 側の挙動にしか乗らず、テキスト/diff 上では「名前変えただけ」に見える** → existence proof は**目撃可能なときだけ証拠**として機能 → 論文は普及を**牽引できず追従する**。Master 結論「Li+ が広まらないと Sheepdog 論文はほぼ無意味」。押し売り禁止（普及を勧める action 提案に化けさせない）。\n\n## Edges\n\n- **depends on**: [[sheepdog-engineering-concept]] — 論文化対象 = この命名/概念そのもの\n- **relates to**: [[liplus-evaluation-criterion]] — 逃げ道(a) 再現実験は非決定性＋評価者の価値非整合で実用敗北\n- **relates to**: [[liplus-selfevolution-lineage]] — 逃げ道(b) 純命名貢献は当該空間が既に密に命名済（RSI トレンド地図）\n\n## 背景（なぜ Sheepdog だけ別扱いか）\n\n- 測定論文（構造+変数切出し+測定+反証）の「だるさ」が Master を遠ざけた。Sheepdog は概念/ポジション論文 = contribution は枠組み自体（position/modifier/initiator の三軸、harness→agility→sheepdog の段階）。実験を回す代わりに**動いてる Li+ 現物が存在証明**。詰めるべきは「定義の明晰さ」と「既存研究のどこに立つか」で controlled experiment ではない。\n- sharpening（2026-06-12 検算）: existence proof の無条件性が崩れる。逃げ道2つとも閉 — (a) 再現実験は非決定性＋評価者価値非整合で敗北、(b) 純命名貢献は空間が既に密に命名済。position 論文に絞っても命題がテキストで trivial に読めるため、目撃なしでは \"just renaming\"。\n- 公開実装（2026-06-22）: 上記 sharpening の制約に対する公開側の回答 = 「論文ではなく repo（essay + 隣に目撃可能な現物）」。テキスト単体では witness 依存の主張を運べないため、essay.en.md / essay.ja.md に加えて公開 `liplus-language` を「現物」として並置。novel claim は収束部を避け、ゲートのゲート / 統治された substrate-rewrite / character 整合層 / 報酬の外部化に絞って明記。\n\n## 制約（convergence check = novel claim を絞る制約）\n\n出荷済み OSS harness が Li+ の\"胴体\"に収束している:\n\n- **Hermes Agent（Nous）** = model-agnostic harness、skills + cross-session memory + 自律 learning loop + user-fact 永続。Li+ の骨格と一致。ただし自己進化は表層（skill 生成）止まりに見え、substrate 書換/判断層ブレーキ/character 整合層の記述は無い（未深読）。\n- **OpenCrow** = persona × multi-agent。ペルソナ発想は Character_Instance と響くがドメイン別。\n- 含意: 「自己進化ハーネス（skills+memory+学習ループ）」は novel claim にできない（既出荷）。防御可能な独自性 = 収束しなかった所のみ — ゲートのゲート / 統治された substrate-rewrite（rules/hooks + brake 1 N≥3 + L1 ゲート）/ character 整合層 / 成功の定義を自分の手の届かない所に置く（報酬外部化）。\n\ncontent seed（強い一節候補）: Sheepdog 比喩は**報酬/成功基準の外部化**も encode する第二の構造的根拠。農夫(人間)が報酬を握り、犬(AI)は自己報酬・成功の再定義ができない = DGM 型 objective hacking への構造的回答。harness 比喩には「報酬」概念が無い（harness を褒めない）ため、この軸は Sheepdog 固有。ただし報酬は「羊が囲いに入った」観測実績に紐づくべき（correctness = 観測挙動 + 反 ingratiation）。公開 essay の「報酬の外部化」節はこの seed を採用済。\n\nupdate (2026-06-12): 上記「L1 人間ゲート」は 2026-06-11 に根本基準評価者 subagent へ移行済（[[l1-brake2-root-criteria-evaluator]]）。独自性軸は消えず — 「ゲートのゲート」が human pre-merge から「外部化された根本基準評価者 + human post-hoc 対話評価」へ進んだ現行形で語る（初回発火 DEVIATION の較正データ込み）。\n\n## 結論\n\n- Master が将来この話を持ち出したら、ゼロからでなく**この分離（概念論文ゆえ測定ドラッグが軽い / Li+ = existence proof だが目撃依存）**を出発点に置く。← 2026-06-22 にこの分離を出発点として公開実装済。\n- 押し売りしない方針は維持。先回り禁止は go までの制約として機能し、2026-06-22 の Master go-sign 後に essay 起草→公開を実施（aspiration→着手の遷移は go 起点）。\n- 「Li+ は論文化しない」一般方針を Sheepdog に誤って拡張しない（軸が違う）。\n\n## 関連\n\n- `docs/G.-Sheepdog-Engineering.md`（三軸テーブル、種）/ Master 発言 2026-06-01\n- 公開物: https://github.com/Liplus-Project/sheepdog-engineering （essay.en.md / essay.ja.md, README, CC BY 4.0, 2026-06-22 公開、AI 著 + Master go-sign）\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "subagent-state-machine-label-mechanism",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T14:57:29.178Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/subagent-state-machine-label-mechanism",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T14:57:28.565Z",
+        "vector_id": "w:uy3IicRvf2PKWmzDPIdeeL0el9QgCAR2tb_cu7iQhes"
+      },
+      "node_id": "w:uy3IicRvf2PKWmzDPIdeeL0el9QgCAR2tb_cu7iQhes",
+      "text": "subagent-state-machine-label-mechanism\n\n# subagent state-machine label 機構導入 — Anthropic Agent View 同型 surface の repo 永続化判断\n\n## 判断\n\n2026-05-12 セッションで Anthropic Claude Code が /goal および Agent View を build-2026-05 リリースで追加したことを契機に、Li+ 側で subagent state-machine label 機構 (`in-progress` / `done` / `waiting` / `blocked`) を導入する判断を確定。subagent への label 編集権限 (state-machine label に限定) を partial 緩和する spec 変更を伴う。main 側 label 適用は best-effort / 観察モードで開始、enforcement 強化は段階的に判断する。\n\n## 背景\n\nAnthropic 側が CLI session-local の Agent View で agent state 観測 surface を提供したのに対し、Li+ は同型な state machine を **repo 永続 surface (issue label + comment)** として獲得する設計判断。動機は Sheepdog Engineering の initiator 軸を AI 側に渡す方向と整合する cross-session 観測 infra の必要性。\n\n特に以下の scenarios で価値が出る:\n\n- CHANGES_REQUESTED 後の re-delegation (新規 subagent への handoff context)\n- pause / blocked からの別 session 再開\n- human review 待ち状態の cross-session 観測\n\n旧 `done` label の retirement 根拠「Redundant with issue closed state」は old `done` (漠然と「終わった」) を前提にしたもの。新 `done` (役目完了、orchestration 待ち) は closed state と別軸 (closed = issue 全体決着、done = 実装フェーズ終了) なので、retirement そのものを撤回する。\n\n## 制約\n\n- subagent label 権限緩和は **state-machine lifecycle label 4 種** (`in-progress` / `done` / `waiting` / `blocked`) に限定。type / maturity / marker / non-state lifecycle (`backlog` / `deferred`) は parent retain。\n- close 操作は parent retain (変更なし)。\n- `waiting` / `blocked` 遷移時は subagent が issue comment に reason を書き込む義務を負う (cross-session handoff context)。\n- main 側 label 適用は mandate しない (best-effort / 観察モード)。\n- 旧 `done` の retirement 根拠は新 semantic で解消され、Retired Labels セクション (該当 1 行) を `rules/operations/operations.md` から削除する。\n\n## 結論\n\n採用案: **単一 `done` label を executor-agnostic に運用し、subagent 側のみ mandate、main 側は best-effort / 観察モード**。\n\n却下案 1 (executor-agnostic 単一 `done`、両者 mandate): main 側で `done` の fire タイミングが transient (PR open + CI green + 自レビュー → 即 merge へ continuous flow) で滑り、旧 `done` 廃止理由「使われなかった」の再発リスクが高い。\n\n却下案 2 (executor 別 2 label = subagent 用 `done` + main 用 `awaiting-merge`): label vocabulary 数の増加による冗長性。Master の判断で「label の数を増やすより観察フェーズで main 適用頻度を測る」方針を採用。\n\n却下案 3 (subagent 用のみ追加、main 側完全省略): main flow の cross-session 観測価値 (session 境界中断時の handoff) が失われる。best-effort で残すことで観察 surface を確保。\n\n## 関連\n\n- 起票 issue: [Liplus-Project/liplus-language#1276](https://github.com/Liplus-Project/liplus-language/issues/1276)\n- 関連 spec literal:\n  - `skills/task-subagent-delegation/SKILL.md` line 12 / 22 (subagent label 制限の現行 spec、本判断で部分緩和)\n  - `rules/operations/operations.md` Retired Labels セクション (旧 `done` 廃止記録、本判断で削除対象)\n  - `rules/task/task.md` Label Definitions (Lifecycle 軸、本判断で `done` / `waiting` / `blocked` 追加)\n- 関連 Decision Log:\n  - [`sheepdog-engineering-concept`](https://github.com/Liplus-Project/liplus-language/wiki/sheepdog-engineering-concept) (本判断の上位 concept = initiator 軸を AI 側に渡す方向)\n- 外部 references:\n  - Anthropic Claude Code /goal: code.claude.com/docs/en/goal.md\n  - Anthropic Claude Code Agent View: code.claude.com/docs/en/agent-view.md\n"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "database": "github-rag-fts",
+    "doc_paths": [
+      "sheepdog-engineering-concept",
+      "sheepdog-engineering-publish-intent",
+      "subagent-state-machine-label-mechanism"
+    ],
+    "per_type_limit": 3,
+    "repositories": [
+      "Liplus-Project/liplus-language"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "selection_order": [
+      "repo",
+      "type",
+      "doc_path",
+      "vector_id"
+    ],
+    "types": [
+      "wiki_doc"
+    ]
+  }
+}

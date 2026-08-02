@@ -146,6 +146,12 @@ production D1からread-only取得した新しい5-node development / holdoutは
 
 freeze後のdevelopmentでは、anchored 3 variantsがrelation MRRを`current`の0.5000から0.7500–1.0000へ改善しましたが、direct lookupとnegative-controlがともに退行しました。候補gate通過は0件だったためholdoutは開かず、既定strategyは`current_positive_additive`のままです。
 
+## Anchored fusion calibration experiment
+
+Issue #15で分離したentry anchorとedge-only graph signalは維持したまま、graph尺度とfinal fusionだけを比較します。graph normalizationは`max`、rawの`none`、`l1_mass`を選択でき、final fusionはlinearとpositive graph nodeだけを順位付けするbottom-centered weighted RRFを選択できます。
+
+production D1からread-only取得した新しい3-node development / holdoutは、既存7 fixturesの50 unique doc pathsおよび相互間から分離しています。固定6 variants、fusion formula、個別case non-regression gate、one-time holdout停止規則は[Anchored fusion calibration experiment](docs/anchored-fusion-calibration-experiment.md)を参照してください。result観測前のため、既定strategyは`current_positive_additive`のままです。
+
 ## Public API
 
 ```python
@@ -212,6 +218,8 @@ MCP 対応 AI との接続は、コアへ MCP SDK を追加せず、同一 repos
 - final score
 - seed node
 - zero-hop / graph path種別
+- entry / positive graph rank
+- entry / graph fusion componentとfusion strategy
 - path contribution
 - path 上の edge type、weight、factuality
 
