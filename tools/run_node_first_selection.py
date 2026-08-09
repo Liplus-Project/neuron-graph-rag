@@ -8,6 +8,7 @@ from neuron_graph_rag.node_first_selection import (
     audit_node_first_result_freeze,
     capture_single_response,
     generate_node_first_stage,
+    preflight_node_first_capture,
     write_json_exclusive,
     write_node_first_stage_exclusive,
 )
@@ -27,7 +28,13 @@ def main() -> int:
     stage.add_argument("--manifest", type=Path, required=True)
     stage.add_argument("--development-result", type=Path)
 
+    preflight = subparsers.add_parser("preflight-capture")
+    preflight.add_argument("--manifest", type=Path, required=True)
+    preflight.add_argument("--stage-packet", type=Path, required=True)
+
     capture = subparsers.add_parser("capture-response")
+    capture.add_argument("--manifest", type=Path, required=True)
+    capture.add_argument("--stage-packet", type=Path, required=True)
     capture.add_argument("--case-packet", type=Path, required=True)
     capture.add_argument("--raw-response", type=Path, required=True)
     capture.add_argument("--judge-id", required=True)
@@ -56,7 +63,13 @@ def main() -> int:
             args.manifest, args.split, stage_packet, case_artifacts
         )
         return 0
+    if args.command == "preflight-capture":
+        preflight_node_first_capture(args.manifest, args.stage_packet)
+        return 0
     if args.command == "capture-response":
+        preflight_node_first_capture(
+            args.manifest, args.stage_packet, args.case_packet
+        )
         payload = capture_single_response(
             args.case_packet,
             args.raw_response.read_text(encoding="utf-8"),

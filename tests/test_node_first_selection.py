@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -13,6 +16,7 @@ from neuron_graph_rag.node_first_selection import (
     capture_single_response,
     generate_node_first_stage,
     parse_single_response,
+    preflight_node_first_capture,
     read_node_first_manifest,
     validate_case_packet,
     validate_single_response,
@@ -130,6 +134,15 @@ def _response(index: int, channel: str = "lexical") -> dict[str, object]:
 
 
 class NodeFirstFreezeContractTest(unittest.TestCase):
+    def test_runbook_preflight_stage_packet_matches_manifest(self) -> None:
+        manifest = read_node_first_manifest(MANIFEST)
+        stage_packet = manifest["artifact_paths"]["development"]["stage_packet"]
+        runbook = (
+            ROOT / "docs" / "node-first-blind-selection-experiment.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn(f"--stage-packet {stage_packet}", runbook)
+
     def test_manifest_freezes_prior_versions_queries_and_twelve_gates(self) -> None:
         manifest = read_node_first_manifest(MANIFEST)
         versions = {entry["version"] for entry in manifest["frozen_prior_artifacts"]}
@@ -344,6 +357,46 @@ class NodeFirstAggregationTest(unittest.TestCase):
             }
             stage_path = fixtures / "development.stage.json"
             stage_path.write_bytes(_json_document_bytes(stage))
+            case_paths = []
+            for case in cases:
+                case_path = fixtures / f"{case['case_id']}.json"
+                case_path.write_bytes(
+                    _json_document_bytes({**common, "case": case})
+                )
+                case_paths.append(case_path)
+            preflighted_case = preflight_node_first_capture(
+                manifest_path, stage_path, case_paths[0]
+            )
+            self.assertEqual(preflighted_case["case"]["case_id"], "case-0001")
+            invalid_stage = dict(stage)
+            invalid_stage["case_packet_artifacts"] = list(
+                stage["case_packet_artifacts"]
+            )
+            invalid_stage["case_packet_artifacts"][0] = dict(
+                invalid_stage["case_packet_artifacts"][0]
+            )
+            invalid_stage["case_packet_artifacts"][0]["sha256"] = "sha256:invalid"
+            stage_path.write_bytes(_json_document_bytes(invalid_stage))
+            with self.assertRaisesRegex(ValueError, "reference hash"):
+                preflight_node_first_capture(manifest_path, stage_path)
+            stage_path.write_bytes(_json_document_bytes(stage))
+            preflight = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "tools" / "run_node_first_selection.py"),
+                    "preflight-capture",
+                    "--manifest",
+                    str(manifest_path),
+                    "--stage-packet",
+                    str(stage_path),
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONPATH": str(ROOT / "src")},
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(preflight.returncode, 0, preflight.stderr)
             response_paths = []
             for case_index in range(1, 5):
                 for judge_number in range(1, 4):
@@ -385,6 +438,48 @@ class NodeFirstAggregationTest(unittest.TestCase):
             self.assertEqual(result["metrics"]["majority_node_accuracy"], 1.0)
             self.assertEqual(result["metrics"]["union_oracle_gap"], 0.0)
             self.assertNotIn("majority_channel_accuracy", result["metrics"])
+
+            raw_response = fixtures / "raw-response.json"
+            raw_response.write_text(json.dumps(_response(1)), encoding="utf-8")
+            refused_output = fixtures / "refused-response.json"
+            case_paths[0].write_bytes(b"{}")
+            refused_capture = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "tools" / "run_node_first_selection.py"),
+                    "capture-response",
+                    "--manifest",
+                    str(manifest_path),
+                    "--stage-packet",
+                    str(stage_path),
+                    "--case-packet",
+                    str(case_paths[0]),
+                    "--raw-response",
+                    str(raw_response),
+                    "--judge-id",
+                    "new-judge",
+                    "--model",
+                    "synthetic-model",
+                    "--agent-type",
+                    "synthetic",
+                    "--output",
+                    str(refused_output),
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONPATH": str(ROOT / "src")},
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertNotEqual(refused_capture.returncode, 0)
+            self.assertIn(
+                "Frozen case packet differs from stage reference",
+                refused_capture.stderr,
+            )
+            self.assertFalse(refused_output.exists())
+            case_paths[0].write_bytes(
+                _json_document_bytes({**common, "case": cases[0]})
+            )
 
             valid_artifact = json.loads(response_paths[0].read_text(encoding="utf-8"))
             invalid_artifact = dict(valid_artifact)
