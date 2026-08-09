@@ -112,11 +112,8 @@ def _read_github_rag_mcp_capture(
         key: _required_string(provenance, key)
         for key in ("service", "tool", "capture_reference")
     }
-    if (
-        provenance_value["service"] != "github-rag-mcp"
-        or provenance_value["tool"] != "search_issues"
-    ):
-        raise ValueError("capture must be from github-rag-mcp search_issues")
+    if provenance_value["service"] != "github-rag-mcp" or provenance_value["tool"] != "search":
+        raise ValueError("capture must be from github-rag-mcp search")
     expected_queries = {case["id"]: case["query"] for case in cases}
     rows = value.get("cases")
     if not isinstance(rows, list) or not rows:
@@ -131,12 +128,17 @@ def _read_github_rag_mcp_capture(
             raise ValueError("capture case must match a fixed compatibility query")
         if case_id in captured:
             raise ValueError(f"Duplicate github-rag-mcp capture case: {case_id}")
-        search_result = row.get("search_result")
-        if not isinstance(search_result, Mapping):
-            raise ValueError("github-rag-mcp capture search_result must be an object")
-        results = search_result.get("results")
+        request = row.get("request")
+        if not isinstance(request, Mapping):
+            raise ValueError("github-rag-mcp capture request must be an object")
+        if request != {"repo": repository, "type": "doc", "top_k": 10}:
+            raise ValueError("capture request must use the fixed repository, doc type, and top_k=10")
+        raw_result = row.get("raw_result")
+        if not isinstance(raw_result, Mapping):
+            raise ValueError("github-rag-mcp capture raw_result must be an object")
+        results = raw_result.get("results")
         if not isinstance(results, list):
-            raise ValueError("github-rag-mcp capture search_result results must be a list")
+            raise ValueError("github-rag-mcp capture raw_result results must be a list")
         source_urls = []
         for item in results:
             if not isinstance(item, Mapping):
@@ -148,7 +150,8 @@ def _read_github_rag_mcp_capture(
         captured[case_id] = {
             "captured_at": captured_at,
             "provenance": provenance_value,
-            "search_result": search_result,
+            "request": dict(request),
+            "raw_result": raw_result,
             "source_urls": source_urls,
         }
     if set(captured) != set(expected_queries):

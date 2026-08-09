@@ -15,7 +15,7 @@ The experiment has three separable boundaries:
    snapshot and upserts documents and provenance into a local NGR index. The
    NGR engine has no GitHub client or GitHub-specific retrieval path.
 3. `tools/run_github_rag_compatibility.py` searches the local index and can
-compare its source URLs and explanations with a preserved `search_issues`
+compare its source URLs and explanations with a preserved `search`
 output from github-rag-mcp. It never calls the production service itself.
 
 ## Reproduction
@@ -46,11 +46,11 @@ python tools/run_github_rag_compatibility.py `
 The committed snapshots preserve one historical public GitHub document and its
 one-document follow-up. They exercise the adapter and runner, but do not query
 or measure a live production index. Consequently, the committed result is
-`inconclusive` and records only adapter-pipeline validation.
+`compared` and records only a minimal document-search-path candidate.
 
 To make a replacement-candidate judgment, preserve a separate capture passed
 with `--github-rag-mcp-capture`. It must contain every fixed query, the capture
-time, the unmodified `search_issues` result (including its source URLs), and
+time, the exact input filters, the unmodified `search` result (including its source URLs), and
 provenance identifying the github-rag-mcp service, tool, and capture reference.
 Only that capture can make `continue_candidate` possible; a hand-authored
 expected source cannot.
@@ -59,7 +59,7 @@ expected source cannot.
 
 The result contains, for each fixed query:
 
-- the frozen github-rag-mcp `search_issues` result, source URLs, and provenance,
+- the frozen github-rag-mcp `search` raw result, input filters, source URLs, and provenance,
   when a capture is supplied;
 - NGR rank, source URL, node ID, and `SearchHit.explain()` rationale;
 - whether a captured source identity (repository and path, while retaining the
@@ -68,8 +68,9 @@ The result contains, for each fixed query:
 
 The runner reports exactly one bounded conclusion:
 
-- `continue_candidate`: a frozen github-rag-mcp capture matches every query and
-  a provided update is reflected in the local index;
+- `continue_candidate`: a frozen github-rag-mcp `search` capture matches every
+  query and a provided update is reflected in the local index. This is only a
+  candidate for the smallest document-search path;
 - `incompatible`: an update was provided but retrieval or update following did
   not meet that contract; or
 - `inconclusive`: no github-rag-mcp capture or no update snapshot was supplied.
