@@ -1,0 +1,19 @@
+{
+  "agent_type": "default",
+  "case_id": "case-0001",
+  "case_packet_sha256": "sha256:cb73d20dd2f113a8f49b0f58cb7966f9cf221020537c888c3eeffcc46b0f06db",
+  "executed_at": "2026-08-02T04:44:10.410745Z",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_id": "development-case-0001-judge-1",
+  "model": "inherited-parent-model",
+  "parsed_response": {
+    "case_id": "case-0001",
+    "node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+    "rationale": "lexical先頭nodeはDiDDを三駆動の総称として束ねるnamingと既存三本柱のpackagingを直接説明し、queryの全要素に最も明示的に一致する。",
+    "selected_channel": "lexical",
+    "trace_id": "d1add322b6ef4b40a3aaf5c14fd359bc"
+  },
+  "raw_response": "{\n  \"case_id\": \"case-0001\",\n  \"selected_channel\": \"lexical\",\n  \"trace_id\": \"d1add322b6ef4b40a3aaf5c14fd359bc\",\n  \"node_id\": \"w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k\",\n  \"rationale\": \"lexical先頭nodeはDiDDを三駆動の総称として束ねるnamingと既存三本柱のpackagingを直接説明し、queryの全要素に最も明示的に一致する。\"\n}\n",
+  "schema_version": 1,
+  "stage": "development"
+}

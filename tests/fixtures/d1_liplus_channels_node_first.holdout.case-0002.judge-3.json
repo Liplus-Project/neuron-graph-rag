@@ -1,0 +1,19 @@
+{
+  "agent_type": "default",
+  "case_id": "case-0002",
+  "case_packet_sha256": "sha256:af57c985705ad04aa7ff9cbc5ca8f337bbb9ed183e72b8fae2071e78911a2afa",
+  "executed_at": "2026-08-09T01:25:32.1374747Z",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_id": "holdout-case-0002-judge-3",
+  "model": "inherited-parent-model",
+  "parsed_response": {
+    "case_id": "case-0002",
+    "node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+    "rationale": "The top lexical hit directly matches the query’s five-phase refactor and internal-knowledge-as-comparison-baseline concepts; the relation lane has no hits.",
+    "selected_channel": "lexical",
+    "trace_id": "0c582bedd1054cf0a5b9b6df434f628e"
+  },
+  "raw_response": "{\"case_id\":\"case-0002\",\"selected_channel\":\"lexical\",\"trace_id\":\"0c582bedd1054cf0a5b9b6df434f628e\",\"node_id\":\"w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls\",\"rationale\":\"The top lexical hit directly matches the query’s five-phase refactor and internal-knowledge-as-comparison-baseline concepts; the relation lane has no hits.\"}\n",
+  "schema_version": 1,
+  "stage": "holdout"
+}

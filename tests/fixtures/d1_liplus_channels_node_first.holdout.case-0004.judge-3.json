@@ -1,0 +1,19 @@
+{
+  "agent_type": "default",
+  "case_id": "case-0004",
+  "case_packet_sha256": "sha256:1b02c58da3b0d578c41b520d6571052ed06da3a7e5778bec67f8cd13eb6b9030",
+  "executed_at": "2026-08-09T01:27:13.4159823Z",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_id": "holdout-case-0004-judge-3",
+  "model": "inherited-parent-model",
+  "parsed_response": {
+    "case_id": "case-0004",
+    "node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+    "rationale": "Top lexical hit directly documents the agentic-search five-phase retrieval architecture named in the query.",
+    "selected_channel": "lexical",
+    "trace_id": "3794f4495f584ef4a36cf11d462dd240"
+  },
+  "raw_response": "{\"case_id\":\"case-0004\",\"selected_channel\":\"lexical\",\"trace_id\":\"3794f4495f584ef4a36cf11d462dd240\",\"node_id\":\"w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls\",\"rationale\":\"Top lexical hit directly documents the agentic-search five-phase retrieval architecture named in the query.\"}\n",
+  "schema_version": 1,
+  "stage": "holdout"
+}

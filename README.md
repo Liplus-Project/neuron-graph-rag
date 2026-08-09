@@ -237,7 +237,7 @@ Linux CIとfresh Windows worktreeの間でv1 / v2 frozen text artifactにLF / CR
 
 Version 3のnode-first protocolは、一つのcase packetをfresh judge一体へ渡す12 independent invocationsとしてresponse completenessを構造化します。採否はchannelではなくnode IDの2/3 majorityで行い、同じnodeへlexical / relationの票が分かれてもcorrect evidenceとして扱います。channelは実traceのfeedback provenanceと補助分布として保持します。
 
-v1 / v2 artifactとinvalid resultは変更せず、v3 implementation、固定relation query、single-case prompt、12 gate、conditional holdoutをresult-free freezeしてから観測します。詳細は[Node-first blind selection experiment](docs/node-first-blind-selection-experiment.md)を参照してください。
+result-free freeze `1fa2001` 後のdevelopment / holdoutは各12 fresh responsesで全12 gateを通過しました。両splitの4 caseはexpected nodeでunanimous majorityとなり、developmentのselected-node MRRは0.875、holdoutは1.0でした。これは frozen minimal holdout 上のblind node-first selection を支持する観測であり、default、production router、`search_channels()`全体のvalidated状態は変更しません。v1 / v2 artifactとinvalid resultは変更せず、v3も再生成・再集約しません。詳細は[Node-first blind selection experiment](docs/node-first-blind-selection-experiment.md)を参照してください。
 
 ## Explanation model
 

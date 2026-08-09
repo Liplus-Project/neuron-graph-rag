@@ -1,0 +1,19 @@
+{
+  "agent_type": "default",
+  "case_id": "case-0002",
+  "case_packet_sha256": "sha256:7782b5ba1d4c2f4cdad98476f2e4a2814ffc29c2501bbd5d715cf50d3d7e4886",
+  "executed_at": "2026-08-02T04:44:10.787854Z",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_id": "development-case-0002-judge-2",
+  "model": "inherited-parent-model",
+  "parsed_response": {
+    "case_id": "case-0002",
+    "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+    "rationale": "DiDD本文が対話・構造・現実の三本柱を直接説明しており、queryの全要素に一致する。",
+    "selected_channel": "lexical",
+    "trace_id": "d8b5479611444e1cb37fd9ba1f73b02a"
+  },
+  "raw_response": "{\"case_id\":\"case-0002\",\"selected_channel\":\"lexical\",\"trace_id\":\"d8b5479611444e1cb37fd9ba1f73b02a\",\"node_id\":\"w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs\",\"rationale\":\"DiDD本文が対話・構造・現実の三本柱を直接説明しており、queryの全要素に一致する。\"}\n",
+  "schema_version": 1,
+  "stage": "development"
+}

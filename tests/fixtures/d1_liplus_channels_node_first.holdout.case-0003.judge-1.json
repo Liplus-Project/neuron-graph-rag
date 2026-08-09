@@ -1,0 +1,19 @@
+{
+  "agent_type": "default",
+  "case_id": "case-0003",
+  "case_packet_sha256": "sha256:7d67366a74c2654d13bd444b89664ca5e12a162fdd457b8c982047ce6df65d8c",
+  "executed_at": "2026-08-09T01:26:24.4062645Z",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_id": "holdout-case-0003-judge-1",
+  "model": "inherited-parent-model",
+  "parsed_response": {
+    "case_id": "case-0003",
+    "node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+    "rationale": "The relation lane connects the skill-trigger decision to the named agentic-search-five-phase-refactor node via a mention edge.",
+    "selected_channel": "relation",
+    "trace_id": "d6aec47621ec4d1d8187363cff5b768f"
+  },
+  "raw_response": "{\"case_id\":\"case-0003\",\"selected_channel\":\"relation\",\"trace_id\":\"d6aec47621ec4d1d8187363cff5b768f\",\"node_id\":\"w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls\",\"rationale\":\"The relation lane connects the skill-trigger decision to the named agentic-search-five-phase-refactor node via a mention edge.\"}\n",
+  "schema_version": 1,
+  "stage": "holdout"
+}

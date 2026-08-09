@@ -1,0 +1,521 @@
+{
+  "cases": [
+    {
+      "case_id": "case-0001",
+      "channel_vote_counts": {
+        "lexical": 3
+      },
+      "cohort": "direct_lookup",
+      "edge_weight_unchanged": true,
+      "expected_node_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+      "has_node_majority": true,
+      "majority_node_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+      "node_correct": true,
+      "node_vote_counts": [
+        {
+          "count": 3,
+          "node_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4"
+        }
+      ],
+      "responses": [
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "holdout-case-0001-judge-1",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+          "selected_rank": 1,
+          "selected_trace_id": "bf56004eb2764e27b8d1106cbd8cef8e",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "holdout-case-0001-judge-2",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+          "selected_rank": 1,
+          "selected_trace_id": "bf56004eb2764e27b8d1106cbd8cef8e",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "holdout-case-0001-judge-3",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+          "selected_rank": 1,
+          "selected_trace_id": "bf56004eb2764e27b8d1106cbd8cef8e",
+          "single_case_valid": true
+        }
+      ],
+      "unanimous_node": true
+    },
+    {
+      "case_id": "case-0002",
+      "channel_vote_counts": {
+        "lexical": 3
+      },
+      "cohort": "direct_lookup",
+      "edge_weight_unchanged": true,
+      "expected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+      "has_node_majority": true,
+      "majority_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+      "node_correct": true,
+      "node_vote_counts": [
+        {
+          "count": 3,
+          "node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls"
+        }
+      ],
+      "responses": [
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "holdout-case-0002-judge-1",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+          "selected_rank": 1,
+          "selected_trace_id": "0c582bedd1054cf0a5b9b6df434f628e",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "holdout-case-0002-judge-2",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+          "selected_rank": 1,
+          "selected_trace_id": "0c582bedd1054cf0a5b9b6df434f628e",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "holdout-case-0002-judge-3",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+          "selected_rank": 1,
+          "selected_trace_id": "0c582bedd1054cf0a5b9b6df434f628e",
+          "single_case_valid": true
+        }
+      ],
+      "unanimous_node": true
+    },
+    {
+      "case_id": "case-0003",
+      "channel_vote_counts": {
+        "relation": 3
+      },
+      "cohort": "relation",
+      "edge_weight_unchanged": true,
+      "expected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+      "has_node_majority": true,
+      "majority_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+      "node_correct": true,
+      "node_vote_counts": [
+        {
+          "count": 3,
+          "node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls"
+        }
+      ],
+      "responses": [
+        {
+          "feedback_provenance": {
+            "channel": "relation",
+            "credited_path_available": true,
+            "would_reinforce_edges": true
+          },
+          "judge_id": "holdout-case-0003-judge-1",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+                "target_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls"
+              }
+            ],
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+                "target_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls"
+              }
+            ]
+          ],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "relation",
+          "selected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+          "selected_rank": 1,
+          "selected_trace_id": "d6aec47621ec4d1d8187363cff5b768f",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "relation",
+            "credited_path_available": true,
+            "would_reinforce_edges": true
+          },
+          "judge_id": "holdout-case-0003-judge-2",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+                "target_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls"
+              }
+            ],
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+                "target_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls"
+              }
+            ]
+          ],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "relation",
+          "selected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+          "selected_rank": 1,
+          "selected_trace_id": "d6aec47621ec4d1d8187363cff5b768f",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "relation",
+            "credited_path_available": true,
+            "would_reinforce_edges": true
+          },
+          "judge_id": "holdout-case-0003-judge-3",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+                "target_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls"
+              }
+            ],
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+                "target_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls"
+              }
+            ]
+          ],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "relation",
+          "selected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+          "selected_rank": 1,
+          "selected_trace_id": "d6aec47621ec4d1d8187363cff5b768f",
+          "single_case_valid": true
+        }
+      ],
+      "unanimous_node": true
+    },
+    {
+      "case_id": "case-0004",
+      "channel_vote_counts": {
+        "lexical": 3
+      },
+      "cohort": "directional_negative",
+      "edge_weight_unchanged": true,
+      "expected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+      "has_node_majority": true,
+      "majority_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+      "node_correct": true,
+      "node_vote_counts": [
+        {
+          "count": 3,
+          "node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls"
+        }
+      ],
+      "responses": [
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "holdout-case-0004-judge-1",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+          "selected_rank": 1,
+          "selected_trace_id": "3794f4495f584ef4a36cf11d462dd240",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "holdout-case-0004-judge-2",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+          "selected_rank": 1,
+          "selected_trace_id": "3794f4495f584ef4a36cf11d462dd240",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "holdout-case-0004-judge-3",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+          "selected_rank": 1,
+          "selected_trace_id": "3794f4495f584ef4a36cf11d462dd240",
+          "single_case_valid": true
+        }
+      ],
+      "unanimous_node": true
+    }
+  ],
+  "claim_scope": "blind_node_first_selection_supported_on_frozen_minimal_holdout",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "gate": {
+    "abstain_is_never_majority": true,
+    "all_responses_valid_and_trace_bound": true,
+    "majority_selects_every_expected_node": true,
+    "node_correctness_is_independent_of_channel": true,
+    "node_majority_exists_for_every_case": true,
+    "observed_artifact_overwrite_is_refused": true,
+    "one_case_per_invocation": true,
+    "packet_and_prompt_exclude_answer_fields": true,
+    "relation_task_selects_edge_target": true,
+    "search_and_scoring_do_not_change_edges": true,
+    "selected_relation_paths_match": true,
+    "v1_v2_artifacts_match_frozen_bytes": true
+  },
+  "gate_passed": true,
+  "manifest_canonical_sha256": "sha256:5bf7f8f17254052c86c194795a53c3e819ecf83224ebcf0dba4fea64e953f009",
+  "metrics": {
+    "abstain_rate": 0.0,
+    "correct_node_channel_split": {
+      "lexical": 9,
+      "relation": 3
+    },
+    "judge_node_accuracy": [
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0001-judge-1"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0001-judge-2"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0001-judge-3"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0002-judge-1"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0002-judge-2"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0002-judge-3"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0003-judge-1"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0003-judge-2"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0003-judge-3"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0004-judge-1"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0004-judge-2"
+      },
+      {
+        "correct": true,
+        "judge_id": "holdout-case-0004-judge-3"
+      }
+    ],
+    "lexical_trace_usage": 0.75,
+    "majority_node_accuracy": 1.0,
+    "node_majority_agreement": 1.0,
+    "path_backed_correct_node_rate": 1.0,
+    "relation_trace_usage": 0.25,
+    "selected_node_mrr": 1.0,
+    "union_oracle_coverage": 1.0,
+    "union_oracle_gap": 0.0
+  },
+  "response_artifacts": [
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:c78a4a70f94469bf60294c0ed9a06b4d7fc1f03a9f0c414533276cf05f146d22",
+      "case_id": "case-0001",
+      "executed_at": "2026-08-09T01:24:35.0697126Z",
+      "judge_id": "holdout-case-0001-judge-1",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:695b9bd5de65d24c42e892b26b9bd1a4699979cec44482ca0babda37f9dc988c",
+      "case_id": "case-0001",
+      "executed_at": "2026-08-09T01:24:35.0697126Z",
+      "judge_id": "holdout-case-0001-judge-2",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:186959424df60651f3380528cf23f9fb32bd5441eaf31dd6b05c67aa43e1082a",
+      "case_id": "case-0001",
+      "executed_at": "2026-08-09T01:24:35.0697126Z",
+      "judge_id": "holdout-case-0001-judge-3",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:5891b5a0ab56238e026247813ba382e08aebf9b40acff6e79c053de984f8eed8",
+      "case_id": "case-0002",
+      "executed_at": "2026-08-09T01:25:32.1374747Z",
+      "judge_id": "holdout-case-0002-judge-1",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:4ea308d551c471a5f00224c057cf7226afba8f1a67f38b9260e3dbeb5f121377",
+      "case_id": "case-0002",
+      "executed_at": "2026-08-09T01:25:32.1374747Z",
+      "judge_id": "holdout-case-0002-judge-2",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:e453c3421812b172957eaf63ffc666621fc40688b02546f5c8b8b032cf717aa1",
+      "case_id": "case-0002",
+      "executed_at": "2026-08-09T01:25:32.1374747Z",
+      "judge_id": "holdout-case-0002-judge-3",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:ee0dbcf8b9c75d1b5f96a48194ad711d27976be1212719d94d49d6cc11c9589f",
+      "case_id": "case-0003",
+      "executed_at": "2026-08-09T01:26:24.4062645Z",
+      "judge_id": "holdout-case-0003-judge-1",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:8d43ae44b7c3cab3a3dc4cef94e19a2dc5b99d4e0e5ae3512a11b28a0e67131e",
+      "case_id": "case-0003",
+      "executed_at": "2026-08-09T01:26:24.4062645Z",
+      "judge_id": "holdout-case-0003-judge-2",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:420eb41380ec99497176d46f371bca323ee3467ef38106b9815c456ad6a0599f",
+      "case_id": "case-0003",
+      "executed_at": "2026-08-09T01:26:24.4062645Z",
+      "judge_id": "holdout-case-0003-judge-3",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:aa8bd5448064a1a60829ba325172439a2030ea467fbe55e25f8fc1279f329e53",
+      "case_id": "case-0004",
+      "executed_at": "2026-08-09T01:27:13.4159823Z",
+      "judge_id": "holdout-case-0004-judge-1",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:69388df9b7d7a466d1b7c82110c15c2736baa109db0d89090411f01a06d321da",
+      "case_id": "case-0004",
+      "executed_at": "2026-08-09T01:27:13.4159823Z",
+      "judge_id": "holdout-case-0004-judge-2",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:48cc798b752a463bd56d0aee7e79ffb114e576d3d898db6ede3ae640f57ede63",
+      "case_id": "case-0004",
+      "executed_at": "2026-08-09T01:27:13.4159823Z",
+      "judge_id": "holdout-case-0004-judge-3",
+      "model": "inherited-parent-model"
+    }
+  ],
+  "schema_version": 1,
+  "stage": "holdout",
+  "stage_packet_sha256": "sha256:865d433c84c67b48f375ffe550570f81b4bf66b15c6f79b396cb676b1898aed8"
+}

@@ -1,0 +1,68 @@
+{
+  "case": {
+    "agreement_node_ids": [],
+    "case_id": "case-0004",
+    "edge_weight_audit": {
+      "after_sha256": "sha256:18ddc831f2a10f2dad28f9dd8e027f7a5820f785c5130a8df99a8e6d5e32b240",
+      "before_sha256": "sha256:18ddc831f2a10f2dad28f9dd8e027f7a5820f785c5130a8df99a8e6d5e32b240",
+      "unchanged": true
+    },
+    "lanes": {
+      "lexical": {
+        "hits": [
+          {
+            "content": "agentic-search-five-phase-refactor\n\n# agentic-search 5-phase refactor — skill encapsulation と内部知識の比較基線化\n\n## 判断\n\nretrieval orchestration を 5 段階で再編する。中核の構造判断は次の 3 点。\n\n1. **内部知識の役割** = `fallback`（外部が無理なら内部で答える）から `comparison baseline (比較基線)`（外部 source と差分照合する物差し）へ再配置。\n2. **外側構造** = 単一 `agentic-search` skill にカプセル化。Phase 3 で task-research-strategy / task-retrieval-orchestration / model-web-search-judgment の retrieval 責務をこの skill に集約する。\n3. **内側プロトコル** = Tier 1（内部仮説 + 外部 1 件下見）／ Tier 2（不一致が出た時のみ多角度展開）。Phase 2 で導入。\n\nphase 構成は Phase 1（merge 済）→ Phase 2-4 を観測を挟みながら順次 → Phase 5 で既存 evolution-loop 運用に統合（calibration 専用 skill は新設しない）。\n\n## 背景\n\nPhase 1 の merge ([PR #1223](https://github.com/Liplus-Project/liplus-language/pull/1223)) で内部知識を「fallback (劣化代替)」から「comparison baseline (比較の物差し)」へ再配置した。これは局所修正でなく、retrieval 全体の再編の起点として設計されている。\n\n並行して、業界の agentic-search pattern（Self-RAG / CRAG / Adaptive RAG / ReAct / 階層型 retriever）と既存 Li+ skill 群（`task-research-strategy` / `task-retrieval-orchestration` / `model-web-search-judgment`）が独立に同領域へ到達していたことを cross-check で確認した。両者の収束点 = 「内部知識を比較基線として置き、外部 source との不一致を anomaly 信号として展開する」アーキテクチャ。\n\nagentic capability は base-model 側に飲み込まれていく方向 (deep research / web search 機能の組込み化) のため、Li+ spec 側に残すべき責務は次の 4 点に純化される:\n\n- governance（権威の階層 = 一次情報 > spec literal > 観測 > 推論）\n- mode gate（質問 / 作業 mode の分離による retrieval 規律）\n- 消費規律（multi-angle parallel retrieve、cross-check 三状態分岐）\n- skill 呼び出し条件（いつ agentic-search を起動するか）\n\nretrieval 実行手順そのものは base-model に委ねる方向に再構成する。\n\n## 制約\n\n- Phase 1 は merge 済。後段の Phase 2-5 はこの基盤を前提に成立する。\n- 既存 skill（`task-research-strategy` / `task-retrieval-orchestration` / `model-web-search-judgment`）の責務再分配は Phase 3 で行う。Phase 3 完了までは現行 3 skill 並走運用を維持する。\n- Phase 5 は新 skill 新設でなく既存 `evolution-loop` への統合に倒す（skill 数を抑える設計判断）。\n\n## 結論\n\n採用案 = 5 phase の段階的再編 + 内部知識の `comparison baseline` 役割再定義 + 単一 `agentic-search` skill への外側集約。\n\n却下案 1 = 内部知識を完全に捨てて「外部 source 一択」に倒す案。\n理由: 内部知識を比較基線として残すことで、freshness 判定 algorithm への依存が dissolve する。古びた内部知識でも anomaly detector として機能する設計が成立する（fresh / stale 二値判定を spec で持たなくてよい）。\n\n却下案 2 = retrieval 手順を spec 側に詳細記述し続ける案。\n理由: agentic capability が base-model に飲み込まれていく方向で、retrieval 実行手順を spec 化し続けると base-model 進化に追随する保守コストが累積する。spec 側は governance + 消費規律 + mode gate + 呼び出し条件の 4 点に純化する方が長期で安定する。\n\n却下案 3 = Phase 5 で calibration 専用 skill を新設する案。\n理由: calibration は既存 evolution-loop の observe → evaluate → distill → reflect → improve の枠で扱える。新 skill 新設は skill 数のインフレを招く。\n\n## 運用上の観測（Phase 1 merge より）\n\n`gh issue develop {parent}` で作成した branch を sub-issue 単位で merge すると、branch ↔ issue リンク経由で GitHub が parent issue まで auto-close する。Phase 1 では merge 直後に `gh issue reopen 1217` で復旧した。\n\nPhase 2-5 で同じ pattern を踏む可能性が高い。ops 側で次のいずれかの構造判断がいずれ必要:\n\n- sub-issue 専用 branch を切る運用に倒す\n- parent issue は merge 後に reopen する前提を ops 仕様に明示する\n\n本判断記録の射程外（[`rules/operations/operations.md`](https://github.com/Liplus-Project/liplus-language/blob/main/rules/operations/operations.md) 側で扱う）として、観測としてのみ記録する。\n\n## 関連\n\n- 親 issue: [#1217 Agentic search refactor: skill-encapsulated + tiered comparison architecture](https://github.com/Liplus-Project/liplus-language/issues/1217)（open）\n- sub-issues:\n  - [#1218 Phase 1: Replace internal knowledge role with comparison baseline](https://github.com/Liplus-Project/liplus-language/issues/1218)（closed）\n  - [#1219 Phase 2: Stage Block 2 into Tier 1 preview + Tier 2 deep-dive](https://github.com/Liplus-Project/liplus-language/issues/1219)（open）\n  - [#1220 Phase 3: Encapsulate retrieval orchestration into agentic-search skill](https://github.com/Liplus-Project/liplus-language/issues/1220)（open）\n  - [#1221 Phase 4: Add mode gate (question/work) and domain tagging](https://github.com/Liplus-Project/liplus-language/issues/1221)（open）\n  - [#1222 Phase 5: Calibration via existing evolution-loop operations](https://github.com/Liplus-Project/liplus-language/issues/1222)（open）\n- Phase 1 PR: [#1223 skills(retrieval): Phase 1 - internal as comparison baseline](https://github.com/Liplus-Project/liplus-language/pull/1223)（merged）\n- Phase 1 merge commit: [`5c8fac5`](https://github.com/Liplus-Project/liplus-language/commit/5c8fac585dead000dee5fdf75fce3eb7465d8062)\n- 影響を受ける skill 群:\n  - [`skills/task-research-strategy/SKILL.md`](https://github.com/Liplus-Project/liplus-language/blob/main/skills/task-research-strategy/SKILL.md)\n  - [`skills/task-retrieval-orchestration/SKILL.md`](https://github.com/Liplus-Project/liplus-language/blob/main/skills/task-retrieval-orchestration/SKILL.md)\n  - [`skills/model-web-search-judgment/SKILL.md`](https://github.com/Liplus-Project/liplus-language/blob/main/skills/model-web-search-judgment/SKILL.md)\n  - [`skills/evolution-loop/SKILL.md`](https://github.com/Liplus-Project/liplus-language/blob/main/skills/evolution-loop/SKILL.md)（Phase 5 統合先）\n\n## メンテナンス\n\nこの判断記録は、以下の場合に削除する:\n\n- Phase 2-5 が全て完了し、再編後の retrieval architecture が requirements spec（docs/3.-Task.md 等）に統合された時\n- agentic-search skill 案が採用されず、別アーキテクチャへ pivot した時（その場合 supersede リンク付きで新エントリを作る）\n- base-model 側の agentic capability 進化により、本判断の前提（spec 側を governance + 消費規律に純化する設計）が無効化された時\n",
+            "node_id": "w:Vtvldweh6TpFhIAwWln_nqWxpoNDehI5Yh9H9dEfkls",
+            "rank": 1,
+            "source_metadata": {
+              "doc_path": "agentic-search-five-phase-refactor",
+              "repo": "Liplus-Project/liplus-language",
+              "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/agentic-search-five-phase-refactor",
+              "state": "active",
+              "type": "wiki_doc",
+              "updated_at": "2026-05-21T01:45:50.211Z"
+            },
+            "title": "agentic-search-five-phase-refactor"
+          },
+          {
+            "content": "skill-trigger-declaration-in-description\n\n# skill の発火条件は `description` 内に置く — `when_to_use` は移植性で却下\n\n## Question\n\nskill の発火条件（いつ invoke されるべきか）の記述形式を統一するとき、Claude Code 独自フィールド `when_to_use` に分離すべきか、`description` 内に留めるべきか。\n\n## Current resolution\n\n**`description` 内に留める。書き出しを固定形に揃えることで統一する（案 A）。**\n\n理由は三つ、いずれも Agent Skills オープン標準（agentskills.io/specification、2026-07-28 一次ソース確認）に基づく。\n\n1. **`when_to_use` は標準に存在しない。** Claude Code 独自拡張。Li+ は Claude / Codex 両アダプタを持つため、片側でしか効かない形式は「統一」にならない。\n2. **標準の作法は「`description` に what と when を両方書く」。** 標準の `description` 定義は \"Should describe both what the skill does and when to use it\" であり、**Li+ の現状はすでに標準どおり**。分離するほうが標準から離れる。\n3. **字数は減らない。** Claude Code の listing 切り詰めは `description` + `when_to_use` の**合算** 1,536 字に対して働くため、フィールドを分けても listing 圧は変わらない。\n\n段階的な逃げ道（現時点では未着手）:\n- 固定形の正規表現照合で発火数の機械カウントが不足する場合 → 標準が「クライアント独自プロパティの置き場」と明記する `metadata:` に構造化して置く（案 B）。`description` との二重管理になるため CI 整合チェックとセット。\n- `when_to_use` の採用（案 C）は、**Codex 側が当該フィールドをどう扱うかの実機確認が取れた後**でのみ再評価する。\n\n## Edges\n\n- supersede / conflict edge なし。\n- **隣接**: [`li-plus-always-on-footprint-load-bearing`](li-plus-always-on-footprint-load-bearing) — always-on footprint を rules + adapter `CLAUDE.md` + output-style（実測 ~21,500 tok）で測り「安全な圧縮余地は枯渇」と結論している。本 entry は**同 entry が測っていない第4の always-on 面**を追加する: skill listing（`description` 合計 10,224 字 / 38本）。listing 予算はコンテキスト窓の 1% で、溢れると**呼び出し頻度の低い skill の description から黙って落とされる**（Claude Code 仕様）。圧縮判断そのものは同 entry の結論を変えない（本 entry は形式の話であり削減の話ではない）が、**skill 本数が増える変更は listing 圧を上げる**という副作用軸を新設する。\n- **depends on（外部前提）**: Agent Skills オープン標準が `when_to_use` を採用しないこと。標準側が将来これを取り込めば案 C は再評価対象。\n\n## Background\n\nMaster「スキルの条件式は公式に合わせて統一化したい」。Li+ の skill `description` は発火条件を `Invoke when X` / `Invoke for A / B / C` / `Invoke immediately after X` と各ファイルが別々の文法で書いており、発火数の機械的カウントも skill 間の発火重複検出もできない状態だった。\n\nこの形式非固定は実害を出している: 同日の対話で親 AI が `when|whenever|before|after` のみを拾う正規表現で発火数を計測し、`Invoke for A / B / C` 形と「1個の when が3項目を束ねる」形を取りこぼして、**存在しない分類（単発火・長手続き型）を立てて Master に報告**した。Master の指摘で発覚。\n\n## Constraints\n\nAgent Skills オープン標準（一次ソース確認済、2026-07-28）:\n\n| field | 要否 | 制約 |\n|---|---|---|\n| `name` | 必須 | 64字以内、小文字英数とハイフン、親ディレクトリ名と一致 |\n| `description` | 必須 | **最大 1024 字**。what と when の両方。照合キーワードを含める |\n| `license` / `compatibility` / `metadata` / `allowed-tools` | 任意 | `compatibility` は 500 字以内。`metadata` は標準外プロパティの公式な置き場 |\n\n本文の推奨 = **5,000 トークン未満 / 500 行以内**。\n\nLi+ 側の実測（2026-07-28、全38本）:\n- `description` > 1024 字 = **0本**（最長 860）\n- 500 行超 = **0本**\n- 本体 > 5,000 tok = **3本**（`evolution-parallel-agent-eval` 6,172 / `model-agentic-search` 5,659 / `operations-on-release` 5,329）\n\nClaude Code 拡張（標準外）: `when_to_use` フィールド、`description` + `when_to_use` 合算 1,536 字で listing 切り詰め、listing 予算 = 窓の 1%（`skillListingBudgetFraction` / `SLASH_COMMAND_TOOL_CHAR_BUDGET` / `skillListingMaxDescChars` で調整可）。\n\n## Conclusion\n\n- **採用**: 案 A — `description` 内の発火条件記述を固定形に揃える。追加機構ゼロ、標準準拠、両アダプタで等価に効く。\n- **却下（保留）**: 案 B（`metadata:` 構造化）— 標準準拠だが `description` との二重管理と CI 整合チェックを要する。案 A で機械カウントが不足した場合の次手。\n- **却下（条件付き保留）**: 案 C（`when_to_use`）— 標準外につき Codex 側の挙動が未確認。確認が取れるまで採用しない。\n\n## Related\n\n- [#1598](https://github.com/Liplus-Project/liplus-language/issues/1598) — skill を機能ではなく発火条件で分割する（本 entry の形式決定は同 issue の未決項目1に対応）\n- [`li-plus-always-on-footprint-load-bearing`](li-plus-always-on-footprint-load-bearing)\n- [`agentic-search-five-phase-refactor`](agentic-search-five-phase-refactor)\n- 一次ソース: <https://agentskills.io/specification> / <https://code.claude.com/docs/en/skills>\n",
+            "node_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+            "rank": 2,
+            "source_metadata": {
+              "doc_path": "skill-trigger-declaration-in-description",
+              "repo": "Liplus-Project/liplus-language",
+              "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/skill-trigger-declaration-in-description",
+              "state": "active",
+              "type": "wiki_doc",
+              "updated_at": "2026-07-31T14:57:26.297Z"
+            },
+            "title": "skill-trigger-declaration-in-description"
+          }
+        ],
+        "trace_id": "3794f4495f584ef4a36cf11d462dd240"
+      },
+      "relation": {
+        "hits": [],
+        "trace_id": "264e48f54e544e93822f9dc9e6bf49bb"
+      }
+    },
+    "query": "agentic search five phase retrieval architecture"
+  },
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_prompt_canonical_sha256": "sha256:78d7186bed00fcabb54b6c132b2bae99db5cae631aa71a969545cd95ec85f27c",
+  "lane_semantics": {
+    "lexical": "BM25-only ordering from direct query-to-document term matching.",
+    "rank_scope": "Ranks are meaningful only within their own lane.",
+    "relation": "Edge-only graph activation ordering after query-based seed selection."
+  },
+  "protocol_manifest_canonical_sha256": "sha256:5bf7f8f17254052c86c194795a53c3e819ecf83224ebcf0dba4fea64e953f009",
+  "response_schema": {
+    "case_id": "the single opaque case ID",
+    "node_id": "selected hit node ID or null",
+    "rationale": "short packet-based reason",
+    "selected_channel": "lexical | relation | abstain",
+    "trace_id": "selected lane trace ID or null"
+  },
+  "schema_version": 1,
+  "stage": "holdout"
+}

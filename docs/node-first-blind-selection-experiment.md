@@ -150,4 +150,8 @@ Developmentの12 gate全通過時だけ未開封holdoutをfresh 12 judgesで一�
 
 ## 観測状態
 
-result-free freeze前であり、v3 development stage / case packet、actual judge response、development resultは未生成である。v2 holdoutは未開封である。
+result-free freeze commit `1fa2001` の後、development stage / 4 case packet / 12 fresh judge response / resultを各一度だけ生成した。12 responseはすべてschema-validかつtrace / node membershipを満たし、4 caseすべてでexpected nodeのunanimous majorityを得た。development gateは全通過し、selected-node MRRは0.875、lexical / relation trace usageは9 / 3だった。
+
+このgate通過後にのみ、異なるfresh 12 judgesでholdout stageを一度だけ開封した。holdoutも全12 gateを通過し、4 caseすべてでexpected nodeのunanimous majority、selected-node MRR 1.0、lexical / relation trace usage 9 / 3を記録した。stage packet、single-case packet、raw / parsed response、resultはすべて`tests/fixtures/d1_liplus_channels_node_first.*`へimmutable artifactとして保存する。
+
+この結果は frozen minimal holdout におけるblind node-first selection の支持だけを記録する。NGR一般性能、任意modelへの一般化、production router、default、`search_channels()`全体のvalidated状態は変更しない。v1 / v2 artifactとinvalid resultは変更せず、v3 holdoutを含めて再生成・再集約しない。

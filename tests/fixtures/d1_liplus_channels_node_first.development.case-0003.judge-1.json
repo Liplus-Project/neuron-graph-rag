@@ -1,0 +1,19 @@
+{
+  "agent_type": "default",
+  "case_id": "case-0003",
+  "case_packet_sha256": "sha256:0a4bafc625f22cc94d471e13d05403fdf409f3446e5353844b2ffeb06cbf0805",
+  "executed_at": "2026-08-02T04:44:10.972110Z",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_id": "development-case-0003-judge-1",
+  "model": "inherited-parent-model",
+  "parsed_response": {
+    "case_id": "case-0003",
+    "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+    "rationale": "DiDD umbrella naming decisionからmention edgeで到達するDiDDページで、PR 1468の決定がリンクした手法ページに直接対応する。",
+    "selected_channel": "relation",
+    "trace_id": "01ff8da7ef8e4df49b711000d37575bc"
+  },
+  "raw_response": "{\"case_id\":\"case-0003\",\"selected_channel\":\"relation\",\"trace_id\":\"01ff8da7ef8e4df49b711000d37575bc\",\"node_id\":\"w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs\",\"rationale\":\"DiDD umbrella naming decisionからmention edgeで到達するDiDDページで、PR 1468の決定がリンクした手法ページに直接対応する。\"}\n",
+  "schema_version": 1,
+  "stage": "development"
+}
