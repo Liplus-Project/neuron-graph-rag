@@ -1,0 +1,360 @@
+{
+  "control": {
+    "cases": [
+      {
+        "expected_node_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+        "id": "holdout-relation-architecture",
+        "lexical_rank": 3,
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ]
+        ],
+        "path_matched": true,
+        "projected_observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_hits": [
+          "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+          "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+        ],
+        "relation_rank": 1,
+        "role": "relation"
+      },
+      {
+        "expected_node_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI",
+        "id": "holdout-direct-configuration",
+        "lexical_rank": 2,
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ]
+        ],
+        "path_matched": false,
+        "projected_observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_hits": [
+          "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+          "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+        ],
+        "relation_rank": 2,
+        "role": "direct_lexical"
+      },
+      {
+        "expected_node_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+        "id": "holdout-directional-negative",
+        "lexical_rank": 1,
+        "observed_paths": [],
+        "path_matched": true,
+        "projected_observed_paths": [],
+        "relation_found": false,
+        "relation_hits": [],
+        "relation_rank": 3,
+        "role": "directional_negative"
+      }
+    ],
+    "feedback": {
+      "credited_edges": [],
+      "credited_only": false,
+      "edge_changes": [],
+      "feedback_count": 1,
+      "no_edge_mutation": true,
+      "recorded": true
+    }
+  },
+  "decision": {
+    "adopted": false,
+    "reason": "feedback_candidate_failed_frozen_holdout_gate"
+  },
+  "development_result_sha256": "sha256:d028ddcd9fe07552f9fe90120074a6f56005b14da620addba10b08e545a4caf8",
+  "experiment_id": "d1-disjoint-trace-credited-feedback-adaptation-reproduction-v1",
+  "gate": {
+    "direct_lexical_control_does_not_regress": true,
+    "directional_negative_control_does_not_regress": true,
+    "expected_relation_endpoint_and_edge_type_match": true,
+    "only_credited_edges_change": true,
+    "relation_recall_and_hit_at_k_do_not_regress": true,
+    "same_schedule_replay_is_deterministic": true,
+    "treatment_strictly_improves_relation_mrr": false
+  },
+  "holdout_open_count": 1,
+  "inputs": {
+    "fixture": "sha256:9154fb635ee7904c4a5fc7aaa2c1e67ecd887dfc1fc525c336661384efc42a25",
+    "gold": "sha256:0657ff037496cc9b9547ade45a1becaab6b807b9856c2135f3c3367125b8a176",
+    "provenance": "sha256:9d293958e678bccf6a54044cafd2bf947e5a2d56ab76bf61e03632aca4891464"
+  },
+  "manifest_sha256": "sha256:4b80b357df8d63ffc7f8dc0c06c25402faf660b6d58851d3081d7f2f2ff47c29",
+  "metrics": {
+    "control_relation_hit_at_k": 1.0,
+    "control_relation_mrr": 1.0,
+    "control_relation_recall": 1.0,
+    "treatment_relation_hit_at_k": 1.0,
+    "treatment_relation_mrr": 1.0,
+    "treatment_relation_recall": 1.0
+  },
+  "schema_version": 1,
+  "stage": "holdout",
+  "treatment": {
+    "cases": [
+      {
+        "expected_node_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+        "id": "holdout-relation-architecture",
+        "lexical_rank": 3,
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.1,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.1,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.1,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ]
+        ],
+        "path_matched": true,
+        "projected_observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_hits": [
+          "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+          "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+        ],
+        "relation_rank": 1,
+        "role": "relation"
+      },
+      {
+        "expected_node_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI",
+        "id": "holdout-direct-configuration",
+        "lexical_rank": 2,
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ]
+        ],
+        "path_matched": false,
+        "projected_observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+              "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_hits": [
+          "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+          "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+        ],
+        "relation_rank": 2,
+        "role": "direct_lexical"
+      },
+      {
+        "expected_node_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+        "id": "holdout-directional-negative",
+        "lexical_rank": 1,
+        "observed_paths": [],
+        "path_matched": true,
+        "projected_observed_paths": [],
+        "relation_found": false,
+        "relation_hits": [],
+        "relation_rank": 3,
+        "role": "directional_negative"
+      }
+    ],
+    "feedback": {
+      "credited_edges": [
+        {
+          "edge_type": "mention",
+          "new_weight": 1.1,
+          "old_weight": 1.0,
+          "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+          "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+        }
+      ],
+      "credited_only": true,
+      "edge_changes": [
+        {
+          "after_reinforced_count": 1,
+          "after_weight": 1.1,
+          "before_reinforced_count": 0,
+          "before_weight": 1.0,
+          "edge_type": "mention",
+          "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+          "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+        }
+      ],
+      "feedback_count": 1,
+      "no_edge_mutation": false,
+      "recorded": true
+    }
+  }
+}

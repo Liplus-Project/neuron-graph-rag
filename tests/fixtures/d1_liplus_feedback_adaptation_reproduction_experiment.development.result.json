@@ -1,0 +1,250 @@
+{
+  "control": {
+    "cases": [
+      {
+        "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+        "id": "development-relation-contract-reference",
+        "lexical_rank": 2,
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.0,
+              "factuality": 1.0,
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ]
+        ],
+        "path_matched": true,
+        "projected_observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_hits": [
+          "w:OVi3nG8q4jbs1wrRJSG2SJQshkbXFB2Ofl8IrXsb6Uo",
+          "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+        ],
+        "relation_rank": 2,
+        "role": "relation"
+      },
+      {
+        "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+        "id": "development-direct-always-on",
+        "lexical_rank": 1,
+        "observed_paths": [],
+        "path_matched": false,
+        "projected_observed_paths": [],
+        "relation_found": false,
+        "relation_hits": [],
+        "relation_rank": 3,
+        "role": "direct_lexical"
+      },
+      {
+        "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+        "id": "development-directional-negative",
+        "lexical_rank": 2,
+        "observed_paths": [],
+        "path_matched": true,
+        "projected_observed_paths": [],
+        "relation_found": false,
+        "relation_hits": [],
+        "relation_rank": 3,
+        "role": "directional_negative"
+      }
+    ],
+    "feedback": {
+      "credited_edges": [],
+      "credited_only": false,
+      "edge_changes": [],
+      "feedback_count": 1,
+      "no_edge_mutation": true,
+      "recorded": true
+    }
+  },
+  "experiment_id": "d1-disjoint-trace-credited-feedback-adaptation-reproduction-v1",
+  "gate": {
+    "direct_lexical_control_does_not_regress": true,
+    "directional_negative_control_does_not_regress": true,
+    "expected_relation_endpoint_and_edge_type_match": true,
+    "only_credited_edges_change": true,
+    "relation_recall_and_hit_at_k_do_not_regress": true,
+    "same_schedule_replay_is_deterministic": true,
+    "treatment_strictly_improves_relation_mrr": true
+  },
+  "gate_passed": true,
+  "holdout_status": "not_opened_candidate_selected",
+  "inputs": {
+    "fixture": "sha256:09a89a5bc283b2f29a73889ffbe2780c264b2e526763f3744b77139431943c58",
+    "gold": "sha256:669467eeaab1add49a32d1b5cc5396d529587d30cef43b03c14299cd4414acd3",
+    "provenance": "sha256:287241130bed0a34732c36971623cff7c0f908dc5043a03a5f36736fd09478dd"
+  },
+  "manifest_sha256": "sha256:4b80b357df8d63ffc7f8dc0c06c25402faf660b6d58851d3081d7f2f2ff47c29",
+  "metrics": {
+    "control_relation_hit_at_k": 1.0,
+    "control_relation_mrr": 0.5,
+    "control_relation_recall": 1.0,
+    "treatment_relation_hit_at_k": 1.0,
+    "treatment_relation_mrr": 1.0,
+    "treatment_relation_recall": 1.0
+  },
+  "schema_version": 1,
+  "stage": "development",
+  "treatment": {
+    "cases": [
+      {
+        "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+        "id": "development-relation-contract-reference",
+        "lexical_rank": 2,
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.1,
+              "factuality": 1.0,
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.1,
+              "factuality": 1.0,
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "edge_weight": 1.1,
+              "factuality": 1.0,
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ]
+        ],
+        "path_matched": true,
+        "projected_observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+              "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_hits": [
+          "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+          "w:OVi3nG8q4jbs1wrRJSG2SJQshkbXFB2Ofl8IrXsb6Uo"
+        ],
+        "relation_rank": 1,
+        "role": "relation"
+      },
+      {
+        "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+        "id": "development-direct-always-on",
+        "lexical_rank": 1,
+        "observed_paths": [],
+        "path_matched": false,
+        "projected_observed_paths": [],
+        "relation_found": false,
+        "relation_hits": [],
+        "relation_rank": 3,
+        "role": "direct_lexical"
+      },
+      {
+        "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+        "id": "development-directional-negative",
+        "lexical_rank": 2,
+        "observed_paths": [],
+        "path_matched": true,
+        "projected_observed_paths": [],
+        "relation_found": false,
+        "relation_hits": [],
+        "relation_rank": 3,
+        "role": "directional_negative"
+      }
+    ],
+    "feedback": {
+      "credited_edges": [
+        {
+          "edge_type": "mention",
+          "new_weight": 1.1,
+          "old_weight": 1.0,
+          "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+          "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+        }
+      ],
+      "credited_only": true,
+      "edge_changes": [
+        {
+          "after_reinforced_count": 1,
+          "after_weight": 1.1,
+          "before_reinforced_count": 0,
+          "before_weight": 1.0,
+          "edge_type": "mention",
+          "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+          "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+        }
+      ],
+      "feedback_count": 1,
+      "no_edge_mutation": false,
+      "recorded": true
+    }
+  }
+}
