@@ -93,8 +93,7 @@ def _evaluate_split(path: Path, manifest: dict[str, Any], stage: str) -> dict[st
     split = manifest[stage]
     fixture = base / str(split["fixture"])
     gold = _read_json(base / str(split["gold"]))
-    config = EngineConfig(**manifest["shared_config"])
-    limit = int(manifest["shared_config"]["limit"])
+    config, limit = _experiment_config(manifest)
     control = _run_group(fixture, gold, config, limit, mutate=False)
     treatment = _run_group(fixture, gold, config, limit, mutate=True)
     replay = _run_group(fixture, gold, config, limit, mutate=True)
@@ -218,6 +217,12 @@ def _validate_gold(fixture_path: Path, gold_path: Path) -> None:
         for step in case.get("expected_path", []):
             if (str(step["source_id"]), str(step["target_id"]), str(step["edge_type"])) not in edges:
                 raise ValueError("Expected relation path is outside fixture")
+
+
+def _experiment_config(manifest: dict[str, Any]) -> tuple[EngineConfig, int]:
+    values = dict(manifest["shared_config"])
+    limit = int(values.pop("limit"))
+    return EngineConfig(**values), limit
 
 
 def _by_role(cases: list[dict[str, Any]], role: str) -> list[dict[str, Any]]:

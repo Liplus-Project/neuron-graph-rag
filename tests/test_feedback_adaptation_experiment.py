@@ -7,6 +7,7 @@ from pathlib import Path
 
 from neuron_graph_rag.feedback_adaptation_experiment import (
     _canonical_sha256,
+    _experiment_config,
     read_feedback_adaptation_manifest,
     run_feedback_adaptation_holdout,
 )
@@ -20,6 +21,12 @@ HOLDOUT_RESULT = FIXTURES / "d1_liplus_feedback_adaptation_experiment.holdout.re
 
 
 class FeedbackAdaptationFreezeTest(unittest.TestCase):
+    def test_limit_is_a_runner_setting_not_an_engine_config_field(self) -> None:
+        manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+        config, limit = _experiment_config(manifest)
+        self.assertEqual(limit, 2)
+        self.assertEqual(config.seed_count, 1)
+
     def test_manifest_freezes_disjoint_split_and_registered_runs(self) -> None:
         manifest = read_feedback_adaptation_manifest(MANIFEST)
         self.assertEqual(manifest["candidate_id"], "trace-credited-feedback")
