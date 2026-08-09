@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "gold_id": "fresh-native-feedback-v2-gold",
+  "説明": "headroom の厳密改善、control と ceiling の非劣化を別々に測定する。",
+  "splits": {
+    "development": {
+      "cases": [
+        {"id": "fresh-dev-headroom", "role": "headroom", "query": "success feedback", "now": 1700000100, "expected_node_id": "v2-dev-1", "expected_path": [{"source_id": "v2-dev-0", "target_id": "v2-dev-1", "edge_type": "mention"}]},
+        {"id": "fresh-dev-control", "role": "control", "query": "controlled benchmark", "now": 1700000101, "expected_node_id": "v2-dev-1", "expected_path": [{"source_id": "v2-dev-0", "target_id": "v2-dev-1", "edge_type": "mention"}]},
+        {"id": "fresh-dev-ceiling", "role": "ceiling", "query": "feedback", "now": 1700000102, "expected_node_id": "v2-dev-2", "expected_path": [{"source_id": "v2-dev-1", "target_id": "v2-dev-2", "edge_type": "mention"}]}
+      ]
+    },
+    "holdout": {
+      "cases": [
+        {"id": "fresh-holdout-headroom", "role": "headroom", "query": "holdout", "now": 1700000200, "expected_node_id": "v2-holdout-2", "expected_path": [{"source_id": "v2-holdout-1", "target_id": "v2-holdout-2", "edge_type": "mention"}]},
+        {"id": "fresh-holdout-control", "role": "control", "query": "read only fixture", "now": 1700000201, "expected_node_id": "v2-holdout-2", "expected_path": [{"source_id": "v2-holdout-1", "target_id": "v2-holdout-2", "edge_type": "mention"}]},
+        {"id": "fresh-holdout-ceiling", "role": "ceiling", "query": "fixture boundary", "now": 1700000202, "expected_node_id": "v2-holdout-2", "expected_path": [{"source_id": "v2-holdout-1", "target_id": "v2-holdout-2", "edge_type": "mention"}]}
+      ]
+    }
+  }
+}

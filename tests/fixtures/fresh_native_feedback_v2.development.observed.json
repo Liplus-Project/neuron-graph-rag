@@ -1,0 +1,377 @@
+{
+  "control": {
+    "cases": [
+      {
+        "expected_node_id": "v2-dev-1",
+        "expected_path_matched": true,
+        "id": "fresh-dev-headroom",
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_rank": 3,
+        "role": "headroom"
+      },
+      {
+        "expected_node_id": "v2-dev-1",
+        "expected_path_matched": true,
+        "id": "fresh-dev-control",
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_rank": 2,
+        "role": "control"
+      },
+      {
+        "expected_node_id": "v2-dev-2",
+        "expected_path_matched": true,
+        "id": "fresh-dev-ceiling",
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            },
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-1",
+              "target_id": "v2-dev-2"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            },
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-1",
+              "target_id": "v2-dev-2"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-1",
+              "target_id": "v2-dev-2"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_rank": 1,
+        "role": "ceiling"
+      }
+    ],
+    "feedback": {
+      "credited_edges": [],
+      "credited_only": false,
+      "edge_changes": [],
+      "feedback_count": 1,
+      "no_edge_mutation": true,
+      "recorded": true
+    }
+  },
+  "evaluation_id": "fresh-native-feedback-v2",
+  "gate": {
+    "ceiling_relation_mrr": true,
+    "control_edge_mutation": true,
+    "control_relation_mrr": true,
+    "headroom_relation_mrr": true,
+    "source_integrity": true,
+    "split_disjointness": true,
+    "treatment_credited_edges": true
+  },
+  "gate_passed": true,
+  "holdout_status": "opened_by_development_gate",
+  "inputs": {
+    "audit": "sha256:dbbe21b26304884a432ded15a8005891400f363e971c0801ed98110a27e7b026",
+    "fixture": "sha256:35c70cfc5a9308b0dd163c5a29ce032e5f440ce64ee974734472839431dc2a1e",
+    "gate": "sha256:16fa0bc454617d250bc3c6ae87f07bf449d81f31c5d6b67bf7acb8e9ba57771f",
+    "gold": "sha256:a30b0a47c61f274a6563414fbfc032ad36cd6591957300f0fcee9621a074745e",
+    "schedule": "sha256:add4bb73b65b37103f10f086ea5295b0c6eb711d164b9d580fafde4186d56f57"
+  },
+  "manifest_sha256": "sha256:fa4e19c0762203bc70a57b0095aab6ded230bdfeaff3ef0f23edadbeb7fd5248",
+  "metrics": {
+    "control_ceiling_relation_mrr": 1.0,
+    "control_control_relation_mrr": 0.5,
+    "control_headroom_relation_mrr": 0.3333333333333333,
+    "treatment_ceiling_relation_mrr": 1.0,
+    "treatment_control_relation_mrr": 0.5,
+    "treatment_headroom_relation_mrr": 0.5
+  },
+  "registered_runs": {
+    "control": 1,
+    "treatment": 1
+  },
+  "schema_version": 1,
+  "source_integrity": {
+    "checks": [
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v2/development-purpose.md",
+        "expected_sha256": "sha256:3f2ba2e3eb2d64634bb711ff4fd2cc8708959f8d0f3027674f4a5b741583b669",
+        "node_id": "v2-dev-0",
+        "raw_sha256": "sha256:3f2ba2e3eb2d64634bb711ff4fd2cc8708959f8d0f3027674f4a5b741583b669",
+        "reason": "raw SHA-256 matched",
+        "stage": "development"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v2/development-trace-boundary.md",
+        "expected_sha256": "sha256:f86ed041e12c5712014f3a05fd36c8684d41026051e200d65b3747eae0d24f1a",
+        "node_id": "v2-dev-1",
+        "raw_sha256": "sha256:f86ed041e12c5712014f3a05fd36c8684d41026051e200d65b3747eae0d24f1a",
+        "reason": "raw SHA-256 matched",
+        "stage": "development"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v2/development-separation.md",
+        "expected_sha256": "sha256:ec053cd802f7436685e3074aa84f3e9a351badec9ba1ca63dbd52b9472554dcd",
+        "node_id": "v2-dev-2",
+        "raw_sha256": "sha256:ec053cd802f7436685e3074aa84f3e9a351badec9ba1ca63dbd52b9472554dcd",
+        "reason": "raw SHA-256 matched",
+        "stage": "development"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v2/development-freeze-boundary.md",
+        "expected_sha256": "sha256:0121b6f904a07b8d4b70f34fdcf6431daa12c7e1e7a32a063975c8a6c068f999",
+        "node_id": "v2-dev-3",
+        "raw_sha256": "sha256:0121b6f904a07b8d4b70f34fdcf6431daa12c7e1e7a32a063975c8a6c068f999",
+        "reason": "raw SHA-256 matched",
+        "stage": "development"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v2/holdout-decision-boundary.md",
+        "expected_sha256": "sha256:20d07e5ce61b5b6d8f71ac9ddac3b78ba809b90112362758e12283a60f2e3fde",
+        "node_id": "v2-holdout-0",
+        "raw_sha256": "sha256:20d07e5ce61b5b6d8f71ac9ddac3b78ba809b90112362758e12283a60f2e3fde",
+        "reason": "raw SHA-256 matched",
+        "stage": "holdout"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v2/holdout-fixture-boundary.md",
+        "expected_sha256": "sha256:a18021fbbb3cc20a5ead8197611535053b9dec7770d4b02110a908b22f237f53",
+        "node_id": "v2-holdout-1",
+        "raw_sha256": "sha256:a18021fbbb3cc20a5ead8197611535053b9dec7770d4b02110a908b22f237f53",
+        "reason": "raw SHA-256 matched",
+        "stage": "holdout"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v2/holdout-channel-boundary.md",
+        "expected_sha256": "sha256:1b97b41e97a5ef2e002a2d5b702e949c216f97cc5c197d43733e59d1c0551020",
+        "node_id": "v2-holdout-2",
+        "raw_sha256": "sha256:1b97b41e97a5ef2e002a2d5b702e949c216f97cc5c197d43733e59d1c0551020",
+        "reason": "raw SHA-256 matched",
+        "stage": "holdout"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v2/holdout-observation-boundary.md",
+        "expected_sha256": "sha256:5feb8d60d323197e1874495f04d377479d85dfc0655490cdb02ec87c32ad8feb",
+        "node_id": "v2-holdout-3",
+        "raw_sha256": "sha256:5feb8d60d323197e1874495f04d377479d85dfc0655490cdb02ec87c32ad8feb",
+        "reason": "raw SHA-256 matched",
+        "stage": "holdout"
+      }
+    ],
+    "passed": true
+  },
+  "stage": "development",
+  "treatment": {
+    "cases": [
+      {
+        "expected_node_id": "v2-dev-1",
+        "expected_path_matched": true,
+        "id": "fresh-dev-headroom",
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_rank": 2,
+        "role": "headroom"
+      },
+      {
+        "expected_node_id": "v2-dev-1",
+        "expected_path_matched": true,
+        "id": "fresh-dev-control",
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_rank": 2,
+        "role": "control"
+      },
+      {
+        "expected_node_id": "v2-dev-2",
+        "expected_path_matched": true,
+        "id": "fresh-dev-ceiling",
+        "observed_paths": [
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            },
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-1",
+              "target_id": "v2-dev-2"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-0",
+              "target_id": "v2-dev-1"
+            },
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-1",
+              "target_id": "v2-dev-2"
+            }
+          ],
+          [
+            {
+              "edge_type": "mention",
+              "source_id": "v2-dev-1",
+              "target_id": "v2-dev-2"
+            }
+          ]
+        ],
+        "relation_found": true,
+        "relation_rank": 1,
+        "role": "ceiling"
+      }
+    ],
+    "feedback": {
+      "credited_edges": [
+        {
+          "edge_type": "mention",
+          "new_weight": 1.385,
+          "old_weight": 1.0,
+          "source_id": "v2-dev-0",
+          "target_id": "v2-dev-1"
+        }
+      ],
+      "credited_only": true,
+      "edge_changes": [
+        {
+          "after_reinforced_count": 1,
+          "after_weight": 1.385,
+          "before_reinforced_count": 0,
+          "before_weight": 1.0,
+          "edge_type": "mention",
+          "source_id": "v2-dev-0",
+          "target_id": "v2-dev-1"
+        }
+      ],
+      "feedback_count": 1,
+      "no_edge_mutation": false,
+      "recorded": true
+    }
+  }
+}
