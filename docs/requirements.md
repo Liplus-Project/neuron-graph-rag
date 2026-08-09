@@ -93,6 +93,7 @@
 75. trace-credited feedback adaptation experimentは、同一のfrozen corpus、config、query schedule、limit、時刻規則でcontrolとtreatmentを比較し、controlはfeedbackを記録してedge mutationを適用せず、treatmentだけがrelation traceのcredited pathを強化する。
 76. feedback adaptationのdevelopment / holdout、feedback event、score query、expected path、gate、registered run count、hash、contamination audit、exclusive outputを結果観測前に固定し、development全gate通過時だけholdoutを一度開く。
 77. feedback adaptation reproductionはprior resultを選択入力にせず、prior fixtureとの識別子だけのcontamination auditを行う。raw relation stepは比較前に`source_id`、`target_id`、`edge_type`だけへ射影し、runtime fieldを含むsynthetic testでpath identityをfreeze前に検証する。
+78. 新規 feedback-adaptation experiment の primary relation gate は、baseline relation MRR が 1.0 未満ならtreatmentのstrict improvement、baseline relation MRR が 1.0 ならtreatmentのnon-regressionを要求する。いずれも endpoint/type projected path、direct lexical / directional-negative controls、credited-only mutation、deterministic replay、contamination、immutable output を含む全 safety gate を必須とする。ceiling case のnon-regression pass は追加の順位改善を示せないことを記録するだけで、generalization、default変更、production採用を許可しない。
 75. v3 implementation、prompt、manifest、query override、schema、集約、path audit、hash規則、gate、stop rule、testsをresult-free commitでpushした後、development stage / 4 case packet / 12 responses / resultを各一度だけ生成する。
 76. development全12 gate通過時だけholdout stageを一度生成し、異なるfresh 12 judgesで同じgateを評価する。packet、response、resultの上書き、観測後の規則変更、実LLM品質値のCI再生成を拒否する。
 
