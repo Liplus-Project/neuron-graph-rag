@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "splits": {
+    "development": {
+      "source_integrity": true,
+      "split_cluster_identity": true,
+      "manifest_artifact_hashes": true,
+      "registered_run_count": true,
+      "relation_channel_only": true,
+      "expected_paths": true,
+      "feedback_checkpoint_counts": true,
+      "headroom_strict_improvement_0_to_10": true,
+      "headroom_intermediate_non_regression": true,
+      "control_case_non_regression": true,
+      "ceiling_case_non_regression": true,
+      "control_arm_non_regression": true,
+      "control_feedback_recorded_without_mutation": true,
+      "treatment_record_success_relation_trace": true,
+      "treatment_credited_edges_only": true,
+      "exclusive_output": true
+    },
+    "holdout": {
+      "source_integrity": true,
+      "split_cluster_identity": true,
+      "manifest_artifact_hashes": true,
+      "registered_run_count": true,
+      "relation_channel_only": true,
+      "expected_paths": true,
+      "feedback_checkpoint_counts": true,
+      "headroom_strict_improvement_0_to_10": true,
+      "headroom_intermediate_non_regression": true,
+      "control_case_non_regression": true,
+      "ceiling_case_non_regression": true,
+      "control_arm_non_regression": true,
+      "control_feedback_recorded_without_mutation": true,
+      "treatment_record_success_relation_trace": true,
+      "treatment_credited_edges_only": true,
+      "exclusive_output": true
+    }
+  },
+  "stop_rule": "development の全 gate が true の場合だけ holdout を一回開く。失敗 output も保存して停止する。"
+}

@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "roles": {
+    "headroom": "credit-10 node の 0 から 10 feedback における strict improvement を測る",
+    "control": "同一 cluster の非 credited credit-3 node が退行しないことを測る",
+    "ceiling": "credited credit-10 node の ceiling query が退行しないことを測る"
+  },
+  "splits": {
+    "development": {
+      "cases": [
+        {
+          "id": "development-signal-stability-headroom",
+          "cluster": "signal-stability",
+          "role": "headroom",
+          "query": "Signal stability overview 文書間の明示的な参照と credited feedback の比較",
+          "expected_node_id": "v3-signal-stability-credit-10",
+          "expected_path": [{"source_id": "v3-signal-stability-overview", "target_id": "v3-signal-stability-credit-10", "edge_type": "explicit_link"}],
+          "now": 1735689600.0
+        },
+        {
+          "id": "development-signal-stability-control",
+          "cluster": "signal-stability",
+          "role": "control",
+          "query": "Signal stability overview の入口と source document の比較",
+          "expected_node_id": "v3-signal-stability-credit-3",
+          "expected_path": [{"source_id": "v3-signal-stability-overview", "target_id": "v3-signal-stability-credit-3", "edge_type": "explicit_link"}],
+          "now": 1735689610.0
+        },
+        {
+          "id": "development-signal-stability-ceiling",
+          "cluster": "signal-stability",
+          "role": "ceiling",
+          "query": "Signal stability overview の feedback credit ceiling と長い反復",
+          "expected_node_id": "v3-signal-stability-credit-10",
+          "expected_path": [{"source_id": "v3-signal-stability-overview", "target_id": "v3-signal-stability-credit-10", "edge_type": "explicit_link"}],
+          "now": 1735689620.0
+        },
+        {
+          "id": "development-boundary-recovery-headroom",
+          "cluster": "boundary-recovery",
+          "role": "headroom",
+          "query": "Boundary recovery overview 文書間の明示的な参照と credited feedback の比較",
+          "expected_node_id": "v3-boundary-recovery-credit-10",
+          "expected_path": [{"source_id": "v3-boundary-recovery-overview", "target_id": "v3-boundary-recovery-credit-10", "edge_type": "explicit_link"}],
+          "now": 1735689630.0
+        },
+        {
+          "id": "development-boundary-recovery-control",
+          "cluster": "boundary-recovery",
+          "role": "control",
+          "query": "Boundary recovery overview の入口と source document の比較",
+          "expected_node_id": "v3-boundary-recovery-credit-3",
+          "expected_path": [{"source_id": "v3-boundary-recovery-overview", "target_id": "v3-boundary-recovery-credit-3", "edge_type": "explicit_link"}],
+          "now": 1735689640.0
+        },
+        {
+          "id": "development-boundary-recovery-ceiling",
+          "cluster": "boundary-recovery",
+          "role": "ceiling",
+          "query": "Boundary recovery overview の feedback credit ceiling と長い反復",
+          "expected_node_id": "v3-boundary-recovery-credit-10",
+          "expected_path": [{"source_id": "v3-boundary-recovery-overview", "target_id": "v3-boundary-recovery-credit-10", "edge_type": "explicit_link"}],
+          "now": 1735689650.0
+        }
+      ]
+    },
+    "holdout": {
+      "cases": [
+        {
+          "id": "holdout-evidence-continuity-headroom",
+          "cluster": "evidence-continuity",
+          "role": "headroom",
+          "query": "Evidence continuity overview 文書間の明示的な参照と credited feedback の比較",
+          "expected_node_id": "v3-evidence-continuity-credit-10",
+          "expected_path": [{"source_id": "v3-evidence-continuity-overview", "target_id": "v3-evidence-continuity-credit-10", "edge_type": "explicit_link"}],
+          "now": 1735776000.0
+        },
+        {
+          "id": "holdout-evidence-continuity-control",
+          "cluster": "evidence-continuity",
+          "role": "control",
+          "query": "Evidence continuity overview の入口と source document の比較",
+          "expected_node_id": "v3-evidence-continuity-credit-3",
+          "expected_path": [{"source_id": "v3-evidence-continuity-overview", "target_id": "v3-evidence-continuity-credit-3", "edge_type": "explicit_link"}],
+          "now": 1735776010.0
+        },
+        {
+          "id": "holdout-evidence-continuity-ceiling",
+          "cluster": "evidence-continuity",
+          "role": "ceiling",
+          "query": "Evidence continuity overview の feedback credit ceiling と長い反復",
+          "expected_node_id": "v3-evidence-continuity-credit-10",
+          "expected_path": [{"source_id": "v3-evidence-continuity-overview", "target_id": "v3-evidence-continuity-credit-10", "edge_type": "explicit_link"}],
+          "now": 1735776020.0
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "result_free": true,
+  "passed": true,
+  "source_commit": "94c8bc250b7352e3009eeee1b353c3aec677bfb7",
+  "source_boundary": "repository-native-controlled-v3 の固定 source document と explicit link だけを使用する",
+  "excluded_artifacts": "#55 と PR #56 の branch、evaluator、fixture、gold、schedule、manifest、gate、docs、observed result は入力、実装、比較対象として読まず再利用しない",
+  "exclusive_outputs": [
+    {"path": "engine_feedback_trajectory_v3.development.observed.json", "absent": true},
+    {"path": "engine_feedback_trajectory_v3.holdout.observed.json", "absent": true}
+  ],
+  "splits": {
+    "development": {
+      "clusters": ["signal-stability", "boundary-recovery"],
+      "node_ids": [
+        "v3-signal-stability-overview",
+        "v3-signal-stability-credit-0",
+        "v3-signal-stability-credit-1",
+        "v3-signal-stability-credit-3",
+        "v3-signal-stability-credit-10",
+        "v3-boundary-recovery-overview",
+        "v3-boundary-recovery-credit-0",
+        "v3-boundary-recovery-credit-1",
+        "v3-boundary-recovery-credit-3",
+        "v3-boundary-recovery-credit-10"
+      ],
+      "document_paths": [
+        "corpora/repository-native-controlled-v3/signal-stability-overview.md",
+        "corpora/repository-native-controlled-v3/signal-stability-credit-0.md",
+        "corpora/repository-native-controlled-v3/signal-stability-credit-1.md",
+        "corpora/repository-native-controlled-v3/signal-stability-credit-3.md",
+        "corpora/repository-native-controlled-v3/signal-stability-credit-10.md",
+        "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+        "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+        "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+        "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+        "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md"
+      ],
+      "credited_edges": [
+        ["v3-signal-stability-overview", "v3-signal-stability-credit-0", "explicit_link"],
+        ["v3-signal-stability-overview", "v3-signal-stability-credit-1", "explicit_link"],
+        ["v3-signal-stability-overview", "v3-signal-stability-credit-3", "explicit_link"],
+        ["v3-signal-stability-overview", "v3-signal-stability-credit-10", "explicit_link"],
+        ["v3-boundary-recovery-overview", "v3-boundary-recovery-credit-0", "explicit_link"],
+        ["v3-boundary-recovery-overview", "v3-boundary-recovery-credit-1", "explicit_link"],
+        ["v3-boundary-recovery-overview", "v3-boundary-recovery-credit-3", "explicit_link"],
+        ["v3-boundary-recovery-overview", "v3-boundary-recovery-credit-10", "explicit_link"]
+      ]
+    },
+    "holdout": {
+      "clusters": ["evidence-continuity"],
+      "node_ids": [
+        "v3-evidence-continuity-overview",
+        "v3-evidence-continuity-credit-0",
+        "v3-evidence-continuity-credit-1",
+        "v3-evidence-continuity-credit-3",
+        "v3-evidence-continuity-credit-10"
+      ],
+      "document_paths": [
+        "corpora/repository-native-controlled-v3/evidence-continuity-overview.md",
+        "corpora/repository-native-controlled-v3/evidence-continuity-credit-0.md",
+        "corpora/repository-native-controlled-v3/evidence-continuity-credit-1.md",
+        "corpora/repository-native-controlled-v3/evidence-continuity-credit-3.md",
+        "corpora/repository-native-controlled-v3/evidence-continuity-credit-10.md"
+      ],
+      "credited_edges": [
+        ["v3-evidence-continuity-overview", "v3-evidence-continuity-credit-0", "explicit_link"],
+        ["v3-evidence-continuity-overview", "v3-evidence-continuity-credit-1", "explicit_link"],
+        ["v3-evidence-continuity-overview", "v3-evidence-continuity-credit-3", "explicit_link"],
+        ["v3-evidence-continuity-overview", "v3-evidence-continuity-credit-10", "explicit_link"]
+      ]
+    }
+  }
+}
