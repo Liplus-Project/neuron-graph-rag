@@ -134,6 +134,15 @@ def _response(index: int, channel: str = "lexical") -> dict[str, object]:
 
 
 class NodeFirstFreezeContractTest(unittest.TestCase):
+    def test_runbook_preflight_stage_packet_matches_manifest(self) -> None:
+        manifest = read_node_first_manifest(MANIFEST)
+        stage_packet = manifest["artifact_paths"]["development"]["stage_packet"]
+        runbook = (
+            ROOT / "docs" / "node-first-blind-selection-experiment.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn(f"--stage-packet {stage_packet}", runbook)
+
     def test_manifest_freezes_prior_versions_queries_and_twelve_gates(self) -> None:
         manifest = read_node_first_manifest(MANIFEST)
         versions = {entry["version"] for entry in manifest["frozen_prior_artifacts"]}

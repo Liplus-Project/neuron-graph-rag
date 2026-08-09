@@ -131,7 +131,7 @@ preflightは次で実行する。
 $env:PYTHONPATH='src'
 python tools/run_node_first_selection.py preflight-capture `
   --manifest tests/fixtures/d1_liplus_channels_node_first_experiment.manifest.json `
-  --stage-packet tests/fixtures/d1_liplus_channels_node_first.development.stage.json
+  --stage-packet tests/fixtures/d1_liplus_channels_node_first.development.stage.packet.json
 ```
 
 stage / case provenanceが不一致なら、judgeを起動せず、raw responseをreadせず、capture artifactやresultをwriteせずに停止する。既存responseの流用、再capture、再aggregate、補完は行わない。
