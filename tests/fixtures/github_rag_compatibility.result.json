@@ -1,9 +1,9 @@
 {
+  "comparison_status": "adapter_pipeline_only",
   "comparisons": [
     {
-      "expected_source_found": true,
-      "github_rag_mcp_contract": {
-        "expected_source_url": "https://github.com/Liplus-Project/github-rag-mcp/blob/53d8feec58a23e098f41e370910e824187adc84e/docs/Home.md"
+      "github_rag_mcp": {
+        "captured": false
       },
       "id": "hybrid-retrieval",
       "ngr": {
@@ -42,12 +42,12 @@
           }
         ]
       },
-      "query": "hybrid retrieval dense sparse rerank"
+      "query": "hybrid retrieval dense sparse rerank",
+      "source_match": null
     },
     {
-      "expected_source_found": true,
-      "github_rag_mcp_contract": {
-        "expected_source_url": "https://github.com/Liplus-Project/github-rag-mcp/blob/53d8feec58a23e098f41e370910e824187adc84e/docs/Home.md"
+      "github_rag_mcp": {
+        "captured": false
       },
       "id": "activity-indexing",
       "ngr": {
@@ -86,11 +86,12 @@
           }
         ]
       },
-      "query": "GitHub webhook commit diff indexing"
+      "query": "GitHub webhook commit diff indexing",
+      "source_match": null
     }
   ],
   "limitations": [
-    "github-rag-mcp production search is not called; expected sources are an explicit comparison contract.",
+    "continue_candidate requires a preserved github-rag-mcp search capture for every query.",
     "This does not implement an MCP server, authentication, transport, or remote deployment.",
     "The adapter indexes only acquired file content; it does not ingest issues, pull requests, comments, releases, or commit diffs."
   ],
@@ -116,5 +117,5 @@
       "github:Liplus-Project/github-rag-mcp:docs/Home.md"
     ]
   },
-  "verdict": "continue_candidate"
+  "verdict": "inconclusive"
 }

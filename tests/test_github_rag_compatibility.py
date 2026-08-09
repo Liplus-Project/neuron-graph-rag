@@ -39,13 +39,64 @@ class GitHubRagCompatibilityTest(unittest.TestCase):
         self.assertEqual(trace.hits[0].node.metadata["source_adapter"], "github_read_only_snapshot")
         self.assertEqual(trace.hits[0].node.metadata["source_url"], SNAPSHOT_URL)
 
-    def test_runner_compares_expected_sources_and_follows_one_update(self) -> None:
+    def test_runner_requires_a_frozen_github_rag_mcp_capture_for_a_candidate_verdict(self) -> None:
         result = run_compatibility(SNAPSHOT, CASES, updated_snapshot_path=UPDATED_SNAPSHOT)
 
-        self.assertEqual(result["verdict"], "continue_candidate")
-        self.assertTrue(all(case["expected_source_found"] for case in result["comparisons"]))
+        self.assertEqual(result["comparison_status"], "adapter_pipeline_only")
+        self.assertEqual(result["verdict"], "inconclusive")
+        self.assertTrue(all(not case["github_rag_mcp"]["captured"] for case in result["comparisons"]))
         self.assertEqual(result["source_update"]["changed_paths"], ["docs/Home.md"])
         self.assertTrue(result["source_update"]["followed"])
+
+    def test_runner_compares_a_frozen_github_rag_mcp_capture(self) -> None:
+        capture = {
+            "schema_version": 1,
+            "captured_at": "2026-08-10T00:00:00Z",
+            "provenance": {
+                "service": "github-rag-mcp",
+                "tool": "search_issues",
+                "capture_reference": "recorded MCP tool result",
+            },
+            "cases": [
+                {
+                    "id": "hybrid-retrieval",
+                    "query": "hybrid retrieval dense sparse rerank",
+                    "search_result": {
+                        "count": 1,
+                        "results": [
+                            {
+                                "url": "https://github.com/Liplus-Project/github-rag-mcp/blob/main/docs/Home.md"
+                            }
+                        ],
+                    },
+                },
+                {
+                    "id": "activity-indexing",
+                    "query": "GitHub webhook commit diff indexing",
+                    "search_result": {
+                        "count": 1,
+                        "results": [
+                            {
+                                "url": "https://github.com/Liplus-Project/github-rag-mcp/blob/main/docs/Home.md"
+                            }
+                        ],
+                    },
+                },
+            ],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            capture_path = Path(directory) / "github-rag-mcp.search.json"
+            capture_path.write_text(json.dumps(capture), encoding="utf-8")
+            result = run_compatibility(
+                SNAPSHOT,
+                CASES,
+                github_rag_mcp_capture_path=capture_path,
+                updated_snapshot_path=UPDATED_SNAPSHOT,
+            )
+
+        self.assertEqual(result["comparison_status"], "compared")
+        self.assertEqual(result["verdict"], "continue_candidate")
+        self.assertTrue(all(case["source_match"] for case in result["comparisons"]))
 
     def test_committed_result_is_the_canonical_observation(self) -> None:
         result = run_compatibility(SNAPSHOT, CASES, updated_snapshot_path=UPDATED_SNAPSHOT)

@@ -14,9 +14,9 @@ The experiment has three separable boundaries:
 2. `neuron_graph_rag.github_source` is the source adapter. It accepts that
    snapshot and upserts documents and provenance into a local NGR index. The
    NGR engine has no GitHub client or GitHub-specific retrieval path.
-3. `tools/run_github_rag_compatibility.py` searches the local index and
-   compares its source URLs and explanations against fixed expected-source
-   contracts. It never calls the production github-rag-mcp service.
+3. `tools/run_github_rag_compatibility.py` searches the local index and can
+compare its source URLs and explanations with a preserved `search_issues`
+output from github-rag-mcp. It never calls the production service itself.
 
 ## Reproduction
 
@@ -39,31 +39,40 @@ python tools/run_github_rag_compatibility.py `
   --snapshot tests/fixtures/github_rag_compatibility.snapshot.json `
   --updated-snapshot tests/fixtures/github_rag_compatibility.updated.snapshot.json `
   --cases tests/fixtures/github_rag_compatibility.cases.json `
+  --github-rag-mcp-capture local.github-rag-mcp.search.json `
   --output local.github-rag-mcp.compatibility.result.json
 ```
 
 The committed snapshots preserve one historical public GitHub document and its
 one-document follow-up. They exercise the adapter and runner, but do not query
-or measure a live production index. A candidate result is meaningful only when
-its snapshot and expected-source cases are both preserved alongside the
-generated result.
+or measure a live production index. Consequently, the committed result is
+`inconclusive` and records only adapter-pipeline validation.
+
+To make a replacement-candidate judgment, preserve a separate capture passed
+with `--github-rag-mcp-capture`. It must contain every fixed query, the capture
+time, the unmodified `search_issues` result (including its source URLs), and
+provenance identifying the github-rag-mcp service, tool, and capture reference.
+Only that capture can make `continue_candidate` possible; a hand-authored
+expected source cannot.
 
 ## Result contract
 
 The result contains, for each fixed query:
 
-- the explicit expected source from the github-rag-mcp comparison contract;
+- the frozen github-rag-mcp `search_issues` result, source URLs, and provenance,
+  when a capture is supplied;
 - NGR rank, source URL, node ID, and `SearchHit.explain()` rationale;
-- whether the expected source is present in NGR's result set; and
+- whether a captured source identity (repository and path, while retaining the
+  original source URLs) is present in NGR's result set; and
 - the changed paths and reindexed node IDs after one source update.
 
 The runner reports exactly one bounded conclusion:
 
-- `continue_candidate`: every expected source is found and a provided update is
-  reflected in the local index;
+- `continue_candidate`: a frozen github-rag-mcp capture matches every query and
+  a provided update is reflected in the local index;
 - `incompatible`: an update was provided but retrieval or update following did
   not meet that contract; or
-- `inconclusive`: no update snapshot was supplied.
+- `inconclusive`: no github-rag-mcp capture or no update snapshot was supplied.
 
 ## Boundaries and missing functionality
 
