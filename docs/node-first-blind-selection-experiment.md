@@ -117,13 +117,24 @@ python tools/run_node_first_selection.py generate-stage development `
 freeze後の順序は固定する。
 
 1. development stageと4 case packetを一度生成
-2. 各caseをfresh 3 judgesへ個別提示
-3. 12 raw responsesを一度capture
-4. development resultを一度aggregate
-5. 一つでもgate不合格ならholdoutを生成せず停止
-6. 全gate通過時だけholdout stageと4 case packetを一度生成
-7. developmentと異なるfresh 12 judgesで一度評価
-8. holdout resultを一度aggregateして終了
+2. stage packetがmanifestに一致し、stageが参照する4 case packetのpath、case ID、実byte hashがすべて一致することを`preflight-capture`で確認する
+3. このpreflight通過後だけ各caseをfresh 3 judgesへ個別提示する
+4. capture-responseはraw responseをreadする前に同じpreflightを再実行し、12 raw responsesをexclusive writeで一度だけcaptureする
+5. development resultを一度aggregateする
+6. 一つでもgate不合格またはpreflight不一致ならholdoutを生成せず、unassessedのまま停止する
+7. 全gate通過時だけholdout stageと4 case packetを一度生成し、同じpreflightを通過させる
+8. developmentと異なるfresh 12 judgesで一度評価し、holdout resultを一度aggregateして終了
+
+preflightは次で実行する。
+
+```powershell
+$env:PYTHONPATH='src'
+python tools/run_node_first_selection.py preflight-capture `
+  --manifest tests/fixtures/d1_liplus_channels_node_first_experiment.manifest.json `
+  --stage-packet tests/fixtures/d1_liplus_channels_node_first.development.stage.json
+```
+
+stage / case provenanceが不一致なら、judgeを起動せず、raw responseをreadせず、capture artifactやresultをwriteせずに停止する。既存responseの流用、再capture、再aggregate、補完は行わない。
 
 ## 12 hard gates
 

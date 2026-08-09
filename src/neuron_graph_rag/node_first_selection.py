@@ -287,6 +287,26 @@ def capture_single_response(
     }
 
 
+def preflight_node_first_capture(
+    manifest_path: str | Path,
+    stage_packet_path: str | Path,
+    case_packet_path: str | Path | None = None,
+) -> dict[str, Any] | None:
+    """Verify the frozen stage and every referenced case packet before capture."""
+    manifest_path = Path(manifest_path)
+    stage_packet_path = Path(stage_packet_path)
+    _, _, _, refs = _preflight_node_first_stage(manifest_path, stage_packet_path)
+    if case_packet_path is None:
+        return None
+
+    root = _repo_root(manifest_path)
+    requested_path = Path(case_packet_path).resolve()
+    for case_id, ref in refs.items():
+        if (root / str(ref["path"])).resolve() == requested_path:
+            return _read_json(requested_path)
+    raise ValueError("Case packet is not referenced by the frozen stage packet")
+
+
 def aggregate_node_first_results(
     manifest_path: str | Path,
     stage_packet_path: str | Path,
@@ -294,30 +314,11 @@ def aggregate_node_first_results(
 ) -> dict[str, Any]:
     manifest_path = Path(manifest_path)
     stage_packet_path = Path(stage_packet_path)
-    manifest = read_node_first_manifest(manifest_path)
-    stage_packet = _read_json(stage_packet_path)
-    validate_stage_packet(stage_packet)
-    manifest_hash = _canonical_checkout_sha256(manifest_path)
-    if stage_packet.get("protocol_manifest_canonical_sha256") != manifest_hash:
-        raise ValueError("Stage packet does not match node-first manifest")
-    if stage_packet.get("experiment_id") != manifest["experiment_id"]:
-        raise ValueError("Stage packet experiment ID differs from manifest")
-    if stage_packet.get("judge_prompt_canonical_sha256") != manifest[
-        "judge_prompt"
-    ]["canonical_sha256"]:
-        raise ValueError("Stage packet judge prompt differs from manifest")
+    manifest, stage_packet, cases, refs = _preflight_node_first_stage(
+        manifest_path, stage_packet_path
+    )
     split_name = str(stage_packet["stage"])
-    if split_name not in {"development", "holdout"}:
-        raise ValueError("Unknown stage packet split")
-
-    refs = {ref["case_id"]: ref for ref in stage_packet["case_packet_artifacts"]}
-    cases = {case["case_id"]: case for case in stage_packet["cases"]}
-    for case_id, case in cases.items():
-        expected_packet = _case_packet_from_stage(stage_packet, case)
-        if refs[case_id].get("sha256") != _bytes_sha256(
-            _json_document_bytes(expected_packet)
-        ):
-            raise ValueError("Stage case packet reference hash is invalid")
+    manifest_hash = _canonical_checkout_sha256(manifest_path)
     response_path_list = [Path(path) for path in response_paths]
     expected_count = int(manifest["case_count"]) * int(manifest["judges_per_case"])
     if len(response_path_list) != expected_count:
@@ -568,6 +569,51 @@ def _case_packet_from_stage(
             "response_schema",
         )
     } | {"case": case}
+
+
+def _preflight_node_first_stage(
+    manifest_path: Path, stage_packet_path: Path
+) -> tuple[
+    dict[str, Any],
+    dict[str, Any],
+    dict[str, dict[str, Any]],
+    dict[str, dict[str, Any]],
+]:
+    manifest = read_node_first_manifest(manifest_path)
+    stage_packet = _read_json(stage_packet_path)
+    validate_stage_packet(stage_packet)
+    manifest_hash = _canonical_checkout_sha256(manifest_path)
+    if stage_packet.get("protocol_manifest_canonical_sha256") != manifest_hash:
+        raise ValueError("Stage packet does not match node-first manifest")
+    if stage_packet.get("experiment_id") != manifest["experiment_id"]:
+        raise ValueError("Stage packet experiment ID differs from manifest")
+    if stage_packet.get("judge_prompt_canonical_sha256") != manifest[
+        "judge_prompt"
+    ]["canonical_sha256"]:
+        raise ValueError("Stage packet judge prompt differs from manifest")
+    if stage_packet.get("stage") not in {"development", "holdout"}:
+        raise ValueError("Unknown stage packet split")
+
+    refs = {
+        str(ref["case_id"]): ref for ref in stage_packet["case_packet_artifacts"]
+    }
+    cases = {str(case["case_id"]): case for case in stage_packet["cases"]}
+    root = _repo_root(manifest_path)
+    for case_id, case in cases.items():
+        ref = refs[case_id]
+        expected_packet = _case_packet_from_stage(stage_packet, case)
+        expected_hash = _bytes_sha256(_json_document_bytes(expected_packet))
+        if ref.get("sha256") != expected_hash:
+            raise ValueError("Stage case packet reference hash is invalid")
+        packet_path = root / str(ref["path"])
+        if not packet_path.is_file():
+            raise ValueError(f"Frozen case packet is missing: {ref['path']}")
+        if _byte_sha256(packet_path) != ref["sha256"]:
+            raise ValueError(
+                f"Frozen case packet differs from stage reference: {ref['path']}"
+            )
+        validate_case_packet(_read_json(packet_path))
+    return manifest, stage_packet, cases, refs
 
 
 def _validate_common_packet(packet: dict[str, Any]) -> None:
