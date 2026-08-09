@@ -12,7 +12,8 @@
 | --- | --- | --- |
 | [observation-lifecycle-test-exception](https://github.com/Liplus-Project/neuron-graph-rag/wiki/observation-lifecycle-test-exception) | active | #31 の observed-state lifecycle test exception は hash、exclusive-write、no-recompute assertion に限定する。 |
 | [ceiling-aware-feedback-adaptation-gate](https://github.com/Liplus-Project/neuron-graph-rag/wiki/ceiling-aware-feedback-adaptation-gate) | active | 新規 feedback-adaptation experiment は baseline relation MRR が 1.0 未満なら strict improvement、1.0 なら全 safety gate を満たす non-regression を要求する。ceiling pass は default や一般化を意味しない。 |
-| [single-corpus-real-feedback-validation](https://github.com/Liplus-Project/neuron-graph-rag/wiki/single-corpus-real-feedback-validation) | active | 実在 D1 source repository 一つの中で identity 分離した development / holdout により、経路 feedback の因果効果を検証する。pass は単一 corpus に限り、cross-corpus generalization、大規模性能、既定値変更、production 採用を主張しない。 |
+| [single-corpus-real-feedback-validation](https://github.com/Liplus-Project/neuron-graph-rag/wiki/single-corpus-real-feedback-validation) | superseded | [repository-native-controlled-corpus](https://github.com/Liplus-Project/neuron-graph-rag/wiki/repository-native-controlled-corpus) がこの node を supersede する。以後の evaluation は、NGR repository に公開する固定 SHA の controlled corpus を source とし、D1 single-corpus experiment は capacity が増えるまで waiting とする。 |
+| [repository-native-controlled-corpus](https://github.com/Liplus-Project/neuron-graph-rag/wiki/repository-native-controlled-corpus) | active | #42 の public repository-native controlled corpus v1 は、固定 SHA の公開 repository documentation と本文中の明示的な相対参照だけを source とする。これは controlled benchmark であり、外部 corpus への一般化、評価 query、gold、result、既定値変更を含まない。 |
 
 ## Entry format
 
