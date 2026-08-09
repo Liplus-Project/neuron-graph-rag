@@ -8,6 +8,9 @@ from pathlib import Path
 from neuron_graph_rag.corpus_integrity import verify_source_sha256
 
 
+ROOT = Path(__file__).resolve().parents[1]
+
+
 def _sha256(raw: bytes) -> str:
     return "sha256:" + hashlib.sha256(raw).hexdigest()
 
@@ -27,6 +30,11 @@ class SourceHashVerificationTest(unittest.TestCase):
         self.assertTrue(result.accepted)
         self.assertEqual(result.decision, "raw_match")
         self.assertEqual(result.alternate_sha256, None)
+
+    def test_repository_declares_canonical_lf_for_text(self) -> None:
+        attributes = (ROOT / ".gitattributes").read_text(encoding="utf-8")
+
+        self.assertIn("* text=auto eol=lf", attributes)
 
     def test_lf_source_matches_crlf_hash_only_by_whole_file_conversion(self) -> None:
         result = self.verify(b"alpha\nbeta\n", b"alpha\r\nbeta\r\n")
