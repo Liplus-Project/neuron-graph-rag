@@ -1,0 +1,14 @@
+{
+  "protocol": "longitudinal-feedback-trajectory-v1",
+  "source_commit": "94c8bc250b7352e3009eeee1b353c3aec677bfb7",
+  "artifact_hashes": {
+    "longitudinal_feedback_trajectory_v3.fixture.json": "sha256:a7906abbbaa4525e71adb0b52529cfcb88408858c7756bd463bd63651e9e8f13",
+    "longitudinal_feedback_trajectory_v3.gold.json": "sha256:b94d84bed99714875f2bbc4b9123f9fa9eeedf56f3a539110e4a16663400ec05",
+    "longitudinal_feedback_trajectory_v3.schedule.json": "sha256:89fff2dcfc813caf692ed0bf973c38f28c5cb1eb22a675746cbd4d943776ea55",
+    "longitudinal_feedback_trajectory_v3.gate.json": "sha256:2f9656cbacc15daf5a06767c227c56e586e1b6f3e6cc351284d037b282e554c1"
+  },
+  "exclusive_output_paths": [
+    "longitudinal_feedback_trajectory_v3.development.observed.json",
+    "longitudinal_feedback_trajectory_v3.holdout.observed.json"
+  ]
+}

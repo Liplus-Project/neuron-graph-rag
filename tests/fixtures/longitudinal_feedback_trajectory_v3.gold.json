@@ -1,0 +1,7 @@
+{
+  "protocol": "longitudinal-feedback-trajectory-v1",
+  "targets": {
+    "development": "v3-signal-stability-credit-10",
+    "holdout": "v3-boundary-recovery-credit-10"
+  }
+}

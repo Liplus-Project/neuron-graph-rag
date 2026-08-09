@@ -1,0 +1,13 @@
+{
+  "protocol": "longitudinal-feedback-trajectory-v1",
+  "feedback_counts": [0, 1, 3, 10],
+  "mrr_ceiling": 1.0,
+  "requirements": [
+    "treatment_mrr_strictly_improves_from_0_to_10",
+    "treatment_mrr_never_regresses_between_registered_points",
+    "control_mrr_never_regresses",
+    "control_has_no_edge_mutation",
+    "treatment_mutates_only_the_registered_credited_edge",
+    "source_integrity_identity_isolation_and_manifest_handoff_must_pass"
+  ]
+}
