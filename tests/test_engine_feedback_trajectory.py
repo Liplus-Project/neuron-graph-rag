@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import tempfile
 import unittest
@@ -39,8 +40,28 @@ class EngineFeedbackTrajectoryFreezeTest(unittest.TestCase):
                 "conditional_on_development_gate"
             ]
         )
-        for result_path in manifest["result_paths"].values():
-            self.assertFalse((FIXTURES / result_path).exists())
+        self.assertEqual(
+            set(manifest["result_paths"]), {"development", "holdout"}
+        )
+
+    def test_observed_development_is_immutable_and_holdout_remains_unopened(self) -> None:
+        manifest = read_engine_feedback_trajectory_manifest(MANIFEST)
+        development = FIXTURES / manifest["result_paths"]["development"]
+        holdout = FIXTURES / manifest["result_paths"]["holdout"]
+
+        self.assertTrue(development.exists())
+        self.assertEqual(
+            "sha256:" + hashlib.sha256(development.read_bytes()).hexdigest(),
+            "sha256:ec3cb4f6bde411ed06a0e8d62cfbf04897438dd9b9d340f21f50a0a5945f46b0",
+        )
+        observed = json.loads(development.read_text(encoding="utf-8"))
+        self.assertEqual(observed["stage"], "development")
+        self.assertFalse(observed["gate_passed"])
+        self.assertEqual(
+            observed["holdout_status"],
+            "not_opened_development_gate_failed",
+        )
+        self.assertFalse(holdout.exists())
 
     def test_source_hashes_and_explicit_links_match_the_frozen_split(self) -> None:
         manifest = read_engine_feedback_trajectory_manifest(MANIFEST)

@@ -1,0 +1,4205 @@
+{
+  "claim_boundary": "repository-native controlled corpus v3 上の NGR engine adaptation に限定し、external generalization、Agent E2E 効率、production adoption、default 変更を含めない",
+  "control": {
+    "arm": "control",
+    "checkpoints": [
+      {
+        "cases": [
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "5d09b7ccd05946fe909320000251c457",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-3",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "67f483730c63483894c369735427d33b",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "52bd4d4783544e918875a6f30f3c7c63",
+            "role": "ceiling"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "07f348fb4dd14ba8bef808ac07c482a9",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-3",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "2107f9d4bfe343c8943d398e1ba9a73e",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "16fee559027a42b5a59232c701a4a2c5",
+            "role": "ceiling"
+          }
+        ],
+        "feedback_count": 0,
+        "role_mrr": {
+          "ceiling": 0.3333333333333333,
+          "control": 0.41666666666666663,
+          "headroom": 0.75
+        }
+      },
+      {
+        "cases": [
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "b481050591374eceb924260e3c506122",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-3",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "f380e82355b0483ca97cb2b56190bcbc",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "61655ab8cc6749a195ac0cab4607721c",
+            "role": "ceiling"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "4635449bccb743b0a7d4543ff354d4d2",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-3",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "b6cc7f84d4a44342ae3a8ae9519d6bfa",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "a49e02b772fe47cba2b3bb70280b3735",
+            "role": "ceiling"
+          }
+        ],
+        "feedback_count": 1,
+        "role_mrr": {
+          "ceiling": 0.3333333333333333,
+          "control": 0.41666666666666663,
+          "headroom": 0.75
+        }
+      },
+      {
+        "cases": [
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "ae63b85415cf407ca862edc30235f8bd",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-3",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "496b2a704f04491096f407079a4c79fd",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "cef2fe68cd7946d3838131c6c0718758",
+            "role": "ceiling"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "72e712e1d234408f95166d21e53f70bd",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-3",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "c3e73ce3f755467f85eb42d5bab74d82",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "38d5499b81124fa982520ce3f57b1726",
+            "role": "ceiling"
+          }
+        ],
+        "feedback_count": 3,
+        "role_mrr": {
+          "ceiling": 0.3333333333333333,
+          "control": 0.41666666666666663,
+          "headroom": 0.75
+        }
+      },
+      {
+        "cases": [
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "8836caeaca49464d8d403b828ec8b9bc",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-3",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "6295dc5dbd35402c84ed72a1aa4af4aa",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "7e7bef518a594872a0c2bb2889f9d95a",
+            "role": "ceiling"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "37a11567563e498b9f571db04111e527",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-3",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "5f477642917c45609d69cbc6e916534e",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "fc093f66a6c347f5a03eb0804716e3de",
+            "role": "ceiling"
+          }
+        ],
+        "feedback_count": 10,
+        "role_mrr": {
+          "ceiling": 0.3333333333333333,
+          "control": 0.41666666666666663,
+          "headroom": 0.75
+        }
+      }
+    ],
+    "edge_changes": [],
+    "feedback": {
+      "per_cluster_count": {
+        "boundary-recovery": 10,
+        "signal-stability": 10
+      },
+      "records": [
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 1,
+          "feedback_id": "trajectory-control-development-0-1",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "4101905c4447491a88435b663544a0cb",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 1,
+          "feedback_id": "trajectory-control-development-1-1",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "7e63a393953e4f5d88247945f78b1b69",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 2,
+          "feedback_id": "trajectory-control-development-0-2",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "f71916f8af7d4c86ba6dd7732ae4c578",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 2,
+          "feedback_id": "trajectory-control-development-1-2",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "939399c362d9464b8cbeb9b6ecd085ad",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 3,
+          "feedback_id": "trajectory-control-development-0-3",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "47c32f0ced9f4ad1896c1da7c3e5dd02",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 3,
+          "feedback_id": "trajectory-control-development-1-3",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "1dfab9fec16746bd929f2c08d4011aec",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 4,
+          "feedback_id": "trajectory-control-development-0-4",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "c2fba3d1277641f1aaacfbe53081a337",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 4,
+          "feedback_id": "trajectory-control-development-1-4",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "6018f6fcb3e14b7f840a8f367723a3f9",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 5,
+          "feedback_id": "trajectory-control-development-0-5",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "9710da55faec44a19a5041198a561353",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 5,
+          "feedback_id": "trajectory-control-development-1-5",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "f5ca159edf1c4802a6f8894a97cc9b68",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 6,
+          "feedback_id": "trajectory-control-development-0-6",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "4eaa765eff634e6fbc7dd93370b0f40e",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 6,
+          "feedback_id": "trajectory-control-development-1-6",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "38a35643c911406e806769ec3d925f3f",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 7,
+          "feedback_id": "trajectory-control-development-0-7",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "a7eb9ea6a1c84e33a4142ca4676b166d",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 7,
+          "feedback_id": "trajectory-control-development-1-7",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "0bbddbdbf9404dd1a9bb3516f85a1090",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 8,
+          "feedback_id": "trajectory-control-development-0-8",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "5bdcaba2d4f34d2081e30c145639dcf5",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 8,
+          "feedback_id": "trajectory-control-development-1-8",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "6bca34460fc344f4a4e9f199f9b7f091",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 9,
+          "feedback_id": "trajectory-control-development-0-9",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "3fff2baf1cba4c7aa21cfd207c2cdf7a",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 9,
+          "feedback_id": "trajectory-control-development-1-9",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "1308ff8f5bfc4f53bfe474176fd8a2b0",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 10,
+          "feedback_id": "trajectory-control-development-0-10",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "5a6c1bf56a734f208aa29681a7ddcf3b",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [],
+          "edge_changes": [],
+          "expected_path_matched": true,
+          "feedback_count": 10,
+          "feedback_id": "trajectory-control-development-1-10",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "16dc54bf4b194182a8478c36a6c3975c",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        }
+      ],
+      "total_event_count": 20
+    },
+    "final_edges": [
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-0",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-1",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-10",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-3",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-0",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-1",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-10",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-3",
+        "weight": 1.0
+      }
+    ],
+    "initial_edges": [
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-0",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-1",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-10",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-3",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-0",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-1",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-10",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-3",
+        "weight": 1.0
+      }
+    ],
+    "metrics": {
+      "0": {
+        "ceiling": 0.3333333333333333,
+        "control": 0.41666666666666663,
+        "headroom": 0.75
+      },
+      "1": {
+        "ceiling": 0.3333333333333333,
+        "control": 0.41666666666666663,
+        "headroom": 0.75
+      },
+      "10": {
+        "ceiling": 0.3333333333333333,
+        "control": 0.41666666666666663,
+        "headroom": 0.75
+      },
+      "3": {
+        "ceiling": 0.3333333333333333,
+        "control": 0.41666666666666663,
+        "headroom": 0.75
+      }
+    }
+  },
+  "evaluation_id": "engine-backed-feedback-trajectory-v3",
+  "gate": {
+    "ceiling_case_non_regression": true,
+    "control_arm_non_regression": true,
+    "control_case_non_regression": false,
+    "control_feedback_recorded_without_mutation": true,
+    "exclusive_output": true,
+    "expected_paths": true,
+    "feedback_checkpoint_counts": true,
+    "headroom_intermediate_non_regression": true,
+    "headroom_strict_improvement_0_to_10": true,
+    "manifest_artifact_hashes": true,
+    "registered_run_count": true,
+    "relation_channel_only": true,
+    "source_integrity": true,
+    "split_cluster_identity": true,
+    "treatment_credited_edges_only": true,
+    "treatment_record_success_relation_trace": true
+  },
+  "gate_passed": false,
+  "holdout_status": "not_opened_development_gate_failed",
+  "inputs": {
+    "audit": "sha256:8cb8f809e8d3c69ee05d03595f1297f69ab2c364b345dc00f0ccc072fcd77e9b",
+    "fixture": "sha256:5ce02408203268f08f78a086a8fd4abf7b0c8f8f9ad5b00310e7b7e9da60614b",
+    "gate": "sha256:44e3231eae1a00cf23851324cded71e07fc3dd06dbf78f39ff6b74981deb3f8b",
+    "gold": "sha256:379cf2ae4355d68678b6a1e4344b6f6a7c9b549033c1c818b7b8128bee4b8f79",
+    "schedule": "sha256:86771dc9692352f14e0ed6582b867c2aa066d4f9bdd923651d2817bef4762a4a"
+  },
+  "manifest_sha256": "sha256:1a0cbabb6e9e80978089e356b64b703769843eb60f33360b61372c913258111f",
+  "registered_runs": {
+    "control": 1,
+    "treatment": 1
+  },
+  "schema_version": 1,
+  "source_corpus_commit": "94c8bc250b7352e3009eeee1b353c3aec677bfb7",
+  "source_integrity": {
+    "checks": [
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v3/signal-stability-overview.md",
+        "expected_sha256": "sha256:1808c4d771d0a05f356407853db6d8593b75f270ff1e808a40200e9b010f1d69",
+        "node_id": "v3-signal-stability-overview",
+        "raw_sha256": "sha256:1808c4d771d0a05f356407853db6d8593b75f270ff1e808a40200e9b010f1d69",
+        "reason": "raw SHA-256 matched"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v3/signal-stability-credit-0.md",
+        "expected_sha256": "sha256:1dfff7e4518bd267b029bb27cb808ce68a0067316defca6f6dc378ebb81db578",
+        "node_id": "v3-signal-stability-credit-0",
+        "raw_sha256": "sha256:1dfff7e4518bd267b029bb27cb808ce68a0067316defca6f6dc378ebb81db578",
+        "reason": "raw SHA-256 matched"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v3/signal-stability-credit-1.md",
+        "expected_sha256": "sha256:ea596b49c14c46be88f152bdbf2c853c186890f20b5802aee5200d61fd950aeb",
+        "node_id": "v3-signal-stability-credit-1",
+        "raw_sha256": "sha256:ea596b49c14c46be88f152bdbf2c853c186890f20b5802aee5200d61fd950aeb",
+        "reason": "raw SHA-256 matched"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v3/signal-stability-credit-3.md",
+        "expected_sha256": "sha256:197484b964a5946e12d0497b1088bfb552a1cb431e973b572bd45182fc9cda36",
+        "node_id": "v3-signal-stability-credit-3",
+        "raw_sha256": "sha256:197484b964a5946e12d0497b1088bfb552a1cb431e973b572bd45182fc9cda36",
+        "reason": "raw SHA-256 matched"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v3/signal-stability-credit-10.md",
+        "expected_sha256": "sha256:5097cb9df0a1d5a8bba3aadab7b55a2dc9308a15388dc4952a5b48cc96df5fcb",
+        "node_id": "v3-signal-stability-credit-10",
+        "raw_sha256": "sha256:5097cb9df0a1d5a8bba3aadab7b55a2dc9308a15388dc4952a5b48cc96df5fcb",
+        "reason": "raw SHA-256 matched"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+        "expected_sha256": "sha256:001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+        "node_id": "v3-boundary-recovery-overview",
+        "raw_sha256": "sha256:001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+        "reason": "raw SHA-256 matched"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+        "expected_sha256": "sha256:45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+        "node_id": "v3-boundary-recovery-credit-0",
+        "raw_sha256": "sha256:45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+        "reason": "raw SHA-256 matched"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+        "expected_sha256": "sha256:f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+        "node_id": "v3-boundary-recovery-credit-1",
+        "raw_sha256": "sha256:f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+        "reason": "raw SHA-256 matched"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+        "expected_sha256": "sha256:fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+        "node_id": "v3-boundary-recovery-credit-3",
+        "raw_sha256": "sha256:fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+        "reason": "raw SHA-256 matched"
+      },
+      {
+        "accepted": true,
+        "alternate_sha256": null,
+        "decision": "raw_match",
+        "document_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+        "expected_sha256": "sha256:019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+        "node_id": "v3-boundary-recovery-credit-10",
+        "raw_sha256": "sha256:019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+        "reason": "raw SHA-256 matched"
+      }
+    ],
+    "explicit_links": {
+      "expected": [
+        [
+          "v3-boundary-recovery-overview",
+          "v3-boundary-recovery-credit-0",
+          "explicit_link"
+        ],
+        [
+          "v3-boundary-recovery-overview",
+          "v3-boundary-recovery-credit-1",
+          "explicit_link"
+        ],
+        [
+          "v3-boundary-recovery-overview",
+          "v3-boundary-recovery-credit-10",
+          "explicit_link"
+        ],
+        [
+          "v3-boundary-recovery-overview",
+          "v3-boundary-recovery-credit-3",
+          "explicit_link"
+        ],
+        [
+          "v3-signal-stability-overview",
+          "v3-signal-stability-credit-0",
+          "explicit_link"
+        ],
+        [
+          "v3-signal-stability-overview",
+          "v3-signal-stability-credit-1",
+          "explicit_link"
+        ],
+        [
+          "v3-signal-stability-overview",
+          "v3-signal-stability-credit-10",
+          "explicit_link"
+        ],
+        [
+          "v3-signal-stability-overview",
+          "v3-signal-stability-credit-3",
+          "explicit_link"
+        ]
+      ],
+      "observed": [
+        [
+          "v3-boundary-recovery-overview",
+          "v3-boundary-recovery-credit-0",
+          "explicit_link"
+        ],
+        [
+          "v3-boundary-recovery-overview",
+          "v3-boundary-recovery-credit-1",
+          "explicit_link"
+        ],
+        [
+          "v3-boundary-recovery-overview",
+          "v3-boundary-recovery-credit-10",
+          "explicit_link"
+        ],
+        [
+          "v3-boundary-recovery-overview",
+          "v3-boundary-recovery-credit-3",
+          "explicit_link"
+        ],
+        [
+          "v3-signal-stability-overview",
+          "v3-signal-stability-credit-0",
+          "explicit_link"
+        ],
+        [
+          "v3-signal-stability-overview",
+          "v3-signal-stability-credit-1",
+          "explicit_link"
+        ],
+        [
+          "v3-signal-stability-overview",
+          "v3-signal-stability-credit-10",
+          "explicit_link"
+        ],
+        [
+          "v3-signal-stability-overview",
+          "v3-signal-stability-credit-3",
+          "explicit_link"
+        ]
+      ],
+      "passed": true
+    },
+    "passed": true,
+    "source_commit": "94c8bc250b7352e3009eeee1b353c3aec677bfb7"
+  },
+  "stage": "development",
+  "treatment": {
+    "arm": "treatment",
+    "checkpoints": [
+      {
+        "cases": [
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "7b7d59319af14a969376085273999a0b",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-3",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "3fac16f809404005ac4644789409cb22",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "b36c8541f48f4f49b32cac220768c2f1",
+            "role": "ceiling"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "ff6ef53b1385468589793f280a65357a",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-3",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "6ef9461d459e4cc99925d88e908fc67e",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 3,
+            "relation_trace_id": "eceecc1cb5c6427592aafad7cdb5affe",
+            "role": "ceiling"
+          }
+        ],
+        "feedback_count": 0,
+        "role_mrr": {
+          "ceiling": 0.3333333333333333,
+          "control": 0.41666666666666663,
+          "headroom": 0.75
+        }
+      },
+      {
+        "cases": [
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25925925925925924,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.05,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "45d07fbfde614c36a25ad980a80c1904",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-3",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.24691358024691354,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 4,
+            "relation_trace_id": "89efe7f1d0d544aa84845aaead72c136",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25925925925925924,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.05,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "31739bb997a64d75aaed2116e446cc15",
+            "role": "ceiling"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25925925925925924,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.05,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "966f4b5e16e44ee8bd617a52ecf8f118",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-3",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.24691358024691354,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "25c12a1d2c004ad4ad31d088bad53c6a",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.25925925925925924,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.05,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "ed80b1c66dbb441abae34f4146145578",
+            "role": "ceiling"
+          }
+        ],
+        "feedback_count": 1,
+        "role_mrr": {
+          "ceiling": 1.0,
+          "control": 0.375,
+          "headroom": 1.0
+        }
+      },
+      {
+        "cases": [
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.2780784973699749,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.1555764568179918,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "f445612811784f2fbe9e48c06c5c35cd",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-3",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.240640500876675,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 2,
+            "relation_trace_id": "022ab575b92d4274a7e40fd7a4e461d1",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.2780784973699749,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.1555764568179918,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "8bcf1a9fda5947d8ae4594f83bdb9114",
+            "role": "ceiling"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.2780784973699749,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.1555764568179918,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "8e983846c82443e2840d31e7dac875ac",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-3",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.240640500876675,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 4,
+            "relation_trace_id": "38ff99617cb14450975eb7200d8c692a",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.2780784973699749,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.1555764568179918,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "d6b13da08685449dbd9ef329d75a1efb",
+            "role": "ceiling"
+          }
+        ],
+        "feedback_count": 3,
+        "role_mrr": {
+          "ceiling": 1.0,
+          "control": 0.375,
+          "headroom": 1.0
+        }
+      },
+      {
+        "cases": [
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.3457347694421299,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.5852963903369899,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "236eb9a4cd3a44009f7e1097342b5bb5",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-3",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.21808841018595665,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 4,
+            "relation_trace_id": "493ffb2648744dc1a3f084610dad5eae",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "signal-stability",
+            "expected_node_id": "v3-signal-stability-credit-10",
+            "expected_path_matched": true,
+            "id": "development-signal-stability-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-signal-stability-overview",
+                  "v3-signal-stability-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.3457347694421299,
+                "kind": "graph",
+                "seed_id": "v3-signal-stability-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.5852963903369899,
+                    "factuality": 1.0,
+                    "source_id": "v3-signal-stability-overview",
+                    "target_id": "v3-signal-stability-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "7992d6a976eb4fc89d29c455b341a7cf",
+            "role": "ceiling"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-headroom",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.3457347694421299,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.5852963903369899,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "3ce7d70a4a9240d2b299e6ad720b9e12",
+            "role": "headroom"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-3",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-control",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-3",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.21808841018595665,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.0,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-3"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 4,
+            "relation_trace_id": "cfd18d87b2bc4e7e835329657b2e5757",
+            "role": "control"
+          },
+          {
+            "channel": "relation",
+            "cluster": "boundary-recovery",
+            "expected_node_id": "v3-boundary-recovery-credit-10",
+            "expected_path_matched": true,
+            "id": "development-boundary-recovery-ceiling",
+            "projected_paths": [
+              [
+                [
+                  "v3-boundary-recovery-overview",
+                  "v3-boundary-recovery-credit-10",
+                  "explicit_link"
+                ]
+              ]
+            ],
+            "raw_paths": [
+              {
+                "contribution": 0.3457347694421299,
+                "kind": "graph",
+                "seed_id": "v3-boundary-recovery-overview",
+                "steps": [
+                  {
+                    "edge_type": "explicit_link",
+                    "edge_weight": 1.5852963903369899,
+                    "factuality": 1.0,
+                    "source_id": "v3-boundary-recovery-overview",
+                    "target_id": "v3-boundary-recovery-credit-10"
+                  }
+                ]
+              }
+            ],
+            "relation_found": true,
+            "relation_rank": 1,
+            "relation_trace_id": "ba8b2b3b8c6a4b0583c2bd4dcae1ce6a",
+            "role": "ceiling"
+          }
+        ],
+        "feedback_count": 10,
+        "role_mrr": {
+          "ceiling": 1.0,
+          "control": 0.25,
+          "headroom": 1.0
+        }
+      }
+    ],
+    "edge_changes": [
+      {
+        "after_reinforced_count": 10,
+        "after_weight": 1.5852963903369899,
+        "before_reinforced_count": 0,
+        "before_weight": 1.0,
+        "edge_type": "explicit_link",
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-10"
+      },
+      {
+        "after_reinforced_count": 10,
+        "after_weight": 1.5852963903369899,
+        "before_reinforced_count": 0,
+        "before_weight": 1.0,
+        "edge_type": "explicit_link",
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-10"
+      }
+    ],
+    "feedback": {
+      "per_cluster_count": {
+        "boundary-recovery": 10,
+        "signal-stability": 10
+      },
+      "records": [
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.05,
+              "old_weight": 1.0,
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 1,
+              "after_weight": 1.05,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "explicit_link",
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 1,
+          "feedback_id": "a17896c72a7b4fb8a48cab0c10df3998",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "8c5cda14d512471daeeaba669508a94e",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 2
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.05,
+              "old_weight": 1.0,
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 1,
+              "after_weight": 1.05,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "explicit_link",
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 1,
+          "feedback_id": "725053a04cd149a791d85a45da169355",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.0,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "a5bdadeb494647048257cf5909bf8e6f",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 3
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.1018518518518519,
+              "old_weight": 1.05,
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 2,
+              "after_weight": 1.1018518518518519,
+              "before_reinforced_count": 1,
+              "before_weight": 1.05,
+              "edge_type": "explicit_link",
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 2,
+          "feedback_id": "fbf53693c8d846768cc67e7db7cf2dc6",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25925925925925924,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.05,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "8f7eb8e6ce964091a03f1c5be2023bdd",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.1018518518518519,
+              "old_weight": 1.05,
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 2,
+              "after_weight": 1.1018518518518519,
+              "before_reinforced_count": 1,
+              "before_weight": 1.05,
+              "edge_type": "explicit_link",
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 2,
+          "feedback_id": "a9b0b2ad1bbd4268b60b782e022b57c9",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.25925925925925924,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.05,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "d7f3e0ddd97c470f87d9b6c0efd05215",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.1555764568179918,
+              "old_weight": 1.1018518518518519,
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.1555764568179918,
+              "before_reinforced_count": 2,
+              "before_weight": 1.1018518518518519,
+              "edge_type": "explicit_link",
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 3,
+          "feedback_id": "64087c2e4275475d96a3e18f302f3252",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.2686230248306998,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.1018518518518519,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "8d8904a33e0e43aba3eb5c5052ca52bf",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.1555764568179918,
+              "old_weight": 1.1018518518518519,
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.1555764568179918,
+              "before_reinforced_count": 2,
+              "before_weight": 1.1018518518518519,
+              "edge_type": "explicit_link",
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 3,
+          "feedback_id": "f2b3a8a793c34a13b58827b090022230",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.2686230248306998,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.1018518518518519,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "0efc4599d41043d2b7fc7897d6068dd6",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.2111921562919867,
+              "old_weight": 1.1555764568179918,
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 4,
+              "after_weight": 1.2111921562919867,
+              "before_reinforced_count": 3,
+              "before_weight": 1.1555764568179918,
+              "edge_type": "explicit_link",
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 4,
+          "feedback_id": "0fda7aa157fa4802a5a4c6fdde96c388",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.2780784973699749,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.1555764568179918,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "9eac22340c0b4491aa83baced6469e6d",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.2111921562919867,
+              "old_weight": 1.1555764568179918,
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 4,
+              "after_weight": 1.2111921562919867,
+              "before_reinforced_count": 3,
+              "before_weight": 1.1555764568179918,
+              "edge_type": "explicit_link",
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 4,
+          "feedback_id": "62d53f38481d499ca402afbe6e22f758",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.2780784973699749,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.1555764568179918,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "c1b19487207c4ed793fe5ce4ad847e97",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.26871468726851,
+              "old_weight": 1.2111921562919867,
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 5,
+              "after_weight": 1.26871468726851,
+              "before_reinforced_count": 4,
+              "before_weight": 1.2111921562919867,
+              "edge_type": "explicit_link",
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 5,
+          "feedback_id": "59a7bf76597c4a81beeaf0460b63950d",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.28761265488261595,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.2111921562919867,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "94c2c885f0a34ab3b8032cd437cf6549",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.26871468726851,
+              "old_weight": 1.2111921562919867,
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 5,
+              "after_weight": 1.26871468726851,
+              "before_reinforced_count": 4,
+              "before_weight": 1.2111921562919867,
+              "edge_type": "explicit_link",
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 5,
+          "feedback_id": "6bfd28e085f548ae84b6811d5824b70d",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.28761265488261595,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.2111921562919867,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "09f2348e29ed4109969795cc51e01bf9",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.328157155562419,
+              "old_weight": 1.26871468726851,
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 6,
+              "after_weight": 1.328157155562419,
+              "before_reinforced_count": 5,
+              "before_weight": 1.26871468726851,
+              "edge_type": "explicit_link",
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 6,
+          "feedback_id": "cd50b01f80b54cd4bd5e1a79a671d357",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.2972123414695449,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.26871468726851,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "c8c76a214f7c43adb3ba1c3181923c7d",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.328157155562419,
+              "old_weight": 1.26871468726851,
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 6,
+              "after_weight": 1.328157155562419,
+              "before_reinforced_count": 5,
+              "before_weight": 1.26871468726851,
+              "edge_type": "explicit_link",
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 6,
+          "feedback_id": "1ba569d057994ef09bc12b40627f1c3b",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.2972123414695449,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.26871468726851,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "182337b8046c499fbb3400574d96d655",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.3895300266401482,
+              "old_weight": 1.328157155562419,
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 7,
+              "after_weight": 1.3895300266401482,
+              "before_reinforced_count": 6,
+              "before_weight": 1.328157155562419,
+              "edge_type": "explicit_link",
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 7,
+          "feedback_id": "753996c4820545c38706928899856ae5",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.3068643553886463,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.328157155562419,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "ba78b5ba5810489f8f9d3aef36415b59",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.3895300266401482,
+              "old_weight": 1.328157155562419,
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 7,
+              "after_weight": 1.3895300266401482,
+              "before_reinforced_count": 6,
+              "before_weight": 1.328157155562419,
+              "edge_type": "explicit_link",
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 7,
+          "feedback_id": "67d2728838a34f8e9c4797f0ac917b82",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.3068643553886463,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.328157155562419,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "08647c69a7d441a6a1b2a62f31bf8712",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.452841133670152,
+              "old_weight": 1.3895300266401482,
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 8,
+              "after_weight": 1.452841133670152,
+              "before_reinforced_count": 7,
+              "before_weight": 1.3895300266401482,
+              "edge_type": "explicit_link",
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 8,
+          "feedback_id": "72946a96a92742acb8c6100a2c735c7c",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.31655553515001883,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.3895300266401482,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "3da1f14e061b4405bc51d4d7588ed3ce",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.452841133670152,
+              "old_weight": 1.3895300266401482,
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 8,
+              "after_weight": 1.452841133670152,
+              "before_reinforced_count": 7,
+              "before_weight": 1.3895300266401482,
+              "edge_type": "explicit_link",
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 8,
+          "feedback_id": "8dac8599f5fb4b44a36d866aa915dcec",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.31655553515001883,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.3895300266401482,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "04dc9271e4234e40b52128c89aa1b68b",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.5180957021605703,
+              "old_weight": 1.452841133670152,
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 9,
+              "after_weight": 1.5180957021605703,
+              "before_reinforced_count": 8,
+              "before_weight": 1.452841133670152,
+              "edge_type": "explicit_link",
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 9,
+          "feedback_id": "056f1862ee0140d7a9bd01fa4ce9978a",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.32627284245209104,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.452841133670152,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "66ce751cf0b0436a87ad6b3fae953513",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.5180957021605703,
+              "old_weight": 1.452841133670152,
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 9,
+              "after_weight": 1.5180957021605703,
+              "before_reinforced_count": 8,
+              "before_weight": 1.452841133670152,
+              "edge_type": "explicit_link",
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 9,
+          "feedback_id": "56d08e134baf4cb38e9a2ef1faaf623d",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.32627284245209104,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.452841133670152,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "d42c374e53c94e77a0032cf5d76cdb4f",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "signal-stability",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.5852963903369899,
+              "old_weight": 1.5180957021605703,
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 10,
+              "after_weight": 1.5852963903369899,
+              "before_reinforced_count": 9,
+              "before_weight": 1.5180957021605703,
+              "edge_type": "explicit_link",
+              "source_id": "v3-signal-stability-overview",
+              "target_id": "v3-signal-stability-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 10,
+          "feedback_id": "cd79ab7f8abd4301934aa573732f3179",
+          "projected_paths": [
+            [
+              [
+                "v3-signal-stability-overview",
+                "v3-signal-stability-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.33600344088209805,
+              "kind": "graph",
+              "seed_id": "v3-signal-stability-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.5180957021605703,
+                  "factuality": 1.0,
+                  "source_id": "v3-signal-stability-overview",
+                  "target_id": "v3-signal-stability-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "7d3a690f79534223857c09fcd91c402f",
+          "used_node_id": "v3-signal-stability-credit-10",
+          "used_node_rank": 1
+        },
+        {
+          "channel": "relation",
+          "cluster": "boundary-recovery",
+          "credited_edges": [
+            {
+              "edge_type": "explicit_link",
+              "new_weight": 1.5852963903369899,
+              "old_weight": 1.5180957021605703,
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "edge_changes": [
+            {
+              "after_reinforced_count": 10,
+              "after_weight": 1.5852963903369899,
+              "before_reinforced_count": 9,
+              "before_weight": 1.5180957021605703,
+              "edge_type": "explicit_link",
+              "source_id": "v3-boundary-recovery-overview",
+              "target_id": "v3-boundary-recovery-credit-10"
+            }
+          ],
+          "expected_path_matched": true,
+          "feedback_count": 10,
+          "feedback_id": "422057479a684e34b5d37dc6a55c1b83",
+          "projected_paths": [
+            [
+              [
+                "v3-boundary-recovery-overview",
+                "v3-boundary-recovery-credit-10",
+                "explicit_link"
+              ]
+            ]
+          ],
+          "raw_paths": [
+            {
+              "contribution": 0.33600344088209805,
+              "kind": "graph",
+              "seed_id": "v3-boundary-recovery-overview",
+              "steps": [
+                {
+                  "edge_type": "explicit_link",
+                  "edge_weight": 1.5180957021605703,
+                  "factuality": 1.0,
+                  "source_id": "v3-boundary-recovery-overview",
+                  "target_id": "v3-boundary-recovery-credit-10"
+                }
+              ]
+            }
+          ],
+          "trace_id": "4205e2dbcd284f51aeb12b0759cdea74",
+          "used_node_id": "v3-boundary-recovery-credit-10",
+          "used_node_rank": 1
+        }
+      ],
+      "total_event_count": 20
+    },
+    "final_edges": [
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-0",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-1",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 10,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-10",
+        "weight": 1.5852963903369899
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-3",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-0",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-1",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 10,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-10",
+        "weight": 1.5852963903369899
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-3",
+        "weight": 1.0
+      }
+    ],
+    "initial_edges": [
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-0",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-1",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-10",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-boundary-recovery-overview",
+        "target_id": "v3-boundary-recovery-credit-3",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-0",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-1",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-10",
+        "weight": 1.0
+      },
+      {
+        "edge_type": "explicit_link",
+        "reinforced_count": 0,
+        "source_id": "v3-signal-stability-overview",
+        "target_id": "v3-signal-stability-credit-3",
+        "weight": 1.0
+      }
+    ],
+    "metrics": {
+      "0": {
+        "ceiling": 0.3333333333333333,
+        "control": 0.41666666666666663,
+        "headroom": 0.75
+      },
+      "1": {
+        "ceiling": 1.0,
+        "control": 0.375,
+        "headroom": 1.0
+      },
+      "10": {
+        "ceiling": 1.0,
+        "control": 0.25,
+        "headroom": 1.0
+      },
+      "3": {
+        "ceiling": 1.0,
+        "control": 0.375,
+        "headroom": 1.0
+      }
+    }
+  }
+}
