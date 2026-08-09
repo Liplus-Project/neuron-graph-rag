@@ -10,3 +10,5 @@ dist/
 *.d1-export.json
 artifacts/d1/
 tests/fixtures/.full-*
+# Immutable run outputs for the repository-native feedback evaluation.
+artifacts/repository-native-feedback-v2/

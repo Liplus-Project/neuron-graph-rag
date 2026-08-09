@@ -1,0 +1,20 @@
+{
+  "protocol_version": "repository-native-feedback-v2",
+  "description": "観測前に固定する relation retrieval の query、feedback、gold target。結果を含まない。",
+  "stages": {
+    "development": {
+      "split": "development",
+      "feedback_query": "hybrid typed graph activation success feedback",
+      "feedback_target_node_id": "v2-dev-3",
+      "score_query": "fixed source input quality",
+      "score_target_node_id": "v2-dev-3"
+    },
+    "holdout": {
+      "split": "holdout",
+      "feedback_query": "decision structure typed edge source metadata",
+      "feedback_target_node_id": "v2-holdout-3",
+      "score_query": "single observation response boundary",
+      "score_target_node_id": "v2-holdout-3"
+    }
+  }
+}
