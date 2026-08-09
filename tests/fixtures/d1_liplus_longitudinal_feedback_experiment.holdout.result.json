@@ -1,0 +1,3780 @@
+{
+  "ceiling_policy": {
+    "ceiling": "non-regression only; a pass does not evidence an additional rank improvement",
+    "ceiling_rank_improvement_observable": false,
+    "headroom": "strict final-horizon aggregate MRR improvement with per-cluster non-regression"
+  },
+  "clusters": [
+    {
+      "cluster_id": "lf-holdout-headroom-a",
+      "cohort": "headroom",
+      "control": {
+        "feedback": {
+          "credited_edges": [],
+          "credited_only": false,
+          "edge_changes": [],
+          "feedback_count": 3,
+          "no_edge_mutation": true,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-b-rival",
+                  "lf-holdout-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-b-rival",
+                  "lf-holdout-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-b-rival",
+                  "lf-holdout-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-b-rival",
+                  "lf-holdout-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "inputs": {
+        "fixture": "sha256:68d3c0a516bfed8467e63243ecd091c7934222df6ce16d8cc81a5d73e50498b5",
+        "gold": "sha256:8874747f2e9090b674e24cdfd9fab5f4f8605562fb2f057db26aa84e03e19cc7",
+        "provenance": "sha256:15fedd655aa5c482d5dcef89820bf24f7912937a268e447b84e8a93c84ced724"
+      },
+      "replay": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-holdout-headroom-a-source",
+              "target_id": "lf-holdout-headroom-a-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-holdout-headroom-a-source",
+              "target_id": "lf-holdout-headroom-a-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-holdout-headroom-a-source",
+              "target_id": "lf-holdout-headroom-a-z-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-holdout-headroom-a-source",
+              "target_id": "lf-holdout-headroom-a-z-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-b-rival",
+                  "lf-holdout-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-z-target",
+                  "lf-holdout-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-z-target",
+                  "lf-holdout-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-z-target",
+                  "lf-holdout-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "treatment": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-holdout-headroom-a-source",
+              "target_id": "lf-holdout-headroom-a-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-holdout-headroom-a-source",
+              "target_id": "lf-holdout-headroom-a-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-holdout-headroom-a-source",
+              "target_id": "lf-holdout-headroom-a-z-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-holdout-headroom-a-source",
+              "target_id": "lf-holdout-headroom-a-z-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-b-rival",
+                  "lf-holdout-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-z-target",
+                  "lf-holdout-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-z-target",
+                  "lf-holdout-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-a-source",
+                      "target_id": "lf-holdout-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-a-z-target",
+                  "lf-holdout-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-z-target",
+                "id": "lf-holdout-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-a-source",
+                "id": "lf-holdout-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      }
+    },
+    {
+      "cluster_id": "lf-holdout-headroom-b",
+      "cohort": "headroom",
+      "control": {
+        "feedback": {
+          "credited_edges": [],
+          "credited_only": false,
+          "edge_changes": [],
+          "feedback_count": 3,
+          "no_edge_mutation": true,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-b-rival",
+                  "lf-holdout-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-b-rival",
+                  "lf-holdout-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-b-rival",
+                  "lf-holdout-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-b-rival",
+                  "lf-holdout-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "inputs": {
+        "fixture": "sha256:ae3f7e3b63f5e01e855d573e169c1aa703ad1a2058be8fb250564937977503ea",
+        "gold": "sha256:bf40d4b51fb693956543e3ee2ea738a59be42405ca29ad367b9fcc7b76e3fd02",
+        "provenance": "sha256:2bfb8ede3cfdabf4259e6acf816a218a3eac3c0fa4d82a4e0f4ec1d94682b922"
+      },
+      "replay": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-holdout-headroom-b-source",
+              "target_id": "lf-holdout-headroom-b-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-holdout-headroom-b-source",
+              "target_id": "lf-holdout-headroom-b-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-holdout-headroom-b-source",
+              "target_id": "lf-holdout-headroom-b-z-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-holdout-headroom-b-source",
+              "target_id": "lf-holdout-headroom-b-z-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-b-rival",
+                  "lf-holdout-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-z-target",
+                  "lf-holdout-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-z-target",
+                  "lf-holdout-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-z-target",
+                  "lf-holdout-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "treatment": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-holdout-headroom-b-source",
+              "target_id": "lf-holdout-headroom-b-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-holdout-headroom-b-source",
+              "target_id": "lf-holdout-headroom-b-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-holdout-headroom-b-source",
+              "target_id": "lf-holdout-headroom-b-z-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-holdout-headroom-b-source",
+              "target_id": "lf-holdout-headroom-b-z-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-b-rival",
+                  "lf-holdout-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-z-target",
+                  "lf-holdout-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-z-target",
+                  "lf-holdout-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-headroom-b-source",
+                      "target_id": "lf-holdout-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-headroom-b-z-target",
+                  "lf-holdout-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-z-target",
+                "id": "lf-holdout-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-headroom-b-source",
+                "id": "lf-holdout-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      }
+    },
+    {
+      "cluster_id": "lf-holdout-ceiling",
+      "cohort": "ceiling",
+      "control": {
+        "feedback": {
+          "credited_edges": [],
+          "credited_only": false,
+          "edge_changes": [],
+          "feedback_count": 3,
+          "no_edge_mutation": true,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "inputs": {
+        "fixture": "sha256:634aac3c901cdbe64f56abd89d7a66d6e7ab70b2c3daf536e26582c7341c7c07",
+        "gold": "sha256:f92571b85abc849a87e1c29dd67c4a5e35b032b7179567895971c530bef8efe7",
+        "provenance": "sha256:4cb9fa126fc9943dc2ef36647632b0b175a3fb764b6a82ca10f492b5fcb56b6b"
+      },
+      "replay": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-holdout-ceiling-source",
+              "target_id": "lf-holdout-ceiling-b-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-holdout-ceiling-source",
+              "target_id": "lf-holdout-ceiling-b-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-holdout-ceiling-source",
+              "target_id": "lf-holdout-ceiling-b-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-holdout-ceiling-source",
+              "target_id": "lf-holdout-ceiling-b-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "treatment": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-holdout-ceiling-source",
+              "target_id": "lf-holdout-ceiling-b-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-holdout-ceiling-source",
+              "target_id": "lf-holdout-ceiling-b-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-holdout-ceiling-source",
+              "target_id": "lf-holdout-ceiling-b-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-holdout-ceiling-source",
+              "target_id": "lf-holdout-ceiling-b-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-holdout-ceiling-source",
+                      "target_id": "lf-holdout-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-holdout-ceiling-b-target",
+                  "lf-holdout-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-b-target",
+                "id": "lf-holdout-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-holdout-ceiling-source",
+                "id": "lf-holdout-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      }
+    }
+  ],
+  "decision": {
+    "adopted": false,
+    "reason": "frozen_longitudinal_gate_passed_no_default_or_generalization_claim"
+  },
+  "development_result_sha256": "sha256:0fee322fd99e2f55526717f0c47321dd9ac93bd793f588cea5477e6bed587404",
+  "experiment_id": "multi-corpus-trace-credited-longitudinal-feedback-v1",
+  "gate": {
+    "ceiling_clusters_do_not_regress": true,
+    "ceiling_h0_control_equals_ceiling": true,
+    "contamination_audit_passed": true,
+    "credited_only_mutation_and_control_no_mutation": true,
+    "direct_lexical_controls_do_not_regress": true,
+    "directional_negative_controls_remain_empty": true,
+    "fixed_horizons_present": true,
+    "headroom_clusters_do_not_regress": true,
+    "headroom_final_aggregate_mrr_strictly_improves": true,
+    "headroom_h0_control_is_below_ceiling": true,
+    "projected_paths_match_at_every_horizon": true,
+    "same_schedule_replay_is_deterministic": true
+  },
+  "holdout_open_count": 1,
+  "manifest_sha256": "sha256:0e47247fbe27894959b9b8ed161c9469b3febc4abb26134e63d75fff37210374",
+  "metrics": {
+    "horizon_relation_mrr": {
+      "0": {
+        "ceiling_control": 1.0,
+        "ceiling_treatment": 1.0,
+        "control": 0.6666666666666666,
+        "headroom_control": 0.5,
+        "headroom_treatment": 0.5,
+        "treatment": 0.6666666666666666
+      },
+      "1": {
+        "ceiling_control": 1.0,
+        "ceiling_treatment": 1.0,
+        "control": 0.6666666666666666,
+        "headroom_control": 0.5,
+        "headroom_treatment": 1.0,
+        "treatment": 1.0
+      },
+      "2": {
+        "ceiling_control": 1.0,
+        "ceiling_treatment": 1.0,
+        "control": 0.6666666666666666,
+        "headroom_control": 0.5,
+        "headroom_treatment": 1.0,
+        "treatment": 1.0
+      },
+      "3": {
+        "ceiling_control": 1.0,
+        "ceiling_treatment": 1.0,
+        "control": 0.6666666666666666,
+        "headroom_control": 0.5,
+        "headroom_treatment": 1.0,
+        "treatment": 1.0
+      }
+    }
+  },
+  "schema_version": 1,
+  "stage": "holdout"
+}
