@@ -11,6 +11,7 @@
 | Node | State | Current resolution |
 | --- | --- | --- |
 | [observation-lifecycle-test-exception](https://github.com/Liplus-Project/neuron-graph-rag/wiki/observation-lifecycle-test-exception) | active | #31 の observed-state lifecycle test exception は hash、exclusive-write、no-recompute assertion に限定する。 |
+| [ceiling-aware-feedback-adaptation-gate](https://github.com/Liplus-Project/neuron-graph-rag/wiki/ceiling-aware-feedback-adaptation-gate) | active | 新規 feedback-adaptation experiment は baseline relation MRR が 1.0 未満なら strict improvement、1.0 なら全 safety gate を満たす non-regression を要求する。ceiling pass は default や一般化を意味しない。 |
 
 ## Entry format
 
