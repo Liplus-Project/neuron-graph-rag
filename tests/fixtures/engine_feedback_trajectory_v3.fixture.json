@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "source_commit": "94c8bc250b7352e3009eeee1b353c3aec677bfb7",
+  "repository_root": "../..",
+  "edge_derivation": "overview 文書の同一 directory 内 Markdown link のみ",
+  "splits": {
+    "development": {
+      "clusters": [
+        "signal-stability",
+        "boundary-recovery"
+      ],
+      "nodes": [
+        {
+          "cluster": "signal-stability",
+          "node_id": "v3-signal-stability-overview",
+          "document_path": "corpora/repository-native-controlled-v3/signal-stability-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/signal-stability-overview.md",
+          "source_sha256": "sha256:1808c4d771d0a05f356407853db6d8593b75f270ff1e808a40200e9b010f1d69"
+        },
+        {
+          "cluster": "signal-stability",
+          "node_id": "v3-signal-stability-credit-0",
+          "document_path": "corpora/repository-native-controlled-v3/signal-stability-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/signal-stability-credit-0.md",
+          "source_sha256": "sha256:1dfff7e4518bd267b029bb27cb808ce68a0067316defca6f6dc378ebb81db578"
+        },
+        {
+          "cluster": "signal-stability",
+          "node_id": "v3-signal-stability-credit-1",
+          "document_path": "corpora/repository-native-controlled-v3/signal-stability-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/signal-stability-credit-1.md",
+          "source_sha256": "sha256:ea596b49c14c46be88f152bdbf2c853c186890f20b5802aee5200d61fd950aeb"
+        },
+        {
+          "cluster": "signal-stability",
+          "node_id": "v3-signal-stability-credit-3",
+          "document_path": "corpora/repository-native-controlled-v3/signal-stability-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/signal-stability-credit-3.md",
+          "source_sha256": "sha256:197484b964a5946e12d0497b1088bfb552a1cb431e973b572bd45182fc9cda36"
+        },
+        {
+          "cluster": "signal-stability",
+          "node_id": "v3-signal-stability-credit-10",
+          "document_path": "corpora/repository-native-controlled-v3/signal-stability-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/signal-stability-credit-10.md",
+          "source_sha256": "sha256:5097cb9df0a1d5a8bba3aadab7b55a2dc9308a15388dc4952a5b48cc96df5fcb"
+        },
+        {
+          "cluster": "boundary-recovery",
+          "node_id": "v3-boundary-recovery-overview",
+          "document_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "source_sha256": "sha256:001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670"
+        },
+        {
+          "cluster": "boundary-recovery",
+          "node_id": "v3-boundary-recovery-credit-0",
+          "document_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "source_sha256": "sha256:45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84"
+        },
+        {
+          "cluster": "boundary-recovery",
+          "node_id": "v3-boundary-recovery-credit-1",
+          "document_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "source_sha256": "sha256:f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c"
+        },
+        {
+          "cluster": "boundary-recovery",
+          "node_id": "v3-boundary-recovery-credit-3",
+          "document_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "source_sha256": "sha256:fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1"
+        },
+        {
+          "cluster": "boundary-recovery",
+          "node_id": "v3-boundary-recovery-credit-10",
+          "document_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "source_sha256": "sha256:019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83"
+        }
+      ],
+      "edges": [
+        {"cluster": "signal-stability", "source_id": "v3-signal-stability-overview", "target_id": "v3-signal-stability-credit-0", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0},
+        {"cluster": "signal-stability", "source_id": "v3-signal-stability-overview", "target_id": "v3-signal-stability-credit-1", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0},
+        {"cluster": "signal-stability", "source_id": "v3-signal-stability-overview", "target_id": "v3-signal-stability-credit-3", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0},
+        {"cluster": "signal-stability", "source_id": "v3-signal-stability-overview", "target_id": "v3-signal-stability-credit-10", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0},
+        {"cluster": "boundary-recovery", "source_id": "v3-boundary-recovery-overview", "target_id": "v3-boundary-recovery-credit-0", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0},
+        {"cluster": "boundary-recovery", "source_id": "v3-boundary-recovery-overview", "target_id": "v3-boundary-recovery-credit-1", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0},
+        {"cluster": "boundary-recovery", "source_id": "v3-boundary-recovery-overview", "target_id": "v3-boundary-recovery-credit-3", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0},
+        {"cluster": "boundary-recovery", "source_id": "v3-boundary-recovery-overview", "target_id": "v3-boundary-recovery-credit-10", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0}
+      ]
+    },
+    "holdout": {
+      "clusters": [
+        "evidence-continuity"
+      ],
+      "nodes": [
+        {
+          "cluster": "evidence-continuity",
+          "node_id": "v3-evidence-continuity-overview",
+          "document_path": "corpora/repository-native-controlled-v3/evidence-continuity-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/evidence-continuity-overview.md",
+          "source_sha256": "sha256:e99d0886f0f35b197387229d5b401afb8dd8be06a2fa56bce7e33d6ffb8f6a24"
+        },
+        {
+          "cluster": "evidence-continuity",
+          "node_id": "v3-evidence-continuity-credit-0",
+          "document_path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/evidence-continuity-credit-0.md",
+          "source_sha256": "sha256:c6d4756eac7dccd3342279cd7a0c81595ddb209f53b9e678ec7c02c8eaa3b401"
+        },
+        {
+          "cluster": "evidence-continuity",
+          "node_id": "v3-evidence-continuity-credit-1",
+          "document_path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/evidence-continuity-credit-1.md",
+          "source_sha256": "sha256:90e217d3a53f43efcc7e5b455229ba9140980ae58f467fe0fc68952004f521e0"
+        },
+        {
+          "cluster": "evidence-continuity",
+          "node_id": "v3-evidence-continuity-credit-3",
+          "document_path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/evidence-continuity-credit-3.md",
+          "source_sha256": "sha256:710ebe6f56ee261b74eb4558122f88065bae69f23317e905e7942827620c4070"
+        },
+        {
+          "cluster": "evidence-continuity",
+          "node_id": "v3-evidence-continuity-credit-10",
+          "document_path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/evidence-continuity-credit-10.md",
+          "source_sha256": "sha256:55f06876f1f28237926a0889c895d50b88b41c9e4cdf5b15ddeb3e01e82fe7af"
+        }
+      ],
+      "edges": [
+        {"cluster": "evidence-continuity", "source_id": "v3-evidence-continuity-overview", "target_id": "v3-evidence-continuity-credit-0", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0},
+        {"cluster": "evidence-continuity", "source_id": "v3-evidence-continuity-overview", "target_id": "v3-evidence-continuity-credit-1", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0},
+        {"cluster": "evidence-continuity", "source_id": "v3-evidence-continuity-overview", "target_id": "v3-evidence-continuity-credit-3", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0},
+        {"cluster": "evidence-continuity", "source_id": "v3-evidence-continuity-overview", "target_id": "v3-evidence-continuity-credit-10", "edge_type": "explicit_link", "weight": 1.0, "factuality": 1.0}
+      ]
+    }
+  }
+}
