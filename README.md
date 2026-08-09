@@ -241,6 +241,8 @@ result-free freeze `1fa2001` 後のdevelopment / holdoutは各12 fresh responses
 
 Trace-credited feedback adaptationは、relation traceの`record_success`が後続relation retrievalをcontrolより改善するかを、同一frozen corpusとscheduleで比較します。controlもfeedback eventを記録しますがedgeを変更せず、treatmentだけがcredited pathを強化します。result-free manifestをpushした後はdevelopmentを一度だけ実行し、全gate通過時だけholdoutを一度開きます。既定API、router、production品質の主張は変更しません。詳細は[Trace-credited feedback adaptation experiment](docs/feedback-adaptation-experiment.md)を参照してください。
 
+独立reproductionはprior feedback-adaptation resultを選択入力にせず、新規D1 development / holdout splitで同じtrace-credit claimを検証します。relation pathはruntime fieldを除き、`source_id`、`target_id`、`edge_type`だけへ射影してgoldと比較します。prior fixtureは識別子だけのcontamination auditに使い、prior goldとresultは読みません。詳細は[Trace-credited feedback adaptation reproduction experiment](docs/feedback-adaptation-reproduction-experiment.md)を参照してください。
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。

@@ -1,0 +1,63 @@
+{
+  "checks": {
+    "development_vs_holdout": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_1": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_2": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_1": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_2": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    }
+  },
+  "inputs": {
+    "development_fixture_sha256": "sha256:09a89a5bc283b2f29a73889ffbe2780c264b2e526763f3744b77139431943c58",
+    "development_gold_sha256": "sha256:669467eeaab1add49a32d1b5cc5396d529587d30cef43b03c14299cd4414acd3",
+    "holdout_fixture_sha256": "sha256:9154fb635ee7904c4a5fc7aaa2c1e67ecd887dfc1fc525c336661384efc42a25",
+    "holdout_gold_sha256": "sha256:0657ff037496cc9b9547ade45a1becaab6b807b9856c2135f3c3367125b8a176",
+    "prior_fixtures": [
+      {
+        "fixture": "d1_liplus_feedback_adaptation_development.json",
+        "fixture_sha256": "sha256:65f9993d3de6adae368daded3525bb79bf20eae613efde17174ba0685b9bc46c"
+      },
+      {
+        "fixture": "d1_liplus_feedback_adaptation_holdout.json",
+        "fixture_sha256": "sha256:44d743353a70826c3933bc19a759de15e1a3d297cac5b4c448af686fdc33d919"
+      }
+    ]
+  },
+  "passed": true,
+  "prior_usage": "fixture identifiers only; prior gold and result artifacts are not loaded",
+  "schema_version": 1
+}

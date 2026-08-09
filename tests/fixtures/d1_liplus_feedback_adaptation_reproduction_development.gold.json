@@ -1,0 +1,43 @@
+{
+  "feedback": {
+    "channel": "relation",
+    "now": 100.0,
+    "query": "Which distributed Li+ source explains that resolved workspace values must not be copied?",
+    "used_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+  },
+  "scoring_cases": [
+    {
+      "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+          "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+        }
+      ],
+      "id": "development-relation-contract-reference",
+      "now": 110.0,
+      "query": "How should distributed Li+ source retain only the workspace contract reference?",
+      "role": "relation",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/always-on-duplication-removal-direction"
+    },
+    {
+      "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+      "id": "development-direct-always-on",
+      "now": 120.0,
+      "query": "Which policy keeps the always-on copy when duplicate content is removed?",
+      "role": "direct_lexical",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/always-on-duplication-removal-direction"
+    },
+    {
+      "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+      "expected_relation_empty": true,
+      "id": "development-directional-negative",
+      "now": 130.0,
+      "query": "Which policy removes duplicate always-on content?",
+      "role": "directional_negative",
+      "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/always-on-duplication-removal-direction"
+    }
+  ],
+  "schema_version": 1
+}

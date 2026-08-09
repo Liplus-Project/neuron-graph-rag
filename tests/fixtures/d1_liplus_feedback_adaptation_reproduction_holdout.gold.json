@@ -1,0 +1,43 @@
+{
+  "feedback": {
+    "channel": "relation",
+    "now": 200.0,
+    "query": "Which dipper_ai page lists the available documentation pages?",
+    "used_node_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+  },
+  "scoring_cases": [
+    {
+      "expected_node_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+      "expected_path": [
+        {
+          "edge_type": "mention",
+          "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+          "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+        }
+      ],
+      "id": "holdout-relation-architecture",
+      "now": 210.0,
+      "query": "Where does dipper_ai introduce its documentation pages?",
+      "role": "relation",
+      "source_url": "https://github.com/Liplus-Project/dipper_ai/wiki/Architecture"
+    },
+    {
+      "expected_node_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI",
+      "id": "holdout-direct-configuration",
+      "now": 220.0,
+      "query": "Which dipper_ai page describes the user.conf configuration format?",
+      "role": "direct_lexical",
+      "source_url": "https://github.com/Liplus-Project/dipper_ai/wiki/Configuration"
+    },
+    {
+      "expected_node_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+      "expected_relation_empty": true,
+      "id": "holdout-directional-negative",
+      "now": 230.0,
+      "query": "Which dipper_ai page shows the internal package layout?",
+      "role": "directional_negative",
+      "source_url": "https://github.com/Liplus-Project/dipper_ai/wiki/Architecture"
+    }
+  ],
+  "schema_version": 1
+}

@@ -1,0 +1,148 @@
+{
+  "edges": [
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "Architecture",
+          "dst_vector_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/dipper_ai",
+          "src_slug": "Home",
+          "src_vector_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+          "updated_at": "2026-07-31T15:46:12.363Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+      "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "Configuration",
+          "dst_vector_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/dipper_ai",
+          "src_slug": "Home",
+          "src_vector_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+          "updated_at": "2026-07-31T15:46:12.363Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+      "target_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI",
+      "weight": 1.0
+    }
+  ],
+  "nodes": [
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "Architecture",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-08T04:45:41.566Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/dipper_ai",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/dipper_ai/wiki/Architecture",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-08T04:45:40.043Z",
+        "vector_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"
+      },
+      "node_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0",
+      "text": "Architecture\n\n# Architecture\n\n## パッケージ構成\n\n```\ndipper_ai/\n├── cmd/dipper_ai/        # エントリポイント (main.go)\n├── internal/\n│   ├── config/           # 設定ファイルのパース・バリデーション\n│   ├── ddns/             # DDNS プロバイダ実装\n│   ├── ip/               # グローバル IP アドレス取得\n│   ├── lock/             # 多重起動防止ロック\n│   ├── mode/             # コマンドロジック (update / check / err_mail)\n│   ├── state/            # 状態ファイル読み書き\n│   └── timegate/         # タイムゲート（実行間隔制御）\n├── scripts/              # install.sh / uninstall.sh\n└── systemd/              # .service / .timer unit ファイル\n```\n\n---\n\n## 各パッケージの役割\n\n### `config`\n\n`user.conf` を読み込み、`Config` 構造体に変換します。\n\n- shell-style `key=value` 形式、インラインコメント・クォート除去対応\n- `boolVal`: `on` / `off` / `1` / `0` / `true` / `false`（大小文字不問）\n- `intMin`: 最小値を強制（`UPDATE_TIME`、`DDNS_TIME` に使用）\n- `intGate`: `0` = 無効化、それ以外は最小値を強制（`IP_CACHE_TIME`、`ERR_CHK_TIME` に使用）\n- MyDNS エントリは `MYDNS_0_ID` が存在する限りインデックスをインクリメントして解析\n- Cloudflare エントリは `CF_0_ENABLED` が存在する限り同様にインクリメント\n\n```go\ntype Config struct {\n    StateDir     string\n    IPv4, IPv6   bool\n    UpdateTime   int  // minutes\n    IPCacheTime  int  // 0 = disabled\n    MyDNS        []MyDNSEntry\n    Cloudflare   []CloudflareEntry\n    // ...\n}\n```\n\n### `ip`\n\n`ip.Fetch(ipv4, ipv6 bool)` でグローバル IP アドレスを取得します。\n外部 HTTP API（`ipv4.icanhazip.com` / `ipv6.icanhazip.com` 等）を使用し、`dig` などの外部コマンドに依存しません。\n\n### `ddns`\n\nDDNS プロバイダごとの HTTP 更新実装。\n\n**MyDNS** (`mydns.go`):\n- `UpdateMyDNSIPv4(entry, url) ProviderResult`\n- `UpdateMyDNSIPv6(entry, url) ProviderResult`\n- HTTP GET + Basic Auth ヘッダ\n\n**Cloudflare** (`cloudflare.go`):\n- `UpdateCloudflare(entry, ip, recordType, zonesURL) ProviderResult`\n- 3 ステップ: ゾーン名 → ゾーン ID 解決 → レコード検索 → PATCH 更新\n- `Authorization: Bearer <token>` ヘッダ\n\n`ProviderResult` は成功・失敗とエラーメッセージを保持します。\n\n### `timegate`\n\n`gate_<name>` ファイルに RFC3339 タイムスタンプを書き込み、前回実行からの経過時間を判定します。\n\n```go\ngate := timegate.New(stateDir, \"update\", 1440*time.Minute)\nif gate.ShouldRun() {\n    // 実行\n    gate.Touch()\n}\n```\n\n### `state`\n\nIP アドレスや DDNS エラーログを `STATE_DIR` のファイルに保存・読み込みします。\n\n| ファイル名 | 内容 |\n|------------|------|\n| `ip_ipv4` | 最後に取得した IPv4 アドレス |\n| `ip_ipv6` | 最後に取得した IPv6 アドレス |\n| `ddns_errors` | DDNS 更新エラーのログ |\n| `gate_<name>` | タイムゲートのタイムスタンプ（RFC3339） |\n| `lock_<command>` | 多重起動防止ロックファイル |\n\n### `lock`\n\n`lock_<command>` ファイルによる排他ロック。同一コマンドの二重起動を防ぎます。\n\n### `mode`\n\nコマンドごとのロジックを実装します。テスト容易性のため、外部依存（IP 取得・DDNS 更新・メール送信）はパッケージ変数として注入可能にしています。\n\n```go\nvar (\n    ipFetch         = ip.Fetch\n    mydnsUpdateIPv4 = ddns.UpdateMyDNSIPv4\n    cloudflareUpdate = ddns.UpdateCloudflare\n)\n```\n\n---\n\n## データフロー（update コマンド）\n\n```\nmain()\n  └─ config.Load()              設定読み込み\n  └─ lock.Acquire()             多重起動防止\n  └─ mode.Update(cfg)\n       └─ timegate \"update\"     UPDATE_TIME ゲート確認\n       └─ ip.Fetch()            グローバル IP 取得\n       └─ state.ReadIP()        前回 IP 読み込み\n       └─ [IP 変化あり]\n            └─ timegate \"ddns\"  DDNS_TIME ゲート確認\n            └─ ddns.UpdateMyDNSIPv4/IPv6()   MyDNS 更新\n            └─ ddns.UpdateCloudflare()       CF 更新\n            └─ state.WriteIP()  新 IP を保存\n            └─ state.AppendError() エラーがあれば記録\n```\n\n---\n\n## テスト構造\n\n| パッケージ | テスト手法 |\n|------------|-----------|\n| `config` | ユニットテスト（`ParseFile` に文字列を渡す） |\n| `ddns` | `httptest.NewServer` によるHTTPモックサーバ |\n| `mode` | パッケージ変数差し替えによる関数インジェクション |\n| `acceptance` | バイナリをビルドして `exec.Command` で呼び出すブラックボックステスト |\n\n受け入れテストは外部 API・`dig` コマンドに依存しません。\nIP 取得が必要なテストでは `IP_CACHE_TIME > 0` + `gate_ip_cache` ファイルの事前配置でキャッシュヒットパスを使用します。\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "Configuration",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-05-08T04:45:44.389Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/dipper_ai",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/dipper_ai/wiki/Configuration",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-05-08T04:45:43.059Z",
+        "vector_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI"
+      },
+      "node_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI",
+      "text": "Configuration\n\n# Configuration\n\n設定ファイルは shell-style の `key=value` 形式です。\nデフォルトのパスは `/etc/dipper_ai/user.conf`（`DIPPER_AI_CONFIG` 環境変数で変更可）。\n\n## 書式ルール\n\n```\nKEY=value          # 基本形\nKEY=on             # 真偽値: on / off / 1 / 0 / true / false（大小文字不問）\nKEY=value # memo   # インラインコメント（値に \" #\" を含めない）\nKEY=\"value\"        # 前後のダブルクォートは自動で除去\n# コメント行       # 行頭 # は無視\n```\n\n---\n\n## STATE_DIR\n\n| | |\n|--|--|\n| **キー** | `STATE_DIR` |\n| **型** | string (ディレクトリパス) |\n| **デフォルト** | `/etc/dipper_ai/state` |\n\nタイムスタンプ・IP キャッシュ・エラーログなどの状態ファイルを保存するディレクトリ。\n存在しない場合は実行時に自動生成されます。\n\n```conf\nSTATE_DIR=/etc/dipper_ai/state\n```\n\n---\n\n## IP アドレス設定\n\n| キー | 型 | デフォルト | 説明 |\n|------|----|-----------|------|\n| `IPV4` | bool | `on` | IPv4 アドレスを取得・追跡する |\n| `IPV6` | bool | `off` | IPv6 アドレスを取得・追跡する |\n| `IPV4_DDNS` | bool | `on` | IPv4 で DDNS を更新する（A レコード） |\n| `IPV6_DDNS` | bool | `on` | IPv6 で DDNS を更新する（AAAA レコード） |\n\n```conf\nIPV4=on\nIPV6=off\nIPV4_DDNS=on\nIPV6_DDNS=on\n```\n\n---\n\n## タイムゲート（分単位）\n\n実行間隔を制御します。ゲートファイルが `STATE_DIR` に保存されます。\n\n| キー | デフォルト | 最小値 | 説明 |\n|------|-----------|--------|------|\n| `UPDATE_TIME` | `1440` | 3 | 定期更新の間隔（分） |\n| `DDNS_TIME` | `1` | 1 | IP 変化後に DDNS を更新する間隔（分） |\n| `IP_CACHE_TIME` | `0` | 15（有効時） | IP キャッシュの有効期間（0 = 無効化） |\n| `ERR_CHK_TIME` | `0` | 1（有効時） | エラーメール送信の間隔（0 = 無効化） |\n\n- 設定値が最小値を下回る場合は自動的に最小値に切り上げられます。\n- `0` を設定すると「無効化」として扱われる（`IP_CACHE_TIME`、`ERR_CHK_TIME` のみ）。\n\n```conf\nUPDATE_TIME=1440    # 1日\nDDNS_TIME=1         # 1分\nIP_CACHE_TIME=0     # キャッシュなし（毎回取得）\nERR_CHK_TIME=0      # エラーメール無効\n```\n\n---\n\n## MyDNS\n\n[MyDNS.JP](https://www.mydns.jp) への更新設定。エントリは `MYDNS_0_*`、`MYDNS_1_*`、`MYDNS_2_*` ... と増やせます。\n\n### エントリキー（`N` = 0, 1, 2, ...）\n\n| キー | 型 | 必須 | デフォルト | 説明 |\n|------|----|------|-----------|------|\n| `MYDNS_N_ID` | string | ✓ | — | MyDNS マスター ID（省略するとそのエントリを終端とみなす） |\n| `MYDNS_N_PASS` | string | ✓ | — | MyDNS パスワード |\n| `MYDNS_N_DOMAIN` | string | | `\"\"` | ドメイン名（現在はログ用途のみ） |\n| `MYDNS_N_IPV4` | bool | | `on` | このエントリで IPv4 を更新する |\n| `MYDNS_N_IPV6` | bool | | `off` | このエントリで IPv6 を更新する |\n\n### URL オーバーライド（省略可）\n\n| キー | デフォルト |\n|------|-----------|\n| `MYDNS_IPV4_URL` | `https://ipv4.mydns.jp/login.html` |\n| `MYDNS_IPV6_URL` | `https://ipv6.mydns.jp/login.html` |\n\n### 例\n\n```conf\nMYDNS_0_ID=mydns123456\nMYDNS_0_PASS=yourpassword\nMYDNS_0_DOMAIN=home.example.com\nMYDNS_0_IPV4=on\nMYDNS_0_IPV6=off\n\nMYDNS_1_ID=mydns789012\nMYDNS_1_PASS=anotherpassword\nMYDNS_1_DOMAIN=server.example.com\nMYDNS_1_IPV4=on\nMYDNS_1_IPV6=on\n```\n\n---\n\n## Cloudflare\n\nCloudflare DNS への更新設定。エントリは `CF_0_*`、`CF_1_*` ... と増やせます。\nゾーン名からゾーン ID を自動解決します（ゾーン ID を直接書く必要はありません）。\n\n### エントリキー（`N` = 0, 1, 2, ...）\n\n| キー | 型 | 必須 | デフォルト | 説明 |\n|------|----|------|-----------|------|\n| `CF_N_ENABLED` | bool | ✓ | — | このエントリを有効化（省略するとそのエントリを終端とみなす） |\n| `CF_N_API` | string | 有効時 ✓ | — | Cloudflare API トークン（DNS:Edit 権限） |\n| `CF_N_ZONE` | string | 有効時 ✓ | — | ゾーン名（例: `example.com`） |\n| `CF_N_DOMAIN` | string | 有効時 ✓ | — | 更新対象 FQDN（例: `home.example.com`） |\n| `CF_N_IPV4` | bool | | `on` | A レコードを更新する |\n| `CF_N_IPV6` | bool | | `off` | AAAA レコードを更新する |\n\n### URL オーバーライド（省略可）\n\n| キー | デフォルト |\n|------|-----------|\n| `CLOUDFLARE_URL` | `https://api.cloudflare.com/client/v4/zones` |\n\n### 例\n\n```conf\nCF_0_ENABLED=on\nCF_0_API=your_api_token_here\nCF_0_ZONE=example.com\nCF_0_DOMAIN=home.example.com\nCF_0_IPV4=on\nCF_0_IPV6=off\n```\n\n---\n\n## メール通知\n\nエラーが蓄積された場合に `sendmail` 経由で通知します。\n`EMAIL_CHK_DDNS` または `EMAIL_UP_DDNS` を `on` にする場合、`EMAIL_ADR` は必須です。\n\n| キー | 型 | デフォルト | 説明 |\n|------|----|-----------|------|\n| `EMAIL_CHK_DDNS` | bool | `off` | IP 変化時に通知 |\n| `EMAIL_UP_DDNS` | bool | `off` | 定期更新時に通知 |\n| `EMAIL_ADR` | string | `\"\"` | 通知先メールアドレス |\n\n```conf\nEMAIL_CHK_DDNS=on\nEMAIL_UP_DDNS=off\nEMAIL_ADR=admin@example.com\n```\n\n> **Note:** メール送信は `sendmail` コマンドに依存します。事前にメール送信環境を構築してください。\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "Home",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-31T15:46:12.340Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/dipper_ai",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/dipper_ai/wiki/Home",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-31T15:46:11.724Z",
+        "vector_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY"
+      },
+      "node_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY",
+      "text": "Home\n\n# dipper_ai\n\n**dipper_ai** は AlmaLinux 9/10 向けの DDNS 自動更新ツールです。\nIP アドレスの変化を検知し、MyDNS または Cloudflare の DNS レコードをリアルタイムで更新します。\nsystemd タイマーで定期実行し、エラー発生時にはメール通知を送ることができます。\n\n---\n\n## ページ一覧\n\n| ページ | 内容 |\n|--------|------|\n| [Installation](Installation) | ビルド・インストール・アンインストール |\n| [Configuration](Configuration) | `user.conf` 全キー一覧とデフォルト値 |\n| [Usage](Usage) | コマンド仕様と systemd 運用 |\n| [Architecture](Architecture) | 内部設計・パッケージ構成・データフロー |\n\n---\n\n## 特徴\n\n- **マルチプロバイダ**: MyDNS と Cloudflare を同時に複数エントリ管理\n- **IPv4 / IPv6 独立制御**: A レコードと AAAA レコードをエントリごとに ON/OFF\n- **タイムゲート**: 設定した間隔ごとにのみ実行（不要な API 呼び出しを防止）\n- **状態管理**: IP キャッシュ・エラーログをファイルで永続化\n- **外部依存最小**: 標準 Go ライブラリのみ、`dig` 等の外部コマンド不使用\n\n---\n\n## クイックスタート\n\n```bash\n# 1. ビルド\ngo build -o dipper_ai ./cmd/dipper_ai\n\n# 2. インストール（root 必要）\nsudo bash scripts/install.sh\n\n# 3. 設定\nsudo cp /etc/dipper_ai/user.conf.example /etc/dipper_ai/user.conf\nsudo vi /etc/dipper_ai/user.conf\n\n# 4. 動作確認\ndipper_ai check\n```\n\n詳細は [Installation](Installation) を参照してください。\n"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "database": "github-rag-fts",
+    "doc_paths": [
+      "Architecture",
+      "Configuration",
+      "Home"
+    ],
+    "per_type_limit": 3,
+    "repositories": [
+      "Liplus-Project/dipper_ai"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "selection_order": [
+      "repo",
+      "type",
+      "doc_path",
+      "vector_id"
+    ],
+    "types": [
+      "wiki_doc"
+    ]
+  }
+}
