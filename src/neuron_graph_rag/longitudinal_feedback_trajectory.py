@@ -148,7 +148,7 @@ def _apply_gate(points: list[dict[str, Any]], edge: str, gate: dict[str, Any]) -
     count_match = [point["credit_count"] for point in points] == expected_counts
     control_non_regression = all(value >= control[0] for value in control)
     treatment_non_regression = all(
-        right >= left for left, right in zip(treatment, treatment[1:], strict=True)
+        right >= left for left, right in zip(treatment, treatment[1:])
     )
     strict_headroom = treatment[-1] > treatment[0]
     ceiling_respected = all(value <= gate["mrr_ceiling"] for value in (*control, *treatment))
