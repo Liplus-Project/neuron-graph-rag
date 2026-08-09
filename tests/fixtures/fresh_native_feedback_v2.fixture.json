@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "fixture_id": "fresh-native-feedback-v2-source-backed",
+  "repository_root": "../..",
+  "splits": {
+    "development": {
+      "nodes": [
+        {"node_id": "v2-dev-0", "document_path": "corpora/repository-native-controlled-v2/development-purpose.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/requirements.md", "source_sha256": "sha256:3f2ba2e3eb2d64634bb711ff4fd2cc8708959f8d0f3027674f4a5b741583b669"},
+        {"node_id": "v2-dev-1", "document_path": "corpora/repository-native-controlled-v2/development-trace-boundary.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/feedback-adaptation-experiment.md", "source_sha256": "sha256:f86ed041e12c5712014f3a05fd36c8684d41026051e200d65b3747eae0d24f1a"},
+        {"node_id": "v2-dev-2", "document_path": "corpora/repository-native-controlled-v2/development-separation.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/feedback-adaptation-reproduction-experiment.md", "source_sha256": "sha256:ec053cd802f7436685e3074aa84f3e9a351badec9ba1ca63dbd52b9472554dcd"},
+        {"node_id": "v2-dev-3", "document_path": "corpora/repository-native-controlled-v2/development-freeze-boundary.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/real-corpus-benchmark.md", "source_sha256": "sha256:0121b6f904a07b8d4b70f34fdcf6431daa12c7e1e7a32a063975c8a6c068f999"}
+      ],
+      "edges": [
+        {"source_id": "v2-dev-0", "target_id": "v2-dev-1", "edge_type": "mention"},
+        {"source_id": "v2-dev-1", "target_id": "v2-dev-2", "edge_type": "mention"},
+        {"source_id": "v2-dev-2", "target_id": "v2-dev-3", "edge_type": "mention"}
+      ]
+    },
+    "holdout": {
+      "nodes": [
+        {"node_id": "v2-holdout-0", "document_path": "corpora/repository-native-controlled-v2/holdout-decision-boundary.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/Decision-Structure.md", "source_sha256": "sha256:20d07e5ce61b5b6d8f71ac9ddac3b78ba809b90112362758e12283a60f2e3fde"},
+        {"node_id": "v2-holdout-1", "document_path": "corpora/repository-native-controlled-v2/holdout-fixture-boundary.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/d1-corpus-fixture.md", "source_sha256": "sha256:a18021fbbb3cc20a5ead8197611535053b9dec7770d4b02110a908b22f237f53"},
+        {"node_id": "v2-holdout-2", "document_path": "corpora/repository-native-controlled-v2/holdout-channel-boundary.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/independent-retrieval-channels-experiment.md", "source_sha256": "sha256:1b97b41e97a5ef2e002a2d5b702e949c216f97cc5c197d43733e59d1c0551020"},
+        {"node_id": "v2-holdout-3", "document_path": "corpora/repository-native-controlled-v2/holdout-observation-boundary.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/node-first-blind-selection-experiment.md", "source_sha256": "sha256:5feb8d60d323197e1874495f04d377479d85dfc0655490cdb02ec87c32ad8feb"}
+      ],
+      "edges": [
+        {"source_id": "v2-holdout-0", "target_id": "v2-holdout-1", "edge_type": "mention"},
+        {"source_id": "v2-holdout-1", "target_id": "v2-holdout-2", "edge_type": "mention"},
+        {"source_id": "v2-holdout-2", "target_id": "v2-holdout-3", "edge_type": "mention"}
+      ]
+    }
+  }
+}

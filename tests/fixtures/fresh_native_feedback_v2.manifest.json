@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "fresh-native-feedback-v2",
+  "candidate_id": "fresh-native-credited-feedback-v2",
+  "説明": "#47 と独立した repository-native controlled corpus v2 の新規評価。観測前に入力と gate を freeze し、結果は専用 path に一回だけ保存する。",
+  "shared_config": {
+    "limit": 3,
+    "seed_count": 2,
+    "max_hops": 2,
+    "hop_decay": 0.7,
+    "feedback_learning_rate": 1.0,
+    "maximum_edge_weight": 2.0,
+    "inhibition_ratio": 0.0,
+    "recurrent_steps": 3
+  },
+  "registered_runs": {
+    "development": {"control": 1, "treatment": 1},
+    "holdout": {"control": 1, "treatment": 1, "conditional_on_development_gate": true}
+  },
+  "result_paths": {
+    "development": "fresh_native_feedback_v2.development.observed.json",
+    "holdout": "fresh_native_feedback_v2.holdout.observed.json"
+  },
+  "artifacts": {
+    "fixture": {"path": "fresh_native_feedback_v2.fixture.json", "sha256": "sha256:35c70cfc5a9308b0dd163c5a29ce032e5f440ce64ee974734472839431dc2a1e"},
+    "gold": {"path": "fresh_native_feedback_v2.gold.json", "sha256": "sha256:a30b0a47c61f274a6563414fbfc032ad36cd6591957300f0fcee9621a074745e"},
+    "schedule": {"path": "fresh_native_feedback_v2.schedule.json", "sha256": "sha256:add4bb73b65b37103f10f086ea5295b0c6eb711d164b9d580fafde4186d56f57"},
+    "gate": {"path": "fresh_native_feedback_v2.gate.json", "sha256": "sha256:16fa0bc454617d250bc3c6ae87f07bf449d81f31c5d6b67bf7acb8e9ba57771f"},
+    "audit": {"path": "fresh_native_feedback_v2.audit.json", "sha256": "sha256:dbbe21b26304884a432ded15a8005891400f363e971c0801ed98110a27e7b026"}
+  }
+}

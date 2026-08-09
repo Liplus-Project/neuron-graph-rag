@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "schedule_id": "fresh-native-feedback-v2-once-only",
+  "説明": "各 split は control 一回と treatment 一回だけを登録し、holdout は development gate 通過時だけ開く。",
+  "splits": {
+    "development": {"stage": "development", "query": "NGR", "channel": "relation", "used_node_id": "v2-dev-1", "now": 1700000000, "credited_edges": [{"source_id": "v2-dev-0", "target_id": "v2-dev-1", "edge_type": "mention"}]},
+    "holdout": {"stage": "holdout", "query": "Decision Structure", "channel": "relation", "used_node_id": "v2-holdout-2", "now": 1700000010, "credited_edges": [{"source_id": "v2-holdout-0", "target_id": "v2-holdout-1", "edge_type": "mention"}, {"source_id": "v2-holdout-1", "target_id": "v2-holdout-2", "edge_type": "mention"}]}
+  }
+}

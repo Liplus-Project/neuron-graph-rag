@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "audit_id": "fresh-native-feedback-v2-result-free-separation",
+  "result_free": true,
+  "passed": true,
+  "説明": "観測結果を作る前に、development と holdout の識別子、文書 path、source URL、credited edge が相互に分離していることを固定する。",
+  "splits": {
+    "development": {
+      "node_ids": ["v2-dev-0", "v2-dev-1", "v2-dev-2", "v2-dev-3"],
+      "document_paths": ["corpora/repository-native-controlled-v2/development-purpose.md", "corpora/repository-native-controlled-v2/development-trace-boundary.md", "corpora/repository-native-controlled-v2/development-separation.md", "corpora/repository-native-controlled-v2/development-freeze-boundary.md"],
+      "source_urls": ["https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/requirements.md", "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/feedback-adaptation-experiment.md", "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/feedback-adaptation-reproduction-experiment.md", "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/real-corpus-benchmark.md"],
+      "credited_edges": [["v2-dev-0", "v2-dev-1", "mention"], ["v2-dev-1", "v2-dev-2", "mention"], ["v2-dev-2", "v2-dev-3", "mention"]]
+    },
+    "holdout": {
+      "node_ids": ["v2-holdout-0", "v2-holdout-1", "v2-holdout-2", "v2-holdout-3"],
+      "document_paths": ["corpora/repository-native-controlled-v2/holdout-decision-boundary.md", "corpora/repository-native-controlled-v2/holdout-fixture-boundary.md", "corpora/repository-native-controlled-v2/holdout-channel-boundary.md", "corpora/repository-native-controlled-v2/holdout-observation-boundary.md"],
+      "source_urls": ["https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/Decision-Structure.md", "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/d1-corpus-fixture.md", "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/independent-retrieval-channels-experiment.md", "https://github.com/Liplus-Project/neuron-graph-rag/blob/03527fd3eab76bbdec652eb74dfdec15b172cb34/docs/node-first-blind-selection-experiment.md"],
+      "credited_edges": [["v2-holdout-0", "v2-holdout-1", "mention"], ["v2-holdout-1", "v2-holdout-2", "mention"], ["v2-holdout-2", "v2-holdout-3", "mention"]]
+    }
+  }
+}
