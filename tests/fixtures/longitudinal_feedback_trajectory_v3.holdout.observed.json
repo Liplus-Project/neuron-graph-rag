@@ -1,0 +1,83 @@
+{
+  "development_to_holdout_handoff": {
+    "development_manifest_hash": "sha256:1f35bed7b5ea329d2baa7f1a6a2dd78880fe816c46101526ce56b8e0a79b72da",
+    "development_status": "passed"
+  },
+  "freeze_manifest_hash": "sha256:1f35bed7b5ea329d2baa7f1a6a2dd78880fe816c46101526ce56b8e0a79b72da",
+  "gate_evidence": {
+    "checks": {
+      "ceiling_respected": true,
+      "control_non_regression": true,
+      "credited_path_only_mutation": true,
+      "feedback_counts": true,
+      "treatment_non_regression": true,
+      "treatment_strict_0_to_10_improvement": true
+    },
+    "passed": true
+  },
+  "points": [
+    {
+      "control": {
+        "mrr": 0.25,
+        "mutated_edges": [],
+        "target_rank": 4
+      },
+      "credit_count": 0,
+      "treatment": {
+        "mrr": 0.25,
+        "mutated_edges": [],
+        "target_rank": 4
+      }
+    },
+    {
+      "control": {
+        "mrr": 0.25,
+        "mutated_edges": [],
+        "target_rank": 4
+      },
+      "credit_count": 1,
+      "treatment": {
+        "mrr": 0.25,
+        "mutated_edges": [
+          "v3-boundary-recovery-overview->v3-boundary-recovery-credit-10"
+        ],
+        "target_rank": 4
+      }
+    },
+    {
+      "control": {
+        "mrr": 0.25,
+        "mutated_edges": [],
+        "target_rank": 4
+      },
+      "credit_count": 3,
+      "treatment": {
+        "mrr": 0.3333333333333333,
+        "mutated_edges": [
+          "v3-boundary-recovery-overview->v3-boundary-recovery-credit-10"
+        ],
+        "target_rank": 3
+      }
+    },
+    {
+      "control": {
+        "mrr": 0.25,
+        "mutated_edges": [],
+        "target_rank": 4
+      },
+      "credit_count": 10,
+      "treatment": {
+        "mrr": 1.0,
+        "mutated_edges": [
+          "v3-boundary-recovery-overview->v3-boundary-recovery-credit-10"
+        ],
+        "target_rank": 1
+      }
+    }
+  ],
+  "protocol": "longitudinal-feedback-trajectory-v1",
+  "source_commit": "94c8bc250b7352e3009eeee1b353c3aec677bfb7",
+  "source_hash_verification": "passed",
+  "split": "holdout",
+  "status": "passed"
+}
