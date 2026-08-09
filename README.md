@@ -239,6 +239,8 @@ Version 3のnode-first protocolは、一つのcase packetをfresh judge一体へ
 
 result-free freeze `1fa2001` 後のdevelopment / holdoutは各12 fresh responsesで全12 gateを通過しました。両splitの4 caseはexpected nodeでunanimous majorityとなり、developmentのselected-node MRRは0.875、holdoutは1.0でした。これは frozen minimal holdout 上のblind node-first selection を支持する観測であり、default、production router、`search_channels()`全体のvalidated状態は変更しません。v1 / v2 artifactとinvalid resultは変更せず、v3も再生成・再集約しません。詳細は[Node-first blind selection experiment](docs/node-first-blind-selection-experiment.md)を参照してください。
 
+Trace-credited feedback adaptationは、relation traceの`record_success`が後続relation retrievalをcontrolより改善するかを、同一frozen corpusとscheduleで比較します。controlもfeedback eventを記録しますがedgeを変更せず、treatmentだけがcredited pathを強化します。result-free manifestをpushした後はdevelopmentを一度だけ実行し、全gate通過時だけholdoutを一度開きます。既定API、router、production品質の主張は変更しません。詳細は[Trace-credited feedback adaptation experiment](docs/feedback-adaptation-experiment.md)を参照してください。
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。

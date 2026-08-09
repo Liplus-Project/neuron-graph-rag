@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "fixture": "d1_liplus_feedback_adaptation_development.json",
+  "feedback": {"query": "development feedback receipt source", "used_node_id": "feedback-dev-target", "channel": "relation", "now": 1000.0},
+  "scoring_cases": [
+    {"id": "feedback-dev-relation", "role": "relation", "query": "development relation scoring bridge", "expected_node_id": "feedback-dev-target", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-dev-target", "expected_path": [{"source_id": "feedback-dev-source", "target_id": "feedback-dev-target", "edge_type": "mention"}], "now": 2000.0},
+    {"id": "feedback-dev-direct", "role": "direct_lexical", "query": "development adaptation verified target direct evidence", "expected_node_id": "feedback-dev-target", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-dev-target", "now": 2001.0},
+    {"id": "feedback-dev-negative", "role": "directional_negative", "query": "development adaptation verified target direct evidence", "expected_node_id": "feedback-dev-target", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-dev-target", "expected_relation_empty": true, "now": 2002.0}
+  ]
+}

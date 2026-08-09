@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "experiment_id": "d1-liplus-trace-credited-feedback-adaptation-v1",
+  "candidate_id": "trace-credited-feedback",
+  "shared_config": {"sparse_weight": 1.0, "dense_weight": 0.0, "entry_weight": 0.0, "graph_weight": 1.0, "use_dense_retrieval": false, "activation_strategy": "anchored_local_competition", "seed_count": 1, "max_hops": 1, "hop_decay": 1.0, "inhibition_ratio": 0.0, "graph_normalization": "none", "feedback_learning_rate": 0.2, "limit": 2},
+  "development": {"fixture": "d1_liplus_feedback_adaptation_development.json", "fixture_sha256": "sha256:65f9993d3de6adae368daded3525bb79bf20eae613efde17174ba0685b9bc46c", "gold": "d1_liplus_feedback_adaptation_development.gold.json", "gold_sha256": "sha256:149ff0dd8bae313761b752579885fb531590bfeda673076fcbe55d13815dfd0e", "provenance": "d1_liplus_feedback_adaptation_development.provenance.json", "provenance_sha256": "sha256:539ff2f2953b2d8414f159756fc09e8895558e7381c4a929a0adbc39d12def8e"},
+  "holdout": {"fixture": "d1_liplus_feedback_adaptation_holdout.json", "fixture_sha256": "sha256:44d743353a70826c3933bc19a759de15e1a3d297cac5b4c448af686fdc33d919", "gold": "d1_liplus_feedback_adaptation_holdout.gold.json", "gold_sha256": "sha256:6385c7a786475b8e5b198aebae482eb21d6a3cd12adce0a33488fdb30704b220", "provenance": "d1_liplus_feedback_adaptation_holdout.provenance.json", "provenance_sha256": "sha256:539ff2f2953b2d8414f159756fc09e8895558e7381c4a929a0adbc39d12def8e"},
+  "contamination_audit": {"artifact": "d1_liplus_feedback_adaptation.contamination.json", "artifact_sha256": "sha256:94f8b2b140c6b2e8e63bd47f5c2b358e19f6b495ea812b1d322678c5528db40a"},
+  "registered_runs": {"development": {"control": 1, "treatment": 2}, "holdout": {"control": 1, "treatment": 2, "conditional_on_development_gate": true}},
+  "gate": ["treatment_strictly_improves_relation_mrr", "relation_recall_and_hit_at_k_do_not_regress", "expected_relation_endpoint_and_edge_type_match", "direct_lexical_control_does_not_regress", "directional_negative_control_does_not_regress", "only_credited_edges_change", "same_schedule_replay_is_deterministic"],
+  "stop_rule": {"development_failure": "do not open holdout", "holdout_open_count": 1, "exclusive_output": "result writers refuse existing output paths", "post_observation_changes": "fixture, gold, provenance, audit, manifest, source, tests, docs, result overwrite, and rerun are forbidden"}
+}

@@ -1,0 +1,220 @@
+{
+  "checks": {
+    "development_vs_holdout": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_1": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_10": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_11": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_2": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_3": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_4": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_5": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_6": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_7": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_8": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development_vs_prior_9": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_1": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_10": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_11": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_2": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_3": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_4": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_5": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_6": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_7": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_8": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout_vs_prior_9": {
+      "doc_paths": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    }
+  },
+  "inputs": {
+    "development_fixture_sha256": "sha256:65f9993d3de6adae368daded3525bb79bf20eae613efde17174ba0685b9bc46c",
+    "development_gold_sha256": "sha256:149ff0dd8bae313761b752579885fb531590bfeda673076fcbe55d13815dfd0e",
+    "holdout_fixture_sha256": "sha256:44d743353a70826c3933bc19a759de15e1a3d297cac5b4c448af686fdc33d919",
+    "holdout_gold_sha256": "sha256:6385c7a786475b8e5b198aebae482eb21d6a3cd12adce0a33488fdb30704b220",
+    "prior_fixtures": [
+      {
+        "fixture": "d1_liplus_anchored_hybrid_development.json",
+        "fixture_sha256": "sha256:7e71b6aba83d2ee6b080251a233f869d2cea85f48a3878b4b2f4e9910a991b9d"
+      },
+      {
+        "fixture": "d1_liplus_anchored_hybrid_holdout.json",
+        "fixture_sha256": "sha256:3f2a2c64df4841616f78da74b8a5bcb246c6b8a5fdda21618ab6a8870b4ae385"
+      },
+      {
+        "fixture": "d1_liplus_benchmark.json",
+        "fixture_sha256": "sha256:b3b305aabb57803c2782c3998215e1cbcf9b5e6cdef0f641abc98520d4400cf9"
+      },
+      {
+        "fixture": "d1_liplus_channels_development.json",
+        "fixture_sha256": "sha256:e634bdcb9a855b01f23259351b554543d47ffd8f82ca4debb0afdb04c8537be6"
+      },
+      {
+        "fixture": "d1_liplus_channels_holdout.json",
+        "fixture_sha256": "sha256:18620641e0008f5cd273446ccc8cdf15acdd29230edbfb21b276d5ff27252b2e"
+      },
+      {
+        "fixture": "d1_liplus_dynamics_holdout.json",
+        "fixture_sha256": "sha256:4f7c444c408c3188323e754aa93141a8deaf1a4b15410ad915dd4c71be3a8081"
+      },
+      {
+        "fixture": "d1_liplus_fusion_calibration_development.json",
+        "fixture_sha256": "sha256:1f0ab101d643613a65b83be2585c410e203a9520b6a933b516203b371fdcd916"
+      },
+      {
+        "fixture": "d1_liplus_fusion_calibration_holdout.json",
+        "fixture_sha256": "sha256:5e381fd671e5bbed543c0ae02938ffbb9d5e9278988fa81721669f737c8cd060"
+      },
+      {
+        "fixture": "d1_liplus_local_competition_development.json",
+        "fixture_sha256": "sha256:27e5018f489d7602cf1753a3bda688f3db82c69ce8ee9eef0401caf72b40acfa"
+      },
+      {
+        "fixture": "d1_liplus_local_competition_holdout.json",
+        "fixture_sha256": "sha256:94b0e311546aee39b8aac114e1387aada465f058d0e14d32e7b7c7aa53b50f62"
+      },
+      {
+        "fixture": "d1_liplus_wiki.json",
+        "fixture_sha256": "sha256:242586f18df57ca7b2229a33140a25a79f7562cc010f7f0fd3580d2ee1fadc69"
+      }
+    ]
+  },
+  "passed": true,
+  "prior_usage": "fixture identifiers only; prior gold and result artifacts are not loaded",
+  "schema_version": 1
+}

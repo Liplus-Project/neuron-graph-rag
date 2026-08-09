@@ -90,6 +90,8 @@
 72. developmentは4 case x fresh 3 judgesの12 independent invocationsとし、各agent contextを再利用せず、repo、web、tool、gold、他case、他judge、prior responseを渡さない。actual LLM invocationはparent orchestratorだけが行う。
 73. v3集約は`node_id`の2/3 majorityを採否の正本とし、同じnodeへ複数laneから投票した場合もnode correctnessを満たす。channel voteはtrace provenanceと分布だけに使い、gold channel gateを持たない。
 74. relation traceを選んだresponseはselected nodeのraw pathを保存し、endpoint / edge typeへの射影が固定relation pathと一致してzero-hopでないことを監査する。feedbackは実行せず、lexical / relation traceの強化provenanceだけを記録する。
+75. trace-credited feedback adaptation experimentは、同一のfrozen corpus、config、query schedule、limit、時刻規則でcontrolとtreatmentを比較し、controlはfeedbackを記録してedge mutationを適用せず、treatmentだけがrelation traceのcredited pathを強化する。
+76. feedback adaptationのdevelopment / holdout、feedback event、score query、expected path、gate、registered run count、hash、contamination audit、exclusive outputを結果観測前に固定し、development全gate通過時だけholdoutを一度開く。
 75. v3 implementation、prompt、manifest、query override、schema、集約、path audit、hash規則、gate、stop rule、testsをresult-free commitでpushした後、development stage / 4 case packet / 12 responses / resultを各一度だけ生成する。
 76. development全12 gate通過時だけholdout stageを一度生成し、異なるfresh 12 judgesで同じgateを評価する。packet、response、resultの上書き、観測後の規則変更、実LLM品質値のCI再生成を拒否する。
 
@@ -119,3 +121,4 @@
 - [Independent retrieval channels experiment](independent-retrieval-channels-experiment.md) が非融合lane、独立trace provenance、feedback帰属、4-case hard gate、単一holdout開封を定義する。
 - [Blind LLM channel selection experiment](blind-llm-channel-selection-experiment.md) がanswer-free packet、fresh judge分離、majority集約、path射影、result-free freeze、conditional holdoutを定義する。
 - [Node-first blind selection experiment](node-first-blind-selection-experiment.md) がsingle-case invocation、node-majority、channel provenance分離、v1 / v2不変監査、conditional holdoutを定義する。
+- [Trace-credited feedback adaptation experiment](feedback-adaptation-experiment.md) がcontrol / treatmentの因果比較、result-free freeze、conditional holdoutを定義する。
