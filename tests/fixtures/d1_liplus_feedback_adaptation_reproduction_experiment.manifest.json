@@ -1,0 +1,66 @@
+{
+  "candidate_id": "trace-credited-feedback-reproduction",
+  "contamination_audit": {
+    "artifact": "d1_liplus_feedback_adaptation_reproduction.contamination.json",
+    "artifact_sha256": "sha256:863cda36624b50e766532af9a6c2cb43fc283f73bf1971c3345777163cc7e690"
+  },
+  "development": {
+    "fixture": "d1_liplus_feedback_adaptation_reproduction_development.json",
+    "fixture_sha256": "sha256:09a89a5bc283b2f29a73889ffbe2780c264b2e526763f3744b77139431943c58",
+    "gold": "d1_liplus_feedback_adaptation_reproduction_development.gold.json",
+    "gold_sha256": "sha256:669467eeaab1add49a32d1b5cc5396d529587d30cef43b03c14299cd4414acd3",
+    "provenance": "d1_liplus_feedback_adaptation_reproduction_development.provenance.json",
+    "provenance_sha256": "sha256:287241130bed0a34732c36971623cff7c0f908dc5043a03a5f36736fd09478dd"
+  },
+  "experiment_id": "d1-disjoint-trace-credited-feedback-adaptation-reproduction-v1",
+  "gate": [
+    "treatment_strictly_improves_relation_mrr",
+    "relation_recall_and_hit_at_k_do_not_regress",
+    "expected_relation_endpoint_and_edge_type_match",
+    "direct_lexical_control_does_not_regress",
+    "directional_negative_control_does_not_regress",
+    "only_credited_edges_change",
+    "same_schedule_replay_is_deterministic"
+  ],
+  "holdout": {
+    "fixture": "d1_liplus_feedback_adaptation_reproduction_holdout.json",
+    "fixture_sha256": "sha256:9154fb635ee7904c4a5fc7aaa2c1e67ecd887dfc1fc525c336661384efc42a25",
+    "gold": "d1_liplus_feedback_adaptation_reproduction_holdout.gold.json",
+    "gold_sha256": "sha256:0657ff037496cc9b9547ade45a1becaab6b807b9856c2135f3c3367125b8a176",
+    "provenance": "d1_liplus_feedback_adaptation_reproduction_holdout.provenance.json",
+    "provenance_sha256": "sha256:9d293958e678bccf6a54044cafd2bf947e5a2d56ab76bf61e03632aca4891464"
+  },
+  "registered_runs": {
+    "development": {
+      "control": 1,
+      "treatment": 2
+    },
+    "holdout": {
+      "conditional_on_development_gate": true,
+      "control": 1,
+      "treatment": 2
+    }
+  },
+  "schema_version": 1,
+  "shared_config": {
+    "activation_strategy": "anchored_local_competition",
+    "dense_weight": 0.0,
+    "entry_weight": 0.0,
+    "feedback_learning_rate": 0.2,
+    "graph_normalization": "none",
+    "graph_weight": 1.0,
+    "hop_decay": 1.0,
+    "inhibition_ratio": 0.0,
+    "limit": 2,
+    "max_hops": 1,
+    "seed_count": 1,
+    "sparse_weight": 1.0,
+    "use_dense_retrieval": false
+  },
+  "stop_rule": {
+    "development_failure": "do not open holdout",
+    "exclusive_output": "result writers refuse existing output paths",
+    "holdout_open_count": 1,
+    "post_observation_changes": "fixture, gold, provenance, audit, manifest, source, tests, docs, result overwrite, and rerun are forbidden"
+  }
+}

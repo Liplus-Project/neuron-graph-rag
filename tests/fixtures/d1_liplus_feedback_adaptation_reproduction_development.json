@@ -1,0 +1,148 @@
+{
+  "edges": [
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "distribution-form-github-direct",
+          "dst_vector_id": "w:OVi3nG8q4jbs1wrRJSG2SJQshkbXFB2Ofl8IrXsb6Uo",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "distributed-source-carries-no-resolved-config-value",
+          "src_vector_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+          "updated_at": "2026-08-08T19:46:13.018Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+      "target_id": "w:OVi3nG8q4jbs1wrRJSG2SJQshkbXFB2Ofl8IrXsb6Uo",
+      "weight": 1.0
+    },
+    {
+      "edge_type": "mention",
+      "factuality": 1.0,
+      "metadata": {
+        "source_record": {
+          "dst_slug": "always-on-duplication-removal-direction",
+          "dst_vector_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+          "edge_kind": "mention",
+          "repo": "Liplus-Project/liplus-language",
+          "src_slug": "distributed-source-carries-no-resolved-config-value",
+          "src_vector_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+          "updated_at": "2026-08-08T19:46:13.018Z"
+        },
+        "source_table": "doc_edges"
+      },
+      "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+      "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+      "weight": 1.0
+    }
+  ],
+  "nodes": [
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "always-on-duplication-removal-direction",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-07-28T05:45:26.076Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/always-on-duplication-removal-direction",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-07-28T05:45:24.499Z",
+        "vector_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"
+      },
+      "node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI",
+      "text": "always-on-duplication-removal-direction\n\n# 常時ロード分の重複を削る向き（どちらのコピーを残すか）\n\n## Question\n\nLi+ ソースに同一内容のコピーが2つあるとき、どちらを削るか。「重複は削れ」という一般則と、Li+ の主軸である「適用瞬間に必要なリテラルが一箇所に揃っているか（跳躍数）」は、場面によって逆を向く。\n\n## Current resolution\n\n**境界を跨ぐかどうかで向きが決まる。**\n\n- **常時ロード分の内側の重複**（`rules/**` ↔ `adapter/*/CLAUDE.md` / `AGENTS.md` 間）→ 削ってよい。削除で増えるのは文脈内跳躍のみで、追加のツール呼び出しは発生しない。canonical を1つ決め、削除跡にはポインタを残す。\n- **常時ロードと遅延ロードを跨ぐ重複**（常時ロード分 ↔ `skills/*/SKILL.md` 本体 / `docs/` / hook）→ **常時ロード側を残し、遅延ロード側を削る。** 素朴に「重複削除」を適用すると逆をやり、適用瞬間にツール呼び出しを一つ増やす。\n\n合格条件はバイト数ではなく**ツール呼び出し跳躍が減るか据え置き**。文脈内跳躍の増加は罰しない（罰すると内側の重複削除が一切できなくなる）。\n\n## Edges\n\n- **depends on**: [[liplus-context-rot-tension]] — always-on ↔ JIT を未解決トレードオフとして受容する判断が前提。本 entry はそのトレードオフの中で「どちらに寄せるか」の運用規則を与える\n- **relates to**: [[liplus-structure-as-retrieval-surface]]\n- **relates to**: [[release-version-rule-always-on-relocation]] — 判定基準を always-on の単一ソースに置いて跳躍ゼロにした先行事例（本規則の雛形）\n\n## 背景\n\nAnthropic の記事（Claude 5 世代向けに Claude Code のシステムプロンプトを8割以上削除して劣化なし）が挙げる指針のうち「重複の削除」を Li+ に当てようとして表面化した。Li+ は重複を嫌って参照で繋ぐ設計であり、これ自体は正しい。しかし一つの規則を適用するのに複数ファイルを渡り歩く構造は、跳躍のたびに「読む」を「記憶で済ませる」に置き換える隙を作る。\n\n記事の指針をそのまま適用すると、その場にあったリテラルが消えて跳躍が一つ増える場面が出る。二つの軸が衝突しているように見えたが、跳躍を**文脈内**（常時ロード分＝既に読み込まれている）と**ツール呼び出し**（外に出る＝取りこぼしうる）に分けたところで和解した。\n\nなお記事の射程はコーディング評価で測った Claude Code のシステムプロンプトであり、統治レイヤを載せた構成での検証ではない。適用にあたっては統治層（自律を渡す条件として人間と合意した内容）を削減対象から明示的に外す仕分けが先に要る。\n\n## 制約\n\n- 統治層（二段ブレーキ、人間判断ゲート一覧、`Evolution_Initiator_Autonomy`、`Human = final judge`）は本規則の適用対象外。モデルの能力向上で消える理由がないため、削減の可否を跳躍数で裁いてはならない\n- A 分類のセクションの内側に統治条項が埋め込まれている箇所がある。セクション単位で削ると統治内容が消えるため、カーブアウトが先\n- `rules/model/subtractive-structural-beauty.md` の Detection signs は同ファイル内で観測面として保護宣言済\n\n## 結論\n\n採用 = 境界を跨ぐかどうかで削る向きを決める二分規則。合格条件はツール呼び出し跳躍の非増加。\n\n却下 = 「重複は一律に削る」（跨ぐ重複で跳躍を増やす）。却下 = 「跳躍を増やす削除は一切しない」（内側の重複削除が不可能になり、`the second copy is what drifts` の規律が執行できなくなる）。\n\n## 関連\n\n- issue [#1564](https://github.com/Liplus-Project/liplus-language/issues/1564)（監査と方針）、[#1588](https://github.com/Liplus-Project/liplus-language/issues/1588)（内側の重複2件）、PR [#1592](https://github.com/Liplus-Project/liplus-language/pull/1592)\n- 計測の instrument = `docs/L.-Hop-Count-Instrument.md`（12シナリオ固定集合＋計数規則＋baseline）\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "distributed-source-carries-no-resolved-config-value",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-08-08T19:46:12.804Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/distributed-source-carries-no-resolved-config-value",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-08-08T19:46:12.155Z",
+        "vector_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo"
+      },
+      "node_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo",
+      "text": "distributed-source-carries-no-resolved-config-value\n\n# 配布される Li+ source に config の解決値を書かない\n\n## Question\n\n`Li+config.md` で workspace ごとに決まる値（言語など）を、`rules/` / `skills/` / `adapter/` の本文が必要とするとき、その値をどう持つか。\n\n## Current resolution\n\n**解決値そのものは書かない。契約への参照だけを書き、値の解決は適用の瞬間に契約が行う。**\n\n- 書いてよい = 「どの契約が解決するか」の名指し（例: `Workspace_Language_Contract` が PR コメントに解決する言語）と、「誰がいつ解決するか」（例: 親が spawn 前に解決してプロンプトへ名指しする）。\n- 書いてはならない = 解決後の値（`Japanese` / `ja` 等の具体名）と、precedence 表の写し。\n- **precedence の写しよりも解決値の写しの方が悪い。** 前者は正本と同期を失うだけだが、後者は**他 workspace では契約でない値が契約の顔で届く**。\n\n適用範囲は「配布される面」＝ `LI_PLUS_REPO` から各 workspace の `.claude/` へ入る全ファイル。`Li+config.md` 自身と、その値を出力する hook は値を持つ側であり本判断の対象外。\n\n## Edges\n\n- **depends on** [`distribution-form-github-direct`](https://github.com/Liplus-Project/liplus-language/wiki/distribution-form-github-direct) — 「source が全 workspace へ配布される」という前提そのもの。この前提が崩れれば（単一 workspace 専用の配布形式になれば）解決値を書いてよい側に反転する。\n- **relates to** [`always-on-duplication-removal-direction`](https://github.com/Liplus-Project/liplus-language/wiki/always-on-duplication-removal-direction) — 同一内容の写しが 2 つあるときどちらを削るかの規則。本判断は「そもそも写してよい内容か」を値の性質（workspace ごとに変わるか）で切る側であり、境界を跨ぐかどうかで向きを決める同 entry とは別軸。\n\n## Background\n\n2026-08-08、issue #1704（brake 1 の評価者コメントの言語がプロンプトから継がれる穴）の実装中に Master の明示指示で確定した。\n\n顕在化の経路が本判断の芯である。親が委譲プロンプトへ書いた言語指示は、`skills/task-subagent-prompt/SKILL.md` Delegation prompt hygiene の「How to apply」に**プロンプトへ逐語コピーする定型文として置かれていた** literal をそのまま採ったものであり、その literal 内に `in liplus-language, issue/PR/commit bodies require Japanese` と解決値が書かれていた。すなわち **Li+ source 側の解決値が、親を経由して subagent の入力へ流れる経路が実在した**。親が思いついた値ではない。\n\n同 literal は precedence を名指す形（explicit human instruction → thread agreement → destination repository / workspace project-language default）を既に持っており、そこまでは正しい。欠陥は末尾で precedence を一度解決した結果を literal 内へ焼き付けている点にあった。\n\n`grep -rn \"Japanese\" rules/ skills/ adapter/` による実測で、同型の解決値保持は 6 箇所（`rules/operations/operations.md` 3 / `skills/task-subagent-prompt/SKILL.md` 3）。うち `operations.md` の 2 行は #1580 が 2026-07 時点で既に検出しており、**#1575 が閉じるまで意図的に据え置かれていた**（下記 Constraints 参照）。\n\n## Constraints\n\n- **正本は 1 つ。** 言語の正本は `Workspace_Language_Contract`（`adapter/claude/CLAUDE.md` / `adapter/codex/AGENTS.md`）であり、値の出所は `Li+config.md`。参照で解決し、写しを置かない。\n- **title 系の ASCII English 固定は本判断の対象外**（Master 確認済み）。GitHub の推奨に従う固定であり、workspace の言語設定とは別軸。「言語を設定可能にする」作業に入った読み手が 4 行すべてをパラメータ化しようとする誤読が実際に発生しているため、固定側にはその理由を明記する。\n- **参照化には substrate の前提がある。** 解決値がその場に書いてあることは「参照の一手を要さない」という点で実際に機能していた。#1575 が閉じる前に外すと、値の解決に「`Li+config.md` を読む」手続きが要る状態になり、それは #1575 が診断した「ルールは在るが適用の瞬間に発火しない」構造そのものになる。#1575 が閉じた後の substrate では値は `on-session-start.sh` が session 冒頭の context へ emit するため、参照の一手は「emit された値を見る」であって手続きではない。**参照化は substrate が整った後にのみ正しい。**\n\n## Conclusion\n\n採用 = 参照で解決する形。`skills/evolution-parallel-agent-eval/SKILL.md` `Report shape` → `Language` 節（PR #1706）がこの形の最初の実装で、「親が spawn 前に解決してプロンプトへ名指しする」だけを規定し、値も precedence も持たない。\n\n却下 = 解決値を書く形。理由は上記のとおり、他 workspace へ契約でない値が契約の顔で届くこと。\n\n**逐語引用は本判断の対象外。** 評価者の所見が引く Li+ source は英語（`rules/model/liplus-coding-rule.md` Source Language）であり、引用は原文の言語のまま残す。根拠は都合ではなく所見が乗っている性質そのもので、**著者は引用に当てて裁定するため、訳された literal は literal ではない**。結果として、`ja` 以外へ解決する workspace では所見は構造的に混在する（引用は英語、地の文は解決後の言語）。\n\n## Related\n\n- #1704 / PR #1706 — 最初の実装（brake 1 評価者コメントの言語）\n- #1580 / PR #1709 — 実測された 6 箇所の是正、完了（#1707 を統合）。`rules/operations/operations.md` の body 系 2 行を `LI_PLUS_PROJECT_LANGUAGE` 参照へ、`skills/task-subagent-prompt/SKILL.md` の 3 箇所から言語名を除去（うち 1 箇所は項目ごと削除 = `Mode-specific delegation injection` の `(a) commit body language`、同節の自己規定に乗らないため）。あわせて title 軸が別軸である理由を明文化し、`ja` / `en` / `English` へ掃き出しを広げた\n- #1575 — 言語契約が値を手続きで解決していた問題（参照化の前提条件、2026-07-27 close）\n"
+    },
+    {
+      "confidence": 1.0,
+      "metadata": {
+        "assignees": "",
+        "commit_author": "",
+        "commit_date": "",
+        "commit_sha": "",
+        "doc_path": "distribution-form-github-direct",
+        "file_path": "",
+        "file_status": "",
+        "indexed_at": "2026-08-08T07:45:42.430Z",
+        "labels": "",
+        "milestone": "",
+        "number": 0,
+        "repo": "Liplus-Project/liplus-language",
+        "source_table": "search_docs",
+        "source_url": "https://github.com/Liplus-Project/liplus-language/wiki/distribution-form-github-direct",
+        "state": "active",
+        "tag_name": "",
+        "tokenizer_kind": "nat",
+        "type": "wiki_doc",
+        "updated_at": "2026-08-08T07:45:41.568Z",
+        "vector_id": "w:OVi3nG8q4jbs1wrRJSG2SJQshkbXFB2Ofl8IrXsb6Uo"
+      },
+      "node_id": "w:OVi3nG8q4jbs1wrRJSG2SJQshkbXFB2Ofl8IrXsb6Uo",
+      "text": "distribution-form-github-direct\n\n# Li+ の配布形式は GitHub リポジトリ直配布\n\n## Question\n\nLi+ をどの形式で利用者に配るか。Claude Code のプラグイン機構は代替になるか。\n\n## Current resolution\n\n配布形式は **GitHub public リポジトリの直配布**。利用者側の `Li+config.md` に置かれた `LI_PLUS_REPO` を AI が読み、`Li+update.md` を実行して `.claude/` 配下に展開する。\n\nClaude Code のプラグイン方式は**代替にならない**（後述の仕様上の欠落による）。この形式は意図的な選択であり、消去法の結果ではない。\n\n## Edges\n\n- depends on: [li-plus-always-on-footprint-load-bearing](li-plus-always-on-footprint-load-bearing) — `rules/` が always-on であることが load-bearing だという判断が前提。この前提が崩れれば `rules/` を skill 化できるので、プラグイン方式が選択肢に戻る。\n\n## Background\n\nClaude Code v2.1.224（2026-08-07）で plugin の `archive` source（HTTPS 越しの zip 配布、`sha256` ピンは任意）が追加された。これを起点に、配布経路一般の信頼境界を検討した際、Li+ 自身の配布形式にも同じ物差しを当てることになった。\n\nLi+ は plugin ではないが、**plugin と同等の権限を持つ**：\n\n- `.claude/hooks/` に 3 本のシェルスクリプト（`on-session-start.sh` / `on-user-prompt.sh` / `post-tool-use.sh`）。セッションごとに実行される。\n- `rules/` と `skills/` は AI の振る舞いを直接書き換える。markdown 一行の追加で挙動が変わるため、バイナリ差し替えを要しない。\n\nかつ plugin system の外側にいるため、**ホスト側の防御が一つもかからない**：marketplace の追加制限（`strictKnownMarketplaces`）、インストール前の「Will install」インベントリ表示、workspace trust ダイアログ。入口は `Li+config.md` の「`LI_PLUS_REPO/Li+update.md` を読んで実行しろ」の一行のみ。\n\nhuman はこの性質を認識した上で配布を継続している（2026-08-08 対話：「配布形態としては危険な部類なんだよね。悪用されると結構リスキー」）。\n\n## Constraints\n\n**プラグイン方式で配れないものがある**（2026-08-08 時点の Claude Code 仕様を調査）。\n\n配布可能なコンポーネント：`skills` / `commands` / `agents` / `workflows` / `hooks` / `mcpServers` / `outputStyles` / `lspServers` / `experimental.themes` / `experimental.monitors`。Li+ の相当部分（`skills/*/SKILL.md`、`character_Instance.md`、`agents/`、hooks 3 本）はこれで配れる。\n\n配布不可能なもの：**`rules/*.md` と CLAUDE.md 本体**。公式仕様の明文は「plugin root の `CLAUDE.md` はプロジェクトコンテキストとして読み込まれない。コンテキストに常時ロードさせたい指示は skill に入れろ」。\n\nこの回避策は Li+ では飲めない。`rules/` を skill に落とすと auto-invocation 依存になり、always-on 性が失われる。L1 Model Layer が「呼ばれたら効くルール」に降格することは、`li-plus-always-on-footprint-load-bearing` が load-bearing と判定した性質そのものの放棄にあたる。\n\nしたがって現状の Li+ にとって、プラグイン化は**部分的にしか到達できず、到達できない部分が中核**である。\n\n## Conclusion\n\n**採用：GitHub public リポジトリ直配布。**\n\nhuman が挙げた積極的理由は 2 つ（2026-08-08 対話：「だって楽だし、中身確認できるからさ」）。\n\n1. **運用の軽さ** — 配信・履歴・版管理・権限管理が GitHub 側の既存機能で賄われる。自前運用なら全てが運用負債になる。維持コストの低い安全策だけが実際に維持される。\n2. **中身の検証可能性** — 読む行為と取り込む行為が分離している。`plugin.json` 相当を落とさずに 1 ファイルずつ読める。\n\n副次的に、配布経路として以下が同時に成立する：\n\n- public リポジトリ = 第三者による観測が働く\n- commit 履歴 = 差し替えに足跡が残る\n- release tag = 版の固定（例：`build-2026-08-08.4`）\n- GitHub が配信 = 標的型配信（要求元によって別バイトを返す）が不可能\n\n**補助対策：issue と PR の書き込みを組織メンバー限定にしている。** Li+ の脅威は「AI が読んで実行する markdown に一行足されること」であり、その最安の入口が外部からの PR である。ここを閉じることが脅威モデル上もっとも費用対効果が高い。\n\n**受容した残余リスク：**\n\n- 配布側では解けないもの：human 側アカウントの侵害、利用者が中身を検証せずに導入すること。\n- ホスト側の plugin 防御は一切適用されない。\n\n**却下：プラグイン方式（marketplace 経由）。** 中核である `rules/` を配れないため、部分導入にしかならず、手動インストールとの二重構成になる。\n\n## 再評価条件\n\nClaude Code 側に `.claude/rules/*.md` 相当を always-on で配布する手段が追加された場合。その時点でプラグイン方式が完全な代替になりうるため、ホスト側防御（marketplace 制限 / インストール前インベントリ / trust ダイアログ）を得る側に倒す判断が成立する。\n\n## Related\n\n- [li-plus-always-on-footprint-load-bearing](li-plus-always-on-footprint-load-bearing) — always-on footprint が load-bearing である判断\n- [current-architecture-as-concession](current-architecture-as-concession) — 現行アーキテクチャが Claude Code 特化である経緯\n- [liplus-context-rot-tension](liplus-context-rot-tension) — always-on ↔ JIT の未解決トレードオフ\n- `D.-Installation` — 配布形式の手順側（docs/ 所有）\n"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "database": "github-rag-fts",
+    "doc_paths": [
+      "always-on-duplication-removal-direction",
+      "distributed-source-carries-no-resolved-config-value",
+      "distribution-form-github-direct"
+    ],
+    "per_type_limit": 3,
+    "repositories": [
+      "Liplus-Project/liplus-language"
+    ],
+    "schema_fingerprint": "sha256:113c675c90f19e043f925d751cbbe570546746f42f3887f1aed09ccd776f2fa6",
+    "selection_order": [
+      "repo",
+      "type",
+      "doc_path",
+      "vector_id"
+    ],
+    "types": [
+      "wiki_doc"
+    ]
+  }
+}
