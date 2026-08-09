@@ -99,13 +99,15 @@ def generate_node_first_stage(
     root = _repo_root(manifest_path)
     source_manifest_path = root / _source_manifest_name(manifest)
     source_manifest = _read_json(source_manifest_path)
-    for split_name in ("development", "holdout"):
-        split = source_manifest[split_name]
+    for frozen_split_name in ("development", "holdout"):
+        frozen_split = source_manifest[frozen_split_name]
         for field in ("fixture", "gold", "provenance"):
-            expected = split.get(f"{field}_sha256")
-            artifact = source_manifest_path.parent / str(split[field])
+            expected = frozen_split.get(f"{field}_sha256")
+            artifact = source_manifest_path.parent / str(frozen_split[field])
             if not expected or _canonical_checkout_sha256(artifact) != expected:
-                raise ValueError(f"v4 frozen {split_name} {field} hash mismatch")
+                raise ValueError(
+                    f"v4 frozen {frozen_split_name} {field} hash mismatch"
+                )
     split = source_manifest[split_name]
     fixture_path = source_manifest_path.parent / split["fixture"]
     gold = _read_json(source_manifest_path.parent / split["gold"])

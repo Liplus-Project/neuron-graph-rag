@@ -157,6 +157,63 @@ class NodeFirstFreezeContractTest(unittest.TestCase):
             )
         )
 
+    def test_v4_stage_generation_keeps_requested_split_sources_and_paths(self) -> None:
+        manifest = read_node_first_manifest(V4_MANIFEST)
+        source_manifest = json.loads(
+            (FIXTURES / manifest["source_manifest"].split("/")[-1]).read_text(
+                encoding="utf-8"
+            )
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            development_result = Path(directory) / "development.result.json"
+            development_result.write_text(
+                json.dumps(
+                    {
+                        "stage": "development",
+                        "gate_passed": True,
+                        "manifest_canonical_sha256": _canonical_checkout_sha256(
+                            V4_MANIFEST
+                        ),
+                    }
+                )
+            )
+            for split_name in ("development", "holdout"):
+                stage_packet, case_artifacts = generate_node_first_stage(
+                    V4_MANIFEST,
+                    split_name,
+                    development_result_path=(
+                        development_result if split_name == "holdout" else None
+                    ),
+                )
+                gold = json.loads(
+                    (FIXTURES / source_manifest[split_name]["gold"]).read_text(
+                        encoding="utf-8"
+                    )
+                )
+                expected_paths = [
+                    manifest["artifact_paths"][split_name][
+                        "case_packet_template"
+                    ].format(case_id=case["case_id"])
+                    for case in stage_packet["cases"]
+                ]
+
+                self.assertEqual(stage_packet["stage"], split_name)
+                self.assertEqual(
+                    [case["query"] for case in stage_packet["cases"]],
+                    [case["query"] for case in gold["cases"]],
+                )
+                self.assertEqual(
+                    [path.relative_to(ROOT).as_posix() for path, _ in case_artifacts],
+                    expected_paths,
+                )
+                self.assertEqual(
+                    [
+                        reference["path"]
+                        for reference in stage_packet["case_packet_artifacts"]
+                    ],
+                    expected_paths,
+                )
+
     def test_runbook_preflight_stage_packet_matches_manifest(self) -> None:
         manifest = read_node_first_manifest(MANIFEST)
         stage_packet = manifest["artifact_paths"]["development"]["stage_packet"]
