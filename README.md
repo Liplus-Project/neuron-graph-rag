@@ -243,6 +243,8 @@ Trace-credited feedback adaptationは、relation traceの`record_success`が後�
 
 独立reproductionはprior feedback-adaptation resultを選択入力にせず、新規D1 development / holdout splitで同じtrace-credit claimを検証します。relation pathはruntime fieldを除き、`source_id`、`target_id`、`edge_type`だけへ射影してgoldと比較します。prior fixtureは識別子だけのcontamination auditに使い、prior goldとresultは読みません。詳細は[Trace-credited feedback adaptation reproduction experiment](docs/feedback-adaptation-reproduction-experiment.md)を参照してください。
 
+Longitudinal multi-corpus feedback adaptation fixes `h=0,1,2,3` across three disjoint clusters in each split. Control records the same feedback schedule without edge mutation, while treatment reinforces only credited relation paths. Headroom clusters require strict final-horizon aggregate MRR improvement; ceiling clusters require non-regression only. Earlier observed feedback-adaptation results are never selection inputs. See [Longitudinal multi-corpus feedback adaptation experiment](docs/longitudinal-feedback-experiment.md).
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。

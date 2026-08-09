@@ -1,0 +1,3776 @@
+{
+  "ceiling_policy": {
+    "ceiling": "non-regression only; a pass does not evidence an additional rank improvement",
+    "ceiling_rank_improvement_observable": false,
+    "headroom": "strict final-horizon aggregate MRR improvement with per-cluster non-regression"
+  },
+  "clusters": [
+    {
+      "cluster_id": "lf-development-headroom-a",
+      "cohort": "headroom",
+      "control": {
+        "feedback": {
+          "credited_edges": [],
+          "credited_only": false,
+          "edge_changes": [],
+          "feedback_count": 3,
+          "no_edge_mutation": true,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-b-rival",
+                  "lf-development-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-b-rival",
+                  "lf-development-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-b-rival",
+                  "lf-development-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-b-rival",
+                  "lf-development-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "inputs": {
+        "fixture": "sha256:ff4cccd92c87c2f3f8caf75d10e2f9284c8e1e03ba3967a15c79794697a7c260",
+        "gold": "sha256:dd7eb035ecb28d72028441035812113475c695089bedea43ceeda90c047196c1",
+        "provenance": "sha256:92259a3c4a7953f67b4b632c02537173d19970acc13018564371d449e3d6b86a"
+      },
+      "replay": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-development-headroom-a-source",
+              "target_id": "lf-development-headroom-a-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-development-headroom-a-source",
+              "target_id": "lf-development-headroom-a-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-development-headroom-a-source",
+              "target_id": "lf-development-headroom-a-z-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-development-headroom-a-source",
+              "target_id": "lf-development-headroom-a-z-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-b-rival",
+                  "lf-development-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-z-target",
+                  "lf-development-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-z-target",
+                  "lf-development-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-z-target",
+                  "lf-development-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "treatment": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-development-headroom-a-source",
+              "target_id": "lf-development-headroom-a-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-development-headroom-a-source",
+              "target_id": "lf-development-headroom-a-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-development-headroom-a-source",
+              "target_id": "lf-development-headroom-a-z-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-development-headroom-a-source",
+              "target_id": "lf-development-headroom-a-z-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-b-rival",
+                  "lf-development-headroom-a-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-z-target",
+                  "lf-development-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-z-target",
+                  "lf-development-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-a-source",
+                      "target_id": "lf-development-headroom-a-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-a-z-target",
+                  "lf-development-headroom-a-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-z-target",
+                "id": "lf-development-headroom-a-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-a-source",
+                "id": "lf-development-headroom-a-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      }
+    },
+    {
+      "cluster_id": "lf-development-headroom-b",
+      "cohort": "headroom",
+      "control": {
+        "feedback": {
+          "credited_edges": [],
+          "credited_only": false,
+          "edge_changes": [],
+          "feedback_count": 3,
+          "no_edge_mutation": true,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-b-rival",
+                  "lf-development-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-b-rival",
+                  "lf-development-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-b-rival",
+                  "lf-development-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-b-rival",
+                  "lf-development-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "inputs": {
+        "fixture": "sha256:c525765e7a54f57ea4b16ab2ff4016e64f5340fe4bbc89846081f2fbe5da4cb0",
+        "gold": "sha256:fc425e8fdbc566b5b7c17899793f0f018e2d87e716b6ea50ed7512d260c8ea9c",
+        "provenance": "sha256:7b156687006c70f3f30183c6e72f7a5e145daef83d26125669e0ab26e9051735"
+      },
+      "replay": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-development-headroom-b-source",
+              "target_id": "lf-development-headroom-b-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-development-headroom-b-source",
+              "target_id": "lf-development-headroom-b-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-development-headroom-b-source",
+              "target_id": "lf-development-headroom-b-z-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-development-headroom-b-source",
+              "target_id": "lf-development-headroom-b-z-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-b-rival",
+                  "lf-development-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-z-target",
+                  "lf-development-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-z-target",
+                  "lf-development-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-z-target",
+                  "lf-development-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "treatment": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-development-headroom-b-source",
+              "target_id": "lf-development-headroom-b-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-development-headroom-b-source",
+              "target_id": "lf-development-headroom-b-z-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-development-headroom-b-source",
+              "target_id": "lf-development-headroom-b-z-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-development-headroom-b-source",
+              "target_id": "lf-development-headroom-b-z-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-b-rival",
+                  "lf-development-headroom-b-z-target"
+                ],
+                "relation_rank": 2,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-z-target",
+                  "lf-development-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-z-target",
+                  "lf-development-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-headroom-b-source",
+                      "target_id": "lf-development-headroom-b-z-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-headroom-b-z-target",
+                  "lf-development-headroom-b-b-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-z-target",
+                "id": "lf-development-headroom-b-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-headroom-b-source",
+                "id": "lf-development-headroom-b-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      }
+    },
+    {
+      "cluster_id": "lf-development-ceiling",
+      "cohort": "ceiling",
+      "control": {
+        "feedback": {
+          "credited_edges": [],
+          "credited_only": false,
+          "edge_changes": [],
+          "feedback_count": 3,
+          "no_edge_mutation": true,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "inputs": {
+        "fixture": "sha256:4436560b9a8c88d3474fcbc4401dd641a09c04aeb8f6550d8c27868bf2c7a56b",
+        "gold": "sha256:95faec8c3837ad05155c0e1fe0419e3f8a70a20659fa6fd0674418c5874f1527",
+        "provenance": "sha256:1fd5cbeb39349f29d3628ca8ff4fec4ac6968e3a6863823705330e588866ac48"
+      },
+      "replay": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-development-ceiling-source",
+              "target_id": "lf-development-ceiling-b-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-development-ceiling-source",
+              "target_id": "lf-development-ceiling-b-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-development-ceiling-source",
+              "target_id": "lf-development-ceiling-b-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-development-ceiling-source",
+              "target_id": "lf-development-ceiling-b-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      },
+      "treatment": {
+        "feedback": {
+          "credited_edges": [
+            {
+              "edge_type": "supports",
+              "new_weight": 1.1,
+              "old_weight": 1.0,
+              "source_id": "lf-development-ceiling-source",
+              "target_id": "lf-development-ceiling-b-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.204761904761905,
+              "old_weight": 1.1,
+              "source_id": "lf-development-ceiling-source",
+              "target_id": "lf-development-ceiling-b-target"
+            },
+            {
+              "edge_type": "supports",
+              "new_weight": 1.3140491617813435,
+              "old_weight": 1.204761904761905,
+              "source_id": "lf-development-ceiling-source",
+              "target_id": "lf-development-ceiling-b-target"
+            }
+          ],
+          "credited_only": true,
+          "edge_changes": [
+            {
+              "after_reinforced_count": 3,
+              "after_weight": 1.3140491617813435,
+              "before_reinforced_count": 0,
+              "before_weight": 1.0,
+              "edge_type": "supports",
+              "source_id": "lf-development-ceiling-source",
+              "target_id": "lf-development-ceiling-b-target"
+            }
+          ],
+          "feedback_count": 3,
+          "no_edge_mutation": false,
+          "recorded": true
+        },
+        "horizons": [
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.0,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 0
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.1,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 1
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.204761904761905,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 2
+          },
+          {
+            "cases": [
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-relation",
+                "lexical_rank": 3,
+                "observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "edge_weight": 1.3140491617813435,
+                      "factuality": 1.0,
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "path_matched": true,
+                "projected_observed_paths": [
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ],
+                  [
+                    {
+                      "edge_type": "supports",
+                      "source_id": "lf-development-ceiling-source",
+                      "target_id": "lf-development-ceiling-b-target"
+                    }
+                  ]
+                ],
+                "relation_found": true,
+                "relation_hits": [
+                  "lf-development-ceiling-b-target",
+                  "lf-development-ceiling-z-rival"
+                ],
+                "relation_rank": 1,
+                "role": "relation"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-b-target",
+                "id": "lf-development-ceiling-direct",
+                "lexical_rank": 1,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "direct_lexical"
+              },
+              {
+                "expected_node_id": "lf-development-ceiling-source",
+                "id": "lf-development-ceiling-negative",
+                "lexical_rank": 3,
+                "observed_paths": [],
+                "path_matched": true,
+                "projected_observed_paths": [],
+                "relation_found": false,
+                "relation_hits": [],
+                "relation_rank": 3,
+                "role": "directional_negative"
+              }
+            ],
+            "horizon": 3
+          }
+        ]
+      }
+    }
+  ],
+  "experiment_id": "multi-corpus-trace-credited-longitudinal-feedback-v1",
+  "gate": {
+    "ceiling_clusters_do_not_regress": true,
+    "ceiling_h0_control_equals_ceiling": true,
+    "contamination_audit_passed": true,
+    "credited_only_mutation_and_control_no_mutation": true,
+    "direct_lexical_controls_do_not_regress": true,
+    "directional_negative_controls_remain_empty": true,
+    "fixed_horizons_present": true,
+    "headroom_clusters_do_not_regress": true,
+    "headroom_final_aggregate_mrr_strictly_improves": true,
+    "headroom_h0_control_is_below_ceiling": true,
+    "projected_paths_match_at_every_horizon": true,
+    "same_schedule_replay_is_deterministic": true
+  },
+  "gate_passed": true,
+  "holdout_status": "not_opened_candidate_selected",
+  "manifest_sha256": "sha256:0e47247fbe27894959b9b8ed161c9469b3febc4abb26134e63d75fff37210374",
+  "metrics": {
+    "horizon_relation_mrr": {
+      "0": {
+        "ceiling_control": 1.0,
+        "ceiling_treatment": 1.0,
+        "control": 0.6666666666666666,
+        "headroom_control": 0.5,
+        "headroom_treatment": 0.5,
+        "treatment": 0.6666666666666666
+      },
+      "1": {
+        "ceiling_control": 1.0,
+        "ceiling_treatment": 1.0,
+        "control": 0.6666666666666666,
+        "headroom_control": 0.5,
+        "headroom_treatment": 1.0,
+        "treatment": 1.0
+      },
+      "2": {
+        "ceiling_control": 1.0,
+        "ceiling_treatment": 1.0,
+        "control": 0.6666666666666666,
+        "headroom_control": 0.5,
+        "headroom_treatment": 1.0,
+        "treatment": 1.0
+      },
+      "3": {
+        "ceiling_control": 1.0,
+        "ceiling_treatment": 1.0,
+        "control": 0.6666666666666666,
+        "headroom_control": 0.5,
+        "headroom_treatment": 1.0,
+        "treatment": 1.0
+      }
+    }
+  },
+  "schema_version": 1,
+  "stage": "development"
+}
