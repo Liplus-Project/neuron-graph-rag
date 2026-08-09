@@ -166,3 +166,18 @@ result-free freeze commit `1fa2001` の後、development stage / 4 case packet /
 このgate通過後にのみ、異なるfresh 12 judgesでholdout stageを一度だけ開封した。holdoutも全12 gateを通過し、4 caseすべてでexpected nodeのunanimous majority、selected-node MRR 1.0、lexical / relation trace usage 9 / 3を記録した。stage packet、single-case packet、raw / parsed response、resultはすべて`tests/fixtures/d1_liplus_channels_node_first.*`へimmutable artifactとして保存する。
 
 この結果は frozen minimal holdout におけるblind node-first selection の支持だけを記録する。NGR一般性能、任意modelへの一般化、production router、default、`search_channels()`全体のvalidated状態は変更しない。v1 / v2 artifactとinvalid resultは変更せず、v3 holdoutを含めて再生成・再集約しない。
+
+## V4 distinct holdout re-freeze
+
+v4 は v3 の stage packet、case packet、raw / capture response、gold、metric、gate、result を selection、tuning、result の入力にしない独立した result-free freeze である。`d1_liplus_channels_node_first_v4_experiment.manifest.json` は新しい development / holdout の fixture、gold、read-only provenance、prompt、artifact path、停止規則を固定する。結果 artifact は含めない。
+
+`d1_liplus_channels_node_first_v4.isolation.json` は v3 と両 split 間で node ID、document path、source URL、normalized query、expected endpoint と edge type の組を identifier-only で照合する。prior gold の値や v3 response / result は読まず、overlap が一件でもあれば generator と preflight の前に停止する。
+
+v4 の実行順は v3 と同じく、`audit-freeze`、development stage 生成、`preflight-capture`、fresh 12 judges、exclusive capture、aggregate の順である。preflight が stage と全 case packet の case ID、path、byte hash を確認できない場合、judge 起動、raw response read、capture / result write をせず unassessed で停止する。development の全 gate 通過時だけ holdout を一度生成・preflight できる。
+
+```powershell
+$env:PYTHONPATH='src'
+python tools/run_node_first_selection.py audit-freeze --manifest tests/fixtures/d1_liplus_channels_node_first_v4_experiment.manifest.json
+python tools/run_node_first_selection.py generate-stage development --manifest tests/fixtures/d1_liplus_channels_node_first_v4_experiment.manifest.json
+python tools/run_node_first_selection.py preflight-capture --manifest tests/fixtures/d1_liplus_channels_node_first_v4_experiment.manifest.json --stage-packet tests/fixtures/d1_liplus_channels_node_first_v4.development.stage.packet.json
+```

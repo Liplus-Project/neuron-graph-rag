@@ -91,6 +91,7 @@
 73. v3集約は`node_id`の2/3 majorityを採否の正本とし、同じnodeへ複数laneから投票した場合もnode correctnessを満たす。channel voteはtrace provenanceと分布だけに使い、gold channel gateを持たない。
 74. relation traceを選んだresponseはselected nodeのraw pathを保存し、endpoint / edge typeへの射影が固定relation pathと一致してzero-hopでないことを監査する。feedbackは実行せず、lexical / relation traceの強化provenanceだけを記録する。
 74a. node-first captureの前にmanifest、stage packet、およびstageが参照する全case packetのcase ID、path、実byte hashを照合する。いずれかが不一致ならjudge起動、raw response read、capture artifact write、aggregationを開始せず、unassessedのまま停止する。
+74b. node-first v4 はv3のobserved / unassessed artifactをselection、tuning、結果入力にせず、development / holdoutとv3をnode ID、document path、source URL、normalized query、expected endpoint / edge typeでidentifier-onlyに分離する。fixture、gold、provenance、manifest、prompt、generator、preflight、runner、tests、stop ruleをresult-free freeze後にのみ一回実行する。
 75. trace-credited feedback adaptation experimentは、同一のfrozen corpus、config、query schedule、limit、時刻規則でcontrolとtreatmentを比較し、controlはfeedbackを記録してedge mutationを適用せず、treatmentだけがrelation traceのcredited pathを強化する。
 76. feedback adaptationのdevelopment / holdout、feedback event、score query、expected path、gate、registered run count、hash、contamination audit、exclusive outputを結果観測前に固定し、development全gate通過時だけholdoutを一度開く。
 77. feedback adaptation reproductionはprior resultを選択入力にせず、prior fixtureとの識別子だけのcontamination auditを行う。raw relation stepは比較前に`source_id`、`target_id`、`edge_type`だけへ射影し、runtime fieldを含むsynthetic testでpath identityをfreeze前に検証する。

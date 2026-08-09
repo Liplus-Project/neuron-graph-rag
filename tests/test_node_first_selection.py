@@ -13,6 +13,7 @@ from neuron_graph_rag.node_first_selection import (
     _canonical_checkout_sha256,
     _json_document_bytes,
     aggregate_node_first_results,
+    audit_node_first_result_freeze,
     capture_single_response,
     generate_node_first_stage,
     parse_single_response,
@@ -28,6 +29,7 @@ from neuron_graph_rag.node_first_selection import (
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures"
 MANIFEST = FIXTURES / "d1_liplus_channels_node_first_experiment.manifest.json"
+V4_MANIFEST = FIXTURES / "d1_liplus_channels_node_first_v4_experiment.manifest.json"
 
 
 def _sha256_bytes(raw: bytes) -> str:
@@ -134,6 +136,27 @@ def _response(index: int, channel: str = "lexical") -> dict[str, object]:
 
 
 class NodeFirstFreezeContractTest(unittest.TestCase):
+    def test_v4_result_freeze_is_identifier_isolated_from_v3(self) -> None:
+        manifest = read_node_first_manifest(V4_MANIFEST)
+        self.assertEqual(
+            manifest["experiment_id"], "d1-liplus-node-first-blind-selection-v4"
+        )
+        audit_node_first_result_freeze(V4_MANIFEST)
+        audit = json.loads(
+            (FIXTURES / manifest["v3_isolation_audit"]["path"].split("/")[-1]).read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(audit["passed"])
+        self.assertEqual(audit["prior_usage"], "identifier-only")
+        self.assertTrue(
+            all(
+                not overlap
+                for check in audit["checks"].values()
+                for overlap in check.values()
+            )
+        )
+
     def test_runbook_preflight_stage_packet_matches_manifest(self) -> None:
         manifest = read_node_first_manifest(MANIFEST)
         stage_packet = manifest["artifact_paths"]["development"]["stage_packet"]

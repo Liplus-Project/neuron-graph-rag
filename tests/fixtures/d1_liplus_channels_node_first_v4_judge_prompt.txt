@@ -1,0 +1,3 @@
+packetには一つのcaseしかありません。
+laneをまたいで数値比較しない。
+packetだけを根拠に、指定 schema の JSON object を一つ返す。

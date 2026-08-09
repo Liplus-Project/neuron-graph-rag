@@ -1,0 +1,32 @@
+{
+  "development": {
+    "fixture": "d1_liplus_feedback_adaptation_reproduction_development.json",
+    "fixture_sha256": "sha256:09a89a5bc283b2f29a73889ffbe2780c264b2e526763f3744b77139431943c58",
+    "gold": "d1_liplus_channels_node_first_v4_development.gold.json",
+    "gold_sha256": "sha256:437a8d8ef04b1aa5bc42d60e07c2b24f6d699ab9f63f44fc11c885bb10d58d2d",
+    "provenance": "d1_liplus_feedback_adaptation_reproduction_development.provenance.json",
+    "provenance_sha256": "sha256:287241130bed0a34732c36971623cff7c0f908dc5043a03a5f36736fd09478dd"
+  },
+  "holdout": {
+    "fixture": "d1_liplus_feedback_adaptation_reproduction_holdout.json",
+    "fixture_sha256": "sha256:9154fb635ee7904c4a5fc7aaa2c1e67ecd887dfc1fc525c336661384efc42a25",
+    "gold": "d1_liplus_channels_node_first_v4_holdout.gold.json",
+    "gold_sha256": "sha256:bc47a0b61f609cf4ab3ca63709a3749ec7493c4d09b60aa0d2fb4fde455c2f44",
+    "provenance": "d1_liplus_feedback_adaptation_reproduction_holdout.provenance.json",
+    "provenance_sha256": "sha256:9d293958e678bccf6a54044cafd2bf947e5a2d56ab76bf61e03632aca4891464"
+  },
+  "shared_config": {
+    "activation_strategy": "anchored_local_competition",
+    "dense_weight": 0.0,
+    "entry_weight": 0.0,
+    "graph_normalization": "none",
+    "graph_weight": 1.0,
+    "hop_decay": 1.0,
+    "inhibition_ratio": 0.0,
+    "limit": 2,
+    "max_hops": 1,
+    "seed_count": 1,
+    "sparse_weight": 1.0,
+    "use_dense_retrieval": false
+  }
+}

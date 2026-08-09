@@ -1,0 +1,18 @@
+{
+  "artifact_paths": {
+    "development": {"case_packet_template": "tests/fixtures/d1_liplus_channels_node_first_v4.development.{case_id}.packet.json", "response_template": "tests/fixtures/d1_liplus_channels_node_first_v4.development.{case_id}.judge-{judge_number}.json", "result": "tests/fixtures/d1_liplus_channels_node_first_v4.development.result.json", "stage_packet": "tests/fixtures/d1_liplus_channels_node_first_v4.development.stage.packet.json"},
+    "holdout": {"case_packet_template": "tests/fixtures/d1_liplus_channels_node_first_v4.holdout.{case_id}.packet.json", "response_template": "tests/fixtures/d1_liplus_channels_node_first_v4.holdout.{case_id}.judge-{judge_number}.json", "result": "tests/fixtures/d1_liplus_channels_node_first_v4.holdout.result.json", "stage_packet": "tests/fixtures/d1_liplus_channels_node_first_v4.holdout.stage.packet.json"}
+  },
+  "case_count": 4,
+  "experiment_id": "d1-liplus-node-first-blind-selection-v4",
+  "frozen_prior_artifacts": [],
+  "gate": ["packet_and_prompt_exclude_answer_fields", "all_responses_valid_and_trace_bound", "node_majority_exists_for_every_case", "majority_selects_every_expected_node", "relation_task_selects_edge_target", "selected_relation_paths_match", "one_case_per_invocation", "abstain_is_never_majority", "search_and_scoring_do_not_change_edges", "node_correctness_is_independent_of_channel", "v3_identifier_isolation_audit_passes", "observed_artifact_overwrite_is_refused"],
+  "judge_prompt": {"canonical_sha256": "sha256:24b68cdce8fc2da5c761b71c1c7b9fad4b1a80179e1fd56d791a23f12e836e6c", "path": "tests/fixtures/d1_liplus_channels_node_first_v4_judge_prompt.txt"},
+  "judges_per_case": 3,
+  "query_overrides": {"development": {}, "holdout": {}},
+  "relation_case_id": "case-0003",
+  "schema_version": 1,
+  "source_manifest": "tests/fixtures/d1_liplus_channels_node_first_v4_sources.manifest.json",
+  "stop_rule": {"development_failure": "do not generate holdout stage or case packets", "holdout_generation_count": 1, "judges_are_fresh_across_every_case": true, "refuse_overwrite": true, "responses_per_stage": 12, "stage_generation_count": 1},
+  "v3_isolation_audit": {"path": "tests/fixtures/d1_liplus_channels_node_first_v4.isolation.json", "sha256": "sha256:1b55b9f096df3ac9633e4f74915254557a6b497183b39da111fa849c7c1e6c90", "v3_manifest": "tests/fixtures/d1_liplus_channels_node_first_experiment.manifest.json"}
+}

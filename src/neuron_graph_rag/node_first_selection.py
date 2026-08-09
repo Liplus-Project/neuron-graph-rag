@@ -19,6 +19,10 @@ from .engine import EngineConfig
 
 
 NODE_FIRST_SCHEMA_VERSION = 1
+NODE_FIRST_EXPERIMENT_IDS = {
+    "d1-liplus-node-first-blind-selection-v3",
+    "d1-liplus-node-first-blind-selection-v4",
+}
 FORBIDDEN_PACKET_KEYS = {
     "acceptable_rank",
     "cohort",
@@ -37,13 +41,15 @@ def read_node_first_manifest(path: str | Path) -> dict[str, Any]:
     manifest = _read_json(manifest_path)
     if manifest.get("schema_version") != NODE_FIRST_SCHEMA_VERSION:
         raise ValueError("Unsupported node-first manifest schema version")
-    if manifest.get("experiment_id") != "d1-liplus-node-first-blind-selection-v3":
+    if manifest.get("experiment_id") not in NODE_FIRST_EXPERIMENT_IDS:
         raise ValueError("Unexpected node-first experiment ID")
     if len(manifest.get("gate", [])) != 12:
         raise ValueError("Node-first manifest must freeze twelve gates")
     if manifest.get("case_count") != 4 or manifest.get("judges_per_case") != 3:
         raise ValueError("Node-first protocol requires four cases and three judges")
     _audit_prior_artifacts(manifest_path, manifest)
+    if manifest["experiment_id"].endswith("-v4"):
+        _audit_v4_split_isolation(manifest_path, manifest)
     prompt = _repo_root(manifest_path) / manifest["judge_prompt"]["path"]
     if _canonical_checkout_sha256(prompt) != manifest["judge_prompt"][
         "canonical_sha256"
@@ -91,19 +97,26 @@ def generate_node_first_stage(
         raise ValueError("development_result_path is only valid for holdout")
 
     root = _repo_root(manifest_path)
-    v1_manifest_path = root / manifest["v1_manifest"]
-    v1_manifest = _read_json(v1_manifest_path)
-    split = v1_manifest[split_name]
-    fixture_path = v1_manifest_path.parent / split["fixture"]
-    gold = _read_json(v1_manifest_path.parent / split["gold"])
+    source_manifest_path = root / _source_manifest_name(manifest)
+    source_manifest = _read_json(source_manifest_path)
+    for split_name in ("development", "holdout"):
+        split = source_manifest[split_name]
+        for field in ("fixture", "gold", "provenance"):
+            expected = split.get(f"{field}_sha256")
+            artifact = source_manifest_path.parent / str(split[field])
+            if not expected or _canonical_checkout_sha256(artifact) != expected:
+                raise ValueError(f"v4 frozen {split_name} {field} hash mismatch")
+    split = source_manifest[split_name]
+    fixture_path = source_manifest_path.parent / split["fixture"]
+    gold = _read_json(source_manifest_path.parent / split["gold"])
     config = EngineConfig(
         **{
             key: value
-            for key, value in v1_manifest["shared_config"].items()
+            for key, value in source_manifest["shared_config"].items()
             if key != "limit"
         }
     )
-    limit = int(v1_manifest["shared_config"]["limit"])
+    limit = int(source_manifest["shared_config"]["limit"])
     overrides = manifest["query_overrides"][split_name]
     cases = []
     for index, source_case in enumerate(gold["cases"], start=1):
@@ -357,10 +370,10 @@ def aggregate_node_first_results(
         raise ValueError("Each case must have exactly three fresh responses")
 
     root = _repo_root(manifest_path)
-    v1_manifest_path = root / manifest["v1_manifest"]
-    v1_manifest = _read_json(v1_manifest_path)
+    source_manifest_path = root / _source_manifest_name(manifest)
+    source_manifest = _read_json(source_manifest_path)
     gold_cases = _read_json(
-        v1_manifest_path.parent / v1_manifest[split_name]["gold"]
+        source_manifest_path.parent / source_manifest[split_name]["gold"]
     )["cases"]
     if len(gold_cases) != len(cases):
         raise ValueError("Stage and gold case counts differ")
@@ -395,6 +408,11 @@ def aggregate_node_first_results(
         )
         for case_id in cases
     )
+    freeze_gate = (
+        {"v3_identifier_isolation_audit_passes": True}
+        if manifest["experiment_id"].endswith("-v4")
+        else {"v1_v2_artifacts_match_frozen_bytes": True}
+    )
     gate = {
         "packet_and_prompt_exclude_answer_fields": True,
         "all_responses_valid_and_trace_bound": True,
@@ -408,7 +426,7 @@ def aggregate_node_first_results(
         "abstain_is_never_majority": all(case["majority_node_id"] is not None for case in evaluated),
         "search_and_scoring_do_not_change_edges": all(case["edge_weight_unchanged"] for case in evaluated),
         "node_correctness_is_independent_of_channel": _has_no_gold_channel_gate(manifest),
-        "v1_v2_artifacts_match_frozen_bytes": True,
+        **freeze_gate,
         "observed_artifact_overwrite_is_refused": bool(manifest["stop_rule"]["refuse_overwrite"]),
     }
     majority_correct = sum(case["node_correct"] for case in evaluated)
@@ -619,7 +637,7 @@ def _preflight_node_first_stage(
 def _validate_common_packet(packet: dict[str, Any]) -> None:
     if packet.get("schema_version") != NODE_FIRST_SCHEMA_VERSION:
         raise ValueError("Unsupported node-first packet schema version")
-    if packet.get("experiment_id") != "d1-liplus-node-first-blind-selection-v3":
+    if packet.get("experiment_id") not in NODE_FIRST_EXPERIMENT_IDS:
         raise ValueError("Unexpected node-first packet experiment ID")
     _reject_forbidden_packet_keys(packet)
 
@@ -691,6 +709,10 @@ def _validate_prompt(prompt: str) -> None:
 def _audit_prior_artifacts(manifest_path: Path, manifest: dict[str, Any]) -> None:
     root = _repo_root(manifest_path)
     entries = manifest.get("frozen_prior_artifacts")
+    if manifest["experiment_id"].endswith("-v4"):
+        if entries:
+            raise ValueError("v4 must not consume v3 artifacts as frozen inputs")
+        return
     if not isinstance(entries, list) or not entries:
         raise ValueError("Node-first manifest must freeze prior artifacts")
     versions = {entry.get("version") for entry in entries}
@@ -701,6 +723,68 @@ def _audit_prior_artifacts(manifest_path: Path, manifest: dict[str, Any]) -> Non
             root / entry["path"], str(entry["sha256"])
         ):
             raise ValueError(f"Frozen prior artifact mismatch: {entry['path']}")
+
+
+def _source_manifest_name(manifest: dict[str, Any]) -> str:
+    return str(manifest.get("source_manifest", manifest.get("v1_manifest", "")))
+
+
+def _audit_v4_split_isolation(manifest_path: Path, manifest: dict[str, Any]) -> None:
+    """Prove v4 uses identifier-only comparisons against v3 source inputs."""
+    root = _repo_root(manifest_path)
+    source_manifest_path = root / _source_manifest_name(manifest)
+    source_manifest = _read_json(source_manifest_path)
+    audit = manifest.get("v3_isolation_audit", {})
+    audit_path = root / str(audit.get("path", ""))
+    if not audit_path.is_file() or _canonical_checkout_sha256(audit_path) != audit.get("sha256"):
+        raise ValueError("v4 isolation audit hash mismatch")
+    reported = _read_json(audit_path)
+    if reported.get("prior_usage") != "identifier-only" or not reported.get("passed"):
+        raise ValueError("v4 isolation audit is not result-free")
+
+    v3_manifest = _read_json(root / str(audit.get("v3_manifest", "")))
+    v3_source = _read_json(root / _source_manifest_name(v3_manifest))
+    identities = {
+        name: _split_identifiers(root, source_manifest, name)
+        for name in ("development", "holdout")
+    }
+    v3_identities = {
+        name: _split_identifiers(root, v3_source, name)
+        for name in ("development", "holdout")
+    }
+    comparisons = {
+        "development_vs_holdout": (identities["development"], identities["holdout"]),
+        "development_vs_v3": (identities["development"], v3_identities["development"] | v3_identities["holdout"]),
+        "holdout_vs_v3": (identities["holdout"], v3_identities["development"] | v3_identities["holdout"]),
+    }
+    fields = ("node_ids", "document_paths", "source_urls", "normalized_queries", "expected_endpoint_edge_types")
+    expected = {
+        key: {field: sorted(left[field] & right[field]) for field in fields}
+        for key, (left, right) in comparisons.items()
+    }
+    if reported.get("checks") != expected or any(values for check in expected.values() for values in check.values()):
+        raise ValueError("v4 development/holdout isolation audit failed")
+
+
+def _split_identifiers(root: Path, source_manifest: dict[str, Any], split_name: str) -> dict[str, set[str]]:
+    split = source_manifest[split_name]
+    fixture = _read_json(root / "tests" / "fixtures" / str(split["fixture"]))
+    gold = _read_json(root / "tests" / "fixtures" / str(split["gold"]))
+    values = {
+        "node_ids": {str(node["node_id"]) for node in fixture["nodes"]},
+        "document_paths": {str(node["metadata"].get("doc_path", "")) for node in fixture["nodes"]},
+        "source_urls": {str(node["metadata"].get("source_url", "")) for node in fixture["nodes"]},
+        "normalized_queries": set(),
+        "expected_endpoint_edge_types": set(),
+    }
+    for case in gold["cases"]:
+        values["normalized_queries"].add(" ".join(str(case["query"]).lower().split()))
+        endpoint = str(case["expected_node_id"])
+        paths = case.get("expected_path", [])
+        values["expected_endpoint_edge_types"].update(
+            f"{endpoint}|{step['edge_type']}" for step in paths
+        )
+    return values
 
 
 def _observed_paths(root: Path, manifest: dict[str, Any]) -> list[Path]:

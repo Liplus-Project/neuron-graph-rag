@@ -1,0 +1,8 @@
+{
+  "cases": [
+    {"cohort": "direct", "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI", "query": "Which Li+ policy keeps the always-on copy when duplicate content is removed?"},
+    {"cohort": "direct", "expected_node_id": "w:OVi3nG8q4jbs1wrRJSG2SJQshkbXFB2Ofl8IrXsb6Uo", "query": "Which Li+ decision describes GitHub direct as the distribution form?"},
+    {"cohort": "relation", "expected_node_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI", "expected_path": [{"edge_type": "mention", "source_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo", "target_id": "w:dyF2Fh2UFo-ua_2vS1QRVS6eKl248ac6lwHsTUvaQgI"}], "query": "Which always-on policy is linked from the distributed-source contract decision?"},
+    {"cohort": "direct", "expected_node_id": "w:VRy1K0vNxWi4dju1kVUkJhJZe6kHTc0PKdNoq7tdLUo", "query": "Which Li+ decision says resolved workspace values stay out of distributed source?"}
+  ]
+}

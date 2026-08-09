@@ -1,0 +1,8 @@
+{
+  "cases": [
+    {"cohort": "direct", "expected_node_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0", "query": "Which dipper_ai page describes its internal package layout?"},
+    {"cohort": "direct", "expected_node_id": "w:PTwqkbadUyhSndjfrgcMEBJ52aFvTOWiWE1oJNZJmpI", "query": "Which dipper_ai page defines the user.conf configuration format?"},
+    {"cohort": "relation", "expected_node_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0", "expected_path": [{"edge_type": "mention", "source_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY", "target_id": "w:GkFwWo1fmgbk8PG_ibtPSs1-ik6Xeeim8eN3UmLegX0"}], "query": "Which dipper_ai architecture page is linked from the Home documentation index?"},
+    {"cohort": "direct", "expected_node_id": "w:RZVb9sPVtRF98eVA_T3PK03x6nHzxlN46mTC5fHCBLY", "query": "Which dipper_ai page lists its available documentation pages?"}
+  ]
+}
