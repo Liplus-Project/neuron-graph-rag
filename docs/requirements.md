@@ -94,6 +94,7 @@
 76. feedback adaptationのdevelopment / holdout、feedback event、score query、expected path、gate、registered run count、hash、contamination audit、exclusive outputを結果観測前に固定し、development全gate通過時だけholdoutを一度開く。
 77. feedback adaptation reproductionはprior resultを選択入力にせず、prior fixtureとの識別子だけのcontamination auditを行う。raw relation stepは比較前に`source_id`、`target_id`、`edge_type`だけへ射影し、runtime fieldを含むsynthetic testでpath identityをfreeze前に検証する。
 78. 新規 feedback-adaptation experiment の primary relation gate は、baseline relation MRR が 1.0 未満ならtreatmentのstrict improvement、baseline relation MRR が 1.0 ならtreatmentのnon-regressionを要求する。いずれも endpoint/type projected path、direct lexical / directional-negative controls、credited-only mutation、deterministic replay、contamination、immutable output を含む全 safety gate を必須とする。ceiling case のnon-regression pass は追加の順位改善を示せないことを記録するだけで、generalization、default変更、production採用を許可しない。
+79. longitudinal feedback adaptation experiment は development / holdout の各3以上の相互disjoint corpus cluster で `h=0,1,2,3` を固定し、同一 feedback schedule の no-mutation control と credited-relation-path-only treatment を比較する。headroom は final-horizon aggregate MRR の strict improvement と cluster non-regression、ceiling は non-regression を要求し、endpoint/type-only path、controls、deterministic replay、contamination、exclusive immutable output を全horizonで必須とする。過去 feedback-adaptation result は selection input にせず、prior fixture identifier のみを contamination audit に使用する。
 75. v3 implementation、prompt、manifest、query override、schema、集約、path audit、hash規則、gate、stop rule、testsをresult-free commitでpushした後、development stage / 4 case packet / 12 responses / resultを各一度だけ生成する。
 76. development全12 gate通過時だけholdout stageを一度生成し、異なるfresh 12 judgesで同じgateを評価する。packet、response、resultの上書き、観測後の規則変更、実LLM品質値のCI再生成を拒否する。
 
@@ -125,3 +126,4 @@
 - [Node-first blind selection experiment](node-first-blind-selection-experiment.md) がsingle-case invocation、node-majority、channel provenance分離、v1 / v2不変監査、conditional holdoutを定義する。
 - [Trace-credited feedback adaptation experiment](feedback-adaptation-experiment.md) がcontrol / treatmentの因果比較、result-free freeze、conditional holdoutを定義する。
 - [Trace-credited feedback adaptation reproduction experiment](feedback-adaptation-reproduction-experiment.md) が新規D1 split、prior-result非参照、endpoint/type-only path projection、conditional holdoutを定義する。
+- [Longitudinal multi-corpus feedback adaptation experiment](longitudinal-feedback-experiment.md) が固定horizon、複数cluster、ceiling-aware gate、one-shot conditional holdoutを定義する。

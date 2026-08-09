@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "nodes": [
+    {
+      "node_id": "lf-holdout-ceiling-source",
+      "text": "Longitudinal corpus lf-holdout-ceiling seed relation scoring confirm successful trace.",
+      "metadata": {
+        "doc_path": "longitudinal-feedback/holdout/ceiling/source",
+        "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-holdout-ceiling-source",
+        "source_table": "constructed_longitudinal_fixture"
+      },
+      "confidence": 1
+    },
+    {
+      "node_id": "lf-holdout-ceiling-z-rival",
+      "text": "Longitudinal corpus lf-holdout-ceiling rival relation destination.",
+      "metadata": {
+        "doc_path": "longitudinal-feedback/holdout/ceiling/rival",
+        "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-holdout-ceiling-rival",
+        "source_table": "constructed_longitudinal_fixture"
+      },
+      "confidence": 1
+    },
+    {
+      "node_id": "lf-holdout-ceiling-b-target",
+      "text": "Longitudinal corpus lf-holdout-ceiling target direct lexical answer.",
+      "metadata": {
+        "doc_path": "longitudinal-feedback/holdout/ceiling/target",
+        "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-holdout-ceiling-target",
+        "source_table": "constructed_longitudinal_fixture"
+      },
+      "confidence": 1
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "lf-holdout-ceiling-source",
+      "target_id": "lf-holdout-ceiling-z-rival",
+      "edge_type": "supports",
+      "weight": 1,
+      "factuality": 1
+    },
+    {
+      "source_id": "lf-holdout-ceiling-source",
+      "target_id": "lf-holdout-ceiling-b-target",
+      "edge_type": "supports",
+      "weight": 1,
+      "factuality": 1
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "cluster_id": "lf-holdout-headroom-b",
+  "cohort": "headroom",
+  "build_method": "deterministic in-repository corpus fixture",
+  "source_access": "no network or D1 access",
+  "read_only": true,
+  "writes": 0,
+  "acquired_at": "2026-08-09T00:00:00Z",
+  "document_count": 3,
+  "edge_count": 2,
+  "source_urls": [
+    "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-holdout-headroom-b-source",
+    "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-holdout-headroom-b-rival",
+    "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-holdout-headroom-b-target"
+  ],
+  "notes": "Result-free constructed corpus; identifiers are unique across every longitudinal cluster and the prior feedback-adaptation fixture families."
+}

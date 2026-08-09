@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "cluster_id": "lf-development-headroom-a",
+  "cohort": "headroom",
+  "feedback_schedule": [
+    {
+      "horizon": 1,
+      "query": "confirm successful lf-development-headroom-a trace",
+      "used_node_id": "lf-development-headroom-a-z-target",
+      "channel": "relation",
+      "now": 101
+    },
+    {
+      "horizon": 2,
+      "query": "confirm successful lf-development-headroom-a trace",
+      "used_node_id": "lf-development-headroom-a-z-target",
+      "channel": "relation",
+      "now": 102
+    },
+    {
+      "horizon": 3,
+      "query": "confirm successful lf-development-headroom-a trace",
+      "used_node_id": "lf-development-headroom-a-z-target",
+      "channel": "relation",
+      "now": 103
+    }
+  ],
+  "scoring_cases": [
+    {
+      "id": "lf-development-headroom-a-relation",
+      "role": "relation",
+      "query": "longitudinal lf-development-headroom-a seed relation",
+      "expected_node_id": "lf-development-headroom-a-z-target",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-development-headroom-a-target",
+      "expected_path": [
+        {
+          "source_id": "lf-development-headroom-a-source",
+          "target_id": "lf-development-headroom-a-z-target",
+          "edge_type": "supports"
+        }
+      ],
+      "now": 100
+    },
+    {
+      "id": "lf-development-headroom-a-direct",
+      "role": "direct_lexical",
+      "query": "direct lexical lf-development-headroom-a target answer",
+      "expected_node_id": "lf-development-headroom-a-z-target",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-development-headroom-a-target",
+      "expected_relation_empty": true,
+      "now": 100
+    },
+    {
+      "id": "lf-development-headroom-a-negative",
+      "role": "directional_negative",
+      "query": "impossible reverse lf-development-headroom-a direction",
+      "expected_node_id": "lf-development-headroom-a-source",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-development-headroom-a-source",
+      "expected_relation_empty": true,
+      "now": 100
+    }
+  ]
+}

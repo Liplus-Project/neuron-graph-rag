@@ -1,0 +1,371 @@
+{
+  "checks": {
+    "development:lf-development-ceiling_vs_development:lf-development-headroom-a": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-ceiling_vs_development:lf-development-headroom-b": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-ceiling_vs_holdout:lf-holdout-ceiling": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-ceiling_vs_holdout:lf-holdout-headroom-a": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-ceiling_vs_holdout:lf-holdout-headroom-b": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-ceiling_vs_prior_1": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-ceiling_vs_prior_2": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-ceiling_vs_prior_3": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-ceiling_vs_prior_4": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-a_vs_development:lf-development-headroom-b": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-a_vs_holdout:lf-holdout-ceiling": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-a_vs_holdout:lf-holdout-headroom-a": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-a_vs_holdout:lf-holdout-headroom-b": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-a_vs_prior_1": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-a_vs_prior_2": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-a_vs_prior_3": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-a_vs_prior_4": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-b_vs_holdout:lf-holdout-ceiling": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-b_vs_holdout:lf-holdout-headroom-a": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-b_vs_holdout:lf-holdout-headroom-b": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-b_vs_prior_1": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-b_vs_prior_2": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-b_vs_prior_3": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "development:lf-development-headroom-b_vs_prior_4": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-ceiling_vs_holdout:lf-holdout-headroom-a": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-ceiling_vs_holdout:lf-holdout-headroom-b": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-ceiling_vs_prior_1": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-ceiling_vs_prior_2": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-ceiling_vs_prior_3": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-ceiling_vs_prior_4": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-headroom-a_vs_holdout:lf-holdout-headroom-b": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-headroom-a_vs_prior_1": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-headroom-a_vs_prior_2": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-headroom-a_vs_prior_3": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-headroom-a_vs_prior_4": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-headroom-b_vs_prior_1": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-headroom-b_vs_prior_2": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-headroom-b_vs_prior_3": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    },
+    "holdout:lf-holdout-headroom-b_vs_prior_4": {
+      "doc_paths": [],
+      "edge_identities": [],
+      "endpoints": [],
+      "node_ids": [],
+      "queries": [],
+      "source_urls": []
+    }
+  },
+  "inputs": {
+    "clusters": [
+      {
+        "cluster": "development:lf-development-headroom-a",
+        "fixture_sha256": "sha256:ff4cccd92c87c2f3f8caf75d10e2f9284c8e1e03ba3967a15c79794697a7c260",
+        "gold_sha256": "sha256:dd7eb035ecb28d72028441035812113475c695089bedea43ceeda90c047196c1"
+      },
+      {
+        "cluster": "development:lf-development-headroom-b",
+        "fixture_sha256": "sha256:c525765e7a54f57ea4b16ab2ff4016e64f5340fe4bbc89846081f2fbe5da4cb0",
+        "gold_sha256": "sha256:fc425e8fdbc566b5b7c17899793f0f018e2d87e716b6ea50ed7512d260c8ea9c"
+      },
+      {
+        "cluster": "development:lf-development-ceiling",
+        "fixture_sha256": "sha256:4436560b9a8c88d3474fcbc4401dd641a09c04aeb8f6550d8c27868bf2c7a56b",
+        "gold_sha256": "sha256:95faec8c3837ad05155c0e1fe0419e3f8a70a20659fa6fd0674418c5874f1527"
+      },
+      {
+        "cluster": "holdout:lf-holdout-headroom-a",
+        "fixture_sha256": "sha256:68d3c0a516bfed8467e63243ecd091c7934222df6ce16d8cc81a5d73e50498b5",
+        "gold_sha256": "sha256:8874747f2e9090b674e24cdfd9fab5f4f8605562fb2f057db26aa84e03e19cc7"
+      },
+      {
+        "cluster": "holdout:lf-holdout-headroom-b",
+        "fixture_sha256": "sha256:ae3f7e3b63f5e01e855d573e169c1aa703ad1a2058be8fb250564937977503ea",
+        "gold_sha256": "sha256:bf40d4b51fb693956543e3ee2ea738a59be42405ca29ad367b9fcc7b76e3fd02"
+      },
+      {
+        "cluster": "holdout:lf-holdout-ceiling",
+        "fixture_sha256": "sha256:634aac3c901cdbe64f56abd89d7a66d6e7ab70b2c3daf536e26582c7341c7c07",
+        "gold_sha256": "sha256:f92571b85abc849a87e1c29dd67c4a5e35b032b7179567895971c530bef8efe7"
+      }
+    ],
+    "prior_fixtures": [
+      {
+        "fixture": "d1_liplus_feedback_adaptation_development.json",
+        "fixture_sha256": "sha256:65f9993d3de6adae368daded3525bb79bf20eae613efde17174ba0685b9bc46c"
+      },
+      {
+        "fixture": "d1_liplus_feedback_adaptation_holdout.json",
+        "fixture_sha256": "sha256:44d743353a70826c3933bc19a759de15e1a3d297cac5b4c448af686fdc33d919"
+      },
+      {
+        "fixture": "d1_liplus_feedback_adaptation_reproduction_development.json",
+        "fixture_sha256": "sha256:09a89a5bc283b2f29a73889ffbe2780c264b2e526763f3744b77139431943c58"
+      },
+      {
+        "fixture": "d1_liplus_feedback_adaptation_reproduction_holdout.json",
+        "fixture_sha256": "sha256:9154fb635ee7904c4a5fc7aaa2c1e67ecd887dfc1fc525c336661384efc42a25"
+      }
+    ]
+  },
+  "passed": true,
+  "prior_usage": "fixture identifiers only; prior gold and observed result artifacts are not loaded",
+  "schema_version": 1
+}

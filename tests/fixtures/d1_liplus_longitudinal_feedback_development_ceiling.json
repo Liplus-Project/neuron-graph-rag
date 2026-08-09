@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "nodes": [
+    {
+      "node_id": "lf-development-ceiling-source",
+      "text": "Longitudinal corpus lf-development-ceiling seed relation scoring confirm successful trace.",
+      "metadata": {
+        "doc_path": "longitudinal-feedback/development/ceiling/source",
+        "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-development-ceiling-source",
+        "source_table": "constructed_longitudinal_fixture"
+      },
+      "confidence": 1
+    },
+    {
+      "node_id": "lf-development-ceiling-z-rival",
+      "text": "Longitudinal corpus lf-development-ceiling rival relation destination.",
+      "metadata": {
+        "doc_path": "longitudinal-feedback/development/ceiling/rival",
+        "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-development-ceiling-rival",
+        "source_table": "constructed_longitudinal_fixture"
+      },
+      "confidence": 1
+    },
+    {
+      "node_id": "lf-development-ceiling-b-target",
+      "text": "Longitudinal corpus lf-development-ceiling target direct lexical answer.",
+      "metadata": {
+        "doc_path": "longitudinal-feedback/development/ceiling/target",
+        "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/longitudinal-feedback-experiment.md#lf-development-ceiling-target",
+        "source_table": "constructed_longitudinal_fixture"
+      },
+      "confidence": 1
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "lf-development-ceiling-source",
+      "target_id": "lf-development-ceiling-z-rival",
+      "edge_type": "supports",
+      "weight": 1,
+      "factuality": 1
+    },
+    {
+      "source_id": "lf-development-ceiling-source",
+      "target_id": "lf-development-ceiling-b-target",
+      "edge_type": "supports",
+      "weight": 1,
+      "factuality": 1
+    }
+  ]
+}
