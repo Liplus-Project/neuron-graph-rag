@@ -1,0 +1,19 @@
+{
+  "agent_type": "default",
+  "case_id": "case-0004",
+  "case_packet_sha256": "sha256:b1e014d3a8301a105c1c713654c0e8af37080e423d78f7789252463f49578f2c",
+  "executed_at": "2026-08-02T04:44:11.261059Z",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_id": "development-case-0004-judge-1",
+  "model": "inherited-parent-model",
+  "parsed_response": {
+    "case_id": "case-0004",
+    "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+    "rationale": "DiDDの手法ページとして、対話駆動・構造駆動・現実駆動の三本柱を直接説明しており、queryに最も合致する。",
+    "selected_channel": "lexical",
+    "trace_id": "020cabf3d3c642c5bfeb7da191d85779"
+  },
+  "raw_response": "{\n  \"case_id\": \"case-0004\",\n  \"selected_channel\": \"lexical\",\n  \"trace_id\": \"020cabf3d3c642c5bfeb7da191d85779\",\n  \"node_id\": \"w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs\",\n  \"rationale\": \"DiDDの手法ページとして、対話駆動・構造駆動・現実駆動の三本柱を直接説明しており、queryに最も合致する。\"\n}\n",
+  "schema_version": 1,
+  "stage": "development"
+}

@@ -1,0 +1,19 @@
+{
+  "agent_type": "default",
+  "case_id": "case-0004",
+  "case_packet_sha256": "sha256:b1e014d3a8301a105c1c713654c0e8af37080e423d78f7789252463f49578f2c",
+  "executed_at": "2026-08-02T04:44:11.344398Z",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_id": "development-case-0004-judge-2",
+  "model": "inherited-parent-model",
+  "parsed_response": {
+    "case_id": "case-0004",
+    "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+    "rationale": "queryのDialogue-Driven Development、method page、three pillarsに対し、DiDD本文が手法名と三本柱を直接説明しており、relation laneにはhitがないため。",
+    "selected_channel": "lexical",
+    "trace_id": "020cabf3d3c642c5bfeb7da191d85779"
+  },
+  "raw_response": "{\"case_id\":\"case-0004\",\"selected_channel\":\"lexical\",\"trace_id\":\"020cabf3d3c642c5bfeb7da191d85779\",\"node_id\":\"w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs\",\"rationale\":\"queryのDialogue-Driven Development、method page、three pillarsに対し、DiDD本文が手法名と三本柱を直接説明しており、relation laneにはhitがないため。\"}\n",
+  "schema_version": 1,
+  "stage": "development"
+}

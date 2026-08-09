@@ -1,0 +1,83 @@
+{
+  "artifact_paths": {
+    "development": {
+      "case_packet_template": "tests/fixtures/d1_liplus_channels_node_first.development.{case_id}.packet.json",
+      "response_template": "tests/fixtures/d1_liplus_channels_node_first.development.{case_id}.judge-{judge_number}.json",
+      "result": "tests/fixtures/d1_liplus_channels_node_first.development.result.json",
+      "stage_packet": "tests/fixtures/d1_liplus_channels_node_first.development.stage.packet.json"
+    },
+    "holdout": {
+      "case_packet_template": "tests/fixtures/d1_liplus_channels_node_first.holdout.{case_id}.packet.json",
+      "response_template": "tests/fixtures/d1_liplus_channels_node_first.holdout.{case_id}.judge-{judge_number}.json",
+      "result": "tests/fixtures/d1_liplus_channels_node_first.holdout.result.json",
+      "stage_packet": "tests/fixtures/d1_liplus_channels_node_first.holdout.stage.packet.json"
+    }
+  },
+  "case_count": 4,
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "frozen_prior_artifacts": [
+    {"path": "tests/fixtures/d1_liplus_channels.contamination.json", "sha256": "sha256:416264de187404da04a26d27a881c3ce6fa8c2ef00d51a524cb423c52e9f43a5", "version": "v1"},
+    {"path": "tests/fixtures/d1_liplus_channels_development.json", "sha256": "sha256:046cf0ebebbc4ffa54ec6b49a5eef6d189876ccaeeb93e8069c257eefb3f65b8", "version": "v1"},
+    {"path": "tests/fixtures/d1_liplus_channels_development.gold.json", "sha256": "sha256:b432788b8304149321df03ca47b7fc2657463211dd00e153c90cea23ad6fb269", "version": "v1"},
+    {"path": "tests/fixtures/d1_liplus_channels_development.provenance.json", "sha256": "sha256:866ee70ce3858cf410d592eebf5edaa3686127e386011b150fc37d982fa685f0", "version": "v1"},
+    {"path": "tests/fixtures/d1_liplus_channels_experiment.manifest.json", "sha256": "sha256:b5214b674c5d1751fc187a7456032d34e11189358c59d6ad4bab686aa0b00b4d", "version": "v1"},
+    {"path": "tests/fixtures/d1_liplus_channels_experiment.development.result.json", "sha256": "sha256:a5cd1517245dc6e7e2bf965701804c4b314c4eff74ffb5c90a894844cd3598b8", "version": "v1"},
+    {"path": "tests/fixtures/d1_liplus_channels_holdout.json", "sha256": "sha256:21b63b9669dd2fbf6874d10870e5fb5e610476aa7dcf281baf356b66e103ffa0", "version": "v1"},
+    {"path": "tests/fixtures/d1_liplus_channels_holdout.gold.json", "sha256": "sha256:047e772d63708d22395f0929689219032b6b6a614d6f85b489bb880520066ea3", "version": "v1"},
+    {"path": "tests/fixtures/d1_liplus_channels_holdout.provenance.json", "sha256": "sha256:e0e0a5062a36d944c00619480945bf05e736db3a3a4fb2068e2f68d2902c91fb", "version": "v1"},
+    {"path": "src/neuron_graph_rag/channel_experiment.py", "sha256": "sha256:44a4975ebb1947e6f38b316f9e9a91f7602970f543330b083c5687d1d175b1cf", "version": "v1"},
+    {"path": "tools/run_channel_experiment.py", "sha256": "sha256:635d2c084fe860551c714a45f0f8f34ea8e2bd3cf9c923e8e340bcb89d987664", "version": "v1"},
+    {"path": "tests/test_channels.py", "sha256": "sha256:6577f6b847c8fb54024dbdb2308f77e1995df2e776a03e0c46835797b2e9664a", "version": "v1"},
+    {"path": "docs/independent-retrieval-channels-experiment.md", "sha256": "sha256:5777ac4e4fff985f20fcb3960d8b09e3e6236f2d2ed45b3091227ac4fa279ffa", "version": "v1"},
+    {"path": "src/neuron_graph_rag/blind_selection.py", "sha256": "sha256:e4750b3b23d21e29887142a57987891326627acb5adcd557a07adf1296724996", "version": "v2"},
+    {"path": "tools/run_blind_selection.py", "sha256": "sha256:f2600267c60240677861a8da55fe3e62d6e08105c658422f6c86eec7771dc31d", "version": "v2"},
+    {"path": "tests/test_blind_selection.py", "sha256": "sha256:2659f7584d514070e6fb3eebf49440011390b51ba981016dc7432431368da918", "version": "v2"},
+    {"path": "docs/blind-llm-channel-selection-experiment.md", "sha256": "sha256:5a72a9ec9c066c153324c88e1f89d809701353d20103dd679d71eeddf1309b4c", "version": "v2"},
+    {"path": "tests/fixtures/d1_liplus_channels_blind_experiment.manifest.json", "sha256": "sha256:3ecfc68bb621ea4af1466e4858f10e75e62993739dd1c927127873eae68de625", "version": "v2"},
+    {"path": "tests/fixtures/d1_liplus_channels_blind_judge_prompt.txt", "sha256": "sha256:3cea7d995c30ae165aea67d443f2b88bb4e4fc936567223d626f11e47c02a5e4", "version": "v2"},
+    {"path": "tests/fixtures/d1_liplus_channels_blind.development.packet.json", "sha256": "sha256:be5ab85eaeb7f7a03a43ef04e640b82d8d953ead20ba3e7b5ad24c8029234dd7", "version": "v2"},
+    {"path": "tests/fixtures/d1_liplus_channels_blind.development.judge-1.json", "sha256": "sha256:a823e8e253fcb17f3c1c2a02bbc7a04670cd3807c9e683ea565e1178ff8463b2", "version": "v2"},
+    {"path": "tests/fixtures/d1_liplus_channels_blind.development.judge-2.json", "sha256": "sha256:46036692eb8b3c9aa5e00758d9c08c0f24f85c89a4880cf635c64188d439c3f0", "version": "v2"},
+    {"path": "tests/fixtures/d1_liplus_channels_blind.development.judge-3.raw.json", "sha256": "sha256:553e24dd63d14758da86c096310c10c011e339c3128e954cc8814afc9c27e245", "version": "v2"},
+    {"path": "tests/fixtures/d1_liplus_channels_blind.development.result.json", "sha256": "sha256:4b2a56f2de1663aad3366437b132f076abfb186c185530e0b3ccddee1f08a3d6", "version": "v2"}
+  ],
+  "frozen_prior_commit": "06446f4149c759748f11acee37c69cdace8651d2",
+  "gate": [
+    "packet_and_prompt_exclude_answer_fields",
+    "all_responses_valid_and_trace_bound",
+    "node_majority_exists_for_every_case",
+    "majority_selects_every_expected_node",
+    "relation_task_selects_edge_target",
+    "selected_relation_paths_match",
+    "one_case_per_invocation",
+    "abstain_is_never_majority",
+    "search_and_scoring_do_not_change_edges",
+    "node_correctness_is_independent_of_channel",
+    "v1_v2_artifacts_match_frozen_bytes",
+    "observed_artifact_overwrite_is_refused"
+  ],
+  "judge_prompt": {
+    "canonical_sha256": "sha256:78d7186bed00fcabb54b6c132b2bae99db5cae631aa71a969545cd95ec85f27c",
+    "path": "tests/fixtures/d1_liplus_channels_node_first_judge_prompt.txt"
+  },
+  "judges_per_case": 3,
+  "query_overrides": {
+    "development": {
+      "case-0003": "Which Dialogue-Driven Development method page is linked from the DiDD umbrella naming decision for PR 1468?"
+    },
+    "holdout": {
+      "case-0003": "Which agentic search refactor is linked from the skill trigger declaration-in-description decision?"
+    }
+  },
+  "relation_case_id": "case-0003",
+  "schema_version": 1,
+  "stop_rule": {
+    "development_failure": "do not generate holdout stage or case packets",
+    "holdout_generation_count": 1,
+    "judges_are_fresh_across_every_case": true,
+    "refuse_overwrite": true,
+    "responses_per_stage": 12,
+    "stage_generation_count": 1
+  },
+  "v1_manifest": "tests/fixtures/d1_liplus_channels_experiment.manifest.json"
+}

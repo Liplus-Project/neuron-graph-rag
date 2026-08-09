@@ -1,0 +1,19 @@
+{
+  "agent_type": "default",
+  "case_id": "case-0001",
+  "case_packet_sha256": "sha256:56782709dc8c63e3489796f70233328e23f77efc160af23b97bcfdbf473d2968",
+  "executed_at": "2026-08-09T01:24:35.0697126Z",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_id": "holdout-case-0001-judge-1",
+  "model": "inherited-parent-model",
+  "parsed_response": {
+    "case_id": "case-0001",
+    "node_id": "w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4",
+    "rationale": "Directly resolves whether skill trigger declarations should remain in description rather than use when_to_use, including portability.",
+    "selected_channel": "lexical",
+    "trace_id": "bf56004eb2764e27b8d1106cbd8cef8e"
+  },
+  "raw_response": "{\"case_id\":\"case-0001\",\"selected_channel\":\"lexical\",\"trace_id\":\"bf56004eb2764e27b8d1106cbd8cef8e\",\"node_id\":\"w:__6MKYfTpBsYud5xjm14aMPS-Cbr7V8gahJpg6ZX6i4\",\"rationale\":\"Directly resolves whether skill trigger declarations should remain in description rather than use when_to_use, including portability.\"}\n",
+  "schema_version": 1,
+  "stage": "holdout"
+}

@@ -1,0 +1,19 @@
+{
+  "agent_type": "default",
+  "case_id": "case-0001",
+  "case_packet_sha256": "sha256:cb73d20dd2f113a8f49b0f58cb7966f9cf221020537c888c3eeffcc46b0f06db",
+  "executed_at": "2026-08-02T04:44:10.510775Z",
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "judge_id": "development-case-0001-judge-2",
+  "model": "inherited-parent-model",
+  "parsed_response": {
+    "case_id": "case-0001",
+    "node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+    "rationale": "Queryのumbrella namingとthree drives packagingに対し、DiDDを三駆動を束ねる総称とする決定を直接扱うlexical先頭nodeが最も明確に一致する。",
+    "selected_channel": "lexical",
+    "trace_id": "d1add322b6ef4b40a3aaf5c14fd359bc"
+  },
+  "raw_response": "{\"case_id\":\"case-0001\",\"selected_channel\":\"lexical\",\"trace_id\":\"d1add322b6ef4b40a3aaf5c14fd359bc\",\"node_id\":\"w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k\",\"rationale\":\"Queryのumbrella namingとthree drives packagingに対し、DiDDを三駆動を束ねる総称とする決定を直接扱うlexical先頭nodeが最も明確に一致する。\"}\n",
+  "schema_version": 1,
+  "stage": "development"
+}

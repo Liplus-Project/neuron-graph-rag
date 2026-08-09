@@ -1,0 +1,521 @@
+{
+  "cases": [
+    {
+      "case_id": "case-0001",
+      "channel_vote_counts": {
+        "lexical": 3
+      },
+      "cohort": "direct_lookup",
+      "edge_weight_unchanged": true,
+      "expected_node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+      "has_node_majority": true,
+      "majority_node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+      "node_correct": true,
+      "node_vote_counts": [
+        {
+          "count": 3,
+          "node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k"
+        }
+      ],
+      "responses": [
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "development-case-0001-judge-1",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+          "selected_rank": 1,
+          "selected_trace_id": "d1add322b6ef4b40a3aaf5c14fd359bc",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "development-case-0001-judge-2",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+          "selected_rank": 1,
+          "selected_trace_id": "d1add322b6ef4b40a3aaf5c14fd359bc",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "development-case-0001-judge-3",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+          "selected_rank": 1,
+          "selected_trace_id": "d1add322b6ef4b40a3aaf5c14fd359bc",
+          "single_case_valid": true
+        }
+      ],
+      "unanimous_node": true
+    },
+    {
+      "case_id": "case-0002",
+      "channel_vote_counts": {
+        "lexical": 3
+      },
+      "cohort": "direct_lookup",
+      "edge_weight_unchanged": true,
+      "expected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "has_node_majority": true,
+      "majority_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "node_correct": true,
+      "node_vote_counts": [
+        {
+          "count": 3,
+          "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs"
+        }
+      ],
+      "responses": [
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "development-case-0002-judge-1",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 0.5,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+          "selected_rank": 2,
+          "selected_trace_id": "d8b5479611444e1cb37fd9ba1f73b02a",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "development-case-0002-judge-2",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 0.5,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+          "selected_rank": 2,
+          "selected_trace_id": "d8b5479611444e1cb37fd9ba1f73b02a",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "development-case-0002-judge-3",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 0.5,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+          "selected_rank": 2,
+          "selected_trace_id": "d8b5479611444e1cb37fd9ba1f73b02a",
+          "single_case_valid": true
+        }
+      ],
+      "unanimous_node": true
+    },
+    {
+      "case_id": "case-0003",
+      "channel_vote_counts": {
+        "relation": 3
+      },
+      "cohort": "relation",
+      "edge_weight_unchanged": true,
+      "expected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "has_node_majority": true,
+      "majority_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "node_correct": true,
+      "node_vote_counts": [
+        {
+          "count": 3,
+          "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs"
+        }
+      ],
+      "responses": [
+        {
+          "feedback_provenance": {
+            "channel": "relation",
+            "credited_path_available": true,
+            "would_reinforce_edges": true
+          },
+          "judge_id": "development-case-0003-judge-1",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+                "target_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs"
+              }
+            ],
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+                "target_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs"
+              }
+            ]
+          ],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "relation",
+          "selected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+          "selected_rank": 1,
+          "selected_trace_id": "01ff8da7ef8e4df49b711000d37575bc",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "relation",
+            "credited_path_available": true,
+            "would_reinforce_edges": true
+          },
+          "judge_id": "development-case-0003-judge-2",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+                "target_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs"
+              }
+            ],
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+                "target_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs"
+              }
+            ]
+          ],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "relation",
+          "selected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+          "selected_rank": 1,
+          "selected_trace_id": "01ff8da7ef8e4df49b711000d37575bc",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "relation",
+            "credited_path_available": true,
+            "would_reinforce_edges": true
+          },
+          "judge_id": "development-case-0003-judge-3",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+                "target_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs"
+              }
+            ],
+            [
+              {
+                "edge_type": "mention",
+                "source_id": "w:hbbCWAnXGz_4EI0OQMnlQOsNMA1crSkErSaH6_QMY4k",
+                "target_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs"
+              }
+            ]
+          ],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "relation",
+          "selected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+          "selected_rank": 1,
+          "selected_trace_id": "01ff8da7ef8e4df49b711000d37575bc",
+          "single_case_valid": true
+        }
+      ],
+      "unanimous_node": true
+    },
+    {
+      "case_id": "case-0004",
+      "channel_vote_counts": {
+        "lexical": 3
+      },
+      "cohort": "directional_negative",
+      "edge_weight_unchanged": true,
+      "expected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "has_node_majority": true,
+      "majority_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+      "node_correct": true,
+      "node_vote_counts": [
+        {
+          "count": 3,
+          "node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs"
+        }
+      ],
+      "responses": [
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "development-case-0004-judge-1",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+          "selected_rank": 1,
+          "selected_trace_id": "020cabf3d3c642c5bfeb7da191d85779",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "development-case-0004-judge-2",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+          "selected_rank": 1,
+          "selected_trace_id": "020cabf3d3c642c5bfeb7da191d85779",
+          "single_case_valid": true
+        },
+        {
+          "feedback_provenance": {
+            "channel": "lexical",
+            "credited_path_available": false,
+            "would_reinforce_edges": false
+          },
+          "judge_id": "development-case-0004-judge-3",
+          "node_correct": true,
+          "path_matched": true,
+          "projected_selected_paths": [],
+          "reciprocal_rank": 1.0,
+          "selected_channel": "lexical",
+          "selected_node_id": "w:yxcIKgC0UvZ0trKx8LXWnJVw4mOGCH-MrCyJZfTyRAs",
+          "selected_rank": 1,
+          "selected_trace_id": "020cabf3d3c642c5bfeb7da191d85779",
+          "single_case_valid": true
+        }
+      ],
+      "unanimous_node": true
+    }
+  ],
+  "experiment_id": "d1-liplus-node-first-blind-selection-v3",
+  "gate": {
+    "abstain_is_never_majority": true,
+    "all_responses_valid_and_trace_bound": true,
+    "majority_selects_every_expected_node": true,
+    "node_correctness_is_independent_of_channel": true,
+    "node_majority_exists_for_every_case": true,
+    "observed_artifact_overwrite_is_refused": true,
+    "one_case_per_invocation": true,
+    "packet_and_prompt_exclude_answer_fields": true,
+    "relation_task_selects_edge_target": true,
+    "search_and_scoring_do_not_change_edges": true,
+    "selected_relation_paths_match": true,
+    "v1_v2_artifacts_match_frozen_bytes": true
+  },
+  "gate_passed": true,
+  "holdout_status": "eligible_for_single_stage",
+  "manifest_canonical_sha256": "sha256:5bf7f8f17254052c86c194795a53c3e819ecf83224ebcf0dba4fea64e953f009",
+  "metrics": {
+    "abstain_rate": 0.0,
+    "correct_node_channel_split": {
+      "lexical": 9,
+      "relation": 3
+    },
+    "judge_node_accuracy": [
+      {
+        "correct": true,
+        "judge_id": "development-case-0001-judge-1"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0001-judge-2"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0001-judge-3"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0002-judge-1"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0002-judge-2"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0002-judge-3"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0003-judge-1"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0003-judge-2"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0003-judge-3"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0004-judge-1"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0004-judge-2"
+      },
+      {
+        "correct": true,
+        "judge_id": "development-case-0004-judge-3"
+      }
+    ],
+    "lexical_trace_usage": 0.75,
+    "majority_node_accuracy": 1.0,
+    "node_majority_agreement": 1.0,
+    "path_backed_correct_node_rate": 1.0,
+    "relation_trace_usage": 0.25,
+    "selected_node_mrr": 0.875,
+    "union_oracle_coverage": 1.0,
+    "union_oracle_gap": 0.0
+  },
+  "response_artifacts": [
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:82f821c97f674ed9f1cf59646205312719b8d8597350794b00a9980d6ceeec1b",
+      "case_id": "case-0001",
+      "executed_at": "2026-08-02T04:44:10.410745Z",
+      "judge_id": "development-case-0001-judge-1",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:88b165ce26ef15cb3fe699bbcb2ab31b79f1f0c370671fd8e90a70e231ae1f92",
+      "case_id": "case-0001",
+      "executed_at": "2026-08-02T04:44:10.510775Z",
+      "judge_id": "development-case-0001-judge-2",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:14f4a7821b2782945492be70f2e296f12c98ef5ff61e42bb753c18917cf91f3f",
+      "case_id": "case-0001",
+      "executed_at": "2026-08-02T04:44:10.594080Z",
+      "judge_id": "development-case-0001-judge-3",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:d2ac1540e6b65a29e1f1cd483188cf6fa6931caa7d2bd0e3142f4718a2433ee2",
+      "case_id": "case-0002",
+      "executed_at": "2026-08-02T04:44:10.694123Z",
+      "judge_id": "development-case-0002-judge-1",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:9f76df7fe5037f85799c190b6c602214bb425c02dd3564aa29135398e9de8a42",
+      "case_id": "case-0002",
+      "executed_at": "2026-08-02T04:44:10.787854Z",
+      "judge_id": "development-case-0002-judge-2",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:6ebb7e22d2e8a17627d893323da77021fdb317cd7b6240cb5a26ceb2d8270800",
+      "case_id": "case-0002",
+      "executed_at": "2026-08-02T04:44:10.877713Z",
+      "judge_id": "development-case-0002-judge-3",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:0a2e79541feee5f067e87a4c3b913870e1992ff3d1d122d88689c83f00b3f32c",
+      "case_id": "case-0003",
+      "executed_at": "2026-08-02T04:44:10.972110Z",
+      "judge_id": "development-case-0003-judge-1",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:acc05b2ef35add329ac05594ece02fb49668fef76a0a08b61467575ab6f2687e",
+      "case_id": "case-0003",
+      "executed_at": "2026-08-02T04:44:11.062729Z",
+      "judge_id": "development-case-0003-judge-2",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:b7c35384e194b5713d3a7fdce2a01974020ca8da82555126089e468c95a63bd2",
+      "case_id": "case-0003",
+      "executed_at": "2026-08-02T04:44:11.161169Z",
+      "judge_id": "development-case-0003-judge-3",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:b780675e3300e023fc6eb6761b63bb88d17372f6c24c134299849faff8f50f61",
+      "case_id": "case-0004",
+      "executed_at": "2026-08-02T04:44:11.261059Z",
+      "judge_id": "development-case-0004-judge-1",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:c1753a143603fd4e4c7cb6aee0b2da000740f7c665bb27017642c5de4233dc4d",
+      "case_id": "case-0004",
+      "executed_at": "2026-08-02T04:44:11.344398Z",
+      "judge_id": "development-case-0004-judge-2",
+      "model": "inherited-parent-model"
+    },
+    {
+      "agent_type": "default",
+      "artifact_sha256": "sha256:e8d66a561a0a9ad58d3d70d620517ac9cfa7d869efc4b9c7628dc66e04a8249d",
+      "case_id": "case-0004",
+      "executed_at": "2026-08-02T04:44:11.444566Z",
+      "judge_id": "development-case-0004-judge-3",
+      "model": "inherited-parent-model"
+    }
+  ],
+  "schema_version": 1,
+  "stage": "development",
+  "stage_packet_sha256": "sha256:838abf68fd6c72d8ffc0f1cef35947277afa12eaf2f2291fa93eae4cccbf9790"
+}
