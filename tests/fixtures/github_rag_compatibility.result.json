@@ -1,0 +1,120 @@
+{
+  "comparisons": [
+    {
+      "expected_source_found": true,
+      "github_rag_mcp_contract": {
+        "expected_source_url": "https://github.com/Liplus-Project/github-rag-mcp/blob/53d8feec58a23e098f41e370910e824187adc84e/docs/Home.md"
+      },
+      "id": "hybrid-retrieval",
+      "ngr": {
+        "hits": [
+          {
+            "node_id": "github:Liplus-Project/github-rag-mcp:docs/Home.md",
+            "rank": 1,
+            "rationale": {
+              "fusion": {
+                "entry_component": 1.0,
+                "final": 1.0,
+                "graph_component": 0.0,
+                "graph_normalization": "max",
+                "strategy": "linear"
+              },
+              "node_id": "github:Liplus-Project/github-rag-mcp:docs/Home.md",
+              "paths": [],
+              "ranks": {
+                "entry": 1,
+                "graph": null
+              },
+              "scores": {
+                "dense": 0.0,
+                "dense_raw": 0.0,
+                "entry": 1.0,
+                "entry_anchor_after_competition": 1.0,
+                "entry_anchor_before_competition": 1.0,
+                "final": 1.0,
+                "graph_activation": 0.0,
+                "graph_activation_normalized": 0.0,
+                "sparse": 1.0,
+                "sparse_raw": 2.719903230453201
+              }
+            },
+            "source_url": "https://github.com/Liplus-Project/github-rag-mcp/blob/53d8feec58a23e098f41e370910e824187adc84e/docs/Home.md"
+          }
+        ]
+      },
+      "query": "hybrid retrieval dense sparse rerank"
+    },
+    {
+      "expected_source_found": true,
+      "github_rag_mcp_contract": {
+        "expected_source_url": "https://github.com/Liplus-Project/github-rag-mcp/blob/53d8feec58a23e098f41e370910e824187adc84e/docs/Home.md"
+      },
+      "id": "activity-indexing",
+      "ngr": {
+        "hits": [
+          {
+            "node_id": "github:Liplus-Project/github-rag-mcp:docs/Home.md",
+            "rank": 1,
+            "rationale": {
+              "fusion": {
+                "entry_component": 1.0,
+                "final": 1.0,
+                "graph_component": 0.0,
+                "graph_normalization": "max",
+                "strategy": "linear"
+              },
+              "node_id": "github:Liplus-Project/github-rag-mcp:docs/Home.md",
+              "paths": [],
+              "ranks": {
+                "entry": 1,
+                "graph": null
+              },
+              "scores": {
+                "dense": 0.0,
+                "dense_raw": 0.0,
+                "entry": 1.0,
+                "entry_anchor_after_competition": 1.0,
+                "entry_anchor_before_competition": 1.0,
+                "final": 1.0,
+                "graph_activation": 0.0,
+                "graph_activation_normalized": 0.0,
+                "sparse": 1.0,
+                "sparse_raw": 2.191586098502433
+              }
+            },
+            "source_url": "https://github.com/Liplus-Project/github-rag-mcp/blob/53d8feec58a23e098f41e370910e824187adc84e/docs/Home.md"
+          }
+        ]
+      },
+      "query": "GitHub webhook commit diff indexing"
+    }
+  ],
+  "limitations": [
+    "github-rag-mcp production search is not called; expected sources are an explicit comparison contract.",
+    "This does not implement an MCP server, authentication, transport, or remote deployment.",
+    "The adapter indexes only acquired file content; it does not ingest issues, pull requests, comments, releases, or commit diffs."
+  ],
+  "schema_version": 1,
+  "source": {
+    "commit": "53d8feec58a23e098f41e370910e824187adc84e",
+    "fingerprint": "sha256:0b282132946dffdf80f19ea5a35d860114adf6348fc78bc988a94f5dd5ce91ac",
+    "read_only": true,
+    "repository": "Liplus-Project/github-rag-mcp",
+    "source_urls": [
+      "https://github.com/Liplus-Project/github-rag-mcp/blob/53d8feec58a23e098f41e370910e824187adc84e/docs/Home.md"
+    ]
+  },
+  "source_update": {
+    "after_commit": "4d0c94bcfb63f05aee7306d55a0fc97caa168b22",
+    "before_commit": "53d8feec58a23e098f41e370910e824187adc84e",
+    "changed_paths": [
+      "docs/Home.md"
+    ],
+    "followed": true,
+    "provided": true,
+    "reindexed_node_ids": [
+      "github:Liplus-Project/github-rag-mcp:docs/Home.md"
+    ]
+  },
+  "verdict": "continue_candidate"
+}

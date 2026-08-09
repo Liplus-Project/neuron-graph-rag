@@ -1,0 +1,15 @@
+{
+  "cases": [
+    {
+      "expected_source_url": "https://github.com/Liplus-Project/github-rag-mcp/blob/53d8feec58a23e098f41e370910e824187adc84e/docs/Home.md",
+      "id": "hybrid-retrieval",
+      "query": "hybrid retrieval dense sparse rerank"
+    },
+    {
+      "expected_source_url": "https://github.com/Liplus-Project/github-rag-mcp/blob/53d8feec58a23e098f41e370910e824187adc84e/docs/Home.md",
+      "id": "activity-indexing",
+      "query": "GitHub webhook commit diff indexing"
+    }
+  ],
+  "schema_version": 1
+}
