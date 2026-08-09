@@ -1,0 +1,13 @@
+{
+  "cases": [
+    {
+      "id": "hybrid-retrieval",
+      "query": "hybrid retrieval dense sparse rerank"
+    },
+    {
+      "id": "activity-indexing",
+      "query": "GitHub webhook commit diff indexing"
+    }
+  ],
+  "schema_version": 1
+}

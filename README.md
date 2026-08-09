@@ -188,6 +188,8 @@ with NeuronGraphRAG("knowledge.db") as rag:
 
 特定データ源の model は公開 API に含みません。GitHub、Decision Structure、Graphify などは、`add_document` と `add_edge` を呼ぶ将来の adapter として追加できます。
 
+GitHub の最小 read-only adapter 候補は、coreへGitHub clientを持ち込まず、固定snapshotをlocal indexへ接続する形で検証しています。[github-rag-mcp replacement compatibility spike](docs/github-rag-mcp-replacement-compatibility.md) は、public repository一つの取得、保存済み `search` capture との比較、one-document update follow-upだけを扱います。committed observation は github-rag-mcp の最小 doc 検索 path の候補に限り、production serviceやMCP replacementを主張するものではありません。
+
 既定 dense encoder は依存なしで再現可能な feature hashing です。実運用の埋め込みは callable を差し替えます。
 
 ```python
