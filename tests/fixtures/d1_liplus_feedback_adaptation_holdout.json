@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "source": {"database": "frozen-local-corpus", "doc_paths": ["feedback-adaptation-holdout-source", "feedback-adaptation-holdout-target", "feedback-adaptation-holdout-competitor"]},
+  "nodes": [
+    {"node_id": "feedback-holdout-source", "text": "holdout feedback receipt source relation scoring bridge", "confidence": 1.0, "metadata": {"doc_path": "feedback-adaptation-holdout-source", "file_path": "docs/feedback-adaptation-holdout-source.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-holdout-source"}},
+    {"node_id": "feedback-holdout-target", "text": "holdout adaptation verified target direct evidence", "confidence": 1.0, "metadata": {"doc_path": "feedback-adaptation-holdout-target", "file_path": "docs/feedback-adaptation-holdout-target.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-holdout-target"}},
+    {"node_id": "feedback-holdout-competitor", "text": "holdout adaptation competing relation", "confidence": 1.0, "metadata": {"doc_path": "feedback-adaptation-holdout-competitor", "file_path": "docs/feedback-adaptation-holdout-competitor.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-holdout-competitor"}}
+  ],
+  "edges": [
+    {"source_id": "feedback-holdout-source", "target_id": "feedback-holdout-target", "edge_type": "mention", "weight": 0.49, "factuality": 1.0},
+    {"source_id": "feedback-holdout-source", "target_id": "feedback-holdout-competitor", "edge_type": "mention", "weight": 0.50, "factuality": 1.0}
+  ]
+}

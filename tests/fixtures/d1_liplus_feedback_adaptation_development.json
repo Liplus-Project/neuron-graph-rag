@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "source": {"database": "frozen-local-corpus", "doc_paths": ["feedback-adaptation-dev-source", "feedback-adaptation-dev-target", "feedback-adaptation-dev-competitor"]},
+  "nodes": [
+    {"node_id": "feedback-dev-source", "text": "development feedback receipt source relation scoring bridge", "confidence": 1.0, "metadata": {"doc_path": "feedback-adaptation-dev-source", "file_path": "docs/feedback-adaptation-dev-source.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-dev-source"}},
+    {"node_id": "feedback-dev-target", "text": "development adaptation verified target direct evidence", "confidence": 1.0, "metadata": {"doc_path": "feedback-adaptation-dev-target", "file_path": "docs/feedback-adaptation-dev-target.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-dev-target"}},
+    {"node_id": "feedback-dev-competitor", "text": "development adaptation competing relation", "confidence": 1.0, "metadata": {"doc_path": "feedback-adaptation-dev-competitor", "file_path": "docs/feedback-adaptation-dev-competitor.md", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-dev-competitor"}}
+  ],
+  "edges": [
+    {"source_id": "feedback-dev-source", "target_id": "feedback-dev-target", "edge_type": "mention", "weight": 0.49, "factuality": 1.0},
+    {"source_id": "feedback-dev-source", "target_id": "feedback-dev-competitor", "edge_type": "mention", "weight": 0.50, "factuality": 1.0}
+  ]
+}

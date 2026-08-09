@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "fixture": "d1_liplus_feedback_adaptation_holdout.json",
+  "feedback": {"query": "holdout feedback receipt source", "used_node_id": "feedback-holdout-target", "channel": "relation", "now": 1000.0},
+  "scoring_cases": [
+    {"id": "feedback-holdout-relation", "role": "relation", "query": "holdout relation scoring bridge", "expected_node_id": "feedback-holdout-target", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-holdout-target", "expected_path": [{"source_id": "feedback-holdout-source", "target_id": "feedback-holdout-target", "edge_type": "mention"}], "now": 2000.0},
+    {"id": "feedback-holdout-direct", "role": "direct_lexical", "query": "holdout adaptation verified target direct evidence", "expected_node_id": "feedback-holdout-target", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-holdout-target", "now": 2001.0},
+    {"id": "feedback-holdout-negative", "role": "directional_negative", "query": "holdout adaptation verified target direct evidence", "expected_node_id": "feedback-holdout-target", "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/wiki/feedback-adaptation-holdout-target", "expected_relation_empty": true, "now": 2002.0}
+  ]
+}
