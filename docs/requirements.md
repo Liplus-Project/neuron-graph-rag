@@ -74,7 +74,7 @@
 56. `search_channels`は同一queryからBM25 lexical laneとanchored edge-only relation laneを独立trace IDで同時返却し、cross-lane final score、combined rank、single winnerを生成しない。
 57. lexical laneはBM25だけで順位付けし、dense retrievalとgraph propagationをlane順位へ使用せず、保存hitへgraph pathを持たせない。
 58. relation laneはBM25+dense entryをseed選択だけに使い、`anchored_local_competition`で1 edge以上を通過したpositive graph nodeをraw activation降順・node ID昇順で順位付けする。
-59. channel provenanceはcallerのchannel自己申告でなく独立trace IDに保存し、`record_success`はlexical traceでedgeを変更せず、relation traceでは保存済みcredited pathだけを強化する。
+59. channel provenanceはcallerのchannel自己申告でなく独立trace IDに保存し、default config の`record_success`はlexical traceでedgeを変更せず、relation traceでは保存済みcredited pathだけを強化する。
 60. 同一nodeが両laneに現れる場合も各rankと説明を保持し、片方のtraceに保存されていないnodeへのfeedbackをatomicに拒否する。
 61. independent-channel experimentはproduction D1からread-only取得した相互disjointな2-node / 1-edge developmentとholdoutを、既存9 fixturesの全node pathから分離し、各splitの4-case hard gate、provenance、contamination audit、lane規則、feedback規則、停止規則を結果観測前に固定する。
 62. developmentでlane parity、relation個別改善、edge-only path、独立trace、edge不変、feedback帰属、cross-lane拒否、決定性の全hard gateを通過した場合だけholdoutを一度開き、同じgateを全通過した場合だけ`search_channels`をvalidatedと記録する。
@@ -96,6 +96,7 @@
 77. feedback adaptation reproductionはprior resultを選択入力にせず、prior fixtureとの識別子だけのcontamination auditを行う。raw relation stepは比較前に`source_id`、`target_id`、`edge_type`だけへ射影し、runtime fieldを含むsynthetic testでpath identityをfreeze前に検証する。
 78. 新規 feedback-adaptation experiment の primary relation gate は、baseline relation MRR が 1.0 未満ならtreatmentのstrict improvement、baseline relation MRR が 1.0 ならtreatmentのnon-regressionを要求する。いずれも endpoint/type projected path、direct lexical / directional-negative controls、credited-only mutation、deterministic replay、contamination、immutable output を含む全 safety gate を必須とする。ceiling case のnon-regression pass は追加の順位改善を示せないことを記録するだけで、generalization、default変更、production採用を許可しない。
 79. repository-native controlled corpus v3 の engine-backed trajectory experiment は、source commit、split / cluster identity、explicit-link edge、0 / 1 / 3 / 10 feedback schedule、query、used node、credited path、control / treatment、gate、manifest hash、exclusive output を観測前に固定する。control は relation trace と used node を記録して edge を変更せず、treatment だけが同じ schedule の relation trace ID を `record_success` に渡す。headroom は 0 から 10 で厳密改善し途中 checkpoint で退行せず、control case と ceiling case も退行せず、credited edge 以外が変化しない場合だけ development gate を通過する。development 全 gate 通過時だけ holdout を一度開き、観測後は evaluator、fixture、gold、schedule、manifest、gate、docs を変更しない。
+80. sibling relation feedback normalization は、明示的に有効化された candidate config でのみ、relation trace の credited edge を強化し、その edge と同じ source から出る未 credit sibling だけを局所的に正規化できる。lexical trace、zero-hop、未関係 source、credited sibling は変更しない。candidate は synthetic isolation test と result-free development / holdout 相当の relation、direct、lexical、negative-control gate を通過するまで default にしない。
 75. v3 implementation、prompt、manifest、query override、schema、集約、path audit、hash規則、gate、stop rule、testsをresult-free commitでpushした後、development stage / 4 case packet / 12 responses / resultを各一度だけ生成する。
 76. development全12 gate通過時だけholdout stageを一度生成し、異なるfresh 12 judgesで同じgateを評価する。packet、response、resultの上書き、観測後の規則変更、実LLM品質値のCI再生成を拒否する。
 
@@ -128,3 +129,4 @@
 - [Trace-credited feedback adaptation experiment](feedback-adaptation-experiment.md) がcontrol / treatmentの因果比較、result-free freeze、conditional holdoutを定義する。
 - [Trace-credited feedback adaptation reproduction experiment](feedback-adaptation-reproduction-experiment.md) が新規D1 split、prior-result非参照、endpoint/type-only path projection、conditional holdoutを定義する。
 - [Engine-backed feedback trajectory experiment](engine-backed-feedback-trajectory-experiment.md) が repository-native controlled corpus v3 上の 0 / 1 / 3 / 10 feedback trajectory、実 relation trace、credited-only mutation、result-free freeze、conditional holdout を定義する。
+- [Sibling relation feedback normalization](sibling-relation-feedback-normalization.md) が opt-in candidate の局所 sibling 正規化、trace isolation、default 変更前の検証境界を定義する。

@@ -198,9 +198,19 @@ class ReinforcedEdge:
 
 
 @dataclass(frozen=True, slots=True)
+class NormalizedSiblingEdge:
+    source_id: str
+    target_id: str
+    edge_type: str
+    old_weight: float
+    new_weight: float
+
+
+@dataclass(frozen=True, slots=True)
 class FeedbackReceipt:
     feedback_id: str
     trace_id: str
     used_node_ids: tuple[str, ...]
     reinforced_edges: tuple[ReinforcedEdge, ...]
     channel: str | None = None
+    normalized_sibling_edges: tuple[NormalizedSiblingEdge, ...] = ()
