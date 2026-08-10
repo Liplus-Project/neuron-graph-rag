@@ -302,8 +302,15 @@ class SQLiteStore:
         created_at: float,
         used_node_ids: Iterable[str],
         edge_updates: Iterable[tuple[str, str, str, float, float]],
-    ) -> list[tuple[str, str, str, float, float]]:
+        normalization_sets: Iterable[
+            tuple[str, tuple[tuple[str, str, str], ...], float]
+        ] = (),
+    ) -> tuple[
+        list[tuple[str, str, str, float, float]],
+        list[tuple[str, str, str, float, float]],
+    ]:
         reinforced: list[tuple[str, str, str, float, float]] = []
+        normalized: list[tuple[str, str, str, float, float]] = []
         with self.transaction() as connection:
             trace = connection.execute(
                 "SELECT 1 FROM retrievals WHERE trace_id = ?", (trace_id,)
@@ -335,6 +342,7 @@ class SQLiteStore:
                     """,
                     (feedback_id, node_id),
                 )
+            reinforced_increase_by_source: dict[str, float] = {}
             for source_id, target_id, edge_type, increment, maximum in edge_updates:
                 row = connection.execute(
                     """
@@ -363,7 +371,41 @@ class SQLiteStore:
                 reinforced.append(
                     (source_id, target_id, edge_type, old_weight, new_weight)
                 )
-        return reinforced
+                reinforced_increase_by_source[source_id] = (
+                    reinforced_increase_by_source.get(source_id, 0.0)
+                    + (new_weight - old_weight)
+                )
+            for source_id, sibling_keys, ratio in normalization_sets:
+                total_increase = reinforced_increase_by_source.get(source_id, 0.0)
+                if total_increase <= 0.0 or not sibling_keys:
+                    continue
+                reduction = total_increase * ratio / len(sibling_keys)
+                for sibling_source, target_id, edge_type in sibling_keys:
+                    row = connection.execute(
+                        """
+                        SELECT weight FROM edges
+                        WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                        """,
+                        (sibling_source, target_id, edge_type),
+                    ).fetchone()
+                    if row is None:
+                        raise KeyError(
+                            f"Unknown edge: {sibling_source} -> {target_id} ({edge_type})"
+                        )
+                    old_weight = float(row["weight"])
+                    new_weight = max(0.0, old_weight - reduction)
+                    if new_weight < old_weight:
+                        connection.execute(
+                            """
+                            UPDATE edges SET weight = ?
+                            WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                            """,
+                            (new_weight, sibling_source, target_id, edge_type),
+                        )
+                        normalized.append(
+                            (sibling_source, target_id, edge_type, old_weight, new_weight)
+                        )
+        return reinforced, normalized
 
     def count_retrievals(self) -> int:
         row = self.connection.execute("SELECT COUNT(*) AS count FROM retrievals").fetchone()

@@ -11,6 +11,7 @@ from pathlib import Path
 from .models import (
     DocumentNode,
     FeedbackReceipt,
+    NormalizedSiblingEdge,
     ReinforcedEdge,
     SearchChannelHit,
     SearchChannelsResult,
@@ -35,6 +36,7 @@ class EngineConfig:
     hop_decay: float = 0.70
     activation_half_life_seconds: float = 3600.0
     feedback_learning_rate: float = 0.20
+    sibling_feedback_normalization: float = 0.0
     maximum_edge_weight: float = 2.0
     maximum_activation: float = 10.0
     max_paths_per_node: int = 4
@@ -76,6 +78,8 @@ class EngineConfig:
             raise ValueError("activation half-life must be positive")
         if self.feedback_learning_rate <= 0.0:
             raise ValueError("feedback learning rate must be positive")
+        if not 0.0 <= self.sibling_feedback_normalization <= 1.0:
+            raise ValueError("sibling_feedback_normalization must be between 0 and 1")
         if self.activation_strategy not in {
             "current_positive_additive",
             "finite_activation_budget",
@@ -610,6 +614,37 @@ class NeuronGraphRAG:
                 unique_edges.items()
             )
         )
+        channel = self.store.retrieval_channel(trace_id)
+        normalization_sets: tuple[
+            tuple[str, tuple[tuple[str, str, str], ...], float], ...
+        ] = ()
+        if (
+            channel == "relation"
+            and self.config.sibling_feedback_normalization > 0.0
+            and unique_edges
+        ):
+            credited_keys = set(unique_edges)
+            normalization_sets = tuple(
+                (
+                    source_id,
+                    tuple(
+                        (edge.source_id, edge.target_id, edge.edge_type)
+                        for edge in self.store.outgoing_edges(source_id)
+                        if (edge.source_id, edge.target_id, edge.edge_type)
+                        not in credited_keys
+                    ),
+                    self.config.sibling_feedback_normalization,
+                )
+                for source_id in sorted({key[0] for key in credited_keys})
+            )
+        stored_reinforced, stored_normalized = self.store.apply_success_feedback(
+            feedback_id,
+            trace_id,
+            timestamp,
+            ordered_node_ids,
+            updates,
+            normalization_sets,
+        )
         reinforced = [
             ReinforcedEdge(
                 source_id,
@@ -618,22 +653,25 @@ class NeuronGraphRAG:
                 old_weight,
                 new_weight,
             )
-            for source_id, target_id, edge_type, old_weight, new_weight in (
-                self.store.apply_success_feedback(
-                    feedback_id,
-                    trace_id,
-                    timestamp,
-                    ordered_node_ids,
-                    updates,
-                )
+            for source_id, target_id, edge_type, old_weight, new_weight in stored_reinforced
+        ]
+        normalized = [
+            NormalizedSiblingEdge(
+                source_id,
+                target_id,
+                edge_type,
+                old_weight,
+                new_weight,
             )
+            for source_id, target_id, edge_type, old_weight, new_weight in stored_normalized
         ]
         return FeedbackReceipt(
             feedback_id,
             trace_id,
             ordered_node_ids,
             tuple(reinforced),
-            self.store.retrieval_channel(trace_id),
+            channel,
+            tuple(normalized),
         )
 
     def activation(
