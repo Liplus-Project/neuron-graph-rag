@@ -15,4 +15,4 @@ This candidate makes a successful relation-trace edge compete only with its uncr
 
 ## Validation boundary
 
-The implementation is covered by synthetic fixtures that isolate target, sibling, non-target source, lexical, and relation feedback. It does not modify D1 fixtures or make any result claim. Before changing the default, a result-free development / holdout plan must freeze relation improvement and direct, lexical, and directional-negative non-regression gates.
+The implementation is covered by synthetic fixtures that fix all of the following: the default `0.0` behavior, an opt-in target and uncredited sibling, multiple credited edges from one source, an unrelated source, lexical and zero-hop traces, and a direct source match that remains the top direct result. It does not modify D1 fixtures or make any result claim. Before changing the default, a result-free development / holdout plan must freeze relation improvement and direct, lexical, and directional-negative non-regression gates.
