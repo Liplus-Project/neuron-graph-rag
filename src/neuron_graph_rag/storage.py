@@ -3,12 +3,12 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
-from collections.abc import Iterable, Iterator
+from collections.abc import Callable, Iterable, Iterator
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
-from .models import DocumentNode, FeedbackContractError, TypedEdge
+from .models import DocumentNode, FeedbackContractError, FeedbackReceipt, TypedEdge
 
 
 class SQLiteStore:
@@ -17,6 +17,7 @@ class SQLiteStore:
         self.connection = sqlite3.connect(self.path)
         self.connection.row_factory = sqlite3.Row
         self.connection.execute("PRAGMA foreign_keys = ON")
+        self._transaction_depth = 0
         self._create_schema()
 
     def close(self) -> None:
@@ -30,12 +31,18 @@ class SQLiteStore:
 
     @contextmanager
     def transaction(self) -> Iterator[sqlite3.Connection]:
+        outermost = self._transaction_depth == 0
+        self._transaction_depth += 1
         try:
             yield self.connection
-            self.connection.commit()
+            if outermost:
+                self.connection.commit()
         except Exception:
-            self.connection.rollback()
+            if outermost:
+                self.connection.rollback()
             raise
+        finally:
+            self._transaction_depth -= 1
 
     def _create_schema(self) -> None:
         self.connection.executescript(
@@ -463,15 +470,10 @@ class SQLiteStore:
         idempotency_key: str,
         payload_json: str,
         receipt_id: str,
-        feedback_id: str,
         trace_id: str,
         created_at: float,
         events: tuple[tuple[str, str], ...],
-        edge_updates: tuple[tuple[str, str, str, float, float], ...],
-        normalization_sets: tuple[
-            tuple[str, tuple[tuple[str, str, str], ...], float], ...
-        ],
-        channel: str | None,
+        apply_feedback: Callable[[tuple[str, ...]], FeedbackReceipt],
     ) -> dict[str, Any]:
         payload_hash = hashlib.sha256(payload_json.encode("utf-8")).hexdigest()
         with self.transaction() as connection:
@@ -517,33 +519,31 @@ class SQLiteStore:
 
             feedback: dict[str, Any] | None = None
             if newly_used:
-                reinforced, normalized = self._apply_success_feedback(
-                    connection,
-                    feedback_id,
-                    trace_id,
-                    created_at,
-                    newly_used,
-                    edge_updates,
-                    normalization_sets,
-                )
+                receipt = apply_feedback(tuple(newly_used))
                 feedback = {
-                    "feedback_id": feedback_id,
-                    "trace_id": trace_id,
-                    "used_node_ids": newly_used,
+                    "feedback_id": receipt.feedback_id,
+                    "trace_id": receipt.trace_id,
+                    "used_node_ids": list(receipt.used_node_ids),
                     "reinforced_edges": [
                         {
-                            "source_id": row[0], "target_id": row[1],
-                            "edge_type": row[2], "old_weight": row[3], "new_weight": row[4],
+                            "source_id": edge.source_id,
+                            "target_id": edge.target_id,
+                            "edge_type": edge.edge_type,
+                            "old_weight": edge.old_weight,
+                            "new_weight": edge.new_weight,
                         }
-                        for row in reinforced
+                        for edge in receipt.reinforced_edges
                     ],
-                    "channel": channel,
+                    "channel": receipt.channel,
                     "normalized_sibling_edges": [
                         {
-                            "source_id": row[0], "target_id": row[1],
-                            "edge_type": row[2], "old_weight": row[3], "new_weight": row[4],
+                            "source_id": edge.source_id,
+                            "target_id": edge.target_id,
+                            "edge_type": edge.edge_type,
+                            "old_weight": edge.old_weight,
+                            "new_weight": edge.new_weight,
                         }
-                        for row in normalized
+                        for edge in receipt.normalized_sibling_edges
                     ],
                 }
             for node_id, stage in state.items():
@@ -666,72 +666,6 @@ class SQLiteStore:
             "INSERT INTO feedback_requests(idempotency_key, operation, payload_hash, result_json) VALUES (?, ?, ?, ?)",
             (key, operation, payload_hash, json.dumps(result, sort_keys=True, ensure_ascii=False)),
         )
-
-    def _apply_success_feedback(
-        self,
-        connection: sqlite3.Connection,
-        feedback_id: str,
-        trace_id: str,
-        created_at: float,
-        used_node_ids: Iterable[str],
-        edge_updates: Iterable[tuple[str, str, str, float, float]],
-        normalization_sets: Iterable[
-            tuple[str, tuple[tuple[str, str, str], ...], float]
-        ],
-    ) -> tuple[
-        list[tuple[str, str, str, float, float]],
-        list[tuple[str, str, str, float, float]],
-    ]:
-        reinforced: list[tuple[str, str, str, float, float]] = []
-        normalized: list[tuple[str, str, str, float, float]] = []
-        connection.execute(
-            "INSERT INTO success_feedback(feedback_id, trace_id, created_at) VALUES (?, ?, ?)",
-            (feedback_id, trace_id, created_at),
-        )
-        for node_id in used_node_ids:
-            connection.execute(
-                "INSERT INTO success_nodes(feedback_id, node_id) VALUES (?, ?)",
-                (feedback_id, node_id),
-            )
-        reinforced_increase_by_source: dict[str, float] = {}
-        for source_id, target_id, edge_type, increment, maximum in edge_updates:
-            row = connection.execute(
-                "SELECT weight FROM edges WHERE source_id = ? AND target_id = ? AND edge_type = ?",
-                (source_id, target_id, edge_type),
-            ).fetchone()
-            if row is None:
-                raise KeyError(f"Unknown edge: {source_id} -> {target_id} ({edge_type})")
-            old_weight = float(row["weight"])
-            new_weight = max(old_weight, min(maximum, old_weight + increment))
-            connection.execute(
-                "UPDATE edges SET weight = ?, reinforced_count = reinforced_count + 1 WHERE source_id = ? AND target_id = ? AND edge_type = ?",
-                (new_weight, source_id, target_id, edge_type),
-            )
-            reinforced.append((source_id, target_id, edge_type, old_weight, new_weight))
-            reinforced_increase_by_source[source_id] = (
-                reinforced_increase_by_source.get(source_id, 0.0) + new_weight - old_weight
-            )
-        for source_id, sibling_keys, ratio in normalization_sets:
-            total_increase = reinforced_increase_by_source.get(source_id, 0.0)
-            if total_increase <= 0.0 or not sibling_keys:
-                continue
-            reduction = total_increase * ratio / len(sibling_keys)
-            for sibling_source, target_id, edge_type in sibling_keys:
-                row = connection.execute(
-                    "SELECT weight FROM edges WHERE source_id = ? AND target_id = ? AND edge_type = ?",
-                    (sibling_source, target_id, edge_type),
-                ).fetchone()
-                if row is None:
-                    raise KeyError(f"Unknown edge: {sibling_source} -> {target_id} ({edge_type})")
-                old_weight = float(row["weight"])
-                new_weight = max(0.0, old_weight - reduction)
-                if new_weight < old_weight:
-                    connection.execute(
-                        "UPDATE edges SET weight = ? WHERE source_id = ? AND target_id = ? AND edge_type = ?",
-                        (new_weight, sibling_source, target_id, edge_type),
-                    )
-                    normalized.append((sibling_source, target_id, edge_type, old_weight, new_weight))
-        return reinforced, normalized
 
     def count_retrievals(self) -> int:
         row = self.connection.execute("SELECT COUNT(*) AS count FROM retrievals").fetchone()

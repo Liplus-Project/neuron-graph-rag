@@ -303,7 +303,8 @@ event は array 順に評価する。同一 call の途中で一件でも不正�
 ### 6.5 Core mapping
 
 - adapter は transport-neutral な `FeedbackLedger.record_source_use` を呼び、stage ledger へ直接 SQL を発行しない。
-- 一つの call で新しく `used` へ到達した node 群だけについて、既存 `record_success` と同じ保存済み path credit を適用する。stage 遷移、idempotency receipt、reinforcement は一つの SQLite transaction に含める。
+- 一つの call で新しく `used` へ到達した node 群だけを `NeuronGraphRAG.record_success(trace_id, newly_used_node_ids)` へ一度渡す。`record_success` は credited-path 選択、contribution clamp、edge increment、channel、sibling normalization の唯一の計画元とする。
+- source-use の outer transaction は `record_success` の inner commit を遅延させ、stage 遷移、idempotency receipt、reinforcement をまとめて commit または rollback する。
 - `FeedbackReceipt` の `feedback_id`、`used_node_ids`、`reinforced_edges` を `feedback` に写す。
 - 再送、同一 stage、すでに `used` の node は reinforcement 処理を再度適用しない。
 
