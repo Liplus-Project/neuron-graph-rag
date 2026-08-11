@@ -1,0 +1,173 @@
+from __future__ import annotations
+
+import tempfile
+import unittest
+from pathlib import Path
+
+from neuron_graph_rag import (
+    FeedbackContractError,
+    FeedbackLedger,
+    NeuronGraphRAG,
+    SourceUseEvent,
+)
+
+
+class FeedbackLedgerTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.database = Path(self.temporary.name) / "ngr.sqlite"
+        self.engine = NeuronGraphRAG(self.database)
+        self.feedback = FeedbackLedger(self.engine)
+        self.engine.add_document("decision", "cache invalidation decision")
+        self.engine.add_document("implementation", "implementation details")
+        self.engine.add_edge("decision", "implementation", "implemented_by", weight=0.7)
+        self.trace = self.engine.search("cache invalidation", limit=2)
+
+    def tearDown(self) -> None:
+        self.engine.close()
+        self.temporary.cleanup()
+
+    def test_ordered_source_use_is_atomic_idempotent_and_reinforces_once(self) -> None:
+        node_id = "implementation"
+        before = self.engine.store.edge("decision", node_id, "implemented_by").weight
+        events = (
+            SourceUseEvent(node_id, "selected"),
+            SourceUseEvent(node_id, "validated"),
+            SourceUseEvent(node_id, "used"),
+        )
+        receipt = self.feedback.record_source_use(
+            self.trace.trace_id, events, idempotency_key="answer-1"
+        )
+        after = self.engine.store.edge("decision", node_id, "implemented_by").weight
+        self.assertEqual(receipt.newly_used_node_ids, (node_id,))
+        self.assertIsNotNone(receipt.feedback)
+        self.assertGreater(after, before)
+
+        replay = self.feedback.record_source_use(
+            self.trace.trace_id, events, idempotency_key="answer-1"
+        )
+        self.assertEqual(replay, receipt)
+        self.assertEqual(
+            self.engine.store.edge("decision", node_id, "implemented_by").weight,
+            after,
+        )
+        self.assertEqual(self.engine.store.count_feedback(), 1)
+
+    def test_invalid_batch_rolls_back_all_stage_changes(self) -> None:
+        events = (
+            SourceUseEvent("implementation", "selected"),
+            SourceUseEvent("decision", "used"),
+        )
+        with self.assertRaises(FeedbackContractError) as raised:
+            self.feedback.record_source_use(
+                self.trace.trace_id, events, idempotency_key="invalid-1"
+            )
+        self.assertEqual(raised.exception.code, "invalid_stage_transition")
+        self.assertEqual(self.engine.store.source_use_stages(self.trace.trace_id), {})
+        self.assertEqual(self.engine.store.count_feedback(), 0)
+
+    def test_non_used_stages_and_duplicate_used_do_not_reinforce(self) -> None:
+        node_id = "implementation"
+        before = self.engine.store.edge("decision", node_id, "implemented_by").weight
+        selected = self.feedback.record_source_use(
+            self.trace.trace_id,
+            [SourceUseEvent(node_id, "selected")],
+            idempotency_key="selected-1",
+        )
+        validated = self.feedback.record_source_use(
+            self.trace.trace_id,
+            [SourceUseEvent(node_id, "validated")],
+            idempotency_key="validated-1",
+        )
+        self.assertIsNone(selected.feedback)
+        self.assertIsNone(validated.feedback)
+        self.assertEqual(self.engine.store.count_feedback(), 0)
+        self.assertEqual(
+            self.engine.store.edge("decision", node_id, "implemented_by").weight,
+            before,
+        )
+
+        self.feedback.record_source_use(
+            self.trace.trace_id,
+            [SourceUseEvent(node_id, "used")],
+            idempotency_key="used-1",
+        )
+        after = self.engine.store.edge("decision", node_id, "implemented_by").weight
+        duplicate = self.feedback.record_source_use(
+            self.trace.trace_id,
+            [SourceUseEvent(node_id, "used")],
+            idempotency_key="used-duplicate",
+        )
+        self.assertFalse(duplicate.events[0].changed)
+        self.assertIsNone(duplicate.feedback)
+        self.assertEqual(self.engine.store.count_feedback(), 1)
+        self.assertEqual(
+            self.engine.store.edge("decision", node_id, "implemented_by").weight,
+            after,
+        )
+
+    def test_idempotency_conflict_does_not_change_ledger(self) -> None:
+        self.feedback.record_source_use(
+            self.trace.trace_id,
+            [SourceUseEvent("implementation", "selected")],
+            idempotency_key="shared-key",
+        )
+        with self.assertRaises(FeedbackContractError) as raised:
+            self.feedback.record_source_use(
+                self.trace.trace_id,
+                [SourceUseEvent("decision", "selected")],
+                idempotency_key="shared-key",
+            )
+        self.assertEqual(raised.exception.code, "idempotency_conflict")
+        self.assertEqual(
+            self.engine.store.source_use_stages(self.trace.trace_id),
+            {"implementation": "selected"},
+        )
+
+    def test_delayed_outcome_requires_used_source_and_never_changes_weight(self) -> None:
+        node_id = "implementation"
+        with self.assertRaises(FeedbackContractError) as raised:
+            self.feedback.record_outcome(
+                self.trace.trace_id,
+                [node_id],
+                "confirmed",
+                "verified later",
+                idempotency_key="outcome-before-use",
+            )
+        self.assertEqual(raised.exception.code, "source_not_used")
+
+        self.feedback.record_source_use(
+            self.trace.trace_id,
+            [
+                SourceUseEvent(node_id, "selected"),
+                SourceUseEvent(node_id, "validated"),
+                SourceUseEvent(node_id, "used"),
+            ],
+            idempotency_key="use-before-outcome",
+        )
+        weight = self.engine.store.edge("decision", node_id, "implemented_by").weight
+        receipt = self.feedback.record_outcome(
+            self.trace.trace_id,
+            [node_id],
+            "corrected",
+            "a detail was corrected",
+            idempotency_key="outcome-1",
+        )
+        replay = self.feedback.record_outcome(
+            self.trace.trace_id,
+            [node_id],
+            "corrected",
+            "a detail was corrected",
+            idempotency_key="outcome-1",
+        )
+        self.assertEqual(receipt, replay)
+        self.assertFalse(receipt.reinforcement_applied)
+        self.assertEqual(self.engine.store.count_outcomes(), 1)
+        self.assertEqual(
+            self.engine.store.edge("decision", node_id, "implemented_by").weight,
+            weight,
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

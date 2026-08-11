@@ -214,3 +214,42 @@ class FeedbackReceipt:
     reinforced_edges: tuple[ReinforcedEdge, ...]
     channel: str | None = None
     normalized_sibling_edges: tuple[NormalizedSiblingEdge, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class SourceUseEvent:
+    node_id: str
+    stage: str
+
+
+@dataclass(frozen=True, slots=True)
+class SourceUseEventReceipt:
+    node_id: str
+    stage: str
+    changed: bool
+
+
+@dataclass(frozen=True, slots=True)
+class SourceUseReceipt:
+    receipt_id: str
+    trace_id: str
+    events: tuple[SourceUseEventReceipt, ...]
+    newly_used_node_ids: tuple[str, ...]
+    feedback: FeedbackReceipt | None
+
+
+@dataclass(frozen=True, slots=True)
+class OutcomeReceipt:
+    outcome_id: str
+    trace_id: str
+    node_ids: tuple[str, ...]
+    outcome: str
+    recorded_at: float
+    reinforcement_applied: bool = False
+
+
+class FeedbackContractError(ValueError):
+    def __init__(self, code: str, message: str, *, retryable: bool = False) -> None:
+        super().__init__(message)
+        self.code = code
+        self.retryable = retryable
