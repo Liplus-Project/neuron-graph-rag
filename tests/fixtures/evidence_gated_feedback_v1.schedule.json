@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "protocol": "evidence-gated-feedback-v1",
+  "checkpoints": [0, 1, 2, 3, 4, 10],
+  "determinism_replays": 2,
+  "limit": 8,
+  "base_timestamp": 1000.0,
+  "feedback_interval": 10.0,
+  "evaluation_timestamp": 2000.0,
+  "engine_config": {
+    "sparse_weight": 1.0,
+    "dense_weight": 0.0,
+    "seed_count": 1,
+    "max_hops": 1,
+    "feedback_learning_rate": 0.2,
+    "maximum_edge_weight": 2.0
+  },
+  "variants": [
+    {"name": "current", "relation_feedback_evidence_quorum": 1, "sibling_feedback_normalization": 0.0},
+    {"name": "evidence-only", "relation_feedback_evidence_quorum": 3, "sibling_feedback_normalization": 0.0},
+    {"name": "local-only", "relation_feedback_evidence_quorum": 1, "sibling_feedback_normalization": 1.0},
+    {"name": "combined", "relation_feedback_evidence_quorum": 3, "sibling_feedback_normalization": 1.0}
+  ]
+}

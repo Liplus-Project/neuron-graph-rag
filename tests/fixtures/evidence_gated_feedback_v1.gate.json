@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "protocol": "evidence-gated-feedback-v1",
+  "hard_gates": [
+    "protocol_integrity",
+    "trace_credit",
+    "combined_pre_quorum_stability",
+    "delayed_headroom_flip",
+    "final_relation_non_regression",
+    "pre_quorum_churn_reduction",
+    "ablation_consistency",
+    "mutation_scope",
+    "atomic_rollback",
+    "deterministic_replay"
+  ]
+}

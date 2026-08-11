@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "protocol": "evidence-gated-feedback-v1",
+  "splits": {
+    "development": {
+      "cases": [
+        {
+          "case_id": "q76-dev-headroom",
+          "cluster_id": "q76-dev-aurora",
+          "role": "headroom",
+          "document_path": "corpora/evidence-gated-reinforcement-v1/development/aurora-kite.md",
+          "source_url_root": "https://example.invalid/ngr/q76/development/aurora-kite",
+          "queries": {
+            "relation": "aurorakite",
+            "direct": "auroradirect",
+            "directional_negative": "auroranegative"
+          },
+          "seed_node_id": "q76-dev-aurora-seed",
+          "target_node_id": "q76-dev-aurora-target",
+          "sibling_node_id": "q76-dev-aurora-sibling",
+          "direct_node_id": "q76-dev-aurora-direct",
+          "directional_seed_node_id": "q76-dev-aurora-negative-seed",
+          "directional_target_node_id": "q76-dev-aurora-negative-target",
+          "nodes": [
+            {"node_id": "q76-dev-aurora-seed", "text": "aurorakite source signal", "source_url": "https://example.invalid/ngr/q76/development/aurora-kite#seed"},
+            {"node_id": "q76-dev-aurora-target", "text": "auroratarget direction signal", "source_url": "https://example.invalid/ngr/q76/development/aurora-kite#target"},
+            {"node_id": "q76-dev-aurora-sibling", "text": "amberfoil sibling branch", "source_url": "https://example.invalid/ngr/q76/development/aurora-kite#sibling"},
+            {"node_id": "q76-dev-aurora-direct", "text": "auroradirect exact control", "source_url": "https://example.invalid/ngr/q76/development/aurora-kite#direct"},
+            {"node_id": "q76-dev-aurora-negative-seed", "text": "auroranegative source control", "source_url": "https://example.invalid/ngr/q76/development/aurora-kite#negative-seed"},
+            {"node_id": "q76-dev-aurora-negative-target", "text": "aurora directional negative target", "source_url": "https://example.invalid/ngr/q76/development/aurora-kite#negative-target"}
+          ],
+          "edges": [
+            {"source_id": "q76-dev-aurora-seed", "target_id": "q76-dev-aurora-target", "edge_type": "supports", "weight": 0.65, "role": "credited"},
+            {"source_id": "q76-dev-aurora-seed", "target_id": "q76-dev-aurora-sibling", "edge_type": "supports", "weight": 0.72, "role": "sibling"},
+            {"source_id": "q76-dev-aurora-negative-seed", "target_id": "q76-dev-aurora-negative-target", "edge_type": "directional_negative", "weight": 0.61, "role": "directional_negative"}
+          ]
+        },
+        {
+          "case_id": "q76-dev-ceiling",
+          "cluster_id": "q76-dev-basalt",
+          "role": "ceiling",
+          "document_path": "corpora/evidence-gated-reinforcement-v1/development/basalt-lantern.md",
+          "source_url_root": "https://example.invalid/ngr/q76/development/basalt-lantern",
+          "queries": {
+            "relation": "basaltlantern",
+            "direct": "basaltdirect",
+            "directional_negative": "basaltnegative"
+          },
+          "seed_node_id": "q76-dev-basalt-seed",
+          "target_node_id": "q76-dev-basalt-target",
+          "sibling_node_id": "q76-dev-basalt-sibling",
+          "direct_node_id": "q76-dev-basalt-direct",
+          "directional_seed_node_id": "q76-dev-basalt-negative-seed",
+          "directional_target_node_id": "q76-dev-basalt-negative-target",
+          "nodes": [
+            {"node_id": "q76-dev-basalt-seed", "text": "basaltlantern source signal", "source_url": "https://example.invalid/ngr/q76/development/basalt-lantern#seed"},
+            {"node_id": "q76-dev-basalt-target", "text": "basalttarget direction signal", "source_url": "https://example.invalid/ngr/q76/development/basalt-lantern#target"},
+            {"node_id": "q76-dev-basalt-sibling", "text": "copperreed sibling branch", "source_url": "https://example.invalid/ngr/q76/development/basalt-lantern#sibling"},
+            {"node_id": "q76-dev-basalt-direct", "text": "basaltdirect exact control", "source_url": "https://example.invalid/ngr/q76/development/basalt-lantern#direct"},
+            {"node_id": "q76-dev-basalt-negative-seed", "text": "basaltnegative source control", "source_url": "https://example.invalid/ngr/q76/development/basalt-lantern#negative-seed"},
+            {"node_id": "q76-dev-basalt-negative-target", "text": "basalt directional negative target", "source_url": "https://example.invalid/ngr/q76/development/basalt-lantern#negative-target"}
+          ],
+          "edges": [
+            {"source_id": "q76-dev-basalt-seed", "target_id": "q76-dev-basalt-target", "edge_type": "supports", "weight": 0.80, "role": "credited"},
+            {"source_id": "q76-dev-basalt-seed", "target_id": "q76-dev-basalt-sibling", "edge_type": "supports", "weight": 0.60, "role": "sibling"},
+            {"source_id": "q76-dev-basalt-negative-seed", "target_id": "q76-dev-basalt-negative-target", "edge_type": "directional_negative", "weight": 0.62, "role": "directional_negative"}
+          ]
+        }
+      ]
+    },
+    "holdout": {
+      "cases": [
+        {
+          "case_id": "q76-hold-headroom",
+          "cluster_id": "q76-hold-cinder",
+          "role": "headroom",
+          "document_path": "corpora/evidence-gated-reinforcement-v1/holdout/cinder-harbor.md",
+          "source_url_root": "https://example.invalid/ngr/q76/holdout/cinder-harbor",
+          "queries": {
+            "relation": "cinderharbor",
+            "direct": "cinderdirect",
+            "directional_negative": "cindernegative"
+          },
+          "seed_node_id": "q76-hold-cinder-seed",
+          "target_node_id": "q76-hold-cinder-target",
+          "sibling_node_id": "q76-hold-cinder-sibling",
+          "direct_node_id": "q76-hold-cinder-direct",
+          "directional_seed_node_id": "q76-hold-cinder-negative-seed",
+          "directional_target_node_id": "q76-hold-cinder-negative-target",
+          "nodes": [
+            {"node_id": "q76-hold-cinder-seed", "text": "cinderharbor source signal", "source_url": "https://example.invalid/ngr/q76/holdout/cinder-harbor#seed"},
+            {"node_id": "q76-hold-cinder-target", "text": "cindertarget direction signal", "source_url": "https://example.invalid/ngr/q76/holdout/cinder-harbor#target"},
+            {"node_id": "q76-hold-cinder-sibling", "text": "silverloom sibling branch", "source_url": "https://example.invalid/ngr/q76/holdout/cinder-harbor#sibling"},
+            {"node_id": "q76-hold-cinder-direct", "text": "cinderdirect exact control", "source_url": "https://example.invalid/ngr/q76/holdout/cinder-harbor#direct"},
+            {"node_id": "q76-hold-cinder-negative-seed", "text": "cindernegative source control", "source_url": "https://example.invalid/ngr/q76/holdout/cinder-harbor#negative-seed"},
+            {"node_id": "q76-hold-cinder-negative-target", "text": "cinder directional negative target", "source_url": "https://example.invalid/ngr/q76/holdout/cinder-harbor#negative-target"}
+          ],
+          "edges": [
+            {"source_id": "q76-hold-cinder-seed", "target_id": "q76-hold-cinder-target", "edge_type": "supports", "weight": 0.64, "role": "credited"},
+            {"source_id": "q76-hold-cinder-seed", "target_id": "q76-hold-cinder-sibling", "edge_type": "supports", "weight": 0.71, "role": "sibling"},
+            {"source_id": "q76-hold-cinder-negative-seed", "target_id": "q76-hold-cinder-negative-target", "edge_type": "directional_negative", "weight": 0.60, "role": "directional_negative"}
+          ]
+        },
+        {
+          "case_id": "q76-hold-ceiling",
+          "cluster_id": "q76-hold-opal",
+          "role": "ceiling",
+          "document_path": "corpora/evidence-gated-reinforcement-v1/holdout/opal-meadow.md",
+          "source_url_root": "https://example.invalid/ngr/q76/holdout/opal-meadow",
+          "queries": {
+            "relation": "opalmeadow",
+            "direct": "opaldirect",
+            "directional_negative": "opalnegative"
+          },
+          "seed_node_id": "q76-hold-opal-seed",
+          "target_node_id": "q76-hold-opal-target",
+          "sibling_node_id": "q76-hold-opal-sibling",
+          "direct_node_id": "q76-hold-opal-direct",
+          "directional_seed_node_id": "q76-hold-opal-negative-seed",
+          "directional_target_node_id": "q76-hold-opal-negative-target",
+          "nodes": [
+            {"node_id": "q76-hold-opal-seed", "text": "opalmeadow source signal", "source_url": "https://example.invalid/ngr/q76/holdout/opal-meadow#seed"},
+            {"node_id": "q76-hold-opal-target", "text": "opaltarget direction signal", "source_url": "https://example.invalid/ngr/q76/holdout/opal-meadow#target"},
+            {"node_id": "q76-hold-opal-sibling", "text": "violetgrain sibling branch", "source_url": "https://example.invalid/ngr/q76/holdout/opal-meadow#sibling"},
+            {"node_id": "q76-hold-opal-direct", "text": "opaldirect exact control", "source_url": "https://example.invalid/ngr/q76/holdout/opal-meadow#direct"},
+            {"node_id": "q76-hold-opal-negative-seed", "text": "opalnegative source control", "source_url": "https://example.invalid/ngr/q76/holdout/opal-meadow#negative-seed"},
+            {"node_id": "q76-hold-opal-negative-target", "text": "opal directional negative target", "source_url": "https://example.invalid/ngr/q76/holdout/opal-meadow#negative-target"}
+          ],
+          "edges": [
+            {"source_id": "q76-hold-opal-seed", "target_id": "q76-hold-opal-target", "edge_type": "supports", "weight": 0.81, "role": "credited"},
+            {"source_id": "q76-hold-opal-seed", "target_id": "q76-hold-opal-sibling", "edge_type": "supports", "weight": 0.59, "role": "sibling"},
+            {"source_id": "q76-hold-opal-negative-seed", "target_id": "q76-hold-opal-negative-target", "edge_type": "directional_negative", "weight": 0.63, "role": "directional_negative"}
+          ]
+        }
+      ]
+    }
+  }
+}

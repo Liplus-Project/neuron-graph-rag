@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "protocol": "evidence-gated-feedback-v1",
+  "identity_field_allowlist": [
+    "case_id",
+    "cluster_id",
+    "credited_edge",
+    "credited_edges",
+    "document_path",
+    "document_paths",
+    "edge_type",
+    "node_id",
+    "node_ids",
+    "path",
+    "paths",
+    "query",
+    "queries",
+    "source_id",
+    "source_url",
+    "source_urls",
+    "target_id"
+  ],
+  "prior_identity_sources": [
+    "tests/fixtures/d1_liplus_anchored_hybrid.contamination.json",
+    "tests/fixtures/d1_liplus_channels.contamination.json",
+    "tests/fixtures/d1_liplus_feedback_adaptation.contamination.json",
+    "tests/fixtures/d1_liplus_feedback_adaptation_reproduction.contamination.json",
+    "tests/fixtures/d1_liplus_fusion_calibration.contamination.json",
+    "tests/fixtures/d1_liplus_local_competition.contamination.json",
+    "tests/fixtures/engine_feedback_trajectory_v3.audit.json",
+    "tests/fixtures/fresh_native_feedback_v2.audit.json"
+  ],
+  "forbidden_field_fragments": ["result", "metric", "gate"],
+  "expected_cross_split_overlap": {},
+  "expected_prior_overlap": {}
+}

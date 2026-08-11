@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "protocol": "evidence-gated-feedback-v1",
+  "evaluated_source": {
+    "commit": "0d1e264dd43c17812cc99c5ffe889e836533a00a",
+    "path": "src/neuron_graph_rag/evidence_feedback.py",
+    "sha256": "233b25e13b1af32626f43bd838827bdb64048351fa6b8b0b48352320e3ad8016"
+  },
+  "registered_artifacts": {
+    "README.md": "f80fdd0c028552b828f4a8199534ae684cfb1503d312c58720671a9e838a2542",
+    "corpora/evidence-gated-reinforcement-v1/development/aurora-kite.md": "ab61a00cd69ba013f95a2991ec15043118b6d8050953cd9851b7c5592afb24c7",
+    "corpora/evidence-gated-reinforcement-v1/development/basalt-lantern.md": "3d7abae3de830774b26c2d85adf433b27a20eb9007f22f18e5e0a54f6ab7ef37",
+    "corpora/evidence-gated-reinforcement-v1/holdout/cinder-harbor.md": "6821557da51d99a3c551775230550d1d16271324bf240f618e43ffa847e1be08",
+    "corpora/evidence-gated-reinforcement-v1/holdout/opal-meadow.md": "65d81080e9e0b211d83a0b464958a8dc5e07e19bacd12369a94dc4365aa6a187",
+    "docs/evidence-gated-feedback-controlled-evaluation.md": "c57c40a9698d246a59e54638363ba4c263f7b6687386cce3e96aa946efc6b9bf",
+    "src/neuron_graph_rag/evidence_gated_evaluation.py": "42218fb0e621eb8ad57d8740bfd13454a03452e29d6f5b48c74b1f4852cfa7da",
+    "tests/fixtures/evidence_gated_feedback_v1.audit.json": "361992447db21e7f888706b8e5e46287a7b5d8f07bdb37feab893ebee2bdfcd8",
+    "tests/fixtures/evidence_gated_feedback_v1.fixture.json": "3f998aa6dbea273c2b00f3bceff979ecb0c5aff3c1a078524d177681936e5e65",
+    "tests/fixtures/evidence_gated_feedback_v1.gate.json": "93728184429b67537e0b8ca547affe39927dcf3425e4f0a528b5e5d4c4fba3d9",
+    "tests/fixtures/evidence_gated_feedback_v1.gold.json": "c10d056c5b71511d0974043476808a7ca92100cdc05fa873437ba3f409438a44",
+    "tests/fixtures/evidence_gated_feedback_v1.schedule.json": "d6f28ab8cc23aad8bbf3ae45b12745fe505d93e7b69e50d3837f381bace793a2",
+    "tests/test_evidence_gated_evaluation.py": "7f50f82d5818d7cc7170120526904724fcaa05ce797ae514489800b85308925d",
+    "tools/run_evidence_gated_evaluation.py": "c747c2d4b973fd4bc560615c1692d0b0c4d8c4e91e87607e36c422642e635697"
+  },
+  "hard_gates": [
+    "protocol_integrity",
+    "trace_credit",
+    "combined_pre_quorum_stability",
+    "delayed_headroom_flip",
+    "final_relation_non_regression",
+    "pre_quorum_churn_reduction",
+    "ablation_consistency",
+    "mutation_scope",
+    "atomic_rollback",
+    "deterministic_replay"
+  ],
+  "exclusive_outputs": {
+    "development": "tests/fixtures/evidence_gated_feedback_v1.development.observed.json",
+    "holdout": "tests/fixtures/evidence_gated_feedback_v1.holdout.observed.json"
+  },
+  "result_free_state": {
+    "development_output_absent": true,
+    "holdout_output_absent": true
+  },
+  "registered_run_count": {
+    "development": 1,
+    "holdout": 1,
+    "holdout_condition": "development_all_hard_gates_pass"
+  },
+  "claim_boundary": "Repository-local synthetic controlled corpus only; no default adoption, production quality, external generalization, or prior observed-result reinterpretation."
+}

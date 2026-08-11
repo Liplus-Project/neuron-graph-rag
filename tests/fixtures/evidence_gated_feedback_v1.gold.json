@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "protocol": "evidence-gated-feedback-v1",
+  "checkpoints": [0, 1, 2, 3, 4, 10],
+  "expected_roles": ["headroom", "ceiling"],
+  "expected_initial_relation_rank": {"headroom": 2, "ceiling": 1},
+  "expected_control_rank": 1,
+  "first_flip_checkpoint": {
+    "current": 1,
+    "evidence-only": 3,
+    "local-only": 1,
+    "combined": 3
+  },
+  "quorum": 3,
+  "sibling_ratio": 1.0
+}

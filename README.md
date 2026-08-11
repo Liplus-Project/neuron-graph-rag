@@ -269,6 +269,8 @@ Feedback rank elasticity runnerは、source SQLiteを変更せず、各累積fee
 
 Evidence-gated local feedback reinforcementは、credited edgeごとに異なるsuccess traceを永続evidenceとして数え、設定quorum到達後だけ既存bounded updateを一回ずつ適用するopt-in candidateです。`neuron_graph_rag.evidence_feedback` のclassから明示的に利用し、package rootと`.engine`のlegacy class identityは変更しません。既定quorumは`1`で現行動作を保ち、`2`以上では到達前のweightとsame-source siblingを変更しません。core / MCP receiptはcount、quorum、activationを返します。詳細は[Evidence-gated local feedback reinforcement](docs/evidence-gated-local-feedback-reinforcement.md)を参照してください。
 
+Evidence-gated feedback controlled evaluationは、quorum `3`とsame-source sibling normalization `1.0`の組合せを、identity-disjointなresult-free development / conditional holdoutで比較します。4variantとfeedback count `[0, 1, 2, 3, 4, 10]`をcheckpointごとにfresh replayし、rank flip timing、top-k churn、control non-regression、mutation scope、atomic rollbackをhard gateにします。既存defaultと過去observed artifactは変更しません。詳細は[Evidence-gated feedback controlled evaluation](docs/evidence-gated-feedback-controlled-evaluation.md)を参照してください。
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。
