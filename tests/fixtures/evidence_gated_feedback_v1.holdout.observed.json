@@ -1,0 +1,3798 @@
+{
+  "all_pass": true,
+  "atomicity": {
+    "credited_failure_rollback": true,
+    "sibling_failure_rollback": true
+  },
+  "cases": [
+    {
+      "case_id": "q76-hold-headroom",
+      "cluster_id": "q76-hold-cinder",
+      "role": "headroom",
+      "variants": {
+        "combined": [
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.64
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [],
+            "evidence_count": 0,
+            "feedback_count": 0,
+            "feedback_rows": 0,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-sibling",
+              "q76-hold-cinder-target"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.37274999999999997,
+              "q76-hold-cinder-target": 0.33599999999999997
+            },
+            "score_margin": -0.036750000000000005,
+            "target_rank": 2,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.64
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 1,
+            "feedback_count": 1,
+            "feedback_rows": 1,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-sibling",
+              "q76-hold-cinder-target"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.37274999999999997,
+              "q76-hold-cinder-target": 0.33599999999999997
+            },
+            "score_margin": -0.036750000000000005,
+            "target_rank": 2,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.64
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 2,
+            "feedback_count": 2,
+            "feedback_rows": 2,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-sibling",
+              "q76-hold-cinder-target"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.37274999999999997,
+              "q76-hold-cinder-target": 0.33599999999999997
+            },
+            "score_margin": -0.036750000000000005,
+            "target_rank": 2,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 1,
+                "weight": 0.7296
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.6204
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0.08960000000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 3,
+            "feedback_count": 3,
+            "feedback_rows": 3,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.32570999999999994,
+              "q76-hold-cinder-target": 0.38303999999999994
+            },
+            "score_margin": 0.05732999999999999,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 2,
+                "weight": 0.831744
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.5182559999999999
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0.08960000000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 3,
+                "reinforced_delta": 0.10214400000000001,
+                "sibling_delta": 0.10214400000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 4,
+            "feedback_count": 4,
+            "feedback_rows": 4,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.27208439999999995,
+              "q76-hold-cinder-target": 0.4366656
+            },
+            "score_margin": 0.16458120000000004,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 8,
+                "weight": 1.8014520264237055
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.0
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0.08960000000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 3,
+                "reinforced_delta": 0.10214400000000001,
+                "sibling_delta": 0.10214400000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 5,
+                "evidence_count": 5,
+                "quorum": 3,
+                "reinforced_delta": 0.11644416000000002,
+                "sibling_delta": 0.11644416000000002,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 6,
+                "evidence_count": 6,
+                "quorum": 3,
+                "reinforced_delta": 0.13274634240000005,
+                "sibling_delta": 0.13274634240000005,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 7,
+                "evidence_count": 7,
+                "quorum": 3,
+                "reinforced_delta": 0.15133083033599992,
+                "sibling_delta": 0.15133083033599992,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 8,
+                "evidence_count": 8,
+                "quorum": 3,
+                "reinforced_delta": 0.17251714658303996,
+                "sibling_delta": 0.11773466726399995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 9,
+                "evidence_count": 9,
+                "quorum": 3,
+                "reinforced_delta": 0.19666954710466555,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 10,
+                "evidence_count": 10,
+                "quorum": 3,
+                "reinforced_delta": 0.19999999999999996,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 10,
+            "feedback_count": 10,
+            "feedback_rows": 10,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-target": 0.75
+            },
+            "score_margin": 0.75,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          }
+        ],
+        "current": [
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.64
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [],
+            "evidence_count": 0,
+            "feedback_count": 0,
+            "feedback_rows": 0,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-sibling",
+              "q76-hold-cinder-target"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.37274999999999997,
+              "q76-hold-cinder-target": 0.33599999999999997
+            },
+            "score_margin": -0.036750000000000005,
+            "target_rank": 2,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 1,
+                "weight": 0.7296
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 1,
+            "feedback_count": 1,
+            "feedback_rows": 1,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.36989441511530974,
+              "q76-hold-cinder-target": 0.38010558488469015
+            },
+            "score_margin": 0.010211169769380413,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 2,
+                "weight": 0.8309614893025841
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.10136148930258404,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 2,
+            "feedback_count": 2,
+            "feedback_rows": 2,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.34556347040249624,
+              "q76-hold-cinder-target": 0.4044365295975038
+            },
+            "score_margin": 0.05887305919500757,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 3,
+                "weight": 0.9388112305285851
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.10136148930258404,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.107849741226001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 3,
+            "feedback_count": 3,
+            "feedback_rows": 3,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.3229599545057006,
+              "q76-hold-cinder-target": 0.4270400454942994
+            },
+            "score_margin": 0.10408009098859883,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 4,
+                "weight": 1.0526885759937317
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.10136148930258404,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.107849741226001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 1,
+                "reinforced_delta": 0.1138773454651466,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 4,
+            "feedback_count": 4,
+            "feedback_rows": 4,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.302095337345565,
+              "q76-hold-cinder-target": 0.44790466265443496
+            },
+            "score_margin": 0.14580932530886997,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 10,
+                "weight": 1.8378695426894942
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.10136148930258404,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.107849741226001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 1,
+                "reinforced_delta": 0.1138773454651466,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 5,
+                "evidence_count": 5,
+                "quorum": 1,
+                "reinforced_delta": 0.119441243374516,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 6,
+                "evidence_count": 6,
+                "quorum": 1,
+                "reinforced_delta": 0.12455355707202842,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 7,
+                "evidence_count": 7,
+                "quorum": 1,
+                "reinforced_delta": 0.12923646965576663,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 8,
+                "evidence_count": 8,
+                "quorum": 1,
+                "reinforced_delta": 0.13351810450212231,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 9,
+                "evidence_count": 9,
+                "quorum": 1,
+                "reinforced_delta": 0.13742944152204184,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 10,
+                "evidence_count": 10,
+                "quorum": 1,
+                "reinforced_delta": 0.14100215056928733,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 10,
+            "feedback_count": 10,
+            "feedback_rows": 10,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.2089981418114134,
+              "q76-hold-cinder-target": 0.5410018581885865
+            },
+            "score_margin": 0.3320037163771731,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          }
+        ],
+        "evidence-only": [
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.64
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [],
+            "evidence_count": 0,
+            "feedback_count": 0,
+            "feedback_rows": 0,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-sibling",
+              "q76-hold-cinder-target"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.37274999999999997,
+              "q76-hold-cinder-target": 0.33599999999999997
+            },
+            "score_margin": -0.036750000000000005,
+            "target_rank": 2,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.64
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 1,
+            "feedback_count": 1,
+            "feedback_rows": 1,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-sibling",
+              "q76-hold-cinder-target"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.37274999999999997,
+              "q76-hold-cinder-target": 0.33599999999999997
+            },
+            "score_margin": -0.036750000000000005,
+            "target_rank": 2,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.64
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 2,
+            "feedback_count": 2,
+            "feedback_rows": 2,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-sibling",
+              "q76-hold-cinder-target"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.37274999999999997,
+              "q76-hold-cinder-target": 0.33599999999999997
+            },
+            "score_margin": -0.036750000000000005,
+            "target_rank": 2,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 1,
+                "weight": 0.7296
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 3,
+            "feedback_count": 3,
+            "feedback_rows": 3,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.36989441511530974,
+              "q76-hold-cinder-target": 0.38010558488469015
+            },
+            "score_margin": 0.010211169769380413,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 2,
+                "weight": 0.8309614893025841
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 3,
+                "reinforced_delta": 0.10136148930258404,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 4,
+            "feedback_count": 4,
+            "feedback_rows": 4,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.34556347040249624,
+              "q76-hold-cinder-target": 0.4044365295975038
+            },
+            "score_margin": 0.05887305919500757,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 8,
+                "weight": 1.559437950598165
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 3,
+                "reinforced_delta": 0.10136148930258404,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 5,
+                "evidence_count": 5,
+                "quorum": 3,
+                "reinforced_delta": 0.107849741226001,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 6,
+                "evidence_count": 6,
+                "quorum": 3,
+                "reinforced_delta": 0.1138773454651466,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 7,
+                "evidence_count": 7,
+                "quorum": 3,
+                "reinforced_delta": 0.119441243374516,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 8,
+                "evidence_count": 8,
+                "quorum": 3,
+                "reinforced_delta": 0.12455355707202842,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 9,
+                "evidence_count": 9,
+                "quorum": 3,
+                "reinforced_delta": 0.12923646965576663,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 10,
+                "evidence_count": 10,
+                "quorum": 3,
+                "reinforced_delta": 0.13351810450212231,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 10,
+            "feedback_count": 10,
+            "feedback_rows": 10,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.2346395942923431,
+              "q76-hold-cinder-target": 0.515360405707657
+            },
+            "score_margin": 0.28072081141531385,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          }
+        ],
+        "local-only": [
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.64
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.71
+              }
+            },
+            "events": [],
+            "evidence_count": 0,
+            "feedback_count": 0,
+            "feedback_rows": 0,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-sibling",
+              "q76-hold-cinder-target"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.37274999999999997,
+              "q76-hold-cinder-target": 0.33599999999999997
+            },
+            "score_margin": -0.036750000000000005,
+            "target_rank": 2,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 1,
+                "weight": 0.7296
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.6204
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0.08960000000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 1,
+            "feedback_count": 1,
+            "feedback_rows": 1,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.32570999999999994,
+              "q76-hold-cinder-target": 0.38303999999999994
+            },
+            "score_margin": 0.05732999999999999,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 2,
+                "weight": 0.831744
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.5182559999999999
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0.08960000000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.10214400000000001,
+                "sibling_delta": 0.10214400000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 2,
+            "feedback_count": 2,
+            "feedback_rows": 2,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.27208439999999995,
+              "q76-hold-cinder-target": 0.4366656
+            },
+            "score_margin": 0.16458120000000004,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 3,
+                "weight": 0.9481881600000001
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.4018118399999999
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0.08960000000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.10214400000000001,
+                "sibling_delta": 0.10214400000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.11644416000000002,
+                "sibling_delta": 0.11644416000000002,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 3,
+            "feedback_count": 3,
+            "feedback_rows": 3,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.21095121599999994,
+              "q76-hold-cinder-target": 0.497798784
+            },
+            "score_margin": 0.28684756800000005,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 4,
+                "weight": 1.0809345024
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.26906549759999987
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0.08960000000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.10214400000000001,
+                "sibling_delta": 0.10214400000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.11644416000000002,
+                "sibling_delta": 0.11644416000000002,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 1,
+                "reinforced_delta": 0.13274634240000005,
+                "sibling_delta": 0.13274634240000005,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 4,
+            "feedback_count": 4,
+            "feedback_rows": 4,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target",
+              "q76-hold-cinder-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-sibling": 0.14125938623999992,
+              "q76-hold-cinder-target": 0.56749061376
+            },
+            "score_margin": 0.4262312275200001,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 10,
+                "weight": 2.0
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.6
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.0
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.08960000000000001,
+                "sibling_delta": 0.08960000000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.10214400000000001,
+                "sibling_delta": 0.10214400000000001,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.11644416000000002,
+                "sibling_delta": 0.11644416000000002,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 1,
+                "reinforced_delta": 0.13274634240000005,
+                "sibling_delta": 0.13274634240000005,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 5,
+                "evidence_count": 5,
+                "quorum": 1,
+                "reinforced_delta": 0.15133083033599992,
+                "sibling_delta": 0.15133083033599992,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 6,
+                "evidence_count": 6,
+                "quorum": 1,
+                "reinforced_delta": 0.17251714658303996,
+                "sibling_delta": 0.11773466726399995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 7,
+                "evidence_count": 7,
+                "quorum": 1,
+                "reinforced_delta": 0.19666954710466555,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 8,
+                "evidence_count": 8,
+                "quorum": 1,
+                "reinforced_delta": 0.19999999999999996,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 9,
+                "evidence_count": 9,
+                "quorum": 1,
+                "reinforced_delta": 0.1985479735762945,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 10,
+                "evidence_count": 10,
+                "quorum": 1,
+                "reinforced_delta": 0.0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 10,
+            "feedback_count": 10,
+            "feedback_rows": 10,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-cinder-target"
+            ],
+            "relation_scores": {
+              "q76-hold-cinder-target": 0.75
+            },
+            "score_margin": 0.75,
+            "target_rank": 1,
+            "top_k_churn": 2,
+            "top_k_churn_recomputed": true
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "q76-hold-ceiling",
+      "cluster_id": "q76-hold-opal",
+      "role": "ceiling",
+      "variants": {
+        "combined": [
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.81
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [],
+            "evidence_count": 0,
+            "feedback_count": 0,
+            "feedback_rows": 0,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.30974999999999997,
+              "q76-hold-opal-target": 0.42524999999999996
+            },
+            "score_margin": 0.11549999999999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.81
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 1,
+            "feedback_count": 1,
+            "feedback_rows": 1,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.30974999999999997,
+              "q76-hold-opal-target": 0.42524999999999996
+            },
+            "score_margin": 0.11549999999999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.81
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 2,
+            "feedback_count": 2,
+            "feedback_rows": 2,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.30974999999999997,
+              "q76-hold-opal-target": 0.42524999999999996
+            },
+            "score_margin": 0.11549999999999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 1,
+                "weight": 0.9234
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.4766
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0.11339999999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 3,
+            "feedback_count": 3,
+            "feedback_rows": 3,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.25021499999999997,
+              "q76-hold-opal-target": 0.48478499999999997
+            },
+            "score_margin": 0.23457,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 2,
+                "weight": 1.052676
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.3473240000000001
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0.11339999999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 3,
+                "reinforced_delta": 0.12927599999999995,
+                "sibling_delta": 0.12927599999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 4,
+            "feedback_count": 4,
+            "feedback_rows": 4,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.18234510000000004,
+              "q76-hold-opal-target": 0.5526549
+            },
+            "score_margin": 0.3703097999999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 8,
+                "weight": 2.0
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.0
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0.11339999999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 3,
+                "reinforced_delta": 0.12927599999999995,
+                "sibling_delta": 0.12927599999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 5,
+                "evidence_count": 5,
+                "quorum": 3,
+                "reinforced_delta": 0.14737464,
+                "sibling_delta": 0.14737464,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 6,
+                "evidence_count": 6,
+                "quorum": 3,
+                "reinforced_delta": 0.16800708959999988,
+                "sibling_delta": 0.16800708959999988,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 7,
+                "evidence_count": 7,
+                "quorum": 3,
+                "reinforced_delta": 0.19152808214399997,
+                "sibling_delta": 0.031942270400000194,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 8,
+                "evidence_count": 8,
+                "quorum": 3,
+                "reinforced_delta": 0.19999999999999996,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 9,
+                "evidence_count": 9,
+                "quorum": 3,
+                "reinforced_delta": 0.19999999999999996,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 10,
+                "evidence_count": 10,
+                "quorum": 3,
+                "reinforced_delta": 0.040414188256000294,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 10,
+            "feedback_count": 10,
+            "feedback_rows": 10,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-target": 0.75
+            },
+            "score_margin": 0.75,
+            "target_rank": 1,
+            "top_k_churn": 1,
+            "top_k_churn_recomputed": true
+          }
+        ],
+        "current": [
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.81
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [],
+            "evidence_count": 0,
+            "feedback_count": 0,
+            "feedback_rows": 0,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.30974999999999997,
+              "q76-hold-opal-target": 0.42524999999999996
+            },
+            "score_margin": 0.11549999999999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 1,
+                "weight": 0.9234
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 1,
+            "feedback_count": 1,
+            "feedback_rows": 1,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.2923880005286111,
+              "q76-hold-opal-target": 0.4576119994713889
+            },
+            "score_margin": 0.16522399894277784,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 2,
+                "weight": 1.0454298665257038
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.1220298665257038,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 2,
+            "feedback_count": 2,
+            "feedback_rows": 2,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.27057106456056357,
+              "q76-hold-opal-target": 0.4794289354394365
+            },
+            "score_margin": 0.20885787087887292,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 3,
+                "weight": 1.173277582642887
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.1220298665257038,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.12784771611718315,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 3,
+            "feedback_count": 3,
+            "feedback_rows": 3,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.25095311388054925,
+              "q76-hold-opal-target": 0.49904688611945075
+            },
+            "score_margin": 0.2480937722389015,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 4,
+                "weight": 1.3063567522747406
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.1220298665257038,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.12784771611718315,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 1,
+                "reinforced_delta": 0.13307916963185362,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 4,
+            "feedback_count": 4,
+            "feedback_rows": 4,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.2333421701740493,
+              "q76-hold-opal-target": 0.5166578298259507
+            },
+            "score_margin": 0.28331565965190136,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 10,
+                "weight": 2.0
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.1220298665257038,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.12784771611718315,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 1,
+                "reinforced_delta": 0.13307916963185362,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 5,
+                "evidence_count": 5,
+                "quorum": 1,
+                "reinforced_delta": 0.13777542128692022,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 6,
+                "evidence_count": 6,
+                "quorum": 1,
+                "reinforced_delta": 0.14199000363216907,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 7,
+                "evidence_count": 7,
+                "quorum": 1,
+                "reinforced_delta": 0.14577510342173694,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 8,
+                "evidence_count": 8,
+                "quorum": 1,
+                "reinforced_delta": 0.1491794917091609,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 9,
+                "evidence_count": 9,
+                "quorum": 1,
+                "reinforced_delta": 0.1189232276752723,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 10,
+                "evidence_count": 10,
+                "quorum": 1,
+                "reinforced_delta": 0.0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 10,
+            "feedback_count": 10,
+            "feedback_rows": 10,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.17084942084942084,
+              "q76-hold-opal-target": 0.5791505791505791
+            },
+            "score_margin": 0.40830115830115826,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          }
+        ],
+        "evidence-only": [
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.81
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [],
+            "evidence_count": 0,
+            "feedback_count": 0,
+            "feedback_rows": 0,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.30974999999999997,
+              "q76-hold-opal-target": 0.42524999999999996
+            },
+            "score_margin": 0.11549999999999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.81
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 1,
+            "feedback_count": 1,
+            "feedback_rows": 1,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.30974999999999997,
+              "q76-hold-opal-target": 0.42524999999999996
+            },
+            "score_margin": 0.11549999999999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.81
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 2,
+            "feedback_count": 2,
+            "feedback_rows": 2,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.30974999999999997,
+              "q76-hold-opal-target": 0.42524999999999996
+            },
+            "score_margin": 0.11549999999999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 1,
+                "weight": 0.9234
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 3,
+            "feedback_count": 3,
+            "feedback_rows": 3,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.2923880005286111,
+              "q76-hold-opal-target": 0.4576119994713889
+            },
+            "score_margin": 0.16522399894277784,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 2,
+                "weight": 1.0454298665257038
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 3,
+                "reinforced_delta": 0.1220298665257038,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 4,
+            "feedback_count": 4,
+            "feedback_rows": 4,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.27057106456056357,
+              "q76-hold-opal-target": 0.4794289354394365
+            },
+            "score_margin": 0.20885787087887292,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 8,
+                "weight": 1.8810767723247277
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [
+              {
+                "activated": false,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": false,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 3,
+                "reinforced_delta": 0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 3,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 3,
+                "reinforced_delta": 0.1220298665257038,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 5,
+                "evidence_count": 5,
+                "quorum": 3,
+                "reinforced_delta": 0.12784771611718315,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 6,
+                "evidence_count": 6,
+                "quorum": 3,
+                "reinforced_delta": 0.13307916963185362,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 7,
+                "evidence_count": 7,
+                "quorum": 3,
+                "reinforced_delta": 0.13777542128692022,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 8,
+                "evidence_count": 8,
+                "quorum": 3,
+                "reinforced_delta": 0.14199000363216907,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 9,
+                "evidence_count": 9,
+                "quorum": 3,
+                "reinforced_delta": 0.14577510342173694,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 10,
+                "evidence_count": 10,
+                "quorum": 3,
+                "reinforced_delta": 0.1491794917091609,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 10,
+            "feedback_count": 10,
+            "feedback_rows": 10,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.17907173300152346,
+              "q76-hold-opal-target": 0.5709282669984765
+            },
+            "score_margin": 0.3918565339969531,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          }
+        ],
+        "local-only": [
+          {
+            "changed_edge_roles": [],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 0,
+                "weight": 0.81
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.59
+              }
+            },
+            "events": [],
+            "evidence_count": 0,
+            "feedback_count": 0,
+            "feedback_rows": 0,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.30974999999999997,
+              "q76-hold-opal-target": 0.42524999999999996
+            },
+            "score_margin": 0.11549999999999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 1,
+                "weight": 0.9234
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.4766
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0.11339999999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 1,
+            "feedback_count": 1,
+            "feedback_rows": 1,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.25021499999999997,
+              "q76-hold-opal-target": 0.48478499999999997
+            },
+            "score_margin": 0.23457,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 2,
+                "weight": 1.052676
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.3473240000000001
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0.11339999999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.12927599999999995,
+                "sibling_delta": 0.12927599999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 2,
+            "feedback_count": 2,
+            "feedback_rows": 2,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.18234510000000004,
+              "q76-hold-opal-target": 0.5526549
+            },
+            "score_margin": 0.3703097999999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 3,
+                "weight": 1.20005064
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.19994936000000008
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0.11339999999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.12927599999999995,
+                "sibling_delta": 0.12927599999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.14737464,
+                "sibling_delta": 0.14737464,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 3,
+            "feedback_count": 3,
+            "feedback_rows": 3,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.10497341400000004,
+              "q76-hold-opal-target": 0.6300265859999999
+            },
+            "score_margin": 0.5250531719999999,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 4,
+                "weight": 1.3680577295999998
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.031942270400000194
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0.11339999999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.12927599999999995,
+                "sibling_delta": 0.12927599999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.14737464,
+                "sibling_delta": 0.14737464,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 1,
+                "reinforced_delta": 0.16800708959999988,
+                "sibling_delta": 0.16800708959999988,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 4,
+            "feedback_count": 4,
+            "feedback_rows": 4,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target",
+              "q76-hold-opal-sibling"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-sibling": 0.0167696919600001,
+              "q76-hold-opal-target": 0.7182303080399999
+            },
+            "score_margin": 0.7014606160799998,
+            "target_rank": 1,
+            "top_k_churn": 0,
+            "top_k_churn_recomputed": true
+          },
+          {
+            "changed_edge_roles": [
+              "credited",
+              "sibling"
+            ],
+            "controls": {
+              "direct_rank": 1,
+              "directional_negative_rank": 1,
+              "lexical_rank": 1
+            },
+            "deterministic_replay_match": true,
+            "edges": {
+              "credited": {
+                "reinforced_count": 10,
+                "weight": 2.0
+              },
+              "directional_negative": {
+                "reinforced_count": 0,
+                "weight": 0.63
+              },
+              "sibling": {
+                "reinforced_count": 0,
+                "weight": 0.0
+              }
+            },
+            "events": [
+              {
+                "activated": true,
+                "event": 1,
+                "evidence_count": 1,
+                "quorum": 1,
+                "reinforced_delta": 0.11339999999999995,
+                "sibling_delta": 0.11339999999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 2,
+                "evidence_count": 2,
+                "quorum": 1,
+                "reinforced_delta": 0.12927599999999995,
+                "sibling_delta": 0.12927599999999995,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 3,
+                "evidence_count": 3,
+                "quorum": 1,
+                "reinforced_delta": 0.14737464,
+                "sibling_delta": 0.14737464,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 4,
+                "evidence_count": 4,
+                "quorum": 1,
+                "reinforced_delta": 0.16800708959999988,
+                "sibling_delta": 0.16800708959999988,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 5,
+                "evidence_count": 5,
+                "quorum": 1,
+                "reinforced_delta": 0.19152808214399997,
+                "sibling_delta": 0.031942270400000194,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 6,
+                "evidence_count": 6,
+                "quorum": 1,
+                "reinforced_delta": 0.19999999999999996,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 7,
+                "evidence_count": 7,
+                "quorum": 1,
+                "reinforced_delta": 0.19999999999999996,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 8,
+                "evidence_count": 8,
+                "quorum": 1,
+                "reinforced_delta": 0.040414188256000294,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 9,
+                "evidence_count": 9,
+                "quorum": 1,
+                "reinforced_delta": 0.0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              },
+              {
+                "activated": true,
+                "event": 10,
+                "evidence_count": 10,
+                "quorum": 1,
+                "reinforced_delta": 0.0,
+                "sibling_delta": 0,
+                "trace_channel": "relation",
+                "trace_credit_matches": true
+              }
+            ],
+            "evidence_count": 10,
+            "feedback_count": 10,
+            "feedback_rows": 10,
+            "ordering_recomputed": true,
+            "rank_recomputed": true,
+            "relation_order": [
+              "q76-hold-opal-target"
+            ],
+            "relation_scores": {
+              "q76-hold-opal-target": 0.75
+            },
+            "score_margin": 0.75,
+            "target_rank": 1,
+            "top_k_churn": 1,
+            "top_k_churn_recomputed": true
+          }
+        ]
+      }
+    }
+  ],
+  "claim_boundary": "Repository-local synthetic controlled corpus only; no default adoption, production quality, external generalization, or prior observed-result reinterpretation.",
+  "evaluated_source": {
+    "commit": "0d1e264dd43c17812cc99c5ffe889e836533a00a",
+    "path": "src/neuron_graph_rag/evidence_feedback.py",
+    "sha256": "233b25e13b1af32626f43bd838827bdb64048351fa6b8b0b48352320e3ad8016"
+  },
+  "gates": {
+    "ablation_consistency": true,
+    "atomic_rollback": true,
+    "combined_pre_quorum_stability": true,
+    "delayed_headroom_flip": true,
+    "deterministic_replay": true,
+    "final_relation_non_regression": true,
+    "mutation_scope": true,
+    "pre_quorum_churn_reduction": true,
+    "protocol_integrity": true,
+    "trace_credit": true
+  },
+  "identity_audit": {
+    "cross_split_overlap": {},
+    "prior_identity_counts": {
+      "tests/fixtures/d1_liplus_anchored_hybrid.contamination.json": {},
+      "tests/fixtures/d1_liplus_channels.contamination.json": {},
+      "tests/fixtures/d1_liplus_feedback_adaptation.contamination.json": {},
+      "tests/fixtures/d1_liplus_feedback_adaptation_reproduction.contamination.json": {},
+      "tests/fixtures/d1_liplus_fusion_calibration.contamination.json": {},
+      "tests/fixtures/d1_liplus_local_competition.contamination.json": {},
+      "tests/fixtures/engine_feedback_trajectory_v3.audit.json": {
+        "document_paths": 17,
+        "node_ids": 15
+      },
+      "tests/fixtures/fresh_native_feedback_v2.audit.json": {
+        "document_paths": 8,
+        "node_ids": 8,
+        "source_urls": 8
+      }
+    },
+    "prior_overlap": {},
+    "split_identity_counts": {
+      "development": {
+        "case_ids": 2,
+        "cluster_ids": 2,
+        "credited_edges": 6,
+        "document_paths": 2,
+        "node_ids": 12,
+        "queries": 6,
+        "source_urls": 12
+      },
+      "holdout": {
+        "case_ids": 2,
+        "cluster_ids": 2,
+        "credited_edges": 6,
+        "document_paths": 2,
+        "node_ids": 12,
+        "queries": 6,
+        "source_urls": 12
+      }
+    }
+  },
+  "protocol": "evidence-gated-feedback-v1",
+  "registered_artifact_hashes": {
+    "README.md": "f80fdd0c028552b828f4a8199534ae684cfb1503d312c58720671a9e838a2542",
+    "corpora/evidence-gated-reinforcement-v1/development/aurora-kite.md": "ab61a00cd69ba013f95a2991ec15043118b6d8050953cd9851b7c5592afb24c7",
+    "corpora/evidence-gated-reinforcement-v1/development/basalt-lantern.md": "3d7abae3de830774b26c2d85adf433b27a20eb9007f22f18e5e0a54f6ab7ef37",
+    "corpora/evidence-gated-reinforcement-v1/holdout/cinder-harbor.md": "6821557da51d99a3c551775230550d1d16271324bf240f618e43ffa847e1be08",
+    "corpora/evidence-gated-reinforcement-v1/holdout/opal-meadow.md": "65d81080e9e0b211d83a0b464958a8dc5e07e19bacd12369a94dc4365aa6a187",
+    "docs/evidence-gated-feedback-controlled-evaluation.md": "c57c40a9698d246a59e54638363ba4c263f7b6687386cce3e96aa946efc6b9bf",
+    "src/neuron_graph_rag/evidence_gated_evaluation.py": "42218fb0e621eb8ad57d8740bfd13454a03452e29d6f5b48c74b1f4852cfa7da",
+    "tests/fixtures/evidence_gated_feedback_v1.audit.json": "361992447db21e7f888706b8e5e46287a7b5d8f07bdb37feab893ebee2bdfcd8",
+    "tests/fixtures/evidence_gated_feedback_v1.fixture.json": "3f998aa6dbea273c2b00f3bceff979ecb0c5aff3c1a078524d177681936e5e65",
+    "tests/fixtures/evidence_gated_feedback_v1.gate.json": "93728184429b67537e0b8ca547affe39927dcf3425e4f0a528b5e5d4c4fba3d9",
+    "tests/fixtures/evidence_gated_feedback_v1.gold.json": "c10d056c5b71511d0974043476808a7ca92100cdc05fa873437ba3f409438a44",
+    "tests/fixtures/evidence_gated_feedback_v1.schedule.json": "d6f28ab8cc23aad8bbf3ae45b12745fe505d93e7b69e50d3837f381bace793a2",
+    "tests/test_evidence_gated_evaluation.py": "7f50f82d5818d7cc7170120526904724fcaa05ce797ae514489800b85308925d",
+    "tools/run_evidence_gated_evaluation.py": "c747c2d4b973fd4bc560615c1692d0b0c4d8c4e91e87607e36c422642e635697"
+  },
+  "run_count": 1,
+  "schema_version": 1,
+  "stage": "holdout"
+}
