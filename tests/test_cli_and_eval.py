@@ -21,15 +21,6 @@ class VerticalSliceTest(unittest.TestCase):
             result["before"]["graph_activation"],
         )
         self.assertTrue(result["success_feedback"]["reinforced_edges"])
-        self.assertEqual(
-            result["success_feedback"]["evidence"][0]["count"], 1
-        )
-        self.assertEqual(
-            result["success_feedback"]["evidence"][0]["quorum"], 1
-        )
-        self.assertTrue(
-            result["success_feedback"]["evidence"][0]["activated"]
-        )
 
     def test_eval_compares_baseline_and_graph_ranking(self) -> None:
         result = evaluate()

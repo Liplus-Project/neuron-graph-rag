@@ -15,13 +15,8 @@ from mcp.server.models import InitializationOptions
 from mcp.server.stdio import stdio_server
 from mcp.shared.exceptions import MCPError
 
-from neuron_graph_rag import (
-    EngineConfig,
-    FeedbackContractError,
-    FeedbackLedger,
-    NeuronGraphRAG,
-    SourceUseEvent,
-)
+from neuron_graph_rag import FeedbackContractError, FeedbackLedger, SourceUseEvent
+from neuron_graph_rag.evidence_feedback import EngineConfig, NeuronGraphRAG
 
 CONTRACT_VERSION = "ngr.mcp.feedback/v1"
 

@@ -208,7 +208,7 @@ adapter は core の test 用 `now` parameter を MCP input に公開しない�
 
 ### 6.1 Meaning
 
-consuming AI が、検索結果をどこまで判断材料として利用したかを記録する。`used` への新規遷移だけを NGR core の即時 reinforcement に接続する。
+consuming AI が、検索結果をどこまで判断材料として利用したかを記録する。`used` への新規遷移だけを NGR core の独立 evidence に接続し、credited edge の設定 quorum 到達時に bounded reinforcement を実行する。
 
 ### 6.2 Normative model-facing description
 
@@ -315,7 +315,7 @@ event は array 順に評価する。同一 call の途中で一件でも不正�
 - adapter は transport-neutral な `FeedbackLedger.record_source_use` を呼び、stage ledger へ直接 SQL を発行しない。
 - 一つの call で新しく `used` へ到達した node 群だけを `NeuronGraphRAG.record_success(trace_id, newly_used_node_ids)` へ一度渡す。`record_success` は credited-path 選択、contribution clamp、edge increment、channel、sibling normalization の唯一の計画元とする。
 - source-use の outer transaction は `record_success` の inner commit を遅延させ、stage 遷移、idempotency receipt、reinforcement をまとめて commit または rollback する。
-- `FeedbackReceipt` の `feedback_id`、`used_node_ids`、`reinforced_edges`、edge ごとの `evidence` を `feedback` に写す。quorum 前は `evidence` を返し、`reinforced_edges` は空とする。
+- `FeedbackReceipt` の `feedback_id`、`used_node_ids`、`reinforced_edges`、edge ごとの `evidence` を `feedback` に写す。quorum 前は `evidence` を返し、`reinforced_edges` は空とする。activation が maximum weight で cap された場合は、既存挙動どおり `old_weight == new_weight` の reinforced edge を返せるが、actual delta が `0` なので sibling は変更しない。
 - 再送、同一 stage、すでに `used` の node は reinforcement 処理を再度適用しない。
 
 core domain API は取得済みでない node を stage 更新前に拒否し、adapter は caller が修正可能な error code へ写す。

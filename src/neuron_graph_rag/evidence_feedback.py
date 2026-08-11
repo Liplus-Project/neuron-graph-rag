@@ -4,6 +4,7 @@ import uuid
 from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import datetime
+from pathlib import Path
 
 from .engine import EngineConfig as BaseEngineConfig
 from .engine import NeuronGraphRAG as BaseNeuronGraphRAG
@@ -13,6 +14,7 @@ from .models import (
     NormalizedSiblingEdge,
     ReinforcedEdge,
 )
+from .retrieval import DenseEncoder
 
 
 @dataclass(frozen=True, slots=True)
@@ -33,6 +35,19 @@ class EngineConfig(BaseEngineConfig):
 
 class NeuronGraphRAG(BaseNeuronGraphRAG):
     config: EngineConfig
+
+    def __init__(
+        self,
+        database: str | Path = ":memory:",
+        *,
+        config: EngineConfig | None = None,
+        dense_encoder: DenseEncoder | None = None,
+    ) -> None:
+        super().__init__(
+            database,
+            config=config or EngineConfig(),
+            dense_encoder=dense_encoder,
+        )
 
     def record_success(
         self,
@@ -113,7 +128,7 @@ class NeuronGraphRAG(BaseNeuronGraphRAG):
                 for source_id in sorted({key[0] for key in credited_keys})
             )
         stored_reinforced, stored_normalized, stored_evidence = (
-            self.store.apply_success_feedback(
+            self.store.apply_evidence_gated_success_feedback(
                 feedback_id,
                 trace_id,
                 timestamp,

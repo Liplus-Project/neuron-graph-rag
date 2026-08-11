@@ -21,7 +21,8 @@ if MCP_AVAILABLE:
         FeedbackMCPAdapter,
     )
 
-from neuron_graph_rag import EngineConfig, NeuronGraphRAG
+from neuron_graph_rag import NeuronGraphRAG
+from neuron_graph_rag.evidence_feedback import EngineConfig
 
 
 @unittest.skipUnless(MCP_AVAILABLE, "optional MCP SDK is not installed")

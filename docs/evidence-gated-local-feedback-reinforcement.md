@@ -2,7 +2,9 @@
 
 ## 目的と既定値
 
-この文書は、relation path の success feedback を独立 evidence と serving edge update に分離する opt-in candidate の正本である。`EngineConfig.relation_feedback_evidence_quorum` は正の整数で、既定値は `1` とする。既定値では最初の独立 success trace が従来どおり一回の bounded reinforcement を発火し、learning rate、maximum edge weight、fusion、normalization の既定値を変更しない。`2` 以上を明示した場合だけ quorum 到達前の serving weight update を遅延する。
+この文書は、relation path の success feedback を独立 evidence と serving edge update に分離する opt-in candidate の正本である。candidate は `neuron_graph_rag.evidence_feedback.EngineConfig` と `NeuronGraphRAG` から明示的に利用する。既存の `neuron_graph_rag.engine` と package root の class identity、`SQLiteStore.apply_success_feedback` の引数と2要素返却は変更しない。candidate 専用 storage path は `apply_evidence_gated_success_feedback` とする。
+
+candidate の `EngineConfig.relation_feedback_evidence_quorum` は正の整数で、既定値は `1` とする。既定値では最初の独立 success trace が従来どおり一回の bounded reinforcement を発火し、learning rate、maximum edge weight、fusion、normalization の既定値を変更しない。`2` 以上を明示した場合だけ quorum 到達前の serving weight update を遅延する。optional MCP adapter はこの明示 candidate path を利用し、core と同じ evidence receipt を返す。
 
 ## Evidence identity と activation
 
@@ -43,7 +45,7 @@ core の `FeedbackReceipt.evidence` と optional MCP の `feedback.evidence` は
 }
 ```
 
-`reinforced_edges` は actual serving update だけを保持する。したがって quorum 前の receipt は evidence を含む一方で `reinforced_edges` が空となり、既存 field の意味を変更しない。idempotency replay は保存済み receipt をそのまま返す。
+`reinforced_edges` は activation event で実行した bounded reinforcement を保持する。したがって quorum 前の receipt は evidence を含む一方で `reinforced_edges` が空となる。maximum weight 到達後の activation は既存挙動どおり `reinforced_count` を増やし、`reinforced_edges` に `old_weight == new_weight` の edge を返せる。この actual weight delta は `0` なので sibling normalization は発火しない。idempotency replay は保存済み receipt をそのまま返す。
 
 ## 検証境界
 

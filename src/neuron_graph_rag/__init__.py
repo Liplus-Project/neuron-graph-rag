@@ -1,9 +1,4 @@
-from . import engine as _engine
-from .evidence_feedback import EngineConfig, NeuronGraphRAG
-
-_engine.EngineConfig = EngineConfig
-_engine.NeuronGraphRAG = NeuronGraphRAG
-
+from .engine import EngineConfig, NeuronGraphRAG
 from .feedback import FeedbackLedger
 from .models import (
     ActivationPath,

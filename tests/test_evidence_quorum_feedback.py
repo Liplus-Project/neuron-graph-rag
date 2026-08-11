@@ -7,12 +7,18 @@ from contextlib import closing
 from pathlib import Path
 
 from neuron_graph_rag import (
-    EngineConfig,
     FeedbackLedger,
-    NeuronGraphRAG,
     SourceUseEvent,
 )
-from neuron_graph_rag.engine import EngineConfig as ModuleEngineConfig
+from neuron_graph_rag.engine import EngineConfig as LegacyEngineConfig
+from neuron_graph_rag.engine import NeuronGraphRAG as LegacyNeuronGraphRAG
+from neuron_graph_rag.evidence_feedback import EngineConfig, NeuronGraphRAG
+from neuron_graph_rag.sibling_normalization_evaluation import (
+    EngineConfig as FrozenEvaluationEngineConfig,
+)
+from neuron_graph_rag.sibling_normalization_evaluation import (
+    NeuronGraphRAG as FrozenEvaluationNeuronGraphRAG,
+)
 
 
 def _config(*, quorum: int = 3, sibling_ratio: float = 0.0) -> EngineConfig:
@@ -49,12 +55,56 @@ def _relation_success(
 
 
 class EvidenceQuorumFeedbackTest(unittest.TestCase):
-    def test_engine_module_exposes_quorum_config(self) -> None:
-        self.assertEqual(
-            ModuleEngineConfig(relation_feedback_evidence_quorum=2)
-            .relation_feedback_evidence_quorum,
-            2,
+    def test_candidate_path_does_not_replace_frozen_engine_identity(self) -> None:
+        self.assertEqual(LegacyEngineConfig.__module__, "neuron_graph_rag.engine")
+        self.assertEqual(LegacyNeuronGraphRAG.__module__, "neuron_graph_rag.engine")
+        self.assertIs(FrozenEvaluationEngineConfig, LegacyEngineConfig)
+        self.assertIs(FrozenEvaluationNeuronGraphRAG, LegacyNeuronGraphRAG)
+        self.assertEqual(EngineConfig.__module__, "neuron_graph_rag.evidence_feedback")
+        self.assertEqual(NeuronGraphRAG.__module__, "neuron_graph_rag.evidence_feedback")
+        with self.assertRaises(TypeError):
+            LegacyEngineConfig(relation_feedback_evidence_quorum=2)
+
+    def test_legacy_engine_keeps_two_value_storage_contract(self) -> None:
+        config = LegacyEngineConfig(
+            sparse_weight=1.0,
+            dense_weight=0.0,
+            seed_count=1,
+            max_hops=2,
         )
+        with LegacyNeuronGraphRAG(config=config) as engine:
+            _populate(engine)
+            trace = engine.search("alpha", limit=5, now=1_000.0)
+            receipt = engine.record_success(trace.trace_id, ["target"], now=1_001.0)
+
+            self.assertTrue(receipt.reinforced_edges)
+            self.assertEqual(receipt.evidence, ())
+            self.assertEqual(engine.store.count_feedback_evidence(), 0)
+
+    def test_capped_activation_reports_equal_weights_without_sibling_delta(self) -> None:
+        with NeuronGraphRAG(config=_config(quorum=1, sibling_ratio=1.0)) as engine:
+            engine.add_document("source", "alpha lexical source")
+            engine.add_document("target", "distant relation target")
+            engine.add_document("sibling", "unrelated sibling")
+            engine.add_edge("source", "target", "mentions", weight=2.0)
+            engine.add_edge("source", "sibling", "mentions", weight=0.5)
+            trace = engine.search("alpha", limit=5, now=1_000.0)
+
+            receipt = engine.record_success(trace.trace_id, ["target"], now=1_001.0)
+
+            self.assertTrue(receipt.evidence[0].activated)
+            self.assertEqual(len(receipt.reinforced_edges), 1)
+            self.assertEqual(receipt.reinforced_edges[0].old_weight, 2.0)
+            self.assertEqual(receipt.reinforced_edges[0].new_weight, 2.0)
+            self.assertEqual(receipt.normalized_sibling_edges, ())
+            self.assertEqual(
+                engine.store.edge("source", "target", "mentions").reinforced_count,
+                1,
+            )
+            self.assertEqual(
+                engine.store.edge("source", "sibling", "mentions").weight,
+                0.5,
+            )
 
     def test_quorum_three_activates_on_third_and_each_later_trace(self) -> None:
         with NeuronGraphRAG(config=_config()) as engine:
@@ -279,7 +329,7 @@ class EvidenceQuorumFeedbackTest(unittest.TestCase):
             target_before = engine.store.edge("source", "target", "mentions")
 
             with self.assertRaises(KeyError):
-                engine.store.apply_success_feedback(
+                engine.store.apply_evidence_gated_success_feedback(
                     "injected-feedback",
                     trace.trace_id,
                     1_001.0,

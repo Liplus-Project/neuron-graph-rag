@@ -223,7 +223,7 @@ neuron-graph-rag-mcp --database /absolute/path/to/knowledge.db
 }
 ```
 
-利用順序は `search` で得た `trace_id` と候補を保持し、実際の判断過程に合わせて `selected` → `validated` → `used` を `record_source_use` へ送ります。新規 `used` だけが即時 reinforcement を一度発火します。後から結果が判明した場合は `record_outcome` で `confirmed`、`corrected`、`rolled_back`、`superseded` のいずれかを監査記録へ追加しますが、v1 の delayed outcome は weight を変更しません。
+利用順序は `search` で得た `trace_id` と候補を保持し、実際の判断過程に合わせて `selected` → `validated` → `used` を `record_source_use` へ送ります。新規 `used` だけが credited edge の独立 evidence を記録し、設定 quorum 到達時に bounded reinforcement を発火します。既定 quorum は `1` です。後から結果が判明した場合は `record_outcome` で `confirmed`、`corrected`、`rolled_back`、`superseded` のいずれかを監査記録へ追加しますが、v1 の delayed outcome は weight を変更しません。
 
 三つの tool の schema、model-facing description、trace retention、failure code の正本は [docs/optional-mcp-interface.md](docs/optional-mcp-interface.md) です。実装範囲は local stdio に限り、HTTP、認証、認可、remote deployment は含みません。
 
@@ -267,7 +267,7 @@ Trace-credited feedback adaptationは、relation traceの`record_success`が後�
 
 Feedback rank elasticity runnerは、source SQLiteを変更せず、各累積feedback checkpointをfresh cloneから再生します。target rankだけでなくraw / normalized graph score、final-score margin、top-k rank delta、非対象churnを出力し、max-normalization ceiling、rank flip threshold、schedule全体のrank安定を区別します。これは診断専用であり、learning rate、fusion、normalization、既定値を変更しません。仕様と実行方法は[Feedback rank elasticity](docs/feedback-rank-elasticity.md)を参照してください。
 
-Evidence-gated local feedback reinforcementは、credited edgeごとに異なるsuccess traceを永続evidenceとして数え、設定quorum到達後だけ既存bounded updateを一回ずつ適用するopt-in candidateです。既定quorumは`1`で現行動作を保ち、`2`以上では到達前のweightとsame-source siblingを変更しません。core / MCP receiptはcount、quorum、activationを返します。詳細は[Evidence-gated local feedback reinforcement](docs/evidence-gated-local-feedback-reinforcement.md)を参照してください。
+Evidence-gated local feedback reinforcementは、credited edgeごとに異なるsuccess traceを永続evidenceとして数え、設定quorum到達後だけ既存bounded updateを一回ずつ適用するopt-in candidateです。`neuron_graph_rag.evidence_feedback` のclassから明示的に利用し、package rootと`.engine`のlegacy class identityは変更しません。既定quorumは`1`で現行動作を保ち、`2`以上では到達前のweightとsame-source siblingを変更しません。core / MCP receiptはcount、quorum、activationを返します。詳細は[Evidence-gated local feedback reinforcement](docs/evidence-gated-local-feedback-reinforcement.md)を参照してください。
 
 ## Explanation model
 
