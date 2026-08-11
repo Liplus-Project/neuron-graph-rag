@@ -228,9 +228,9 @@ def _edge_snapshot(engine: NeuronGraphRAG) -> dict[str, float]:
 
 
 def _rank(hits: Any, node_id: str) -> int | None:
-    for hit in hits:
+    for rank, hit in enumerate(hits, start=1):
         if hit.node.node_id == node_id:
-            return int(hit.rank)
+            return rank
     return None
 
 

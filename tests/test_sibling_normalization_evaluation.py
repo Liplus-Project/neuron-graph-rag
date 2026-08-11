@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 from neuron_graph_rag.sibling_normalization_evaluation import (
+    _rank,
     validate_observed_outputs,
     validate_protocol,
 )
@@ -42,6 +44,15 @@ class SiblingNormalizationEvaluationProtocolTest(unittest.TestCase):
         }
 
         self.assertTrue(actual <= expected)
+
+    def test_rank_uses_tuple_position_for_search_hits(self) -> None:
+        hits = (
+            SimpleNamespace(node=SimpleNamespace(node_id="first")),
+            SimpleNamespace(node=SimpleNamespace(node_id="second")),
+        )
+
+        self.assertEqual(_rank(hits, "second"), 2)
+        self.assertIsNone(_rank(hits, "missing"))
 
 
 if __name__ == "__main__":
