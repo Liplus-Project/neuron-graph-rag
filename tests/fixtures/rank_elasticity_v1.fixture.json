@@ -1,0 +1,21 @@
+{
+  "schema_version": "ngr.rank-elasticity-fixture/v1",
+  "documents": [
+    {"node_id": "c-source", "text": "ceiling anchor quasar", "metadata": {"cluster": "ceiling"}},
+    {"node_id": "c-target", "text": "ceiling target orbit", "metadata": {"cluster": "ceiling"}},
+    {"node_id": "c-rival", "text": "ceiling rival mundane", "metadata": {"cluster": "ceiling"}},
+    {"node_id": "t-source", "text": "threshold anchor zircon", "metadata": {"cluster": "threshold"}},
+    {"node_id": "t-target", "text": "threshold target amber", "metadata": {"cluster": "threshold"}},
+    {"node_id": "t-rival", "text": "threshold rival amber", "metadata": {"cluster": "threshold"}},
+    {"node_id": "direct", "text": "directcontrol exact unique answer", "metadata": {"cluster": "control"}},
+    {"node_id": "lexical", "text": "lexicalcontrol exact phrase answer", "metadata": {"cluster": "control"}},
+    {"node_id": "neg-source", "text": "directionalnegative upstream omega", "metadata": {"cluster": "control"}},
+    {"node_id": "neg-target", "text": "directionalnegative downstream psi", "metadata": {"cluster": "control"}}
+  ],
+  "edges": [
+    {"source_id": "c-source", "target_id": "c-target", "edge_type": "supports", "weight": 0.5, "factuality": 1.0},
+    {"source_id": "t-source", "target_id": "t-target", "edge_type": "supports", "weight": 0.65, "factuality": 1.0},
+    {"source_id": "t-source", "target_id": "t-rival", "edge_type": "supports", "weight": 0.7, "factuality": 1.0},
+    {"source_id": "neg-target", "target_id": "neg-source", "edge_type": "supports", "weight": 0.7, "factuality": 1.0}
+  ]
+}
