@@ -1,0 +1,497 @@
+{
+  "all_gates_passed": true,
+  "atomicity_probe": {
+    "actual_error": "KeyError",
+    "edges_after": {
+      "snc-probe-source|snc-probe-first|links": 0.6
+    },
+    "edges_before": {
+      "snc-probe-source|snc-probe-first|links": 0.6
+    },
+    "expected_error": "KeyError",
+    "feedback_after": 0,
+    "feedback_before": 0
+  },
+  "cases": [
+    {
+      "baseline": {
+        "direct": {
+          "expected_node": "snc-hold-c-source",
+          "rank_after": 1,
+          "rank_before": 1
+        },
+        "directional_negative": {
+          "forbidden_node": "snc-hold-c-source",
+          "order_after": [],
+          "order_before": []
+        },
+        "lexical": {
+          "expected_node": "snc-hold-c-source",
+          "rank_after": 1,
+          "rank_before": 1
+        },
+        "mutation": {
+          "after_lexical": {
+            "snc-hold-c-source|snc-hold-c-credited-peer|references": 0.4,
+            "snc-hold-c-source|snc-hold-c-sibling|references": 0.6,
+            "snc-hold-c-source|snc-hold-c-target|references": 0.8,
+            "snc-hold-c-unrelated-source|snc-hold-c-unrelated-target|references": 0.8
+          },
+          "after_relation": {
+            "snc-hold-c-source|snc-hold-c-credited-peer|references": 0.456,
+            "snc-hold-c-source|snc-hold-c-sibling|references": 0.6,
+            "snc-hold-c-source|snc-hold-c-target|references": 0.912,
+            "snc-hold-c-unrelated-source|snc-hold-c-unrelated-target|references": 0.8
+          },
+          "after_zero_hop": {
+            "snc-hold-c-source|snc-hold-c-credited-peer|references": 0.4,
+            "snc-hold-c-source|snc-hold-c-sibling|references": 0.6,
+            "snc-hold-c-source|snc-hold-c-target|references": 0.8,
+            "snc-hold-c-unrelated-source|snc-hold-c-unrelated-target|references": 0.8
+          },
+          "initial": {
+            "snc-hold-c-source|snc-hold-c-credited-peer|references": 0.4,
+            "snc-hold-c-source|snc-hold-c-sibling|references": 0.6,
+            "snc-hold-c-source|snc-hold-c-target|references": 0.8,
+            "snc-hold-c-unrelated-source|snc-hold-c-unrelated-target|references": 0.8
+          },
+          "lexical_changed": {},
+          "lexical_receipt_edge_counts": [
+            0,
+            0
+          ],
+          "normalized_sibling_edges": [],
+          "reinforced_edges": [
+            "snc-hold-c-source|snc-hold-c-credited-peer|references",
+            "snc-hold-c-source|snc-hold-c-target|references"
+          ],
+          "relation_changed": {
+            "snc-hold-c-source|snc-hold-c-credited-peer|references": {
+              "after": 0.456,
+              "before": 0.4
+            },
+            "snc-hold-c-source|snc-hold-c-target|references": {
+              "after": 0.912,
+              "before": 0.8
+            }
+          },
+          "zero_hop_changed": {},
+          "zero_hop_receipt_edge_counts": [
+            0,
+            0
+          ]
+        },
+        "normalization": 0.0,
+        "relation": {
+          "credited_paths": {
+            "snc-hold-c-credited-peer": [
+              {
+                "edge_type": "references",
+                "source_id": "snc-hold-c-source",
+                "target_id": "snc-hold-c-credited-peer"
+              }
+            ],
+            "snc-hold-c-target": [
+              {
+                "edge_type": "references",
+                "source_id": "snc-hold-c-source",
+                "target_id": "snc-hold-c-target"
+              }
+            ]
+          },
+          "expected_node": "snc-hold-c-target",
+          "order_after": [
+            "snc-hold-c-target",
+            "snc-hold-c-sibling",
+            "snc-hold-c-credited-peer"
+          ],
+          "order_before": [
+            "snc-hold-c-target",
+            "snc-hold-c-sibling",
+            "snc-hold-c-credited-peer"
+          ],
+          "rank_after": 1,
+          "rank_before": 1
+        },
+        "trace_provenance": {
+          "lexical_trace_id": "bad72a32ef9848448915e11bc1d3e55e",
+          "relation_feedback_channel": "relation",
+          "relation_feedback_trace_id": "f121b250ac324a9384e835e03b6bef8d",
+          "relation_feedback_used_same_trace": true,
+          "relation_trace_id": "f121b250ac324a9384e835e03b6bef8d",
+          "trace_ids_distinct": true
+        }
+      },
+      "case_id": "snc-v1-holdout-ceiling",
+      "cluster_id": "snc-v1-holdout-cluster-cedar",
+      "role": "ceiling",
+      "treatment": {
+        "direct": {
+          "expected_node": "snc-hold-c-source",
+          "rank_after": 1,
+          "rank_before": 1
+        },
+        "directional_negative": {
+          "forbidden_node": "snc-hold-c-source",
+          "order_after": [],
+          "order_before": []
+        },
+        "lexical": {
+          "expected_node": "snc-hold-c-source",
+          "rank_after": 1,
+          "rank_before": 1
+        },
+        "mutation": {
+          "after_lexical": {
+            "snc-hold-c-source|snc-hold-c-credited-peer|references": 0.4,
+            "snc-hold-c-source|snc-hold-c-sibling|references": 0.6,
+            "snc-hold-c-source|snc-hold-c-target|references": 0.8,
+            "snc-hold-c-unrelated-source|snc-hold-c-unrelated-target|references": 0.8
+          },
+          "after_relation": {
+            "snc-hold-c-source|snc-hold-c-credited-peer|references": 0.456,
+            "snc-hold-c-source|snc-hold-c-sibling|references": 0.432,
+            "snc-hold-c-source|snc-hold-c-target|references": 0.912,
+            "snc-hold-c-unrelated-source|snc-hold-c-unrelated-target|references": 0.8
+          },
+          "after_zero_hop": {
+            "snc-hold-c-source|snc-hold-c-credited-peer|references": 0.4,
+            "snc-hold-c-source|snc-hold-c-sibling|references": 0.6,
+            "snc-hold-c-source|snc-hold-c-target|references": 0.8,
+            "snc-hold-c-unrelated-source|snc-hold-c-unrelated-target|references": 0.8
+          },
+          "initial": {
+            "snc-hold-c-source|snc-hold-c-credited-peer|references": 0.4,
+            "snc-hold-c-source|snc-hold-c-sibling|references": 0.6,
+            "snc-hold-c-source|snc-hold-c-target|references": 0.8,
+            "snc-hold-c-unrelated-source|snc-hold-c-unrelated-target|references": 0.8
+          },
+          "lexical_changed": {},
+          "lexical_receipt_edge_counts": [
+            0,
+            0
+          ],
+          "normalized_sibling_edges": [
+            "snc-hold-c-source|snc-hold-c-sibling|references"
+          ],
+          "reinforced_edges": [
+            "snc-hold-c-source|snc-hold-c-credited-peer|references",
+            "snc-hold-c-source|snc-hold-c-target|references"
+          ],
+          "relation_changed": {
+            "snc-hold-c-source|snc-hold-c-credited-peer|references": {
+              "after": 0.456,
+              "before": 0.4
+            },
+            "snc-hold-c-source|snc-hold-c-sibling|references": {
+              "after": 0.432,
+              "before": 0.6
+            },
+            "snc-hold-c-source|snc-hold-c-target|references": {
+              "after": 0.912,
+              "before": 0.8
+            }
+          },
+          "zero_hop_changed": {},
+          "zero_hop_receipt_edge_counts": [
+            0,
+            0
+          ]
+        },
+        "normalization": 1.0,
+        "relation": {
+          "credited_paths": {
+            "snc-hold-c-credited-peer": [
+              {
+                "edge_type": "references",
+                "source_id": "snc-hold-c-source",
+                "target_id": "snc-hold-c-credited-peer"
+              }
+            ],
+            "snc-hold-c-target": [
+              {
+                "edge_type": "references",
+                "source_id": "snc-hold-c-source",
+                "target_id": "snc-hold-c-target"
+              }
+            ]
+          },
+          "expected_node": "snc-hold-c-target",
+          "order_after": [
+            "snc-hold-c-target",
+            "snc-hold-c-credited-peer",
+            "snc-hold-c-sibling"
+          ],
+          "order_before": [
+            "snc-hold-c-target",
+            "snc-hold-c-sibling",
+            "snc-hold-c-credited-peer"
+          ],
+          "rank_after": 1,
+          "rank_before": 1
+        },
+        "trace_provenance": {
+          "lexical_trace_id": "96937357aed44a66acfa45a74552b2f6",
+          "relation_feedback_channel": "relation",
+          "relation_feedback_trace_id": "db820c8d99c5498fa73c2738db65cb09",
+          "relation_feedback_used_same_trace": true,
+          "relation_trace_id": "db820c8d99c5498fa73c2738db65cb09",
+          "trace_ids_distinct": true
+        }
+      }
+    },
+    {
+      "baseline": {
+        "direct": {
+          "expected_node": "snc-hold-h-source",
+          "rank_after": 1,
+          "rank_before": 1
+        },
+        "directional_negative": {
+          "forbidden_node": "snc-hold-h-source",
+          "order_after": [],
+          "order_before": []
+        },
+        "lexical": {
+          "expected_node": "snc-hold-h-source",
+          "rank_after": 1,
+          "rank_before": 1
+        },
+        "mutation": {
+          "after_lexical": {
+            "snc-hold-h-source|snc-hold-h-sibling|references": 0.7,
+            "snc-hold-h-source|snc-hold-h-target|references": 0.6,
+            "snc-hold-h-unrelated-source|snc-hold-h-unrelated-target|references": 0.85
+          },
+          "after_relation": {
+            "snc-hold-h-source|snc-hold-h-sibling|references": 0.7,
+            "snc-hold-h-source|snc-hold-h-target|references": 0.6839999999999999,
+            "snc-hold-h-unrelated-source|snc-hold-h-unrelated-target|references": 0.85
+          },
+          "after_zero_hop": {
+            "snc-hold-h-source|snc-hold-h-sibling|references": 0.7,
+            "snc-hold-h-source|snc-hold-h-target|references": 0.6,
+            "snc-hold-h-unrelated-source|snc-hold-h-unrelated-target|references": 0.85
+          },
+          "initial": {
+            "snc-hold-h-source|snc-hold-h-sibling|references": 0.7,
+            "snc-hold-h-source|snc-hold-h-target|references": 0.6,
+            "snc-hold-h-unrelated-source|snc-hold-h-unrelated-target|references": 0.85
+          },
+          "lexical_changed": {},
+          "lexical_receipt_edge_counts": [
+            0,
+            0
+          ],
+          "normalized_sibling_edges": [],
+          "reinforced_edges": [
+            "snc-hold-h-source|snc-hold-h-target|references"
+          ],
+          "relation_changed": {
+            "snc-hold-h-source|snc-hold-h-target|references": {
+              "after": 0.6839999999999999,
+              "before": 0.6
+            }
+          },
+          "zero_hop_changed": {},
+          "zero_hop_receipt_edge_counts": [
+            0,
+            0
+          ]
+        },
+        "normalization": 0.0,
+        "relation": {
+          "credited_paths": {
+            "snc-hold-h-target": [
+              {
+                "edge_type": "references",
+                "source_id": "snc-hold-h-source",
+                "target_id": "snc-hold-h-target"
+              }
+            ]
+          },
+          "expected_node": "snc-hold-h-target",
+          "order_after": [
+            "snc-hold-h-sibling",
+            "snc-hold-h-target"
+          ],
+          "order_before": [
+            "snc-hold-h-sibling",
+            "snc-hold-h-target"
+          ],
+          "rank_after": 2,
+          "rank_before": 2
+        },
+        "trace_provenance": {
+          "lexical_trace_id": "94cdae4e5bba4c45871643768111c2ad",
+          "relation_feedback_channel": "relation",
+          "relation_feedback_trace_id": "3f9e666c360e4ddeba036e4ac232c056",
+          "relation_feedback_used_same_trace": true,
+          "relation_trace_id": "3f9e666c360e4ddeba036e4ac232c056",
+          "trace_ids_distinct": true
+        }
+      },
+      "case_id": "snc-v1-holdout-headroom",
+      "cluster_id": "snc-v1-holdout-cluster-quartz",
+      "role": "headroom",
+      "treatment": {
+        "direct": {
+          "expected_node": "snc-hold-h-source",
+          "rank_after": 1,
+          "rank_before": 1
+        },
+        "directional_negative": {
+          "forbidden_node": "snc-hold-h-source",
+          "order_after": [],
+          "order_before": []
+        },
+        "lexical": {
+          "expected_node": "snc-hold-h-source",
+          "rank_after": 1,
+          "rank_before": 1
+        },
+        "mutation": {
+          "after_lexical": {
+            "snc-hold-h-source|snc-hold-h-sibling|references": 0.7,
+            "snc-hold-h-source|snc-hold-h-target|references": 0.6,
+            "snc-hold-h-unrelated-source|snc-hold-h-unrelated-target|references": 0.85
+          },
+          "after_relation": {
+            "snc-hold-h-source|snc-hold-h-sibling|references": 0.616,
+            "snc-hold-h-source|snc-hold-h-target|references": 0.6839999999999999,
+            "snc-hold-h-unrelated-source|snc-hold-h-unrelated-target|references": 0.85
+          },
+          "after_zero_hop": {
+            "snc-hold-h-source|snc-hold-h-sibling|references": 0.7,
+            "snc-hold-h-source|snc-hold-h-target|references": 0.6,
+            "snc-hold-h-unrelated-source|snc-hold-h-unrelated-target|references": 0.85
+          },
+          "initial": {
+            "snc-hold-h-source|snc-hold-h-sibling|references": 0.7,
+            "snc-hold-h-source|snc-hold-h-target|references": 0.6,
+            "snc-hold-h-unrelated-source|snc-hold-h-unrelated-target|references": 0.85
+          },
+          "lexical_changed": {},
+          "lexical_receipt_edge_counts": [
+            0,
+            0
+          ],
+          "normalized_sibling_edges": [
+            "snc-hold-h-source|snc-hold-h-sibling|references"
+          ],
+          "reinforced_edges": [
+            "snc-hold-h-source|snc-hold-h-target|references"
+          ],
+          "relation_changed": {
+            "snc-hold-h-source|snc-hold-h-sibling|references": {
+              "after": 0.616,
+              "before": 0.7
+            },
+            "snc-hold-h-source|snc-hold-h-target|references": {
+              "after": 0.6839999999999999,
+              "before": 0.6
+            }
+          },
+          "zero_hop_changed": {},
+          "zero_hop_receipt_edge_counts": [
+            0,
+            0
+          ]
+        },
+        "normalization": 1.0,
+        "relation": {
+          "credited_paths": {
+            "snc-hold-h-target": [
+              {
+                "edge_type": "references",
+                "source_id": "snc-hold-h-source",
+                "target_id": "snc-hold-h-target"
+              }
+            ]
+          },
+          "expected_node": "snc-hold-h-target",
+          "order_after": [
+            "snc-hold-h-target",
+            "snc-hold-h-sibling"
+          ],
+          "order_before": [
+            "snc-hold-h-sibling",
+            "snc-hold-h-target"
+          ],
+          "rank_after": 1,
+          "rank_before": 2
+        },
+        "trace_provenance": {
+          "lexical_trace_id": "ed65c876a8504ba8a1826b654c205856",
+          "relation_feedback_channel": "relation",
+          "relation_feedback_trace_id": "11396ce08e75467abc31f7a8f1cf5231",
+          "relation_feedback_used_same_trace": true,
+          "relation_trace_id": "11396ce08e75467abc31f7a8f1cf5231",
+          "trace_ids_distinct": true
+        }
+      }
+    }
+  ],
+  "claim_boundary": "Repository-native controlled corpus only; no external D1 generalization, default change, or production adoption claim.",
+  "evaluated_source": {
+    "commit": "a99859f23c3dbc0e75469ad10f7b415ec73e0336",
+    "path": "src/neuron_graph_rag/engine.py",
+    "sha256": "68c5178f52571906b7323507e7e2f786bd7793e43f83fa492b8d9869108f7181"
+  },
+  "freeze_commit": "7b1b080a0d163a5819d52f025173bce952556f23",
+  "gates": {
+    "credited_path_match": true,
+    "deterministic_replay": true,
+    "direct_non_regression": true,
+    "directional_negative_non_regression": true,
+    "failed_transaction_atomicity": true,
+    "lexical_non_regression": true,
+    "mutation_scope": true,
+    "relation_ceiling_non_regression": true,
+    "relation_headroom_strict_improvement": true
+  },
+  "protocol": "sibling-normalization-controlled-v1",
+  "registered_artifact_hashes": {
+    "docs/requirements.md": "e0628a979d6b741186829da2db718ce6bc46dae9f50ea637896986c3876cba81",
+    "docs/sibling-normalization-controlled-evaluation.md": "c8ce25062fdf5b03546977105ccad7b6c8e4e0621588c4b11a6cbdc081dc1e94",
+    "docs/sibling-relation-feedback-normalization.md": "7b33ce4dace6e976d90471b705b4554ae3ead755c78e429d8c9d91a84b105521",
+    "src/neuron_graph_rag/sibling_normalization_evaluation.py": "c07c959fe9e9240fd82e44c836b2296f8aa02aa2565e62bac449131981b7e945",
+    "tests/fixtures/sibling_normalization_controlled_v1.fixture.json": "18c10ed563f49021d6f7897ad726d4682bdffc9098e69233a5b0bf8bf06457f7",
+    "tests/fixtures/sibling_normalization_controlled_v1.gate.json": "9db04353a7e5e3602bc4237521e93012669e2187ff35be2e84d27bbebbca26b9",
+    "tests/fixtures/sibling_normalization_controlled_v1.gold.json": "8697f8290cb81a2c6882cb3612529e51251bbb7586708a14fbebb5a39d51b141",
+    "tests/fixtures/sibling_normalization_controlled_v1.schedule.json": "9a5fbdad04f1373fd1b00972d341b8a6add24e732830587fc1f65491cebb932f",
+    "tests/test_sibling_normalization_evaluation.py": "cc0889528c820967d8583c59aacc7d1e2d29450381b9c74e42616892a9c6abc8",
+    "tools/run_sibling_normalization_evaluation.py": "8e278f757354d2e0a8a850d49ecc2cf8a7763097d093be6764c531a6448732f4"
+  },
+  "schedule": {
+    "checkpoints": [
+      0,
+      1
+    ],
+    "feedback_events": 1,
+    "limit": 6,
+    "normalization": {
+      "baseline": 0.0,
+      "treatment": 1.0
+    },
+    "protocol": "sibling-normalization-controlled-v1",
+    "registered_runs": {
+      "development": 1,
+      "holdout": 1
+    },
+    "schema_version": 1,
+    "timestamps": {
+      "direct_after": 1007.0,
+      "direct_before": 1001.0,
+      "lexical_feedback": 1003.0,
+      "negative_after": 1008.0,
+      "negative_before": 1002.0,
+      "primary_after": 1006.0,
+      "primary_before": 1000.0,
+      "relation_feedback": 1005.0,
+      "zero_hop_feedback": 1004.0
+    }
+  },
+  "schema_version": 1,
+  "stage": "holdout"
+}
