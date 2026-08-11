@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -32,8 +33,10 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         self.database = Path(self.temporary.name) / "ngr.sqlite"
         with NeuronGraphRAG(self.database) as engine:
             engine.add_document("decision", "cache invalidation decision")
-            engine.add_document("implementation", "cache implementation")
+            engine.add_document("implementation", "implementation detail")
+            engine.add_document("alternate", "alternate approach")
             engine.add_edge("decision", "implementation", "implemented_by", weight=0.7)
+            engine.add_edge("decision", "alternate", "implemented_by", weight=0.6)
         self.adapter = FeedbackMCPAdapter(self.database)
 
     def tearDown(self) -> None:
@@ -209,6 +212,157 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
             )
             self.assertFalse(result.is_error)
             self.assertEqual(json.loads(result.content[0].text), result.structured_content)
+            source_use = await session.call_tool(
+                "record_source_use",
+                {
+                    "contract_version": CONTRACT_VERSION,
+                    "idempotency_key": "stdio-default-source-use",
+                    "trace_id": result.structured_content["trace_id"],
+                    "events": [
+                        {"node_id": "implementation", "stage": "selected"},
+                        {"node_id": "implementation", "stage": "validated"},
+                        {"node_id": "implementation", "stage": "used"},
+                    ],
+                },
+            )
+            self.assertFalse(source_use.is_error)
+            evidence = source_use.structured_content["feedback"]["evidence"]
+            self.assertEqual(evidence[0]["quorum"], 1)
+            self.assertTrue(evidence[0]["activated"])
+
+        with NeuronGraphRAG(self.database) as engine:
+            self.assertGreater(
+                engine.store.edge(
+                    "decision", "implementation", "implemented_by"
+                ).weight,
+                0.7,
+            )
+            self.assertEqual(
+                engine.store.edge("decision", "alternate", "implemented_by").weight,
+                0.6,
+            )
+
+    async def test_stdio_q3_s1_delays_then_normalizes_on_third_evidence(self) -> None:
+        database = Path(self.temporary.name) / "stdio-q3-s1.sqlite"
+        with NeuronGraphRAG(database) as engine:
+            engine.add_document("source", "stabilization anchor")
+            engine.add_document("target", "credited implementation result")
+            engine.add_document("sibling", "uncredited sibling result")
+            engine.add_document("other-source", "isolated origin")
+            engine.add_document("other-target", "isolated destination")
+            engine.add_edge("source", "target", "supports", weight=0.7)
+            engine.add_edge("source", "sibling", "supports", weight=0.6)
+            engine.add_edge("other-source", "other-target", "isolated", weight=0.8)
+
+        target_weights = []
+        sibling_weights = []
+        for event_index in range(1, 4):
+            parameters = StdioServerParameters(
+                command=sys.executable,
+                args=[
+                    "-m",
+                    "neuron_graph_rag_mcp",
+                    "--database",
+                    str(database),
+                    "--relation-feedback-evidence-quorum",
+                    "3",
+                    "--sibling-feedback-normalization",
+                    "1.0",
+                ],
+            )
+            async with (
+                stdio_client(parameters) as (read_stream, write_stream),
+                ClientSession(read_stream, write_stream) as session,
+            ):
+                await session.initialize()
+                search = await session.call_tool(
+                    "search",
+                    {
+                        "contract_version": CONTRACT_VERSION,
+                        "query": "stabilization anchor",
+                        "limit": 5,
+                    },
+                )
+                arguments = {
+                    "contract_version": CONTRACT_VERSION,
+                    "idempotency_key": f"stdio-q3-s1-{event_index}",
+                    "trace_id": search.structured_content["trace_id"],
+                    "events": [
+                        {"node_id": "target", "stage": "selected"},
+                        {"node_id": "target", "stage": "validated"},
+                        {"node_id": "target", "stage": "used"},
+                    ],
+                }
+                source_use = await session.call_tool(
+                    "record_source_use", arguments
+                )
+                retry = await session.call_tool("record_source_use", arguments)
+                self.assertFalse(source_use.is_error)
+                self.assertEqual(retry.structured_content, source_use.structured_content)
+                feedback = source_use.structured_content["feedback"]
+                self.assertEqual(feedback["evidence"][0]["count"], event_index)
+                self.assertEqual(feedback["evidence"][0]["quorum"], 3)
+                self.assertEqual(
+                    feedback["evidence"][0]["activated"], event_index == 3
+                )
+                self.assertEqual(
+                    len(feedback["reinforced_edges"]), 1 if event_index == 3 else 0
+                )
+
+            with NeuronGraphRAG(database) as engine:
+                target_weights.append(
+                    engine.store.edge("source", "target", "supports").weight
+                )
+                sibling_weights.append(
+                    engine.store.edge("source", "sibling", "supports").weight
+                )
+                self.assertEqual(
+                    engine.store.edge(
+                        "other-source", "other-target", "isolated"
+                    ).weight,
+                    0.8,
+                )
+
+        self.assertEqual(target_weights[:2], [0.7, 0.7])
+        self.assertEqual(sibling_weights[:2], [0.6, 0.6])
+        self.assertGreater(target_weights[2], 0.7)
+        self.assertLess(sibling_weights[2], 0.6)
+        self.assertAlmostEqual(
+            target_weights[2] - 0.7,
+            0.6 - sibling_weights[2],
+        )
+
+    def test_invalid_cli_feedback_settings_do_not_create_database(self) -> None:
+        invalid_values = (
+            ("--relation-feedback-evidence-quorum", "0"),
+            ("--relation-feedback-evidence-quorum", "1.5"),
+            ("--sibling-feedback-normalization", "-0.1"),
+            ("--sibling-feedback-normalization", "1.1"),
+            ("--sibling-feedback-normalization", "nan"),
+        )
+        for index, (option, value) in enumerate(invalid_values):
+            with self.subTest(option=option, value=value):
+                database = Path(self.temporary.name) / f"invalid-{index}.sqlite"
+                result = subprocess.run(
+                    [
+                        sys.executable,
+                        "-m",
+                        "neuron_graph_rag_mcp",
+                        "--database",
+                        str(database),
+                        option,
+                        value,
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=10,
+                    check=False,
+                )
+                self.assertEqual(result.returncode, 2)
+                self.assertIn(option, result.stderr)
+                self.assertFalse(database.exists())
+                self.assertFalse(Path(f"{database}-wal").exists())
+                self.assertFalse(Path(f"{database}-shm").exists())
 
 
 if __name__ == "__main__":

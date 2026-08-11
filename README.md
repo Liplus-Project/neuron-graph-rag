@@ -210,6 +210,17 @@ pip install -e '.[mcp]'
 neuron-graph-rag-mcp --database /absolute/path/to/knowledge.db
 ```
 
+To opt one local stdio server into the evaluated stabilization settings, pass both feedback options explicitly:
+
+```bash
+neuron-graph-rag-mcp \
+  --database /absolute/path/to/knowledge.db \
+  --relation-feedback-evidence-quorum 3 \
+  --sibling-feedback-normalization 1.0
+```
+
+The CLI defaults remain quorum `1` and sibling normalization `0.0`. Invalid values are rejected before the database is opened. With positive sibling normalization, the MCP search tool returns the relation channel so feedback has the provenance required for local normalization; the default `0.0` path remains the existing hybrid search. The `3` / `1.0` command configures only that server process; it does not change library defaults, legacy engine/storage contracts, or establish production adoption.
+
 一般的な MCP client では次のように登録します。
 
 ```json
@@ -217,7 +228,11 @@ neuron-graph-rag-mcp --database /absolute/path/to/knowledge.db
   "mcpServers": {
     "neuron-graph-rag": {
       "command": "neuron-graph-rag-mcp",
-      "args": ["--database", "/absolute/path/to/knowledge.db"]
+      "args": [
+        "--database", "/absolute/path/to/knowledge.db",
+        "--relation-feedback-evidence-quorum", "3",
+        "--sibling-feedback-normalization", "1.0"
+      ]
     }
   }
 }

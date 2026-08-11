@@ -12,6 +12,23 @@
 
 `src/neuron_graph_rag_mcp/` の optional adapter がこの契約を local stdio transport で実装する。`pip install -e '.[mcp]'` で追加依存を導入し、`neuron-graph-rag-mcp --database <path>` で起動する。NGR core は引き続き Python 標準ライブラリだけで動作する。
 
+### Local stabilization opt-in
+
+The stdio CLI accepts two process-local feedback settings:
+
+```bash
+neuron-graph-rag-mcp \
+  --database /absolute/path/to/knowledge.db \
+  --relation-feedback-evidence-quorum 3 \
+  --sibling-feedback-normalization 1.0
+```
+
+`--relation-feedback-evidence-quorum` accepts positive integers and defaults to `1`. `--sibling-feedback-normalization` accepts finite values from `0.0` through `1.0` and defaults to `0.0`. The CLI validates both values before opening the SQLite database, then constructs the explicit `neuron_graph_rag.evidence_feedback.EngineConfig` used by that server process.
+
+When sibling normalization is positive, the MCP `search` tool uses `search_channels(...).relation` and returns that relation trace through the existing MCP search result schema. This preserves the relation provenance required by candidate feedback normalization. At the default normalization `0.0`, the tool continues to use the existing hybrid `search()` path.
+
+Omitting both options preserves the existing immediate-reinforcement and no-sibling-normalization behavior. The `3` / `1.0` combination is a reversible local opt-in supported by the frozen controlled evaluation; it is not an external-corpus generalization, a production-quality claim, or a project-wide default adoption. Library callers and legacy engine/storage identities remain unchanged. The normative process-local requirements are recorded in [MCP Feedback Stabilization Settings](mcp-feedback-stabilization-settings.md).
+
 ## 2. Protocol envelope
 
 tool 名は `search`、`record_source_use`、`record_outcome` とする。すべての input と成功 output は JSON Schema で宣言し、未知 field を受け付けない。

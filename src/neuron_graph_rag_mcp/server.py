@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import math
 import re
 import sqlite3
 from pathlib import Path
@@ -310,13 +311,19 @@ class FeedbackMCPAdapter:
         if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 100:
             raise ValueError("limit must be an integer from 1 through 100")
         try:
-            trace = self.engine.search(query, limit=limit)
+            if self.engine.config.sibling_feedback_normalization > 0.0:
+                trace = self.engine.search_channels(query, limit=limit).relation
+            else:
+                trace = self.engine.search(query, limit=limit)
         except ValueError as error:
             if str(error) == "Cannot search an empty corpus":
                 raise FeedbackContractError("empty_corpus", "local NGR corpus is empty") from error
             raise
         hits = []
         for rank, hit in enumerate(trace.hits, start=1):
+            final_score = (
+                hit.channel_score if hasattr(hit, "channel_score") else hit.final_score
+            )
             hits.append(
                 {
                     "node_id": hit.node.node_id,
@@ -330,7 +337,7 @@ class FeedbackMCPAdapter:
                         "dense": hit.dense_score,
                         "entry": hit.entry_score,
                         "graph_activation": hit.graph_activation,
-                        "final": hit.final_score,
+                        "final": final_score,
                     },
                     "paths": [
                         {
@@ -571,8 +578,10 @@ def create_server(
     return server, adapter
 
 
-async def _run(database: str | Path) -> None:
-    server, adapter = create_server(database)
+async def _run(
+    database: str | Path, *, config: EngineConfig | None = None
+) -> None:
+    server, adapter = create_server(database, config=config)
     try:
         async with stdio_server() as (read_stream, write_stream):
             await server.run(
@@ -592,8 +601,51 @@ async def _run(database: str | Path) -> None:
         adapter.close()
 
 
-def main() -> None:
+def _positive_integer(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("must be a positive integer") from error
+    if parsed < 1:
+        raise argparse.ArgumentTypeError("must be a positive integer")
+    return parsed
+
+
+def _unit_interval(value: str) -> float:
+    try:
+        parsed = float(value)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("must be a number from 0.0 through 1.0") from error
+    if not math.isfinite(parsed) or not 0.0 <= parsed <= 1.0:
+        raise argparse.ArgumentTypeError("must be a number from 0.0 through 1.0")
+    return parsed
+
+
+def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run the local Neuron Graph RAG MCP server")
     parser.add_argument("--database", required=True, help="Path to the local SQLite database")
+    parser.add_argument(
+        "--relation-feedback-evidence-quorum",
+        type=_positive_integer,
+        default=1,
+        help="Independent relation feedback items required before reinforcement (default: 1)",
+    )
+    parser.add_argument(
+        "--sibling-feedback-normalization",
+        type=_unit_interval,
+        default=0.0,
+        help="Same-source sibling normalization ratio from 0.0 through 1.0 (default: 0.0)",
+    )
+    return parser
+
+
+def main() -> None:
+    parser = _build_parser()
     arguments = parser.parse_args()
-    asyncio.run(_run(arguments.database))
+    config = EngineConfig(
+        relation_feedback_evidence_quorum=(
+            arguments.relation_feedback_evidence_quorum
+        ),
+        sibling_feedback_normalization=arguments.sibling_feedback_normalization,
+    )
+    asyncio.run(_run(arguments.database, config=config))
