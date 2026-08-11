@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "protocol": "sibling-normalization-controlled-v1",
+  "evaluated_source": {
+    "commit": "a99859f23c3dbc0e75469ad10f7b415ec73e0336",
+    "path": "src/neuron_graph_rag/engine.py",
+    "sha256": "68c5178f52571906b7323507e7e2f786bd7793e43f83fa492b8d9869108f7181"
+  },
+  "paths": {
+    "fixture": "tests/fixtures/sibling_normalization_controlled_v1.fixture.json",
+    "gold": "tests/fixtures/sibling_normalization_controlled_v1.gold.json",
+    "schedule": "tests/fixtures/sibling_normalization_controlled_v1.schedule.json",
+    "gate": "tests/fixtures/sibling_normalization_controlled_v1.gate.json"
+  },
+  "registered_artifacts": {
+    "docs/requirements.md": "e0628a979d6b741186829da2db718ce6bc46dae9f50ea637896986c3876cba81",
+    "docs/sibling-normalization-controlled-evaluation.md": "c8ce25062fdf5b03546977105ccad7b6c8e4e0621588c4b11a6cbdc081dc1e94",
+    "docs/sibling-relation-feedback-normalization.md": "7b33ce4dace6e976d90471b705b4554ae3ead755c78e429d8c9d91a84b105521",
+    "src/neuron_graph_rag/sibling_normalization_evaluation.py": "250bc0c0d93311d6fb44718dcaaa1792ea1aaa5e79ac2479600deaa35d3dbbba",
+    "tests/fixtures/sibling_normalization_controlled_v1.fixture.json": "18c10ed563f49021d6f7897ad726d4682bdffc9098e69233a5b0bf8bf06457f7",
+    "tests/fixtures/sibling_normalization_controlled_v1.gate.json": "9db04353a7e5e3602bc4237521e93012669e2187ff35be2e84d27bbebbca26b9",
+    "tests/fixtures/sibling_normalization_controlled_v1.gold.json": "8697f8290cb81a2c6882cb3612529e51251bbb7586708a14fbebb5a39d51b141",
+    "tests/fixtures/sibling_normalization_controlled_v1.schedule.json": "9a5fbdad04f1373fd1b00972d341b8a6add24e732830587fc1f65491cebb932f",
+    "tests/test_sibling_normalization_evaluation.py": "11bb79644b5f67806ea89383906595cb2af98f23648bd0800db2298b60754fc6",
+    "tools/run_sibling_normalization_evaluation.py": "8e278f757354d2e0a8a850d49ecc2cf8a7763097d093be6764c531a6448732f4"
+  },
+  "exclusive_outputs": {
+    "development": "tests/fixtures/sibling_normalization_controlled_v1.development.observed.json",
+    "holdout": "tests/fixtures/sibling_normalization_controlled_v1.holdout.observed.json"
+  },
+  "result_free_state": {
+    "development_output_absent": true,
+    "holdout_output_absent": true
+  },
+  "claim_boundary": "Repository-native controlled corpus only; no external D1 generalization, default change, or production adoption claim."
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "protocol": "sibling-normalization-controlled-v1",
+  "normalization": {
+    "baseline": 0.0,
+    "treatment": 1.0
+  },
+  "feedback_events": 1,
+  "checkpoints": [0, 1],
+  "limit": 6,
+  "timestamps": {
+    "primary_before": 1000.0,
+    "direct_before": 1001.0,
+    "negative_before": 1002.0,
+    "lexical_feedback": 1003.0,
+    "zero_hop_feedback": 1004.0,
+    "relation_feedback": 1005.0,
+    "primary_after": 1006.0,
+    "direct_after": 1007.0,
+    "negative_after": 1008.0
+  },
+  "registered_runs": {
+    "development": 1,
+    "holdout": 1
+  }
+}

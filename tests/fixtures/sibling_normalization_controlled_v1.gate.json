@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "protocol": "sibling-normalization-controlled-v1",
+  "gates": [
+    {"id": "relation_headroom_strict_improvement", "rule": "treatment post-feedback rank is strictly better than baseline post-feedback rank"},
+    {"id": "relation_ceiling_non_regression", "rule": "treatment ceiling rank after feedback is no worse than its initial rank"},
+    {"id": "direct_non_regression", "rule": "every direct expected source rank is non-regressing"},
+    {"id": "lexical_non_regression", "rule": "every lexical expected source rank is non-regressing and lexical or zero-hop feedback changes no edge"},
+    {"id": "directional_negative_non_regression", "rule": "the reverse-direction source remains absent and relation ordering remains unchanged"},
+    {"id": "credited_path_match", "rule": "every feedback node has the registered endpoint/type path on the persisted relation trace"},
+    {"id": "mutation_scope", "rule": "baseline changes credited edges only; treatment additionally reduces only registered uncredited same-source siblings"},
+    {"id": "failed_transaction_atomicity", "rule": "a missing later credited edge rolls back earlier edge and feedback writes"},
+    {"id": "deterministic_replay", "rule": "a second in-run construction has the same stable observation"}
+  ],
+  "holdout_rule": "open holdout exactly once only if every development gate passes",
+  "stop_rule": "save any failing development or holdout result and do not tune or rerun"
+}

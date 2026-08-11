@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "protocol": "sibling-normalization-controlled-v1",
+  "splits": {
+    "development": {
+      "split_id": "snc-v1-development",
+      "cases": [
+        {
+          "case_id": "snc-v1-dev-headroom",
+          "cluster_id": "snc-v1-dev-cluster-saffron",
+          "primary_query": "saffron",
+          "directional_negative_query": "cobalt",
+          "documents": [
+            {"node_id": "snc-dev-h-source", "text": "saffron protocol anchor"},
+            {"node_id": "snc-dev-h-target", "text": "cobalt resolution evidence"},
+            {"node_id": "snc-dev-h-sibling", "text": "umber competing note"},
+            {"node_id": "snc-dev-h-unrelated-source", "text": "silver detached source"},
+            {"node_id": "snc-dev-h-unrelated-target", "text": "gold detached target"}
+          ],
+          "edges": [
+            {"source_id": "snc-dev-h-source", "target_id": "snc-dev-h-target", "edge_type": "supports", "weight": 0.6},
+            {"source_id": "snc-dev-h-source", "target_id": "snc-dev-h-sibling", "edge_type": "supports", "weight": 0.7},
+            {"source_id": "snc-dev-h-unrelated-source", "target_id": "snc-dev-h-unrelated-target", "edge_type": "supports", "weight": 0.9}
+          ]
+        },
+        {
+          "case_id": "snc-v1-dev-ceiling",
+          "cluster_id": "snc-v1-dev-cluster-marigold",
+          "primary_query": "marigold",
+          "directional_negative_query": "indigo",
+          "documents": [
+            {"node_id": "snc-dev-c-source", "text": "marigold anchor record"},
+            {"node_id": "snc-dev-c-target", "text": "indigo resolved guidance"},
+            {"node_id": "snc-dev-c-credited-peer", "text": "violet corroborating evidence"},
+            {"node_id": "snc-dev-c-sibling", "text": "ochre alternate branch"},
+            {"node_id": "snc-dev-c-unrelated-source", "text": "pearl detached source"},
+            {"node_id": "snc-dev-c-unrelated-target", "text": "bronze detached target"}
+          ],
+          "edges": [
+            {"source_id": "snc-dev-c-source", "target_id": "snc-dev-c-target", "edge_type": "supports", "weight": 0.8},
+            {"source_id": "snc-dev-c-source", "target_id": "snc-dev-c-credited-peer", "edge_type": "supports", "weight": 0.4},
+            {"source_id": "snc-dev-c-source", "target_id": "snc-dev-c-sibling", "edge_type": "supports", "weight": 0.6},
+            {"source_id": "snc-dev-c-unrelated-source", "target_id": "snc-dev-c-unrelated-target", "edge_type": "supports", "weight": 0.75}
+          ]
+        }
+      ]
+    },
+    "holdout": {
+      "split_id": "snc-v1-holdout",
+      "cases": [
+        {
+          "case_id": "snc-v1-holdout-headroom",
+          "cluster_id": "snc-v1-holdout-cluster-quartz",
+          "primary_query": "quartz",
+          "directional_negative_query": "cerulean",
+          "documents": [
+            {"node_id": "snc-hold-h-source", "text": "quartz protocol anchor"},
+            {"node_id": "snc-hold-h-target", "text": "cerulean resolution evidence"},
+            {"node_id": "snc-hold-h-sibling", "text": "russet competing note"},
+            {"node_id": "snc-hold-h-unrelated-source", "text": "ivory detached source"},
+            {"node_id": "snc-hold-h-unrelated-target", "text": "copper detached target"}
+          ],
+          "edges": [
+            {"source_id": "snc-hold-h-source", "target_id": "snc-hold-h-target", "edge_type": "references", "weight": 0.6},
+            {"source_id": "snc-hold-h-source", "target_id": "snc-hold-h-sibling", "edge_type": "references", "weight": 0.7},
+            {"source_id": "snc-hold-h-unrelated-source", "target_id": "snc-hold-h-unrelated-target", "edge_type": "references", "weight": 0.85}
+          ]
+        },
+        {
+          "case_id": "snc-v1-holdout-ceiling",
+          "cluster_id": "snc-v1-holdout-cluster-cedar",
+          "primary_query": "cedar",
+          "directional_negative_query": "amber",
+          "documents": [
+            {"node_id": "snc-hold-c-source", "text": "cedar anchor record"},
+            {"node_id": "snc-hold-c-target", "text": "amber resolved guidance"},
+            {"node_id": "snc-hold-c-credited-peer", "text": "lilac corroborating evidence"},
+            {"node_id": "snc-hold-c-sibling", "text": "umber alternate branch"},
+            {"node_id": "snc-hold-c-unrelated-source", "text": "slate detached source"},
+            {"node_id": "snc-hold-c-unrelated-target", "text": "brass detached target"}
+          ],
+          "edges": [
+            {"source_id": "snc-hold-c-source", "target_id": "snc-hold-c-target", "edge_type": "references", "weight": 0.8},
+            {"source_id": "snc-hold-c-source", "target_id": "snc-hold-c-credited-peer", "edge_type": "references", "weight": 0.4},
+            {"source_id": "snc-hold-c-source", "target_id": "snc-hold-c-sibling", "edge_type": "references", "weight": 0.6},
+            {"source_id": "snc-hold-c-unrelated-source", "target_id": "snc-hold-c-unrelated-target", "edge_type": "references", "weight": 0.8}
+          ]
+        }
+      ]
+    }
+  },
+  "atomicity_probe": {
+    "case_id": "snc-v1-atomicity-probe",
+    "cluster_id": "snc-v1-probe-cluster",
+    "primary_query": "atomanchor",
+    "documents": [
+      {"node_id": "snc-probe-source", "text": "atomanchor transaction source"},
+      {"node_id": "snc-probe-first", "text": "atoma first credited target"},
+      {"node_id": "snc-probe-removed", "text": "atomb removed credited target"}
+    ],
+    "edges": [
+      {"source_id": "snc-probe-source", "target_id": "snc-probe-first", "edge_type": "links", "weight": 0.6},
+      {"source_id": "snc-probe-source", "target_id": "snc-probe-removed", "edge_type": "links", "weight": 0.5}
+    ],
+    "used_node_ids": ["snc-probe-first", "snc-probe-removed"],
+    "removed_edge_before_feedback": {
+      "source_id": "snc-probe-source",
+      "target_id": "snc-probe-removed",
+      "edge_type": "links"
+    },
+    "expected_error": "KeyError"
+  }
+}
