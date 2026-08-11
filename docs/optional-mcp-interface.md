@@ -2,16 +2,15 @@
 
 ## 1. Status and purpose
 
-この文書は、MCP 対応 AI が Neuron Graph RAG（NGR）を検索し、実際に利用した source と後から判明した結果を返すための、実装前のインターフェース契約を定義する。
+この文書は、MCP 対応 AI が Neuron Graph RAG（NGR）を検索し、実際に利用した source と後から判明した結果を返すための、実装済み local stdio interface の契約を定義する。
 
 この契約は次を意味しない。
 
-- MCP server が実装済みである
 - MCP SDK が NGR core の必須依存である
 - 認証方式、transport、公開 endpoint、remote deployment が決定済みである
 - delayed outcome が現在の edge weight を自動的に減算または巻き戻す
 
-将来の adapter は、同一 repository 内の任意 package としてこの契約を実装する。NGR core は引き続き Python 標準ライブラリだけで動作する。
+`src/neuron_graph_rag_mcp/` の optional adapter がこの契約を local stdio transport で実装する。`pip install -e '.[mcp]'` で追加依存を導入し、`neuron-graph-rag-mcp --database <path>` で起動する。NGR core は引き続き Python 標準ライブラリだけで動作する。
 
 ## 2. Protocol envelope
 
@@ -303,12 +302,13 @@ event は array 順に評価する。同一 call の途中で一件でも不正�
 
 ### 6.5 Core mapping
 
-- `selected` と `validated` は adapter-owned stage ledger に保存し、core method を呼ばない。
-- 一つの call で新しく `used` へ到達した node 群だけを `NeuronGraphRAG.record_success(trace_id, newly_used_node_ids)` へ一度渡す。
+- adapter は transport-neutral な `FeedbackLedger.record_source_use` を呼び、stage ledger へ直接 SQL を発行しない。
+- 一つの call で新しく `used` へ到達した node 群だけを `NeuronGraphRAG.record_success(trace_id, newly_used_node_ids)` へ一度渡す。`record_success` は credited-path 選択、contribution clamp、edge increment、channel、sibling normalization の唯一の計画元とする。
+- source-use の outer transaction は `record_success` の inner commit を遅延させ、stage 遷移、idempotency receipt、reinforcement をまとめて commit または rollback する。
 - `FeedbackReceipt` の `feedback_id`、`used_node_ids`、`reinforced_edges` を `feedback` に写す。
-- 再送、同一 stage、すでに `used` の node は `record_success` を再度呼ばない。
+- 再送、同一 stage、すでに `used` の node は reinforcement 処理を再度適用しない。
 
-現在の core は取得済みでない node を `record_success` で拒否する。adapter はそれより前に trace と node の対応を検証し、caller が修正可能な error code を返す。
+core domain API は取得済みでない node を stage 更新前に拒否し、adapter は caller が修正可能な error code へ写す。
 
 ## 7. Tool: `record_outcome`
 
@@ -382,7 +382,7 @@ Record a delayed outcome for sources that were already marked used, such as conf
 
 ### 7.6 Core mapping
 
-現在の NGR public API に delayed outcome method はない。v1 adapter は outcome ledger にだけ保存し、`record_success`、edge update、activation update を呼ばない。
+transport-neutral な `FeedbackLedger.record_outcome` は outcome ledger にだけ保存し、`record_success`、edge update、activation update を呼ばない。
 
 ## 8. Failure contract
 
@@ -446,9 +446,9 @@ MCP であることだけを理由に別 repository へ分離しない。次の�
 
 分離する場合も、この文書の tool semantics と version literal を compatibility surface とし、core への依存方向を逆転させない。
 
-## 11. Implementation acceptance for a follow-up issue
+## 11. Implementation acceptance
 
-将来の実装 issue は最低限、次を検証する。
+実装は最低限、次を検証する。
 
 - core-only install に MCP dependency が混入しない
 - three tools の input/output schema と error code が契約に一致する

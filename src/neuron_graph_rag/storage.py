@@ -1,13 +1,14 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import sqlite3
-from collections.abc import Iterable, Iterator
+from collections.abc import Callable, Iterable, Iterator
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
-from .models import DocumentNode, TypedEdge
+from .models import DocumentNode, FeedbackContractError, FeedbackReceipt, TypedEdge
 
 
 class SQLiteStore:
@@ -16,6 +17,7 @@ class SQLiteStore:
         self.connection = sqlite3.connect(self.path)
         self.connection.row_factory = sqlite3.Row
         self.connection.execute("PRAGMA foreign_keys = ON")
+        self._transaction_depth = 0
         self._create_schema()
 
     def close(self) -> None:
@@ -29,12 +31,18 @@ class SQLiteStore:
 
     @contextmanager
     def transaction(self) -> Iterator[sqlite3.Connection]:
+        outermost = self._transaction_depth == 0
+        self._transaction_depth += 1
         try:
             yield self.connection
-            self.connection.commit()
+            if outermost:
+                self.connection.commit()
         except Exception:
-            self.connection.rollback()
+            if outermost:
+                self.connection.rollback()
             raise
+        finally:
+            self._transaction_depth -= 1
 
     def _create_schema(self) -> None:
         self.connection.executescript(
@@ -96,6 +104,36 @@ class SQLiteStore:
                 feedback_id TEXT NOT NULL REFERENCES success_feedback(feedback_id) ON DELETE CASCADE,
                 node_id TEXT NOT NULL REFERENCES nodes(node_id) ON DELETE CASCADE,
                 PRIMARY KEY (feedback_id, node_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS source_use_state (
+                trace_id TEXT NOT NULL REFERENCES retrievals(trace_id) ON DELETE CASCADE,
+                node_id TEXT NOT NULL REFERENCES nodes(node_id) ON DELETE CASCADE,
+                stage TEXT NOT NULL CHECK(stage IN ('selected', 'validated', 'used')),
+                updated_at REAL NOT NULL,
+                PRIMARY KEY (trace_id, node_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS feedback_requests (
+                idempotency_key TEXT PRIMARY KEY,
+                operation TEXT NOT NULL,
+                payload_hash TEXT NOT NULL,
+                result_json TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS delayed_outcomes (
+                outcome_id TEXT PRIMARY KEY,
+                trace_id TEXT NOT NULL REFERENCES retrievals(trace_id) ON DELETE CASCADE,
+                outcome TEXT NOT NULL CHECK(outcome IN ('confirmed', 'corrected', 'rolled_back', 'superseded')),
+                summary TEXT NOT NULL,
+                external_ref TEXT,
+                recorded_at REAL NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS delayed_outcome_nodes (
+                outcome_id TEXT NOT NULL REFERENCES delayed_outcomes(outcome_id) ON DELETE CASCADE,
+                node_id TEXT NOT NULL REFERENCES nodes(node_id) ON DELETE CASCADE,
+                PRIMARY KEY (outcome_id, node_id)
             );
             """
         )
@@ -295,6 +333,25 @@ class SQLiteStore:
             raise KeyError(f"Node {node_id} was not returned by trace {trace_id}")
         return list(json.loads(row["paths_json"]))
 
+    def source_use_stages(self, trace_id: str) -> dict[str, str]:
+        if self.connection.execute(
+            "SELECT 1 FROM retrievals WHERE trace_id = ?", (trace_id,)
+        ).fetchone() is None:
+            raise FeedbackContractError("unknown_trace", "trace handle does not exist")
+        return {
+            str(row["node_id"]): str(row["stage"])
+            for row in self.connection.execute(
+                "SELECT node_id, stage FROM source_use_state WHERE trace_id = ?",
+                (trace_id,),
+            )
+        }
+
+    def count_outcomes(self) -> int:
+        row = self.connection.execute(
+            "SELECT COUNT(*) AS count FROM delayed_outcomes"
+        ).fetchone()
+        return int(row["count"])
+
     def apply_success_feedback(
         self,
         feedback_id: str,
@@ -406,6 +463,209 @@ class SQLiteStore:
                             (sibling_source, target_id, edge_type, old_weight, new_weight)
                         )
         return reinforced, normalized
+
+    def record_source_use(
+        self,
+        *,
+        idempotency_key: str,
+        payload_json: str,
+        receipt_id: str,
+        trace_id: str,
+        created_at: float,
+        events: tuple[tuple[str, str], ...],
+        apply_feedback: Callable[[tuple[str, ...]], FeedbackReceipt],
+    ) -> dict[str, Any]:
+        payload_hash = hashlib.sha256(payload_json.encode("utf-8")).hexdigest()
+        with self.transaction() as connection:
+            replay = self._idempotent_replay(
+                connection, idempotency_key, "record_source_use", payload_hash
+            )
+            if replay is not None:
+                return replay
+            self._require_trace(connection, trace_id)
+            allowed = {
+                str(row["node_id"])
+                for row in connection.execute(
+                    "SELECT node_id FROM retrieval_results WHERE trace_id = ?", (trace_id,)
+                )
+            }
+            state = {
+                str(row["node_id"]): str(row["stage"])
+                for row in connection.execute(
+                    "SELECT node_id, stage FROM source_use_state WHERE trace_id = ?",
+                    (trace_id,),
+                )
+            }
+            order = {"retrieved": 0, "selected": 1, "validated": 2, "used": 3}
+            event_results: list[dict[str, Any]] = []
+            newly_used: list[str] = []
+            for node_id, stage in events:
+                if node_id not in allowed:
+                    raise FeedbackContractError(
+                        "node_not_in_trace", f"node {node_id} was not returned by this trace"
+                    )
+                current = state.get(node_id, "retrieved")
+                if order[stage] < order[current] or order[stage] > order[current] + 1:
+                    raise FeedbackContractError(
+                        "invalid_stage_transition",
+                        f"node {node_id} cannot transition from {current} to {stage}",
+                    )
+                changed = stage != current
+                if changed:
+                    state[node_id] = stage
+                    if stage == "used" and node_id not in newly_used:
+                        newly_used.append(node_id)
+                event_results.append({"node_id": node_id, "stage": stage, "changed": changed})
+
+            feedback: dict[str, Any] | None = None
+            if newly_used:
+                receipt = apply_feedback(tuple(newly_used))
+                feedback = {
+                    "feedback_id": receipt.feedback_id,
+                    "trace_id": receipt.trace_id,
+                    "used_node_ids": list(receipt.used_node_ids),
+                    "reinforced_edges": [
+                        {
+                            "source_id": edge.source_id,
+                            "target_id": edge.target_id,
+                            "edge_type": edge.edge_type,
+                            "old_weight": edge.old_weight,
+                            "new_weight": edge.new_weight,
+                        }
+                        for edge in receipt.reinforced_edges
+                    ],
+                    "channel": receipt.channel,
+                    "normalized_sibling_edges": [
+                        {
+                            "source_id": edge.source_id,
+                            "target_id": edge.target_id,
+                            "edge_type": edge.edge_type,
+                            "old_weight": edge.old_weight,
+                            "new_weight": edge.new_weight,
+                        }
+                        for edge in receipt.normalized_sibling_edges
+                    ],
+                }
+            for node_id, stage in state.items():
+                if stage != "retrieved":
+                    connection.execute(
+                        """
+                        INSERT INTO source_use_state(trace_id, node_id, stage, updated_at)
+                        VALUES (?, ?, ?, ?)
+                        ON CONFLICT(trace_id, node_id) DO UPDATE SET
+                            stage = excluded.stage, updated_at = excluded.updated_at
+                        """,
+                        (trace_id, node_id, stage, created_at),
+                    )
+            result = {
+                "receipt_id": receipt_id,
+                "trace_id": trace_id,
+                "events": event_results,
+                "newly_used_node_ids": newly_used,
+                "feedback": feedback,
+            }
+            self._save_idempotent_result(
+                connection, idempotency_key, "record_source_use", payload_hash, result
+            )
+            return result
+
+    def record_outcome(
+        self,
+        *,
+        idempotency_key: str,
+        payload_json: str,
+        outcome_id: str,
+        trace_id: str,
+        node_ids: tuple[str, ...],
+        outcome: str,
+        summary: str,
+        external_ref: str | None,
+        recorded_at: float,
+    ) -> dict[str, Any]:
+        payload_hash = hashlib.sha256(payload_json.encode("utf-8")).hexdigest()
+        with self.transaction() as connection:
+            replay = self._idempotent_replay(
+                connection, idempotency_key, "record_outcome", payload_hash
+            )
+            if replay is not None:
+                return replay
+            self._require_trace(connection, trace_id)
+            for node_id in node_ids:
+                row = connection.execute(
+                    """
+                    SELECT stage FROM source_use_state
+                    WHERE trace_id = ? AND node_id = ?
+                    """,
+                    (trace_id, node_id),
+                ).fetchone()
+                if row is None or str(row["stage"]) != "used":
+                    raise FeedbackContractError(
+                        "source_not_used", f"node {node_id} is not marked used for this trace"
+                    )
+            connection.execute(
+                """
+                INSERT INTO delayed_outcomes(
+                    outcome_id, trace_id, outcome, summary, external_ref, recorded_at
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (outcome_id, trace_id, outcome, summary, external_ref, recorded_at),
+            )
+            for node_id in node_ids:
+                connection.execute(
+                    "INSERT INTO delayed_outcome_nodes(outcome_id, node_id) VALUES (?, ?)",
+                    (outcome_id, node_id),
+                )
+            result = {
+                "outcome_id": outcome_id,
+                "trace_id": trace_id,
+                "node_ids": list(node_ids),
+                "outcome": outcome,
+                "recorded_at": recorded_at,
+                "reinforcement_applied": False,
+            }
+            self._save_idempotent_result(
+                connection, idempotency_key, "record_outcome", payload_hash, result
+            )
+            return result
+
+    @staticmethod
+    def _require_trace(connection: sqlite3.Connection, trace_id: str) -> None:
+        if connection.execute(
+            "SELECT 1 FROM retrievals WHERE trace_id = ?", (trace_id,)
+        ).fetchone() is None:
+            raise FeedbackContractError("unknown_trace", "trace handle does not exist")
+
+    @staticmethod
+    def _idempotent_replay(
+        connection: sqlite3.Connection,
+        key: str,
+        operation: str,
+        payload_hash: str,
+    ) -> dict[str, Any] | None:
+        row = connection.execute(
+            "SELECT operation, payload_hash, result_json FROM feedback_requests WHERE idempotency_key = ?",
+            (key,),
+        ).fetchone()
+        if row is None:
+            return None
+        if str(row["operation"]) != operation or str(row["payload_hash"]) != payload_hash:
+            raise FeedbackContractError(
+                "idempotency_conflict", "idempotency key was already used with a different request"
+            )
+        return dict(json.loads(row["result_json"]))
+
+    @staticmethod
+    def _save_idempotent_result(
+        connection: sqlite3.Connection,
+        key: str,
+        operation: str,
+        payload_hash: str,
+        result: dict[str, Any],
+    ) -> None:
+        connection.execute(
+            "INSERT INTO feedback_requests(idempotency_key, operation, payload_hash, result_json) VALUES (?, ?, ?, ?)",
+            (key, operation, payload_hash, json.dumps(result, sort_keys=True, ensure_ascii=False)),
+        )
 
     def count_retrievals(self) -> int:
         row = self.connection.execute("SELECT COUNT(*) AS count FROM retrievals").fetchone()

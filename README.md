@@ -203,9 +203,29 @@ rag = NeuronGraphRAG("knowledge.db", dense_encoder=my_encoder)
 
 ## Optional MCP interface
 
-MCP 対応 AI との接続は、コアへ MCP SDK を追加せず、同一 repository 内の任意 adapter として設計します。`search`、source-use の `retrieved / selected / validated / used`、`used` だけの即時 reinforcement、`corrected / rolled_back` などの delayed outcome を含む実装前の契約は [docs/optional-mcp-interface.md](docs/optional-mcp-interface.md) にあります。
+local SQLite database を MCP 対応 AI へ stdio で接続する optional adapter を利用できます。MCP SDK は core の必須依存に含まれません。
 
-契約には、接続した AI が `tools/list` だけから feedback 行動を判断できる model-facing description literal と、trace retention / expiry の表示規則も含みます。MCP server、認証、transport、remote deployment はまだ実装・確定していません。
+```bash
+pip install -e '.[mcp]'
+neuron-graph-rag-mcp --database /absolute/path/to/knowledge.db
+```
+
+一般的な MCP client では次のように登録します。
+
+```json
+{
+  "mcpServers": {
+    "neuron-graph-rag": {
+      "command": "neuron-graph-rag-mcp",
+      "args": ["--database", "/absolute/path/to/knowledge.db"]
+    }
+  }
+}
+```
+
+利用順序は `search` で得た `trace_id` と候補を保持し、実際の判断過程に合わせて `selected` → `validated` → `used` を `record_source_use` へ送ります。新規 `used` だけが即時 reinforcement を一度発火します。後から結果が判明した場合は `record_outcome` で `confirmed`、`corrected`、`rolled_back`、`superseded` のいずれかを監査記録へ追加しますが、v1 の delayed outcome は weight を変更しません。
+
+三つの tool の schema、model-facing description、trace retention、failure code の正本は [docs/optional-mcp-interface.md](docs/optional-mcp-interface.md) です。実装範囲は local stdio に限り、HTTP、認証、認可、remote deployment は含みません。
 
 ## Independent retrieval channels
 

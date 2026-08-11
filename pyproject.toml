@@ -12,8 +12,12 @@ license = "Apache-2.0"
 authors = [{ name = "Liplus Project" }]
 dependencies = []
 
+[project.optional-dependencies]
+mcp = ["mcp>=2,<3"]
+
 [project.scripts]
 neuron-graph-rag = "neuron_graph_rag.cli:main"
+neuron-graph-rag-mcp = "neuron_graph_rag_mcp.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
