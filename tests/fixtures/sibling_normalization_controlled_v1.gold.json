@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "protocol": "sibling-normalization-controlled-v1",
+  "splits": {
+    "development": {
+      "cases": [
+        {
+          "case_id": "snc-v1-dev-headroom",
+          "role": "headroom",
+          "expected_source_node": "snc-dev-h-source",
+          "expected_relation_node": "snc-dev-h-target",
+          "used_node_ids": ["snc-dev-h-target"],
+          "paths": {
+            "snc-dev-h-target": [
+              {"source_id": "snc-dev-h-source", "target_id": "snc-dev-h-target", "edge_type": "supports"}
+            ]
+          },
+          "credited_edges": ["snc-dev-h-source|snc-dev-h-target|supports"],
+          "uncredited_sibling_edges": ["snc-dev-h-source|snc-dev-h-sibling|supports"],
+          "unrelated_edges": ["snc-dev-h-unrelated-source|snc-dev-h-unrelated-target|supports"]
+        },
+        {
+          "case_id": "snc-v1-dev-ceiling",
+          "role": "ceiling",
+          "expected_source_node": "snc-dev-c-source",
+          "expected_relation_node": "snc-dev-c-target",
+          "used_node_ids": ["snc-dev-c-target", "snc-dev-c-credited-peer"],
+          "paths": {
+            "snc-dev-c-target": [
+              {"source_id": "snc-dev-c-source", "target_id": "snc-dev-c-target", "edge_type": "supports"}
+            ],
+            "snc-dev-c-credited-peer": [
+              {"source_id": "snc-dev-c-source", "target_id": "snc-dev-c-credited-peer", "edge_type": "supports"}
+            ]
+          },
+          "credited_edges": [
+            "snc-dev-c-source|snc-dev-c-target|supports",
+            "snc-dev-c-source|snc-dev-c-credited-peer|supports"
+          ],
+          "uncredited_sibling_edges": ["snc-dev-c-source|snc-dev-c-sibling|supports"],
+          "unrelated_edges": ["snc-dev-c-unrelated-source|snc-dev-c-unrelated-target|supports"]
+        }
+      ]
+    },
+    "holdout": {
+      "cases": [
+        {
+          "case_id": "snc-v1-holdout-headroom",
+          "role": "headroom",
+          "expected_source_node": "snc-hold-h-source",
+          "expected_relation_node": "snc-hold-h-target",
+          "used_node_ids": ["snc-hold-h-target"],
+          "paths": {
+            "snc-hold-h-target": [
+              {"source_id": "snc-hold-h-source", "target_id": "snc-hold-h-target", "edge_type": "references"}
+            ]
+          },
+          "credited_edges": ["snc-hold-h-source|snc-hold-h-target|references"],
+          "uncredited_sibling_edges": ["snc-hold-h-source|snc-hold-h-sibling|references"],
+          "unrelated_edges": ["snc-hold-h-unrelated-source|snc-hold-h-unrelated-target|references"]
+        },
+        {
+          "case_id": "snc-v1-holdout-ceiling",
+          "role": "ceiling",
+          "expected_source_node": "snc-hold-c-source",
+          "expected_relation_node": "snc-hold-c-target",
+          "used_node_ids": ["snc-hold-c-target", "snc-hold-c-credited-peer"],
+          "paths": {
+            "snc-hold-c-target": [
+              {"source_id": "snc-hold-c-source", "target_id": "snc-hold-c-target", "edge_type": "references"}
+            ],
+            "snc-hold-c-credited-peer": [
+              {"source_id": "snc-hold-c-source", "target_id": "snc-hold-c-credited-peer", "edge_type": "references"}
+            ]
+          },
+          "credited_edges": [
+            "snc-hold-c-source|snc-hold-c-target|references",
+            "snc-hold-c-source|snc-hold-c-credited-peer|references"
+          ],
+          "uncredited_sibling_edges": ["snc-hold-c-source|snc-hold-c-sibling|references"],
+          "unrelated_edges": ["snc-hold-c-unrelated-source|snc-hold-c-unrelated-target|references"]
+        }
+      ]
+    }
+  }
+}

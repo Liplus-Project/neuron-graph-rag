@@ -16,3 +16,5 @@ This candidate makes a successful relation-trace edge compete only with its uncr
 ## Validation boundary
 
 The implementation is covered by synthetic fixtures that fix all of the following: the default `0.0` behavior, an opt-in target and uncredited sibling, multiple credited edges from one source, an unrelated source, lexical and zero-hop traces, and a direct source match that remains the top direct result. It does not modify D1 fixtures or make any result claim. Before changing the default, a result-free development / holdout plan must freeze relation improvement and direct, lexical, and directional-negative non-regression gates.
+
+The repository-native controlled evaluation is defined by [Sibling normalization controlled evaluation](sibling-normalization-controlled-evaluation.md). Its result-free protocol freezes distinct development / holdout clusters, the `0.0` / `1.0` coefficient pair, actual relation-trace feedback, mutation and rollback audits, hard gates, one-time outputs, and the conditional holdout stop rule. Any observed result remains limited to that controlled corpus and does not change the default.
