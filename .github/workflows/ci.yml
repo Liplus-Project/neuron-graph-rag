@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   core:
-    name: Core
+    name: CI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
