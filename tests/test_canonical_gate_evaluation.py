@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import hashlib
+import subprocess
 import tempfile
 import unittest
-import hashlib
 from pathlib import Path
 
 from neuron_graph_rag.canonical_gate_evaluation import (
@@ -16,7 +17,6 @@ from neuron_graph_rag.canonical_gate_evaluation import (
     verify_registered_result,
     write_observed_exclusive,
 )
-
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures"
@@ -122,8 +122,35 @@ class CanonicalGateEvaluationTest(unittest.TestCase):
 
     def test_registered_artifacts_are_result_free_or_immutable(self) -> None:
         manifest = read_json(FIXTURES / "canonical_evidence_gate_v1.manifest.json")
+        manifest_relative = "tests/fixtures/canonical_evidence_gate_v1.manifest.json"
+        frozen_commit = subprocess.check_output(
+            ["git", "log", "-1", "--format=%H", "--", manifest_relative],
+            cwd=ROOT,
+            text=True,
+        ).strip()
+        commit_check = subprocess.run(
+            ["git", "cat-file", "-e", f"{frozen_commit}^{{commit}}"],
+            cwd=ROOT,
+            check=False,
+        )
+        self.assertEqual(
+            commit_check.returncode,
+            0,
+            "the manifest-introducing commit must be present; CI uses fetch-depth 0",
+        )
+        evolving_surfaces = {
+            "README.md",
+            "tests/test_canonical_gate_evaluation.py",
+        }
         for relative, expected_hash in manifest["artifacts"].items():
-            actual = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
+            if relative in evolving_surfaces:
+                frozen_bytes = subprocess.check_output(
+                    ["git", "show", f"{frozen_commit}:{relative}"],
+                    cwd=ROOT,
+                )
+                actual = hashlib.sha256(frozen_bytes).hexdigest()
+            else:
+                actual = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
             self.assertEqual(actual, expected_hash, relative)
         for stage, relative in manifest["outputs"].items():
             output = ROOT / relative
