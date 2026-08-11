@@ -1,0 +1,15 @@
+{
+  "protocol_id": "canon77-canonical-gates-v1",
+  "gates": [
+    {"gate_id": "trace-credit"},
+    {"gate_id": "canonical-roundtrip"},
+    {"gate_id": "quorum-boundary"},
+    {"gate_id": "headroom-response"},
+    {"gate_id": "ceiling-safety"},
+    {"gate_id": "control-invariance"},
+    {"gate_id": "ablation-locality"},
+    {"gate_id": "atomic-rollback"},
+    {"gate_id": "artifact-integrity"},
+    {"gate_id": "deterministic-recompute"}
+  ]
+}

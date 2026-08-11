@@ -1,0 +1,117 @@
+{
+  "protocol_id": "canon77-canonical-gates-v1",
+  "cases": [
+    {
+      "case_id": "canon77-dev-meridian-headroom",
+      "stage": "development",
+      "stratum": "headroom",
+      "query": "meridianquartz",
+      "target_node_id": "canon77-dm-target",
+      "direct_node_id": "canon77-dm-z-direct",
+      "reverse_node_id": "canon77-dm-y-reverse",
+      "nodes": [
+        {"node_id": "canon77-dm-a-source", "text": "meridianquartz relation seed", "source_url": "https://example.invalid/ngr/canon77/development/meridian#source"},
+        {"node_id": "canon77-dm-target", "text": "fixed credited meridian conclusion", "source_url": "https://example.invalid/ngr/canon77/development/meridian#target"},
+        {"node_id": "canon77-dm-sibling", "text": "local alternate meridian conclusion", "source_url": "https://example.invalid/ngr/canon77/development/meridian#sibling"},
+        {"node_id": "canon77-dm-z-direct", "text": "meridianquartz direct lexical control", "source_url": "https://example.invalid/ngr/canon77/development/meridian#direct"},
+        {"node_id": "canon77-dm-y-reverse", "text": "reverse directional control", "source_url": "https://example.invalid/ngr/canon77/development/meridian#reverse"},
+        {"node_id": "canon77-dm-u-unrelated", "text": "isolated unrelated origin", "source_url": "https://example.invalid/ngr/canon77/development/meridian#unrelated"},
+        {"node_id": "canon77-dm-v-unrelated-target", "text": "isolated unrelated destination", "source_url": "https://example.invalid/ngr/canon77/development/meridian#unrelated-target"}
+      ],
+      "edges": [
+        {"source_id": "canon77-dm-a-source", "target_id": "canon77-dm-target", "edge_type": "canon77_supports", "weight": 1.49},
+        {"source_id": "canon77-dm-a-source", "target_id": "canon77-dm-sibling", "edge_type": "canon77_supports", "weight": 1.55},
+        {"source_id": "canon77-dm-u-unrelated", "target_id": "canon77-dm-v-unrelated-target", "edge_type": "canon77_isolated", "weight": 0.73},
+        {"source_id": "canon77-dm-y-reverse", "target_id": "canon77-dm-a-source", "edge_type": "canon77_reverse", "weight": 0.67}
+      ],
+      "credited_edge": {"source_id": "canon77-dm-a-source", "target_id": "canon77-dm-target", "edge_type": "canon77_supports"},
+      "sibling_edge": {"source_id": "canon77-dm-a-source", "target_id": "canon77-dm-sibling", "edge_type": "canon77_supports"},
+      "unrelated_edge": {"source_id": "canon77-dm-u-unrelated", "target_id": "canon77-dm-v-unrelated-target", "edge_type": "canon77_isolated"},
+      "reverse_edge": {"source_id": "canon77-dm-y-reverse", "target_id": "canon77-dm-a-source", "edge_type": "canon77_reverse"}
+    },
+    {
+      "case_id": "canon77-dev-tundra-ceiling",
+      "stage": "development",
+      "stratum": "ceiling",
+      "query": "tundracipher",
+      "target_node_id": "canon77-dt-target",
+      "direct_node_id": "canon77-dt-z-direct",
+      "reverse_node_id": "canon77-dt-y-reverse",
+      "nodes": [
+        {"node_id": "canon77-dt-a-source", "text": "tundracipher relation seed", "source_url": "https://example.invalid/ngr/canon77/development/tundra#source"},
+        {"node_id": "canon77-dt-target", "text": "fixed credited tundra conclusion", "source_url": "https://example.invalid/ngr/canon77/development/tundra#target"},
+        {"node_id": "canon77-dt-sibling", "text": "local alternate tundra conclusion", "source_url": "https://example.invalid/ngr/canon77/development/tundra#sibling"},
+        {"node_id": "canon77-dt-z-direct", "text": "tundracipher direct lexical control", "source_url": "https://example.invalid/ngr/canon77/development/tundra#direct"},
+        {"node_id": "canon77-dt-y-reverse", "text": "reverse directional control", "source_url": "https://example.invalid/ngr/canon77/development/tundra#reverse"},
+        {"node_id": "canon77-dt-u-unrelated", "text": "isolated unrelated origin", "source_url": "https://example.invalid/ngr/canon77/development/tundra#unrelated"},
+        {"node_id": "canon77-dt-v-unrelated-target", "text": "isolated unrelated destination", "source_url": "https://example.invalid/ngr/canon77/development/tundra#unrelated-target"}
+      ],
+      "edges": [
+        {"source_id": "canon77-dt-a-source", "target_id": "canon77-dt-target", "edge_type": "canon77_supports", "weight": 1.8},
+        {"source_id": "canon77-dt-a-source", "target_id": "canon77-dt-sibling", "edge_type": "canon77_supports", "weight": 1.2},
+        {"source_id": "canon77-dt-u-unrelated", "target_id": "canon77-dt-v-unrelated-target", "edge_type": "canon77_isolated", "weight": 0.72},
+        {"source_id": "canon77-dt-y-reverse", "target_id": "canon77-dt-a-source", "edge_type": "canon77_reverse", "weight": 0.66}
+      ],
+      "credited_edge": {"source_id": "canon77-dt-a-source", "target_id": "canon77-dt-target", "edge_type": "canon77_supports"},
+      "sibling_edge": {"source_id": "canon77-dt-a-source", "target_id": "canon77-dt-sibling", "edge_type": "canon77_supports"},
+      "unrelated_edge": {"source_id": "canon77-dt-u-unrelated", "target_id": "canon77-dt-v-unrelated-target", "edge_type": "canon77_isolated"},
+      "reverse_edge": {"source_id": "canon77-dt-y-reverse", "target_id": "canon77-dt-a-source", "edge_type": "canon77_reverse"}
+    },
+    {
+      "case_id": "canon77-hold-velvet-headroom",
+      "stage": "holdout",
+      "stratum": "headroom",
+      "query": "velvetcomet",
+      "target_node_id": "canon77-hv-target",
+      "direct_node_id": "canon77-hv-z-direct",
+      "reverse_node_id": "canon77-hv-y-reverse",
+      "nodes": [
+        {"node_id": "canon77-hv-a-source", "text": "velvetcomet relation seed", "source_url": "https://example.invalid/ngr/canon77/holdout/velvet#source"},
+        {"node_id": "canon77-hv-target", "text": "fixed credited velvet conclusion", "source_url": "https://example.invalid/ngr/canon77/holdout/velvet#target"},
+        {"node_id": "canon77-hv-sibling", "text": "local alternate velvet conclusion", "source_url": "https://example.invalid/ngr/canon77/holdout/velvet#sibling"},
+        {"node_id": "canon77-hv-z-direct", "text": "velvetcomet direct lexical control", "source_url": "https://example.invalid/ngr/canon77/holdout/velvet#direct"},
+        {"node_id": "canon77-hv-y-reverse", "text": "reverse directional control", "source_url": "https://example.invalid/ngr/canon77/holdout/velvet#reverse"},
+        {"node_id": "canon77-hv-u-unrelated", "text": "isolated unrelated origin", "source_url": "https://example.invalid/ngr/canon77/holdout/velvet#unrelated"},
+        {"node_id": "canon77-hv-v-unrelated-target", "text": "isolated unrelated destination", "source_url": "https://example.invalid/ngr/canon77/holdout/velvet#unrelated-target"}
+      ],
+      "edges": [
+        {"source_id": "canon77-hv-a-source", "target_id": "canon77-hv-target", "edge_type": "canon77_supports", "weight": 1.48},
+        {"source_id": "canon77-hv-a-source", "target_id": "canon77-hv-sibling", "edge_type": "canon77_supports", "weight": 1.54},
+        {"source_id": "canon77-hv-u-unrelated", "target_id": "canon77-hv-v-unrelated-target", "edge_type": "canon77_isolated", "weight": 0.71},
+        {"source_id": "canon77-hv-y-reverse", "target_id": "canon77-hv-a-source", "edge_type": "canon77_reverse", "weight": 0.65}
+      ],
+      "credited_edge": {"source_id": "canon77-hv-a-source", "target_id": "canon77-hv-target", "edge_type": "canon77_supports"},
+      "sibling_edge": {"source_id": "canon77-hv-a-source", "target_id": "canon77-hv-sibling", "edge_type": "canon77_supports"},
+      "unrelated_edge": {"source_id": "canon77-hv-u-unrelated", "target_id": "canon77-hv-v-unrelated-target", "edge_type": "canon77_isolated"},
+      "reverse_edge": {"source_id": "canon77-hv-y-reverse", "target_id": "canon77-hv-a-source", "edge_type": "canon77_reverse"}
+    },
+    {
+      "case_id": "canon77-hold-harbor-ceiling",
+      "stage": "holdout",
+      "stratum": "ceiling",
+      "query": "harborlattice",
+      "target_node_id": "canon77-hh-target",
+      "direct_node_id": "canon77-hh-z-direct",
+      "reverse_node_id": "canon77-hh-y-reverse",
+      "nodes": [
+        {"node_id": "canon77-hh-a-source", "text": "harborlattice relation seed", "source_url": "https://example.invalid/ngr/canon77/holdout/harbor#source"},
+        {"node_id": "canon77-hh-target", "text": "fixed credited harbor conclusion", "source_url": "https://example.invalid/ngr/canon77/holdout/harbor#target"},
+        {"node_id": "canon77-hh-sibling", "text": "local alternate harbor conclusion", "source_url": "https://example.invalid/ngr/canon77/holdout/harbor#sibling"},
+        {"node_id": "canon77-hh-z-direct", "text": "harborlattice direct lexical control", "source_url": "https://example.invalid/ngr/canon77/holdout/harbor#direct"},
+        {"node_id": "canon77-hh-y-reverse", "text": "reverse directional control", "source_url": "https://example.invalid/ngr/canon77/holdout/harbor#reverse"},
+        {"node_id": "canon77-hh-u-unrelated", "text": "isolated unrelated origin", "source_url": "https://example.invalid/ngr/canon77/holdout/harbor#unrelated"},
+        {"node_id": "canon77-hh-v-unrelated-target", "text": "isolated unrelated destination", "source_url": "https://example.invalid/ngr/canon77/holdout/harbor#unrelated-target"}
+      ],
+      "edges": [
+        {"source_id": "canon77-hh-a-source", "target_id": "canon77-hh-target", "edge_type": "canon77_supports", "weight": 1.78},
+        {"source_id": "canon77-hh-a-source", "target_id": "canon77-hh-sibling", "edge_type": "canon77_supports", "weight": 1.18},
+        {"source_id": "canon77-hh-u-unrelated", "target_id": "canon77-hh-v-unrelated-target", "edge_type": "canon77_isolated", "weight": 0.7},
+        {"source_id": "canon77-hh-y-reverse", "target_id": "canon77-hh-a-source", "edge_type": "canon77_reverse", "weight": 0.64}
+      ],
+      "credited_edge": {"source_id": "canon77-hh-a-source", "target_id": "canon77-hh-target", "edge_type": "canon77_supports"},
+      "sibling_edge": {"source_id": "canon77-hh-a-source", "target_id": "canon77-hh-sibling", "edge_type": "canon77_supports"},
+      "unrelated_edge": {"source_id": "canon77-hh-u-unrelated", "target_id": "canon77-hh-v-unrelated-target", "edge_type": "canon77_isolated"},
+      "reverse_edge": {"source_id": "canon77-hh-y-reverse", "target_id": "canon77-hh-a-source", "edge_type": "canon77_reverse"}
+    }
+  ]
+}

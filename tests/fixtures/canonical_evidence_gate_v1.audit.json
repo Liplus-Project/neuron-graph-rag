@@ -1,0 +1,15 @@
+{
+  "protocol_id": "canon77-canonical-gates-v1",
+  "audit_scope": "identity fields only",
+  "registry": "tests/fixtures/canonical_evidence_gate_v1.identity-registry.json",
+  "checks": {
+    "new_namespace_excludes_reserved_public_namespaces": true,
+    "new_corpus_directory_is_unique": true,
+    "development_and_holdout_case_ids_are_disjoint": true,
+    "node_ids_are_globally_unique": true,
+    "source_urls_are_globally_unique": true,
+    "query_tokens_are_split_unique": true,
+    "credited_edge_identities_are_globally_unique": true
+  },
+  "all_identity_checks_pass": true
+}

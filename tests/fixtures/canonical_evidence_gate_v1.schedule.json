@@ -1,0 +1,27 @@
+{
+  "protocol_id": "canon77-canonical-gates-v1",
+  "checkpoints": [0, 1, 2, 3, 4, 10],
+  "variants": [
+    {
+      "variant_id": "current",
+      "evidence_quorum": 1,
+      "sibling_normalization": 0.0
+    },
+    {
+      "variant_id": "evidence-only",
+      "evidence_quorum": 3,
+      "sibling_normalization": 0.0
+    },
+    {
+      "variant_id": "local-only",
+      "evidence_quorum": 1,
+      "sibling_normalization": 1.0
+    },
+    {
+      "variant_id": "combined",
+      "evidence_quorum": 3,
+      "sibling_normalization": 1.0
+    }
+  ],
+  "duplicate_policy": "replay each event once with the same relation trace"
+}

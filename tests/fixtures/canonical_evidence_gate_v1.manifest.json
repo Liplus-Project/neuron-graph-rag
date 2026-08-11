@@ -1,0 +1,37 @@
+{
+  "protocol_id": "canon77-canonical-gates-v1",
+  "source_commit": "0d1e264dd43c17812cc99c5ffe889e836533a00a",
+  "fixture": "tests/fixtures/canonical_evidence_gate_v1.fixture.json",
+  "gold": "tests/fixtures/canonical_evidence_gate_v1.gold.json",
+  "schedule": "tests/fixtures/canonical_evidence_gate_v1.schedule.json",
+  "gate": "tests/fixtures/canonical_evidence_gate_v1.gate.json",
+  "identity_registry": "tests/fixtures/canonical_evidence_gate_v1.identity-registry.json",
+  "audit": "tests/fixtures/canonical_evidence_gate_v1.audit.json",
+  "outputs": {
+    "development": "tests/fixtures/canonical_evidence_gate_v1.development.observed.json",
+    "holdout": "tests/fixtures/canonical_evidence_gate_v1.holdout.observed.json"
+  },
+  "registered_run_count": {
+    "development": 1,
+    "holdout_if_development_all_pass": 1
+  },
+  "artifacts": {
+    "src/neuron_graph_rag/canonical_gate_evaluation.py": "a9c267cb55ffe18b2326050d71ae87777b93b97f453134cbba500404755ea159",
+    "tools/run_canonical_gate_evaluation.py": "5395efa54b29ba2f8c747cdfcaade72cc52ee5f68d1c3b3afcb48d2541fcda52",
+    "tests/test_canonical_gate_evaluation.py": "1e97d527230367ef24f1c8ff2c73f79381ecafbd8c2ceaefffcc138f60031c1a",
+    "tests/fixtures/canonical_evidence_gate_v1.fixture.json": "57b3068c79f048342a58ac2ffcba5af1af8dce39b28730f05305b23c995e6450",
+    "tests/fixtures/canonical_evidence_gate_v1.gold.json": "9315eceea1245101b204ba3502cac4762e01dcdabdd541bb7a138daad2037cb6",
+    "tests/fixtures/canonical_evidence_gate_v1.schedule.json": "5063fef46acd1c54a0a247fb38b623a6cf5d75ea865f1dc0482e18674abfb596",
+    "tests/fixtures/canonical_evidence_gate_v1.gate.json": "ad7338feb8e37ec005e7b502000f259739a7ad25106f07a481d0e712baa11b54",
+    "tests/fixtures/canonical_evidence_gate_v1.identity-registry.json": "8e060c76d910d2cb0fe9bbe7afc0c81600978e80df4795664884adde37771b9e",
+    "tests/fixtures/canonical_evidence_gate_v1.audit.json": "e7d2a177857bc758aa86141725958793ffbb72819d49a85d56723386924b3ae6",
+    "corpora/canonical-evidence-gates-v1/README.md": "f92220b8b4f247daf84dc59956e7f6ad49a46b514e867fb4e82389b2fa7396ee",
+    "corpora/canonical-evidence-gates-v1/development-meridian.md": "efd932b229448bbf7045c5d9071dd28273bea3006b8d8f2270f4e30f27c5a5a1",
+    "corpora/canonical-evidence-gates-v1/development-tundra.md": "3b4799ad86a4d2b0725ffdef8ad159bbe8096676ab4e43eb8022d2089c48256e",
+    "corpora/canonical-evidence-gates-v1/holdout-velvet.md": "629f79dc3a37fec68b49cd152f69182bc638266c13402cb6108a36709a9f0b25",
+    "corpora/canonical-evidence-gates-v1/holdout-harbor.md": "df5ef44cae03ea10b7ce00e7e577189814f59e2ee54c208920434706e524084c",
+    "docs/canonical-evidence-gate-evaluation.md": "7c90282dd14ca53cea666fc7b43f9bb97d4f70fd0055b8bab0435a95c75c11a6",
+    "docs/Decision-Structure.md": "24dfca534d83d765bfaf10b3bc504a6ac2d8fac036228e01a01b6fa46bf7dd94",
+    "README.md": "1ecb09befa3ae1e2c90aa4ed3bf5c7039a0955862e198e42d04abcf06a76152a"
+  }
+}
