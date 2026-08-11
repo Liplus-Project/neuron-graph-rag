@@ -14,5 +14,6 @@ Neuron Graph RAG（NGR）は、ハイブリッド検索、型付き知識グラ�
 - [D1 corpus fixture](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/d1-corpus-fixture.md)
 - [Real-corpus benchmark](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/real-corpus-benchmark.md)
 - [Node-first blind selection experiment](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/node-first-blind-selection-experiment.md)
+- [Feedback rank elasticity](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/feedback-rank-elasticity.md)
 
 Wiki には docs-owned の正本だけを同期します。Decision Structure entry やナビゲーションは Wiki-only として、docs の同期対象から分離して維持します。

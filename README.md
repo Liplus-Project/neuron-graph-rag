@@ -265,6 +265,8 @@ Trace-credited feedback adaptationは、relation traceの`record_success`が後�
 
 独立reproductionはprior feedback-adaptation resultを選択入力にせず、新規D1 development / holdout splitで同じtrace-credit claimを検証します。relation pathはruntime fieldを除き、`source_id`、`target_id`、`edge_type`だけへ射影してgoldと比較します。prior fixtureは識別子だけのcontamination auditに使い、prior goldとresultは読みません。詳細は[Trace-credited feedback adaptation reproduction experiment](docs/feedback-adaptation-reproduction-experiment.md)を参照してください。
 
+Feedback rank elasticity runnerは、source SQLiteを変更せず、各累積feedback checkpointをfresh cloneから再生します。target rankだけでなくraw / normalized graph score、final-score margin、top-k rank delta、非対象churnを出力し、max-normalization ceiling、rank flip threshold、schedule全体のrank安定を区別します。これは診断専用であり、learning rate、fusion、normalization、既定値を変更しません。仕様と実行方法は[Feedback rank elasticity](docs/feedback-rank-elasticity.md)を参照してください。
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。
