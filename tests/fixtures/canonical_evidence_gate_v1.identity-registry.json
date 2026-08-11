@@ -1,0 +1,14 @@
+{
+  "registry_scope": "public repository path and filename identities only",
+  "reserved_public_namespaces": [
+    "d1_liplus_",
+    "engine_feedback_trajectory_",
+    "fresh_native_feedback_",
+    "sibling_normalization_controlled_",
+    "rank_elasticity_",
+    "repository-native-controlled-"
+  ],
+  "new_protocol_namespace": "canon77-",
+  "new_corpus_directory": "corpora/canonical-evidence-gates-v1",
+  "new_source_url_prefix": "https://example.invalid/ngr/canon77/"
+}

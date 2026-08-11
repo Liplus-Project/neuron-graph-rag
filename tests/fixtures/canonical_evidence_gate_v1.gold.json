@@ -1,0 +1,9 @@
+{
+  "protocol_id": "canon77-canonical-gates-v1",
+  "cases": [
+    {"case_id": "canon77-dev-meridian-headroom", "target_node_id": "canon77-dm-target"},
+    {"case_id": "canon77-dev-tundra-ceiling", "target_node_id": "canon77-dt-target"},
+    {"case_id": "canon77-hold-velvet-headroom", "target_node_id": "canon77-hv-target"},
+    {"case_id": "canon77-hold-harbor-ceiling", "target_node_id": "canon77-hh-target"}
+  ]
+}
