@@ -38,6 +38,7 @@ repository 付属 schedule は `[0, 1, 3, 5, 10]` を固定し、複数回でも
 scenario の診断は次を区別する。
 
 - `rank_flip_threshold`: baseline より良い rank を初めて得た checkpoint が存在する
+- `rank_regression`: baseline より悪い rank の checkpoint が一つ以上存在する。途中で改善していても regression を優先して分類し、最初の悪化点を `rank_regression_first_checkpoint` に保存する
 - `edge_changed_but_rank_unchanged`: edge は変わったが target rank は schedule 全体で変わらない
 - `rank_stable_through_schedule`: 上記の edge-change 条件を満たさず、target rank が schedule 全体で変わらない
 

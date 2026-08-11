@@ -72,13 +72,15 @@ def run_rank_elasticity(
 
 def write_rank_elasticity_result(path: str | Path, result: dict[str, Any]) -> None:
     output = Path(path)
-    if output.exists():
-        raise ValueError(f"Refusing to overwrite a rank elasticity result: {output}")
+    payload = json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(
-        json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    try:
+        with output.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(payload)
+    except FileExistsError as error:
+        raise ValueError(
+            f"Refusing to overwrite a rank elasticity result: {output}"
+        ) from error
 
 
 def _run_scenario(
@@ -288,6 +290,14 @@ def _diagnose(
         ),
         None,
     )
+    first_regression = next(
+        (
+            int(record["feedback_count"])
+            for record in records[1:]
+            if int(record["rank"]) > baseline_rank
+        ),
+        None,
+    )
     edge_changed = any(run["changed_edges"] for run in checkpoint_runs[1:])
     rank_stable = all(int(record["rank"]) == baseline_rank for record in records)
     normalized_stable = all(
@@ -308,7 +318,9 @@ def _diagnose(
         )
         for record in records
     )
-    if first_flip is not None:
+    if first_regression is not None:
+        classification = "rank_regression"
+    elif first_flip is not None:
         classification = "rank_flip_threshold"
     elif edge_changed and rank_stable:
         classification = "edge_changed_but_rank_unchanged"
@@ -317,6 +329,7 @@ def _diagnose(
     return {
         "classification": classification,
         "rank_flip_threshold": first_flip,
+        "rank_regression_first_checkpoint": first_regression,
         "rank_stable_through_schedule": rank_stable,
         "edge_changed_but_rank_unchanged": edge_changed and rank_stable,
         "fusion_side_ceiling": (

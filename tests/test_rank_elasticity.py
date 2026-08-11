@@ -3,12 +3,16 @@ from __future__ import annotations
 import copy
 import json
 import tempfile
+import threading
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from unittest.mock import patch
 
 from neuron_graph_rag import NeuronGraphRAG
 from neuron_graph_rag.rank_elasticity import (
     SCHEMA_VERSION,
+    _diagnose,
     _rank_deltas,
     read_rank_elasticity_schedule,
     run_rank_elasticity,
@@ -187,6 +191,25 @@ class RankElasticityTest(unittest.TestCase):
         self.assertEqual(deltas["arriving"]["baseline_rank"], None)
         self.assertGreater(deltas["arriving"]["delta"], 0)
 
+    def test_diagnosis_classifies_regression_before_an_earlier_flip(self) -> None:
+        records = [
+            {
+                "feedback_count": count,
+                "rank": rank,
+                "scores": {"graph_normalized": 0.5, "final": 0.5},
+            }
+            for count, rank in ((0, 2), (1, 1), (3, 3))
+        ]
+        diagnosis = _diagnose(
+            {"checkpoints": records},
+            [{"changed_edges": []} for _ in records],
+        )
+
+        self.assertEqual(diagnosis["classification"], "rank_regression")
+        self.assertEqual(diagnosis["rank_flip_threshold"], 1)
+        self.assertEqual(diagnosis["rank_regression_first_checkpoint"], 3)
+        self.assertFalse(diagnosis["rank_stable_through_schedule"])
+
     def test_schedule_rejects_a_missing_control_role(self) -> None:
         schedule = json.loads(SCHEDULE.read_text(encoding="utf-8"))
         invalid = copy.deepcopy(schedule)
@@ -205,6 +228,40 @@ class RankElasticityTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Refusing to overwrite"):
                 write_rank_elasticity_result(output, {"changed": True})
             self.assertEqual(output.read_text(encoding="utf-8"), original)
+
+    def test_result_writer_exclusively_creates_under_a_race(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "result.json"
+            barrier = threading.Barrier(2)
+            original_exists = Path.exists
+
+            def synchronized_exists(path: Path) -> bool:
+                if path == output:
+                    barrier.wait(timeout=5)
+                    return False
+                return original_exists(path)
+
+            def attempt(value: str) -> tuple[str, str]:
+                try:
+                    write_rank_elasticity_result(output, {"writer": value})
+                except ValueError:
+                    return "refused", value
+                return "written", value
+
+            with (
+                patch.object(Path, "exists", synchronized_exists),
+                ThreadPoolExecutor(max_workers=2) as executor,
+            ):
+                outcomes = list(executor.map(attempt, ("first", "second")))
+
+            written = [value for status, value in outcomes if status == "written"]
+            refused = [value for status, value in outcomes if status == "refused"]
+            self.assertEqual(len(written), 1)
+            self.assertEqual(len(refused), 1)
+            self.assertEqual(
+                json.loads(output.read_text(encoding="utf-8")),
+                {"writer": written[0]},
+            )
 
 
 if __name__ == "__main__":
