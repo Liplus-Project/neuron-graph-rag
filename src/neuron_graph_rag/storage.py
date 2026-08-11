@@ -106,6 +106,18 @@ class SQLiteStore:
                 PRIMARY KEY (feedback_id, node_id)
             );
 
+            CREATE TABLE IF NOT EXISTS relation_feedback_evidence (
+                source_id TEXT NOT NULL,
+                target_id TEXT NOT NULL,
+                edge_type TEXT NOT NULL,
+                trace_id TEXT NOT NULL REFERENCES retrievals(trace_id) ON DELETE CASCADE,
+                feedback_id TEXT NOT NULL REFERENCES success_feedback(feedback_id) ON DELETE CASCADE,
+                created_at REAL NOT NULL,
+                PRIMARY KEY (source_id, target_id, edge_type, trace_id),
+                FOREIGN KEY (source_id, target_id, edge_type)
+                    REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
+            );
+
             CREATE TABLE IF NOT EXISTS source_use_state (
                 trace_id TEXT NOT NULL REFERENCES retrievals(trace_id) ON DELETE CASCADE,
                 node_id TEXT NOT NULL REFERENCES nodes(node_id) ON DELETE CASCADE,
@@ -362,12 +374,23 @@ class SQLiteStore:
         normalization_sets: Iterable[
             tuple[str, tuple[tuple[str, str, str], ...], float]
         ] = (),
+        *,
+        evidence_quorum: int = 1,
     ) -> tuple[
         list[tuple[str, str, str, float, float]],
         list[tuple[str, str, str, float, float]],
+        list[tuple[str, str, str, int, int, bool]],
     ]:
+        if (
+            isinstance(evidence_quorum, bool)
+            or not isinstance(evidence_quorum, int)
+            or evidence_quorum < 1
+        ):
+            raise ValueError("evidence_quorum must be a positive integer")
+        updates = tuple(edge_updates)
         reinforced: list[tuple[str, str, str, float, float]] = []
         normalized: list[tuple[str, str, str, float, float]] = []
+        evidence: list[tuple[str, str, str, int, int, bool]] = []
         with self.transaction() as connection:
             trace = connection.execute(
                 "SELECT 1 FROM retrievals WHERE trace_id = ?", (trace_id,)
@@ -400,7 +423,7 @@ class SQLiteStore:
                     (feedback_id, node_id),
                 )
             reinforced_increase_by_source: dict[str, float] = {}
-            for source_id, target_id, edge_type, increment, maximum in edge_updates:
+            for source_id, target_id, edge_type, increment, maximum in updates:
                 row = connection.execute(
                     """
                     SELECT weight FROM edges
@@ -412,6 +435,44 @@ class SQLiteStore:
                     raise KeyError(
                         f"Unknown edge: {source_id} -> {target_id} ({edge_type})"
                     )
+                inserted = connection.execute(
+                    """
+                    INSERT INTO relation_feedback_evidence(
+                        source_id, target_id, edge_type, trace_id, feedback_id, created_at
+                    ) VALUES (?, ?, ?, ?, ?, ?)
+                    ON CONFLICT(source_id, target_id, edge_type, trace_id) DO NOTHING
+                    """,
+                    (
+                        source_id,
+                        target_id,
+                        edge_type,
+                        trace_id,
+                        feedback_id,
+                        created_at,
+                    ),
+                ).rowcount == 1
+                count = int(
+                    connection.execute(
+                        """
+                        SELECT COUNT(*) FROM relation_feedback_evidence
+                        WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                        """,
+                        (source_id, target_id, edge_type),
+                    ).fetchone()[0]
+                )
+                activated = inserted and count >= evidence_quorum
+                evidence.append(
+                    (
+                        source_id,
+                        target_id,
+                        edge_type,
+                        count,
+                        evidence_quorum,
+                        activated,
+                    )
+                )
+                if not activated:
+                    continue
                 old_weight = float(row["weight"])
                 new_weight = max(
                     old_weight,
@@ -462,7 +523,7 @@ class SQLiteStore:
                         normalized.append(
                             (sibling_source, target_id, edge_type, old_weight, new_weight)
                         )
-        return reinforced, normalized
+        return reinforced, normalized, evidence
 
     def record_source_use(
         self,
@@ -544,6 +605,17 @@ class SQLiteStore:
                             "new_weight": edge.new_weight,
                         }
                         for edge in receipt.normalized_sibling_edges
+                    ],
+                    "evidence": [
+                        {
+                            "source_id": item.source_id,
+                            "target_id": item.target_id,
+                            "edge_type": item.edge_type,
+                            "count": item.count,
+                            "quorum": item.quorum,
+                            "activated": item.activated,
+                        }
+                        for item in receipt.evidence
                     ],
                 }
             for node_id, stage in state.items():
@@ -674,6 +746,24 @@ class SQLiteStore:
     def count_feedback(self) -> int:
         row = self.connection.execute(
             "SELECT COUNT(*) AS count FROM success_feedback"
+        ).fetchone()
+        return int(row["count"])
+
+    def count_feedback_evidence(self) -> int:
+        row = self.connection.execute(
+            "SELECT COUNT(*) AS count FROM relation_feedback_evidence"
+        ).fetchone()
+        return int(row["count"])
+
+    def feedback_evidence_count(
+        self, source_id: str, target_id: str, edge_type: str
+    ) -> int:
+        row = self.connection.execute(
+            """
+            SELECT COUNT(*) AS count FROM relation_feedback_evidence
+            WHERE source_id = ? AND target_id = ? AND edge_type = ?
+            """,
+            (source_id, target_id, edge_type),
         ).fetchone()
         return int(row["count"])
 

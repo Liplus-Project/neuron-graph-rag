@@ -8,6 +8,7 @@ from datetime import datetime
 
 from .engine import NeuronGraphRAG
 from .models import (
+    FeedbackEvidence,
     FeedbackReceipt,
     NormalizedSiblingEdge,
     OutcomeReceipt,
@@ -88,6 +89,17 @@ class FeedbackLedger:
                         float(edge["new_weight"]),
                     )
                     for edge in feedback_data["normalized_sibling_edges"]
+                ),
+                tuple(
+                    FeedbackEvidence(
+                        str(item["source_id"]),
+                        str(item["target_id"]),
+                        str(item["edge_type"]),
+                        int(item["count"]),
+                        int(item["quorum"]),
+                        bool(item["activated"]),
+                    )
+                    for item in feedback_data.get("evidence", [])
                 ),
             )
         return SourceUseReceipt(

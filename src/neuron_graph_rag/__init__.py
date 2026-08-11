@@ -1,9 +1,15 @@
-from .engine import EngineConfig, NeuronGraphRAG
+from . import engine as _engine
+from .evidence_feedback import EngineConfig, NeuronGraphRAG
+
+_engine.EngineConfig = EngineConfig
+_engine.NeuronGraphRAG = NeuronGraphRAG
+
 from .feedback import FeedbackLedger
 from .models import (
     ActivationPath,
     DocumentNode,
     FeedbackContractError,
+    FeedbackEvidence,
     FeedbackReceipt,
     NormalizedSiblingEdge,
     OutcomeReceipt,
@@ -26,15 +32,16 @@ __all__ = [
     "EngineConfig",
     "FeatureHashingEncoder",
     "FeedbackContractError",
+    "FeedbackEvidence",
     "FeedbackLedger",
     "FeedbackReceipt",
-    "NormalizedSiblingEdge",
     "NeuronGraphRAG",
+    "NormalizedSiblingEdge",
     "OutcomeReceipt",
     "PathStep",
     "SearchChannelHit",
-    "SearchChannelsResult",
     "SearchChannelTrace",
+    "SearchChannelsResult",
     "SearchHit",
     "SearchTrace",
     "SourceUseEvent",

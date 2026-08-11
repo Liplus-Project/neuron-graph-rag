@@ -267,6 +267,8 @@ Trace-credited feedback adaptationは、relation traceの`record_success`が後�
 
 Feedback rank elasticity runnerは、source SQLiteを変更せず、各累積feedback checkpointをfresh cloneから再生します。target rankだけでなくraw / normalized graph score、final-score margin、top-k rank delta、非対象churnを出力し、max-normalization ceiling、rank flip threshold、schedule全体のrank安定を区別します。これは診断専用であり、learning rate、fusion、normalization、既定値を変更しません。仕様と実行方法は[Feedback rank elasticity](docs/feedback-rank-elasticity.md)を参照してください。
 
+Evidence-gated local feedback reinforcementは、credited edgeごとに異なるsuccess traceを永続evidenceとして数え、設定quorum到達後だけ既存bounded updateを一回ずつ適用するopt-in candidateです。既定quorumは`1`で現行動作を保ち、`2`以上では到達前のweightとsame-source siblingを変更しません。core / MCP receiptはcount、quorum、activationを返します。詳細は[Evidence-gated local feedback reinforcement](docs/evidence-gated-local-feedback-reinforcement.md)を参照してください。
+
 ## Explanation model
 
 各 `SearchHit` は次の情報を保持します。

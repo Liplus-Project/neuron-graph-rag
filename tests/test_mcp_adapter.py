@@ -21,7 +21,7 @@ if MCP_AVAILABLE:
         FeedbackMCPAdapter,
     )
 
-from neuron_graph_rag import NeuronGraphRAG
+from neuron_graph_rag import EngineConfig, NeuronGraphRAG
 
 
 @unittest.skipUnless(MCP_AVAILABLE, "optional MCP SDK is not installed")
@@ -131,6 +131,64 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(error["code"], "unsupported_contract_version")
         self.assertNotIn("secret query text", invalid.content[0].text)
         self.assertNotIn("private value", invalid.content[0].text)
+
+    async def test_feedback_receipt_exposes_quorum_evidence_and_replays(self) -> None:
+        self.adapter.close()
+        self.adapter = FeedbackMCPAdapter(
+            self.database,
+            config=EngineConfig(relation_feedback_evidence_quorum=3),
+        )
+        search = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="search",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "query": "cache invalidation",
+                    "limit": 2,
+                },
+            ),
+        )
+        arguments = {
+            "contract_version": CONTRACT_VERSION,
+            "idempotency_key": "evidence-quorum-mcp-1",
+            "trace_id": search.structured_content["trace_id"],
+            "events": [
+                {"node_id": "implementation", "stage": "selected"},
+                {"node_id": "implementation", "stage": "validated"},
+                {"node_id": "implementation", "stage": "used"},
+            ],
+        }
+        result = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="record_source_use", arguments=arguments
+            ),
+        )
+        replay = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="record_source_use", arguments=arguments
+            ),
+        )
+
+        self.assertFalse(result.is_error)
+        self.assertEqual(replay.structured_content, result.structured_content)
+        feedback = result.structured_content["feedback"]
+        self.assertEqual(feedback["reinforced_edges"], [])
+        self.assertEqual(
+            feedback["evidence"],
+            [
+                {
+                    "source_id": "decision",
+                    "target_id": "implementation",
+                    "edge_type": "implemented_by",
+                    "count": 1,
+                    "quorum": 3,
+                    "activated": False,
+                }
+            ],
+        )
 
     async def test_stdio_protocol_smoke(self) -> None:
         parameters = StdioServerParameters(

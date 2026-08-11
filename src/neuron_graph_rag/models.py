@@ -207,6 +207,16 @@ class NormalizedSiblingEdge:
 
 
 @dataclass(frozen=True, slots=True)
+class FeedbackEvidence:
+    source_id: str
+    target_id: str
+    edge_type: str
+    count: int
+    quorum: int
+    activated: bool
+
+
+@dataclass(frozen=True, slots=True)
 class FeedbackReceipt:
     feedback_id: str
     trace_id: str
@@ -214,6 +224,7 @@ class FeedbackReceipt:
     reinforced_edges: tuple[ReinforcedEdge, ...]
     channel: str | None = None
     normalized_sibling_edges: tuple[NormalizedSiblingEdge, ...] = ()
+    evidence: tuple[FeedbackEvidence, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)

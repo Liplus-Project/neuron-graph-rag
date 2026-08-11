@@ -5,8 +5,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .engine import EngineConfig, NeuronGraphRAG
 from .benchmark import run_benchmark, write_benchmark_result
+from .engine import EngineConfig, NeuronGraphRAG
 from .evaluation import evaluate
 from .sample import load_sample_corpus
 
@@ -60,6 +60,17 @@ def run_demo(database: str | Path = ":memory:") -> dict[str, Any]:
                     }
                     for edge in receipt.reinforced_edges
                 ],
+                "evidence": [
+                    {
+                        "source_id": item.source_id,
+                        "target_id": item.target_id,
+                        "edge_type": item.edge_type,
+                        "count": item.count,
+                        "quorum": item.quorum,
+                        "activated": item.activated,
+                    }
+                    for item in receipt.evidence
+                ],
             },
             "after": {
                 "rank": _rank(second, "implementation"),
@@ -105,7 +116,7 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _rank(trace: object, node_id: str) -> int:
-    hits = getattr(trace, "hits")
+    hits = trace.hits
     return next(
         index
         for index, hit in enumerate(hits, start=1)

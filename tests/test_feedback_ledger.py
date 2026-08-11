@@ -245,6 +245,10 @@ class FeedbackPlanParityTest(unittest.TestCase):
                 ledger_receipt.feedback.reinforced_edges,
                 direct_receipt.reinforced_edges,
             )
+            self.assertEqual(
+                ledger_receipt.feedback.evidence,
+                direct_receipt.evidence,
+            )
             self.assertEqual(ledger_engine.store.list_edges(), direct.store.list_edges())
 
     def test_relation_sibling_normalization_matches_direct_record_success(self) -> None:
@@ -278,6 +282,10 @@ class FeedbackPlanParityTest(unittest.TestCase):
             self.assertEqual(
                 ledger_receipt.feedback.normalized_sibling_edges,
                 direct_receipt.normalized_sibling_edges,
+            )
+            self.assertEqual(
+                ledger_receipt.feedback.evidence,
+                direct_receipt.evidence,
             )
             self.assertEqual(ledger_engine.store.list_edges(), direct.store.list_edges())
 
