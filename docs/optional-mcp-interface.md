@@ -96,11 +96,11 @@ source-use は一つの順序付き状態として扱う。
 | `retrieved` | `search` の結果に候補として返った | NGR | なし |
 | `selected` | consuming AI が詳細確認する source として選んだ | client | なし |
 | `validated` | exact source を確認し、現在の判断材料として利用可能と判定した | client | なし |
-| `used` | 最終回答、実装判断、レビュー判断などの根拠として実際に利用した | client | 新規遷移時のみ即時強化 |
+| `used` | 最終回答、実装判断、レビュー判断などの根拠として実際に利用した | client | 新規遷移時に独立 evidence を記録し、設定 quorum 到達後だけ強化 |
 
 `retrieved -> selected -> validated -> used` の順序を守る。既存状態と同じ stage の再送は idempotent no-op とする。後退、段階の飛び越し、`retrieved` の client 申告は拒否する。同じ `record_source_use` call 内では、同一 node の連続する複数段階を順に送ってよい。
 
-`used` は「良さそう」「読んだ」という impression ではない。final artifact の根拠として使用した時点でのみ記録する。即時 reinforcement を発火するのは新しい `used` 遷移だけであり、`retrieved`、`selected`、`validated`、delayed outcome は発火しない。
+`used` は「良さそう」「読んだ」という impression ではない。final artifact の根拠として使用した時点でのみ記録する。新しい `used` 遷移だけが credited edge の独立 evidence を記録でき、既定 quorum `1` では従来どおりその event が即時 reinforcement を発火する。quorum `2` 以上では到達前の serving weight を変更しない。`retrieved`、`selected`、`validated`、duplicate / retry、delayed outcome は evidence と reinforcement を発火しない。
 
 ## 5. Tool: `search`
 
@@ -208,14 +208,14 @@ adapter は core の test 用 `now` parameter を MCP input に公開しない�
 
 ### 6.1 Meaning
 
-consuming AI が、検索結果をどこまで判断材料として利用したかを記録する。`used` への新規遷移だけを NGR core の即時 reinforcement に接続する。
+consuming AI が、検索結果をどこまで判断材料として利用したかを記録する。`used` への新規遷移だけを NGR core の独立 evidence に接続し、credited edge の設定 quorum 到達時に bounded reinforcement を実行する。
 
 ### 6.2 Normative model-facing description
 
 次を exact `description` とする。
 
 ```text
-Record ordered source-use transitions for candidates from one Neuron Graph RAG search trace. Use selected only when a source is chosen for inspection, validated only after its exact source is checked and accepted as usable, and used only after it becomes an actual basis of a downstream answer, implementation decision, or review. Transitions must occur in order. Only a newly recorded used source triggers immediate graph reinforcement; retrieved, selected, validated, retries, and duplicate stages do not reinforce. If the trace handle has expired or does not exist, this tool returns unknown_trace.
+Record ordered source-use transitions for candidates from one Neuron Graph RAG search trace. Use selected only when a source is chosen for inspection, validated only after its exact source is checked and accepted as usable, and used only after it becomes an actual basis of a downstream answer, implementation decision, or review. Transitions must occur in order. A newly recorded used source can add one independent evidence item per credited edge; graph reinforcement occurs only when that edge's configured evidence quorum has been reached. The default quorum is one. Retrieved, selected, validated, retries, duplicate traces, and duplicate stages add no evidence and do not reinforce. If the trace handle has expired or does not exist, this tool returns unknown_trace.
 ```
 
 ### 6.3 Input
@@ -293,6 +293,16 @@ event は array 順に評価する。同一 call の途中で一件でも不正�
         "old_weight": 0.7,
         "new_weight": 0.84
       }
+    ],
+    "evidence": [
+      {
+        "source_id": "decision-17",
+        "target_id": "pr-42",
+        "edge_type": "implemented_by",
+        "count": 1,
+        "quorum": 1,
+        "activated": true
+      }
     ]
   }
 }
@@ -305,7 +315,7 @@ event は array 順に評価する。同一 call の途中で一件でも不正�
 - adapter は transport-neutral な `FeedbackLedger.record_source_use` を呼び、stage ledger へ直接 SQL を発行しない。
 - 一つの call で新しく `used` へ到達した node 群だけを `NeuronGraphRAG.record_success(trace_id, newly_used_node_ids)` へ一度渡す。`record_success` は credited-path 選択、contribution clamp、edge increment、channel、sibling normalization の唯一の計画元とする。
 - source-use の outer transaction は `record_success` の inner commit を遅延させ、stage 遷移、idempotency receipt、reinforcement をまとめて commit または rollback する。
-- `FeedbackReceipt` の `feedback_id`、`used_node_ids`、`reinforced_edges` を `feedback` に写す。
+- `FeedbackReceipt` の `feedback_id`、`used_node_ids`、`reinforced_edges`、edge ごとの `evidence` を `feedback` に写す。quorum 前は `evidence` を返し、`reinforced_edges` は空とする。activation が maximum weight で cap された場合は、既存挙動どおり `old_weight == new_weight` の reinforced edge を返せるが、actual delta が `0` なので sibling は変更しない。
 - 再送、同一 stage、すでに `used` の node は reinforcement 処理を再度適用しない。
 
 core domain API は取得済みでない node を stage 更新前に拒否し、adapter は caller が修正可能な error code へ写す。
@@ -456,6 +466,7 @@ MCP であることだけを理由に別 repository へ分離しない。次の�
 - `selected` と `validated` では edge weight が変わらない
 - 新規 `used` だけが一度だけ `record_success` を呼ぶ
 - retry と duplicate stage が reinforcement を重複させない
+- 同一 trace、idempotency replay、duplicate stage が evidence count を重複させず、quorum 前は serving weight を変更しない
 - `corrected`、`rolled_back` を含む delayed outcome が weight を変更しない
 - invalid trace、trace 外 node、enum、stage 順序、idempotency conflict を拒否する
 - `tools/list` の description だけから feedback 順序、reinforcement 条件、delayed outcome 非変更規則を判断できる

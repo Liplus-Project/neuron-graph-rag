@@ -15,12 +15,8 @@ from mcp.server.models import InitializationOptions
 from mcp.server.stdio import stdio_server
 from mcp.shared.exceptions import MCPError
 
-from neuron_graph_rag import (
-    FeedbackContractError,
-    FeedbackLedger,
-    NeuronGraphRAG,
-    SourceUseEvent,
-)
+from neuron_graph_rag import FeedbackContractError, FeedbackLedger, SourceUseEvent
+from neuron_graph_rag.evidence_feedback import EngineConfig, NeuronGraphRAG
 
 CONTRACT_VERSION = "ngr.mcp.feedback/v1"
 
@@ -39,10 +35,12 @@ SOURCE_USE_DESCRIPTION = (
     "search trace. Use selected only when a source is chosen for inspection, validated "
     "only after its exact source is checked and accepted as usable, and used only after it "
     "becomes an actual basis of a downstream answer, implementation decision, or review. "
-    "Transitions must occur in order. Only a newly recorded used source triggers immediate "
-    "graph reinforcement; retrieved, selected, validated, retries, and duplicate stages do "
-    "not reinforce. If the trace handle has expired or does not exist, this tool returns "
-    "unknown_trace."
+    "Transitions must occur in order. A newly recorded used source can add one independent "
+    "evidence item per credited edge; graph reinforcement occurs only when that edge's "
+    "configured evidence quorum has been reached. The default quorum is one. Retrieved, "
+    "selected, validated, retries, duplicate traces, and duplicate stages add no evidence "
+    "and do not reinforce. If the trace handle has expired or does not exist, this tool "
+    "returns unknown_trace."
 )
 OUTCOME_DESCRIPTION = (
     "Record a delayed outcome for sources that were already marked used, such as "
@@ -128,6 +126,17 @@ _EDGE_OUTPUT = _object(
     },
     ["source_id", "target_id", "edge_type", "old_weight", "new_weight"],
 )
+_EVIDENCE_OUTPUT = _object(
+    {
+        "source_id": {"type": "string"},
+        "target_id": {"type": "string"},
+        "edge_type": {"type": "string"},
+        "count": {"type": "integer", "minimum": 1},
+        "quorum": {"type": "integer", "minimum": 1},
+        "activated": {"type": "boolean"},
+    },
+    ["source_id", "target_id", "edge_type", "count", "quorum", "activated"],
+)
 SEARCH_OUTPUT = _object(
     {
         "contract_version": {"type": "string", "const": CONTRACT_VERSION},
@@ -201,8 +210,9 @@ SOURCE_USE_OUTPUT = _object(
                         "feedback_id": {"type": "string", "pattern": _TRACE.pattern},
                         "used_node_ids": {"type": "array", "items": {"type": "string"}},
                         "reinforced_edges": {"type": "array", "items": _EDGE_OUTPUT},
+                        "evidence": {"type": "array", "items": _EVIDENCE_OUTPUT},
                     },
-                    ["feedback_id", "used_node_ids", "reinforced_edges"],
+                    ["feedback_id", "used_node_ids", "reinforced_edges", "evidence"],
                 ),
             ]
         },
@@ -258,8 +268,10 @@ TOOLS = (
 
 
 class FeedbackMCPAdapter:
-    def __init__(self, database: str | Path) -> None:
-        self.engine = NeuronGraphRAG(database)
+    def __init__(
+        self, database: str | Path, *, config: EngineConfig | None = None
+    ) -> None:
+        self.engine = NeuronGraphRAG(database, config=config)
         self.feedback = FeedbackLedger(self.engine)
 
     def close(self) -> None:
@@ -386,6 +398,17 @@ class FeedbackMCPAdapter:
                         "new_weight": edge.new_weight,
                     }
                     for edge in receipt.feedback.reinforced_edges
+                ],
+                "evidence": [
+                    {
+                        "source_id": item.source_id,
+                        "target_id": item.target_id,
+                        "edge_type": item.edge_type,
+                        "count": item.count,
+                        "quorum": item.quorum,
+                        "activated": item.activated,
+                    }
+                    for item in receipt.feedback.evidence
                 ],
             }
         return {
@@ -531,8 +554,10 @@ class FeedbackMCPAdapter:
         return value
 
 
-def create_server(database: str | Path) -> tuple[Server[Any], FeedbackMCPAdapter]:
-    adapter = FeedbackMCPAdapter(database)
+def create_server(
+    database: str | Path, *, config: EngineConfig | None = None
+) -> tuple[Server[Any], FeedbackMCPAdapter]:
+    adapter = FeedbackMCPAdapter(database, config=config)
     server: Server[Any] = Server(
         "neuron-graph-rag",
         version="0.1.0",
