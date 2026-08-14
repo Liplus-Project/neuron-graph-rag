@@ -29,6 +29,17 @@ When sibling normalization is positive, the MCP `search` tool uses `search_chann
 
 Omitting both options preserves the existing immediate-reinforcement and no-sibling-normalization behavior. The `3` / `1.0` combination is a reversible local opt-in supported by the frozen controlled evaluation; it is not an external-corpus generalization, a production-quality claim, or a project-wide default adoption. Library callers and legacy engine/storage identities remain unchanged. The normative process-local requirements are recorded in [MCP Feedback Stabilization Settings](mcp-feedback-stabilization-settings.md).
 
+confirmed-triggered diminishing candidate は、次の二つを同時に明示した process だけで有効になる。
+
+```bash
+neuron-graph-rag-mcp \
+  --database /absolute/path/to/knowledge.db \
+  --confirmed-outcome-reinforcement \
+  --confirmation-decay-ratio 0.5
+```
+
+ratio は `0 < r < 1` とし、flag と ratio の片方だけを指定した起動は database を開く前に拒否する。candidate 有効時は MCP `search` が relation trace を返し、`used` は provenance のみ、独立 `confirmed` が初回 multiplier `1.0` と後続 `r^(n-1)` で credited path を強化する。詳細は [Confirmed-outcome feedback reinforcement](confirmed-outcome-feedback-reinforcement.md) を正本とする。
+
 ## 2. Protocol envelope
 
 tool 名は `search`、`record_source_use`、`record_outcome` とする。すべての input と成功 output は JSON Schema で宣言し、未知 field を受け付けない。
@@ -113,11 +124,11 @@ source-use は一つの順序付き状態として扱う。
 | `retrieved` | `search` の結果に候補として返った | NGR | なし |
 | `selected` | consuming AI が詳細確認する source として選んだ | client | なし |
 | `validated` | exact source を確認し、現在の判断材料として利用可能と判定した | client | なし |
-| `used` | 最終回答、実装判断、レビュー判断などの根拠として実際に利用した | client | 新規遷移時に独立 evidence を記録し、設定 quorum 到達後だけ強化 |
+| `used` | 最終回答、実装判断、レビュー判断などの根拠として実際に利用した | client | 既定 policy は新規遷移時に独立 evidence を記録して quorum 到達後に強化。confirmed candidate は履歴のみ |
 
 `retrieved -> selected -> validated -> used` の順序を守る。既存状態と同じ stage の再送は idempotent no-op とする。後退、段階の飛び越し、`retrieved` の client 申告は拒否する。同じ `record_source_use` call 内では、同一 node の連続する複数段階を順に送ってよい。
 
-`used` は「良さそう」「読んだ」という impression ではない。final artifact の根拠として使用した時点でのみ記録する。新しい `used` 遷移だけが credited edge の独立 evidence を記録でき、既定 quorum `1` では従来どおりその event が即時 reinforcement を発火する。quorum `2` 以上では到達前の serving weight を変更しない。`retrieved`、`selected`、`validated`、duplicate / retry、delayed outcome は evidence と reinforcement を発火しない。
+`used` は「良さそう」「読んだ」という impression ではない。final artifact の根拠として使用した時点でのみ記録する。既定 policy では新しい `used` 遷移だけが credited edge の独立 evidence を記録でき、既定 quorum `1` では従来どおりその event が即時 reinforcement を発火する。quorum `2` 以上では到達前の serving weight を変更しない。confirmed candidate では `retrieved` から `used` まで evidence、weight、`reinforced_count` を変更せず、後続 `confirmed` だけを正の trigger とする。
 
 ## 5. Tool: `search`
 
@@ -341,7 +352,7 @@ core domain API は取得済みでない node を stage 更新前に拒否し、
 
 ### 7.1 Meaning
 
-source を利用した判断や artifact に後から判明した結果を、即時 source-use とは別軸で記録する。v1 では評価用の履歴であり、edge weight を自動変更しない。
+source を利用した判断や artifact に後から判明した結果を、即時 source-use とは別軸で記録する。既定 policy では評価用の履歴であり、edge weight を変更しない。明示 confirmed candidate では `confirmed` だけが保存済み relation credited path の diminishing reinforcement を発火できる。
 
 ### 7.2 Normative model-facing description
 
@@ -405,11 +416,11 @@ Record a delayed outcome for sources that were already marked used, such as conf
 }
 ```
 
-`reinforcement_applied` は v1 では常に `false` とする。将来 delayed outcome を学習へ接続する場合は、原因帰属、weight rollback、再計算可能性を別の versioned policy として定義する。
+既定 policy の `reinforcement_applied` は常に `false` とする。confirmed candidate では新しい独立 edge confirmation を保存した時だけ `true` とし、`confirmations` に count、multiplier、actual delta、old/new weight、`credited_paths` に保存済み relation steps、`normalized_sibling_edges` に局所変更を返す。duplicate trace と idempotency replay は count と weight を重複変更しない。`corrected`、`rolled_back`、`superseded` は candidate 有効時も `false` のままである。
 
 ### 7.6 Core mapping
 
-transport-neutral な `FeedbackLedger.record_outcome` は outcome ledger にだけ保存し、`record_success`、edge update、activation update を呼ばない。
+transport-neutral な `FeedbackLedger.record_outcome` は既定 policy では outcome ledger にだけ保存する。confirmed candidate では `record_success` を再利用せず、outcome、confirmation count、edge/sibling update、receipt を candidate 専用の一つの storage transaction へ渡す。
 
 ## 8. Failure contract
 
@@ -435,6 +446,7 @@ error の text content は、次の object を JSON 直列化する。
 | `source_not_used` | outcome 対象が `used` に到達していない | false |
 | `invalid_stage_transition` | source-use の順序違反または後退 | false |
 | `idempotency_conflict` | 同じ key に異なる payload が割り当てられた | false |
+| `confirmation_policy_conflict` | credited edge に保存済みの decay ratio と現在の candidate config が異なる | false |
 | `core_unavailable` | database lock など一時的な core failure | true |
 | `internal_error` | caller が修正できない予期しない失敗 | false |
 
@@ -485,6 +497,8 @@ MCP であることだけを理由に別 repository へ分離しない。次の�
 - retry と duplicate stage が reinforcement を重複させない
 - 同一 trace、idempotency replay、duplicate stage が evidence count を重複させず、quorum 前は serving weight を変更しない
 - `corrected`、`rolled_back` を含む delayed outcome が weight を変更しない
+- confirmed candidate では `used` まで weight が不変で、独立 `confirmed` が count `1` / multiplier `1.0` から固定 ratio で減衰し、core / MCP receipt が一致する
+- confirmed candidate の duplicate trace、retry、lexical、zero-hop、uncredited path、別 source、途中失敗が count と weight を変更しない
 - invalid trace、trace 外 node、enum、stage 順序、idempotency conflict を拒否する
 - `tools/list` の description だけから feedback 順序、reinforcement 条件、delayed outcome 非変更規則を判断できる
 - persistent core では `trace_expires_at` が `null`、retention deployment では具体的な description と timestamp が一致する

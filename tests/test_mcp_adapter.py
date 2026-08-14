@@ -15,6 +15,8 @@ if MCP_AVAILABLE:
     from mcp.client.stdio import stdio_client
 
     from neuron_graph_rag_mcp.server import (
+        CONFIRMED_OUTCOME_DESCRIPTION,
+        CONFIRMED_SOURCE_USE_DESCRIPTION,
         CONTRACT_VERSION,
         OUTCOME_DESCRIPTION,
         SEARCH_DESCRIPTION,
@@ -194,6 +196,85 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
             ],
         )
 
+    async def test_confirmed_candidate_moves_reinforcement_to_outcome_with_receipt_parity(self) -> None:
+        self.adapter.close()
+        self.adapter = FeedbackMCPAdapter(
+            self.database,
+            config=EngineConfig(
+                confirmed_outcome_reinforcement=True,
+                confirmation_decay_ratio=0.5,
+                sibling_feedback_normalization=1.0,
+            ),
+        )
+        listed = await self.adapter.list_tools()
+        self.assertEqual(listed.tools[1].description, CONFIRMED_SOURCE_USE_DESCRIPTION)
+        self.assertEqual(listed.tools[2].description, CONFIRMED_OUTCOME_DESCRIPTION)
+        before = self.adapter.engine.store.edge(
+            "decision", "implementation", "implemented_by"
+        ).weight
+        search = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="search",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "query": "cache invalidation",
+                    "limit": 3,
+                },
+            ),
+        )
+        trace_id = search.structured_content["trace_id"]
+        source_use = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="record_source_use",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "idempotency_key": "confirmed-candidate-use",
+                    "trace_id": trace_id,
+                    "events": [
+                        {"node_id": "implementation", "stage": "selected"},
+                        {"node_id": "implementation", "stage": "validated"},
+                        {"node_id": "implementation", "stage": "used"},
+                    ],
+                },
+            ),
+        )
+        self.assertIsNone(source_use.structured_content["feedback"])
+        self.assertEqual(
+            self.adapter.engine.store.edge(
+                "decision", "implementation", "implemented_by"
+            ).weight,
+            before,
+        )
+        arguments = {
+            "contract_version": CONTRACT_VERSION,
+            "idempotency_key": "confirmed-candidate-outcome",
+            "trace_id": trace_id,
+            "node_ids": ["implementation"],
+            "outcome": "confirmed",
+            "summary": "the implementation was verified",
+        }
+        outcome = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(name="record_outcome", arguments=arguments),
+        )
+        replay = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(name="record_outcome", arguments=arguments),
+        )
+        self.assertFalse(outcome.is_error)
+        self.assertEqual(replay.structured_content, outcome.structured_content)
+        self.assertTrue(outcome.structured_content["reinforcement_applied"])
+        confirmation = outcome.structured_content["confirmations"][0]
+        self.assertEqual(confirmation["confirmation_count"], 1)
+        self.assertEqual(confirmation["multiplier"], 1.0)
+        self.assertGreater(confirmation["actual_delta"], 0.0)
+        self.assertEqual(
+            outcome.structured_content["credited_paths"][0]["steps"][0]["source_id"],
+            "decision",
+        )
+
     async def test_stdio_protocol_smoke(self) -> None:
         parameters = StdioServerParameters(
             command=sys.executable,
@@ -339,6 +420,8 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
             ("--sibling-feedback-normalization", "-0.1"),
             ("--sibling-feedback-normalization", "1.1"),
             ("--sibling-feedback-normalization", "nan"),
+            ("--confirmation-decay-ratio", "0"),
+            ("--confirmation-decay-ratio", "1"),
         )
         for index, (option, value) in enumerate(invalid_values):
             with self.subTest(option=option, value=value):
@@ -363,6 +446,24 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
                 self.assertFalse(database.exists())
                 self.assertFalse(Path(f"{database}-wal").exists())
                 self.assertFalse(Path(f"{database}-shm").exists())
+
+        missing_pair = Path(self.temporary.name) / "missing-decay.sqlite"
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "neuron_graph_rag_mcp",
+                "--database",
+                str(missing_pair),
+                "--confirmed-outcome-reinforcement",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 2)
+        self.assertFalse(missing_pair.exists())
 
 
 if __name__ == "__main__":

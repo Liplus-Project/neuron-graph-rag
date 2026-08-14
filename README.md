@@ -221,6 +221,16 @@ neuron-graph-rag-mcp \
 
 The CLI defaults remain quorum `1` and sibling normalization `0.0`. Invalid values are rejected before the database is opened. With positive sibling normalization, the MCP search tool returns the relation channel so feedback has the provenance required for local normalization; the default `0.0` path remains the existing hybrid search. The `3` / `1.0` command configures only that server process; it does not change library defaults, legacy engine/storage contracts, or establish production adoption.
 
+confirmed outcome を唯一の正の trigger とする diminishing candidate も process 単位で明示 opt-in できます。flag と decay ratio は必ず組にし、既存の q3/s1 設定と default は変更しません。
+
+```bash
+neuron-graph-rag-mcp \
+  --database /absolute/path/to/knowledge.db \
+  --confirmed-outcome-reinforcement \
+  --confirmation-decay-ratio 0.5 \
+  --sibling-feedback-normalization 1.0
+```
+
 一般的な MCP client では次のように登録します。
 
 ```json
@@ -238,7 +248,7 @@ The CLI defaults remain quorum `1` and sibling normalization `0.0`. Invalid valu
 }
 ```
 
-利用順序は `search` で得た `trace_id` と候補を保持し、実際の判断過程に合わせて `selected` → `validated` → `used` を `record_source_use` へ送ります。新規 `used` だけが credited edge の独立 evidence を記録し、設定 quorum 到達時に bounded reinforcement を発火します。既定 quorum は `1` です。後から結果が判明した場合は `record_outcome` で `confirmed`、`corrected`、`rolled_back`、`superseded` のいずれかを監査記録へ追加しますが、v1 の delayed outcome は weight を変更しません。
+利用順序は `search` で得た `trace_id` と候補を保持し、実際の判断過程に合わせて `selected` → `validated` → `used` を `record_source_use` へ送ります。既定 policy では新規 `used` が credited edge の独立 evidence を記録し、設定 quorum 到達時に bounded reinforcement を発火します。confirmed candidate 有効時は `used` まで weight を変更せず、後から `record_outcome` へ送った独立 `confirmed` だけが初回 multiplier `1.0`、後続 geometric decay で保存済み relation path を強化します。`corrected`、`rolled_back`、`superseded` はどちらの policy でも weight を変更しません。
 
 三つの tool の schema、model-facing description、trace retention、failure code の正本は [docs/optional-mcp-interface.md](docs/optional-mcp-interface.md) です。実装範囲は local stdio に限り、HTTP、認証、認可、remote deployment は含みません。
 
@@ -283,6 +293,8 @@ Trace-credited feedback adaptationは、relation traceの`record_success`が後�
 Feedback rank elasticity runnerは、source SQLiteを変更せず、各累積feedback checkpointをfresh cloneから再生します。target rankだけでなくraw / normalized graph score、final-score margin、top-k rank delta、非対象churnを出力し、max-normalization ceiling、rank flip threshold、schedule全体のrank安定を区別します。これは診断専用であり、learning rate、fusion、normalization、既定値を変更しません。仕様と実行方法は[Feedback rank elasticity](docs/feedback-rank-elasticity.md)を参照してください。
 
 Evidence-gated local feedback reinforcementは、credited edgeごとに異なるsuccess traceを永続evidenceとして数え、設定quorum到達後だけ既存bounded updateを一回ずつ適用するopt-in candidateです。`neuron_graph_rag.evidence_feedback` のclassから明示的に利用し、package rootと`.engine`のlegacy class identityは変更しません。既定quorumは`1`で現行動作を保ち、`2`以上では到達前のweightとsame-source siblingを変更しません。core / MCP receiptはcount、quorum、activationを返します。詳細は[Evidence-gated local feedback reinforcement](docs/evidence-gated-local-feedback-reinforcement.md)を参照してください。
+
+Confirmed-outcome feedback reinforcementは、同じ candidate class の `confirmed_outcome_reinforcement=True` と明示 `confirmation_decay_ratio` で有効にします。`used` は履歴だけを保存し、relation trace 上で used となった node の一意な credited path を、独立 `confirmed` outcome ごとに減衰強化します。count、multiplier、actual delta、credited path は core / MCP receipt で同じ形に写され、SQLite restart 後も継続します。mechanics は default 採用や q3/s1 との優位性を主張しません。詳細は[Confirmed-outcome feedback reinforcement](docs/confirmed-outcome-feedback-reinforcement.md)を参照してください。
 
 Canonical evidence gate evaluationは、quorum `3` と sibling normalization `1.0` の組合せを、fresh engine checkpoint、独立development / holdout identity、非アルファベット順canonical gate array、exclusive result writerで評価します。freeze前に登録外placeholderで実writer→verifier round-tripを証明し、development全gate通過時だけholdoutを一度開きます。既定値とvalidated状態は変更しません。詳細は[Canonical evidence gate evaluation](docs/canonical-evidence-gate-evaluation.md)を参照してください。
 

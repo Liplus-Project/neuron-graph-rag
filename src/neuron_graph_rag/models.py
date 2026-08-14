@@ -250,6 +250,24 @@ class SourceUseReceipt:
 
 
 @dataclass(frozen=True, slots=True)
+class ConfirmedEdge:
+    source_id: str
+    target_id: str
+    edge_type: str
+    confirmation_count: int
+    multiplier: float
+    actual_delta: float
+    old_weight: float
+    new_weight: float
+
+
+@dataclass(frozen=True, slots=True)
+class CreditedPath:
+    node_id: str
+    steps: tuple[PathStep, ...]
+
+
+@dataclass(frozen=True, slots=True)
 class OutcomeReceipt:
     outcome_id: str
     trace_id: str
@@ -257,6 +275,9 @@ class OutcomeReceipt:
     outcome: str
     recorded_at: float
     reinforcement_applied: bool = False
+    confirmations: tuple[ConfirmedEdge, ...] = ()
+    credited_paths: tuple[CreditedPath, ...] = ()
+    normalized_sibling_edges: tuple[NormalizedSiblingEdge, ...] = ()
 
 
 class FeedbackContractError(ValueError):
