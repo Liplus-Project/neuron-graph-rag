@@ -14,11 +14,18 @@
       "type": "object"
     },
     "efficiency": {
-      "type": "object"
+      "description": "One nullable efficiency row per packet in slot order.",
+      "minItems": 1,
+      "type": "array"
     },
-    "packet_id": {
-      "minLength": 1,
-      "type": "string"
+    "packet_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
     },
     "protocol_id": {
       "const": "real-task-feedback-shadow-v1"
@@ -29,9 +36,14 @@
     "schema_version": {
       "const": 1
     },
-    "slot": {
-      "minimum": 1,
-      "type": "integer"
+    "slots": {
+      "items": {
+        "minimum": 1,
+        "type": "integer"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
     },
     "snapshot_sha256": {
       "pattern": "^sha256:[0-9a-f]{64}$",
@@ -41,8 +53,8 @@
   "required": [
     "schema_version",
     "protocol_id",
-    "packet_id",
-    "slot",
+    "packet_ids",
+    "slots",
     "snapshot_sha256",
     "arms",
     "comparison",

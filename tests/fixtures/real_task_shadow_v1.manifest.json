@@ -4,15 +4,15 @@
     "confirmed_r05_s1"
   ],
   "artifact_sha256": {
-    "docs/real-task-feedback-shadow-protocol.md": "30cdd28d623cba73a3358543903e546ad0053cb058807fecd2c73cb0815a68c3",
-    "src/neuron_graph_rag/real_task_shadow.py": "4121b7ec6fba0505bf546236bcc4378bf66877475caf1ae7163163b8cce616da",
+    "docs/real-task-feedback-shadow-protocol.md": "f5283247036d8cb0aa46afc2112bf891117e1dd81621e4e522d2cf137144fc50",
+    "src/neuron_graph_rag/real_task_shadow.py": "12a81403c7e78a2416c1232edcb2837093a656384c7547be75676a710ea222ee",
     "tests/fixtures/real_task_shadow_v1.evidence-schema.json": "daf82b6cfb162ba5dbcccb1742a0fc9686557f80f668617854e2fcf82babe269",
     "tests/fixtures/real_task_shadow_v1.inclusion-rule.json": "78c16efc0786d3af87d502103cb6e2c124c95372c816af27f918ed9882163bca",
     "tests/fixtures/real_task_shadow_v1.packet-schema.json": "5ba654ad46c3eead29c3e08af97e4648e002e89f73228d41f8e137f06de026b0",
     "tests/fixtures/real_task_shadow_v1.placeholder.json": "8f57ee4635af5c967c3dcd55dcb8335b9bd9d9496c309191b80edb9839bdd191",
-    "tests/fixtures/real_task_shadow_v1.result-schema.json": "e6e7e1741665fa0a4f3ec9bd8bb750fd5858505803160909901b7fd1523e8388",
-    "tests/test_real_task_shadow.py": "2592b8b32d2eab92b636296380be10e51e1af54251825683a3015c09e0024586",
-    "tools/run_real_task_shadow.py": "82bb5da44794fa5b6b57c612cbcbd4c18aab2a2cdbe0b3e6b44b216e7d06a106"
+    "tests/fixtures/real_task_shadow_v1.result-schema.json": "258421e06a3d4dafe271a776ad8bb4825efd5a8df1b7ce1e7458d2c206183905",
+    "tests/test_real_task_shadow.py": "a232c76770cdf3492e0cc1f03b1067b0be3f66e58b9bf0d4f7cd8e677691bcc6",
+    "tools/run_real_task_shadow.py": "3fc5114a9749c42d33acd3b4d203acdb92aa95dfc039a580af817c4ff7eb453a"
   },
   "evidence_kinds": [
     "test_passed",
@@ -33,6 +33,12 @@
   "registered_outputs": {
     "observed_results": "artifacts/real-task-feedback-shadow-v1/observed",
     "packet_registry": "artifacts/real-task-feedback-shadow-v1/packets"
+  },
+  "registry_write": "exclusive_lock_scan_validate_reserve_write",
+  "replay_contract": {
+    "arm_clone_scope": "one_fresh_clone_per_arm_per_ordered_batch",
+    "result_verification": "exact_semantic_replay_from_packets_and_snapshot",
+    "slot_order": "sequential_from_one"
   },
   "result_free": true
 }

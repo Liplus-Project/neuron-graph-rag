@@ -27,7 +27,7 @@ packet schema の正本は `tests/fixtures/real_task_shadow_v1.packet-schema.jso
 
 confirmed outcome は used node に結び付く positive objective evidence を最低一つ必要とする。許可する evidence kind は `test_passed`、`citation_verified`、`review_accepted`、`rollback_or_correction` の四つだけである。前の三つを positive、最後を negative とする。self-evaluation は gold にしない。`pending` は evidence を持たず、`corrected` と `rolled_back` は `rollback_or_correction` を必要とする。
 
-packet registry は append-only で canonical UTF-8 JSON を exclusive create する。同じ packet ID、slot skip、上書きを拒否する。訂正は既存 packet を編集せず `supersedes_packet_id` で直前の packet を指す新規 packet とし、slot、task、snapshot、retrieval、source-use は変えない。一つの packet から複数の直接 successor を作らない。
+packet registry は append-only で canonical UTF-8 JSON を exclusive create する。capture は registry 全体の exclusive lock を取得してから scan、slot / successor 検証、write を行い、異なる packet ID の concurrent writer が同じ slot を予約することを拒否する。同じ packet ID、slot skip、上書きも拒否する。訂正は既存 packet を編集せず `supersedes_packet_id` で直前の packet を指す新規 packet とし、slot、task、snapshot、retrieval、source-use は変えない。一つの packet から複数の直接 successor を作らない。replay 時は各 slot の successor chain の末尾だけを effective packet とする。
 
 ## Replay
 
@@ -37,17 +37,21 @@ CLI は次の command を持つ。
 python tools/run_real_task_shadow.py probe --fixture tests/fixtures/real_task_shadow_v1.placeholder.json
 python tools/run_real_task_shadow.py capture --input PACKET.json --registry-dir LOCAL_REGISTRY
 python tools/run_real_task_shadow.py verify-packet --packet PACKET.json --snapshot SNAPSHOT.db
-python tools/run_real_task_shadow.py replay --packet PACKET.json --snapshot SNAPSHOT.db --output RESULT.json
-python tools/run_real_task_shadow.py verify-result --result RESULT.json
+python tools/run_real_task_shadow.py replay --registry-dir LOCAL_REGISTRY --snapshot SNAPSHOT.db --output RESULT.json
+python tools/run_real_task_shadow.py verify-result --result RESULT.json --registry-dir LOCAL_REGISTRY --snapshot SNAPSHOT.db
 ```
 
 `capture` と `replay` の出力は exclusive create であり、既存 file を置換しない。registry と observed result の登録先は manifest に記載するが、この result-free commit には directory も file も作らない。
 
-replay は raw snapshot hash、captured node の存在、source URL、node text の UTF-8 SHA-256、fresh relation retrieval の候補順、used node の credited path を検証する。各 arm は source snapshot から独立した temporary clone を作り、同じ replay を二回行って semantic equality を確認する。source snapshot 自体は変更しない。
+replay は registry の effective packet を slot `1..N` 順に読み、全 packet が同じ raw snapshot SHA-256 を共有することを要求する。slot 欠落、順序変更、packet ID 重複、snapshot 不一致は比較前に fail closed する。各 packet について captured node の存在、source URL、node text の UTF-8 SHA-256、frozen snapshot 上の relation retrieval 候補順、used node の credited path も検証する。
+
+arm ごとに source snapshot から temporary clone を一つだけ作り、全 packet の source-use / outcome を slot 順に同じ clone へ累積 replay する。このため `used_q3_s1` は異なる sequential task trace から同じ edge へ三回 evidence が到達すれば quorum を実効的に通過できる。arm 間で packet、slot、snapshot、順序を変えない。batch 全体を別の fresh clone でもう一度 replay して exact semantic equality を確認し、source snapshot 自体は変更しない。単一 `--packet` replay は同じ batch API の `N=1` 最小形である。
 
 `used_q3_s1` は quorum `3`、sibling normalization `1.0`、used-time policy を使う。`confirmed_r05_s1` は quorum `1`、confirmed outcome reinforcement、decay `0.5`、sibling normalization `1.0` を使う。両 arm は Issue #85 で固定した明示 configuration であり、serving default ではない。
 
-result schema は、使用 node の前後 rank / graph score、その delta、path edge の weight / reinforced / evidence / confirmation count と delta、non-target churn、source-use と outcome の semantic receipt、idempotency replay、二回の deterministic replay、source snapshot 不変を保存する。efficiency field は未計測なら `null` のまま保持する。
+result schema は ordered packet ID / slot と arm ごとの packet replay arrayを持つ。各 packet について使用 node の前後 rank / graph score、その delta、path edge の weight / reinforced / evidence / confirmation count と delta、non-target churn、source-use と outcome の semantic receipt、idempotency replayを保存し、arm の最終 edge state と二回の deterministic batch replay、source snapshot 不変も保存する。efficiency field は packet ごとの順序を保ち、未計測なら `null` のまま保持する。
+
+`verify-result` は result だけの自己整合検査ではない。対応する packet または registry と snapshot を必須入力とし、fresh clone から二 arm の cumulative semantic replay を再計算して stored result と完全一致することを検証する。receipt、idempotency、determinism、source 不変の boolean 自己申告、または内部 delta だけが整合した改変 result は verification を通過しない。
 
 hash mismatch、node absence、source identity mismatch、content hash mismatch、candidate order mismatch、credited path mismatch、unsupported evidence、objective evidence 不足、duplicate packet、idempotency conflict、非 deterministic replay は fail closed する。negative outcome は監査記録だけを作り、negative reinforcement や rollback を実行しない。
 
