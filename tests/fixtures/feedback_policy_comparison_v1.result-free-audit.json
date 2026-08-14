@@ -1,0 +1,14 @@
+{
+  "protocol_id": "policycmp85-feedback-policy-comparison-v1",
+  "result_free": true,
+  "source_commit": "07b4ed48df8a81ba8c91dbaa17eb740774b6951b",
+  "placeholder_identity": "temporary-policy-comparison-placeholder",
+  "placeholder_round_trip_passed": true,
+  "placeholder_output_registered": false,
+  "registered_development_output_absent_at_freeze": true,
+  "registered_holdout_output_absent_at_freeze": true,
+  "exclusive_writer": "write_observed_exclusive",
+  "verifier": "verify_observed_payload",
+  "one_time_development_runs": 1,
+  "conditional_one_time_holdout_runs": 1
+}

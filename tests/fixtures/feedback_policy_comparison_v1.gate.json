@@ -1,0 +1,26 @@
+{
+  "protocol_id": "policycmp85-feedback-policy-comparison-v1",
+  "gates": [
+    {
+      "gate_id": "protocol-integrity"
+    },
+    {
+      "gate_id": "confirmed-diminishing"
+    },
+    {
+      "gate_id": "used-quorum-boundary"
+    },
+    {
+      "gate_id": "corrected-isolation"
+    },
+    {
+      "gate_id": "confirmed-headroom"
+    },
+    {
+      "gate_id": "checkpoint-10-safety"
+    },
+    {
+      "gate_id": "mutation-locality"
+    }
+  ]
+}

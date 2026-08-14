@@ -298,6 +298,8 @@ Confirmed-outcome feedback reinforcementは、同じ candidate class の `confir
 
 後続の feedback policy comparison に使う public source は、[feedback-policy-comparison-v1](corpora/feedback-policy-comparison-v1/README.md) に corpus-only で固定しています。development / holdout 各二 cluster の明示 link topology、source-only manifest、raw SHA-256、LF 改行規則、provenance、既存 fixture との identity contamination audit だけを含み、評価の選択入力と観測物は含めません。この source merge commit を後続の別 issue が唯一の入力として扱います。
 
+この corpus を使う `used + q3 + sibling normalization 1.0` と `confirmed + decay 0.5 + sibling normalization 1.0` の比較は、[Feedback policy comparison evaluation](docs/feedback-policy-comparison-evaluation.md) に result-free protocol、one-time development、conditional holdout、exclusive observed result、再計算可能な hard gate を固定しています。controlled result は default adoption や production quality を意味しません。
+
 Canonical evidence gate evaluationは、quorum `3` と sibling normalization `1.0` の組合せを、fresh engine checkpoint、独立development / holdout identity、非アルファベット順canonical gate array、exclusive result writerで評価します。freeze前に登録外placeholderで実writer→verifier round-tripを証明し、development全gate通過時だけholdoutを一度開きます。既定値とvalidated状態は変更しません。詳細は[Canonical evidence gate evaluation](docs/canonical-evidence-gate-evaluation.md)を参照してください。
 
 ## Explanation model

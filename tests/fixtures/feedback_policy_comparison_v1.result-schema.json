@@ -1,0 +1,41 @@
+{
+  "protocol_id": "policycmp85-feedback-policy-comparison-v1",
+  "top_level_fields": [
+    "protocol_id",
+    "stage",
+    "source_commit",
+    "protocol_hashes",
+    "preflight",
+    "arms",
+    "gates",
+    "all_pass",
+    "interpretation_ja"
+  ],
+  "arm_fields": [
+    "arm_id",
+    "policy",
+    "config",
+    "checkpoints",
+    "receipts",
+    "semantic_sha256",
+    "fresh_clone_replay"
+  ],
+  "checkpoint_fields": [
+    "checkpoint",
+    "queries",
+    "edges",
+    "mutation_count",
+    "actual_delta_cumulative",
+    "changed_edges",
+    "top_k_changes",
+    "non_target_churn"
+  ],
+  "gate_fields": [
+    "gate_id",
+    "passed"
+  ],
+  "json_encoding": "UTF-8 without BOM",
+  "json_indent": 2,
+  "json_trailing_newline": true,
+  "field_reorder_after_observation": "prohibited"
+}

@@ -1,0 +1,36 @@
+{
+  "protocol_id": "policycmp85-feedback-policy-comparison-v1",
+  "source_commit": "07b4ed48df8a81ba8c91dbaa17eb740774b6951b",
+  "source_manifest": "corpora/feedback-policy-comparison-v1/manifest.json",
+  "source_manifest_sha256": "aa4d955027b1b9d039693deb8c2a04edf067bf7578ec6a19a3791d33ec8e7391",
+  "protocol_artifacts": {
+    "fixture": "tests/fixtures/feedback_policy_comparison_v1.fixture.json",
+    "gold": "tests/fixtures/feedback_policy_comparison_v1.gold.json",
+    "schedule": "tests/fixtures/feedback_policy_comparison_v1.schedule.json",
+    "gate": "tests/fixtures/feedback_policy_comparison_v1.gate.json",
+    "result_schema": "tests/fixtures/feedback_policy_comparison_v1.result-schema.json",
+    "audit": "tests/fixtures/feedback_policy_comparison_v1.result-free-audit.json"
+  },
+  "outputs": {
+    "development": "tests/fixtures/feedback_policy_comparison_v1.development.observed.json",
+    "holdout": "tests/fixtures/feedback_policy_comparison_v1.holdout.observed.json"
+  },
+  "registered_run_count": {
+    "development": 1,
+    "holdout_if_development_all_pass": 1
+  },
+  "artifact_sha256": {
+    "src/neuron_graph_rag/feedback_policy_comparison_evaluation.py": "537f3f53d7b6126ad5746b2a65df00de7082e995ffd18a0e47af58223d93c06f",
+    "tools/run_feedback_policy_comparison_evaluation.py": "cbea46987c587f03027d6a1a16e34911399f92a471263a2fa696285a76fcc5fc",
+    "tests/test_feedback_policy_comparison_evaluation.py": "f5444d79d632d6caf6a17776b4bacdbbdc971c78e1a9d696a4e775ab74f73e20",
+    "tests/test_feedback_policy_comparison_corpus.py": "f88c7cf2b31757d650483aac26535bac36358d429527cd2b07f55ee7a966ebe6",
+    "tests/fixtures/feedback_policy_comparison_v1.fixture.json": "a6a816660291a16a0646109dbfd3499b6e0f60ca7cec59b477198b4554332b73",
+    "tests/fixtures/feedback_policy_comparison_v1.gold.json": "ff3d907e05d49b11ddeae76d638c81ee0f801fd9ca8f139abd0e76e554889a8a",
+    "tests/fixtures/feedback_policy_comparison_v1.schedule.json": "ee4ae7a3372745cb6000fc7bcd095656f7ca57c3dfad8e136a343af0b737aaa6",
+    "tests/fixtures/feedback_policy_comparison_v1.gate.json": "b9aae7b08f6880fcaff4af4dfe9f276ea436803c948623a00c354c3226c42064",
+    "tests/fixtures/feedback_policy_comparison_v1.result-schema.json": "b9aebaa0a8f1f04974da0b203fd6135df01d00fc03b948d3ed486087844bc8ec",
+    "tests/fixtures/feedback_policy_comparison_v1.result-free-audit.json": "a393462efcc2a87553509f5dbc594299c18ef9baebf579173f27f93c460f9499",
+    "docs/feedback-policy-comparison-evaluation.md": "2b724561dc2aa7aa18ac5d33ac4ac3a61897687362d3f15b97a0b1981013cf89",
+    "README.md": "94c70ab6000483261c631f0defd3f3dc1597439c715dde0e265daba98ebba7a4"
+  }
+}
