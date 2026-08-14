@@ -1,0 +1,44 @@
+{
+  "arms": [
+    "used_q3_s1",
+    "confirmed_r05_s1"
+  ],
+  "artifact_sha256": {
+    "docs/real-task-feedback-shadow-protocol.md": "f5283247036d8cb0aa46afc2112bf891117e1dd81621e4e522d2cf137144fc50",
+    "src/neuron_graph_rag/real_task_shadow.py": "12a81403c7e78a2416c1232edcb2837093a656384c7547be75676a710ea222ee",
+    "tests/fixtures/real_task_shadow_v1.evidence-schema.json": "daf82b6cfb162ba5dbcccb1742a0fc9686557f80f668617854e2fcf82babe269",
+    "tests/fixtures/real_task_shadow_v1.inclusion-rule.json": "78c16efc0786d3af87d502103cb6e2c124c95372c816af27f918ed9882163bca",
+    "tests/fixtures/real_task_shadow_v1.packet-schema.json": "5ba654ad46c3eead29c3e08af97e4648e002e89f73228d41f8e137f06de026b0",
+    "tests/fixtures/real_task_shadow_v1.placeholder.json": "8f57ee4635af5c967c3dcd55dcb8335b9bd9d9496c309191b80edb9839bdd191",
+    "tests/fixtures/real_task_shadow_v1.result-schema.json": "258421e06a3d4dafe271a776ad8bb4825efd5a8df1b7ce1e7458d2c206183905",
+    "tests/test_real_task_shadow.py": "a232c76770cdf3492e0cc1f03b1067b0be3f66e58b9bf0d4f7cd8e677691bcc6",
+    "tools/run_real_task_shadow.py": "3fc5114a9749c42d33acd3b4d203acdb92aa95dfc039a580af817c4ff7eb453a"
+  },
+  "evidence_kinds": [
+    "test_passed",
+    "citation_verified",
+    "review_accepted",
+    "rollback_or_correction"
+  ],
+  "freeze_parent_commit": "8428e63a20ad40ce588fa3b7841926e308cced84",
+  "observation_status": "not_started",
+  "protocol_artifacts": {
+    "evidence_schema": "tests/fixtures/real_task_shadow_v1.evidence-schema.json",
+    "inclusion_rule": "tests/fixtures/real_task_shadow_v1.inclusion-rule.json",
+    "packet_schema": "tests/fixtures/real_task_shadow_v1.packet-schema.json",
+    "placeholder_fixture": "tests/fixtures/real_task_shadow_v1.placeholder.json",
+    "result_schema": "tests/fixtures/real_task_shadow_v1.result-schema.json"
+  },
+  "protocol_id": "real-task-feedback-shadow-v1",
+  "registered_outputs": {
+    "observed_results": "artifacts/real-task-feedback-shadow-v1/observed",
+    "packet_registry": "artifacts/real-task-feedback-shadow-v1/packets"
+  },
+  "registry_write": "exclusive_lock_scan_validate_reserve_write",
+  "replay_contract": {
+    "arm_clone_scope": "one_fresh_clone_per_arm_per_ordered_batch",
+    "result_verification": "exact_semantic_replay_from_packets_and_snapshot",
+    "slot_order": "sequential_from_one"
+  },
+  "result_free": true
+}

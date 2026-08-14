@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Append-only real-task feedback shadow packet. Runtime validation is stricter and authoritative.",
+  "properties": {
+    "captured_at": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "database_snapshot": {
+      "type": "object"
+    },
+    "efficiency": {
+      "type": "object"
+    },
+    "outcome": {
+      "type": "object"
+    },
+    "packet_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "protocol_id": {
+      "const": "real-task-feedback-shadow-v1"
+    },
+    "retrieval": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "slot": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "source_use": {
+      "maxItems": 3,
+      "minItems": 3,
+      "type": "array"
+    },
+    "supersedes_packet_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "task": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "packet_id",
+    "slot",
+    "supersedes_packet_id",
+    "task",
+    "database_snapshot",
+    "retrieval",
+    "source_use",
+    "outcome",
+    "efficiency",
+    "captured_at"
+  ],
+  "title": "Real task feedback shadow packet v1",
+  "type": "object"
+}

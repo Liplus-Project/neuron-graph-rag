@@ -1,0 +1,19 @@
+{
+  "assignment": "first_post_merge_eligible_task_in_sequential_order",
+  "eligible_task": {
+    "base_commit_required": true,
+    "database_snapshot_hash_required": true,
+    "objective_external_outcome_required_for_confirmed": true,
+    "same_packet_replayed_to_both_arms": true,
+    "source_must_reach_used_stage": true
+  },
+  "exclusions": [
+    "self_evaluation_as_gold",
+    "outcome_based_selection",
+    "unsupported_or_inadequate_source_use",
+    "task_reuse_after_exclusion"
+  ],
+  "observation_batch": "not_fixed_in_this_result_free_protocol",
+  "protocol_id": "real-task-feedback-shadow-v1",
+  "stop_rule": "not_fixed_in_this_result_free_protocol"
+}

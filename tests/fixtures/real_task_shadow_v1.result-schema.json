@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Two-arm shadow replay result including rank, score, path-weight state, counts, deltas, churn, idempotency and replay proof.",
+  "properties": {
+    "arms": {
+      "required": [
+        "used_q3_s1",
+        "confirmed_r05_s1"
+      ],
+      "type": "object"
+    },
+    "comparison": {
+      "type": "object"
+    },
+    "efficiency": {
+      "description": "One nullable efficiency row per packet in slot order.",
+      "minItems": 1,
+      "type": "array"
+    },
+    "packet_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "protocol_id": {
+      "const": "real-task-feedback-shadow-v1"
+    },
+    "replay": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "slots": {
+      "items": {
+        "minimum": 1,
+        "type": "integer"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "snapshot_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "packet_ids",
+    "slots",
+    "snapshot_sha256",
+    "arms",
+    "comparison",
+    "efficiency",
+    "replay"
+  ],
+  "title": "Real task feedback shadow result v1",
+  "type": "object"
+}
