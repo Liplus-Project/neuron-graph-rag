@@ -1,0 +1,61 @@
+{
+  "documents": [
+    {
+      "node_id": "placeholder-seed",
+      "source_url": "https://example.invalid/placeholder/seed",
+      "text": "placeholder alpha seed for a synthetic retrieval only"
+    },
+    {
+      "node_id": "placeholder-target",
+      "source_url": "https://example.invalid/placeholder/target",
+      "text": "synthetic terminal reached through the placeholder relation"
+    },
+    {
+      "node_id": "placeholder-sibling",
+      "source_url": "https://example.invalid/placeholder/sibling",
+      "text": "synthetic sibling used to expose non-target churn"
+    }
+  ],
+  "edges": [
+    {
+      "edge_type": "placeholder_link",
+      "source_id": "placeholder-seed",
+      "target_id": "placeholder-target",
+      "weight": 0.8
+    },
+    {
+      "edge_type": "placeholder_link",
+      "source_id": "placeholder-seed",
+      "target_id": "placeholder-sibling",
+      "weight": 0.2
+    }
+  ],
+  "packet_seed": {
+    "captured_at": "2000-01-01T00:00:00Z",
+    "efficiency": {
+      "elapsed_seconds": null,
+      "research_count": null,
+      "token_count": null,
+      "tool_calls": null
+    },
+    "limit": 2,
+    "outcome": {
+      "evidence": [],
+      "external_ref": null,
+      "status": "pending",
+      "summary": "placeholder outcome pending"
+    },
+    "packet_id": "placeholder-packet-0001",
+    "query": "placeholder alpha seed",
+    "task": {
+      "base_commit": "0000000000000000000000000000000000000000",
+      "close_condition": "placeholder close condition",
+      "eligible_at": "2000-01-01T00:00:00Z",
+      "repository": "example.invalid/placeholder/repository",
+      "task_url": "https://example.invalid/placeholder/task/1"
+    },
+    "used_node_id": "placeholder-target"
+  },
+  "placeholder_only": true,
+  "protocol_id": "real-task-feedback-shadow-v1"
+}

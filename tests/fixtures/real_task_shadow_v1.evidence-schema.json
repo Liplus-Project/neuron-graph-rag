@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Objective evidence bound to the used node and target commit.",
+  "properties": {
+    "details": {
+      "type": "object"
+    },
+    "external_ref": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "test_passed",
+        "citation_verified",
+        "review_accepted",
+        "rollback_or_correction"
+      ]
+    },
+    "node_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "target_commit": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "kind",
+    "node_id",
+    "external_ref",
+    "target_commit",
+    "details"
+  ],
+  "title": "Real task objective evidence v1",
+  "type": "object"
+}

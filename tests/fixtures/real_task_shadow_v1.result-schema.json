@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Two-arm shadow replay result including rank, score, path-weight state, counts, deltas, churn, idempotency and replay proof.",
+  "properties": {
+    "arms": {
+      "required": [
+        "used_q3_s1",
+        "confirmed_r05_s1"
+      ],
+      "type": "object"
+    },
+    "comparison": {
+      "type": "object"
+    },
+    "efficiency": {
+      "type": "object"
+    },
+    "packet_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "protocol_id": {
+      "const": "real-task-feedback-shadow-v1"
+    },
+    "replay": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "slot": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "snapshot_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "packet_id",
+    "slot",
+    "snapshot_sha256",
+    "arms",
+    "comparison",
+    "efficiency",
+    "replay"
+  ],
+  "title": "Real task feedback shadow result v1",
+  "type": "object"
+}
