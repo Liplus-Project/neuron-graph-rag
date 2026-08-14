@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "corpus_id": "feedback-policy-comparison-v1",
+  "phase": "corpus-only",
+  "repository": "Liplus-Project/neuron-graph-rag",
+  "license": "Apache-2.0",
+  "newline_policy": {
+    "canonical": "LF",
+    "verification": "raw-sha256-first-with-whole-file-lf-crlf-equivalence-only"
+  },
+  "relation_source": "relative-markdown-links-under-explicit-reference-sections-only",
+  "splits": {
+    "development": {
+      "split_id": "policycmp-v1-development",
+      "documents": [
+        {
+          "cluster_id": "amber-archive",
+          "node_id": "policycmp-v1-dev-amber-source",
+          "path": "corpora/feedback-policy-comparison-v1/development-amber-source.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:53c8e2ce88457980e355a5e8e76bffbf92200217bd78d4eab7f98c6ef0445143",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/development-amber-source.md"
+        },
+        {
+          "cluster_id": "amber-archive",
+          "node_id": "policycmp-v1-dev-amber-route",
+          "path": "corpora/feedback-policy-comparison-v1/development-amber-route.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:78f128de402b396e636ac59c5d5bde9d7945c88a7c21532450f915bc54876053",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/development-amber-route.md"
+        },
+        {
+          "cluster_id": "amber-archive",
+          "node_id": "policycmp-v1-dev-amber-terminal",
+          "path": "corpora/feedback-policy-comparison-v1/development-amber-terminal.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:8451b5604d10821cd618d3d8b044e0f25893c6709cf3c3adf7f8a175050c2d0a",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/development-amber-terminal.md"
+        },
+        {
+          "cluster_id": "amber-archive",
+          "node_id": "policycmp-v1-dev-amber-sibling",
+          "path": "corpora/feedback-policy-comparison-v1/development-amber-sibling.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:05883750ac6b1ae835c9faa4e41e84fdc5feabb1dda9bf1f212a9b92c9f24482",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/development-amber-sibling.md"
+        },
+        {
+          "cluster_id": "cobalt-observatory",
+          "node_id": "policycmp-v1-dev-cobalt-source",
+          "path": "corpora/feedback-policy-comparison-v1/development-cobalt-source.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:4e9ac173dd1c6085124d732a5329b81c72bdacb6d71f9834ea1262b2554aef50",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/development-cobalt-source.md"
+        },
+        {
+          "cluster_id": "cobalt-observatory",
+          "node_id": "policycmp-v1-dev-cobalt-route",
+          "path": "corpora/feedback-policy-comparison-v1/development-cobalt-route.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:32b31940466f71a398fd3cb0fdb774f2123592b6f6704272dc41fa07bf9f316c",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/development-cobalt-route.md"
+        },
+        {
+          "cluster_id": "cobalt-observatory",
+          "node_id": "policycmp-v1-dev-cobalt-terminal",
+          "path": "corpora/feedback-policy-comparison-v1/development-cobalt-terminal.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:fea56030c977c93124b754c2035d82cc289e16c5994bbcbc116285ea62c92f87",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/development-cobalt-terminal.md"
+        },
+        {
+          "cluster_id": "cobalt-observatory",
+          "node_id": "policycmp-v1-dev-cobalt-sibling",
+          "path": "corpora/feedback-policy-comparison-v1/development-cobalt-sibling.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:dafbc9dc2be739f9212762c81f08231066383fc3d4e701d0f6e6bf90de374af4",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/development-cobalt-sibling.md"
+        }
+      ],
+      "edges": [
+        {
+          "source_id": "policycmp-v1-dev-amber-source",
+          "target_id": "policycmp-v1-dev-amber-route",
+          "edge_type": "mention"
+        },
+        {
+          "source_id": "policycmp-v1-dev-amber-source",
+          "target_id": "policycmp-v1-dev-amber-sibling",
+          "edge_type": "mention"
+        },
+        {
+          "source_id": "policycmp-v1-dev-amber-route",
+          "target_id": "policycmp-v1-dev-amber-terminal",
+          "edge_type": "mention"
+        },
+        {
+          "source_id": "policycmp-v1-dev-cobalt-source",
+          "target_id": "policycmp-v1-dev-cobalt-route",
+          "edge_type": "mention"
+        },
+        {
+          "source_id": "policycmp-v1-dev-cobalt-source",
+          "target_id": "policycmp-v1-dev-cobalt-sibling",
+          "edge_type": "mention"
+        },
+        {
+          "source_id": "policycmp-v1-dev-cobalt-route",
+          "target_id": "policycmp-v1-dev-cobalt-terminal",
+          "edge_type": "mention"
+        }
+      ]
+    },
+    "holdout": {
+      "split_id": "policycmp-v1-holdout",
+      "documents": [
+        {
+          "cluster_id": "quartz-foundry",
+          "node_id": "policycmp-v1-holdout-quartz-source",
+          "path": "corpora/feedback-policy-comparison-v1/holdout-quartz-source.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:49d6501b37519e0f82fc379caf04f0ae45b69554a0e69e298985d6c2de9e5be6",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/holdout-quartz-source.md"
+        },
+        {
+          "cluster_id": "quartz-foundry",
+          "node_id": "policycmp-v1-holdout-quartz-route",
+          "path": "corpora/feedback-policy-comparison-v1/holdout-quartz-route.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:74a44abf53e4bce3c32da0df117ee53033505a1adc0809966660bebd0be1e107",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/holdout-quartz-route.md"
+        },
+        {
+          "cluster_id": "quartz-foundry",
+          "node_id": "policycmp-v1-holdout-quartz-terminal",
+          "path": "corpora/feedback-policy-comparison-v1/holdout-quartz-terminal.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:66c61a42042fea02e9c2a1f48b32338139ad7a8d57e46dc65deb317022dc7293",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/holdout-quartz-terminal.md"
+        },
+        {
+          "cluster_id": "quartz-foundry",
+          "node_id": "policycmp-v1-holdout-quartz-sibling",
+          "path": "corpora/feedback-policy-comparison-v1/holdout-quartz-sibling.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:65e6eaaab7f57c925051063cbe15be280986ac771e60aff1bccc10bddff4bd32",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/holdout-quartz-sibling.md"
+        },
+        {
+          "cluster_id": "willow-relay",
+          "node_id": "policycmp-v1-holdout-willow-source",
+          "path": "corpora/feedback-policy-comparison-v1/holdout-willow-source.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:2c49b14a417dfd523bc3b0f6a23b4cc96bfe0e9cbe52541d5335128fd2bcbe4d",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/holdout-willow-source.md"
+        },
+        {
+          "cluster_id": "willow-relay",
+          "node_id": "policycmp-v1-holdout-willow-route",
+          "path": "corpora/feedback-policy-comparison-v1/holdout-willow-route.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:f6d702ecac5760f310d6cf85a42d8cc2282ddd54d09cbd9ed2a062f48a14e3a6",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/holdout-willow-route.md"
+        },
+        {
+          "cluster_id": "willow-relay",
+          "node_id": "policycmp-v1-holdout-willow-terminal",
+          "path": "corpora/feedback-policy-comparison-v1/holdout-willow-terminal.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:4208515b0034326f42746cc3fe45b33d4aecab62e8498fa0b36a4bce4c44abe0",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/holdout-willow-terminal.md"
+        },
+        {
+          "cluster_id": "willow-relay",
+          "node_id": "policycmp-v1-holdout-willow-sibling",
+          "path": "corpora/feedback-policy-comparison-v1/holdout-willow-sibling.md",
+          "provenance": "repository-authored-public-source",
+          "raw_sha256": "sha256:275ae506b31c0eae991c8669a5b9ac8cd198754a1ae3c2bfe69a733d9c11e348",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/feedback-policy-comparison-v1/holdout-willow-sibling.md"
+        }
+      ],
+      "edges": [
+        {
+          "source_id": "policycmp-v1-holdout-quartz-source",
+          "target_id": "policycmp-v1-holdout-quartz-route",
+          "edge_type": "mention"
+        },
+        {
+          "source_id": "policycmp-v1-holdout-quartz-source",
+          "target_id": "policycmp-v1-holdout-quartz-sibling",
+          "edge_type": "mention"
+        },
+        {
+          "source_id": "policycmp-v1-holdout-quartz-route",
+          "target_id": "policycmp-v1-holdout-quartz-terminal",
+          "edge_type": "mention"
+        },
+        {
+          "source_id": "policycmp-v1-holdout-willow-source",
+          "target_id": "policycmp-v1-holdout-willow-route",
+          "edge_type": "mention"
+        },
+        {
+          "source_id": "policycmp-v1-holdout-willow-source",
+          "target_id": "policycmp-v1-holdout-willow-sibling",
+          "edge_type": "mention"
+        },
+        {
+          "source_id": "policycmp-v1-holdout-willow-route",
+          "target_id": "policycmp-v1-holdout-willow-terminal",
+          "edge_type": "mention"
+        }
+      ]
+    }
+  },
+  "contamination_audit": {
+    "prior_corpus_root": "corpora",
+    "prior_fixture_root": "tests/fixtures",
+    "excluded_root": "corpora/feedback-policy-comparison-v1",
+    "identity_fields": [
+      "split_id",
+      "node_id",
+      "path",
+      "source_url",
+      "source_id-target_id-edge_type"
+    ]
+  }
+}
