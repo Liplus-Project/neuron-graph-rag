@@ -296,6 +296,8 @@ Evidence-gated local feedback reinforcementは、credited edgeごとに異なる
 
 Confirmed-outcome feedback reinforcementは、同じ candidate class の `confirmed_outcome_reinforcement=True` と明示 `confirmation_decay_ratio` で有効にします。`used` は履歴だけを保存し、relation trace 上で used となった node の一意な credited path を、独立 `confirmed` outcome ごとに減衰強化します。count、multiplier、actual delta、credited path は core / MCP receipt で同じ形に写され、SQLite restart 後も継続します。mechanics は default 採用や q3/s1 との優位性を主張しません。詳細は[Confirmed-outcome feedback reinforcement](docs/confirmed-outcome-feedback-reinforcement.md)を参照してください。
 
+後続の feedback policy comparison に使う public source は、[feedback-policy-comparison-v1](corpora/feedback-policy-comparison-v1/README.md) に corpus-only で固定しています。development / holdout 各二 cluster の明示 link topology、source-only manifest、raw SHA-256、LF 改行規則、provenance、既存 fixture との identity contamination audit だけを含み、評価の選択入力と観測物は含めません。この source merge commit を後続の別 issue が唯一の入力として扱います。
+
 Canonical evidence gate evaluationは、quorum `3` と sibling normalization `1.0` の組合せを、fresh engine checkpoint、独立development / holdout identity、非アルファベット順canonical gate array、exclusive result writerで評価します。freeze前に登録外placeholderで実writer→verifier round-tripを証明し、development全gate通過時だけholdoutを一度開きます。既定値とvalidated状態は変更しません。詳細は[Canonical evidence gate evaluation](docs/canonical-evidence-gate-evaluation.md)を参照してください。
 
 ## Explanation model
