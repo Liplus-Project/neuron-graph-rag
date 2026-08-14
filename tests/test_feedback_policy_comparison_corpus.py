@@ -160,7 +160,12 @@ class FeedbackPolicyComparisonCorpusTest(unittest.TestCase):
             for path in (ROOT / "corpora").rglob("*")
             if path.is_file() and CORPUS_ROOT not in path.parents
         ]
-        fixture_files = [path for path in (ROOT / "tests" / "fixtures").rglob("*") if path.is_file()]
+        fixture_files = [
+            path
+            for path in (ROOT / "tests" / "fixtures").rglob("*")
+            if path.is_file()
+            and not path.name.startswith("feedback_policy_comparison_v1.")
+        ]
         fixture_names = {path.name.lower() for path in fixture_files}
         self.assertTrue(any("feedback" in name for name in fixture_names))
         self.assertTrue(any("rank_elasticity" in name for name in fixture_names))

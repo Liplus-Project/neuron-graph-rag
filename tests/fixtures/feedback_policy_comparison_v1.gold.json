@@ -1,0 +1,115 @@
+{
+  "protocol_id": "policycmp85-feedback-policy-comparison-v1",
+  "splits": {
+    "development": [
+      {
+        "case_id": "policycmp85-dev-amber-confirmed",
+        "cohort": "confirmed-use",
+        "cluster_node_ids": [
+          "policycmp-v1-dev-amber-source",
+          "policycmp-v1-dev-amber-route",
+          "policycmp-v1-dev-amber-terminal",
+          "policycmp-v1-dev-amber-sibling"
+        ],
+        "relation_query": "Amber archive intake",
+        "direct_query": "Amber preservation shelf",
+        "reverse_query": "Amber preservation shelf",
+        "expected_terminal_node_id": "policycmp-v1-dev-amber-terminal",
+        "used_node_id": "policycmp-v1-dev-amber-terminal",
+        "non_target_sibling_node_id": "policycmp-v1-dev-amber-sibling",
+        "unrelated_node_id": "policycmp-v1-dev-cobalt-terminal",
+        "direct_node_id": "policycmp-v1-dev-amber-terminal",
+        "reverse_expected_node_id": "policycmp-v1-dev-amber-source",
+        "outcome": "confirmed",
+        "outcome_summary": "固定 schedule の正しい利用を確認",
+        "limit": 8,
+        "allowed_mutation_edges": [
+          "policycmp-v1-dev-amber-route|policycmp-v1-dev-amber-terminal|mention",
+          "policycmp-v1-dev-amber-source|policycmp-v1-dev-amber-route|mention",
+          "policycmp-v1-dev-amber-source|policycmp-v1-dev-amber-sibling|mention"
+        ]
+      },
+      {
+        "case_id": "policycmp85-dev-cobalt-corrected",
+        "cohort": "corrected-use",
+        "cluster_node_ids": [
+          "policycmp-v1-dev-cobalt-source",
+          "policycmp-v1-dev-cobalt-route",
+          "policycmp-v1-dev-cobalt-terminal",
+          "policycmp-v1-dev-cobalt-sibling"
+        ],
+        "relation_query": "Cobalt observatory intake",
+        "direct_query": "Cobalt lens register",
+        "reverse_query": "Cobalt lens register",
+        "expected_terminal_node_id": "policycmp-v1-dev-cobalt-terminal",
+        "used_node_id": "policycmp-v1-dev-cobalt-sibling",
+        "non_target_sibling_node_id": "policycmp-v1-dev-cobalt-route",
+        "unrelated_node_id": "policycmp-v1-dev-amber-terminal",
+        "direct_node_id": "policycmp-v1-dev-cobalt-terminal",
+        "reverse_expected_node_id": "policycmp-v1-dev-cobalt-source",
+        "outcome": "corrected",
+        "outcome_summary": "固定 schedule の誤利用を後で訂正",
+        "limit": 8,
+        "allowed_mutation_edges": [
+          "policycmp-v1-dev-cobalt-source|policycmp-v1-dev-cobalt-route|mention",
+          "policycmp-v1-dev-cobalt-source|policycmp-v1-dev-cobalt-sibling|mention"
+        ]
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "policycmp85-holdout-quartz-confirmed",
+        "cohort": "confirmed-use",
+        "cluster_node_ids": [
+          "policycmp-v1-holdout-quartz-source",
+          "policycmp-v1-holdout-quartz-route",
+          "policycmp-v1-holdout-quartz-terminal",
+          "policycmp-v1-holdout-quartz-sibling"
+        ],
+        "relation_query": "Quartz foundry intake",
+        "direct_query": "Quartz glaze register",
+        "reverse_query": "Quartz glaze register",
+        "expected_terminal_node_id": "policycmp-v1-holdout-quartz-terminal",
+        "used_node_id": "policycmp-v1-holdout-quartz-terminal",
+        "non_target_sibling_node_id": "policycmp-v1-holdout-quartz-sibling",
+        "unrelated_node_id": "policycmp-v1-holdout-willow-terminal",
+        "direct_node_id": "policycmp-v1-holdout-quartz-terminal",
+        "reverse_expected_node_id": "policycmp-v1-holdout-quartz-source",
+        "outcome": "confirmed",
+        "outcome_summary": "固定 schedule の正しい利用を確認",
+        "limit": 8,
+        "allowed_mutation_edges": [
+          "policycmp-v1-holdout-quartz-route|policycmp-v1-holdout-quartz-terminal|mention",
+          "policycmp-v1-holdout-quartz-source|policycmp-v1-holdout-quartz-route|mention",
+          "policycmp-v1-holdout-quartz-source|policycmp-v1-holdout-quartz-sibling|mention"
+        ]
+      },
+      {
+        "case_id": "policycmp85-holdout-willow-corrected",
+        "cohort": "corrected-use",
+        "cluster_node_ids": [
+          "policycmp-v1-holdout-willow-source",
+          "policycmp-v1-holdout-willow-route",
+          "policycmp-v1-holdout-willow-terminal",
+          "policycmp-v1-holdout-willow-sibling"
+        ],
+        "relation_query": "Willow relay intake",
+        "direct_query": "Willow basin register",
+        "reverse_query": "Willow basin register",
+        "expected_terminal_node_id": "policycmp-v1-holdout-willow-terminal",
+        "used_node_id": "policycmp-v1-holdout-willow-sibling",
+        "non_target_sibling_node_id": "policycmp-v1-holdout-willow-route",
+        "unrelated_node_id": "policycmp-v1-holdout-quartz-terminal",
+        "direct_node_id": "policycmp-v1-holdout-willow-terminal",
+        "reverse_expected_node_id": "policycmp-v1-holdout-willow-source",
+        "outcome": "corrected",
+        "outcome_summary": "固定 schedule の誤利用を後で訂正",
+        "limit": 8,
+        "allowed_mutation_edges": [
+          "policycmp-v1-holdout-willow-source|policycmp-v1-holdout-willow-route|mention",
+          "policycmp-v1-holdout-willow-source|policycmp-v1-holdout-willow-sibling|mention"
+        ]
+      }
+    ]
+  }
+}
