@@ -8,10 +8,13 @@ from datetime import datetime
 
 from .engine import NeuronGraphRAG
 from .models import (
+    ConfirmedEdge,
+    CreditedPath,
     FeedbackEvidence,
     FeedbackReceipt,
     NormalizedSiblingEdge,
     OutcomeReceipt,
+    PathStep,
     ReinforcedEdge,
     SourceUseEvent,
     SourceUseEventReceipt,
@@ -51,6 +54,9 @@ class FeedbackLedger:
             separators=(",", ":"),
             ensure_ascii=False,
         )
+        reinforce_on_use = not bool(
+            getattr(self.engine.config, "confirmed_outcome_reinforcement", False)
+        )
         stored = self.engine.store.record_source_use(
             idempotency_key=idempotency_key,
             payload_json=payload_json,
@@ -58,9 +64,16 @@ class FeedbackLedger:
             trace_id=trace_id,
             created_at=timestamp,
             events=tuple((event.node_id, event.stage) for event in ordered_events),
-            apply_feedback=lambda node_ids: self.engine.record_success(
-                trace_id, node_ids, now=timestamp
+            apply_feedback=(
+                (
+                    lambda node_ids: self.engine.record_success(
+                        trace_id, node_ids, now=timestamp
+                    )
+                )
+                if reinforce_on_use
+                else None
             ),
+            confirmation_candidate=not reinforce_on_use,
         )
         feedback_data = stored["feedback"]
         feedback = None
@@ -145,17 +158,39 @@ class FeedbackLedger:
             separators=(",", ":"),
             ensure_ascii=False,
         )
-        stored = self.engine.store.record_outcome(
-            idempotency_key=idempotency_key,
-            payload_json=payload_json,
-            outcome_id=uuid.uuid4().hex,
-            trace_id=trace_id,
-            node_ids=ordered_node_ids,
-            outcome=outcome,
-            summary=summary,
-            external_ref=external_ref,
-            recorded_at=self._timestamp(now),
+        outcome_id = uuid.uuid4().hex
+        recorded_at = self._timestamp(now)
+        candidate_enabled = bool(
+            getattr(self.engine.config, "confirmed_outcome_reinforcement", False)
         )
+        if candidate_enabled and outcome == "confirmed":
+            plan = self.engine.confirmed_outcome_plan(trace_id, ordered_node_ids)
+            stored = self.engine.store.record_confirmed_outcome(
+                idempotency_key=idempotency_key,
+                payload_json=payload_json,
+                outcome_id=outcome_id,
+                trace_id=trace_id,
+                node_ids=ordered_node_ids,
+                summary=summary,
+                external_ref=external_ref,
+                recorded_at=recorded_at,
+                decay_ratio=float(self.engine.config.confirmation_decay_ratio),
+                edge_updates=plan["updates"],
+                normalization_sets=plan["normalization_sets"],
+                credited_paths=plan["credited_paths"],
+            )
+        else:
+            stored = self.engine.store.record_outcome(
+                idempotency_key=idempotency_key,
+                payload_json=payload_json,
+                outcome_id=outcome_id,
+                trace_id=trace_id,
+                node_ids=ordered_node_ids,
+                outcome=outcome,
+                summary=summary,
+                external_ref=external_ref,
+                recorded_at=recorded_at,
+            )
         return OutcomeReceipt(
             str(stored["outcome_id"]),
             str(stored["trace_id"]),
@@ -163,6 +198,45 @@ class FeedbackLedger:
             str(stored["outcome"]),
             float(stored["recorded_at"]),
             bool(stored["reinforcement_applied"]),
+            tuple(
+                ConfirmedEdge(
+                    str(item["source_id"]),
+                    str(item["target_id"]),
+                    str(item["edge_type"]),
+                    int(item["confirmation_count"]),
+                    float(item["multiplier"]),
+                    float(item["actual_delta"]),
+                    float(item["old_weight"]),
+                    float(item["new_weight"]),
+                )
+                for item in stored.get("confirmations", [])
+            ),
+            tuple(
+                CreditedPath(
+                    str(path["node_id"]),
+                    tuple(
+                        PathStep(
+                            str(step["source_id"]),
+                            str(step["target_id"]),
+                            str(step["edge_type"]),
+                            float(step["edge_weight"]),
+                            float(step["factuality"]),
+                        )
+                        for step in path["steps"]
+                    ),
+                )
+                for path in stored.get("credited_paths", [])
+            ),
+            tuple(
+                NormalizedSiblingEdge(
+                    str(edge["source_id"]),
+                    str(edge["target_id"]),
+                    str(edge["edge_type"]),
+                    float(edge["old_weight"]),
+                    float(edge["new_weight"]),
+                )
+                for edge in stored.get("normalized_sibling_edges", [])
+            ),
         )
 
     @staticmethod

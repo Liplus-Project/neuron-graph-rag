@@ -51,6 +51,22 @@ OUTCOME_DESCRIPTION = (
     "source-use feedback. If the trace handle has expired or does not exist, this tool "
     "returns unknown_trace."
 )
+CONFIRMED_SOURCE_USE_DESCRIPTION = (
+    "Record ordered source-use transitions for candidates from one Neuron Graph RAG "
+    "search trace. Use selected, validated, and used in order. This server uses the "
+    "confirmed-outcome candidate: retrieved through used records provenance only and "
+    "never changes graph weights. Retain the trace_id and call record_outcome with "
+    "confirmed only when later evidence or an operational result supports the judgment. "
+    "Retries and duplicate stages do not change state twice."
+)
+CONFIRMED_OUTCOME_DESCRIPTION = (
+    "Record a delayed outcome for sources already marked used. This server uses the "
+    "confirmed-outcome candidate: a new confirmed outcome can reinforce only the saved "
+    "credited relation path. The first independent confirmation uses multiplier 1.0 and "
+    "later independent traces use the configured geometric decay; duplicate traces and "
+    "idempotency retries do not reinforce twice. Corrected, rolled_back, and superseded "
+    "remain audit-only and never subtract or roll back weights."
+)
 
 _IDEMPOTENCY = re.compile(r"^[A-Za-z0-9._:-]+$")
 _TRACE = re.compile(r"^[0-9a-f]{32}$")
@@ -137,6 +153,29 @@ _EVIDENCE_OUTPUT = _object(
         "activated": {"type": "boolean"},
     },
     ["source_id", "target_id", "edge_type", "count", "quorum", "activated"],
+)
+_CONFIRMATION_OUTPUT = _object(
+    {
+        "source_id": {"type": "string"},
+        "target_id": {"type": "string"},
+        "edge_type": {"type": "string"},
+        "confirmation_count": {"type": "integer", "minimum": 1},
+        "multiplier": {"type": "number", "exclusiveMinimum": 0.0},
+        "actual_delta": {"type": "number", "minimum": 0.0},
+        "old_weight": {"type": "number", "minimum": 0.0},
+        "new_weight": {"type": "number", "minimum": 0.0},
+    },
+    [
+        "source_id", "target_id", "edge_type", "confirmation_count",
+        "multiplier", "actual_delta", "old_weight", "new_weight",
+    ],
+)
+_CREDITED_PATH_OUTPUT = _object(
+    {
+        "node_id": {"type": "string"},
+        "steps": {"type": "array", "items": _STEP_OUTPUT},
+    },
+    ["node_id", "steps"],
 )
 SEARCH_OUTPUT = _object(
     {
@@ -228,7 +267,10 @@ OUTCOME_OUTPUT = _object(
         "node_ids": {"type": "array", "items": {"type": "string"}},
         "outcome": {"type": "string", "enum": ["confirmed", "corrected", "rolled_back", "superseded"]},
         "recorded_at": {"type": "number"},
-        "reinforcement_applied": {"type": "boolean", "const": False},
+        "reinforcement_applied": {"type": "boolean"},
+        "confirmations": {"type": "array", "items": _CONFIRMATION_OUTPUT},
+        "credited_paths": {"type": "array", "items": _CREDITED_PATH_OUTPUT},
+        "normalized_sibling_edges": {"type": "array", "items": _EDGE_OUTPUT},
     },
     ["contract_version", "outcome_id", "trace_id", "node_ids", "outcome", "recorded_at", "reinforcement_applied"],
 )
@@ -268,21 +310,48 @@ TOOLS = (
 )
 
 
+def _tools(*, confirmed_outcome_reinforcement: bool) -> tuple[types.Tool, ...]:
+    if not confirmed_outcome_reinforcement:
+        return TOOLS
+    return (
+        TOOLS[0],
+        types.Tool(
+            name="record_source_use",
+            description=CONFIRMED_SOURCE_USE_DESCRIPTION,
+            input_schema=SOURCE_USE_INPUT,
+            output_schema=SOURCE_USE_OUTPUT,
+            annotations=_annotations(idempotent=True),
+        ),
+        types.Tool(
+            name="record_outcome",
+            description=CONFIRMED_OUTCOME_DESCRIPTION,
+            input_schema=OUTCOME_INPUT,
+            output_schema=OUTCOME_OUTPUT,
+            annotations=_annotations(idempotent=True),
+        ),
+    )
+
+
 class FeedbackMCPAdapter:
     def __init__(
         self, database: str | Path, *, config: EngineConfig | None = None
     ) -> None:
         self.engine = NeuronGraphRAG(database, config=config)
         self.feedback = FeedbackLedger(self.engine)
+        self.tools = _tools(
+            confirmed_outcome_reinforcement=(
+                self.engine.config.confirmed_outcome_reinforcement
+            )
+        )
 
     def close(self) -> None:
         self.engine.close()
 
     async def list_tools(self, *_: object) -> types.ListToolsResult:
-        return types.ListToolsResult(tools=list(TOOLS), result_type="complete")
+        return types.ListToolsResult(tools=list(self.tools), result_type="complete")
 
     async def call_tool(self, _context: object, params: types.CallToolRequestParams) -> types.CallToolResult:
-        if params.name not in {tool.name for tool in TOOLS}:
+        if params.name not in {tool.name for tool in self.tools}:
             raise MCPError(-32601, "Unknown tool")
         arguments = params.arguments or {}
         try:
@@ -311,7 +380,10 @@ class FeedbackMCPAdapter:
         if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 100:
             raise ValueError("limit must be an integer from 1 through 100")
         try:
-            if self.engine.config.sibling_feedback_normalization > 0.0:
+            if (
+                self.engine.config.confirmed_outcome_reinforcement
+                or self.engine.config.sibling_feedback_normalization > 0.0
+            ):
                 trace = self.engine.search_channels(query, limit=limit).relation
             else:
                 trace = self.engine.search(query, limit=limit)
@@ -468,6 +540,45 @@ class FeedbackMCPAdapter:
             "outcome": receipt.outcome,
             "recorded_at": receipt.recorded_at,
             "reinforcement_applied": receipt.reinforcement_applied,
+            "confirmations": [
+                {
+                    "source_id": item.source_id,
+                    "target_id": item.target_id,
+                    "edge_type": item.edge_type,
+                    "confirmation_count": item.confirmation_count,
+                    "multiplier": item.multiplier,
+                    "actual_delta": item.actual_delta,
+                    "old_weight": item.old_weight,
+                    "new_weight": item.new_weight,
+                }
+                for item in receipt.confirmations
+            ],
+            "credited_paths": [
+                {
+                    "node_id": path.node_id,
+                    "steps": [
+                        {
+                            "source_id": step.source_id,
+                            "target_id": step.target_id,
+                            "edge_type": step.edge_type,
+                            "edge_weight": step.edge_weight,
+                            "factuality": step.factuality,
+                        }
+                        for step in path.steps
+                    ],
+                }
+                for path in receipt.credited_paths
+            ],
+            "normalized_sibling_edges": [
+                {
+                    "source_id": edge.source_id,
+                    "target_id": edge.target_id,
+                    "edge_type": edge.edge_type,
+                    "old_weight": edge.old_weight,
+                    "new_weight": edge.new_weight,
+                }
+                for edge in receipt.normalized_sibling_edges
+            ],
         }
 
     @staticmethod
@@ -621,6 +732,13 @@ def _unit_interval(value: str) -> float:
     return parsed
 
 
+def _open_unit_interval(value: str) -> float:
+    parsed = _unit_interval(value)
+    if not 0.0 < parsed < 1.0:
+        raise argparse.ArgumentTypeError("must be a number strictly between 0.0 and 1.0")
+    return parsed
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run the local Neuron Graph RAG MCP server")
     parser.add_argument("--database", required=True, help="Path to the local SQLite database")
@@ -636,16 +754,37 @@ def _build_parser() -> argparse.ArgumentParser:
         default=0.0,
         help="Same-source sibling normalization ratio from 0.0 through 1.0 (default: 0.0)",
     )
+    parser.add_argument(
+        "--confirmed-outcome-reinforcement",
+        action="store_true",
+        help="Move positive relation reinforcement from used to confirmed outcomes",
+    )
+    parser.add_argument(
+        "--confirmation-decay-ratio",
+        type=_open_unit_interval,
+        default=None,
+        help="Geometric decay ratio required by confirmed-outcome reinforcement",
+    )
     return parser
 
 
 def main() -> None:
     parser = _build_parser()
     arguments = parser.parse_args()
+    if arguments.confirmed_outcome_reinforcement and arguments.confirmation_decay_ratio is None:
+        parser.error(
+            "--confirmed-outcome-reinforcement requires --confirmation-decay-ratio"
+        )
+    if not arguments.confirmed_outcome_reinforcement and arguments.confirmation_decay_ratio is not None:
+        parser.error(
+            "--confirmation-decay-ratio requires --confirmed-outcome-reinforcement"
+        )
     config = EngineConfig(
         relation_feedback_evidence_quorum=(
             arguments.relation_feedback_evidence_quorum
         ),
         sibling_feedback_normalization=arguments.sibling_feedback_normalization,
+        confirmed_outcome_reinforcement=arguments.confirmed_outcome_reinforcement,
+        confirmation_decay_ratio=arguments.confirmation_decay_ratio,
     )
     asyncio.run(_run(arguments.database, config=config))

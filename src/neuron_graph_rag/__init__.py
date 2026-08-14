@@ -2,6 +2,8 @@ from .engine import EngineConfig, NeuronGraphRAG
 from .feedback import FeedbackLedger
 from .models import (
     ActivationPath,
+    ConfirmedEdge,
+    CreditedPath,
     DocumentNode,
     FeedbackContractError,
     FeedbackEvidence,
@@ -23,6 +25,8 @@ from .retrieval import FeatureHashingEncoder
 
 __all__ = [
     "ActivationPath",
+    "ConfirmedEdge",
+    "CreditedPath",
     "DocumentNode",
     "EngineConfig",
     "FeatureHashingEncoder",
