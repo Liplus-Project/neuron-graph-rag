@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import importlib.util
 import os
 import subprocess
 import sys
@@ -24,7 +25,10 @@ from neuron_graph_rag.real_task_shadow_v2 import (
     verify_packet_against_snapshot,
     verify_result_against_packets,
 )
-from neuron_graph_rag_mcp.server import CONTRACT_VERSION, FeedbackMCPAdapter
+MCP_AVAILABLE = importlib.util.find_spec("mcp") is not None
+
+if MCP_AVAILABLE:
+    from neuron_graph_rag_mcp.server import CONTRACT_VERSION, FeedbackMCPAdapter
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,6 +37,7 @@ PLACEHOLDER = FIXTURES / "real_task_shadow_v2.placeholder.json"
 MANIFEST = FIXTURES / "real_task_shadow_v2.manifest.json"
 
 
+@unittest.skipUnless(MCP_AVAILABLE, "optional MCP SDK is not installed")
 class RealTaskShadowV2Test(unittest.TestCase):
     def setUp(self) -> None:
         self.fixture = read_canonical_json(PLACEHOLDER)
