@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "$id": "https://example.invalid/neuron-graph-rag/real-task-feedback-shadow-v2.packet.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "capture": {
+      "additionalProperties": false,
+      "properties": {
+        "capture_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "effective_config": {
+          "additionalProperties": false,
+          "properties": {
+            "feedback": {
+              "type": "object"
+            },
+            "retrieval": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "feedback",
+            "retrieval"
+          ],
+          "type": "object"
+        },
+        "feedback_config_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "full_config_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "retrieval_config_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "search_surface": {
+          "enum": [
+            "combined",
+            "relation"
+          ],
+          "type": "string"
+        },
+        "searched_at": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "capture_fingerprint",
+        "effective_config",
+        "feedback_config_fingerprint",
+        "full_config_fingerprint",
+        "retrieval_config_fingerprint",
+        "search_surface",
+        "searched_at"
+      ],
+      "type": "object"
+    },
+    "captured_at": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "database_snapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "efficiency": {
+      "type": "object"
+    },
+    "outcome": {
+      "type": "object"
+    },
+    "packet_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "protocol_id": {
+      "const": "real-task-feedback-shadow-v2"
+    },
+    "retrieval": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": 2
+    },
+    "slot": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "source_use": {
+      "type": "array"
+    },
+    "supersedes_packet_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "task": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "capture",
+    "captured_at",
+    "database_snapshot",
+    "efficiency",
+    "outcome",
+    "packet_id",
+    "protocol_id",
+    "retrieval",
+    "schema_version",
+    "slot",
+    "source_use",
+    "supersedes_packet_id",
+    "task"
+  ],
+  "title": "Real-task feedback shadow v2 packet",
+  "type": "object"
+}

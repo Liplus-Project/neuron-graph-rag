@@ -76,6 +76,12 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(result.is_error)
         self.assertEqual(json.loads(result.content[0].text), result.structured_content)
         self.assertIsNone(result.structured_content["trace_expires_at"])
+        provenance = result.structured_content["effective_config_provenance"]
+        self.assertEqual(provenance["search_surface"], "combined")
+        self.assertEqual(provenance["effective_config"]["retrieval"]["sparse_weight"], 0.55)
+        self.assertEqual(provenance["effective_config"]["feedback"]["maximum_edge_weight"], 2.0)
+        self.assertTrue(provenance["retrieval_config_fingerprint"].startswith("sha256:"))
+        self.assertTrue(provenance["full_config_fingerprint"].startswith("sha256:"))
         self.assertTrue(all(hit["source_use_stage"] == "retrieved" for hit in result.structured_content["hits"]))
 
     async def test_feedback_loop_and_safe_tool_errors(self) -> None:

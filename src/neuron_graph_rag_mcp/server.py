@@ -17,6 +17,11 @@ from mcp.server.stdio import stdio_server
 from mcp.shared.exceptions import MCPError
 
 from neuron_graph_rag import FeedbackContractError, FeedbackLedger, SourceUseEvent
+from neuron_graph_rag.config_provenance import (
+    effective_config_provenance,
+    effective_search_surface,
+    search_with_surface,
+)
 from neuron_graph_rag.evidence_feedback import EngineConfig, NeuronGraphRAG
 
 CONTRACT_VERSION = "ngr.mcp.feedback/v1"
@@ -184,6 +189,28 @@ SEARCH_OUTPUT = _object(
         "query": {"type": "string"},
         "created_at": {"type": "number"},
         "trace_expires_at": {"type": ["number", "null"]},
+        "effective_config_provenance": _object(
+            {
+                "effective_config": _object(
+                    {
+                        "retrieval": {"type": "object"},
+                        "feedback": {"type": "object"},
+                    },
+                    ["retrieval", "feedback"],
+                ),
+                "search_surface": {
+                    "type": "string",
+                    "enum": ["combined", "relation"],
+                },
+                "retrieval_config_fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+                "feedback_config_fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+                "full_config_fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+            },
+            [
+                "effective_config", "search_surface", "retrieval_config_fingerprint",
+                "feedback_config_fingerprint", "full_config_fingerprint",
+            ],
+        ),
         "hits": {
             "type": "array",
             "items": _object(
@@ -223,7 +250,10 @@ SEARCH_OUTPUT = _object(
             ),
         },
     },
-    ["contract_version", "trace_id", "query", "created_at", "trace_expires_at", "hits"],
+    [
+        "contract_version", "trace_id", "query", "created_at",
+        "trace_expires_at", "effective_config_provenance", "hits",
+    ],
 )
 SOURCE_USE_OUTPUT = _object(
     {
@@ -380,13 +410,13 @@ class FeedbackMCPAdapter:
         if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 100:
             raise ValueError("limit must be an integer from 1 through 100")
         try:
-            if (
-                self.engine.config.confirmed_outcome_reinforcement
-                or self.engine.config.sibling_feedback_normalization > 0.0
-            ):
-                trace = self.engine.search_channels(query, limit=limit).relation
-            else:
-                trace = self.engine.search(query, limit=limit)
+            search_surface = effective_search_surface(self.engine.config)
+            trace = search_with_surface(
+                self.engine,
+                query,
+                limit=limit,
+                search_surface=search_surface,
+            )
         except ValueError as error:
             if str(error) == "Cannot search an empty corpus":
                 raise FeedbackContractError("empty_corpus", "local NGR corpus is empty") from error
@@ -436,6 +466,10 @@ class FeedbackMCPAdapter:
             "query": trace.query,
             "created_at": trace.created_at,
             "trace_expires_at": None,
+            "effective_config_provenance": {
+                **effective_config_provenance(self.engine.config),
+                "search_surface": search_surface,
+            },
             "hits": hits,
         }
 
