@@ -1,0 +1,82 @@
+{
+  "$id": "https://example.invalid/neuron-graph-rag/real-task-feedback-shadow-v2.result.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "arms": {
+      "additionalProperties": false,
+      "properties": {
+        "confirmed_r05_s1": {
+          "type": "object"
+        },
+        "used_q3_s1": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "confirmed_r05_s1",
+        "used_q3_s1"
+      ],
+      "type": "object"
+    },
+    "capture_config": {
+      "type": "object"
+    },
+    "capture_search_surface": {
+      "enum": [
+        "combined",
+        "relation"
+      ],
+      "type": "string"
+    },
+    "comparison": {
+      "type": "object"
+    },
+    "efficiency": {
+      "type": "array"
+    },
+    "packet_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "protocol_id": {
+      "const": "real-task-feedback-shadow-v2"
+    },
+    "replay": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": 2
+    },
+    "slots": {
+      "items": {
+        "minimum": 1,
+        "type": "integer"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "snapshot_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "arms",
+    "capture_config",
+    "capture_search_surface",
+    "comparison",
+    "efficiency",
+    "packet_ids",
+    "protocol_id",
+    "replay",
+    "schema_version",
+    "slots",
+    "snapshot_sha256"
+  ],
+  "title": "Real-task feedback shadow v2 result",
+  "type": "object"
+}

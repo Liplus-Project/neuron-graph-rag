@@ -1,0 +1,51 @@
+{
+  "arms": [
+    "used_q3_s1",
+    "confirmed_r05_s1"
+  ],
+  "artifact_sha256": {
+    "docs/real-task-feedback-shadow-protocol-v2.md": "270cb257ea23a3f5d4e09ec5a522e7e1ab24171e115204fa35bfa0fdea8a25bd",
+    "src/neuron_graph_rag/config_provenance.py": "5cc42425c6576f330a96c629f341ac5ddf8fd3629f14181e307919d3ebd581e6",
+    "src/neuron_graph_rag/real_task_shadow_v2.py": "0a816da79e1f4fb97c9a7e9e80fd15657f06b5bd0787537c748c1d11cfa9cbef",
+    "src/neuron_graph_rag_mcp/server.py": "4f29b0b2172a6ced58b0b5a46dc0c4204dcf695d93b64e7b9e8b1124af44c571",
+    "tests/fixtures/real_task_shadow_v2.packet-schema.json": "13c549ae5e322d6d92105f83c5170d93bea3e1c267cbaac657fe372b9d074fe3",
+    "tests/fixtures/real_task_shadow_v2.placeholder.json": "7c7e6a2f8c2b811404afb5eb4fec71b8889877e80a7f1baaf5e63e3aa923ef23",
+    "tests/fixtures/real_task_shadow_v2.result-schema.json": "5d952ca06eed54b790aaba69d5336332f22fbcec7337d50ba1b7332c89a67add",
+    "tests/test_mcp_adapter.py": "68ea846d480214dbb229ec51da19cba64b2c21edd5f5e51c8fd7b971bdc4c08d",
+    "tests/test_real_task_shadow_v2.py": "8552b8601c38b8b63a9f692d942858c9f9b684647e5461db2b8e414ed7b567af",
+    "tools/run_real_task_shadow_v2.py": "c4cac4b927a50ea7100ca44e5c93e270e80e216b11fab0e3b619dc36067cb577"
+  },
+  "capture_contract": {
+    "config_partition": "retrieval_and_feedback",
+    "fingerprints": [
+      "retrieval_config_fingerprint",
+      "feedback_config_fingerprint",
+      "full_config_fingerprint",
+      "capture_fingerprint"
+    ],
+    "mcp_provenance": "effective_runtime_config",
+    "search_time": "captured_trace_created_at"
+  },
+  "freeze_parent_commit": "062e3748d65e18a3f75b4e01ff9a183197d21c16",
+  "observation_status": "not_started",
+  "protocol_artifacts": {
+    "packet_schema": "tests/fixtures/real_task_shadow_v2.packet-schema.json",
+    "placeholder_fixture": "tests/fixtures/real_task_shadow_v2.placeholder.json",
+    "result_schema": "tests/fixtures/real_task_shadow_v2.result-schema.json"
+  },
+  "protocol_id": "real-task-feedback-shadow-v2",
+  "registered_outputs": {
+    "observed_results": "artifacts/real-task-feedback-shadow-v2/observed",
+    "packet_registry": "artifacts/real-task-feedback-shadow-v2/packets"
+  },
+  "registry_write": "exclusive_lock_scan_validate_reserve_write",
+  "replay_contract": {
+    "arm_clone_scope": "one_fresh_clone_per_arm_per_ordered_batch",
+    "capture_retrieval_config": "shared_across_arms",
+    "capture_time": "reused_per_packet",
+    "result_verification": "exact_semantic_replay_from_packets_and_snapshot",
+    "slot_order": "sequential_from_one"
+  },
+  "result_free": true,
+  "supersedes_protocol_id": "real-task-feedback-shadow-v1"
+}

@@ -218,6 +218,8 @@ In this deployment, trace handles expire <retention policy>; feedback after expi
 
 `trace_expires_at` は自動 expiry がなければ `null`、retention があれば Unix timestamp seconds とする。
 
+`search` はさらに `effective_config_provenance` を必ず返す。これは実際に trace を生成した `EngineConfig` を、ranking と graph propagation に影響する `effective_config.retrieval` と、feedback mutation だけに影響する `effective_config.feedback` へ分離し、実際に選ばれた `search_surface`（`combined` / `relation`）を併記した機械可読 object である。各 config 区分と全体には、UTF-8・key sort・2-space indent・末尾 LF の canonical JSON bytes に対する `sha256:` fingerprint をそれぞれ `retrieval_config_fingerprint`、`feedback_config_fingerprint`、`full_config_fingerprint` として付ける。process default も明示値も、解決後の effective value を省略せず返す。`created_at` とこの provenance により、result-free feedback shadow v2 は同じ snapshot、query、limit、capture 時刻、retrieval config、search surface を exact replayできる。provenance の追加は serving retrieval/default、feedback policy、transport、deployment を変更しない。
+
 ### 5.5 Core mapping
 
 | MCP field or behavior | Current NGR API |
