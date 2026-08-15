@@ -12,7 +12,7 @@
     "tests/fixtures/real_task_shadow_v2.placeholder.json": "7c7e6a2f8c2b811404afb5eb4fec71b8889877e80a7f1baaf5e63e3aa923ef23",
     "tests/fixtures/real_task_shadow_v2.result-schema.json": "5d952ca06eed54b790aaba69d5336332f22fbcec7337d50ba1b7332c89a67add",
     "tests/test_mcp_adapter.py": "68ea846d480214dbb229ec51da19cba64b2c21edd5f5e51c8fd7b971bdc4c08d",
-    "tests/test_real_task_shadow_v2.py": "d630b8f61f8da125cafac87094b404e53deab382c60fb1b73afaa2b3285a32f4",
+    "tests/test_real_task_shadow_v2.py": "8552b8601c38b8b63a9f692d942858c9f9b684647e5461db2b8e414ed7b567af",
     "tools/run_real_task_shadow_v2.py": "c4cac4b927a50ea7100ca44e5c93e270e80e216b11fab0e3b619dc36067cb577"
   },
   "capture_contract": {

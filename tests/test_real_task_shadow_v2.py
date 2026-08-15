@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import copy
 import hashlib
-import importlib.util
 import os
 import subprocess
 import sys
@@ -25,10 +24,15 @@ from neuron_graph_rag.real_task_shadow_v2 import (
     verify_packet_against_snapshot,
     verify_result_against_packets,
 )
-MCP_AVAILABLE = importlib.util.find_spec("mcp") is not None
-
-if MCP_AVAILABLE:
+try:
     from neuron_graph_rag_mcp.server import CONTRACT_VERSION, FeedbackMCPAdapter
+except ImportError as error:
+    module = error.name or ""
+    if module != "mcp" and not module.startswith("mcp."):
+        raise
+    MCP_AVAILABLE = False
+else:
+    MCP_AVAILABLE = True
 
 
 ROOT = Path(__file__).resolve().parents[1]
