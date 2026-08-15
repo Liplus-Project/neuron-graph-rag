@@ -125,6 +125,19 @@ class RealTaskShadowV3LifecycleTest(unittest.TestCase):
 
     @staticmethod
     def _rebind(packet: dict[str, object]) -> None:
+        config = packet["capture"]["effective_config"]
+        provenance = effective_config_provenance(
+            EngineConfig(**{**config["retrieval"], **config["feedback"]})
+        )
+        packet["capture"]["retrieval_config_fingerprint"] = provenance[
+            "retrieval_config_fingerprint"
+        ]
+        packet["capture"]["feedback_config_fingerprint"] = provenance[
+            "feedback_config_fingerprint"
+        ]
+        packet["capture"]["full_config_fingerprint"] = provenance[
+            "full_config_fingerprint"
+        ]
         packet["capture"]["capture_fingerprint"] = bind_capture_fingerprint(packet)
 
     def _second_root(self, first: dict[str, object]) -> dict[str, object]:
@@ -202,6 +215,16 @@ class RealTaskShadowV3LifecycleTest(unittest.TestCase):
                     MANIFEST, repository_root=ROOT, registered_root=output_root
                 )
 
+    def test_repository_registered_outputs_match_the_frozen_lifecycle(self) -> None:
+        state = audit_repository_lifecycle(MANIFEST, repository_root=ROOT)
+        self.assertIn(state["stage"], {"empty", "packets", "final_aggregate"})
+        self.assertEqual(
+            state["final_aggregate"], state["stage"] == "final_aggregate"
+        )
+        self.assertGreaterEqual(
+            state["packet_file_count"], state["effective_packet_count"]
+        )
+
     def test_hash_canonical_slot_immutable_and_field_order_tamper_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -217,6 +240,44 @@ class RealTaskShadowV3LifecycleTest(unittest.TestCase):
             self._rebind(correction)
             with self.assertRaisesRegex(ValueError, "immutable field: capture"):
                 capture_packet(correction, immutable_registry)
+
+            second = self._second_root(first)
+            divergent_snapshot = copy.deepcopy(second)
+            divergent_snapshot["database_snapshot"]["sha256"] = "sha256:" + "0" * 64
+            divergent_surface = copy.deepcopy(second)
+            divergent_surface["capture"]["effective_config"]["feedback"][
+                "sibling_feedback_normalization"
+            ] = 0.0
+            divergent_surface["capture"]["search_surface"] = "combined"
+            self._rebind(divergent_surface)
+            divergent_config = copy.deepcopy(second)
+            divergent_config["capture"]["effective_config"]["feedback"][
+                "maximum_edge_weight"
+            ] = 2.5
+            self._rebind(divergent_config)
+            divergent_time = copy.deepcopy(second)
+            divergent_time["capture"]["searched_at"] = first["capture"]["searched_at"]
+            self._rebind(divergent_time)
+            batch_cases = (
+                ("snapshot", divergent_snapshot, "share the exact snapshot"),
+                ("surface", divergent_surface, "share one capture search surface"),
+                ("config", divergent_config, "share one effective capture config"),
+                ("time", divergent_time, "timestamps must strictly increase"),
+            )
+            for name, packet, message in batch_cases:
+                with self.subTest(batch_invariant=name):
+                    batch_root = root / f"batch-{name}"
+                    batch_registry = (
+                        batch_root / "artifacts" / PROTOCOL_ID / "packets"
+                    )
+                    capture_packet(first, batch_registry)
+                    capture_packet(packet, batch_registry)
+                    with self.assertRaisesRegex(ValueError, message):
+                        audit_repository_lifecycle(
+                            MANIFEST,
+                            repository_root=ROOT,
+                            registered_root=batch_root,
+                        )
 
             noncanonical_root = root / "noncanonical"
             registry = noncanonical_root / "artifacts" / PROTOCOL_ID / "packets"

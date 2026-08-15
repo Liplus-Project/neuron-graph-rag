@@ -396,6 +396,29 @@ def audit_repository_lifecycle(
     aggregate = _relative_path(output_root, outputs["final_aggregate"], "final_aggregate")
     packets = _read_registry(registry)
     effective = _effective_registry(packets, require_nonempty=False)
+    if effective:
+        snapshot_hashes = {
+            packet["database_snapshot"]["sha256"] for packet in effective
+        }
+        if len(snapshot_hashes) != 1:
+            raise ValueError("effective packets must share the exact snapshot")
+        search_surfaces = {
+            packet["capture"]["search_surface"] for packet in effective
+        }
+        if len(search_surfaces) != 1:
+            raise ValueError("effective packets must share one capture search surface")
+        capture_configs = [
+            packet["capture"]["effective_config"] for packet in effective
+        ]
+        if any(config != capture_configs[0] for config in capture_configs[1:]):
+            raise ValueError("effective packets must share one effective capture config")
+        capture_times = [
+            float(packet["capture"]["searched_at"]) for packet in effective
+        ]
+        if any(
+            right <= left for left, right in zip(capture_times, capture_times[1:])
+        ):
+            raise ValueError("effective packet capture timestamps must strictly increase")
     if aggregate.parent.exists():
         allowed = {aggregate.resolve()} if aggregate.exists() else set()
         entries = {path.resolve() for path in aggregate.parent.iterdir()}
@@ -411,7 +434,6 @@ def audit_repository_lifecycle(
             raise ValueError("final aggregate packet IDs do not bind the effective registry")
         if result["slots"] != [packet["slot"] for packet in effective]:
             raise ValueError("final aggregate slots do not bind the effective registry")
-        snapshot_hashes = {packet["database_snapshot"]["sha256"] for packet in effective}
         if snapshot_hashes != {result["snapshot_sha256"]}:
             raise ValueError("final aggregate snapshot does not bind the effective registry")
         if result["capture_config"] != effective[0]["capture"]["effective_config"]:

@@ -4,12 +4,12 @@
     "confirmed_r05_s1"
   ],
   "artifact_sha256": {
-    "docs/real-task-feedback-shadow-protocol-v3.md": "4a046a4878f18afe0cc627f48a18783479d5e29e8a90d85595a3543b4b701c08",
-    "src/neuron_graph_rag/real_task_shadow_v3.py": "237bc5e4ac2eaf07b0ec777ab48dabe8aa4ad6e4ecd26e7341dc659d8da8d60a",
+    "docs/real-task-feedback-shadow-protocol-v3.md": "a8f7c68a1d5c2f0d7d98d871acb98b1340ea4ce2ee3de154ba4a2b93e512a2f9",
+    "src/neuron_graph_rag/real_task_shadow_v3.py": "ca399220a3f2a4883dd5b63968142fa65a0856ec85aab42b6b1a95a8e0283995",
     "tests/fixtures/real_task_shadow_v3.packet-schema.json": "071af30c7a16f67ce3a7f4ab682bb98a82963e293040b36a6b8b585f55200743",
     "tests/fixtures/real_task_shadow_v3.placeholder.json": "4c2f7628dca2eff0a73184e52b988c647aaef545af07f92144318f75ec4f9d0d",
     "tests/fixtures/real_task_shadow_v3.result-schema.json": "f901595e494bce4464c5f821b0d9a57f3a4f0fa0d843ba8dceebe4ee1ce681c8",
-    "tests/test_real_task_shadow_v3.py": "7d2c6b108abe009eb64bc0b03e45d539bbcc201297402a976ecb423972b9e831",
+    "tests/test_real_task_shadow_v3.py": "c35d0c620d24b7c3518ed4a23531755f248b20ea80709eb0d6500a1df6b9725f",
     "tools/run_real_task_shadow_v3.py": "007c5087ffa82e591cb7cf5b342afa8e000777c77d29a8dccc67e4543b575500"
   },
   "capture_contract": {

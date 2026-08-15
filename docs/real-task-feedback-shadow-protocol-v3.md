@@ -38,13 +38,14 @@ repository lifecycle audit は repository 内 artifact だけを使い、snapsho
 - protocol / legacy frozen artifact hash
 - packet と aggregate の canonical JSON bytes
 - root slot の連番、correction chain の到達可能性、immutable correction field
+- effective packet 全体で共通の snapshot hash、capture config、search surface と、slot 順に厳密増加する capture timestamp
 - final aggregate が一つだけで、effective packet ID / slot / snapshot hash / capture config / search surface と一致すること
 
 この責務分離により、CI は repository lifecycle を再現可能に検証し、snapshot を持つ観測環境だけが retrieval semantics を exact 検証する。
 
 ## 5. Result-free gate
 
-`tests/test_real_task_shadow_v3.py` は placeholder identity のみで空 registry、sequential root、superseding correction、one-time final aggregate を同じ manifest 上に再現する。protocol hash、canonical JSON、slot、immutable field、exclusive write、one-time result の tamper を fail closed にする。実 task URL、実 source identity、Issue #95 packet / outcome、PR #96 artifact は fixture と registered output に含めない。
+`tests/test_real_task_shadow_v3.py` は placeholder identity のみで空 registry、sequential root、superseding correction、one-time final aggregate を同じ manifest 上に再現する。さらに temporary lifecycle probe とは別に、manifest の実 registered path を repository root 上で毎回 audit する。protocol hash、canonical JSON、slot、immutable field、batch 共通入力、capture 時刻順、exclusive write、one-time result の tamper を fail closed にする。実 task URL、実 source identity、Issue #95 packet / outcome、PR #96 artifact は fixture と registered output に含めない。
 
 ## 6. Commands
 
