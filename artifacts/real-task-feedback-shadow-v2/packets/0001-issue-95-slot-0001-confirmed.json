@@ -1,0 +1,124 @@
+{
+  "capture": {
+    "capture_fingerprint": "sha256:482574a9efea5b5793aacd08d358c66699ab2845c4f1be59277628f99eab6623",
+    "effective_config": {
+      "feedback": {
+        "confirmation_decay_ratio": null,
+        "confirmed_outcome_reinforcement": false,
+        "feedback_learning_rate": 0.2,
+        "maximum_edge_weight": 2.0,
+        "relation_feedback_evidence_quorum": 3,
+        "sibling_feedback_normalization": 1.0
+      },
+      "retrieval": {
+        "activation_budget": 1.0,
+        "activation_half_life_seconds": 3600.0,
+        "activation_strategy": "current_positive_additive",
+        "convergence_tolerance": 1e-09,
+        "dense_weight": 0.45,
+        "entry_weight": 0.55,
+        "final_fusion_strategy": "linear",
+        "graph_normalization": "max",
+        "graph_weight": 0.45,
+        "hop_decay": 0.7,
+        "inhibition_ratio": 0.0,
+        "inhibition_top_k": 0,
+        "max_active_paths_per_node": 4,
+        "max_hops": 2,
+        "max_paths_per_node": 4,
+        "max_propagation_expansions": 10000,
+        "maximum_activation": 10.0,
+        "query_transmission_floor": 0.4,
+        "query_transmission_power": 1.0,
+        "recurrent_decay": 0.5,
+        "recurrent_steps": 3,
+        "rrf_k": 60,
+        "seed_count": 3,
+        "sparse_weight": 0.55,
+        "use_dense_retrieval": true,
+        "use_graph_propagation": true
+      }
+    },
+    "feedback_config_fingerprint": "sha256:a8704079446125f3e3e6b7cef83a80df7bae8a6e7cf46fe6702dde624b504d06",
+    "full_config_fingerprint": "sha256:8a0722d60159449ca0e09378469fd4be8be24eaf416211ce0e712e6029d98f1d",
+    "retrieval_config_fingerprint": "sha256:bfc95085fdc8870ecd1ef119edbad55869697f4265ed7a3f71431405709252b8",
+    "search_surface": "relation",
+    "searched_at": 1786801442.6691406
+  },
+  "captured_at": "2026-08-15T13:43:55.9709605Z",
+  "database_snapshot": {
+    "sha256": "sha256:845270981712cdeec92ccd620ba896a5c0a7693b73a0f0e138a336fe93145f8f"
+  },
+  "efficiency": {
+    "elapsed_seconds": null,
+    "research_count": null,
+    "token_count": null,
+    "tool_calls": null
+  },
+  "outcome": {
+    "evidence": [
+      {
+        "details": {
+          "claim": "the source literally bounds the experiment to fixed corpus, no default/production adoption, result-free freeze, and no protocol adjustment/rerun after failure.",
+          "literal_match": true
+        },
+        "external_ref": "https://github.com/Liplus-Project/neuron-graph-rag/issues/95#issuecomment-5302507798",
+        "kind": "citation_verified",
+        "node_id": "docs/sibling-normalization-controlled-evaluation.md",
+        "target_commit": "777fe4bf63b0021acb9c5734125d024923fbc74f"
+      }
+    ],
+    "external_ref": "https://github.com/Liplus-Project/neuron-graph-rag/issues/95#issuecomment-5302507798",
+    "status": "confirmed",
+    "summary": "fixed sourceの制約をliteral確認した"
+  },
+  "packet_id": "issue-95-slot-0001-confirmed",
+  "protocol_id": "real-task-feedback-shadow-v2",
+  "retrieval": {
+    "candidates": [
+      {
+        "content_sha256": "sha256:c8ce25062fdf5b03546977105ccad7b6c8e4e0621588c4b11a6cbdc081dc1e94",
+        "node_id": "docs/sibling-normalization-controlled-evaluation.md",
+        "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/sibling-normalization-controlled-evaluation.md"
+      }
+    ],
+    "credited_path": {
+      "node_id": "docs/sibling-normalization-controlled-evaluation.md",
+      "seed_id": "docs/sibling-relation-feedback-normalization.md",
+      "steps": [
+        {
+          "edge_type": "links_to",
+          "source_id": "docs/sibling-relation-feedback-normalization.md",
+          "target_id": "docs/sibling-normalization-controlled-evaluation.md"
+        }
+      ]
+    },
+    "limit": 5,
+    "query": "What evidence and constraints define the next real-task validation step for confirmed-outcome feedback after controlled comparison, with serving defaults unchanged?",
+    "used_node_id": "docs/sibling-normalization-controlled-evaluation.md"
+  },
+  "schema_version": 2,
+  "slot": 1,
+  "source_use": [
+    {
+      "node_id": "docs/sibling-normalization-controlled-evaluation.md",
+      "stage": "selected"
+    },
+    {
+      "node_id": "docs/sibling-normalization-controlled-evaluation.md",
+      "stage": "validated"
+    },
+    {
+      "node_id": "docs/sibling-normalization-controlled-evaluation.md",
+      "stage": "used"
+    }
+  ],
+  "supersedes_packet_id": "issue-95-slot-0001-root",
+  "task": {
+    "base_commit": "777fe4bf63b0021acb9c5734125d024923fbc74f",
+    "close_condition": "live provenanceをslot 1へcanonical captureし、frozen snapshot exact verifierを通す",
+    "eligible_at": "2026-08-15T13:43:36Z",
+    "repository": "Liplus-Project/neuron-graph-rag",
+    "task_url": "https://github.com/Liplus-Project/neuron-graph-rag/issues/95"
+  }
+}
