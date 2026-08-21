@@ -1,0 +1,67 @@
+{
+  "protocol_id": "soft-start-snapshot-v1",
+  "issue": 104,
+  "source_boundary": "one-time-transaction-consistent-local-snapshot",
+  "historical_verification": "manifest-first-addition-commit-exact-blobs",
+  "snapshot": {
+    "source_locator": "local_codex_ngr_database",
+    "source_access": "sqlite-uri-mode-ro-query-only",
+    "capture_method": "sqlite-backup-api",
+    "captured_at": "2026-08-21T00:48:04+00:00",
+    "source_container_sha256_before": "90c664d345aab9a9ccf36943b5b503cf98e9588577db0e7ccd4f07b27cb33fe0",
+    "source_container_sha256_after": "90c664d345aab9a9ccf36943b5b503cf98e9588577db0e7ccd4f07b27cb33fe0",
+    "snapshot_sha256": "003f24478f8d18dd34ab6aee5d939202d116f195ac8db33c29e38ab7e0f456d1",
+    "snapshot_size": 425984,
+    "schema_sha256": "a4e58aa7675a6d9e3d9dd7fa778d5bbb4d0ec45eecc262e62f87e019a3ccae9f",
+    "table_names": [
+      "activation_state",
+      "confirmed_edge_state",
+      "confirmed_relation_feedback",
+      "confirmed_source_uses",
+      "delayed_outcome_nodes",
+      "delayed_outcomes",
+      "edges",
+      "feedback_requests",
+      "nodes",
+      "relation_feedback_evidence",
+      "retrieval_channels",
+      "retrieval_results",
+      "retrievals",
+      "source_use_state",
+      "success_feedback",
+      "success_nodes"
+    ],
+    "row_counts": {
+      "nodes": 21,
+      "edges": 30,
+      "retrievals": 24,
+      "success_feedback": 10,
+      "delayed_outcomes": 3
+    }
+  },
+  "protocol_artifacts": {
+    "fixture": "tests/fixtures/soft_start_snapshot_v1.fixture.json",
+    "schedule": "tests/fixtures/soft_start_snapshot_v1.schedule.json",
+    "gate": "tests/fixtures/soft_start_snapshot_v1.gate.json",
+    "result_schema": "tests/fixtures/soft_start_snapshot_v1.result-schema.json",
+    "audit": "tests/fixtures/soft_start_snapshot_v1.result-free-audit.json"
+  },
+  "outputs": {
+    "development": "tests/fixtures/soft_start_snapshot_v1.development.observed.json",
+    "holdout": "tests/fixtures/soft_start_snapshot_v1.holdout.observed.json"
+  },
+  "artifact_sha256": {
+    "src/neuron_graph_rag/soft_start_snapshot_evaluation.py": "d7f7b421315118c96ccb9e796524dd02c0edec2c0f6fb2f7398b7ad88be58f13",
+    "tools/run_soft_start_snapshot_evaluation.py": "c15a14b4b0d2c8498f70b01a7e75aa45a1c8a670690638bdc7c4b2aa3654c2da",
+    "tests/test_soft_start_snapshot_evaluation.py": "a43c5dcfa2afe4506bcf2966cfbe6fab4ce7e09f37c9eb82b6608a5310b21210",
+    "tests/fixtures/soft_start_snapshot_v1.fixture.json": "9d785ffa49c6cca590a088c50bb33cc1b55d3120063c7e0f9ef33603ea07ace9",
+    "tests/fixtures/soft_start_snapshot_v1.schedule.json": "932ea6636f81fe3e0a68a1e78e48ce423d08511a7235185d9d02b38d6421f331",
+    "tests/fixtures/soft_start_snapshot_v1.gate.json": "f38e1d052fede8380a86344b80332506405343f2e73d6efe40bf74addd5f907e",
+    "tests/fixtures/soft_start_snapshot_v1.result-schema.json": "65c380803004eafa6e2faae259108ea972ce26dafe1284590d8580703055b5b4",
+    "tests/fixtures/soft_start_snapshot_v1.result-free-audit.json": "3169c3fcef89bbe10d29c103e4e294887da13d81983d27dc7ccd9b3a697a69c2",
+    "docs/soft-start-snapshot-evaluation.md": "f19d578a3babb07a6a3c86dfe678bf0566e29871b80722a437bcb143a31ab980",
+    "docs/requirements.md": "8d39e4eb3da6e3fa27b4b57cc63e8e3951be28d539fcac71f258533a69d7249b",
+    "docs/Decision-Structure.md": "a35f485db4adc6b403fe8f3ff5db270df3d0da5aae94313f3d79e54762b0bb67",
+    "README.md": "1222d1146560719b19f5d1962f12740a4929cb02bf97ad93830723ac1845d08a"
+  }
+}
