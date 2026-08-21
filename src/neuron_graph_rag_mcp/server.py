@@ -88,6 +88,15 @@ SOFT_START_OUTCOME_DESCRIPTION = (
     "confirmed outcome's actual delta. Duplicate traces and idempotency retries do not "
     "reinforce twice; negative outcomes remain audit-only."
 )
+DEACTIVATION_OUTCOME_DESCRIPTION = (
+    "Record a delayed outcome for sources already marked used. This server uses the "
+    "outcome-driven deactivation candidate: confirmed follows the soft-start schedule; "
+    "causally attributed corrected and rolled_back outcomes exactly reverse each active "
+    "credited contribution together with its same-source sibling normalization mutations. "
+    "Superseded makes the saved relation path dormant without deleting evidence, and a "
+    "later confirmed outcome on that saved path reactivates it. Unattributed, duplicate, "
+    "lexical, and zero-hop outcomes remain non-mutating."
+)
 
 _IDEMPOTENCY = re.compile(r"^[A-Za-z0-9._:-]+$")
 _TRACE = re.compile(r"^[0-9a-f]{32}$")
@@ -197,6 +206,50 @@ _CREDITED_PATH_OUTPUT = _object(
         "steps": {"type": "array", "items": _STEP_OUTPUT},
     },
     ["node_id", "steps"],
+)
+_DORMANCY_OUTPUT = _object(
+    {
+        "source_id": {"type": "string"},
+        "target_id": {"type": "string"},
+        "edge_type": {"type": "string"},
+        "old_dormant": {"type": "boolean"},
+        "new_dormant": {"type": "boolean"},
+    },
+    ["source_id", "target_id", "edge_type", "old_dormant", "new_dormant"],
+)
+_CONTRIBUTION_MUTATION_OUTPUT = _object(
+    {
+        "mutation_role": {"type": "string", "enum": ["credited", "sibling"]},
+        "source_id": {"type": "string"},
+        "target_id": {"type": "string"},
+        "edge_type": {"type": "string"},
+        "actual_delta": {"type": "number"},
+        "old_weight": {"type": "number"},
+        "new_weight": {"type": "number"},
+    },
+    [
+        "mutation_role", "source_id", "target_id", "edge_type",
+        "actual_delta", "old_weight", "new_weight",
+    ],
+)
+_REVERSED_CONTRIBUTION_OUTPUT = _object(
+    {
+        "contribution_id": {"type": "string"},
+        "contribution_kind": {
+            "type": "string",
+            "enum": ["soft_start_provisional", "soft_start_confirmation"],
+        },
+        "source_record_id": {"type": "string"},
+        "source_id": {"type": "string"},
+        "target_id": {"type": "string"},
+        "edge_type": {"type": "string"},
+        "credited_delta": {"type": "number"},
+        "mutations": {"type": "array", "items": _CONTRIBUTION_MUTATION_OUTPUT},
+    },
+    [
+        "contribution_id", "contribution_kind", "source_record_id", "source_id",
+        "target_id", "edge_type", "credited_delta", "mutations",
+    ],
 )
 SEARCH_OUTPUT = _object(
     {
@@ -317,6 +370,12 @@ OUTCOME_OUTPUT = _object(
         "confirmations": {"type": "array", "items": _CONFIRMATION_OUTPUT},
         "credited_paths": {"type": "array", "items": _CREDITED_PATH_OUTPUT},
         "normalized_sibling_edges": {"type": "array", "items": _EDGE_OUTPUT},
+        "deactivation_applied": {"type": "boolean"},
+        "reversed_contributions": {
+            "type": "array", "items": _REVERSED_CONTRIBUTION_OUTPUT
+        },
+        "dormancy_changes": {"type": "array", "items": _DORMANCY_OUTPUT},
+        "reactivated_edges": {"type": "array", "items": _DORMANCY_OUTPUT},
     },
     ["contract_version", "outcome_id", "trace_id", "node_ids", "outcome", "recorded_at", "reinforcement_applied"],
 )
@@ -360,6 +419,7 @@ def _tools(
     *,
     confirmed_outcome_reinforcement: bool,
     soft_start_feedback_reinforcement: bool,
+    outcome_driven_feedback_deactivation: bool = False,
 ) -> tuple[types.Tool, ...]:
     if not confirmed_outcome_reinforcement and not soft_start_feedback_reinforcement:
         return TOOLS
@@ -369,9 +429,13 @@ def _tools(
         else CONFIRMED_SOURCE_USE_DESCRIPTION
     )
     outcome_description = (
-        SOFT_START_OUTCOME_DESCRIPTION
-        if soft_start_feedback_reinforcement
-        else CONFIRMED_OUTCOME_DESCRIPTION
+        DEACTIVATION_OUTCOME_DESCRIPTION
+        if outcome_driven_feedback_deactivation
+        else (
+            SOFT_START_OUTCOME_DESCRIPTION
+            if soft_start_feedback_reinforcement
+            else CONFIRMED_OUTCOME_DESCRIPTION
+        )
     )
     return (
         TOOLS[0],
@@ -404,6 +468,9 @@ class FeedbackMCPAdapter:
             ),
             soft_start_feedback_reinforcement=(
                 self.engine.config.soft_start_feedback_reinforcement
+            ),
+            outcome_driven_feedback_deactivation=(
+                self.engine.config.outcome_driven_feedback_deactivation
             ),
         )
 
@@ -646,6 +713,51 @@ class FeedbackMCPAdapter:
                 }
                 for edge in receipt.normalized_sibling_edges
             ],
+            "deactivation_applied": receipt.deactivation_applied,
+            "reversed_contributions": [
+                {
+                    "contribution_id": item.contribution_id,
+                    "contribution_kind": item.contribution_kind,
+                    "source_record_id": item.source_record_id,
+                    "source_id": item.source_id,
+                    "target_id": item.target_id,
+                    "edge_type": item.edge_type,
+                    "credited_delta": item.credited_delta,
+                    "mutations": [
+                        {
+                            "mutation_role": mutation.mutation_role,
+                            "source_id": mutation.source_id,
+                            "target_id": mutation.target_id,
+                            "edge_type": mutation.edge_type,
+                            "actual_delta": mutation.actual_delta,
+                            "old_weight": mutation.old_weight,
+                            "new_weight": mutation.new_weight,
+                        }
+                        for mutation in item.mutations
+                    ],
+                }
+                for item in receipt.reversed_contributions
+            ],
+            "dormancy_changes": [
+                {
+                    "source_id": item.source_id,
+                    "target_id": item.target_id,
+                    "edge_type": item.edge_type,
+                    "old_dormant": item.old_dormant,
+                    "new_dormant": item.new_dormant,
+                }
+                for item in receipt.dormancy_changes
+            ],
+            "reactivated_edges": [
+                {
+                    "source_id": item.source_id,
+                    "target_id": item.target_id,
+                    "edge_type": item.edge_type,
+                    "old_dormant": item.old_dormant,
+                    "new_dormant": item.new_dormant,
+                }
+                for item in receipt.reactivated_edges
+            ],
         }
 
     @staticmethod
@@ -843,6 +955,11 @@ def _build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Provisional fraction required by soft-start feedback reinforcement",
     )
+    parser.add_argument(
+        "--outcome-driven-feedback-deactivation",
+        action="store_true",
+        help="Exactly reverse attributed soft-start contributions or make them dormant",
+    )
     return parser
 
 
@@ -883,6 +1000,14 @@ def main() -> None:
         parser.error(
             "--soft-start-feedback-ratio requires --soft-start-feedback-reinforcement"
         )
+    if (
+        arguments.outcome_driven_feedback_deactivation
+        and not arguments.soft_start_feedback_reinforcement
+    ):
+        parser.error(
+            "--outcome-driven-feedback-deactivation requires "
+            "--soft-start-feedback-reinforcement"
+        )
     config = EngineConfig(
         relation_feedback_evidence_quorum=(
             arguments.relation_feedback_evidence_quorum
@@ -894,5 +1019,8 @@ def main() -> None:
             arguments.soft_start_feedback_reinforcement
         ),
         soft_start_feedback_ratio=arguments.soft_start_feedback_ratio,
+        outcome_driven_feedback_deactivation=(
+            arguments.outcome_driven_feedback_deactivation
+        ),
     )
     asyncio.run(_run(arguments.database, config=config))

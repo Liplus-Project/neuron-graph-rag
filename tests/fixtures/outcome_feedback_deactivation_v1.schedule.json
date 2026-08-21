@@ -1,0 +1,52 @@
+{
+  "protocol_id": "outcome-driven-feedback-deactivation-v1",
+  "arms": [
+    {
+      "arm_id": "control",
+      "soft_start_feedback_reinforcement": true,
+      "soft_start_feedback_ratio": 0.25,
+      "confirmation_decay_ratio": 0.5,
+      "sibling_feedback_normalization": 1.0,
+      "outcome_driven_feedback_deactivation": false
+    },
+    {
+      "arm_id": "deactivation_candidate",
+      "soft_start_feedback_reinforcement": true,
+      "soft_start_feedback_ratio": 0.25,
+      "confirmation_decay_ratio": 0.5,
+      "sibling_feedback_normalization": 1.0,
+      "outcome_driven_feedback_deactivation": true
+    }
+  ],
+  "event_order": {
+    "corrected": [
+      "relation_search",
+      "used",
+      "confirmed",
+      "corrected",
+      "idempotency_replay"
+    ],
+    "rolled_back": [
+      "relation_search",
+      "used",
+      "confirmed",
+      "restart",
+      "rolled_back",
+      "idempotency_replay"
+    ],
+    "superseded": [
+      "relation_search",
+      "used",
+      "superseded",
+      "dormancy_checkpoint",
+      "confirmed_reactivation"
+    ],
+    "unattributed": [
+      "lexical_search",
+      "used",
+      "negative_outcome",
+      "idempotency_replay"
+    ]
+  },
+  "execution": "fresh snapshot clone per case and arm; development once; holdout once only after all development hard gates pass"
+}

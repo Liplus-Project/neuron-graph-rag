@@ -26,6 +26,7 @@ class EngineConfig(BaseEngineConfig):
     confirmation_decay_ratio: float | None = None
     soft_start_feedback_reinforcement: bool = False
     soft_start_feedback_ratio: float | None = None
+    outcome_driven_feedback_deactivation: bool = False
 
     def __post_init__(self) -> None:
         BaseEngineConfig.__post_init__(self)
@@ -41,6 +42,8 @@ class EngineConfig(BaseEngineConfig):
             raise TypeError("confirmed_outcome_reinforcement must be a boolean")
         if not isinstance(self.soft_start_feedback_reinforcement, bool):
             raise TypeError("soft_start_feedback_reinforcement must be a boolean")
+        if not isinstance(self.outcome_driven_feedback_deactivation, bool):
+            raise TypeError("outcome_driven_feedback_deactivation must be a boolean")
         if (
             self.confirmed_outcome_reinforcement
             and self.soft_start_feedback_reinforcement
@@ -85,6 +88,14 @@ class EngineConfig(BaseEngineConfig):
         elif self.soft_start_feedback_ratio is not None:
             raise ValueError(
                 "soft_start_feedback_ratio requires soft_start_feedback_reinforcement"
+            )
+        if (
+            self.outcome_driven_feedback_deactivation
+            and not self.soft_start_feedback_reinforcement
+        ):
+            raise ValueError(
+                "outcome_driven_feedback_deactivation requires soft-start feedback "
+                "reinforcement"
             )
 
 
@@ -291,6 +302,16 @@ class NeuronGraphRAG(BaseNeuronGraphRAG):
             trace_id, used_node_ids, require_candidate_marker=True
         )
 
+    def deactivation_outcome_plan(
+        self, trace_id: str, used_node_ids: Iterable[str]
+    ) -> dict[str, Any]:
+        """Build the saved credited relation path used to attribute deactivation."""
+        if not self.config.outcome_driven_feedback_deactivation:
+            raise ValueError("outcome-driven feedback deactivation is not enabled")
+        return self._relation_feedback_plan(
+            trace_id, used_node_ids, require_candidate_marker=True
+        )
+
     def _relation_feedback_plan(
         self,
         trace_id: str,
@@ -381,6 +402,12 @@ class NeuronGraphRAG(BaseNeuronGraphRAG):
                         for edge in self.store.outgoing_edges(source_id)
                         if (edge.source_id, edge.target_id, edge.edge_type)
                         not in credited_keys
+                        and (
+                            not self.config.outcome_driven_feedback_deactivation
+                            or not self.store.edge_has_active_contribution(
+                                edge.source_id, edge.target_id, edge.edge_type
+                            )
+                        )
                     ),
                     self.config.sibling_feedback_normalization,
                 )

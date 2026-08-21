@@ -1,0 +1,13 @@
+{
+  "protocol_id": "outcome-driven-feedback-deactivation-v1",
+  "registered_development_output_present": false,
+  "registered_holdout_output_present": false,
+  "development_executed_in_freeze_issue": false,
+  "holdout_executed_in_freeze_issue": false,
+  "placeholder_round_trip_passed": true,
+  "source_database_mutated": false,
+  "live_config_mutated": false,
+  "private_snapshot_committed": false,
+  "private_body_committed": false,
+  "freeze_observation_split": "Observation begins only in a successor issue after the squash-merged freeze registration is present on main."
+}

@@ -9,13 +9,16 @@ from datetime import datetime
 from .engine import NeuronGraphRAG
 from .models import (
     ConfirmedEdge,
+    ContributionMutation,
     CreditedPath,
+    DormancyChange,
     FeedbackEvidence,
     FeedbackReceipt,
     NormalizedSiblingEdge,
     OutcomeReceipt,
     PathStep,
     ReinforcedEdge,
+    ReversedContribution,
     SourceUseEvent,
     SourceUseEventReceipt,
     SourceUseReceipt,
@@ -169,6 +172,13 @@ class FeedbackLedger:
             getattr(self.engine.config, "confirmed_outcome_reinforcement", False)
             or getattr(self.engine.config, "soft_start_feedback_reinforcement", False)
         )
+        deactivation_enabled = bool(
+            getattr(
+                self.engine.config,
+                "outcome_driven_feedback_deactivation",
+                False,
+            )
+        )
         if candidate_enabled and outcome == "confirmed":
             plan = self.engine.confirmed_outcome_plan(trace_id, ordered_node_ids)
             record_confirmed = (
@@ -199,6 +209,26 @@ class FeedbackLedger:
                 normalization_sets=plan["normalization_sets"],
                 credited_paths=plan["credited_paths"],
                 **candidate_options,
+            )
+        elif deactivation_enabled and outcome in {
+            "corrected",
+            "rolled_back",
+            "superseded",
+        }:
+            plan = self.engine.deactivation_outcome_plan(
+                trace_id, ordered_node_ids
+            )
+            stored = self.engine.store.record_deactivation_outcome(
+                idempotency_key=idempotency_key,
+                payload_json=payload_json,
+                outcome_id=outcome_id,
+                trace_id=trace_id,
+                node_ids=ordered_node_ids,
+                outcome=outcome,
+                summary=summary,
+                external_ref=external_ref,
+                recorded_at=recorded_at,
+                credited_paths=plan["credited_paths"],
             )
         else:
             stored = self.engine.store.record_outcome(
@@ -257,6 +287,51 @@ class FeedbackLedger:
                     float(edge["new_weight"]),
                 )
                 for edge in stored.get("normalized_sibling_edges", [])
+            ),
+            bool(stored.get("deactivation_applied", False)),
+            tuple(
+                ReversedContribution(
+                    str(item["contribution_id"]),
+                    str(item["contribution_kind"]),
+                    str(item["source_record_id"]),
+                    str(item["source_id"]),
+                    str(item["target_id"]),
+                    str(item["edge_type"]),
+                    float(item["credited_delta"]),
+                    tuple(
+                        ContributionMutation(
+                            str(mutation["mutation_role"]),
+                            str(mutation["source_id"]),
+                            str(mutation["target_id"]),
+                            str(mutation["edge_type"]),
+                            float(mutation["actual_delta"]),
+                            float(mutation["old_weight"]),
+                            float(mutation["new_weight"]),
+                        )
+                        for mutation in item["mutations"]
+                    ),
+                )
+                for item in stored.get("reversed_contributions", [])
+            ),
+            tuple(
+                DormancyChange(
+                    str(item["source_id"]),
+                    str(item["target_id"]),
+                    str(item["edge_type"]),
+                    bool(item["old_dormant"]),
+                    bool(item["new_dormant"]),
+                )
+                for item in stored.get("dormancy_changes", [])
+            ),
+            tuple(
+                DormancyChange(
+                    str(item["source_id"]),
+                    str(item["target_id"]),
+                    str(item["edge_type"]),
+                    bool(item["old_dormant"]),
+                    bool(item["new_dormant"]),
+                )
+                for item in stored.get("reactivated_edges", [])
             ),
         )
 
