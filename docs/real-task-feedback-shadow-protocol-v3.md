@@ -35,7 +35,8 @@ local exact verifier は明示された SQLite snapshot を必要とする。liv
 
 repository lifecycle audit は repository 内 artifact だけを使い、snapshot replay を担当しない。次を検証する。
 
-- protocol / legacy frozen artifact hash
+- v3 manifest path の初回追加 commit にある protocol / legacy frozen artifact の exact blob hash
+- 初回追加 commit の存在と current `HEAD` の ancestor 関係、および current manifest bytes と初回登録 manifest bytes の一致
 - packet と aggregate の canonical JSON bytes
 - root slot の連番、correction chain の到達可能性、immutable correction field
 - effective packet 全体で共通の snapshot hash、capture config、search surface と、slot 順に厳密増加する capture timestamp
@@ -59,3 +60,5 @@ python tools/run_real_task_shadow_v3.py audit-lifecycle --manifest tests/fixture
 ```
 
 `probe` は実 MCP adapter search から placeholder packet、snapshot exact verification、two-arm replay、one-time result までを一時 directory 内で一巡し、registered output を repository に生成しない。`audit-lifecycle` は snapshot を使わず、freeze 後の repository lifecycle state を検証する。
+
+同名 path の current working tree は repository evolution の現在状態であり、v1 / v2 / v3 の historical evidence ではない。lifecycle audit は manifest、packet、aggregate、gate、観測結果を変更せず、hash 取得元だけを manifest path の初回追加 commit の blob に固定する。

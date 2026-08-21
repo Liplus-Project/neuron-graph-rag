@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -332,12 +333,32 @@ class BlindAggregationRuleTest(unittest.TestCase):
     def test_synthetic_three_judge_aggregation_passes_frozen_gates(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
+            subprocess.run(
+                ["git", "init", "--initial-branch=main"], cwd=root, check=True,
+                capture_output=True,
+            )
+            subprocess.run(
+                ["git", "config", "user.name", "Blind Test"], cwd=root, check=True
+            )
+            subprocess.run(
+                ["git", "config", "user.email", "blind@example.invalid"],
+                cwd=root, check=True,
+            )
             fixtures = root / "tests" / "fixtures"
             fixtures.mkdir(parents=True)
             prompt = fixtures / "prompt.txt"
             prompt.write_text("laneをまたいで数値比較しない\n", encoding="utf-8")
             baseline = root / "baseline.txt"
             baseline.write_text("frozen\n", encoding="utf-8")
+            subprocess.run(["git", "add", "baseline.txt"], cwd=root, check=True)
+            subprocess.run(
+                ["git", "commit", "-m", "test: freeze baseline"],
+                cwd=root, check=True, capture_output=True,
+            )
+            baseline_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=root, check=True,
+                capture_output=True, text=True,
+            ).stdout.strip()
             gold_cases = []
             packet = _packet()
             packet["experiment_id"] = "d1-liplus-blind-channel-selection-v2"
@@ -380,6 +401,7 @@ class BlindAggregationRuleTest(unittest.TestCase):
                         "schema_version": 1,
                         "experiment_id": "d1-liplus-blind-channel-selection-v2",
                         "gate": [f"gate-{index}" for index in range(12)],
+                        "frozen_v1_baseline_commit": baseline_commit,
                         "frozen_v1_bytes": [
                             {"path": "baseline.txt", "sha256": _sha256(baseline)}
                         ],
@@ -431,6 +453,12 @@ class BlindAggregationRuleTest(unittest.TestCase):
                     encoding="utf-8",
                 )
                 response_paths.append(artifact_path)
+
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(
+                ["git", "commit", "-m", "test: register blind manifest"],
+                cwd=root, check=True, capture_output=True,
+            )
 
             result = aggregate_blind_results(
                 manifest, packet_path, response_paths

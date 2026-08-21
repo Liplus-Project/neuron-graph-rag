@@ -9,6 +9,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
+from .corpus_integrity import verify_manifest_source_hashes
 from .evidence_feedback import EngineConfig, NeuronGraphRAG
 from .feedback import FeedbackLedger
 from .models import SourceUseEvent
@@ -24,12 +25,16 @@ CHECKPOINTS = (0, 1, 3, 10)
 
 def read_json(path: Path) -> Any:
     raw = path.read_bytes()
+    return _read_json_bytes(raw, str(path))
+
+
+def _read_json_bytes(raw: bytes, source: str) -> Any:
     text = raw.decode("utf-8", errors="strict")
     if text.encode("utf-8") != raw:
-        raise ValueError(f"non-canonical UTF-8 artifact: {path}")
+        raise ValueError(f"non-canonical UTF-8 artifact: {source}")
     payload = json.loads(text)
     if text != json.dumps(payload, ensure_ascii=False, indent=2) + "\n":
-        raise ValueError(f"non-canonical JSON artifact: {path}")
+        raise ValueError(f"non-canonical JSON artifact: {source}")
     return payload
 
 
@@ -88,14 +93,18 @@ def _git_bytes(commit: str, path: str) -> bytes:
 
 def _load_protocol() -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
     manifest = read_json(MANIFEST_PATH)
-    for relative, expected in manifest["artifact_sha256"].items():
-        path = ROOT / relative
-        if not path.is_file() or _sha256(path) != expected:
-            raise RuntimeError(f"frozen artifact hash mismatch: {relative}")
+    try:
+        registered = verify_manifest_source_hashes(
+            ROOT, MANIFEST_PATH, manifest["artifact_sha256"]
+        )
+    except ValueError as error:
+        raise RuntimeError(str(error)) from error
     artifacts: dict[str, dict[str, Any]] = {}
     for name, relative in manifest["protocol_artifacts"].items():
-        path = ROOT / relative
-        artifacts[name] = read_json(path)
+        artifacts[name] = _read_json_bytes(
+            registered.artifact_bytes[relative],
+            f"{registered.source_commit}:{relative}",
+        )
     return manifest, artifacts
 
 

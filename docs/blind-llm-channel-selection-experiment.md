@@ -135,7 +135,7 @@ Development gateは不合格であり、`holdout_status=not_opened_invalid_judge
 
 PR #22の最初のLinux CI run `30731318651`では、Windowsでfreezeしたv1 text artifactのCRLF checkout byte hashと、GitHub ActionsのLF checkout byte hashが一致せず、`d1_liplus_channels.contamination.json`のfreeze auditで停止した。内容差ではなく、Gitのtext checkout変換だけが原因である。
 
-その後、mainから作成したfresh Windows worktreeでは、v2 judge prompt、development packet、judge artifactもLFの固定hashに対してCRLFでcheckoutされ、同じ内容のままmanifest読込とobserved artifact auditが停止した。verificationをv1だけに限定すると同じfrozen text契約をv2へ一貫して適用できないため、v1 / v2 frozen text-byte verificationを次の順序へ揃えた。
+その後、mainから作成したfresh Windows worktreeでは、v2 judge prompt、development packet、judge artifactもLFの固定hashに対してCRLFでcheckoutされ、同じ内容のままmanifest読込とobserved artifact auditが停止した。verificationをv1だけに限定すると同じfrozen text契約をv2へ一貫して適用できないため、v1 は manifest が明示する full baseline commit ID、v2 は manifest path の初回追加 commit の blob bytes を取得し、frozen text-byte verificationを次の順序へ揃えた。current working tree の同名 path は historical evidence に使わない。
 
 1. checkout raw bytesのSHA-256を最初に照合する。
 2. raw不一致時だけ、全改行がLF一種類ならCRLFへ、CRLF一種類ならLFへexact変換する。

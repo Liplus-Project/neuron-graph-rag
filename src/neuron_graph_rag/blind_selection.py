@@ -8,6 +8,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+from .corpus_integrity import (
+    verify_historical_source_hashes,
+    verify_manifest_source_hashes,
+)
 from .d1_fixture import load_fixture
 from .engine import EngineConfig, NeuronGraphRAG
 
@@ -45,12 +49,15 @@ def read_blind_manifest(path: str | Path) -> dict[str, Any]:
     if len(manifest.get("gate", [])) != 12:
         raise ValueError("Blind selection manifest must freeze twelve gates")
     _audit_v1_hashes(manifest_path, manifest)
-    prompt_path = _repo_root(manifest_path) / manifest["judge_prompt"]["path"]
-    if not _matches_frozen_text_bytes(
-        prompt_path, str(manifest["judge_prompt"]["sha256"])
-    ):
-        raise ValueError("Frozen judge prompt hash mismatch")
-    _validate_prompt(prompt_path.read_text(encoding="utf-8"))
+    root = _repo_root(manifest_path)
+    prompt_relative = str(manifest["judge_prompt"]["path"])
+    prompt = verify_manifest_source_hashes(
+        root,
+        manifest_path,
+        {prompt_relative: str(manifest["judge_prompt"]["sha256"])},
+        allow_text_newline_alternate=True,
+    )
+    _validate_prompt(prompt.artifact_bytes[prompt_relative].decode("utf-8"))
     return manifest
 
 
@@ -560,11 +567,12 @@ def _audit_v1_hashes(manifest_path: Path, manifest: dict[str, Any]) -> None:
     entries = manifest.get("frozen_v1_bytes")
     if not isinstance(entries, list) or not entries:
         raise ValueError("Blind manifest must freeze v1 byte hashes")
-    for entry in entries:
-        if not _matches_frozen_text_bytes(
-            root / entry["path"], str(entry["sha256"])
-        ):
-            raise ValueError(f"Frozen v1 byte hash mismatch: {entry['path']}")
+    verify_historical_source_hashes(
+        root,
+        str(manifest["frozen_v1_baseline_commit"]),
+        {str(entry["path"]): str(entry["sha256"]) for entry in entries},
+        allow_text_newline_alternate=True,
+    )
 
 
 def _matches_frozen_text_bytes(path: Path, expected_sha256: str) -> bool:

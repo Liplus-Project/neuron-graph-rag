@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import json
 import tempfile
 import unittest
@@ -15,6 +14,7 @@ from neuron_graph_rag.feedback_policy_comparison_evaluation import (
     verify_registered_result,
     write_observed_exclusive,
 )
+from neuron_graph_rag.corpus_integrity import verify_manifest_source_hashes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,12 +55,10 @@ class FeedbackPolicyComparisonEvaluationTest(unittest.TestCase):
         self.assertFalse(audit["placeholder_output_registered"])
 
         manifest = read_json(MANIFEST_PATH)
-        for relative, expected in manifest["artifact_sha256"].items():
-            self.assertEqual(
-                hashlib.sha256((ROOT / relative).read_bytes()).hexdigest(),
-                expected,
-                relative,
-            )
+        verified = verify_manifest_source_hashes(
+            ROOT, MANIFEST_PATH, manifest["artifact_sha256"]
+        )
+        self.assertEqual(verified.artifact_sha256, manifest["artifact_sha256"])
 
     def test_source_projection_and_split_identity_are_frozen(self) -> None:
         fixture = _fixture("fixture")

@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import hashlib
 import tempfile
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from . import real_task_shadow as v1
 from . import real_task_shadow_v2 as v2
+from .corpus_integrity import verify_manifest_source_hashes
 from .evidence_feedback import EngineConfig
 
 
@@ -323,27 +323,6 @@ def _relative_path(root: Path, relative: Any, name: str) -> Path:
     return resolved
 
 
-def _verify_hashes(root: Path, values: Any, name: str) -> None:
-    hashes = v1._mapping(values, name)
-    if not hashes:
-        raise ValueError(f"{name} must not be empty")
-    for relative, expected in hashes.items():
-        if not isinstance(expected, str) or len(expected) != 64:
-            raise ValueError(f"{name}.{relative} must be a sha256 hex digest")
-        try:
-            int(expected, 16)
-        except ValueError as error:
-            raise ValueError(
-                f"{name}.{relative} must be a sha256 hex digest"
-            ) from error
-        path = _relative_path(root, relative, f"{name}.{relative}")
-        if not path.is_file():
-            raise ValueError(f"frozen artifact is missing: {relative}")
-        actual = hashlib.sha256(path.read_bytes()).hexdigest()
-        if actual != expected:
-            raise ValueError(f"frozen artifact hash mismatch: {relative}")
-
-
 def audit_repository_lifecycle(
     manifest_path: str | Path,
     *,
@@ -388,8 +367,10 @@ def audit_repository_lifecycle(
             raise ValueError(f"lifecycle manifest changed the frozen {field}")
     root = Path(repository_root).resolve()
     output_root = root if registered_root is None else Path(registered_root).resolve()
-    _verify_hashes(root, manifest["artifact_sha256"], "artifact_sha256")
-    _verify_hashes(root, manifest["legacy_artifact_sha256"], "legacy_artifact_sha256")
+    verify_manifest_source_hashes(root, manifest_path, manifest["artifact_sha256"])
+    verify_manifest_source_hashes(
+        root, manifest_path, manifest["legacy_artifact_sha256"]
+    )
     outputs = v1._mapping(manifest["registered_outputs"], "registered_outputs")
     v1._exact_keys(outputs, {"final_aggregate", "packet_registry"}, "registered_outputs")
     registry = _relative_path(output_root, outputs["packet_registry"], "packet_registry")

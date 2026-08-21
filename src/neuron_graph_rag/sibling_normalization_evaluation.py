@@ -1,11 +1,15 @@
 from __future__ import annotations
 
-import hashlib
 import json
 import subprocess
 from pathlib import Path
 from typing import Any
 
+from .corpus_integrity import (
+    HistoricalSourceSnapshot,
+    verify_historical_source_hashes,
+    verify_manifest_source_hashes,
+)
 from .engine import EngineConfig, NeuronGraphRAG
 
 
@@ -15,20 +19,24 @@ MANIFEST_PATH = Path(
 )
 
 
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(64 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def load_json(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8") as stream:
-        value = json.load(stream)
+    return _load_json_bytes(path.read_bytes(), str(path))
+
+
+def _load_json_bytes(raw: bytes, source: str) -> dict[str, Any]:
+    value = json.loads(raw.decode("utf-8", errors="strict"))
     if not isinstance(value, dict):
-        raise ValueError(f"Expected an object in {path}")
+        raise ValueError(f"Expected an object in {source}")
     return value
+
+
+def _registered_json(
+    registered: HistoricalSourceSnapshot, relative: str
+) -> dict[str, Any]:
+    return _load_json_bytes(
+        registered.artifact_bytes[relative],
+        f"{registered.source_commit}:{relative}",
+    )
 
 
 def _git(repo_root: Path, *args: str) -> str:
@@ -51,33 +59,26 @@ def validate_protocol(repo_root: Path) -> dict[str, Any]:
     registered = manifest.get("registered_artifacts")
     if not isinstance(registered, dict) or not registered:
         raise ValueError("Manifest has no registered artifacts")
-    actual_hashes: dict[str, str] = {}
-    for relative, expected in sorted(registered.items()):
-        path = repo_root / relative
-        if not path.is_file():
-            raise FileNotFoundError(f"Missing registered artifact: {relative}")
-        actual = sha256_file(path)
-        if actual != expected:
-            raise ValueError(
-                f"Registered artifact hash mismatch: {relative}: {actual} != {expected}"
-            )
-        actual_hashes[relative] = actual
+    registered_snapshot = verify_manifest_source_hashes(
+        repo_root, manifest_path, registered
+    )
+    actual_hashes = registered_snapshot.artifact_sha256
 
     source = manifest.get("evaluated_source")
     if not isinstance(source, dict):
         raise ValueError("Manifest has no evaluated source")
-    source_path = repo_root / str(source["path"])
-    actual_source_hash = sha256_file(source_path)
-    if actual_source_hash != source.get("sha256"):
-        raise ValueError("Evaluated engine source differs from the frozen source hash")
     source_commit = str(source["commit"])
-    _git(repo_root, "cat-file", "-e", f"{source_commit}^{{commit}}")
-    _git(repo_root, "merge-base", "--is-ancestor", source_commit, "HEAD")
+    source_snapshot = verify_historical_source_hashes(
+        repo_root,
+        source_commit,
+        {str(source["path"]): str(source["sha256"])},
+    )
+    actual_source_hash = source_snapshot.artifact_sha256[str(source["path"])]
 
-    fixture = load_json(repo_root / str(manifest["paths"]["fixture"]))
-    gold = load_json(repo_root / str(manifest["paths"]["gold"]))
-    schedule = load_json(repo_root / str(manifest["paths"]["schedule"]))
-    gate = load_json(repo_root / str(manifest["paths"]["gate"]))
+    fixture = _registered_json(registered_snapshot, str(manifest["paths"]["fixture"]))
+    gold = _registered_json(registered_snapshot, str(manifest["paths"]["gold"]))
+    schedule = _registered_json(registered_snapshot, str(manifest["paths"]["schedule"]))
+    gate = _registered_json(registered_snapshot, str(manifest["paths"]["gate"]))
     _validate_split_identity(fixture, gold)
     _validate_schedule(schedule)
     _validate_gate(gate)

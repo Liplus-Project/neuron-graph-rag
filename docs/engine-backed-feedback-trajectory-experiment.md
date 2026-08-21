@@ -14,6 +14,8 @@ repository-native controlled corpus v3 に対し、実際の `NeuronGraphRAG` in
 - Audit: `tests/fixtures/engine_feedback_trajectory_v3.audit.json`
 - Manifest: `tests/fixtures/engine_feedback_trajectory_v3.manifest.json`
 
+manifest artifact は manifest path の初回追加 commit、source corpus は上記 source corpus commit の exact blob bytes を読む。各 commit の存在と current `HEAD` の ancestor 関係を検証し、current working tree の同名 fixture、source document、evaluator は historical evidence として扱わない。既存の raw-first LF / CRLF whole-file alternate だけを維持する。
+
 development は `signal-stability` と `boundary-recovery`、holdout は `evidence-continuity` を使う。node ID、document path、source URL、explicit-link edge は split 間で重複させない。edge は overview 文書に記載された同一 directory 内の相対 Markdown link だけから固定する。
 
 result-free commit を push するまで development と holdout の runner を実行しない。exclusive output が存在しないことを audit に固定し、runner は既存 output の上書きを拒否する。

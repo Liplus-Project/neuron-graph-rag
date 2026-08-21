@@ -13,7 +13,10 @@ from .blind_selection import (
     RESPONSE_KEYS,
     SELECTIONS,
     _make_packet_case,
-    _matches_frozen_text_bytes,
+)
+from .corpus_integrity import (
+    verify_historical_source_hashes,
+    verify_manifest_source_hashes,
 )
 from .engine import EngineConfig
 
@@ -44,12 +47,15 @@ def read_node_first_manifest(path: str | Path) -> dict[str, Any]:
     if manifest.get("case_count") != 4 or manifest.get("judges_per_case") != 3:
         raise ValueError("Node-first protocol requires four cases and three judges")
     _audit_prior_artifacts(manifest_path, manifest)
-    prompt = _repo_root(manifest_path) / manifest["judge_prompt"]["path"]
-    if _canonical_checkout_sha256(prompt) != manifest["judge_prompt"][
-        "canonical_sha256"
-    ]:
-        raise ValueError("Frozen node-first judge prompt hash mismatch")
-    _validate_prompt(prompt.read_text(encoding="utf-8"))
+    root = _repo_root(manifest_path)
+    prompt_relative = str(manifest["judge_prompt"]["path"])
+    prompt = verify_manifest_source_hashes(
+        root,
+        manifest_path,
+        {prompt_relative: str(manifest["judge_prompt"]["canonical_sha256"])},
+        allow_text_newline_alternate=True,
+    )
+    _validate_prompt(prompt.artifact_bytes[prompt_relative].decode("utf-8"))
     return manifest
 
 
@@ -696,11 +702,12 @@ def _audit_prior_artifacts(manifest_path: Path, manifest: dict[str, Any]) -> Non
     versions = {entry.get("version") for entry in entries}
     if versions != {"v1", "v2"}:
         raise ValueError("Node-first manifest must freeze v1 and v2 artifacts")
-    for entry in entries:
-        if not _matches_frozen_text_bytes(
-            root / entry["path"], str(entry["sha256"])
-        ):
-            raise ValueError(f"Frozen prior artifact mismatch: {entry['path']}")
+    verify_historical_source_hashes(
+        root,
+        str(manifest["frozen_prior_commit"]),
+        {str(entry["path"]): str(entry["sha256"]) for entry in entries},
+        allow_text_newline_alternate=True,
+    )
 
 
 def _observed_paths(root: Path, manifest: dict[str, Any]) -> list[Path]:

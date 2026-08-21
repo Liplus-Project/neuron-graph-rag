@@ -1,11 +1,18 @@
 from __future__ import annotations
 
 import hashlib
+import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
 
-from neuron_graph_rag.corpus_integrity import verify_source_sha256
+from neuron_graph_rag.corpus_integrity import (
+    registered_manifest_commit,
+    verify_historical_source_hashes,
+    verify_manifest_source_hashes,
+    verify_source_sha256,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -76,6 +83,181 @@ class SourceHashVerificationTest(unittest.TestCase):
 
         self.assertFalse(result.accepted)
         self.assertEqual(result.decision, "rejected_no_newline_conversion")
+
+
+class HistoricalSourceVerificationTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.root = Path(self.temporary.name)
+        self._git("init", "--initial-branch=main")
+        self._git("config", "user.name", "Historical Source Test")
+        self._git("config", "user.email", "historical-source@example.invalid")
+        self.artifact = self.root / "src" / "artifact.txt"
+        self.manifest = self.root / "tests" / "frozen.manifest.json"
+        self.artifact.parent.mkdir(parents=True)
+        self.manifest.parent.mkdir(parents=True)
+        self.registered_bytes = b"registered\nsource\n"
+        self.artifact.write_bytes(self.registered_bytes)
+        self.expected = hashlib.sha256(self.registered_bytes).hexdigest()
+        self.manifest.write_text(
+            json.dumps(
+                {"artifact_sha256": {"src/artifact.txt": self.expected}},
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        self._git("add", ".")
+        self._git("commit", "-m", "test: register historical source")
+        self.commit = self._git("rev-parse", "HEAD").stdout.strip()
+
+    def tearDown(self) -> None:
+        self.temporary.cleanup()
+
+    def _git(self, *arguments: str) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            ["git", *arguments],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+    def test_registered_commit_bytes_survive_current_working_tree_evolution(self) -> None:
+        self.artifact.write_bytes(b"later repository evolution\n")
+        self._git("add", "src/artifact.txt")
+        self._git("commit", "-m", "test: evolve current source")
+
+        snapshot = verify_manifest_source_hashes(
+            self.root,
+            self.manifest,
+            {"src/artifact.txt": self.expected},
+        )
+
+        self.assertEqual(snapshot.source_commit, self.commit)
+        self.assertEqual(snapshot.artifact_bytes["src/artifact.txt"], self.registered_bytes)
+        self.assertEqual(registered_manifest_commit(self.root, self.manifest), self.commit)
+
+    def test_manifest_and_registered_blob_tampering_fail_closed(self) -> None:
+        original_manifest = self.manifest.read_bytes()
+        self.manifest.write_bytes(original_manifest + b" ")
+        with self.assertRaisesRegex(ValueError, "manifest differs"):
+            verify_manifest_source_hashes(
+                self.root,
+                self.manifest,
+                {"src/artifact.txt": self.expected},
+            )
+
+        self.manifest.write_bytes(original_manifest)
+        self.artifact.write_bytes(b"tampered registered bytes\n")
+        self.manifest.write_text(
+            json.dumps(
+                {
+                    "artifact_sha256": {"src/artifact.txt": self.expected},
+                    "revision": 2,
+                },
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        self._git("add", ".")
+        self._git("commit", "-m", "test: forge registered source")
+        with self.assertRaisesRegex(ValueError, "manifest differs"):
+            verify_manifest_source_hashes(
+                self.root,
+                self.manifest,
+                {"src/artifact.txt": self.expected},
+            )
+
+    def test_committed_manifest_rewrite_does_not_move_registration_boundary(self) -> None:
+        tampered = b"committed replacement\n"
+        tampered_hash = hashlib.sha256(tampered).hexdigest()
+        self.artifact.write_bytes(tampered)
+        self.manifest.write_text(
+            json.dumps(
+                {"artifact_sha256": {"src/artifact.txt": tampered_hash}},
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        self._git("add", ".")
+        self._git("commit", "-m", "test: rewrite frozen manifest and source")
+
+        with self.assertRaisesRegex(ValueError, "manifest differs"):
+            verify_manifest_source_hashes(
+                self.root,
+                self.manifest,
+                {"src/artifact.txt": tampered_hash},
+            )
+        self.assertNotEqual(
+            self._git("rev-parse", "HEAD").stdout.strip(),
+            self.commit,
+        )
+
+    def test_unknown_commit_and_missing_path_fail_closed(self) -> None:
+        with self.assertRaisesRegex(ValueError, "commit is unavailable"):
+            verify_historical_source_hashes(
+                self.root,
+                "0" * 40,
+                {"src/artifact.txt": self.expected},
+            )
+        with self.assertRaisesRegex(ValueError, "path is missing"):
+            verify_historical_source_hashes(
+                self.root,
+                self.commit,
+                {"src/missing.txt": self.expected},
+            )
+
+    def test_nonancestor_commit_fails_closed(self) -> None:
+        tree = self._git("show", "-s", "--format=%T", self.commit).stdout.strip()
+        nonancestor = self._git(
+            "commit-tree", tree, "-m", "test: detached historical source"
+        ).stdout.strip()
+
+        with self.assertRaisesRegex(ValueError, "not an ancestor"):
+            verify_historical_source_hashes(
+                self.root,
+                nonancestor,
+                {"src/artifact.txt": self.expected},
+            )
+
+    def test_mutable_refs_and_revision_expressions_are_rejected(self) -> None:
+        for source_commit in (
+            "HEAD",
+            "main",
+            "HEAD~1",
+            "refs/heads/main",
+            self.commit[:12],
+            self.commit.upper(),
+        ):
+            with self.subTest(source_commit=source_commit):
+                with self.assertRaisesRegex(ValueError, "invalid historical source commit"):
+                    verify_historical_source_hashes(
+                        self.root,
+                        source_commit,
+                        {"src/artifact.txt": self.expected},
+                    )
+
+    def test_newline_alternate_is_explicit(self) -> None:
+        expected_crlf = hashlib.sha256(b"registered\r\nsource\r\n").hexdigest()
+        with self.assertRaisesRegex(ValueError, "hash mismatch"):
+            verify_historical_source_hashes(
+                self.root,
+                self.commit,
+                {"src/artifact.txt": expected_crlf},
+            )
+        accepted = verify_historical_source_hashes(
+            self.root,
+            self.commit,
+            {"src/artifact.txt": expected_crlf},
+            allow_text_newline_alternate=True,
+        )
+        self.assertEqual(accepted.artifact_bytes["src/artifact.txt"], self.registered_bytes)
 
 
 if __name__ == "__main__":
