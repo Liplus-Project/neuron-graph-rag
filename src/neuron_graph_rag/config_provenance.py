@@ -15,6 +15,8 @@ FEEDBACK_CONFIG_FIELDS = (
     "relation_feedback_evidence_quorum",
     "confirmed_outcome_reinforcement",
     "confirmation_decay_ratio",
+    "soft_start_feedback_reinforcement",
+    "soft_start_feedback_ratio",
 )
 SEARCH_SURFACES = ("combined", "relation")
 
@@ -31,14 +33,23 @@ def effective_config(config: EngineConfig) -> dict[str, dict[str, Any]]:
     names = {field.name for field in fields(EngineConfig)}
     if set(raw) != names:
         raise RuntimeError("EngineConfig serialization is incomplete")
+    active_names = set(names)
+    if (
+        raw["soft_start_feedback_reinforcement"] is False
+        and raw["soft_start_feedback_ratio"] is None
+    ):
+        active_names -= {
+            "soft_start_feedback_reinforcement",
+            "soft_start_feedback_ratio",
+        }
     return {
         "retrieval": {
             name: raw[name]
-            for name in sorted(names - set(FEEDBACK_CONFIG_FIELDS))
+            for name in sorted(active_names - set(FEEDBACK_CONFIG_FIELDS))
         },
         "feedback": {
             name: raw[name]
-            for name in sorted(FEEDBACK_CONFIG_FIELDS)
+            for name in sorted(set(FEEDBACK_CONFIG_FIELDS) & active_names)
         },
     }
 
@@ -56,6 +67,7 @@ def effective_config_provenance(config: EngineConfig) -> dict[str, Any]:
 def effective_search_surface(config: EngineConfig) -> str:
     if (
         config.confirmed_outcome_reinforcement
+        or config.soft_start_feedback_reinforcement
         or config.sibling_feedback_normalization > 0.0
     ):
         return "relation"

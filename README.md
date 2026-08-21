@@ -248,7 +248,7 @@ neuron-graph-rag-mcp \
 }
 ```
 
-利用順序は `search` で得た `trace_id` と候補を保持し、実際の判断過程に合わせて `selected` → `validated` → `used` を `record_source_use` へ送ります。既定 policy では新規 `used` が credited edge の独立 evidence を記録し、設定 quorum 到達時に bounded reinforcement を発火します。confirmed candidate 有効時は `used` まで weight を変更せず、後から `record_outcome` へ送った独立 `confirmed` だけが初回 multiplier `1.0`、後続 geometric decay で保存済み relation path を強化します。`corrected`、`rolled_back`、`superseded` はどちらの policy でも weight を変更しません。
+利用順序は `search` で得た `trace_id` と候補を保持し、実際の判断過程に合わせて `selected` → `validated` → `used` を `record_source_use` へ送ります。既定 policy では新規 `used` が credited edge の独立 evidence を記録し、設定 quorum 到達時に bounded reinforcement を発火します。confirmed-only candidate 有効時は `used` まで weight を変更せず、後から `record_outcome` へ送った独立 `confirmed` だけが初回 multiplier `1.0`、後続 geometric decay で保存済み relation path を強化します。`corrected`、`rolled_back`、`superseded` は既定 policy と confirmed-only policy のどちらでも weight を変更しません。
 
 三つの tool の schema、model-facing description、trace retention、failure code の正本は [docs/optional-mcp-interface.md](docs/optional-mcp-interface.md) です。実装範囲は local stdio に限り、HTTP、認証、認可、remote deployment は含みません。
 
@@ -295,6 +295,8 @@ Feedback rank elasticity runnerは、source SQLiteを変更せず、各累積fee
 Evidence-gated local feedback reinforcementは、credited edgeごとに異なるsuccess traceを永続evidenceとして数え、設定quorum到達後だけ既存bounded updateを一回ずつ適用するopt-in candidateです。`neuron_graph_rag.evidence_feedback` のclassから明示的に利用し、package rootと`.engine`のlegacy class identityは変更しません。既定quorumは`1`で現行動作を保ち、`2`以上では到達前のweightとsame-source siblingを変更しません。core / MCP receiptはcount、quorum、activationを返します。詳細は[Evidence-gated local feedback reinforcement](docs/evidence-gated-local-feedback-reinforcement.md)を参照してください。
 
 Confirmed-outcome feedback reinforcementは、同じ candidate class の `confirmed_outcome_reinforcement=True` と明示 `confirmation_decay_ratio` で有効にします。`used` は履歴だけを保存し、relation trace 上で used となった node の一意な credited path を、独立 `confirmed` outcome ごとに減衰強化します。count、multiplier、actual delta、credited path は core / MCP receipt で同じ形に写され、SQLite restart 後も継続します。mechanics は default 採用や q3/s1 との優位性を主張しません。詳細は[Confirmed-outcome feedback reinforcement](docs/confirmed-outcome-feedback-reinforcement.md)を参照してください。
+
+Soft-start feedback reinforcementは、`soft_start_feedback_reinforcement=True`、`soft_start_feedback_ratio`、`confirmation_decay_ratio` を明示する別の default-off candidate です。credited relation edge の最初の新規 `used` は通常 bounded update の一部だけを provisional に適用し、最初の独立 `confirmed` が残りを補完します。後続 confirmation は既存 geometric decay に従い、same-source sibling normalization は `used` ではなく各 confirmation の actual delta だけへ適用します。confirmed-only candidate、hard quorum と同時には有効化できず、既存 q1/s0、q3/s1、confirmed-only、凍結評価 artifact と default fingerprint は変更しません。詳細は[Confirmed-outcome feedback reinforcement](docs/confirmed-outcome-feedback-reinforcement.md#soft-start-successor-candidate)を参照してください。
 
 後続の feedback policy comparison に使う public source は、[feedback-policy-comparison-v1](corpora/feedback-policy-comparison-v1/README.md) に corpus-only で固定しています。development / holdout 各二 cluster の明示 link topology、source-only manifest、raw SHA-256、LF 改行規則、provenance、既存 fixture との identity contamination audit だけを含み、評価の選択入力と観測物は含めません。この source merge commit を後続の別 issue が唯一の入力として扱います。
 

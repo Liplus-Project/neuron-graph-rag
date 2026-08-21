@@ -66,9 +66,43 @@ neuron-graph-rag-mcp \
 
 candidate 有効時、MCP `search` は relation trace を返し、`tools/list` の source-use / outcome description も confirmed-triggered policy を明示する。無効時は既存 hybrid search、used-evidence reinforcement、audit-only delayed outcome description を保つ。
 
+## Soft-start successor candidate
+
+soft-start は confirmed-only と排他的な別の default-off candidate である。次の三値を同時に明示した場合だけ有効になる。
+
+```python
+EngineConfig(
+    soft_start_feedback_reinforcement=True,
+    soft_start_feedback_ratio=0.25,
+    confirmation_decay_ratio=0.5,
+)
+```
+
+`soft_start_feedback_ratio` と `confirmation_decay_ratio` はどちらも有限の `0 < value < 1` とする。soft-start は `confirmed_outcome_reinforcement=True` または `relation_feedback_evidence_quorum != 1` と組み合わせられず、矛盾する設定は database を開く前に拒否する。
+
+credited relation edge で最初に発生した新規 `used` は、通常の bounded increment の `soft_start_feedback_ratio` 倍だけを provisional に適用する。edge ごとの schedule は initial weight、base increment、soft-start ratio、confirmation decay、geometric maximum を SQLite に保存する。同じ edge の後続 `used` は独立 trace の policy marker と audit row を保存するが、provisional update を重複適用しない。`used` 時点では sibling normalization を一切行わない。
+
+最初の独立 `confirmed` は count `1`、表示 multiplier `1 - soft_start_feedback_ratio` とし、edge を `min(maximum_edge_weight, geometric maximum, initial weight + base increment)` まで増やす。この target との差だけを actual delta とするため、provisional と最初の confirmation の合計は通常 bounded update 一回を超えず、途中で cap または別の増加があっても weight を減らさない。後続 confirmation `n` は multiplier `confirmation_decay_ratio^(n-1)` を使う。same-source sibling normalization は各 confirmation の actual delta だけに適用する。
+
+source-use state、policy marker、provisional edge update、soft-start audit、idempotency receipt は一つの transaction で保存する。confirmed outcome 側も outcome、count、edge/sibling update、receipt を一つの transaction で保存する。receipt 保存を含む途中失敗は全変更を rollback する。core `SourceUseReceipt.feedback` と MCP output は provisional edge を同じ形で返し、`OutcomeReceipt` と MCP output は remainder または後続 decay の count、multiplier、actual delta を同じ形で返す。
+
+local stdio server では次のように起動する。
+
+```bash
+neuron-graph-rag-mcp \
+  --database /absolute/path/to/knowledge.db \
+  --soft-start-feedback-reinforcement \
+  --soft-start-feedback-ratio 0.25 \
+  --confirmation-decay-ratio 0.5
+```
+
+inactive な soft-start field は effective-config provenance へ追加しない。これにより既存 default、q3/s1、confirmed-only capture の canonical bytes と fingerprint を維持する。active な soft-start process だけが二つの soft-start field を provenance に含める。
+
 ## Adoption boundary
 
 この実装は mechanics、atomicity、receipt parity、default compatibility を固定する。decay ratio の採用値、q3/s1 に対する優位性、production default 変更は主張しない。比較には、既存 #76 / #77 artifact を変更、再実行、再集計しない fresh result-free evaluation を別 Issue で固定する必要がある。
+
+soft-start も同じ adoption boundary に従う。既存 #89 / PR #99 とその凍結 artifact は変更せず、soft-start、q3/s1、confirmed-only の比較は fresh successor evaluation として別に固定する。mechanics の実装だけで現在の local serving database または project default を切り替えない。
 
 ## Related
 
@@ -76,3 +110,5 @@ candidate 有効時、MCP `search` は relation trace を返し、`tools/list` �
 - [Optional MCP feedback interface](optional-mcp-interface.md)
 - [Decision Structure](Decision-Structure.md)
 - [Issue #81](https://github.com/Liplus-Project/neuron-graph-rag/issues/81)
+- [Issue #100](https://github.com/Liplus-Project/neuron-graph-rag/issues/100)
+- [Soft-start feedback reinforcement decision](https://github.com/Liplus-Project/neuron-graph-rag/wiki/soft-start-feedback-reinforcement)

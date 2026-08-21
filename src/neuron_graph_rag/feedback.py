@@ -54,9 +54,22 @@ class FeedbackLedger:
             separators=(",", ":"),
             ensure_ascii=False,
         )
-        reinforce_on_use = not bool(
+        confirmed_only = bool(
             getattr(self.engine.config, "confirmed_outcome_reinforcement", False)
         )
+        soft_start = bool(
+            getattr(self.engine.config, "soft_start_feedback_reinforcement", False)
+        )
+        if soft_start:
+            apply_feedback = lambda node_ids: self.engine.record_soft_start(
+                trace_id, node_ids, now=timestamp
+            )
+        elif confirmed_only:
+            apply_feedback = None
+        else:
+            apply_feedback = lambda node_ids: self.engine.record_success(
+                trace_id, node_ids, now=timestamp
+            )
         stored = self.engine.store.record_source_use(
             idempotency_key=idempotency_key,
             payload_json=payload_json,
@@ -64,16 +77,8 @@ class FeedbackLedger:
             trace_id=trace_id,
             created_at=timestamp,
             events=tuple((event.node_id, event.stage) for event in ordered_events),
-            apply_feedback=(
-                (
-                    lambda node_ids: self.engine.record_success(
-                        trace_id, node_ids, now=timestamp
-                    )
-                )
-                if reinforce_on_use
-                else None
-            ),
-            confirmation_candidate=not reinforce_on_use,
+            apply_feedback=apply_feedback,
+            confirmation_candidate=confirmed_only or soft_start,
         )
         feedback_data = stored["feedback"]
         feedback = None
@@ -162,10 +167,25 @@ class FeedbackLedger:
         recorded_at = self._timestamp(now)
         candidate_enabled = bool(
             getattr(self.engine.config, "confirmed_outcome_reinforcement", False)
+            or getattr(self.engine.config, "soft_start_feedback_reinforcement", False)
         )
         if candidate_enabled and outcome == "confirmed":
             plan = self.engine.confirmed_outcome_plan(trace_id, ordered_node_ids)
-            stored = self.engine.store.record_confirmed_outcome(
+            record_confirmed = (
+                self.engine.store.record_soft_start_confirmed_outcome
+                if getattr(
+                    self.engine.config, "soft_start_feedback_reinforcement", False
+                )
+                else self.engine.store.record_confirmed_outcome
+            )
+            candidate_options = (
+                {"soft_start_ratio": float(self.engine.config.soft_start_feedback_ratio)}
+                if getattr(
+                    self.engine.config, "soft_start_feedback_reinforcement", False
+                )
+                else {}
+            )
+            stored = record_confirmed(
                 idempotency_key=idempotency_key,
                 payload_json=payload_json,
                 outcome_id=outcome_id,
@@ -178,6 +198,7 @@ class FeedbackLedger:
                 edge_updates=plan["updates"],
                 normalization_sets=plan["normalization_sets"],
                 credited_paths=plan["credited_paths"],
+                **candidate_options,
             )
         else:
             stored = self.engine.store.record_outcome(
