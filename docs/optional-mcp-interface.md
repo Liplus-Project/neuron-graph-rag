@@ -40,6 +40,18 @@ neuron-graph-rag-mcp \
 
 ratio は `0 < r < 1` とし、flag と ratio の片方だけを指定した起動は database を開く前に拒否する。candidate 有効時は MCP `search` が relation trace を返し、`used` は provenance のみ、独立 `confirmed` が初回 multiplier `1.0` と後続 `r^(n-1)` で credited path を強化する。詳細は [Confirmed-outcome feedback reinforcement](confirmed-outcome-feedback-reinforcement.md) を正本とする。
 
+soft-start candidate は次の三値を同時に明示した process だけで有効になる。
+
+```bash
+neuron-graph-rag-mcp \
+  --database /absolute/path/to/knowledge.db \
+  --soft-start-feedback-reinforcement \
+  --soft-start-feedback-ratio 0.25 \
+  --confirmation-decay-ratio 0.5
+```
+
+soft-start ratio と confirmation decay は有限の `0 < value < 1` とし、confirmed-only flag、hard evidence quorum と同時には有効化できない。MCP `search` は relation trace と active soft-start field を含む effective-config provenance を返す。最初の新規 `used` は通常 bounded update の provisional fraction を core と同じ receipt 形で返し、最初の独立 `confirmed` は残り、後続 confirmation は geometric decay を返す。`used` は sibling を変更せず、confirmation の actual delta だけが sibling normalization の対象になる。詳細は [Confirmed-outcome feedback reinforcement の soft-start 節](confirmed-outcome-feedback-reinforcement.md#soft-start-successor-candidate) を正本とする。
+
 ## 2. Protocol envelope
 
 tool 名は `search`、`record_source_use`、`record_outcome` とする。すべての input と成功 output は JSON Schema で宣言し、未知 field を受け付けない。
@@ -124,11 +136,11 @@ source-use は一つの順序付き状態として扱う。
 | `retrieved` | `search` の結果に候補として返った | NGR | なし |
 | `selected` | consuming AI が詳細確認する source として選んだ | client | なし |
 | `validated` | exact source を確認し、現在の判断材料として利用可能と判定した | client | なし |
-| `used` | 最終回答、実装判断、レビュー判断などの根拠として実際に利用した | client | 既定 policy は新規遷移時に独立 evidence を記録して quorum 到達後に強化。confirmed candidate は履歴のみ |
+| `used` | 最終回答、実装判断、レビュー判断などの根拠として実際に利用した | client | 既定 policy は新規遷移時に独立 evidence を記録して quorum 到達後に強化。confirmed-only candidate は履歴のみ。soft-start candidate は最初の credited edge に provisional update を一回だけ適用 |
 
 `retrieved -> selected -> validated -> used` の順序を守る。既存状態と同じ stage の再送は idempotent no-op とする。後退、段階の飛び越し、`retrieved` の client 申告は拒否する。同じ `record_source_use` call 内では、同一 node の連続する複数段階を順に送ってよい。
 
-`used` は「良さそう」「読んだ」という impression ではない。final artifact の根拠として使用した時点でのみ記録する。既定 policy では新しい `used` 遷移だけが credited edge の独立 evidence を記録でき、既定 quorum `1` では従来どおりその event が即時 reinforcement を発火する。quorum `2` 以上では到達前の serving weight を変更しない。confirmed candidate では `retrieved` から `used` まで evidence、weight、`reinforced_count` を変更せず、後続 `confirmed` だけを正の trigger とする。
+`used` は「良さそう」「読んだ」という impression ではない。final artifact の根拠として使用した時点でのみ記録する。既定 policy では新しい `used` 遷移だけが credited edge の独立 evidence を記録でき、既定 quorum `1` では従来どおりその event が即時 reinforcement を発火する。quorum `2` 以上では到達前の serving weight を変更しない。confirmed-only candidate では `retrieved` から `used` まで evidence、weight、`reinforced_count` を変更せず、後続 `confirmed` だけを正の trigger とする。soft-start candidate では最初の credited `used` が provisional update を一回だけ発火し、同じ edge の後続 `used` は provenance と confirmation eligibility だけを保存する。
 
 ## 5. Tool: `search`
 
@@ -218,7 +230,7 @@ In this deployment, trace handles expire <retention policy>; feedback after expi
 
 `trace_expires_at` は自動 expiry がなければ `null`、retention があれば Unix timestamp seconds とする。
 
-`search` はさらに `effective_config_provenance` を必ず返す。これは実際に trace を生成した `EngineConfig` を、ranking と graph propagation に影響する `effective_config.retrieval` と、feedback mutation だけに影響する `effective_config.feedback` へ分離し、実際に選ばれた `search_surface`（`combined` / `relation`）を併記した機械可読 object である。各 config 区分と全体には、UTF-8・key sort・2-space indent・末尾 LF の canonical JSON bytes に対する `sha256:` fingerprint をそれぞれ `retrieval_config_fingerprint`、`feedback_config_fingerprint`、`full_config_fingerprint` として付ける。process default も明示値も、解決後の effective value を省略せず返す。`created_at` とこの provenance により、result-free feedback shadow v2 は同じ snapshot、query、limit、capture 時刻、retrieval config、search surface を exact replayできる。provenance の追加は serving retrieval/default、feedback policy、transport、deployment を変更しない。
+`search` はさらに `effective_config_provenance` を必ず返す。これは実際に trace を生成した `EngineConfig` を、ranking と graph propagation に影響する `effective_config.retrieval` と、feedback mutation だけに影響する `effective_config.feedback` へ分離し、実際に選ばれた `search_surface`（`combined` / `relation`）を併記した機械可読 object である。各 config 区分と全体には、UTF-8・key sort・2-space indent・末尾 LF の canonical JSON bytes に対する `sha256:` fingerprint をそれぞれ `retrieval_config_fingerprint`、`feedback_config_fingerprint`、`full_config_fingerprint` として付ける。既存 field は process default も明示値も解決後の effective value を返す。後続追加した soft-start field は active process だけで返し、inactive 時は frozen default、q3/s1、confirmed-only capture の canonical bytes と fingerprint を維持する。`created_at` とこの provenance により、result-free feedback shadow v2 は同じ snapshot、query、limit、capture 時刻、retrieval config、search surface を exact replayできる。provenance の追加は serving retrieval/default、feedback policy、transport、deployment を変更しない。
 
 ### 5.5 Core mapping
 
@@ -354,7 +366,7 @@ core domain API は取得済みでない node を stage 更新前に拒否し、
 
 ### 7.1 Meaning
 
-source を利用した判断や artifact に後から判明した結果を、即時 source-use とは別軸で記録する。既定 policy では評価用の履歴であり、edge weight を変更しない。明示 confirmed candidate では `confirmed` だけが保存済み relation credited path の diminishing reinforcement を発火できる。
+source を利用した判断や artifact に後から判明した結果を、即時 source-use とは別軸で記録する。既定 policy では評価用の履歴であり、edge weight を変更しない。明示 confirmed-only candidate では `confirmed` だけが保存済み relation credited path の diminishing reinforcement を発火できる。soft-start candidate では最初の `confirmed` が通常 update の残り、後続 `confirmed` が geometric decay を発火できる。
 
 ### 7.2 Normative model-facing description
 
@@ -373,7 +385,7 @@ Record a delayed outcome for sources that were already marked used, such as conf
 | `rolled_back` | 判断または artifact が撤回、revert、rollback された |
 | `superseded` | 誤りと断定せず、新しい前提または判断に置き換えられた |
 
-`corrected` と `rolled_back` を即時の負の reinforcement に変換しない。query、index、source selection、source 自体、実装のどこに原因があるかを一件の outcome だけで判別できないためである。`confirmed` も `used` の reinforcement を重複加算しない。
+`corrected` と `rolled_back` を即時の負の reinforcement に変換しない。query、index、source selection、source 自体、実装のどこに原因があるかを一件の outcome だけで判別できないためである。既定 policy の `confirmed` も `used` の reinforcement を重複加算しない。soft-start の `confirmed` は provisional と合算して通常 update 一回を超えない remainder だけを最初に加算する。
 
 ### 7.4 Input
 
@@ -418,11 +430,11 @@ Record a delayed outcome for sources that were already marked used, such as conf
 }
 ```
 
-既定 policy の `reinforcement_applied` は常に `false` とする。confirmed candidate では新しい独立 edge confirmation を保存した時だけ `true` とし、`confirmations` に count、multiplier、actual delta、old/new weight、`credited_paths` に保存済み relation steps、`normalized_sibling_edges` に局所変更を返す。duplicate trace と idempotency replay は count と weight を重複変更しない。`corrected`、`rolled_back`、`superseded` は candidate 有効時も `false` のままである。
+既定 policy の `reinforcement_applied` は常に `false` とする。confirmed-only と soft-start candidate では新しい独立 edge confirmation を保存した時だけ `true` とし、`confirmations` に count、multiplier、actual delta、old/new weight、`credited_paths` に保存済み relation steps、`normalized_sibling_edges` に局所変更を返す。duplicate trace と idempotency replay は count と weight を重複変更しない。`corrected`、`rolled_back`、`superseded` は candidate 有効時も `false` のままである。
 
 ### 7.6 Core mapping
 
-transport-neutral な `FeedbackLedger.record_outcome` は既定 policy では outcome ledger にだけ保存する。confirmed candidate では `record_success` を再利用せず、outcome、confirmation count、edge/sibling update、receipt を candidate 専用の一つの storage transaction へ渡す。
+transport-neutral な `FeedbackLedger.record_outcome` は既定 policy では outcome ledger にだけ保存する。confirmed-only と soft-start candidate では `record_success` を再利用せず、outcome、confirmation count、edge/sibling update、receipt を candidate 専用の一つの storage transaction へ渡す。
 
 ## 8. Failure contract
 
@@ -499,8 +511,11 @@ MCP であることだけを理由に別 repository へ分離しない。次の�
 - retry と duplicate stage が reinforcement を重複させない
 - 同一 trace、idempotency replay、duplicate stage が evidence count を重複させず、quorum 前は serving weight を変更しない
 - `corrected`、`rolled_back` を含む delayed outcome が weight を変更しない
-- confirmed candidate では `used` まで weight が不変で、独立 `confirmed` が count `1` / multiplier `1.0` から固定 ratio で減衰し、core / MCP receipt が一致する
-- confirmed candidate の duplicate trace、retry、lexical、zero-hop、uncredited path、別 source、途中失敗が count と weight を変更しない
+- confirmed-only candidate では `used` まで weight が不変で、独立 `confirmed` が count `1` / multiplier `1.0` から固定 ratio で減衰し、core / MCP receipt が一致する
+- confirmed-only candidate の duplicate trace、retry、lexical、zero-hop、uncredited path、別 source、途中失敗が count と weight を変更しない
+- soft-start candidate では最初の credited `used` だけが provisional update を適用し、最初の `confirmed` との合計が通常 bounded update 一回以下、後続 confirmation が固定 ratio で減衰する
+- soft-start の `used` は sibling を変更せず、confirmation の actual delta だけが sibling normalization へ反映され、core / MCP receipt が一致する
+- soft-start の duplicate trace、retry、negative outcome、lexical、zero-hop、uncredited path、別 source、途中失敗が schedule と weight を不正に変更しない
 - invalid trace、trace 外 node、enum、stage 順序、idempotency conflict を拒否する
 - `tools/list` の description だけから feedback 順序、reinforcement 条件、delayed outcome 非変更規則を判断できる
 - persistent core では `trace_expires_at` が `null`、retention deployment では具体的な description と timestamp が一致する

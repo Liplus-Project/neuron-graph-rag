@@ -186,6 +186,38 @@ class SQLiteStore:
                 FOREIGN KEY (source_id, target_id, edge_type)
                     REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
             );
+
+            CREATE TABLE IF NOT EXISTS soft_start_edge_state (
+                source_id TEXT NOT NULL,
+                target_id TEXT NOT NULL,
+                edge_type TEXT NOT NULL,
+                confirmation_count INTEGER NOT NULL CHECK(confirmation_count >= 0),
+                base_increment REAL NOT NULL CHECK(base_increment > 0.0),
+                initial_weight REAL NOT NULL CHECK(initial_weight >= 0.0),
+                soft_start_ratio REAL NOT NULL
+                    CHECK(soft_start_ratio > 0.0 AND soft_start_ratio < 1.0),
+                decay_ratio REAL NOT NULL CHECK(decay_ratio > 0.0 AND decay_ratio < 1.0),
+                geometric_maximum REAL NOT NULL CHECK(geometric_maximum >= initial_weight),
+                PRIMARY KEY (source_id, target_id, edge_type),
+                FOREIGN KEY (source_id, target_id, edge_type)
+                    REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
+            );
+
+            CREATE TABLE IF NOT EXISTS soft_start_relation_feedback (
+                source_id TEXT NOT NULL,
+                target_id TEXT NOT NULL,
+                edge_type TEXT NOT NULL,
+                trace_id TEXT NOT NULL REFERENCES retrievals(trace_id) ON DELETE CASCADE,
+                feedback_id TEXT NOT NULL
+                    REFERENCES success_feedback(feedback_id) ON DELETE CASCADE,
+                actual_delta REAL NOT NULL CHECK(actual_delta >= 0.0),
+                old_weight REAL NOT NULL CHECK(old_weight >= 0.0),
+                new_weight REAL NOT NULL CHECK(new_weight >= old_weight),
+                created_at REAL NOT NULL,
+                PRIMARY KEY (source_id, target_id, edge_type, trace_id),
+                FOREIGN KEY (source_id, target_id, edge_type)
+                    REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
+            );
             """
         )
         self.connection.commit()
@@ -691,6 +723,169 @@ class SQLiteStore:
                         )
         return reinforced, normalized, evidence
 
+    def apply_soft_start_feedback(
+        self,
+        feedback_id: str,
+        trace_id: str,
+        created_at: float,
+        used_node_ids: Iterable[str],
+        edge_updates: Iterable[tuple[str, str, str, float, float]],
+        *,
+        soft_start_ratio: float,
+        decay_ratio: float,
+    ) -> list[tuple[str, str, str, float, float]]:
+        """Atomically apply the first provisional update for each credited edge."""
+        updates = tuple(edge_updates)
+        reinforced: list[tuple[str, str, str, float, float]] = []
+        with self.transaction() as connection:
+            self._require_trace(connection, trace_id)
+            connection.execute(
+                """
+                INSERT INTO success_feedback(feedback_id, trace_id, created_at)
+                VALUES (?, ?, ?)
+                """,
+                (feedback_id, trace_id, created_at),
+            )
+            for node_id in used_node_ids:
+                exists = connection.execute(
+                    """
+                    SELECT 1 FROM retrieval_results
+                    WHERE trace_id = ? AND node_id = ?
+                    """,
+                    (trace_id, node_id),
+                ).fetchone()
+                if exists is None:
+                    raise ValueError(
+                        f"Successful node {node_id} was not retrieved by trace {trace_id}"
+                    )
+                connection.execute(
+                    "INSERT INTO success_nodes(feedback_id, node_id) VALUES (?, ?)",
+                    (feedback_id, node_id),
+                )
+            for source_id, target_id, edge_type, base_increment, maximum in updates:
+                duplicate = connection.execute(
+                    """
+                    SELECT 1 FROM soft_start_relation_feedback
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ? AND trace_id = ?
+                    """,
+                    (source_id, target_id, edge_type, trace_id),
+                ).fetchone()
+                if duplicate is not None:
+                    continue
+                edge = connection.execute(
+                    """
+                    SELECT weight FROM edges
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                    """,
+                    (source_id, target_id, edge_type),
+                ).fetchone()
+                if edge is None:
+                    raise KeyError(
+                        f"Unknown edge: {source_id} -> {target_id} ({edge_type})"
+                    )
+                old_weight = float(edge["weight"])
+                confirmed_state = connection.execute(
+                    """
+                    SELECT 1 FROM confirmed_edge_state
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                    """,
+                    (source_id, target_id, edge_type),
+                ).fetchone()
+                if confirmed_state is not None:
+                    raise FeedbackContractError(
+                        "confirmation_policy_conflict",
+                        "soft-start cannot replace a persisted confirmed-only edge schedule",
+                    )
+                state = connection.execute(
+                    """
+                    SELECT * FROM soft_start_edge_state
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                    """,
+                    (source_id, target_id, edge_type),
+                ).fetchone()
+                actual_delta = 0.0
+                new_weight = old_weight
+                if state is None:
+                    geometric_maximum = min(
+                        maximum, old_weight + base_increment / (1.0 - decay_ratio)
+                    )
+                    new_weight = max(
+                        old_weight,
+                        min(
+                            maximum,
+                            geometric_maximum,
+                            old_weight + base_increment * soft_start_ratio,
+                        ),
+                    )
+                    actual_delta = new_weight - old_weight
+                    connection.execute(
+                        """
+                        UPDATE edges
+                        SET weight = ?, reinforced_count = reinforced_count + 1
+                        WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                        """,
+                        (new_weight, source_id, target_id, edge_type),
+                    )
+                    connection.execute(
+                        """
+                        INSERT INTO soft_start_edge_state(
+                            source_id, target_id, edge_type, confirmation_count,
+                            base_increment, initial_weight, soft_start_ratio,
+                            decay_ratio, geometric_maximum
+                        ) VALUES (?, ?, ?, 0, ?, ?, ?, ?, ?)
+                        """,
+                        (
+                            source_id,
+                            target_id,
+                            edge_type,
+                            base_increment,
+                            old_weight,
+                            soft_start_ratio,
+                            decay_ratio,
+                            geometric_maximum,
+                        ),
+                    )
+                    reinforced.append(
+                        (source_id, target_id, edge_type, old_weight, new_weight)
+                    )
+                else:
+                    if not math.isclose(
+                        float(state["soft_start_ratio"]),
+                        soft_start_ratio,
+                        rel_tol=0.0,
+                        abs_tol=1e-15,
+                    ) or not math.isclose(
+                        float(state["decay_ratio"]),
+                        decay_ratio,
+                        rel_tol=0.0,
+                        abs_tol=1e-15,
+                    ):
+                        raise FeedbackContractError(
+                            "confirmation_policy_conflict",
+                            "soft-start ratio or confirmation decay differs from the "
+                            "persisted edge schedule",
+                        )
+                connection.execute(
+                    """
+                    INSERT INTO soft_start_relation_feedback(
+                        source_id, target_id, edge_type, trace_id, feedback_id,
+                        actual_delta, old_weight, new_weight, created_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        source_id,
+                        target_id,
+                        edge_type,
+                        trace_id,
+                        feedback_id,
+                        actual_delta,
+                        old_weight,
+                        new_weight,
+                        created_at,
+                    ),
+                )
+        return reinforced
+
     def record_source_use(
         self,
         *,
@@ -892,6 +1087,18 @@ class SQLiteStore:
                     (source_id, target_id, edge_type),
                 ).fetchone()
                 if state is None:
+                    soft_start_state = connection.execute(
+                        """
+                        SELECT 1 FROM soft_start_edge_state
+                        WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                        """,
+                        (source_id, target_id, edge_type),
+                    ).fetchone()
+                    if soft_start_state is not None:
+                        raise FeedbackContractError(
+                            "confirmation_policy_conflict",
+                            "confirmed-only cannot replace a persisted soft-start edge schedule",
+                        )
                     confirmation_count = 1
                     stored_base_increment = base_increment
                     geometric_maximum = min(
@@ -967,6 +1174,229 @@ class SQLiteStore:
                         old_weight,
                         new_weight,
                         recorded_at,
+                    ),
+                )
+                confirmations.append(
+                    {
+                        "source_id": source_id,
+                        "target_id": target_id,
+                        "edge_type": edge_type,
+                        "confirmation_count": confirmation_count,
+                        "multiplier": multiplier,
+                        "actual_delta": actual_delta,
+                        "old_weight": old_weight,
+                        "new_weight": new_weight,
+                    }
+                )
+                reinforced_increase_by_source[source_id] = (
+                    reinforced_increase_by_source.get(source_id, 0.0) + actual_delta
+                )
+
+            for source_id, sibling_keys, ratio in normalization_sets:
+                total_increase = reinforced_increase_by_source.get(source_id, 0.0)
+                if total_increase <= 0.0 or not sibling_keys:
+                    continue
+                reduction = total_increase * ratio / len(sibling_keys)
+                for sibling_source, target_id, edge_type in sibling_keys:
+                    row = connection.execute(
+                        """
+                        SELECT weight FROM edges
+                        WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                        """,
+                        (sibling_source, target_id, edge_type),
+                    ).fetchone()
+                    if row is None:
+                        raise KeyError(
+                            f"Unknown edge: {sibling_source} -> {target_id} ({edge_type})"
+                        )
+                    old_weight = float(row["weight"])
+                    new_weight = max(0.0, old_weight - reduction)
+                    if new_weight < old_weight:
+                        connection.execute(
+                            """
+                            UPDATE edges SET weight = ?
+                            WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                            """,
+                            (new_weight, sibling_source, target_id, edge_type),
+                        )
+                        normalized.append(
+                            {
+                                "source_id": sibling_source,
+                                "target_id": target_id,
+                                "edge_type": edge_type,
+                                "old_weight": old_weight,
+                                "new_weight": new_weight,
+                            }
+                        )
+            result = {
+                "outcome_id": outcome_id,
+                "trace_id": trace_id,
+                "node_ids": list(node_ids),
+                "outcome": "confirmed",
+                "recorded_at": recorded_at,
+                "reinforcement_applied": bool(confirmations),
+                "confirmations": confirmations,
+                "credited_paths": list(credited_paths),
+                "normalized_sibling_edges": normalized,
+            }
+            self._save_idempotent_result(
+                connection, idempotency_key, "record_outcome", payload_hash, result
+            )
+            return result
+
+    def record_soft_start_confirmed_outcome(
+        self,
+        *,
+        idempotency_key: str,
+        payload_json: str,
+        outcome_id: str,
+        trace_id: str,
+        node_ids: tuple[str, ...],
+        summary: str,
+        external_ref: str | None,
+        recorded_at: float,
+        decay_ratio: float,
+        soft_start_ratio: float,
+        edge_updates: tuple[tuple[str, str, str, float, float], ...],
+        normalization_sets: tuple[
+            tuple[str, tuple[tuple[str, str, str], ...], float], ...
+        ],
+        credited_paths: tuple[dict[str, object], ...],
+    ) -> dict[str, Any]:
+        """Atomically record confirmation of a persisted soft-start schedule."""
+        payload_hash = hashlib.sha256(payload_json.encode("utf-8")).hexdigest()
+        confirmations: list[dict[str, Any]] = []
+        normalized: list[dict[str, Any]] = []
+        with self.transaction() as connection:
+            replay = self._idempotent_replay(
+                connection, idempotency_key, "record_outcome", payload_hash
+            )
+            if replay is not None:
+                return replay
+            self._require_trace(connection, trace_id)
+            self._require_used_nodes(connection, trace_id, node_ids)
+            connection.execute(
+                """
+                INSERT INTO delayed_outcomes(
+                    outcome_id, trace_id, outcome, summary, external_ref, recorded_at
+                ) VALUES (?, ?, 'confirmed', ?, ?, ?)
+                """,
+                (outcome_id, trace_id, summary, external_ref, recorded_at),
+            )
+            for node_id in node_ids:
+                connection.execute(
+                    "INSERT INTO delayed_outcome_nodes(outcome_id, node_id) VALUES (?, ?)",
+                    (outcome_id, node_id),
+                )
+
+            reinforced_increase_by_source: dict[str, float] = {}
+            for source_id, target_id, edge_type, base_increment, maximum in edge_updates:
+                duplicate = connection.execute(
+                    """
+                    SELECT 1 FROM confirmed_relation_feedback
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ? AND trace_id = ?
+                    """,
+                    (source_id, target_id, edge_type, trace_id),
+                ).fetchone()
+                if duplicate is not None:
+                    continue
+                edge = connection.execute(
+                    """
+                    SELECT weight FROM edges
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                    """,
+                    (source_id, target_id, edge_type),
+                ).fetchone()
+                if edge is None:
+                    raise KeyError(
+                        f"Unknown edge: {source_id} -> {target_id} ({edge_type})"
+                    )
+                confirmed_only_state = connection.execute(
+                    """
+                    SELECT 1 FROM confirmed_edge_state
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                    """,
+                    (source_id, target_id, edge_type),
+                ).fetchone()
+                if confirmed_only_state is not None:
+                    raise FeedbackContractError(
+                        "confirmation_policy_conflict",
+                        "soft-start cannot replace a persisted confirmed-only edge schedule",
+                    )
+                state = connection.execute(
+                    """
+                    SELECT * FROM soft_start_edge_state
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                    """,
+                    (source_id, target_id, edge_type),
+                ).fetchone()
+                if state is None:
+                    continue
+                if not math.isclose(
+                    float(state["soft_start_ratio"]),
+                    soft_start_ratio,
+                    rel_tol=0.0,
+                    abs_tol=1e-15,
+                ) or not math.isclose(
+                    float(state["decay_ratio"]),
+                    decay_ratio,
+                    rel_tol=0.0,
+                    abs_tol=1e-15,
+                ):
+                    raise FeedbackContractError(
+                        "confirmation_policy_conflict",
+                        "soft-start ratio or confirmation decay differs from the "
+                        "persisted edge schedule",
+                    )
+                old_weight = float(edge["weight"])
+                confirmation_count = int(state["confirmation_count"]) + 1
+                stored_base_increment = float(state["base_increment"])
+                if confirmation_count == 1:
+                    multiplier = 1.0 - soft_start_ratio
+                    target_weight = min(
+                        maximum,
+                        float(state["geometric_maximum"]),
+                        float(state["initial_weight"]) + stored_base_increment,
+                    )
+                    new_weight = max(old_weight, target_weight)
+                else:
+                    multiplier = decay_ratio ** (confirmation_count - 1)
+                    new_weight = max(
+                        old_weight,
+                        min(
+                            maximum,
+                            float(state["geometric_maximum"]),
+                            old_weight + stored_base_increment * multiplier,
+                        ),
+                    )
+                actual_delta = new_weight - old_weight
+                connection.execute(
+                    """
+                    UPDATE edges
+                    SET weight = ?, reinforced_count = reinforced_count + 1
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                    """,
+                    (new_weight, source_id, target_id, edge_type),
+                )
+                connection.execute(
+                    """
+                    UPDATE soft_start_edge_state SET confirmation_count = ?
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                    """,
+                    (confirmation_count, source_id, target_id, edge_type),
+                )
+                connection.execute(
+                    """
+                    INSERT INTO confirmed_relation_feedback(
+                        source_id, target_id, edge_type, trace_id, outcome_id,
+                        confirmation_count, multiplier, actual_delta,
+                        old_weight, new_weight, created_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        source_id, target_id, edge_type, trace_id, outcome_id,
+                        confirmation_count, multiplier, actual_delta,
+                        old_weight, new_weight, recorded_at,
                     ),
                 )
                 confirmations.append(

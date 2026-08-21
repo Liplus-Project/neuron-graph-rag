@@ -72,6 +72,22 @@ CONFIRMED_OUTCOME_DESCRIPTION = (
     "idempotency retries do not reinforce twice. Corrected, rolled_back, and superseded "
     "remain audit-only and never subtract or roll back weights."
 )
+SOFT_START_SOURCE_USE_DESCRIPTION = (
+    "Record ordered source-use transitions for candidates from one Neuron Graph RAG "
+    "search trace. Use selected, validated, and used in order. This server uses the "
+    "soft-start candidate: the first newly used relation trace can apply the configured "
+    "provisional fraction of one bounded update. Later used traces add provenance only; "
+    "retrieved, selected, validated, retries, and duplicate stages never reinforce. "
+    "Retain trace_id and record a confirmed outcome when later evidence supports it."
+)
+SOFT_START_OUTCOME_DESCRIPTION = (
+    "Record a delayed outcome for sources already marked used. This server uses the "
+    "soft-start candidate: the first independent confirmed outcome completes at most "
+    "the remainder of one normal bounded update, and later independent confirmations "
+    "use the configured geometric decay. Sibling normalization applies only to each "
+    "confirmed outcome's actual delta. Duplicate traces and idempotency retries do not "
+    "reinforce twice; negative outcomes remain audit-only."
+)
 
 _IDEMPOTENCY = re.compile(r"^[A-Za-z0-9._:-]+$")
 _TRACE = re.compile(r"^[0-9a-f]{32}$")
@@ -340,21 +356,35 @@ TOOLS = (
 )
 
 
-def _tools(*, confirmed_outcome_reinforcement: bool) -> tuple[types.Tool, ...]:
-    if not confirmed_outcome_reinforcement:
+def _tools(
+    *,
+    confirmed_outcome_reinforcement: bool,
+    soft_start_feedback_reinforcement: bool,
+) -> tuple[types.Tool, ...]:
+    if not confirmed_outcome_reinforcement and not soft_start_feedback_reinforcement:
         return TOOLS
+    source_use_description = (
+        SOFT_START_SOURCE_USE_DESCRIPTION
+        if soft_start_feedback_reinforcement
+        else CONFIRMED_SOURCE_USE_DESCRIPTION
+    )
+    outcome_description = (
+        SOFT_START_OUTCOME_DESCRIPTION
+        if soft_start_feedback_reinforcement
+        else CONFIRMED_OUTCOME_DESCRIPTION
+    )
     return (
         TOOLS[0],
         types.Tool(
             name="record_source_use",
-            description=CONFIRMED_SOURCE_USE_DESCRIPTION,
+            description=source_use_description,
             input_schema=SOURCE_USE_INPUT,
             output_schema=SOURCE_USE_OUTPUT,
             annotations=_annotations(idempotent=True),
         ),
         types.Tool(
             name="record_outcome",
-            description=CONFIRMED_OUTCOME_DESCRIPTION,
+            description=outcome_description,
             input_schema=OUTCOME_INPUT,
             output_schema=OUTCOME_OUTPUT,
             annotations=_annotations(idempotent=True),
@@ -371,7 +401,10 @@ class FeedbackMCPAdapter:
         self.tools = _tools(
             confirmed_outcome_reinforcement=(
                 self.engine.config.confirmed_outcome_reinforcement
-            )
+            ),
+            soft_start_feedback_reinforcement=(
+                self.engine.config.soft_start_feedback_reinforcement
+            ),
         )
 
     def close(self) -> None:
@@ -797,7 +830,18 @@ def _build_parser() -> argparse.ArgumentParser:
         "--confirmation-decay-ratio",
         type=_open_unit_interval,
         default=None,
-        help="Geometric decay ratio required by confirmed-outcome reinforcement",
+        help="Geometric decay ratio required by confirmed-only or soft-start reinforcement",
+    )
+    parser.add_argument(
+        "--soft-start-feedback-reinforcement",
+        action="store_true",
+        help="Apply a provisional used update and complete it on first confirmation",
+    )
+    parser.add_argument(
+        "--soft-start-feedback-ratio",
+        type=_open_unit_interval,
+        default=None,
+        help="Provisional fraction required by soft-start feedback reinforcement",
     )
     return parser
 
@@ -805,13 +849,39 @@ def _build_parser() -> argparse.ArgumentParser:
 def main() -> None:
     parser = _build_parser()
     arguments = parser.parse_args()
-    if arguments.confirmed_outcome_reinforcement and arguments.confirmation_decay_ratio is None:
+    if (
+        arguments.confirmed_outcome_reinforcement
+        and arguments.soft_start_feedback_reinforcement
+    ):
         parser.error(
-            "--confirmed-outcome-reinforcement requires --confirmation-decay-ratio"
+            "--confirmed-outcome-reinforcement and "
+            "--soft-start-feedback-reinforcement are mutually exclusive"
         )
-    if not arguments.confirmed_outcome_reinforcement and arguments.confirmation_decay_ratio is not None:
+    candidate_enabled = (
+        arguments.confirmed_outcome_reinforcement
+        or arguments.soft_start_feedback_reinforcement
+    )
+    if candidate_enabled and arguments.confirmation_decay_ratio is None:
         parser.error(
-            "--confirmation-decay-ratio requires --confirmed-outcome-reinforcement"
+            "confirmed-only and soft-start reinforcement require --confirmation-decay-ratio"
+        )
+    if not candidate_enabled and arguments.confirmation_decay_ratio is not None:
+        parser.error(
+            "--confirmation-decay-ratio requires confirmed-only or soft-start reinforcement"
+        )
+    if (
+        arguments.soft_start_feedback_reinforcement
+        and arguments.soft_start_feedback_ratio is None
+    ):
+        parser.error(
+            "--soft-start-feedback-reinforcement requires --soft-start-feedback-ratio"
+        )
+    if (
+        not arguments.soft_start_feedback_reinforcement
+        and arguments.soft_start_feedback_ratio is not None
+    ):
+        parser.error(
+            "--soft-start-feedback-ratio requires --soft-start-feedback-reinforcement"
         )
     config = EngineConfig(
         relation_feedback_evidence_quorum=(
@@ -820,5 +890,9 @@ def main() -> None:
         sibling_feedback_normalization=arguments.sibling_feedback_normalization,
         confirmed_outcome_reinforcement=arguments.confirmed_outcome_reinforcement,
         confirmation_decay_ratio=arguments.confirmation_decay_ratio,
+        soft_start_feedback_reinforcement=(
+            arguments.soft_start_feedback_reinforcement
+        ),
+        soft_start_feedback_ratio=arguments.soft_start_feedback_ratio,
     )
     asyncio.run(_run(arguments.database, config=config))

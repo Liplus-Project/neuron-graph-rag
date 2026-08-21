@@ -20,6 +20,8 @@ if MCP_AVAILABLE:
         CONTRACT_VERSION,
         OUTCOME_DESCRIPTION,
         SEARCH_DESCRIPTION,
+        SOFT_START_OUTCOME_DESCRIPTION,
+        SOFT_START_SOURCE_USE_DESCRIPTION,
         SOURCE_USE_DESCRIPTION,
         FeedbackMCPAdapter,
     )
@@ -281,6 +283,103 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
             "decision",
         )
 
+    async def test_soft_start_candidate_receipt_parity_and_provenance(self) -> None:
+        self.adapter.close()
+        self.adapter = FeedbackMCPAdapter(
+            self.database,
+            config=EngineConfig(
+                soft_start_feedback_reinforcement=True,
+                soft_start_feedback_ratio=0.25,
+                confirmation_decay_ratio=0.5,
+                sibling_feedback_normalization=1.0,
+            ),
+        )
+        listed = await self.adapter.list_tools()
+        self.assertEqual(listed.tools[1].description, SOFT_START_SOURCE_USE_DESCRIPTION)
+        self.assertEqual(listed.tools[2].description, SOFT_START_OUTCOME_DESCRIPTION)
+        before = self.adapter.engine.store.edge(
+            "decision", "implementation", "implemented_by"
+        ).weight
+        sibling_before = self.adapter.engine.store.edge(
+            "decision", "alternate", "implemented_by"
+        ).weight
+        search = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="search",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "query": "cache invalidation",
+                    "limit": 3,
+                },
+            ),
+        )
+        provenance = search.structured_content["effective_config_provenance"]
+        self.assertEqual(provenance["search_surface"], "relation")
+        feedback_config = provenance["effective_config"]["feedback"]
+        self.assertTrue(feedback_config["soft_start_feedback_reinforcement"])
+        self.assertEqual(feedback_config["soft_start_feedback_ratio"], 0.25)
+        trace_id = search.structured_content["trace_id"]
+        source_use = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="record_source_use",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "idempotency_key": "soft-start-use",
+                    "trace_id": trace_id,
+                    "events": [
+                        {"node_id": "implementation", "stage": "selected"},
+                        {"node_id": "implementation", "stage": "validated"},
+                        {"node_id": "implementation", "stage": "used"},
+                    ],
+                },
+            ),
+        )
+        feedback = source_use.structured_content["feedback"]
+        self.assertIsNotNone(feedback)
+        provisional = feedback["reinforced_edges"][0]
+        provisional_delta = provisional["new_weight"] - provisional["old_weight"]
+        self.assertGreater(provisional_delta, 0.0)
+        self.assertEqual(
+            self.adapter.engine.store.edge(
+                "decision", "alternate", "implemented_by"
+            ).weight,
+            sibling_before,
+        )
+        outcome = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="record_outcome",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "idempotency_key": "soft-start-confirmed",
+                    "trace_id": trace_id,
+                    "node_ids": ["implementation"],
+                    "outcome": "confirmed",
+                    "summary": "the implementation was verified",
+                },
+            ),
+        )
+        confirmation = outcome.structured_content["confirmations"][0]
+        self.assertEqual(confirmation["confirmation_count"], 1)
+        self.assertEqual(confirmation["multiplier"], 0.75)
+        self.assertGreater(confirmation["actual_delta"], 0.0)
+        self.assertAlmostEqual(
+            self.adapter.engine.store.edge(
+                "decision", "implementation", "implemented_by"
+            ).weight
+            - before,
+            provisional_delta + confirmation["actual_delta"],
+        )
+        self.assertAlmostEqual(
+            sibling_before
+            - self.adapter.engine.store.edge(
+                "decision", "alternate", "implemented_by"
+            ).weight,
+            confirmation["actual_delta"],
+        )
+
     async def test_stdio_protocol_smoke(self) -> None:
         parameters = StdioServerParameters(
             command=sys.executable,
@@ -428,6 +527,10 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
             ("--sibling-feedback-normalization", "nan"),
             ("--confirmation-decay-ratio", "0"),
             ("--confirmation-decay-ratio", "1"),
+            ("--soft-start-feedback-ratio", "0"),
+            ("--soft-start-feedback-ratio", "1"),
+            ("--soft-start-feedback-ratio", "nan"),
+            ("--soft-start-feedback-ratio", "inf"),
         )
         for index, (option, value) in enumerate(invalid_values):
             with self.subTest(option=option, value=value):
@@ -470,6 +573,38 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         )
         self.assertEqual(result.returncode, 2)
         self.assertFalse(missing_pair.exists())
+
+        invalid_combinations = (
+            ("--soft-start-feedback-reinforcement", "--confirmation-decay-ratio", "0.5"),
+            ("--soft-start-feedback-ratio", "0.25"),
+            (
+                "--confirmed-outcome-reinforcement",
+                "--soft-start-feedback-reinforcement",
+                "--soft-start-feedback-ratio",
+                "0.25",
+                "--confirmation-decay-ratio",
+                "0.5",
+            ),
+        )
+        for index, options in enumerate(invalid_combinations):
+            with self.subTest(options=options):
+                database = Path(self.temporary.name) / f"invalid-combination-{index}.sqlite"
+                result = subprocess.run(
+                    [
+                        sys.executable,
+                        "-m",
+                        "neuron_graph_rag_mcp",
+                        "--database",
+                        str(database),
+                        *options,
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=10,
+                    check=False,
+                )
+                self.assertEqual(result.returncode, 2)
+                self.assertFalse(database.exists())
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import uuid
 from collections.abc import Iterable
 from dataclasses import dataclass
@@ -23,6 +24,8 @@ class EngineConfig(BaseEngineConfig):
     relation_feedback_evidence_quorum: int = 1
     confirmed_outcome_reinforcement: bool = False
     confirmation_decay_ratio: float | None = None
+    soft_start_feedback_reinforcement: bool = False
+    soft_start_feedback_ratio: float | None = None
 
     def __post_init__(self) -> None:
         BaseEngineConfig.__post_init__(self)
@@ -36,10 +39,24 @@ class EngineConfig(BaseEngineConfig):
             )
         if not isinstance(self.confirmed_outcome_reinforcement, bool):
             raise TypeError("confirmed_outcome_reinforcement must be a boolean")
-        if self.confirmed_outcome_reinforcement:
+        if not isinstance(self.soft_start_feedback_reinforcement, bool):
+            raise TypeError("soft_start_feedback_reinforcement must be a boolean")
+        if (
+            self.confirmed_outcome_reinforcement
+            and self.soft_start_feedback_reinforcement
+        ):
+            raise ValueError(
+                "confirmed-only and soft-start feedback reinforcement are mutually exclusive"
+            )
+        outcome_candidate = (
+            self.confirmed_outcome_reinforcement
+            or self.soft_start_feedback_reinforcement
+        )
+        if outcome_candidate:
             if (
                 isinstance(self.confirmation_decay_ratio, bool)
                 or not isinstance(self.confirmation_decay_ratio, (int, float))
+                or not math.isfinite(float(self.confirmation_decay_ratio))
                 or not 0.0 < float(self.confirmation_decay_ratio) < 1.0
             ):
                 raise ValueError(
@@ -47,7 +64,27 @@ class EngineConfig(BaseEngineConfig):
                 )
         elif self.confirmation_decay_ratio is not None:
             raise ValueError(
-                "confirmation_decay_ratio requires confirmed_outcome_reinforcement"
+                "confirmation_decay_ratio requires confirmed-only or soft-start "
+                "feedback reinforcement"
+            )
+        if self.soft_start_feedback_reinforcement:
+            if self.relation_feedback_evidence_quorum != 1:
+                raise ValueError(
+                    "soft-start feedback reinforcement cannot be combined with a "
+                    "hard evidence quorum"
+                )
+            if (
+                isinstance(self.soft_start_feedback_ratio, bool)
+                or not isinstance(self.soft_start_feedback_ratio, (int, float))
+                or not math.isfinite(float(self.soft_start_feedback_ratio))
+                or not 0.0 < float(self.soft_start_feedback_ratio) < 1.0
+            ):
+                raise ValueError(
+                    "soft_start_feedback_ratio must be explicitly set between 0 and 1"
+                )
+        elif self.soft_start_feedback_ratio is not None:
+            raise ValueError(
+                "soft_start_feedback_ratio requires soft_start_feedback_reinforcement"
             )
 
 
@@ -197,21 +234,83 @@ class NeuronGraphRAG(BaseNeuronGraphRAG):
             evidence,
         )
 
+    def record_soft_start(
+        self,
+        trace_id: str,
+        used_node_ids: Iterable[str],
+        *,
+        now: datetime | float | None = None,
+    ) -> FeedbackReceipt:
+        """Apply the one-time provisional part of a soft-start relation schedule."""
+        if not self.config.soft_start_feedback_reinforcement:
+            raise ValueError("soft-start feedback reinforcement is not enabled")
+        ordered_node_ids = tuple(dict.fromkeys(used_node_ids))
+        if not ordered_node_ids:
+            raise ValueError("At least one used node is required")
+        timestamp = self._timestamp(now)
+        plan = self._relation_feedback_plan(
+            trace_id, ordered_node_ids, require_candidate_marker=False
+        )
+        feedback_id = uuid.uuid4().hex
+        stored_reinforced = self.store.apply_soft_start_feedback(
+            feedback_id,
+            trace_id,
+            timestamp,
+            ordered_node_ids,
+            plan["updates"],
+            soft_start_ratio=float(self.config.soft_start_feedback_ratio),
+            decay_ratio=float(self.config.confirmation_decay_ratio),
+        )
+        return FeedbackReceipt(
+            feedback_id,
+            trace_id,
+            ordered_node_ids,
+            tuple(
+                ReinforcedEdge(
+                    source_id,
+                    target_id,
+                    edge_type,
+                    old_weight,
+                    new_weight,
+                )
+                for source_id, target_id, edge_type, old_weight, new_weight in stored_reinforced
+            ),
+            self.store.retrieval_channel(trace_id),
+        )
+
     def confirmed_outcome_plan(
         self, trace_id: str, used_node_ids: Iterable[str]
     ) -> dict[str, Any]:
         """Build a relation-only credited plan for an opt-in confirmed outcome."""
-        if not self.config.confirmed_outcome_reinforcement:
+        if not (
+            self.config.confirmed_outcome_reinforcement
+            or self.config.soft_start_feedback_reinforcement
+        ):
             raise ValueError("confirmed outcome reinforcement is not enabled")
+        return self._relation_feedback_plan(
+            trace_id, used_node_ids, require_candidate_marker=True
+        )
+
+    def _relation_feedback_plan(
+        self,
+        trace_id: str,
+        used_node_ids: Iterable[str],
+        *,
+        require_candidate_marker: bool,
+    ) -> dict[str, Any]:
         ordered_node_ids = tuple(dict.fromkeys(used_node_ids))
         if not ordered_node_ids:
             raise ValueError("At least one used node is required")
         if self.store.retrieval_channel(trace_id) != "relation":
             return {"updates": (), "normalization_sets": (), "credited_paths": ()}
-        eligible_node_ids = tuple(
-            node_id
-            for node_id in ordered_node_ids
-            if self.store.is_confirmed_candidate_use(trace_id, node_id)
+        eligible_node_ids = (
+            tuple(
+                node_id
+                for node_id in ordered_node_ids
+                if self.store.is_confirmed_candidate_use(trace_id, node_id)
+            )
+            if require_candidate_marker
+            else ordered_node_ids
         )
 
         selected_paths: list[tuple[str, dict[str, object]]] = []
