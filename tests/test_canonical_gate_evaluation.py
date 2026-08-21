@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import hashlib
-import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -17,6 +15,7 @@ from neuron_graph_rag.canonical_gate_evaluation import (
     verify_registered_result,
     write_observed_exclusive,
 )
+from neuron_graph_rag.corpus_integrity import verify_manifest_source_hashes
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures"
@@ -122,36 +121,12 @@ class CanonicalGateEvaluationTest(unittest.TestCase):
 
     def test_registered_artifacts_are_result_free_or_immutable(self) -> None:
         manifest = read_json(FIXTURES / "canonical_evidence_gate_v1.manifest.json")
-        manifest_relative = "tests/fixtures/canonical_evidence_gate_v1.manifest.json"
-        frozen_commit = subprocess.check_output(
-            ["git", "log", "-1", "--format=%H", "--", manifest_relative],
-            cwd=ROOT,
-            text=True,
-        ).strip()
-        commit_check = subprocess.run(
-            ["git", "cat-file", "-e", f"{frozen_commit}^{{commit}}"],
-            cwd=ROOT,
-            check=False,
+        registered = verify_manifest_source_hashes(
+            ROOT,
+            FIXTURES / "canonical_evidence_gate_v1.manifest.json",
+            manifest["artifacts"],
         )
-        self.assertEqual(
-            commit_check.returncode,
-            0,
-            "the manifest-introducing commit must be present; CI uses fetch-depth 0",
-        )
-        evolving_surfaces = {
-            "README.md",
-            "tests/test_canonical_gate_evaluation.py",
-        }
-        for relative, expected_hash in manifest["artifacts"].items():
-            if relative in evolving_surfaces:
-                frozen_bytes = subprocess.check_output(
-                    ["git", "show", f"{frozen_commit}:{relative}"],
-                    cwd=ROOT,
-                )
-                actual = hashlib.sha256(frozen_bytes).hexdigest()
-            else:
-                actual = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
-            self.assertEqual(actual, expected_hash, relative)
+        self.assertEqual(registered.artifact_sha256, manifest["artifacts"])
         for stage, relative in manifest["outputs"].items():
             output = ROOT / relative
             if output.exists():

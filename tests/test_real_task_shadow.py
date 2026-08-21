@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import copy
-import hashlib
 import os
 import subprocess
 import sys
@@ -12,6 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from neuron_graph_rag import EngineConfig
+from neuron_graph_rag.corpus_integrity import verify_manifest_source_hashes
 from neuron_graph_rag.real_task_shadow import (
     ARM_IDS,
     PROTOCOL_ID,
@@ -320,9 +320,10 @@ class RealTaskShadowTest(unittest.TestCase):
         manifest = read_canonical_json(MANIFEST)
         self.assertEqual(manifest["protocol_id"], PROTOCOL_ID)
         self.assertTrue(manifest["result_free"])
-        for relative, expected in manifest["artifact_sha256"].items():
-            actual = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
-            self.assertEqual(actual, expected, relative)
+        verified = verify_manifest_source_hashes(
+            ROOT, MANIFEST, manifest["artifact_sha256"]
+        )
+        self.assertEqual(verified.artifact_sha256, manifest["artifact_sha256"])
         for relative in manifest["registered_outputs"].values():
             path = ROOT / relative
             self.assertTrue(not path.exists() or not any(path.iterdir()), relative)

@@ -7,7 +7,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .corpus_integrity import verify_source_sha256
+from .corpus_integrity import (
+    HistoricalSourceSnapshot,
+    verify_historical_source_hashes,
+    verify_manifest_source_hashes,
+    verify_source_bytes,
+)
 from .engine import EngineConfig, NeuronGraphRAG
 
 
@@ -98,15 +103,26 @@ def write_fresh_native_feedback_result(path: str | Path, result: dict[str, Any])
 
 
 def _read_frozen_artifacts(manifest_path: Path, manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    loaded: dict[str, dict[str, Any]] = {}
+    root = manifest_path.resolve().parents[2]
+    records: dict[str, tuple[str, str]] = {}
     for name in ("fixture", "gold", "schedule", "gate", "audit"):
         record = manifest["artifacts"].get(name)
         if not isinstance(record, dict):
             raise ValueError(f"Missing frozen {name} record")
         artifact = manifest_path.parent / str(record["path"])
-        if _raw_sha256(artifact) != record["sha256"]:
-            raise ValueError(f"Frozen {name} hash mismatch")
-        loaded[name] = _read_json(artifact)
+        relative = artifact.resolve().relative_to(root).as_posix()
+        records[name] = (relative, str(record["sha256"]))
+    registered = verify_manifest_source_hashes(
+        root,
+        manifest_path,
+        {relative: expected for relative, expected in records.values()},
+    )
+    loaded: dict[str, dict[str, Any]] = {}
+    for name, (relative, _) in records.items():
+        loaded[name] = _read_json_bytes(
+            registered.artifact_bytes[relative],
+            f"{registered.source_commit}:{relative}",
+        )
     return loaded
 
 
@@ -211,11 +227,15 @@ def _validate_gate(gate: dict[str, Any]) -> None:
 
 def _verify_source_integrity(manifest_path: Path, fixture: dict[str, Any]) -> dict[str, Any]:
     root = (manifest_path.parent / str(fixture["repository_root"])).resolve()
+    source = _registered_source_snapshot(root, manifest_path, fixture)
     checks: list[dict[str, str | bool | None]] = []
     for stage in ("development", "holdout"):
         for node in fixture["splits"][stage]["nodes"]:
-            verification = verify_source_sha256(
-                root / str(node["document_path"]), str(node["source_sha256"])
+            relative = str(node["document_path"])
+            verification = verify_source_bytes(
+                source.artifact_bytes[relative],
+                str(node["source_sha256"]),
+                allow_text_newline_alternate=True,
             )
             checks.append(
                 {
@@ -312,10 +332,12 @@ def _run_group(
 def _load_source_backed_split(engine: NeuronGraphRAG, manifest_path: Path, fixture: dict[str, Any], stage: str) -> None:
     root = (manifest_path.parent / str(fixture["repository_root"])).resolve()
     split = fixture["splits"][stage]
+    source = _registered_source_snapshot(root, manifest_path, fixture)
     for node in split["nodes"]:
+        relative = str(node["document_path"])
         engine.add_document(
             str(node["node_id"]),
-            (root / str(node["document_path"])).read_text(encoding="utf-8"),
+            source.artifact_bytes[relative].decode("utf-8", errors="strict"),
             metadata={"source_url": node["source_url"], "document_path": node["document_path"]},
         )
     for edge in split["edges"]:
@@ -325,6 +347,23 @@ def _load_source_backed_split(engine: NeuronGraphRAG, manifest_path: Path, fixtu
         )
 
 
+def _registered_source_snapshot(
+    root: Path, manifest_path: Path, fixture: dict[str, Any]
+) -> HistoricalSourceSnapshot:
+    nodes = [
+        node
+        for stage in ("development", "holdout")
+        for node in fixture["splits"][stage]["nodes"]
+    ]
+    return verify_manifest_source_hashes(
+        root,
+        manifest_path,
+        {
+            str(node["document_path"]): str(node["source_sha256"])
+            for node in nodes
+        },
+        allow_text_newline_alternate=True,
+    )
 def _score_case(engine: NeuronGraphRAG, case: dict[str, Any], limit: int) -> dict[str, Any]:
     trace = engine.search_channels(case["query"], limit=limit, now=float(case["now"]))
     expected = str(case["expected_node_id"])
@@ -379,10 +418,13 @@ def _reinforced(edge: Any) -> dict[str, Any]:
 
 
 def _read_json(path: Path) -> dict[str, Any]:
-    with path.open(encoding="utf-8") as stream:
-        value = json.load(stream)
+    return _read_json_bytes(path.read_bytes(), str(path))
+
+
+def _read_json_bytes(raw: bytes, source: str) -> dict[str, Any]:
+    value = json.loads(raw.decode("utf-8", errors="strict"))
     if not isinstance(value, dict):
-        raise ValueError(f"Expected JSON object: {path}")
+        raise ValueError(f"Expected JSON object: {source}")
     return value
 
 

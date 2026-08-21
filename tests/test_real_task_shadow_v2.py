@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import copy
-import hashlib
 import os
 import subprocess
 import sys
@@ -10,6 +9,7 @@ import unittest
 from pathlib import Path
 
 from neuron_graph_rag.evidence_feedback import EngineConfig
+from neuron_graph_rag.corpus_integrity import verify_manifest_source_hashes
 from neuron_graph_rag.real_task_shadow import read_canonical_json, write_json_exclusive
 from neuron_graph_rag.real_task_shadow_v2 import (
     PROTOCOL_ID,
@@ -243,8 +243,10 @@ class RealTaskShadowV2Test(unittest.TestCase):
         manifest = read_canonical_json(MANIFEST)
         self.assertTrue(manifest["result_free"])
         self.assertEqual(manifest["observation_status"], "not_started")
-        for relative, expected in manifest["artifact_sha256"].items():
-            self.assertEqual(hashlib.sha256((ROOT / relative).read_bytes()).hexdigest(), expected, relative)
+        verified = verify_manifest_source_hashes(
+            ROOT, MANIFEST, manifest["artifact_sha256"]
+        )
+        self.assertEqual(verified.artifact_sha256, manifest["artifact_sha256"])
         for relative in manifest["registered_outputs"].values():
             path = ROOT / relative
             self.assertTrue(not path.exists() or not any(path.iterdir()), relative)

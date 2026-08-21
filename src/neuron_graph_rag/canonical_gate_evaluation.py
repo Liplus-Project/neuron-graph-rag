@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 from collections.abc import Mapping, Sequence
@@ -8,6 +7,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
+from .corpus_integrity import HistoricalSourceSnapshot, verify_manifest_source_hashes
 from .evidence_feedback import EngineConfig, NeuronGraphRAG
 
 
@@ -19,18 +19,34 @@ MANIFEST_PATH = FIXTURES / f"{PROTOCOL_STEM}.manifest.json"
 
 def read_json(path: Path) -> Any:
     raw = path.read_bytes()
+    return _read_json_bytes(raw, str(path))
+
+
+def _read_json_bytes(raw: bytes, source: str) -> Any:
     text = raw.decode("utf-8")
     if text.encode("utf-8") != raw:
-        raise ValueError(f"non-canonical UTF-8 artifact: {path}")
+        raise ValueError(f"non-canonical UTF-8 artifact: {source}")
     return json.loads(text)
 
 
-def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+def _registered_artifacts(manifest: Mapping[str, Any]) -> HistoricalSourceSnapshot:
+    return verify_manifest_source_hashes(ROOT, MANIFEST_PATH, manifest["artifacts"])
+
+
+def _registered_json(
+    registered: HistoricalSourceSnapshot, relative: str
+) -> Any:
+    return _read_json_bytes(
+        registered.artifact_bytes[relative],
+        f"{registered.source_commit}:{relative}",
+    )
 
 
 def canonical_gate_ids(gate_path: Path) -> list[str]:
-    payload = read_json(gate_path)
+    return _canonical_gate_ids(read_json(gate_path))
+
+
+def _canonical_gate_ids(payload: Mapping[str, Any]) -> list[str]:
     gates = payload.get("gates")
     if not isinstance(gates, list) or not gates:
         raise ValueError("registered gates must be a non-empty array")
@@ -348,12 +364,14 @@ def _changed_edges(snapshot: Mapping[str, Any]) -> list[str]:
 
 def _artifact_preflight(manifest: Mapping[str, Any], stage: str) -> dict[str, Any]:
     checks: dict[str, bool] = {}
+    registered = _registered_artifacts(manifest)
     for relative, expected_hash in manifest["artifacts"].items():
-        path = ROOT / relative
-        checks[f"hash:{relative}"] = path.is_file() and _sha256(path) == expected_hash
-        if path.is_file() and path.suffix in {".json", ".md", ".py"}:
+        checks[f"hash:{relative}"] = (
+            registered.artifact_sha256[relative] == expected_hash
+        )
+        if Path(relative).suffix in {".json", ".md", ".py"}:
             try:
-                path.read_bytes().decode("utf-8")
+                registered.artifact_bytes[relative].decode("utf-8")
             except UnicodeDecodeError:
                 checks[f"utf8:{relative}"] = False
             else:
@@ -370,9 +388,9 @@ def _artifact_preflight(manifest: Mapping[str, Any], stage: str) -> dict[str, An
         if other_output.exists():
             development = read_json(other_output)
             checks["development-all-pass"] = development.get("all_pass") is True
-    audit = read_json(ROOT / manifest["audit"])
-    fixture = read_json(ROOT / manifest["fixture"])
-    registry = read_json(ROOT / manifest["identity_registry"])
+    audit = _registered_json(registered, manifest["audit"])
+    fixture = _registered_json(registered, manifest["fixture"])
+    registry = _registered_json(registered, manifest["identity_registry"])
     identity_checks = verify_identity_only_registry(fixture, registry)
     checks["identity-audit"] = (
         audit.get("checks") == identity_checks
@@ -517,10 +535,13 @@ def run_registered_stage(stage: str, *, root: Path = ROOT) -> Path:
     preflight = _artifact_preflight(manifest, stage)
     if not preflight["passed"]:
         raise RuntimeError(f"protocol preflight failed: {preflight['checks']}")
-    fixture = read_json(ROOT / manifest["fixture"])
-    gold = read_json(ROOT / manifest["gold"])
-    schedule = read_json(ROOT / manifest["schedule"])
-    gate_ids = canonical_gate_ids(ROOT / manifest["gate"])
+    registered = _registered_artifacts(manifest)
+    fixture = _registered_json(registered, manifest["fixture"])
+    gold = _registered_json(registered, manifest["gold"])
+    schedule = _registered_json(registered, manifest["schedule"])
+    gate_ids = _canonical_gate_ids(
+        _registered_json(registered, manifest["gate"])
+    )
     cases = [item for item in fixture["cases"] if item["stage"] == stage]
     expected_targets = {
         item["case_id"]: item["target_node_id"] for item in gold["cases"]

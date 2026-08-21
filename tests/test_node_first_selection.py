@@ -248,6 +248,18 @@ class NodeFirstAggregationTest(unittest.TestCase):
     def test_synthetic_twelve_invocations_allow_channel_split_on_correct_node(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
+            subprocess.run(
+                ["git", "init", "--initial-branch=main"], cwd=root, check=True,
+                capture_output=True,
+            )
+            subprocess.run(
+                ["git", "config", "user.name", "Node First Test"],
+                cwd=root, check=True,
+            )
+            subprocess.run(
+                ["git", "config", "user.email", "node-first@example.invalid"],
+                cwd=root, check=True,
+            )
             fixtures = root / "tests" / "fixtures"
             fixtures.mkdir(parents=True)
             prompt = fixtures / "prompt.txt"
@@ -260,6 +272,18 @@ class NodeFirstAggregationTest(unittest.TestCase):
             prior_v2 = root / "prior-v2.txt"
             prior_v1.write_text("v1\n", encoding="utf-8")
             prior_v2.write_text("v2\n", encoding="utf-8")
+            subprocess.run(
+                ["git", "add", "prior-v1.txt", "prior-v2.txt"],
+                cwd=root, check=True,
+            )
+            subprocess.run(
+                ["git", "commit", "-m", "test: freeze prior artifacts"],
+                cwd=root, check=True, capture_output=True,
+            )
+            prior_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=root, check=True,
+                capture_output=True, text=True,
+            ).stdout.strip()
             gold_cases = []
             for index in range(1, 5):
                 gold: dict[str, object] = {
@@ -321,6 +345,7 @@ class NodeFirstAggregationTest(unittest.TestCase):
                     {"path": "prior-v1.txt", "sha256": _sha256_bytes(prior_v1.read_bytes()), "version": "v1"},
                     {"path": "prior-v2.txt", "sha256": _sha256_bytes(prior_v2.read_bytes()), "version": "v2"},
                 ],
+                "frozen_prior_commit": prior_commit,
                 "judge_prompt": {
                     "path": "tests/fixtures/prompt.txt",
                     "canonical_sha256": _canonical_checkout_sha256(prompt),
@@ -364,6 +389,11 @@ class NodeFirstAggregationTest(unittest.TestCase):
                     _json_document_bytes({**common, "case": case})
                 )
                 case_paths.append(case_path)
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(
+                ["git", "commit", "-m", "test: register node-first manifest"],
+                cwd=root, check=True, capture_output=True,
+            )
             preflighted_case = preflight_node_first_capture(
                 manifest_path, stage_path, case_paths[0]
             )

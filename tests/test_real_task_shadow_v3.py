@@ -296,7 +296,9 @@ class RealTaskShadowV3LifecycleTest(unittest.TestCase):
             manifest["artifact_sha256"][relative] = "0" * 64
             forged_manifest = root / "forged.manifest.json"
             forged_manifest.write_bytes(canonical_json_bytes(manifest))
-            with self.assertRaisesRegex(ValueError, "hash mismatch"):
+            with self.assertRaisesRegex(
+                ValueError, "outside repository|not registered|hash mismatch"
+            ):
                 audit_repository_lifecycle(
                     forged_manifest, repository_root=ROOT, registered_root=root
                 )

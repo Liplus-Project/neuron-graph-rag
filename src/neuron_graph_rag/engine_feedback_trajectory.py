@@ -8,7 +8,12 @@ import re
 from pathlib import Path
 from typing import Any
 
-from .corpus_integrity import verify_source_sha256
+from .corpus_integrity import (
+    HistoricalSourceSnapshot,
+    verify_historical_source_hashes,
+    verify_manifest_source_hashes,
+    verify_source_bytes,
+)
 from .engine import EngineConfig, NeuronGraphRAG
 
 
@@ -419,15 +424,26 @@ def _gate_result(
 def _read_frozen_artifacts(
     manifest_path: Path, manifest: dict[str, Any]
 ) -> dict[str, dict[str, Any]]:
-    loaded: dict[str, dict[str, Any]] = {}
+    root = manifest_path.resolve().parents[2]
+    records: dict[str, tuple[str, str]] = {}
     for name in ("fixture", "gold", "schedule", "gate", "audit"):
         record = manifest.get("artifacts", {}).get(name)
         if not isinstance(record, dict):
             raise ValueError(f"Missing frozen artifact: {name}")
         artifact_path = manifest_path.parent / str(record.get("path", ""))
-        if _raw_sha256(artifact_path) != record.get("sha256"):
-            raise ValueError(f"Frozen artifact hash mismatch: {name}")
-        loaded[name] = _read_json(artifact_path)
+        relative = artifact_path.resolve().relative_to(root).as_posix()
+        records[name] = (relative, str(record.get("sha256", "")))
+    registered = verify_manifest_source_hashes(
+        root,
+        manifest_path,
+        {relative: expected for relative, expected in records.values()},
+    )
+    loaded: dict[str, dict[str, Any]] = {}
+    for name, (relative, _) in records.items():
+        loaded[name] = _read_json_bytes(
+            registered.artifact_bytes[relative],
+            f"{registered.source_commit}:{relative}",
+        )
     return loaded
 
 
@@ -537,10 +553,15 @@ def _verify_source_integrity(
     manifest_path: Path, fixture: dict[str, Any], stage: str
 ) -> dict[str, Any]:
     root = (manifest_path.parent / str(fixture["repository_root"])).resolve()
+    source = _registered_source_snapshot(root, fixture, stage)
     checks: list[dict[str, Any]] = []
     for node in fixture["splits"][stage]["nodes"]:
-        path = root / str(node["document_path"])
-        verification = verify_source_sha256(path, str(node["source_sha256"]))
+        relative = str(node["document_path"])
+        verification = verify_source_bytes(
+            source.artifact_bytes[relative],
+            str(node["source_sha256"]),
+            allow_text_newline_alternate=True,
+        )
         checks.append(
             {
                 "node_id": node["node_id"],
@@ -553,7 +574,9 @@ def _verify_source_integrity(
                 "alternate_sha256": verification.alternate_sha256,
             }
         )
-    explicit_links = _verify_explicit_links(root, fixture["splits"][stage])
+    explicit_links = _verify_explicit_links(
+        fixture["splits"][stage], source.artifact_bytes
+    )
     return {
         "passed": all(bool(check["accepted"]) for check in checks) and explicit_links["passed"],
         "source_commit": fixture["source_commit"],
@@ -562,7 +585,9 @@ def _verify_source_integrity(
     }
 
 
-def _verify_explicit_links(root: Path, split: dict[str, Any]) -> dict[str, Any]:
+def _verify_explicit_links(
+    split: dict[str, Any], source_bytes: dict[str, bytes]
+) -> dict[str, Any]:
     node_by_path = {
         Path(str(node["document_path"])).name: str(node["node_id"])
         for node in split["nodes"]
@@ -572,8 +597,13 @@ def _verify_explicit_links(root: Path, split: dict[str, Any]) -> dict[str, Any]:
     for cluster in split["clusters"]:
         overview_name = f"{cluster}-overview.md"
         overview_node = node_by_path[overview_name]
-        overview_path = root / "corpora" / "repository-native-controlled-v3" / overview_name
-        for target_name in RELATIVE_LINK.findall(overview_path.read_text(encoding="utf-8")):
+        overview_relative = next(
+            str(node["document_path"])
+            for node in split["nodes"]
+            if Path(str(node["document_path"])).name == overview_name
+        )
+        overview_text = source_bytes[overview_relative].decode("utf-8", errors="strict")
+        for target_name in RELATIVE_LINK.findall(overview_text):
             observed.add((overview_node, node_by_path[target_name], "explicit_link"))
     return {
         "passed": observed == expected,
@@ -590,10 +620,12 @@ def _load_split(
 ) -> None:
     root = (manifest_path.parent / str(fixture["repository_root"])).resolve()
     split = fixture["splits"][stage]
+    source = _registered_source_snapshot(root, fixture, stage)
     for node in split["nodes"]:
+        relative = str(node["document_path"])
         engine.add_document(
             str(node["node_id"]),
-            (root / str(node["document_path"])).read_text(encoding="utf-8"),
+            source.artifact_bytes[relative].decode("utf-8", errors="strict"),
             metadata={
                 "cluster": node["cluster"],
                 "source_url": node["source_url"],
@@ -611,6 +643,18 @@ def _load_split(
         )
 
 
+def _registered_source_snapshot(
+    root: Path, fixture: dict[str, Any], stage: str
+) -> HistoricalSourceSnapshot:
+    return verify_historical_source_hashes(
+        root,
+        str(fixture["source_commit"]),
+        {
+            str(node["document_path"]): str(node["source_sha256"])
+            for node in fixture["splits"][stage]["nodes"]
+        },
+        allow_text_newline_alternate=True,
+    )
 def _paths_from_hit(hit: Any) -> tuple[list[dict[str, Any]], list[tuple[tuple[str, str, str], ...]]]:
     raw = list(hit.explain()["paths"])
     projected = [_project_path(path["steps"]) for path in raw]
@@ -699,10 +743,13 @@ def _result_path(
 
 
 def _read_json(path: Path) -> dict[str, Any]:
-    with path.open(encoding="utf-8") as stream:
-        value = json.load(stream)
+    return _read_json_bytes(path.read_bytes(), str(path))
+
+
+def _read_json_bytes(raw: bytes, source: str) -> dict[str, Any]:
+    value = json.loads(raw.decode("utf-8", errors="strict"))
     if not isinstance(value, dict):
-        raise ValueError(f"Expected JSON object: {path}")
+        raise ValueError(f"Expected JSON object: {source}")
     return value
 
 
