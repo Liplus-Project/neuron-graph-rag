@@ -218,6 +218,67 @@ class SQLiteStore:
                 FOREIGN KEY (source_id, target_id, edge_type)
                     REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
             );
+
+            CREATE TABLE IF NOT EXISTS feedback_contributions (
+                contribution_id TEXT PRIMARY KEY,
+                contribution_kind TEXT NOT NULL
+                    CHECK(contribution_kind IN ('soft_start_provisional', 'soft_start_confirmation')),
+                source_record_id TEXT NOT NULL,
+                trace_id TEXT NOT NULL REFERENCES retrievals(trace_id) ON DELETE CASCADE,
+                source_id TEXT NOT NULL,
+                target_id TEXT NOT NULL,
+                edge_type TEXT NOT NULL,
+                baseline_weight REAL NOT NULL CHECK(baseline_weight >= 0.0),
+                credited_delta REAL NOT NULL CHECK(credited_delta > 0.0),
+                reinforced_count_delta INTEGER NOT NULL CHECK(reinforced_count_delta >= 0),
+                active INTEGER NOT NULL DEFAULT 1 CHECK(active IN (0, 1)),
+                reversed_by_outcome_id TEXT REFERENCES delayed_outcomes(outcome_id),
+                created_at REAL NOT NULL,
+                UNIQUE(contribution_kind, source_record_id, source_id, target_id, edge_type),
+                FOREIGN KEY (source_id, target_id, edge_type)
+                    REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
+            );
+
+            CREATE TABLE IF NOT EXISTS feedback_contribution_mutations (
+                contribution_id TEXT NOT NULL
+                    REFERENCES feedback_contributions(contribution_id) ON DELETE CASCADE,
+                mutation_role TEXT NOT NULL CHECK(mutation_role IN ('credited', 'sibling')),
+                source_id TEXT NOT NULL,
+                target_id TEXT NOT NULL,
+                edge_type TEXT NOT NULL,
+                actual_delta REAL NOT NULL CHECK(actual_delta != 0.0),
+                PRIMARY KEY (
+                    contribution_id, mutation_role, source_id, target_id, edge_type
+                ),
+                FOREIGN KEY (source_id, target_id, edge_type)
+                    REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
+            );
+
+            CREATE TABLE IF NOT EXISTS feedback_edge_journal_state (
+                source_id TEXT NOT NULL,
+                target_id TEXT NOT NULL,
+                edge_type TEXT NOT NULL,
+                baseline_weight REAL NOT NULL CHECK(baseline_weight >= 0.0),
+                baseline_reinforced_count INTEGER NOT NULL
+                    CHECK(baseline_reinforced_count >= 0),
+                maximum_weight REAL NOT NULL CHECK(maximum_weight >= baseline_weight),
+                PRIMARY KEY (source_id, target_id, edge_type),
+                FOREIGN KEY (source_id, target_id, edge_type)
+                    REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
+            );
+
+            CREATE TABLE IF NOT EXISTS relation_edge_dormancy (
+                source_id TEXT NOT NULL,
+                target_id TEXT NOT NULL,
+                edge_type TEXT NOT NULL,
+                dormant INTEGER NOT NULL CHECK(dormant IN (0, 1)),
+                outcome_id TEXT NOT NULL REFERENCES delayed_outcomes(outcome_id),
+                trace_id TEXT NOT NULL REFERENCES retrievals(trace_id) ON DELETE CASCADE,
+                updated_at REAL NOT NULL,
+                PRIMARY KEY (source_id, target_id, edge_type),
+                FOREIGN KEY (source_id, target_id, edge_type)
+                    REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
+            );
             """
         )
         self.connection.commit()
@@ -283,13 +344,241 @@ class SQLiteStore:
     def outgoing_edges(self, node_id: str) -> list[TypedEdge]:
         rows = self.connection.execute(
             """
-            SELECT * FROM edges
-            WHERE source_id = ?
-            ORDER BY target_id, edge_type
+            SELECT edges.* FROM edges
+            LEFT JOIN relation_edge_dormancy AS dormancy
+              ON dormancy.source_id = edges.source_id
+             AND dormancy.target_id = edges.target_id
+             AND dormancy.edge_type = edges.edge_type
+            WHERE edges.source_id = ? AND COALESCE(dormancy.dormant, 0) = 0
+            ORDER BY edges.target_id, edges.edge_type
             """,
             (node_id,),
         ).fetchall()
         return [self._edge_from_row(row) for row in rows]
+
+    def edge_has_active_contribution(
+        self, source_id: str, target_id: str, edge_type: str
+    ) -> bool:
+        return self.connection.execute(
+            """
+            SELECT 1 FROM feedback_contributions
+            WHERE source_id = ? AND target_id = ? AND edge_type = ? AND active = 1
+            LIMIT 1
+            """,
+            (source_id, target_id, edge_type),
+        ).fetchone() is not None
+
+    def edge_is_dormant(
+        self, source_id: str, target_id: str, edge_type: str
+    ) -> bool:
+        row = self.connection.execute(
+            """
+            SELECT dormant FROM relation_edge_dormancy
+            WHERE source_id = ? AND target_id = ? AND edge_type = ?
+            """,
+            (source_id, target_id, edge_type),
+        ).fetchone()
+        return row is not None and bool(row["dormant"])
+
+    @staticmethod
+    def _contribution_id(
+        contribution_kind: str,
+        source_record_id: str,
+        source_id: str,
+        target_id: str,
+        edge_type: str,
+    ) -> str:
+        value = "\0".join(
+            (contribution_kind, source_record_id, source_id, target_id, edge_type)
+        )
+        return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+    @classmethod
+    def _ensure_edge_journal_state(
+        cls,
+        connection: sqlite3.Connection,
+        *,
+        source_id: str,
+        target_id: str,
+        edge_type: str,
+        baseline_weight: float,
+        baseline_reinforced_count: int,
+        maximum_weight: float,
+    ) -> None:
+        connection.execute(
+            """
+            INSERT OR IGNORE INTO feedback_edge_journal_state(
+                source_id, target_id, edge_type, baseline_weight,
+                baseline_reinforced_count, maximum_weight
+            ) VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                source_id,
+                target_id,
+                edge_type,
+                baseline_weight,
+                baseline_reinforced_count,
+                max(baseline_weight, maximum_weight),
+            ),
+        )
+
+    @classmethod
+    def _insert_contribution(
+        cls,
+        connection: sqlite3.Connection,
+        *,
+        contribution_kind: str,
+        source_record_id: str,
+        trace_id: str,
+        source_id: str,
+        target_id: str,
+        edge_type: str,
+        baseline_weight: float,
+        edge_weight_before: float,
+        edge_reinforced_count_before: int,
+        maximum_weight: float,
+        credited_delta: float,
+        created_at: float,
+        sibling_mutations: Iterable[
+            tuple[str, str, str, float, float, int]
+        ] = (),
+    ) -> str | None:
+        if credited_delta <= 0.0:
+            return None
+        contribution_id = cls._contribution_id(
+            contribution_kind, source_record_id, source_id, target_id, edge_type
+        )
+        cls._ensure_edge_journal_state(
+            connection,
+            source_id=source_id,
+            target_id=target_id,
+            edge_type=edge_type,
+            baseline_weight=edge_weight_before,
+            baseline_reinforced_count=edge_reinforced_count_before,
+            maximum_weight=maximum_weight,
+        )
+        connection.execute(
+            """
+            INSERT INTO feedback_contributions(
+                contribution_id, contribution_kind, source_record_id, trace_id,
+                source_id, target_id, edge_type, baseline_weight, credited_delta,
+                reinforced_count_delta, active, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 1, ?)
+            """,
+            (
+                contribution_id,
+                contribution_kind,
+                source_record_id,
+                trace_id,
+                source_id,
+                target_id,
+                edge_type,
+                baseline_weight,
+                credited_delta,
+                created_at,
+            ),
+        )
+        connection.execute(
+            """
+            INSERT INTO feedback_contribution_mutations(
+                contribution_id, mutation_role, source_id, target_id, edge_type,
+                actual_delta
+            ) VALUES (?, 'credited', ?, ?, ?, ?)
+            """,
+            (contribution_id, source_id, target_id, edge_type, credited_delta),
+        )
+        for (
+            sibling_source,
+            sibling_target,
+            sibling_type,
+            reduction,
+            sibling_old_weight,
+            sibling_reinforced_count,
+        ) in sibling_mutations:
+            if reduction <= 0.0:
+                continue
+            cls._ensure_edge_journal_state(
+                connection,
+                source_id=sibling_source,
+                target_id=sibling_target,
+                edge_type=sibling_type,
+                baseline_weight=sibling_old_weight,
+                baseline_reinforced_count=sibling_reinforced_count,
+                maximum_weight=maximum_weight,
+            )
+            connection.execute(
+                """
+                INSERT INTO feedback_contribution_mutations(
+                    contribution_id, mutation_role, source_id, target_id, edge_type,
+                    actual_delta
+                ) VALUES (?, 'sibling', ?, ?, ?, ?)
+                """,
+                (
+                    contribution_id,
+                    sibling_source,
+                    sibling_target,
+                    sibling_type,
+                    -reduction,
+                ),
+            )
+        return contribution_id
+
+    @staticmethod
+    def _rebuild_edge_from_active_journal(
+        connection: sqlite3.Connection,
+        source_id: str,
+        target_id: str,
+        edge_type: str,
+    ) -> tuple[float, int]:
+        state = connection.execute(
+            """
+            SELECT * FROM feedback_edge_journal_state
+            WHERE source_id = ? AND target_id = ? AND edge_type = ?
+            """,
+            (source_id, target_id, edge_type),
+        ).fetchone()
+        if state is None:
+            raise KeyError("journaled edge state is absent")
+        active_delta = float(
+            connection.execute(
+                """
+                SELECT COALESCE(SUM(mutation.actual_delta), 0.0)
+                FROM feedback_contribution_mutations AS mutation
+                JOIN feedback_contributions AS contribution
+                  ON contribution.contribution_id = mutation.contribution_id
+                WHERE mutation.source_id = ? AND mutation.target_id = ?
+                  AND mutation.edge_type = ? AND contribution.active = 1
+                """,
+                (source_id, target_id, edge_type),
+            ).fetchone()[0]
+        )
+        active_reinforced_count = int(
+            connection.execute(
+                """
+                SELECT COALESCE(SUM(contribution.reinforced_count_delta), 0)
+                FROM feedback_contribution_mutations AS mutation
+                JOIN feedback_contributions AS contribution
+                  ON contribution.contribution_id = mutation.contribution_id
+                WHERE mutation.source_id = ? AND mutation.target_id = ?
+                  AND mutation.edge_type = ? AND mutation.mutation_role = 'credited'
+                  AND contribution.active = 1
+                """,
+                (source_id, target_id, edge_type),
+            ).fetchone()[0]
+        )
+        new_weight = min(
+            float(state["maximum_weight"]),
+            max(0.0, float(state["baseline_weight"]) + active_delta),
+        )
+        new_count = int(state["baseline_reinforced_count"]) + active_reinforced_count
+        connection.execute(
+            """
+            UPDATE edges SET weight = ?, reinforced_count = ?
+            WHERE source_id = ? AND target_id = ? AND edge_type = ?
+            """,
+            (new_weight, new_count, source_id, target_id, edge_type),
+        )
+        return new_weight, new_count
 
     def edge(self, source_id: str, target_id: str, edge_type: str) -> TypedEdge:
         row = self.connection.execute(
@@ -774,7 +1063,7 @@ class SQLiteStore:
                     continue
                 edge = connection.execute(
                     """
-                    SELECT weight FROM edges
+                    SELECT weight, reinforced_count FROM edges
                     WHERE source_id = ? AND target_id = ? AND edge_type = ?
                     """,
                     (source_id, target_id, edge_type),
@@ -883,6 +1172,23 @@ class SQLiteStore:
                         new_weight,
                         created_at,
                     ),
+                )
+                self._insert_contribution(
+                    connection,
+                    contribution_kind="soft_start_provisional",
+                    source_record_id=feedback_id,
+                    trace_id=trace_id,
+                    source_id=source_id,
+                    target_id=target_id,
+                    edge_type=edge_type,
+                    baseline_weight=(
+                        old_weight if state is None else float(state["initial_weight"])
+                    ),
+                    edge_weight_before=old_weight,
+                    edge_reinforced_count_before=int(edge["reinforced_count"]),
+                    maximum_weight=maximum,
+                    credited_delta=actual_delta,
+                    created_at=created_at,
                 )
         return reinforced
 
@@ -1267,6 +1573,11 @@ class SQLiteStore:
         payload_hash = hashlib.sha256(payload_json.encode("utf-8")).hexdigest()
         confirmations: list[dict[str, Any]] = []
         normalized: list[dict[str, Any]] = []
+        contribution_specs: list[dict[str, Any]] = []
+        sibling_reductions_by_source: dict[
+            str, list[tuple[str, str, str, float, float, int]]
+        ] = {}
+        reactivated: list[dict[str, Any]] = []
         with self.transaction() as connection:
             replay = self._idempotent_replay(
                 connection, idempotency_key, "record_outcome", payload_hash
@@ -1300,9 +1611,41 @@ class SQLiteStore:
                 ).fetchone()
                 if duplicate is not None:
                     continue
+                dormant = connection.execute(
+                    """
+                    SELECT dormant FROM relation_edge_dormancy
+                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                    """,
+                    (source_id, target_id, edge_type),
+                ).fetchone()
+                if dormant is not None and bool(dormant["dormant"]):
+                    connection.execute(
+                        """
+                        UPDATE relation_edge_dormancy
+                        SET dormant = 0, outcome_id = ?, trace_id = ?, updated_at = ?
+                        WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                        """,
+                        (
+                            outcome_id,
+                            trace_id,
+                            recorded_at,
+                            source_id,
+                            target_id,
+                            edge_type,
+                        ),
+                    )
+                    reactivated.append(
+                        {
+                            "source_id": source_id,
+                            "target_id": target_id,
+                            "edge_type": edge_type,
+                            "old_dormant": True,
+                            "new_dormant": False,
+                        }
+                    )
                 edge = connection.execute(
                     """
-                    SELECT weight FROM edges
+                    SELECT weight, reinforced_count FROM edges
                     WHERE source_id = ? AND target_id = ? AND edge_type = ?
                     """,
                     (source_id, target_id, edge_type),
@@ -1411,6 +1754,20 @@ class SQLiteStore:
                         "new_weight": new_weight,
                     }
                 )
+                contribution_specs.append(
+                    {
+                        "source_id": source_id,
+                        "target_id": target_id,
+                        "edge_type": edge_type,
+                        "baseline_weight": float(state["initial_weight"]),
+                        "edge_weight_before": old_weight,
+                        "edge_reinforced_count_before": int(
+                            edge["reinforced_count"]
+                        ),
+                        "maximum_weight": maximum,
+                        "credited_delta": actual_delta,
+                    }
+                )
                 reinforced_increase_by_source[source_id] = (
                     reinforced_increase_by_source.get(source_id, 0.0) + actual_delta
                 )
@@ -1423,7 +1780,7 @@ class SQLiteStore:
                 for sibling_source, target_id, edge_type in sibling_keys:
                     row = connection.execute(
                         """
-                        SELECT weight FROM edges
+                        SELECT weight, reinforced_count FROM edges
                         WHERE source_id = ? AND target_id = ? AND edge_type = ?
                         """,
                         (sibling_source, target_id, edge_type),
@@ -1451,6 +1808,56 @@ class SQLiteStore:
                                 "new_weight": new_weight,
                             }
                         )
+                        sibling_reductions_by_source.setdefault(source_id, []).append(
+                            (
+                                sibling_source,
+                                target_id,
+                                edge_type,
+                                old_weight - new_weight,
+                                old_weight,
+                                int(row["reinforced_count"]),
+                            )
+                        )
+            for spec in contribution_specs:
+                source_id = str(spec["source_id"])
+                total = reinforced_increase_by_source.get(source_id, 0.0)
+                share = float(spec["credited_delta"]) / total if total > 0.0 else 0.0
+                self._insert_contribution(
+                    connection,
+                    contribution_kind="soft_start_confirmation",
+                    source_record_id=outcome_id,
+                    trace_id=trace_id,
+                    source_id=source_id,
+                    target_id=str(spec["target_id"]),
+                    edge_type=str(spec["edge_type"]),
+                    baseline_weight=float(spec["baseline_weight"]),
+                    edge_weight_before=float(spec["edge_weight_before"]),
+                    edge_reinforced_count_before=int(
+                        spec["edge_reinforced_count_before"]
+                    ),
+                    maximum_weight=float(spec["maximum_weight"]),
+                    credited_delta=float(spec["credited_delta"]),
+                    created_at=recorded_at,
+                    sibling_mutations=tuple(
+                        (
+                            sibling_source,
+                            sibling_target,
+                            sibling_type,
+                            reduction * share,
+                            sibling_old_weight,
+                            sibling_reinforced_count,
+                        )
+                        for (
+                            sibling_source,
+                            sibling_target,
+                            sibling_type,
+                            reduction,
+                            sibling_old_weight,
+                            sibling_reinforced_count,
+                        )
+                        in sibling_reductions_by_source.get(source_id, [])
+                    ),
+                )
             result = {
                 "outcome_id": outcome_id,
                 "trace_id": trace_id,
@@ -1461,6 +1868,7 @@ class SQLiteStore:
                 "confirmations": confirmations,
                 "credited_paths": list(credited_paths),
                 "normalized_sibling_edges": normalized,
+                "reactivated_edges": reactivated,
             }
             self._save_idempotent_result(
                 connection, idempotency_key, "record_outcome", payload_hash, result
@@ -1509,6 +1917,210 @@ class SQLiteStore:
                 "outcome": outcome,
                 "recorded_at": recorded_at,
                 "reinforcement_applied": False,
+            }
+            self._save_idempotent_result(
+                connection, idempotency_key, "record_outcome", payload_hash, result
+            )
+            return result
+
+    def record_deactivation_outcome(
+        self,
+        *,
+        idempotency_key: str,
+        payload_json: str,
+        outcome_id: str,
+        trace_id: str,
+        node_ids: tuple[str, ...],
+        outcome: str,
+        summary: str,
+        external_ref: str | None,
+        recorded_at: float,
+        credited_paths: tuple[dict[str, object], ...],
+    ) -> dict[str, Any]:
+        """Atomically reverse attributable contributions or change edge dormancy."""
+        if outcome not in {"corrected", "rolled_back", "superseded"}:
+            raise ValueError("deactivation outcome is not supported")
+        payload_hash = hashlib.sha256(payload_json.encode("utf-8")).hexdigest()
+        with self.transaction() as connection:
+            replay = self._idempotent_replay(
+                connection, idempotency_key, "record_outcome", payload_hash
+            )
+            if replay is not None:
+                return replay
+            self._require_trace(connection, trace_id)
+            self._require_used_nodes(connection, trace_id, node_ids)
+            connection.execute(
+                """
+                INSERT INTO delayed_outcomes(
+                    outcome_id, trace_id, outcome, summary, external_ref, recorded_at
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (outcome_id, trace_id, outcome, summary, external_ref, recorded_at),
+            )
+            for node_id in node_ids:
+                connection.execute(
+                    "INSERT INTO delayed_outcome_nodes(outcome_id, node_id) VALUES (?, ?)",
+                    (outcome_id, node_id),
+                )
+
+            credited_keys = {
+                (
+                    str(step["source_id"]),
+                    str(step["target_id"]),
+                    str(step["edge_type"]),
+                )
+                for path in credited_paths
+                for step in path["steps"]
+            }
+            reversed_contributions: list[dict[str, Any]] = []
+            dormancy_changes: list[dict[str, Any]] = []
+            if outcome in {"corrected", "rolled_back"}:
+                for source_id, target_id, edge_type in sorted(credited_keys):
+                    contributions = connection.execute(
+                        """
+                        SELECT * FROM feedback_contributions
+                        WHERE trace_id = ? AND source_id = ? AND target_id = ?
+                          AND edge_type = ? AND active = 1
+                        ORDER BY created_at DESC, contribution_id DESC
+                        """,
+                        (trace_id, source_id, target_id, edge_type),
+                    ).fetchall()
+                    for contribution in contributions:
+                        mutations: list[dict[str, Any]] = []
+                        mutation_rows = connection.execute(
+                            """
+                            SELECT * FROM feedback_contribution_mutations
+                            WHERE contribution_id = ?
+                            ORDER BY mutation_role, source_id, target_id, edge_type
+                            """,
+                            (contribution["contribution_id"],),
+                        ).fetchall()
+                        old_weights: dict[tuple[str, str, str], float] = {}
+                        for mutation in mutation_rows:
+                            edge = connection.execute(
+                                """
+                                SELECT weight FROM edges
+                                WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                                """,
+                                (
+                                    mutation["source_id"],
+                                    mutation["target_id"],
+                                    mutation["edge_type"],
+                                ),
+                            ).fetchone()
+                            if edge is None:
+                                raise KeyError("journaled contribution edge is absent")
+                            identity = (
+                                str(mutation["source_id"]),
+                                str(mutation["target_id"]),
+                                str(mutation["edge_type"]),
+                            )
+                            old_weights[identity] = float(edge["weight"])
+                        connection.execute(
+                            """
+                            UPDATE feedback_contributions
+                            SET active = 0, reversed_by_outcome_id = ?
+                            WHERE contribution_id = ?
+                            """,
+                            (outcome_id, contribution["contribution_id"]),
+                        )
+                        for mutation in mutation_rows:
+                            identity = (
+                                str(mutation["source_id"]),
+                                str(mutation["target_id"]),
+                                str(mutation["edge_type"]),
+                            )
+                            old_weight = old_weights[identity]
+                            new_weight, _ = self._rebuild_edge_from_active_journal(
+                                connection, *identity
+                            )
+                            mutations.append(
+                                {
+                                    "mutation_role": str(mutation["mutation_role"]),
+                                    "source_id": str(mutation["source_id"]),
+                                    "target_id": str(mutation["target_id"]),
+                                    "edge_type": str(mutation["edge_type"]),
+                                    "actual_delta": float(mutation["actual_delta"]),
+                                    "old_weight": old_weight,
+                                    "new_weight": new_weight,
+                                }
+                            )
+                        reversed_contributions.append(
+                            {
+                                "contribution_id": str(contribution["contribution_id"]),
+                                "contribution_kind": str(contribution["contribution_kind"]),
+                                "source_record_id": str(contribution["source_record_id"]),
+                                "source_id": str(contribution["source_id"]),
+                                "target_id": str(contribution["target_id"]),
+                                "edge_type": str(contribution["edge_type"]),
+                                "credited_delta": float(contribution["credited_delta"]),
+                                "mutations": mutations,
+                            }
+                        )
+            else:
+                for source_id, target_id, edge_type in sorted(credited_keys):
+                    attributable = connection.execute(
+                        """
+                        SELECT 1 FROM feedback_contributions
+                        WHERE trace_id = ? AND source_id = ? AND target_id = ?
+                          AND edge_type = ?
+                        LIMIT 1
+                        """,
+                        (trace_id, source_id, target_id, edge_type),
+                    ).fetchone()
+                    if attributable is None:
+                        continue
+                    current = connection.execute(
+                        """
+                        SELECT dormant FROM relation_edge_dormancy
+                        WHERE source_id = ? AND target_id = ? AND edge_type = ?
+                        """,
+                        (source_id, target_id, edge_type),
+                    ).fetchone()
+                    old_dormant = current is not None and bool(current["dormant"])
+                    connection.execute(
+                        """
+                        INSERT INTO relation_edge_dormancy(
+                            source_id, target_id, edge_type, dormant,
+                            outcome_id, trace_id, updated_at
+                        ) VALUES (?, ?, ?, 1, ?, ?, ?)
+                        ON CONFLICT(source_id, target_id, edge_type) DO UPDATE SET
+                            dormant = 1,
+                            outcome_id = excluded.outcome_id,
+                            trace_id = excluded.trace_id,
+                            updated_at = excluded.updated_at
+                        """,
+                        (
+                            source_id, target_id, edge_type,
+                            outcome_id, trace_id, recorded_at,
+                        ),
+                    )
+                    if not old_dormant:
+                        dormancy_changes.append(
+                            {
+                                "source_id": source_id,
+                                "target_id": target_id,
+                                "edge_type": edge_type,
+                                "old_dormant": False,
+                                "new_dormant": True,
+                            }
+                        )
+            result = {
+                "outcome_id": outcome_id,
+                "trace_id": trace_id,
+                "node_ids": list(node_ids),
+                "outcome": outcome,
+                "recorded_at": recorded_at,
+                "reinforcement_applied": False,
+                "deactivation_applied": bool(
+                    reversed_contributions or dormancy_changes
+                ),
+                "confirmations": [],
+                "credited_paths": list(credited_paths),
+                "normalized_sibling_edges": [],
+                "reversed_contributions": reversed_contributions,
+                "dormancy_changes": dormancy_changes,
+                "reactivated_edges": [],
             }
             self._save_idempotent_result(
                 connection, idempotency_key, "record_outcome", payload_hash, result

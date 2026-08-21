@@ -1,0 +1,130 @@
+{
+  "protocol_id": "outcome-driven-feedback-deactivation-v1",
+  "selection_rule": "Fresh snapshot public identities and saved one-hop relation paths fixed before registered outputs; development and holdout identities are disjoint.",
+  "stages": {
+    "development": [
+      {
+        "case_id": "deactivation-dev-corrected-requirements-corpus",
+        "case_role": "corrected",
+        "query": "requirements specification feedback interface",
+        "search_surface": "relation",
+        "used_node_id": "docs/d1-corpus-fixture.md",
+        "credited_edge": {
+          "source_id": "docs/requirements.md",
+          "target_id": "docs/d1-corpus-fixture.md",
+          "edge_type": "links_to"
+        },
+        "registered_initial_state": {
+          "weight": 0.5,
+          "reinforced_count": 0
+        },
+        "negative_outcome": "corrected"
+      },
+      {
+        "case_id": "deactivation-dev-rollback-readme-anchored",
+        "case_role": "rolled_back",
+        "query": "Neuron Graph RAG prototype",
+        "search_surface": "relation",
+        "used_node_id": "docs/anchored-bm25-graph-hybrid-experiment.md",
+        "credited_edge": {
+          "source_id": "README.md",
+          "target_id": "docs/anchored-bm25-graph-hybrid-experiment.md",
+          "edge_type": "links_to"
+        },
+        "registered_initial_state": {
+          "weight": 0.5,
+          "reinforced_count": 0
+        },
+        "negative_outcome": "rolled_back"
+      },
+      {
+        "case_id": "deactivation-dev-superseded-requirements-blind",
+        "case_role": "superseded",
+        "query": "requirements specification feedback interface",
+        "search_surface": "relation",
+        "used_node_id": "docs/blind-llm-channel-selection-experiment.md",
+        "credited_edge": {
+          "source_id": "docs/requirements.md",
+          "target_id": "docs/blind-llm-channel-selection-experiment.md",
+          "edge_type": "links_to"
+        },
+        "registered_initial_state": {
+          "weight": 0.5,
+          "reinforced_count": 0
+        },
+        "negative_outcome": "superseded"
+      },
+      {
+        "case_id": "deactivation-dev-unattributed-lexical-fusion",
+        "case_role": "unattributed",
+        "query": "anchored fusion calibration experiment",
+        "search_surface": "lexical",
+        "used_node_id": "docs/anchored-fusion-calibration-experiment.md",
+        "credited_edge": {},
+        "negative_outcome": "corrected"
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "deactivation-holdout-corrected-readme-node-first",
+        "case_role": "corrected",
+        "query": "Neuron Graph RAG prototype",
+        "search_surface": "relation",
+        "used_node_id": "docs/node-first-blind-selection-experiment.md",
+        "credited_edge": {
+          "source_id": "README.md",
+          "target_id": "docs/node-first-blind-selection-experiment.md",
+          "edge_type": "links_to"
+        },
+        "registered_initial_state": {
+          "weight": 0.5,
+          "reinforced_count": 0
+        },
+        "negative_outcome": "corrected"
+      },
+      {
+        "case_id": "deactivation-holdout-rollback-requirements-trajectory",
+        "case_role": "rolled_back",
+        "query": "requirements specification feedback interface",
+        "search_surface": "relation",
+        "used_node_id": "docs/engine-backed-feedback-trajectory-experiment.md",
+        "credited_edge": {
+          "source_id": "docs/requirements.md",
+          "target_id": "docs/engine-backed-feedback-trajectory-experiment.md",
+          "edge_type": "links_to"
+        },
+        "registered_initial_state": {
+          "weight": 0.5,
+          "reinforced_count": 0
+        },
+        "negative_outcome": "rolled_back"
+      },
+      {
+        "case_id": "deactivation-holdout-superseded-readme-benchmark",
+        "case_role": "superseded",
+        "query": "Neuron Graph RAG prototype",
+        "search_surface": "relation",
+        "used_node_id": "docs/real-corpus-benchmark.md",
+        "credited_edge": {
+          "source_id": "README.md",
+          "target_id": "docs/real-corpus-benchmark.md",
+          "edge_type": "links_to"
+        },
+        "registered_initial_state": {
+          "weight": 0.5,
+          "reinforced_count": 0
+        },
+        "negative_outcome": "superseded"
+      },
+      {
+        "case_id": "deactivation-holdout-unattributed-lexical-compatibility",
+        "case_role": "unattributed",
+        "query": "GitHub RAG MCP replacement compatibility",
+        "search_surface": "lexical",
+        "used_node_id": "docs/github-rag-mcp-replacement-compatibility.md",
+        "credited_edge": {},
+        "negative_outcome": "rolled_back"
+      }
+    ]
+  }
+}

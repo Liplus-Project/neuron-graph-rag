@@ -268,6 +268,38 @@ class CreditedPath:
 
 
 @dataclass(frozen=True, slots=True)
+class ContributionMutation:
+    mutation_role: str
+    source_id: str
+    target_id: str
+    edge_type: str
+    actual_delta: float
+    old_weight: float
+    new_weight: float
+
+
+@dataclass(frozen=True, slots=True)
+class ReversedContribution:
+    contribution_id: str
+    contribution_kind: str
+    source_record_id: str
+    source_id: str
+    target_id: str
+    edge_type: str
+    credited_delta: float
+    mutations: tuple[ContributionMutation, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class DormancyChange:
+    source_id: str
+    target_id: str
+    edge_type: str
+    old_dormant: bool
+    new_dormant: bool
+
+
+@dataclass(frozen=True, slots=True)
 class OutcomeReceipt:
     outcome_id: str
     trace_id: str
@@ -278,6 +310,10 @@ class OutcomeReceipt:
     confirmations: tuple[ConfirmedEdge, ...] = ()
     credited_paths: tuple[CreditedPath, ...] = ()
     normalized_sibling_edges: tuple[NormalizedSiblingEdge, ...] = ()
+    deactivation_applied: bool = False
+    reversed_contributions: tuple[ReversedContribution, ...] = ()
+    dormancy_changes: tuple[DormancyChange, ...] = ()
+    reactivated_edges: tuple[DormancyChange, ...] = ()
 
 
 class FeedbackContractError(ValueError):

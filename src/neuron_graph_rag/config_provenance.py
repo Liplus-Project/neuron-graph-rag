@@ -17,6 +17,7 @@ FEEDBACK_CONFIG_FIELDS = (
     "confirmation_decay_ratio",
     "soft_start_feedback_reinforcement",
     "soft_start_feedback_ratio",
+    "outcome_driven_feedback_deactivation",
 )
 SEARCH_SURFACES = ("combined", "relation")
 
@@ -42,6 +43,8 @@ def effective_config(config: EngineConfig) -> dict[str, dict[str, Any]]:
             "soft_start_feedback_reinforcement",
             "soft_start_feedback_ratio",
         }
+    if raw["outcome_driven_feedback_deactivation"] is False:
+        active_names.remove("outcome_driven_feedback_deactivation")
     return {
         "retrieval": {
             name: raw[name]

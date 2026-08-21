@@ -1,0 +1,37 @@
+{
+  "protocol_id": "outcome-driven-feedback-deactivation-v1",
+  "gates": [
+    {
+      "gate_id": "protocol-and-preflight-integrity",
+      "requirement": "Frozen hashes, snapshot, registered baseline, case identity, path identity, capacity, privacy, and output absence all pass."
+    },
+    {
+      "gate_id": "corrected-exact-contribution-reversal",
+      "requirement": "Corrected reverses every active credited and same-contribution sibling mutation, while control remains audit-only."
+    },
+    {
+      "gate_id": "rolled-back-exact-contribution-reversal",
+      "requirement": "Rolled back reverses the same persisted contribution unit after restart without touching another contribution."
+    },
+    {
+      "gate_id": "superseded-dormancy-and-reactivation",
+      "requirement": "Superseded hides the stored edge from normal activation without deletion and confirmed on the saved path reactivates it."
+    },
+    {
+      "gate_id": "baseline-floor-without-punitive-update",
+      "requirement": "No reversed credited edge falls below its registered baseline."
+    },
+    {
+      "gate_id": "idempotency-restart-and-transaction-atomicity",
+      "requirement": "Replay, restart, and injected transaction failure cannot duplicate or partially apply deactivation."
+    },
+    {
+      "gate_id": "credited-sibling-locality-and-controls",
+      "requirement": "Only attributed credited and same-source sibling mutations change; lexical and unattributed controls do not mutate."
+    },
+    {
+      "gate_id": "source-snapshot-privacy-and-exclusive-output",
+      "requirement": "Source and snapshot remain unchanged, public output is private-free, and the registered output is exclusively created."
+    }
+  ]
+}

@@ -8,7 +8,7 @@
 
 - MCP SDK が NGR core の必須依存である
 - 認証方式、transport、公開 endpoint、remote deployment が決定済みである
-- delayed outcome が現在の edge weight を自動的に減算または巻き戻す
+- delayed outcome が既定 policy で現在の edge weight を自動的に減算または巻き戻す
 
 `src/neuron_graph_rag_mcp/` の optional adapter がこの契約を local stdio transport で実装する。`pip install -e '.[mcp]'` で追加依存を導入し、`neuron-graph-rag-mcp --database <path>` で起動する。NGR core は引き続き Python 標準ライブラリだけで動作する。
 
@@ -51,6 +51,19 @@ neuron-graph-rag-mcp \
 ```
 
 soft-start ratio と confirmation decay は有限の `0 < value < 1` とし、confirmed-only flag、hard evidence quorum と同時には有効化できない。MCP `search` は relation trace と active soft-start field を含む effective-config provenance を返す。最初の新規 `used` は通常 bounded update の provisional fraction を core と同じ receipt 形で返し、最初の独立 `confirmed` は残り、後続 confirmation は geometric decay を返す。`used` は sibling を変更せず、confirmation の actual delta だけが sibling normalization の対象になる。詳細は [Confirmed-outcome feedback reinforcement の soft-start 節](confirmed-outcome-feedback-reinforcement.md#soft-start-successor-candidate) を正本とする。
+
+outcome-driven deactivation candidate は上のsoft-start三値に次のflagを追加したprocessだけで有効になる。
+
+```bash
+neuron-graph-rag-mcp \
+  --database /absolute/path/to/knowledge.db \
+  --soft-start-feedback-reinforcement \
+  --soft-start-feedback-ratio 0.25 \
+  --confirmation-decay-ratio 0.5 \
+  --outcome-driven-feedback-deactivation
+```
+
+帰属可能な`corrected` / `rolled_back`はcredited deltaと同一contributionのsibling normalization deltaを一体で逆適用し、`superseded`はedgeをdormantにする。後続`confirmed`は保存済みpathを再活性化する。MCP receiptは`deactivation_applied`、`reversed_contributions`、`dormancy_changes`、`reactivated_edges`をcoreと同じ形で返す。既定時のaudit-only動作とdescriptionは変更しない。詳細は[Outcome-driven feedback deactivation](outcome-driven-feedback-deactivation.md)を正本とする。
 
 ## 2. Protocol envelope
 
@@ -366,7 +379,7 @@ core domain API は取得済みでない node を stage 更新前に拒否し、
 
 ### 7.1 Meaning
 
-source を利用した判断や artifact に後から判明した結果を、即時 source-use とは別軸で記録する。既定 policy では評価用の履歴であり、edge weight を変更しない。明示 confirmed-only candidate では `confirmed` だけが保存済み relation credited path の diminishing reinforcement を発火できる。soft-start candidate では最初の `confirmed` が通常 update の残り、後続 `confirmed` が geometric decay を発火できる。
+source を利用した判断や artifact に後から判明した結果を、即時 source-use とは別軸で記録する。既定 policy では評価用の履歴であり、edge weight を変更しない。明示 confirmed-only candidate では `confirmed` だけが保存済み relation credited path の diminishing reinforcement を発火できる。soft-start candidate では最初の `confirmed` が通常 update の残り、後続 `confirmed` が geometric decay を発火できる。outcome-driven deactivation candidateでは、帰属可能なnegative outcomeだけが保存済みcontributionを可逆に不活性化できる。
 
 ### 7.2 Normative model-facing description
 
@@ -374,6 +387,12 @@ source を利用した判断や artifact に後から判明した結果を、即
 
 ```text
 Record a delayed outcome for sources that were already marked used, such as confirmed, corrected, rolled_back, or superseded. In v1, delayed outcomes are audit and evaluation records only: they do not add, subtract, undo, or otherwise change graph weights. Do not use this tool instead of record_source_use for immediate source-use feedback. If the trace handle has expired or does not exist, this tool returns unknown_trace.
+```
+
+outcome-driven deactivation candidateを明示したprocessは、代わりに次をexact `description`とする。
+
+```text
+Record a delayed outcome for sources already marked used. This server uses the outcome-driven deactivation candidate: confirmed follows the soft-start schedule; causally attributed corrected and rolled_back outcomes exactly reverse each active credited contribution together with its same-source sibling normalization mutations. Superseded makes the saved relation path dormant without deleting evidence, and a later confirmed outcome on that saved path reactivates it. Unattributed, duplicate, lexical, and zero-hop outcomes remain non-mutating.
 ```
 
 ### 7.3 Outcome enum
@@ -385,7 +404,7 @@ Record a delayed outcome for sources that were already marked used, such as conf
 | `rolled_back` | 判断または artifact が撤回、revert、rollback された |
 | `superseded` | 誤りと断定せず、新しい前提または判断に置き換えられた |
 
-`corrected` と `rolled_back` を即時の負の reinforcement に変換しない。query、index、source selection、source 自体、実装のどこに原因があるかを一件の outcome だけで判別できないためである。既定 policy の `confirmed` も `used` の reinforcement を重複加算しない。soft-start の `confirmed` は provisional と合算して通常 update 一回を超えない remainder だけを最初に加算する。
+既定 policy では`corrected` と `rolled_back` を即時の負の reinforcement に変換しない。query、index、source selection、source 自体、実装のどこに原因があるかを一件の outcome だけで判別できないためである。明示deactivation candidateだけが保存済みtrace / credited pathへ帰属できるsoft-start contributionをexact reversalする。既定 policy の `confirmed` も `used` の reinforcement を重複加算しない。soft-start の `confirmed` は provisional と合算して通常 update 一回を超えない remainder だけを最初に加算する。
 
 ### 7.4 Input
 
@@ -430,11 +449,11 @@ Record a delayed outcome for sources that were already marked used, such as conf
 }
 ```
 
-既定 policy の `reinforcement_applied` は常に `false` とする。confirmed-only と soft-start candidate では新しい独立 edge confirmation を保存した時だけ `true` とし、`confirmations` に count、multiplier、actual delta、old/new weight、`credited_paths` に保存済み relation steps、`normalized_sibling_edges` に局所変更を返す。duplicate trace と idempotency replay は count と weight を重複変更しない。`corrected`、`rolled_back`、`superseded` は candidate 有効時も `false` のままである。
+既定 policy の `reinforcement_applied` は常に `false` とする。confirmed-only と soft-start candidate では新しい独立 edge confirmation を保存した時だけ `true` とし、`confirmations` に count、multiplier、actual delta、old/new weight、`credited_paths` に保存済み relation steps、`normalized_sibling_edges` に局所変更を返す。duplicate trace と idempotency replay は count と weight を重複変更しない。negative outcomeでは`reinforcement_applied`を`false`のまま保ち、明示deactivation candidateの変更有無は`deactivation_applied`、exact inverseは`reversed_contributions[].mutations`、dormancy遷移は`dormancy_changes`、再活性化は`reactivated_edges`に返す。
 
 ### 7.6 Core mapping
 
-transport-neutral な `FeedbackLedger.record_outcome` は既定 policy では outcome ledger にだけ保存する。confirmed-only と soft-start candidate では `record_success` を再利用せず、outcome、confirmation count、edge/sibling update、receipt を candidate 専用の一つの storage transaction へ渡す。
+transport-neutral な `FeedbackLedger.record_outcome` は既定 policy では outcome ledger にだけ保存する。confirmed-only と soft-start candidate では `record_success` を再利用せず、outcome、confirmation count、edge/sibling update、receipt を candidate 専用の一つの storage transaction へ渡す。deactivation candidateもoutcome、credited/sibling inverse、contribution state、dormancy、receiptを一つのtransactionへ渡す。
 
 ## 8. Failure contract
 

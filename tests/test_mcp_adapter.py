@@ -18,6 +18,7 @@ if MCP_AVAILABLE:
         CONFIRMED_OUTCOME_DESCRIPTION,
         CONFIRMED_SOURCE_USE_DESCRIPTION,
         CONTRACT_VERSION,
+        DEACTIVATION_OUTCOME_DESCRIPTION,
         OUTCOME_DESCRIPTION,
         SEARCH_DESCRIPTION,
         SOFT_START_OUTCOME_DESCRIPTION,
@@ -380,6 +381,95 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
             confirmation["actual_delta"],
         )
 
+    async def test_deactivation_candidate_receipt_description_and_provenance(self) -> None:
+        self.adapter.close()
+        self.adapter = FeedbackMCPAdapter(
+            self.database,
+            config=EngineConfig(
+                soft_start_feedback_reinforcement=True,
+                soft_start_feedback_ratio=0.25,
+                confirmation_decay_ratio=0.5,
+                sibling_feedback_normalization=1.0,
+                outcome_driven_feedback_deactivation=True,
+            ),
+        )
+        listed = await self.adapter.list_tools()
+        self.assertEqual(listed.tools[2].description, DEACTIVATION_OUTCOME_DESCRIPTION)
+        search = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="search",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "query": "cache invalidation",
+                    "limit": 3,
+                },
+            ),
+        )
+        self.assertTrue(
+            search.structured_content["effective_config_provenance"]
+            ["effective_config"]["feedback"]
+            ["outcome_driven_feedback_deactivation"]
+        )
+        trace_id = search.structured_content["trace_id"]
+        await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="record_source_use",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "idempotency_key": "deactivation-mcp-use",
+                    "trace_id": trace_id,
+                    "events": [
+                        {"node_id": "implementation", "stage": "selected"},
+                        {"node_id": "implementation", "stage": "validated"},
+                        {"node_id": "implementation", "stage": "used"},
+                    ],
+                },
+            ),
+        )
+        await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="record_outcome",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "idempotency_key": "deactivation-mcp-confirmed",
+                    "trace_id": trace_id,
+                    "node_ids": ["implementation"],
+                    "outcome": "confirmed",
+                    "summary": "confirmed before correction",
+                },
+            ),
+        )
+        corrected = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="record_outcome",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "idempotency_key": "deactivation-mcp-corrected",
+                    "trace_id": trace_id,
+                    "node_ids": ["implementation"],
+                    "outcome": "corrected",
+                    "summary": "credited result was corrected",
+                },
+            ),
+        )
+        payload = corrected.structured_content
+        self.assertTrue(payload["deactivation_applied"])
+        self.assertEqual(len(payload["reversed_contributions"]), 2)
+        self.assertEqual(payload["dormancy_changes"], [])
+        self.assertEqual(payload["reactivated_edges"], [])
+        self.assertEqual(
+            {
+                mutation["mutation_role"]
+                for contribution in payload["reversed_contributions"]
+                for mutation in contribution["mutations"]
+            },
+            {"credited", "sibling"},
+        )
+
     async def test_stdio_protocol_smoke(self) -> None:
         parameters = StdioServerParameters(
             command=sys.executable,
@@ -577,6 +667,7 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         invalid_combinations = (
             ("--soft-start-feedback-reinforcement", "--confirmation-decay-ratio", "0.5"),
             ("--soft-start-feedback-ratio", "0.25"),
+            ("--outcome-driven-feedback-deactivation",),
             (
                 "--confirmed-outcome-reinforcement",
                 "--soft-start-feedback-reinforcement",

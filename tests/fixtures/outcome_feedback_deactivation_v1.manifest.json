@@ -1,0 +1,72 @@
+{
+  "protocol_id": "outcome-driven-feedback-deactivation-v1",
+  "issue": 111,
+  "source_boundary": "fresh-one-time-transaction-consistent-local-snapshot",
+  "registration_boundary": "freeze-only-squash-merge-before-successor-observation",
+  "snapshot": {
+    "source_locator": "local_codex_ngr_database",
+    "source_access": "sqlite-uri-mode-ro-query-only",
+    "capture_method": "sqlite-backup-api",
+    "captured_at": "2026-08-21T11:56:00+00:00",
+    "source_logical_sha256_before": "92fc59c96ec1bb70c846997e77d34f911d5cf98f65e68312ed22b86c891ef27a",
+    "source_logical_sha256_after": "92fc59c96ec1bb70c846997e77d34f911d5cf98f65e68312ed22b86c891ef27a",
+    "snapshot_logical_sha256": "92fc59c96ec1bb70c846997e77d34f911d5cf98f65e68312ed22b86c891ef27a",
+    "snapshot_sha256": "b129f1f85f2706929cdc6291c5c846b8a50d419cb3b49ca9f108987c6d2d2454",
+    "snapshot_size": 442368,
+    "schema_sha256": "b5cd9409af9d5107935ee857c7e84b31392ad428f18ea72ec861452ffa12867b",
+    "table_names": [
+      "activation_state",
+      "confirmed_edge_state",
+      "confirmed_relation_feedback",
+      "confirmed_source_uses",
+      "delayed_outcome_nodes",
+      "delayed_outcomes",
+      "edges",
+      "feedback_requests",
+      "nodes",
+      "relation_feedback_evidence",
+      "retrieval_channels",
+      "retrieval_results",
+      "retrievals",
+      "soft_start_edge_state",
+      "soft_start_relation_feedback",
+      "source_use_state",
+      "success_feedback",
+      "success_nodes"
+    ],
+    "row_counts": {
+      "nodes": 21,
+      "edges": 30,
+      "retrievals": 24,
+      "success_feedback": 10,
+      "delayed_outcomes": 3
+    }
+  },
+  "protocol_artifacts": {
+    "fixture": "tests/fixtures/outcome_feedback_deactivation_v1.fixture.json",
+    "schedule": "tests/fixtures/outcome_feedback_deactivation_v1.schedule.json",
+    "gate": "tests/fixtures/outcome_feedback_deactivation_v1.gate.json",
+    "result_schema": "tests/fixtures/outcome_feedback_deactivation_v1.result-schema.json",
+    "audit": "tests/fixtures/outcome_feedback_deactivation_v1.result-free-audit.json"
+  },
+  "outputs": {
+    "development": "tests/fixtures/outcome_feedback_deactivation_v1.development.observed.json",
+    "holdout": "tests/fixtures/outcome_feedback_deactivation_v1.holdout.observed.json"
+  },
+  "artifact_sha256": {
+    "src/neuron_graph_rag/outcome_feedback_deactivation_evaluation.py": "ad3b7ffda22ec66b57734c5a2a367b1e9f8f39b397cf6da9c9cc244038214a57",
+    "tools/run_outcome_feedback_deactivation_evaluation.py": "ab41133fb4b97e1bd30d916fd7e1684d4c4d99a39580c5f32068c876da592ce8",
+    "tests/test_outcome_feedback_deactivation_evaluation.py": "52a75ae4b6542ef49be3bdc7d58d4a40cea800da04f2214bc458a45c82f9beda",
+    "tests/test_outcome_feedback_deactivation.py": "460407e0b5f97747cf6187b7e6dabcadac349930f6d511a2c9c4524923aef49d",
+    "tests/fixtures/outcome_feedback_deactivation_v1.fixture.json": "41446bf8f50da64dfcdafd60a72e036e61afb4ae2fa7d995cdfb049da4c822b2",
+    "tests/fixtures/outcome_feedback_deactivation_v1.schedule.json": "97b9d1df873d595addd7030c7b65caea4a0eda9e675cb5a1ecfe9ef7b062bd4a",
+    "tests/fixtures/outcome_feedback_deactivation_v1.gate.json": "3bbbfbb3a694bf7962694bac999d6b696786eeedb774612b2b7d0efcbbe1045b",
+    "tests/fixtures/outcome_feedback_deactivation_v1.result-schema.json": "f3a1b08f0725e5bac2231bc9dde5d7c9fb8d7a844c5860037e4157b5718581cb",
+    "tests/fixtures/outcome_feedback_deactivation_v1.result-free-audit.json": "ef27a7ba3c2a44c79387e891482b3b5ea8a100172f23c8932aad3a2099b8d2d5",
+    "docs/outcome-driven-feedback-deactivation.md": "27ebe4c66151bfb78ba03e687961d3eb75d163a4bc843662686712ad5e0d517d",
+    "docs/requirements.md": "1036da4d8adb3293dc6ce8cf0894778bea63dfccba7a94f3a10f97f869107cc0",
+    "docs/Decision-Structure.md": "bf074a79e838cff67a5560a2fa82278f983dd01b1dd04bad50afe621217e525c",
+    "docs/optional-mcp-interface.md": "75dc2fdcc769e22fbc6b075ecfe5306935e05f30a52d1718a6d47e930f3d7102",
+    "README.md": "d65962bd1b5564e87a9da5bc9ccddcd864c64c259dc6a408816ca852eecd35c1"
+  }
+}

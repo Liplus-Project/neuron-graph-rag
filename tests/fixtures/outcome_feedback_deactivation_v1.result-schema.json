@@ -1,0 +1,21 @@
+{
+  "protocol_id": "outcome-driven-feedback-deactivation-v1",
+  "required": [
+    "protocol_id",
+    "stage",
+    "snapshot_sha256",
+    "arms",
+    "hard_gates",
+    "all_hard_gates_pass"
+  ],
+  "stage_enum": [
+    "development",
+    "holdout"
+  ],
+  "arm_order": [
+    "control",
+    "deactivation_candidate"
+  ],
+  "writer": "exclusive-create-no-overwrite",
+  "verifier": "canonical-json-identity-gate-order-and-aggregate"
+}
