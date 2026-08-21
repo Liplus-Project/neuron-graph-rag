@@ -1,0 +1,252 @@
+{
+  "protocol_id": "baseline-aware-soft-start-snapshot-v2",
+  "selection_rule": "Fresh snapshot public identifiers selected without using v1 private snapshot or observed development edge identities; baseline state and q3 first mutation are frozen before registered results.",
+  "stages": {
+    "development": [
+      {
+        "case_id": "v2-dev-confirmed-requirements-real-corpus",
+        "case_role": "confirmed",
+        "query": "requirements specification feedback interface",
+        "search_surface": "relation",
+        "used_node_id": "docs/real-corpus-benchmark.md",
+        "source_node_id": "docs/requirements.md",
+        "credited_edge": {
+          "source_id": "docs/requirements.md",
+          "target_id": "docs/real-corpus-benchmark.md",
+          "edge_type": "links_to"
+        },
+        "registered_initial_state": {
+          "weight": 0.5626442053538984,
+          "reinforced_count": 1,
+          "evidence_count": 0,
+          "confirmation_count": 0
+        },
+        "expected_q3_first_mutation_event": 3,
+        "outcome": "confirmed",
+        "direct_query": "real corpus benchmark",
+        "direct_node_id": "docs/real-corpus-benchmark.md",
+        "reverse_query": "requirements specification",
+        "reverse_node_id": "docs/requirements.md",
+        "retrieval_limit": 21,
+        "hit_k": 5,
+        "allowed_mutation_edges": [
+          "docs/requirements.md|docs/anchored-bm25-graph-hybrid-experiment.md|links_to",
+          "docs/requirements.md|docs/anchored-fusion-calibration-experiment.md|links_to",
+          "docs/requirements.md|docs/blind-llm-channel-selection-experiment.md|links_to",
+          "docs/requirements.md|docs/d1-corpus-fixture.md|links_to",
+          "docs/requirements.md|docs/engine-backed-feedback-trajectory-experiment.md|links_to",
+          "docs/requirements.md|docs/feedback-adaptation-experiment.md|links_to",
+          "docs/requirements.md|docs/feedback-adaptation-reproduction-experiment.md|links_to",
+          "docs/requirements.md|docs/independent-retrieval-channels-experiment.md|links_to",
+          "docs/requirements.md|docs/neural-dynamics-experiment.md|links_to",
+          "docs/requirements.md|docs/neural-dynamics-local-competition-experiment.md|links_to",
+          "docs/requirements.md|docs/node-first-blind-selection-experiment.md|links_to",
+          "docs/requirements.md|docs/optional-mcp-interface.md|links_to",
+          "docs/requirements.md|docs/real-corpus-benchmark.md|links_to",
+          "docs/requirements.md|docs/sibling-normalization-controlled-evaluation.md|links_to",
+          "docs/requirements.md|docs/sibling-relation-feedback-normalization.md|links_to"
+        ]
+      },
+      {
+        "case_id": "v2-dev-corrected-readme-github-compatibility",
+        "case_role": "corrected",
+        "query": "Neuron Graph RAG prototype",
+        "search_surface": "relation",
+        "used_node_id": "docs/github-rag-mcp-replacement-compatibility.md",
+        "source_node_id": "README.md",
+        "credited_edge": {
+          "source_id": "README.md",
+          "target_id": "docs/github-rag-mcp-replacement-compatibility.md",
+          "edge_type": "links_to"
+        },
+        "registered_initial_state": {
+          "weight": 0.5,
+          "reinforced_count": 0,
+          "evidence_count": 0,
+          "confirmation_count": 0
+        },
+        "expected_q3_first_mutation_event": 3,
+        "outcome": "corrected",
+        "direct_query": "GitHub RAG MCP replacement compatibility",
+        "direct_node_id": "docs/github-rag-mcp-replacement-compatibility.md",
+        "reverse_query": "Neuron Graph RAG prototype",
+        "reverse_node_id": "README.md",
+        "retrieval_limit": 21,
+        "hit_k": 5,
+        "allowed_mutation_edges": [
+          "README.md|docs/anchored-bm25-graph-hybrid-experiment.md|links_to",
+          "README.md|docs/anchored-fusion-calibration-experiment.md|links_to",
+          "README.md|docs/blind-llm-channel-selection-experiment.md|links_to",
+          "README.md|docs/d1-corpus-fixture.md|links_to",
+          "README.md|docs/feedback-adaptation-experiment.md|links_to",
+          "README.md|docs/feedback-adaptation-reproduction-experiment.md|links_to",
+          "README.md|docs/github-rag-mcp-replacement-compatibility.md|links_to",
+          "README.md|docs/independent-retrieval-channels-experiment.md|links_to",
+          "README.md|docs/neural-dynamics-experiment.md|links_to",
+          "README.md|docs/neural-dynamics-local-competition-experiment.md|links_to",
+          "README.md|docs/node-first-blind-selection-experiment.md|links_to",
+          "README.md|docs/optional-mcp-interface.md|links_to",
+          "README.md|docs/real-corpus-benchmark.md|links_to",
+          "README.md|docs/requirements.md|links_to"
+        ]
+      },
+      {
+        "case_id": "v2-dev-lexical-real-corpus-control",
+        "case_role": "lexical",
+        "query": "real corpus benchmark",
+        "search_surface": "lexical",
+        "used_node_id": "docs/real-corpus-benchmark.md",
+        "source_node_id": "docs/real-corpus-benchmark.md",
+        "credited_edge": {},
+        "outcome": "confirmed",
+        "direct_query": "real corpus benchmark",
+        "direct_node_id": "docs/real-corpus-benchmark.md",
+        "reverse_query": "real corpus benchmark",
+        "reverse_node_id": "docs/real-corpus-benchmark.md",
+        "retrieval_limit": 21,
+        "hit_k": 5,
+        "allowed_mutation_edges": []
+      },
+      {
+        "case_id": "v2-dev-zero-hop-home-control",
+        "case_role": "zero_hop",
+        "query": "Neuron Graph RAG home",
+        "search_surface": "lexical",
+        "used_node_id": "docs/Home.md",
+        "source_node_id": "docs/Home.md",
+        "credited_edge": {},
+        "outcome": "confirmed",
+        "direct_query": "Neuron Graph RAG home",
+        "direct_node_id": "docs/Home.md",
+        "reverse_query": "Neuron Graph RAG home",
+        "reverse_node_id": "docs/Home.md",
+        "retrieval_limit": 21,
+        "hit_k": 5,
+        "allowed_mutation_edges": []
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "v2-holdout-confirmed-requirements-fusion",
+        "case_role": "confirmed",
+        "query": "requirements specification feedback interface",
+        "search_surface": "relation",
+        "used_node_id": "docs/anchored-fusion-calibration-experiment.md",
+        "source_node_id": "docs/requirements.md",
+        "credited_edge": {
+          "source_id": "docs/requirements.md",
+          "target_id": "docs/anchored-fusion-calibration-experiment.md",
+          "edge_type": "links_to"
+        },
+        "registered_initial_state": {
+          "weight": 0.553741578432044,
+          "reinforced_count": 1,
+          "evidence_count": 0,
+          "confirmation_count": 0
+        },
+        "expected_q3_first_mutation_event": 3,
+        "outcome": "confirmed",
+        "direct_query": "anchored fusion calibration experiment",
+        "direct_node_id": "docs/anchored-fusion-calibration-experiment.md",
+        "reverse_query": "requirements specification",
+        "reverse_node_id": "docs/requirements.md",
+        "retrieval_limit": 21,
+        "hit_k": 5,
+        "allowed_mutation_edges": [
+          "docs/requirements.md|docs/anchored-bm25-graph-hybrid-experiment.md|links_to",
+          "docs/requirements.md|docs/anchored-fusion-calibration-experiment.md|links_to",
+          "docs/requirements.md|docs/blind-llm-channel-selection-experiment.md|links_to",
+          "docs/requirements.md|docs/d1-corpus-fixture.md|links_to",
+          "docs/requirements.md|docs/engine-backed-feedback-trajectory-experiment.md|links_to",
+          "docs/requirements.md|docs/feedback-adaptation-experiment.md|links_to",
+          "docs/requirements.md|docs/feedback-adaptation-reproduction-experiment.md|links_to",
+          "docs/requirements.md|docs/independent-retrieval-channels-experiment.md|links_to",
+          "docs/requirements.md|docs/neural-dynamics-experiment.md|links_to",
+          "docs/requirements.md|docs/neural-dynamics-local-competition-experiment.md|links_to",
+          "docs/requirements.md|docs/node-first-blind-selection-experiment.md|links_to",
+          "docs/requirements.md|docs/optional-mcp-interface.md|links_to",
+          "docs/requirements.md|docs/real-corpus-benchmark.md|links_to",
+          "docs/requirements.md|docs/sibling-normalization-controlled-evaluation.md|links_to",
+          "docs/requirements.md|docs/sibling-relation-feedback-normalization.md|links_to"
+        ]
+      },
+      {
+        "case_id": "v2-holdout-corrected-readme-channels",
+        "case_role": "corrected",
+        "query": "Neuron Graph RAG prototype",
+        "search_surface": "relation",
+        "used_node_id": "docs/independent-retrieval-channels-experiment.md",
+        "source_node_id": "README.md",
+        "credited_edge": {
+          "source_id": "README.md",
+          "target_id": "docs/independent-retrieval-channels-experiment.md",
+          "edge_type": "links_to"
+        },
+        "registered_initial_state": {
+          "weight": 0.5,
+          "reinforced_count": 0,
+          "evidence_count": 0,
+          "confirmation_count": 0
+        },
+        "expected_q3_first_mutation_event": 3,
+        "outcome": "corrected",
+        "direct_query": "independent retrieval channels experiment",
+        "direct_node_id": "docs/independent-retrieval-channels-experiment.md",
+        "reverse_query": "Neuron Graph RAG prototype",
+        "reverse_node_id": "README.md",
+        "retrieval_limit": 21,
+        "hit_k": 5,
+        "allowed_mutation_edges": [
+          "README.md|docs/anchored-bm25-graph-hybrid-experiment.md|links_to",
+          "README.md|docs/anchored-fusion-calibration-experiment.md|links_to",
+          "README.md|docs/blind-llm-channel-selection-experiment.md|links_to",
+          "README.md|docs/d1-corpus-fixture.md|links_to",
+          "README.md|docs/feedback-adaptation-experiment.md|links_to",
+          "README.md|docs/feedback-adaptation-reproduction-experiment.md|links_to",
+          "README.md|docs/github-rag-mcp-replacement-compatibility.md|links_to",
+          "README.md|docs/independent-retrieval-channels-experiment.md|links_to",
+          "README.md|docs/neural-dynamics-experiment.md|links_to",
+          "README.md|docs/neural-dynamics-local-competition-experiment.md|links_to",
+          "README.md|docs/node-first-blind-selection-experiment.md|links_to",
+          "README.md|docs/optional-mcp-interface.md|links_to",
+          "README.md|docs/real-corpus-benchmark.md|links_to",
+          "README.md|docs/requirements.md|links_to"
+        ]
+      },
+      {
+        "case_id": "v2-holdout-lexical-github-control",
+        "case_role": "lexical",
+        "query": "GitHub RAG MCP replacement compatibility",
+        "search_surface": "lexical",
+        "used_node_id": "docs/github-rag-mcp-replacement-compatibility.md",
+        "source_node_id": "docs/github-rag-mcp-replacement-compatibility.md",
+        "credited_edge": {},
+        "outcome": "confirmed",
+        "direct_query": "GitHub RAG MCP replacement compatibility",
+        "direct_node_id": "docs/github-rag-mcp-replacement-compatibility.md",
+        "reverse_query": "GitHub RAG MCP replacement compatibility",
+        "reverse_node_id": "docs/github-rag-mcp-replacement-compatibility.md",
+        "retrieval_limit": 21,
+        "hit_k": 5,
+        "allowed_mutation_edges": []
+      },
+      {
+        "case_id": "v2-holdout-zero-hop-footer-control",
+        "case_role": "zero_hop",
+        "query": "Neuron Graph RAG footer",
+        "search_surface": "lexical",
+        "used_node_id": "docs/_Footer.md",
+        "source_node_id": "docs/_Footer.md",
+        "credited_edge": {},
+        "outcome": "confirmed",
+        "direct_query": "Neuron Graph RAG footer",
+        "direct_node_id": "docs/_Footer.md",
+        "reverse_query": "Neuron Graph RAG footer",
+        "reverse_node_id": "docs/_Footer.md",
+        "retrieval_limit": 21,
+        "hit_k": 5,
+        "allowed_mutation_edges": []
+      }
+    ]
+  }
+}

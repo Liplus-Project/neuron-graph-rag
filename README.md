@@ -300,6 +300,8 @@ Soft-start feedback reinforcementは、`soft_start_feedback_reinforcement=True`�
 
 local database上の比較は、[Soft-start snapshot evaluation](docs/soft-start-snapshot-evaluation.md)でtransaction-consistent private snapshot、固定4 arm、result-free manifest、one-time development、conditional holdout、privacy / mutation / rank hard gateとして分離しています。評価はsnapshotのfresh cloneだけを変更し、source database、live config、snapshot本体、private本文をpublic artifactへ含めません。支持結果も固定local snapshot上のcutover候補に限定し、このissue内でconfigやdefaultを変更しません。
 
+v1 developmentはsnapshot既存evidenceによりq3/s1がfresh `used_2`で発火し、空baseline由来の`used_3`を固定したboundary gateだけが不合格となりました。この不支持resultを変更せず、[Baseline-aware soft-start snapshot evaluation](docs/baseline-aware-soft-start-snapshot-evaluation.md)はfresh snapshotと別caseを使い、initial evidence stateからq3 first mutationを導出します。baseline不一致やcapacity不足ではregistered resultを作りません。v2はregistered output不在のfreeze-only PRとして固定し、squash merge後の別Issueでdevelopmentを一度だけ実行して、全gate通過時だけholdoutを一度開きます。
+
 後続の feedback policy comparison に使う public source は、[feedback-policy-comparison-v1](corpora/feedback-policy-comparison-v1/README.md) に corpus-only で固定しています。development / holdout 各二 cluster の明示 link topology、source-only manifest、raw SHA-256、LF 改行規則、provenance、既存 fixture との identity contamination audit だけを含み、評価の選択入力と観測物は含めません。この source merge commit を後続の別 issue が唯一の入力として扱います。
 
 この corpus を使う `used + q3 + sibling normalization 1.0` と `confirmed + decay 0.5 + sibling normalization 1.0` の比較は、[Feedback policy comparison evaluation](docs/feedback-policy-comparison-evaluation.md) に result-free protocol、one-time development、conditional holdout、exclusive observed result、再計算可能な hard gate を固定しています。controlled result は default adoption や production quality を意味しません。

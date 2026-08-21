@@ -1,0 +1,86 @@
+{
+  "protocol_id": "baseline-aware-soft-start-snapshot-v2",
+  "base_engine_config": {
+    "sparse_weight": 0.55,
+    "dense_weight": 0.45,
+    "entry_weight": 0.55,
+    "graph_weight": 0.45,
+    "seed_count": 3,
+    "max_hops": 2,
+    "hop_decay": 0.7,
+    "activation_half_life_seconds": 3600.0,
+    "feedback_learning_rate": 0.2,
+    "sibling_feedback_normalization": 1.0,
+    "maximum_edge_weight": 2.0,
+    "maximum_activation": 10.0,
+    "max_paths_per_node": 4,
+    "max_propagation_expansions": 10000,
+    "activation_strategy": "current_positive_additive",
+    "activation_budget": 1.0,
+    "inhibition_ratio": 0.0,
+    "inhibition_top_k": 0,
+    "query_transmission_floor": 0.4,
+    "query_transmission_power": 1.0,
+    "recurrent_steps": 3,
+    "recurrent_decay": 0.5,
+    "convergence_tolerance": 1e-09,
+    "max_active_paths_per_node": 4,
+    "use_dense_retrieval": true,
+    "use_graph_propagation": true,
+    "graph_normalization": "max",
+    "final_fusion_strategy": "linear",
+    "rrf_k": 60,
+    "relation_feedback_evidence_quorum": 1,
+    "confirmed_outcome_reinforcement": false,
+    "confirmation_decay_ratio": null,
+    "soft_start_feedback_reinforcement": false,
+    "soft_start_feedback_ratio": null
+  },
+  "arms": [
+    {
+      "arm_id": "control",
+      "policy": "audit-only",
+      "engine_config": {}
+    },
+    {
+      "arm_id": "used_q3_s1",
+      "policy": "baseline-aware-used-evidence-quorum-3-sibling-1.0",
+      "engine_config": {
+        "relation_feedback_evidence_quorum": 3
+      }
+    },
+    {
+      "arm_id": "confirmed_r05_s1",
+      "policy": "confirmed-only-decay-0.5-sibling-1.0",
+      "engine_config": {
+        "confirmed_outcome_reinforcement": true,
+        "confirmation_decay_ratio": 0.5
+      }
+    },
+    {
+      "arm_id": "soft_start_r025_r05_s1",
+      "policy": "soft-start-0.25-decay-0.5-sibling-1.0",
+      "engine_config": {
+        "soft_start_feedback_reinforcement": true,
+        "soft_start_feedback_ratio": 0.25,
+        "confirmation_decay_ratio": 0.5
+      }
+    }
+  ],
+  "event_order": [
+    "used_1",
+    "outcome_1",
+    "used_2",
+    "outcome_2",
+    "used_3",
+    "outcome_3",
+    "used_4",
+    "outcome_4"
+  ],
+  "event_budget": 4,
+  "q3_first_mutation_derivation": "max(1, relation_feedback_evidence_quorum - registered_initial_evidence_count)",
+  "capacity_rule": "derived first mutation must occur before the final event so one later fresh evidence activation is observed",
+  "checkpoint_policy": "baseline and after every registered event",
+  "fresh_trace_policy": "one new search trace per event iteration",
+  "fresh_clone_replay": true
+}
