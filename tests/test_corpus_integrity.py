@@ -165,12 +165,39 @@ class HistoricalSourceVerificationTest(unittest.TestCase):
         )
         self._git("add", ".")
         self._git("commit", "-m", "test: forge registered source")
-        with self.assertRaisesRegex(ValueError, "historical source hash mismatch"):
+        with self.assertRaisesRegex(ValueError, "manifest differs"):
             verify_manifest_source_hashes(
                 self.root,
                 self.manifest,
                 {"src/artifact.txt": self.expected},
             )
+
+    def test_committed_manifest_rewrite_does_not_move_registration_boundary(self) -> None:
+        tampered = b"committed replacement\n"
+        tampered_hash = hashlib.sha256(tampered).hexdigest()
+        self.artifact.write_bytes(tampered)
+        self.manifest.write_text(
+            json.dumps(
+                {"artifact_sha256": {"src/artifact.txt": tampered_hash}},
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        self._git("add", ".")
+        self._git("commit", "-m", "test: rewrite frozen manifest and source")
+
+        with self.assertRaisesRegex(ValueError, "manifest differs"):
+            verify_manifest_source_hashes(
+                self.root,
+                self.manifest,
+                {"src/artifact.txt": tampered_hash},
+            )
+        self.assertNotEqual(
+            self._git("rev-parse", "HEAD").stdout.strip(),
+            self.commit,
+        )
 
     def test_unknown_commit_and_missing_path_fail_closed(self) -> None:
         with self.assertRaisesRegex(ValueError, "commit is unavailable"):
@@ -198,6 +225,23 @@ class HistoricalSourceVerificationTest(unittest.TestCase):
                 nonancestor,
                 {"src/artifact.txt": self.expected},
             )
+
+    def test_mutable_refs_and_revision_expressions_are_rejected(self) -> None:
+        for source_commit in (
+            "HEAD",
+            "main",
+            "HEAD~1",
+            "refs/heads/main",
+            self.commit[:12],
+            self.commit.upper(),
+        ):
+            with self.subTest(source_commit=source_commit):
+                with self.assertRaisesRegex(ValueError, "invalid historical source commit"):
+                    verify_historical_source_hashes(
+                        self.root,
+                        source_commit,
+                        {"src/artifact.txt": self.expected},
+                    )
 
     def test_newline_alternate_is_explicit(self) -> None:
         expected_crlf = hashlib.sha256(b"registered\r\nsource\r\n").hexdigest()

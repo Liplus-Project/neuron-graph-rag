@@ -51,7 +51,7 @@ edge target は Decision Structure node slug とする。外部資料は `Edges`
 - lowercase kebab-case の Decision Structure entry と `_Sidebar.md` は Wiki-only である。docs-to-Wiki synchronization は、`docs/` に対応物がないことを理由にこれらを create、overwrite、delete しない。
 - 個別 Wiki entry は、その判断の current state の正本である。GitHub issue、pull request、commit、test output、fixture、gold、manifest、gate、result artifact は、それぞれの所有境界に従う根拠または契約であり、リンクしただけで Decision Structure entry にはならない。
 - `requirements.md`、実験文書、fixture、gold、manifest、gate、result artifact は、既存の source-of-truth boundary を維持する。
-- frozen source / artifact hash の source of truth は、manifest 登録 commit または manifest が明示する source commit の exact blob bytes である。current working tree の同名 path は後続 evolution の現在状態であり、historical evidence ではない。
+- frozen source / artifact hash の source of truth は、manifest path の初回追加 commit または manifest が明示する lowercase full 40-hex source commit の exact blob bytes である。後続の committed manifest rewrite や mutable ref は信頼境界を動かさず、current working tree の同名 path は後続 evolution の現在状態であって historical evidence ではない。
 
 ## Lifecycle
 

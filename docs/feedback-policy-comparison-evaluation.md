@@ -10,7 +10,7 @@
 
 protocol ID は `policycmp85-feedback-policy-comparison-v1` である。fixture、gold、query、cohort role、graph projection、engine config、event order、checkpoint、metric、gate array、result schema、exclusive writer、verifier、output path を observed result 不在の freeze commit に固定して push する。
 
-protocol artifact hash は manifest 登録 commit の exact blob bytes に対して照合し、検証後の fixture、gold、schedule、gate、schema、audit も同じ登録 blob から読む。current working tree の同名 evaluator、test、README、docs は後続 evolution であり、過去の protocol bytes として扱わない。source corpus は引き続き manifest の `source_commit` にある manifest と文書の exact bytes だけを読む。
+protocol artifact hash は manifest path の初回追加 commit の exact blob bytes に対して照合し、検証後の fixture、gold、schedule、gate、schema、audit も同じ初回登録 blob から読む。current working tree の同名 evaluator、test、README、docs は後続 evolution であり、過去の protocol bytes として扱わない。source corpus は引き続き manifest の lowercase full 40-hex `source_commit` にある manifest と文書の exact bytes だけを読む。
 
 development は Amber を `confirmed-use`、Cobalt を `corrected-use` に割り当てる。全 hard gate 通過時だけ開く holdout は Quartz を `confirmed-use`、Willow を `corrected-use` に割り当てる。split 間では node、path、source URL、edge identity、query を共有しない。各 arm は同じ split の8文書、6 edge、query、event order を使う。
 

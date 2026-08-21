@@ -10,7 +10,7 @@
 
 `sibling_normalization_controlled_v1` の fixture、gold、schedule、manifest、gate、evaluator、runner、test と本書を、observed output が存在しない状態で commit / push する。manifest は評価対象の engine source commit と SHA-256、登録 artifact の SHA-256、split / cluster identity、exclusive output path を固定する。
 
-評価対象 engine source は manifest の明示 commit、protocol artifact は manifest 登録 commit の exact blob bytes を読む。commit の存在と current `HEAD` の ancestor 関係、manifest bytes、path、hash を検証し、current working tree の同名 path は historical evidence として扱わない。
+評価対象 engine source は manifest の明示 full commit ID、protocol artifact は manifest path の初回追加 commit の exact blob bytes を読む。commit の存在と current `HEAD` の ancestor 関係、manifest bytes、path、hash を検証し、current working tree の同名 path は historical evidence として扱わない。
 
 development と holdout は node ID、cluster ID、query 語彙を共有しない。過去の feedback trajectory evaluator、fixture、gold、schedule、manifest、gate、observed result は選択入力にも実行入力にも使わない。
 

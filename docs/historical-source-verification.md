@@ -6,8 +6,8 @@ frozen evaluation の hash registry は、過去の protocol を固定した時�
 
 ## Source-of-truth boundary
 
-- manifest 内の artifact hash は、その manifest の登録 commit にある `git show <commit>:<path>` の exact bytes と照合する。登録 commit は current manifest path を最後に変更した commit とし、current manifest bytes 自体がその commit と一致することを先に検証する。
-- manifest が source commit、baseline commit、prior commit を明示する source registry は、その明示 commit の blob を照合する。
+- manifest 内の artifact hash は、その manifest path を最初に追加した登録 commit にある `git show <commit>:<path>` の exact bytes と照合する。後続の committed rewrite を新しい信頼点にせず、current manifest bytes 自体が初回登録 blob と一致することを先に検証する。
+- manifest が source commit、baseline commit、prior commit を明示する source registry は、その明示 commit の blob を照合する。明示 commit は lowercase full 40-hex object ID に限定し、branch、tag、`HEAD~1` 等の mutable ref / revision expression を拒否する。
 - commit object が存在し、現在の `HEAD` の ancestor であることを必須とする。未知 commit、非 ancestor commit、欠落 path、hash 不一致、working-tree manifest 改変は fail closed にする。
 - 同名 path の current working-tree bytes は historical evidence ではない。検証後に evaluator が frozen fixture、gold、schedule、gate、source document を読む場合も、検証済み commit blob を使う。
 

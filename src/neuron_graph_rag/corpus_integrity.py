@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 import subprocess
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -35,17 +36,20 @@ def registered_manifest_commit(
 ) -> str:
     """Resolve the commit that registered the current frozen manifest bytes.
 
-    The manifest itself remains the immutable registry.  Its most recent commit
-    is therefore the source boundary for the hashes it contains; later working
-    tree changes must not move that boundary.
+    The manifest itself remains the immutable registry.  The commit that first
+    added its current path is therefore the source boundary for the hashes it
+    contains; later committed or working-tree changes must not move it.
     """
 
     root = Path(repository_root).resolve()
     relative = _repository_relative(root, manifest_path)
-    completed = _git(root, "log", "-1", "--format=%H", "--", relative)
-    commit = completed.stdout.decode("ascii", errors="strict").strip()
-    if not commit:
+    completed = _git(root, "log", "--diff-filter=A", "--format=%H", "--", relative)
+    commits = completed.stdout.decode("ascii", errors="strict").splitlines()
+    if not commits:
         raise ValueError(f"frozen manifest is not registered in git: {relative}")
+    if len(commits) != 1:
+        raise ValueError(f"frozen manifest has multiple registration commits: {relative}")
+    commit = commits[0]
     _verify_commit_boundary(root, commit)
     registered = _git_bytes(root, commit, relative)
     current = (root / relative).read_bytes()
@@ -251,7 +255,7 @@ def _repository_relative(root: Path, path: str | Path) -> str:
 
 
 def _verify_commit_boundary(root: Path, commit: str) -> None:
-    if not commit or any(character.isspace() for character in commit):
+    if re.fullmatch(r"[0-9a-f]{40}", commit) is None:
         raise ValueError(f"invalid historical source commit: {commit!r}")
     try:
         _git(root, "cat-file", "-e", f"{commit}^{{commit}}")
