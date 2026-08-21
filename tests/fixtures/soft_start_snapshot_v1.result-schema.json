@@ -1,0 +1,21 @@
+{
+  "protocol_id": "soft-start-snapshot-v1",
+  "top_level_fields": [
+    "protocol_id",
+    "stage",
+    "status",
+    "failure_code",
+    "snapshot",
+    "protocol_hashes",
+    "preflight",
+    "arms",
+    "gates",
+    "all_hard_gates_pass",
+    "interpretation_ja"
+  ],
+  "failure_codes": [
+    "preflight-failed",
+    "execution-failed"
+  ],
+  "output_policy": "exclusive-create-no-overwrite-no-rerun"
+}

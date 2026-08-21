@@ -1,0 +1,12 @@
+{
+  "protocol_id": "soft-start-snapshot-v1",
+  "result_free": true,
+  "registered_outputs_absent": true,
+  "source_database_write_count": 0,
+  "snapshot_clone_only": true,
+  "snapshot_body_private": true,
+  "private_node_text_registered": false,
+  "absolute_private_path_registered": false,
+  "placeholder_round_trip_passed": true,
+  "prior_frozen_artifacts_reused": false
+}
