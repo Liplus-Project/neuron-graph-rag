@@ -1,0 +1,21 @@
+{
+  "protocol_id": "baseline-aware-soft-start-snapshot-v2",
+  "top_level_fields": [
+    "protocol_id",
+    "stage",
+    "status",
+    "failure_code",
+    "snapshot",
+    "protocol_hashes",
+    "preflight",
+    "arms",
+    "gates",
+    "all_hard_gates_pass",
+    "interpretation_ja"
+  ],
+  "failure_codes": [
+    "execution-failed"
+  ],
+  "preflight_failure_policy": "no-registered-result-and-failure-report",
+  "output_policy": "exclusive-create-no-overwrite-no-rerun"
+}

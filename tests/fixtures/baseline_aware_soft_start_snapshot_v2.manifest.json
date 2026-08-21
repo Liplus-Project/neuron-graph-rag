@@ -1,0 +1,73 @@
+{
+  "protocol_id": "baseline-aware-soft-start-snapshot-v2",
+  "issue": 106,
+  "source_boundary": "fresh-one-time-transaction-consistent-local-snapshot",
+  "historical_verification": "manifest-first-addition-commit-exact-blobs",
+  "predecessor_boundary": "v1 protocol, gate, result, interpretation, and private snapshot are not modified, rerun, recomputed, or used as v2 inputs",
+  "excluded_v1_development_credited_edges": [
+    "docs/requirements.md|docs/optional-mcp-interface.md|links_to",
+    "docs/sibling-relation-feedback-normalization.md|docs/sibling-normalization-controlled-evaluation.md|links_to"
+  ],
+  "snapshot": {
+    "source_locator": "local_codex_ngr_database",
+    "source_access": "sqlite-uri-mode-ro-query-only",
+    "capture_method": "sqlite-backup-api",
+    "captured_at": "2026-08-21T01:14:55+00:00",
+    "source_container_sha256_before": "90c664d345aab9a9ccf36943b5b503cf98e9588577db0e7ccd4f07b27cb33fe0",
+    "source_container_sha256_after": "90c664d345aab9a9ccf36943b5b503cf98e9588577db0e7ccd4f07b27cb33fe0",
+    "snapshot_sha256": "003f24478f8d18dd34ab6aee5d939202d116f195ac8db33c29e38ab7e0f456d1",
+    "snapshot_size": 425984,
+    "schema_sha256": "a4e58aa7675a6d9e3d9dd7fa778d5bbb4d0ec45eecc262e62f87e019a3ccae9f",
+    "table_names": [
+      "activation_state",
+      "confirmed_edge_state",
+      "confirmed_relation_feedback",
+      "confirmed_source_uses",
+      "delayed_outcome_nodes",
+      "delayed_outcomes",
+      "edges",
+      "feedback_requests",
+      "nodes",
+      "relation_feedback_evidence",
+      "retrieval_channels",
+      "retrieval_results",
+      "retrievals",
+      "source_use_state",
+      "success_feedback",
+      "success_nodes"
+    ],
+    "row_counts": {
+      "nodes": 21,
+      "edges": 30,
+      "retrievals": 24,
+      "success_feedback": 10,
+      "delayed_outcomes": 3
+    }
+  },
+  "protocol_artifacts": {
+    "fixture": "tests/fixtures/baseline_aware_soft_start_snapshot_v2.fixture.json",
+    "schedule": "tests/fixtures/baseline_aware_soft_start_snapshot_v2.schedule.json",
+    "gate": "tests/fixtures/baseline_aware_soft_start_snapshot_v2.gate.json",
+    "result_schema": "tests/fixtures/baseline_aware_soft_start_snapshot_v2.result-schema.json",
+    "audit": "tests/fixtures/baseline_aware_soft_start_snapshot_v2.result-free-audit.json"
+  },
+  "outputs": {
+    "development": "tests/fixtures/baseline_aware_soft_start_snapshot_v2.development.observed.json",
+    "holdout": "tests/fixtures/baseline_aware_soft_start_snapshot_v2.holdout.observed.json"
+  },
+  "artifact_sha256": {
+    "src/neuron_graph_rag/baseline_aware_soft_start_snapshot_evaluation.py": "9532e9e6fe59a48946d529347f38b7c1c6b685a4d3ad212ad5d8232c22bdc012",
+    "tools/run_baseline_aware_soft_start_snapshot_evaluation.py": "a119742a092aee44f2f7bb135d795f314fc65a623efa60669da20d1fb86cf714",
+    "tests/test_baseline_aware_soft_start_snapshot_evaluation.py": "ab6647bdf796e43a4a8eb8077b525b7f6e78184739db7067fad75cc93274c0d9",
+    "tests/test_soft_start_snapshot_evaluation.py": "d576fa0f0e6ceb525532bfba78ee66903651f5730f50fe9a0a09294687fa2dba",
+    "tests/fixtures/baseline_aware_soft_start_snapshot_v2.fixture.json": "7b55771bb37e68313ba50e7bdf00aa6edab2fabef61a2ade0fb651fdb2e2ae62",
+    "tests/fixtures/baseline_aware_soft_start_snapshot_v2.schedule.json": "a4f697a2eeb4c2921b7613a24da629f1e39f6ace286b5f1bf2ba1a2b168f18ca",
+    "tests/fixtures/baseline_aware_soft_start_snapshot_v2.gate.json": "e0ebf1c3a4e0b827377aa7833c2c384fd3a0ba919e61a5f1e1633ca6d46b6998",
+    "tests/fixtures/baseline_aware_soft_start_snapshot_v2.result-schema.json": "099fcf79eecb207ebbe3750ddac20876b81fb5675f1758e8a560302c49e09604",
+    "tests/fixtures/baseline_aware_soft_start_snapshot_v2.result-free-audit.json": "c53874177be067783e00350590879f815bc98acb9768c6cd3ebdad9e316827c8",
+    "docs/baseline-aware-soft-start-snapshot-evaluation.md": "0481abf383c60722a3d4b8416cf166eb4c67fa6f8e425eef63d1e9b2c44317f5",
+    "docs/requirements.md": "4f4d97f8212a0cf7d35f02b826bbb2a9f08ada5089eced96cfcd168ea4119278",
+    "docs/Decision-Structure.md": "5889ecbd5e23bd67e3494d30a9ef7b37855eba46f3a807d45c4adfb2bcd7d3df",
+    "README.md": "cbee26ad9f4e6343786843ac70bdd491fd6c855b3d9dd05e6ca4c73563e92ab2"
+  }
+}

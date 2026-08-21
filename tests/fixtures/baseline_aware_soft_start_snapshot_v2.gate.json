@@ -1,0 +1,43 @@
+{
+  "protocol_id": "baseline-aware-soft-start-snapshot-v2",
+  "thresholds": {
+    "negative_provisional_ratio_max": 0.25,
+    "confirmation_decay_ratio": 0.5,
+    "numeric_tolerance": 1e-12,
+    "event_budget": 4
+  },
+  "gates": [
+    {
+      "gate_id": "protocol-integrity",
+      "hard": true
+    },
+    {
+      "gate_id": "baseline-aware-q3-boundary",
+      "hard": true
+    },
+    {
+      "gate_id": "confirmed-only-boundary",
+      "hard": true
+    },
+    {
+      "gate_id": "soft-start-schedule",
+      "hard": true
+    },
+    {
+      "gate_id": "learning-latency-and-quality",
+      "hard": true
+    },
+    {
+      "gate_id": "negative-provisional-bound",
+      "hard": true
+    },
+    {
+      "gate_id": "control-rank-and-mutation-safety",
+      "hard": true
+    },
+    {
+      "gate_id": "mutation-locality-and-source-isolation",
+      "hard": true
+    }
+  ]
+}
