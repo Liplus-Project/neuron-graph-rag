@@ -254,6 +254,19 @@ class SQLiteStore:
                     REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
             );
 
+            CREATE TABLE IF NOT EXISTS feedback_edge_journal_state (
+                source_id TEXT NOT NULL,
+                target_id TEXT NOT NULL,
+                edge_type TEXT NOT NULL,
+                baseline_weight REAL NOT NULL CHECK(baseline_weight >= 0.0),
+                baseline_reinforced_count INTEGER NOT NULL
+                    CHECK(baseline_reinforced_count >= 0),
+                maximum_weight REAL NOT NULL CHECK(maximum_weight >= baseline_weight),
+                PRIMARY KEY (source_id, target_id, edge_type),
+                FOREIGN KEY (source_id, target_id, edge_type)
+                    REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
+            );
+
             CREATE TABLE IF NOT EXISTS relation_edge_dormancy (
                 source_id TEXT NOT NULL,
                 target_id TEXT NOT NULL,
@@ -381,6 +394,35 @@ class SQLiteStore:
         return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
     @classmethod
+    def _ensure_edge_journal_state(
+        cls,
+        connection: sqlite3.Connection,
+        *,
+        source_id: str,
+        target_id: str,
+        edge_type: str,
+        baseline_weight: float,
+        baseline_reinforced_count: int,
+        maximum_weight: float,
+    ) -> None:
+        connection.execute(
+            """
+            INSERT OR IGNORE INTO feedback_edge_journal_state(
+                source_id, target_id, edge_type, baseline_weight,
+                baseline_reinforced_count, maximum_weight
+            ) VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                source_id,
+                target_id,
+                edge_type,
+                baseline_weight,
+                baseline_reinforced_count,
+                max(baseline_weight, maximum_weight),
+            ),
+        )
+
+    @classmethod
     def _insert_contribution(
         cls,
         connection: sqlite3.Connection,
@@ -392,14 +434,28 @@ class SQLiteStore:
         target_id: str,
         edge_type: str,
         baseline_weight: float,
+        edge_weight_before: float,
+        edge_reinforced_count_before: int,
+        maximum_weight: float,
         credited_delta: float,
         created_at: float,
-        sibling_mutations: Iterable[tuple[str, str, str, float]] = (),
+        sibling_mutations: Iterable[
+            tuple[str, str, str, float, float, int]
+        ] = (),
     ) -> str | None:
         if credited_delta <= 0.0:
             return None
         contribution_id = cls._contribution_id(
             contribution_kind, source_record_id, source_id, target_id, edge_type
+        )
+        cls._ensure_edge_journal_state(
+            connection,
+            source_id=source_id,
+            target_id=target_id,
+            edge_type=edge_type,
+            baseline_weight=edge_weight_before,
+            baseline_reinforced_count=edge_reinforced_count_before,
+            maximum_weight=maximum_weight,
         )
         connection.execute(
             """
@@ -431,9 +487,25 @@ class SQLiteStore:
             """,
             (contribution_id, source_id, target_id, edge_type, credited_delta),
         )
-        for sibling_source, sibling_target, sibling_type, reduction in sibling_mutations:
+        for (
+            sibling_source,
+            sibling_target,
+            sibling_type,
+            reduction,
+            sibling_old_weight,
+            sibling_reinforced_count,
+        ) in sibling_mutations:
             if reduction <= 0.0:
                 continue
+            cls._ensure_edge_journal_state(
+                connection,
+                source_id=sibling_source,
+                target_id=sibling_target,
+                edge_type=sibling_type,
+                baseline_weight=sibling_old_weight,
+                baseline_reinforced_count=sibling_reinforced_count,
+                maximum_weight=maximum_weight,
+            )
             connection.execute(
                 """
                 INSERT INTO feedback_contribution_mutations(
@@ -450,6 +522,63 @@ class SQLiteStore:
                 ),
             )
         return contribution_id
+
+    @staticmethod
+    def _rebuild_edge_from_active_journal(
+        connection: sqlite3.Connection,
+        source_id: str,
+        target_id: str,
+        edge_type: str,
+    ) -> tuple[float, int]:
+        state = connection.execute(
+            """
+            SELECT * FROM feedback_edge_journal_state
+            WHERE source_id = ? AND target_id = ? AND edge_type = ?
+            """,
+            (source_id, target_id, edge_type),
+        ).fetchone()
+        if state is None:
+            raise KeyError("journaled edge state is absent")
+        active_delta = float(
+            connection.execute(
+                """
+                SELECT COALESCE(SUM(mutation.actual_delta), 0.0)
+                FROM feedback_contribution_mutations AS mutation
+                JOIN feedback_contributions AS contribution
+                  ON contribution.contribution_id = mutation.contribution_id
+                WHERE mutation.source_id = ? AND mutation.target_id = ?
+                  AND mutation.edge_type = ? AND contribution.active = 1
+                """,
+                (source_id, target_id, edge_type),
+            ).fetchone()[0]
+        )
+        active_reinforced_count = int(
+            connection.execute(
+                """
+                SELECT COALESCE(SUM(contribution.reinforced_count_delta), 0)
+                FROM feedback_contribution_mutations AS mutation
+                JOIN feedback_contributions AS contribution
+                  ON contribution.contribution_id = mutation.contribution_id
+                WHERE mutation.source_id = ? AND mutation.target_id = ?
+                  AND mutation.edge_type = ? AND mutation.mutation_role = 'credited'
+                  AND contribution.active = 1
+                """,
+                (source_id, target_id, edge_type),
+            ).fetchone()[0]
+        )
+        new_weight = min(
+            float(state["maximum_weight"]),
+            max(0.0, float(state["baseline_weight"]) + active_delta),
+        )
+        new_count = int(state["baseline_reinforced_count"]) + active_reinforced_count
+        connection.execute(
+            """
+            UPDATE edges SET weight = ?, reinforced_count = ?
+            WHERE source_id = ? AND target_id = ? AND edge_type = ?
+            """,
+            (new_weight, new_count, source_id, target_id, edge_type),
+        )
+        return new_weight, new_count
 
     def edge(self, source_id: str, target_id: str, edge_type: str) -> TypedEdge:
         row = self.connection.execute(
@@ -934,7 +1063,7 @@ class SQLiteStore:
                     continue
                 edge = connection.execute(
                     """
-                    SELECT weight FROM edges
+                    SELECT weight, reinforced_count FROM edges
                     WHERE source_id = ? AND target_id = ? AND edge_type = ?
                     """,
                     (source_id, target_id, edge_type),
@@ -1055,6 +1184,9 @@ class SQLiteStore:
                     baseline_weight=(
                         old_weight if state is None else float(state["initial_weight"])
                     ),
+                    edge_weight_before=old_weight,
+                    edge_reinforced_count_before=int(edge["reinforced_count"]),
+                    maximum_weight=maximum,
                     credited_delta=actual_delta,
                     created_at=created_at,
                 )
@@ -1443,7 +1575,7 @@ class SQLiteStore:
         normalized: list[dict[str, Any]] = []
         contribution_specs: list[dict[str, Any]] = []
         sibling_reductions_by_source: dict[
-            str, list[tuple[str, str, str, float]]
+            str, list[tuple[str, str, str, float, float, int]]
         ] = {}
         reactivated: list[dict[str, Any]] = []
         with self.transaction() as connection:
@@ -1513,7 +1645,7 @@ class SQLiteStore:
                     )
                 edge = connection.execute(
                     """
-                    SELECT weight FROM edges
+                    SELECT weight, reinforced_count FROM edges
                     WHERE source_id = ? AND target_id = ? AND edge_type = ?
                     """,
                     (source_id, target_id, edge_type),
@@ -1628,6 +1760,11 @@ class SQLiteStore:
                         "target_id": target_id,
                         "edge_type": edge_type,
                         "baseline_weight": float(state["initial_weight"]),
+                        "edge_weight_before": old_weight,
+                        "edge_reinforced_count_before": int(
+                            edge["reinforced_count"]
+                        ),
+                        "maximum_weight": maximum,
                         "credited_delta": actual_delta,
                     }
                 )
@@ -1643,7 +1780,7 @@ class SQLiteStore:
                 for sibling_source, target_id, edge_type in sibling_keys:
                     row = connection.execute(
                         """
-                        SELECT weight FROM edges
+                        SELECT weight, reinforced_count FROM edges
                         WHERE source_id = ? AND target_id = ? AND edge_type = ?
                         """,
                         (sibling_source, target_id, edge_type),
@@ -1677,6 +1814,8 @@ class SQLiteStore:
                                 target_id,
                                 edge_type,
                                 old_weight - new_weight,
+                                old_weight,
+                                int(row["reinforced_count"]),
                             )
                         )
             for spec in contribution_specs:
@@ -1692,6 +1831,11 @@ class SQLiteStore:
                     target_id=str(spec["target_id"]),
                     edge_type=str(spec["edge_type"]),
                     baseline_weight=float(spec["baseline_weight"]),
+                    edge_weight_before=float(spec["edge_weight_before"]),
+                    edge_reinforced_count_before=int(
+                        spec["edge_reinforced_count_before"]
+                    ),
+                    maximum_weight=float(spec["maximum_weight"]),
                     credited_delta=float(spec["credited_delta"]),
                     created_at=recorded_at,
                     sibling_mutations=tuple(
@@ -1700,8 +1844,17 @@ class SQLiteStore:
                             sibling_target,
                             sibling_type,
                             reduction * share,
+                            sibling_old_weight,
+                            sibling_reinforced_count,
                         )
-                        for sibling_source, sibling_target, sibling_type, reduction
+                        for (
+                            sibling_source,
+                            sibling_target,
+                            sibling_type,
+                            reduction,
+                            sibling_old_weight,
+                            sibling_reinforced_count,
+                        )
                         in sibling_reductions_by_source.get(source_id, [])
                     ),
                 )
@@ -1842,10 +1995,11 @@ class SQLiteStore:
                             """,
                             (contribution["contribution_id"],),
                         ).fetchall()
+                        old_weights: dict[tuple[str, str, str], float] = {}
                         for mutation in mutation_rows:
                             edge = connection.execute(
                                 """
-                                SELECT weight, reinforced_count FROM edges
+                                SELECT weight FROM edges
                                 WHERE source_id = ? AND target_id = ? AND edge_type = ?
                                 """,
                                 (
@@ -1856,56 +2010,12 @@ class SQLiteStore:
                             ).fetchone()
                             if edge is None:
                                 raise KeyError("journaled contribution edge is absent")
-                            old_weight = float(edge["weight"])
-                            signed_delta = float(mutation["actual_delta"])
-                            if str(mutation["mutation_role"]) == "credited":
-                                new_weight = max(
-                                    float(contribution["baseline_weight"]),
-                                    old_weight - signed_delta,
-                                )
-                                new_count = max(
-                                    0,
-                                    int(edge["reinforced_count"])
-                                    - int(contribution["reinforced_count_delta"]),
-                                )
-                                connection.execute(
-                                    """
-                                    UPDATE edges SET weight = ?, reinforced_count = ?
-                                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
-                                    """,
-                                    (
-                                        new_weight,
-                                        new_count,
-                                        mutation["source_id"],
-                                        mutation["target_id"],
-                                        mutation["edge_type"],
-                                    ),
-                                )
-                            else:
-                                new_weight = old_weight - signed_delta
-                                connection.execute(
-                                    """
-                                    UPDATE edges SET weight = ?
-                                    WHERE source_id = ? AND target_id = ? AND edge_type = ?
-                                    """,
-                                    (
-                                        new_weight,
-                                        mutation["source_id"],
-                                        mutation["target_id"],
-                                        mutation["edge_type"],
-                                    ),
-                                )
-                            mutations.append(
-                                {
-                                    "mutation_role": str(mutation["mutation_role"]),
-                                    "source_id": str(mutation["source_id"]),
-                                    "target_id": str(mutation["target_id"]),
-                                    "edge_type": str(mutation["edge_type"]),
-                                    "actual_delta": signed_delta,
-                                    "old_weight": old_weight,
-                                    "new_weight": new_weight,
-                                }
+                            identity = (
+                                str(mutation["source_id"]),
+                                str(mutation["target_id"]),
+                                str(mutation["edge_type"]),
                             )
+                            old_weights[identity] = float(edge["weight"])
                         connection.execute(
                             """
                             UPDATE feedback_contributions
@@ -1914,6 +2024,27 @@ class SQLiteStore:
                             """,
                             (outcome_id, contribution["contribution_id"]),
                         )
+                        for mutation in mutation_rows:
+                            identity = (
+                                str(mutation["source_id"]),
+                                str(mutation["target_id"]),
+                                str(mutation["edge_type"]),
+                            )
+                            old_weight = old_weights[identity]
+                            new_weight, _ = self._rebuild_edge_from_active_journal(
+                                connection, *identity
+                            )
+                            mutations.append(
+                                {
+                                    "mutation_role": str(mutation["mutation_role"]),
+                                    "source_id": str(mutation["source_id"]),
+                                    "target_id": str(mutation["target_id"]),
+                                    "edge_type": str(mutation["edge_type"]),
+                                    "actual_delta": float(mutation["actual_delta"]),
+                                    "old_weight": old_weight,
+                                    "new_weight": new_weight,
+                                }
+                            )
                         reversed_contributions.append(
                             {
                                 "contribution_id": str(contribution["contribution_id"]),
