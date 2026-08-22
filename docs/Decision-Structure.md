@@ -21,6 +21,7 @@
 | [repository-native-controlled-corpus](https://github.com/Liplus-Project/neuron-graph-rag/wiki/repository-native-controlled-corpus) | active | repository-native controlled corpus v2 は、固定 SHA の公開 documentation と本文中の明示的な同一 directory 相対 link だけから、node、doc path、source URL、credited edge identity が相互に分離した development / holdout の各 3-edge path を導出する。v1 は provenance として保持する。これは controlled benchmark であり、外部 corpus への一般化、評価 query、gold、result、既定値変更を含まない。 |
 | [soft-start-feedback-reinforcement](https://github.com/Liplus-Project/neuron-graph-rag/wiki/soft-start-feedback-reinforcement) | active | 最初の credited `used` に通常 bounded updateの小さなprovisional fractionを適用し、最初の独立`confirmed`がremainder、後続confirmationがgeometric decayを適用する。v1 snapshot評価の不支持を保持し、baseline-aware successorはfresh initial evidenceからq3 first mutationを導出する。v2 freeze-only PRとsquash後のobserved registrationを分離し、development全gate通過時だけholdoutを一度開く。source database、live config、defaultを変更しない。 |
 | [github-rag-mcp-replacement-compatibility](https://github.com/Liplus-Project/neuron-graph-rag/wiki/github-rag-mcp-replacement-compatibility) | active | public GitHub repository一つのread-only snapshotをNGR local indexへ接続する。github-rag-mcp `search` の保存済み raw capture と source URL、根拠を比較する。共有 source identity を確認しても最小 doc 検索 path の候補に限り、production github-rag-mcp、MCP authentication / transport、remote deployment、default変更は含まない。 |
+| [sqlite-canonical-judgment-graph](https://github.com/Liplus-Project/neuron-graph-rag/wiki/sqlite-canonical-judgment-graph) | active | NGR 自身の判断構造は SQLite の stable identity、revision、lifecycle、typed relation を machine-native 正本とし、raw SQL でなく atomic domain API で変更する。Wiki は移行 fixture の検証後に optional generated view へ下げる。 |
 
 ## Entry format
 
@@ -49,6 +50,9 @@
 edge target は Decision Structure node slug とする。外部資料は `Edges` でなく `Related` に置く。
 
 ## Source-of-truth boundary
+
+- 新規に domain API から登録された judgment graph の machine-readable 正本は SQLite である。詳細契約は [Canonical SQLite judgment graph](canonical-sqlite-judgment-graph.md) に置く。
+- 既存 Wiki entry は検証済み import が行われるまで従来の正本境界を維持する。本変更だけで本番 Wiki entry を自動移行または削除しない。
 
 - `docs/Decision-Structure.md` は main repository における索引、format、vocabulary、所有境界、lifecycle の正本である。これは docs-owned であり、GitHub Wiki の `Decision-Structure.md` へ mirror する。
 - lowercase kebab-case の Decision Structure entry と `_Sidebar.md` は Wiki-only である。docs-to-Wiki synchronization は、`docs/` に対応物がないことを理由にこれらを create、overwrite、delete しない。

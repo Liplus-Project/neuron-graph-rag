@@ -152,6 +152,28 @@ OUTCOME_INPUT = _object(
     },
     ["contract_version", "idempotency_key", "trace_id", "node_ids", "outcome", "summary"],
 )
+JUDGMENT_WRITE_INPUT = {
+    "type": "object",
+    "properties": {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "action": {"type": "string", "enum": ["add", "update", "supersede", "archive", "restore", "hard_delete"]},
+        "judgment_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "successor_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "statement": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1},
+        "provenance": {"type": "object"},
+        "expected_revision": {"type": "integer", "minimum": 1},
+        "relations": {
+            "type": "array",
+            "items": _object(
+                {"target_id": {"type": "string"}, "relation_type": {"type": "string"}},
+                ["target_id", "relation_type"],
+            ),
+        },
+    },
+    "required": ["contract_version", "action", "judgment_id"],
+    "additionalProperties": False,
+}
 
 _STEP_OUTPUT = _object(
     {
@@ -412,6 +434,27 @@ TOOLS = (
         output_schema=OUTCOME_OUTPUT,
         annotations=_annotations(idempotent=True),
     ),
+    types.Tool(
+        name="write_judgment",
+        description=(
+            "Atomically add, update, supersede, archive, restore, or explicitly hard-delete "
+            "a canonical SQLite judgment. Never use raw SQL. Updates and lifecycle changes "
+            "require expected_revision; hard delete is restricted to safe archived candidates."
+        ),
+        input_schema=JUDGMENT_WRITE_INPUT,
+        output_schema=_object(
+            {
+                "contract_version": {"type": "string"},
+                "action": {"type": "string"},
+                "judgment": {"type": ["object", "null"]},
+            },
+            ["contract_version", "action", "judgment"],
+        ),
+        annotations=types.ToolAnnotations(
+            read_only_hint=False, destructive_hint=True, idempotent_hint=False,
+            open_world_hint=False,
+        ),
+    ),
 )
 
 
@@ -453,6 +496,7 @@ def _tools(
             output_schema=OUTCOME_OUTPUT,
             annotations=_annotations(idempotent=True),
         ),
+        TOOLS[3],
     )
 
 
@@ -490,8 +534,10 @@ class FeedbackMCPAdapter:
                 output = self._search(arguments)
             elif params.name == "record_source_use":
                 output = self._record_source_use(arguments)
-            else:
+            elif params.name == "record_outcome":
                 output = self._record_outcome(arguments)
+            else:
+                output = self._write_judgment(arguments)
             return self._success(output)
         except FeedbackContractError as error:
             return self._error(error.code, str(error), error.retryable)
@@ -759,6 +805,44 @@ class FeedbackMCPAdapter:
                 for item in receipt.reactivated_edges
             ],
         }
+
+    def _write_judgment(self, data: dict[str, Any]) -> dict[str, Any]:
+        allowed = {
+            "contract_version", "action", "judgment_id", "successor_id",
+            "statement", "rationale", "provenance", "expected_revision", "relations",
+        }
+        self._keys(data, allowed, {"contract_version", "action", "judgment_id"})
+        self._version(data)
+        action = data["action"]
+        identifier = data["judgment_id"]
+        graph = self.engine.judgments
+        if action == "add":
+            required = {"statement", "rationale", "provenance"}
+            if not required <= data.keys():
+                raise ValueError("add requires statement, rationale, and provenance")
+            judgment = graph.add(identifier, data["statement"], data["rationale"], data["provenance"], relations=data.get("relations", []))
+        elif action == "update":
+            required = {"statement", "rationale", "provenance", "expected_revision"}
+            if not required <= data.keys():
+                raise ValueError("update requires content, provenance, and expected_revision")
+            judgment = graph.update(identifier, data["statement"], data["rationale"], data["provenance"], expected_revision=data["expected_revision"], relations=data.get("relations", []))
+        elif action == "supersede":
+            required = {"successor_id", "statement", "rationale", "provenance", "expected_revision"}
+            if not required <= data.keys():
+                raise ValueError("supersede requires successor content and expected_revision")
+            judgment = graph.supersede(identifier, data["successor_id"], data["statement"], data["rationale"], data["provenance"], expected_revision=data["expected_revision"], relations=data.get("relations", []))
+        elif action in {"archive", "restore"}:
+            if "expected_revision" not in data:
+                raise ValueError("lifecycle change requires expected_revision")
+            judgment = getattr(graph, action)(identifier, expected_revision=data["expected_revision"])
+        elif action == "hard_delete":
+            if "expected_revision" not in data:
+                raise ValueError("hard_delete requires expected_revision")
+            graph.hard_delete(identifier, expected_revision=data["expected_revision"])
+            judgment = None
+        else:
+            raise ValueError("unsupported judgment action")
+        return {"contract_version": CONTRACT_VERSION, "action": action, "judgment": judgment}
 
     @staticmethod
     def _success(output: dict[str, Any]) -> types.CallToolResult:

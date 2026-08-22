@@ -23,6 +23,7 @@ from .models import (
 from .dynamics import DynamicsSettings, propagate
 from .retrieval import BM25Retriever, DenseEncoder, DenseRetriever, normalize_scores
 from .storage import SQLiteStore
+from .judgments import JudgmentGraph
 
 
 @dataclass(frozen=True, slots=True)
@@ -134,6 +135,7 @@ class NeuronGraphRAG:
     ) -> None:
         self.config = config or EngineConfig()
         self.store = SQLiteStore(database)
+        self.judgments = JudgmentGraph(self.store)
         self.sparse_retriever = BM25Retriever()
         self.dense_retriever = DenseRetriever(dense_encoder)
 

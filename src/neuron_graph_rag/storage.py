@@ -279,6 +279,34 @@ class SQLiteStore:
                 FOREIGN KEY (source_id, target_id, edge_type)
                     REFERENCES edges(source_id, target_id, edge_type) ON DELETE CASCADE
             );
+
+            CREATE TABLE IF NOT EXISTS judgments (
+                judgment_id TEXT PRIMARY KEY,
+                current_revision INTEGER NOT NULL CHECK(current_revision >= 1),
+                lifecycle TEXT NOT NULL CHECK(lifecycle IN ('active', 'archived')),
+                superseded_by TEXT UNIQUE REFERENCES judgments(judgment_id),
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS judgment_revisions (
+                judgment_id TEXT NOT NULL REFERENCES judgments(judgment_id) ON DELETE CASCADE,
+                revision INTEGER NOT NULL CHECK(revision >= 1),
+                statement TEXT NOT NULL,
+                rationale TEXT NOT NULL,
+                provenance_json TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                PRIMARY KEY (judgment_id, revision)
+            );
+
+            CREATE TABLE IF NOT EXISTS judgment_relations (
+                source_id TEXT NOT NULL REFERENCES judgments(judgment_id) ON DELETE CASCADE,
+                target_id TEXT NOT NULL REFERENCES judgments(judgment_id) ON DELETE RESTRICT,
+                relation_type TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                PRIMARY KEY (source_id, target_id, relation_type),
+                CHECK(source_id <> target_id)
+            );
             """
         )
         self.connection.commit()
@@ -332,12 +360,28 @@ class SQLiteStore:
         return self._node_from_row(row)
 
     def list_nodes(self) -> list[DocumentNode]:
-        rows = self.connection.execute("SELECT * FROM nodes ORDER BY node_id").fetchall()
+        rows = self.connection.execute(
+            """
+            SELECT nodes.* FROM nodes
+            LEFT JOIN judgments ON judgments.judgment_id = nodes.node_id
+            WHERE judgments.judgment_id IS NULL OR judgments.lifecycle = 'active'
+            ORDER BY nodes.node_id
+            """
+        ).fetchall()
         return [self._node_from_row(row) for row in rows]
 
     def list_edges(self) -> list[TypedEdge]:
         rows = self.connection.execute(
-            "SELECT * FROM edges ORDER BY source_id, target_id, edge_type"
+            """
+            SELECT edges.* FROM edges
+            LEFT JOIN judgments AS source_judgment
+              ON source_judgment.judgment_id = edges.source_id
+            LEFT JOIN judgments AS target_judgment
+              ON target_judgment.judgment_id = edges.target_id
+            WHERE (source_judgment.judgment_id IS NULL OR source_judgment.lifecycle = 'active')
+              AND (target_judgment.judgment_id IS NULL OR target_judgment.lifecycle = 'active')
+            ORDER BY edges.source_id, edges.target_id, edges.edge_type
+            """
         ).fetchall()
         return [self._edge_from_row(row) for row in rows]
 
@@ -350,6 +394,11 @@ class SQLiteStore:
              AND dormancy.target_id = edges.target_id
              AND dormancy.edge_type = edges.edge_type
             WHERE edges.source_id = ? AND COALESCE(dormancy.dormant, 0) = 0
+              AND NOT EXISTS (
+                SELECT 1 FROM judgments
+                WHERE judgments.judgment_id = edges.target_id
+                  AND judgments.lifecycle <> 'active'
+              )
             ORDER BY edges.target_id, edges.edge_type
             """,
             (node_id,),
