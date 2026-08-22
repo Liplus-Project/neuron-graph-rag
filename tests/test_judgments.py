@@ -67,6 +67,91 @@ class JudgmentGraphTests(unittest.TestCase):
             with self.assertRaises(KeyError):
                 engine.judgments.get("candidate")
 
+    def test_hard_delete_failure_boundaries_preserve_graph_atomically(self) -> None:
+        with NeuronGraphRAG() as engine:
+            engine.judgments.add("active", "Active", "Reason", PROVENANCE)
+            before = engine.judgments.export()
+            with self.assertRaises(JudgmentContractError):
+                engine.judgments.hard_delete("active", expected_revision=1)
+            self.assertEqual(engine.judgments.export(), before)
+
+            engine.judgments.add("referenced", "Referenced", "Reason", PROVENANCE)
+            engine.judgments.add(
+                "source", "Source", "Reason", PROVENANCE,
+                relations=[{"target_id": "referenced", "relation_type": "supports"}],
+            )
+            engine.judgments.archive("referenced", expected_revision=1)
+            before = engine.judgments.export()
+            with self.assertRaises(JudgmentContractError):
+                engine.judgments.hard_delete("referenced", expected_revision=1)
+            self.assertEqual(engine.judgments.export(), before)
+
+            engine.judgments.add("predecessor", "Old", "Reason", PROVENANCE)
+            engine.judgments.supersede(
+                "predecessor", "successor", "New", "Reason", PROVENANCE,
+                expected_revision=1,
+            )
+            before = engine.judgments.export()
+            with self.assertRaises(JudgmentContractError):
+                engine.judgments.hard_delete("predecessor", expected_revision=1)
+            self.assertEqual(engine.judgments.export(), before)
+
+    def test_lifecycle_no_op_fails_without_touching_timestamp(self) -> None:
+        with NeuronGraphRAG() as engine:
+            engine.judgments.add("state", "State", "Reason", PROVENANCE)
+            active_timestamp = engine.store.connection.execute(
+                "SELECT updated_at FROM judgments WHERE judgment_id = 'state'"
+            ).fetchone()[0]
+            with self.assertRaisesRegex(JudgmentContractError, "already active"):
+                engine.judgments.restore("state", expected_revision=1)
+            self.assertEqual(
+                engine.store.connection.execute(
+                    "SELECT updated_at FROM judgments WHERE judgment_id = 'state'"
+                ).fetchone()[0],
+                active_timestamp,
+            )
+            engine.judgments.archive("state", expected_revision=1)
+            archived_timestamp = engine.store.connection.execute(
+                "SELECT updated_at FROM judgments WHERE judgment_id = 'state'"
+            ).fetchone()[0]
+            with self.assertRaisesRegex(JudgmentContractError, "already archived"):
+                engine.judgments.archive("state", expected_revision=1)
+            self.assertEqual(
+                engine.store.connection.execute(
+                    "SELECT updated_at FROM judgments WHERE judgment_id = 'state'"
+                ).fetchone()[0],
+                archived_timestamp,
+            )
+
+    def test_integrity_rejects_inconsistent_supersession_state(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for mutation in ("active_predecessor", "missing_relation", "wrong_successor"):
+                with self.subTest(mutation=mutation):
+                    database = root / f"{mutation}.sqlite"
+                    with NeuronGraphRAG(database) as engine:
+                        engine.judgments.add("old", "Old", "Reason", PROVENANCE)
+                        engine.judgments.supersede(
+                            "old", "new", "New", "Reason", PROVENANCE,
+                            expected_revision=1,
+                        )
+                        if mutation == "active_predecessor":
+                            engine.store.connection.execute(
+                                "UPDATE judgments SET lifecycle = 'active' WHERE judgment_id = 'old'"
+                            )
+                        elif mutation == "missing_relation":
+                            engine.store.connection.execute(
+                                "DELETE FROM judgment_relations WHERE source_id = 'new' AND target_id = 'old' AND relation_type = 'supersedes'"
+                            )
+                        else:
+                            engine.judgments.add("other", "Other", "Reason", PROVENANCE)
+                            engine.store.connection.execute(
+                                "UPDATE judgments SET superseded_by = 'other' WHERE judgment_id = 'old'"
+                            )
+                        engine.store.connection.commit()
+                    with self.assertRaisesRegex(RuntimeError, "supersession_inconsistencies"):
+                        integrity(database)
+
     def test_deterministic_round_trip_and_backup_restore(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

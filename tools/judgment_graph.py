@@ -63,13 +63,50 @@ def integrity(database: Path) -> dict[str, object]:
             WHERE superseded_by IS NOT NULL GROUP BY superseded_by HAVING COUNT(*) > 1
             """
         ).fetchall()
+        supersession_inconsistencies = connection.execute(
+            """
+            SELECT predecessor.judgment_id, predecessor.lifecycle,
+                   predecessor.superseded_by
+            FROM judgments AS predecessor
+            WHERE predecessor.superseded_by IS NOT NULL
+              AND (
+                predecessor.lifecycle <> 'archived'
+                OR NOT EXISTS (
+                    SELECT 1 FROM judgment_relations AS relation
+                    WHERE relation.source_id = predecessor.superseded_by
+                      AND relation.target_id = predecessor.judgment_id
+                      AND relation.relation_type = 'supersedes'
+                )
+              )
+            UNION ALL
+            SELECT relation.target_id, target.lifecycle, relation.source_id
+            FROM judgment_relations AS relation
+            JOIN judgments AS target ON target.judgment_id = relation.target_id
+            WHERE relation.relation_type = 'supersedes'
+              AND (
+                target.lifecycle <> 'archived'
+                OR target.superseded_by IS NULL
+                OR target.superseded_by <> relation.source_id
+              )
+            ORDER BY 1, 3
+            """
+        ).fetchall()
     result = {
         "sqlite_integrity": sqlite_status,
         "foreign_key_violations": foreign_keys,
         "dangling_relations": [dict(row) for row in dangling],
         "duplicate_successors": [dict(row) for row in duplicate_successors],
+        "supersession_inconsistencies": [
+            dict(row) for row in supersession_inconsistencies
+        ],
     }
-    if sqlite_status != "ok" or foreign_keys or dangling or duplicate_successors:
+    if (
+        sqlite_status != "ok"
+        or foreign_keys
+        or dangling
+        or duplicate_successors
+        or supersession_inconsistencies
+    ):
         raise RuntimeError(json.dumps(result, sort_keys=True))
     return result
 

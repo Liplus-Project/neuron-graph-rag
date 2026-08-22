@@ -186,6 +186,8 @@ class JudgmentGraph:
             row = self._require(connection, judgment_id)
             if row["current_revision"] != expected_revision:
                 raise JudgmentContractError("stale expected_revision")
+            if row["lifecycle"] == lifecycle:
+                raise JudgmentContractError(f"judgment is already {lifecycle}")
             if lifecycle == "active" and row["superseded_by"] is not None:
                 raise JudgmentContractError("superseded judgments cannot be restored")
             connection.execute(
