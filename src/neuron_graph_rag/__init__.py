@@ -1,5 +1,6 @@
 from .engine import EngineConfig, NeuronGraphRAG
 from .feedback import FeedbackLedger
+from .judgments import JudgmentContractError, JudgmentGraph
 from .models import (
     ActivationPath,
     ConfirmedEdge,
@@ -39,6 +40,8 @@ __all__ = [
     "FeedbackEvidence",
     "FeedbackLedger",
     "FeedbackReceipt",
+    "JudgmentContractError",
+    "JudgmentGraph",
     "NeuronGraphRAG",
     "NormalizedSiblingEdge",
     "OutcomeReceipt",

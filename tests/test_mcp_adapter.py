@@ -50,21 +50,24 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
 
     async def test_tools_list_contract_and_structured_search_result(self) -> None:
         listed = await self.adapter.list_tools()
-        self.assertEqual([tool.name for tool in listed.tools], ["search", "record_source_use", "record_outcome"])
+        self.assertEqual([tool.name for tool in listed.tools], ["search", "record_source_use", "record_outcome", "write_judgment"])
         self.assertEqual(
-            [tool.description for tool in listed.tools],
+            [tool.description for tool in listed.tools[:3]],
             [SEARCH_DESCRIPTION, SOURCE_USE_DESCRIPTION, OUTCOME_DESCRIPTION],
         )
         self.assertEqual(
             [tool.annotations.idempotent_hint for tool in listed.tools],
-            [False, True, True],
+            [False, True, True, False],
         )
-        for tool in listed.tools:
+        for tool in listed.tools[:3]:
             self.assertFalse(tool.annotations.read_only_hint)
             self.assertFalse(tool.annotations.destructive_hint)
             self.assertFalse(tool.annotations.open_world_hint)
             self.assertFalse(tool.input_schema["additionalProperties"])
             self.assertFalse(tool.output_schema["additionalProperties"])
+        self.assertTrue(listed.tools[3].annotations.destructive_hint)
+        self.assertFalse(listed.tools[3].input_schema["additionalProperties"])
+        self.assertFalse(listed.tools[3].output_schema["additionalProperties"])
 
         result = await self.adapter.call_tool(
             None,
@@ -146,6 +149,44 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(error["code"], "unsupported_contract_version")
         self.assertNotIn("secret query text", invalid.content[0].text)
         self.assertNotIn("private value", invalid.content[0].text)
+
+    async def test_judgment_write_uses_atomic_domain_surface(self) -> None:
+        added = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="write_judgment",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "action": "add",
+                    "judgment_id": "mcp-judgment",
+                    "statement": "Use the domain API",
+                    "rationale": "Raw SQL is outside the model-facing contract",
+                    "provenance": {"source": "test"},
+                },
+            ),
+        )
+        self.assertFalse(added.is_error)
+        self.assertEqual(added.structured_content["judgment"]["revision"], 1)
+        stale = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="write_judgment",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "action": "update",
+                    "judgment_id": "mcp-judgment",
+                    "statement": "Changed",
+                    "rationale": "Stale writes fail closed",
+                    "provenance": {"source": "test"},
+                    "expected_revision": 2,
+                },
+            ),
+        )
+        self.assertTrue(stale.is_error)
+        self.assertEqual(
+            self.adapter.engine.judgments.get("mcp-judgment")["statement"],
+            "Use the domain API",
+        )
 
     async def test_feedback_receipt_exposes_quorum_evidence_and_replays(self) -> None:
         self.adapter.close()
@@ -481,7 +522,7 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         ):
             await session.initialize()
             listed = await session.list_tools()
-            self.assertEqual([tool.name for tool in listed.tools], ["search", "record_source_use", "record_outcome"])
+            self.assertEqual([tool.name for tool in listed.tools], ["search", "record_source_use", "record_outcome", "write_judgment"])
             result = await session.call_tool(
                 "search",
                 {"contract_version": CONTRACT_VERSION, "query": "cache"},
