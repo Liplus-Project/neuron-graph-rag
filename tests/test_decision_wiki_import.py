@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -12,6 +13,7 @@ from neuron_graph_rag.decision_wiki_import import (
     deterministic_json,
     import_atomically,
 )
+from tools.import_decision_wikis import publish_bundle
 
 
 def _source(root: Path, repository: str, rows: str, pages: dict[str, str]) -> WikiSource:
@@ -115,6 +117,38 @@ class DecisionWikiImportTests(unittest.TestCase):
             with self.assertRaises(Exception):
                 import_atomically(broken, invalid)
             self.assertFalse(broken.exists())
+
+    def test_bundle_failure_after_export_leaves_no_outputs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = _source(
+                root, "Example/one",
+                "| [source](https://github.com/Example/one/wiki/source) | active | Source |\n",
+                {"source": "## Current resolution\n\nSource\n\n## Edges\n\n- **informs** none\n"},
+            )
+            outputs = (
+                root / "decisions.sqlite",
+                root / "decisions.export.json",
+                root / "decisions.backup.sqlite",
+                root / "decisions.manifest.json",
+            )
+
+            for failure_stage in ("after_export", "published:decisions.sqlite"):
+                with self.subTest(failure_stage=failure_stage):
+                    def fail(stage: str) -> None:
+                        if stage == failure_stage:
+                            raise RuntimeError("injected bundle failure")
+
+                    with self.assertRaisesRegex(RuntimeError, "injected"):
+                        publish_bundle((source,), *outputs, failure_hook=fail)
+                    self.assertEqual([path for path in outputs if path.exists()], [])
+                    self.assertEqual(list(root.glob(".*.tmp")), [])
+
+            publish_bundle((source,), *outputs)
+            self.assertTrue(all(path.exists() for path in outputs))
+            manifest = json.loads(outputs[3].read_text(encoding="utf-8"))
+            self.assertEqual(manifest["judgment_count"], 1)
+            self.assertEqual(manifest["integrity"]["sqlite_integrity"], "ok")
 
 
 if __name__ == "__main__":

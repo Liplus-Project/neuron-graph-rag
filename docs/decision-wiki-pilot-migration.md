@@ -23,6 +23,6 @@ python tools/import_decision_wikis.py `
   --manifest C:\path\to\pilot\decisions.manifest.json
 ```
 
-The command refuses to overwrite any output. It builds the database under a temporary sibling name, imports all records in one transaction, checks SQLite and judgment supersession integrity, writes a deterministic export, creates a SQLite backup, and records source commits and counts in the manifest. Running the export twice over the same database produces byte-identical JSON.
+The command refuses to overwrite any output. It builds all four outputs under temporary sibling names, imports all records in one transaction, checks SQLite and judgment supersession integrity, independently exports the database twice and compares the bytes, verifies the SQLite backup, and records source commits and counts in the manifest. Only after every validation succeeds are the database, export, backup, and manifest published as one bundle. Any build or publication failure removes every temporary and newly published output, leaving no partial set.
 
 The committed `decision-wiki-pilot-manifest.json` records the completed pilot without committing the SQLite binary, backup, export, or Wiki clones.
