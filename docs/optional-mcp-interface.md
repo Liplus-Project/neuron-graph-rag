@@ -67,7 +67,7 @@ neuron-graph-rag-mcp \
 
 ## 2. Protocol envelope
 
-tool 名は `search`、`record_source_use`、`record_outcome` とする。すべての input と成功 output は JSON Schema で宣言し、未知 field を受け付けない。
+tool 名は `search`、`record_source_use`、`record_outcome`、`write_judgment`、`search_judgments`、`get_judgment`、`traverse_judgments` とする。すべての input と成功 output は JSON Schema で宣言し、未知 field を受け付けない。
 
 成功時は MCP envelope の `resultType` を `complete` とし、機械処理用の `structuredContent` と、その同じ JSON を直列化した `TextContent` を返す。これは [MCP 2026-07-28 tools specification](https://modelcontextprotocol.io/specification/2026-07-28/server/tools) の tool result、structured content、後方互換性の指針に合わせる。
 
@@ -94,8 +94,14 @@ tool の意味をこの文書だけに閉じ込めない。MCP client が `tools
 | `search` | `false` | `false` | `false` | `false` |
 | `record_source_use` | `false` | `false` | `true` | `false` |
 | `record_outcome` | `false` | `false` | `true` | `false` |
+| `write_judgment` | `false` | `true` | `false` | `false` |
+| `search_judgments` | `true` | `false` | `true` | `false` |
+| `get_judgment` | `true` | `false` | `true` | `false` |
+| `traverse_judgments` | `true` | `false` | `true` | `false` |
 
 `search` は edge を強化しないが、retrieval trace と動的 activation を保存するため read-only ではない。annotation は表示上の hint であり、認証・認可の代替ではない。
+
+judgment 専用三 tool は通常 `search` の feedback loop から分離されている。`search_judgments` は trace ID を発行せず、`get_judgment` は stable identity を完全一致で取得し、`traverse_judgments` は有限 hop の typed relation を決定的に辿る。三 tool は成功時・失敗時とも persistent table を変更しない。`search_judgments` と `traverse_judgments` は既定で active judgment だけを返し、archived は `include_archived=true` の時だけ含める。
 
 ## 3. Shared identifiers and validation
 

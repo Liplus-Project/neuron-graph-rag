@@ -210,6 +210,10 @@ pip install -e '.[mcp]'
 neuron-graph-rag-mcp --database /absolute/path/to/knowledge.db
 ```
 
+同じ adapter は SQLite 正本の判断を読む専用 tool `search_judgments`、`get_judgment`、`traverse_judgments` も公開します。これらは通常 `search` と異なり retrieval trace、activation、feedback を保存せず、read-only です。例えば `search_judgments` の `repository` には `liplus-language` や `neuron-graph-rag` の namespace を指定でき、archived judgment は `include_archived=true` を明示した時だけ検索・探索対象に入ります。接続先は workspace 固有 path を commit せず、上記の `/absolute/path/to/knowledge.db` を各 client の絶対 path へ置き換えます。
+
+この接続例は local stdio の実装済み範囲だけを示します。Wiki 自動生成、共有フォルダ同期、remote / on-prem 配置は含みません。
+
 To opt one local stdio server into the evaluated stabilization settings, pass both feedback options explicitly:
 
 ```bash

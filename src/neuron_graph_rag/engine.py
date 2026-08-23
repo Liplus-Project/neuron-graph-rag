@@ -135,9 +135,16 @@ class NeuronGraphRAG:
     ) -> None:
         self.config = config or EngineConfig()
         self.store = SQLiteStore(database)
-        self.judgments = JudgmentGraph(self.store)
         self.sparse_retriever = BM25Retriever()
         self.dense_retriever = DenseRetriever(dense_encoder)
+        self.judgments = JudgmentGraph(
+            self.store,
+            sparse_retriever=self.sparse_retriever,
+            dense_retriever=self.dense_retriever,
+            sparse_weight=self.config.sparse_weight,
+            dense_weight=self.config.dense_weight,
+            use_dense_retrieval=self.config.use_dense_retrieval,
+        )
 
     def close(self) -> None:
         self.store.close()

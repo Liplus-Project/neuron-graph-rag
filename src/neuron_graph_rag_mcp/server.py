@@ -97,6 +97,22 @@ DEACTIVATION_OUTCOME_DESCRIPTION = (
     "later confirmed outcome on that saved path reactivates it. Unattributed, duplicate, "
     "lexical, and zero-hop outcomes remain non-mutating."
 )
+JUDGMENT_SEARCH_DESCRIPTION = (
+    "Search only canonical SQLite judgments without creating a retrieval trace or changing "
+    "activation, feedback, nodes, edges, revisions, lifecycle, or relations. Results include "
+    "the current revision, lifecycle, statement, rationale, provenance, typed relations, "
+    "and score explanation. Active judgments are the default; include archived judgments "
+    "only when explicitly requested."
+)
+JUDGMENT_GET_DESCRIPTION = (
+    "Get the current state of one canonical SQLite judgment by exact stable identity. This "
+    "operation is read-only and returns archived judgments as well as active judgments."
+)
+JUDGMENT_TRAVERSE_DESCRIPTION = (
+    "Traverse canonical SQLite judgment relations by type, direction, and finite hop count. "
+    "Traversal is cycle-safe, deterministic, and read-only. Active judgments are the default; "
+    "include archived judgments only when explicitly requested."
+)
 
 _IDEMPOTENCY = re.compile(r"^[A-Za-z0-9._:-]+$")
 _TRACE = re.compile(r"^[0-9a-f]{32}$")
@@ -174,6 +190,37 @@ JUDGMENT_WRITE_INPUT = {
     "required": ["contract_version", "action", "judgment_id"],
     "additionalProperties": False,
 }
+JUDGMENT_SEARCH_INPUT = _object(
+    {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "query": {"type": "string", "minLength": 1, "maxLength": 8192},
+        "limit": {"type": "integer", "minimum": 1, "maximum": 100, "default": 5},
+        "include_archived": {"type": "boolean", "default": False},
+        "repository": {"type": "string", "minLength": 1, "maxLength": 256},
+    },
+    ["contract_version", "query"],
+)
+JUDGMENT_GET_INPUT = _object(
+    {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "judgment_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    },
+    ["contract_version", "judgment_id"],
+)
+JUDGMENT_TRAVERSE_INPUT = _object(
+    {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "judgment_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "direction": {
+            "type": "string", "enum": ["incoming", "outgoing", "both"],
+            "default": "outgoing",
+        },
+        "relation_type": {"type": "string", "minLength": 1, "maxLength": 64},
+        "max_hops": {"type": "integer", "minimum": 1, "maximum": 32, "default": 1},
+        "include_archived": {"type": "boolean", "default": False},
+    },
+    ["contract_version", "judgment_id"],
+)
 
 _STEP_OUTPUT = _object(
     {
@@ -402,11 +449,89 @@ OUTCOME_OUTPUT = _object(
     ["contract_version", "outcome_id", "trace_id", "node_ids", "outcome", "recorded_at", "reinforcement_applied"],
 )
 
+_JUDGMENT_RELATION_OUTPUT = _object(
+    {
+        "target_id": {"type": "string"},
+        "relation_type": {"type": "string"},
+    },
+    ["target_id", "relation_type"],
+)
+_JUDGMENT_PROPERTIES = {
+    "judgment_id": {"type": "string"},
+    "revision": {"type": "integer", "minimum": 1},
+    "statement": {"type": "string"},
+    "rationale": {"type": "string"},
+    "provenance": {"type": "object"},
+    "lifecycle": {"type": "string", "enum": ["active", "archived"]},
+    "superseded_by": {"type": ["string", "null"]},
+    "relations": {"type": "array", "items": _JUDGMENT_RELATION_OUTPUT},
+}
+_JUDGMENT_REQUIRED = list(_JUDGMENT_PROPERTIES)
+JUDGMENT_OUTPUT = _object(dict(_JUDGMENT_PROPERTIES), _JUDGMENT_REQUIRED)
+JUDGMENT_SEARCH_RESULT_OUTPUT = _object(
+    {
+        **_JUDGMENT_PROPERTIES,
+        "score": {"type": "number"},
+        "explanation": _object(
+            {
+                "sparse_score": {"type": "number"},
+                "dense_score": {"type": "number"},
+                "sparse_weight": {"type": "number"},
+                "dense_weight": {"type": "number"},
+            },
+            ["sparse_score", "dense_score", "sparse_weight", "dense_weight"],
+        ),
+    },
+    [*_JUDGMENT_REQUIRED, "score", "explanation"],
+)
+JUDGMENT_SEARCH_OUTPUT = _object(
+    {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "judgments": {"type": "array", "items": JUDGMENT_SEARCH_RESULT_OUTPUT},
+    },
+    ["contract_version", "judgments"],
+)
+JUDGMENT_GET_OUTPUT = _object(
+    {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "judgment": JUDGMENT_OUTPUT,
+    },
+    ["contract_version", "judgment"],
+)
+_TRAVERSED_RELATION_OUTPUT = _object(
+    {
+        "source_id": {"type": "string"},
+        "target_id": {"type": "string"},
+        "relation_type": {"type": "string"},
+    },
+    ["source_id", "target_id", "relation_type"],
+)
+JUDGMENT_TRAVERSE_OUTPUT = _object(
+    {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "results": {
+            "type": "array",
+            "items": _object(
+                {
+                    "hop": {"type": "integer", "minimum": 1},
+                    "direction": {"type": "string", "enum": ["incoming", "outgoing"]},
+                    "relation": _TRAVERSED_RELATION_OUTPUT,
+                    "judgment": JUDGMENT_OUTPUT,
+                },
+                ["hop", "direction", "relation", "judgment"],
+            ),
+        },
+    },
+    ["contract_version", "results"],
+)
 
-def _annotations(*, idempotent: bool) -> types.ToolAnnotations:
+
+def _annotations(
+    *, idempotent: bool, read_only: bool = False, destructive: bool = False
+) -> types.ToolAnnotations:
     return types.ToolAnnotations(
-        read_only_hint=False,
-        destructive_hint=False,
+        read_only_hint=read_only,
+        destructive_hint=destructive,
         idempotent_hint=idempotent,
         open_world_hint=False,
     )
@@ -450,10 +575,28 @@ TOOLS = (
             },
             ["contract_version", "action", "judgment"],
         ),
-        annotations=types.ToolAnnotations(
-            read_only_hint=False, destructive_hint=True, idempotent_hint=False,
-            open_world_hint=False,
-        ),
+        annotations=_annotations(idempotent=False, destructive=True),
+    ),
+    types.Tool(
+        name="search_judgments",
+        description=JUDGMENT_SEARCH_DESCRIPTION,
+        input_schema=JUDGMENT_SEARCH_INPUT,
+        output_schema=JUDGMENT_SEARCH_OUTPUT,
+        annotations=_annotations(idempotent=True, read_only=True),
+    ),
+    types.Tool(
+        name="get_judgment",
+        description=JUDGMENT_GET_DESCRIPTION,
+        input_schema=JUDGMENT_GET_INPUT,
+        output_schema=JUDGMENT_GET_OUTPUT,
+        annotations=_annotations(idempotent=True, read_only=True),
+    ),
+    types.Tool(
+        name="traverse_judgments",
+        description=JUDGMENT_TRAVERSE_DESCRIPTION,
+        input_schema=JUDGMENT_TRAVERSE_INPUT,
+        output_schema=JUDGMENT_TRAVERSE_OUTPUT,
+        annotations=_annotations(idempotent=True, read_only=True),
     ),
 )
 
@@ -496,7 +639,7 @@ def _tools(
             output_schema=OUTCOME_OUTPUT,
             annotations=_annotations(idempotent=True),
         ),
-        TOOLS[3],
+        *TOOLS[3:],
     )
 
 
@@ -536,8 +679,14 @@ class FeedbackMCPAdapter:
                 output = self._record_source_use(arguments)
             elif params.name == "record_outcome":
                 output = self._record_outcome(arguments)
-            else:
+            elif params.name == "write_judgment":
                 output = self._write_judgment(arguments)
+            elif params.name == "search_judgments":
+                output = self._search_judgments(arguments)
+            elif params.name == "get_judgment":
+                output = self._get_judgment(arguments)
+            else:
+                output = self._traverse_judgments(arguments)
             return self._success(output)
         except FeedbackContractError as error:
             return self._error(error.code, str(error), error.retryable)
@@ -843,6 +992,56 @@ class FeedbackMCPAdapter:
         else:
             raise ValueError("unsupported judgment action")
         return {"contract_version": CONTRACT_VERSION, "action": action, "judgment": judgment}
+
+    def _search_judgments(self, data: dict[str, Any]) -> dict[str, Any]:
+        self._keys(
+            data,
+            {"contract_version", "query", "limit", "include_archived", "repository"},
+            {"contract_version", "query"},
+        )
+        self._version(data)
+        query = self._trimmed_string(data["query"], "query", 8192)
+        limit = data.get("limit", 5)
+        if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 100:
+            raise ValueError("limit must be an integer from 1 through 100")
+        results = self.engine.judgments.search_judgments(
+            query,
+            limit=limit,
+            include_archived=data.get("include_archived", False),
+            repository=data.get("repository"),
+        )
+        return {"contract_version": CONTRACT_VERSION, "judgments": results}
+
+    def _get_judgment(self, data: dict[str, Any]) -> dict[str, Any]:
+        self._keys(
+            data,
+            {"contract_version", "judgment_id"},
+            {"contract_version", "judgment_id"},
+        )
+        self._version(data)
+        return {
+            "contract_version": CONTRACT_VERSION,
+            "judgment": self.engine.judgments.get_judgment(data["judgment_id"]),
+        }
+
+    def _traverse_judgments(self, data: dict[str, Any]) -> dict[str, Any]:
+        self._keys(
+            data,
+            {
+                "contract_version", "judgment_id", "direction", "relation_type",
+                "max_hops", "include_archived",
+            },
+            {"contract_version", "judgment_id"},
+        )
+        self._version(data)
+        results = self.engine.judgments.traverse_judgments(
+            data["judgment_id"],
+            direction=data.get("direction", "outgoing"),
+            relation_type=data.get("relation_type"),
+            max_hops=data.get("max_hops", 1),
+            include_archived=data.get("include_archived", False),
+        )
+        return {"contract_version": CONTRACT_VERSION, "results": results}
 
     @staticmethod
     def _success(output: dict[str, Any]) -> types.CallToolResult:
