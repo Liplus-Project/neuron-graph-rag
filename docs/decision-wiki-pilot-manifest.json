@@ -1,0 +1,27 @@
+{
+  "export_sha256": "14ac7dc1e22cf696cb865bf4077bd04ab8ddb106b06b48951c3edfbe00fd7c5c",
+  "format": "ngr-decision-wiki-pilot/v1",
+  "integrity": {
+    "dangling_relations": [],
+    "duplicate_successors": [],
+    "foreign_key_violations": [],
+    "sqlite_integrity": "ok",
+    "supersession_inconsistencies": []
+  },
+  "judgment_count": 86,
+  "lifecycle_counts": {
+    "active": 81,
+    "archived": 5
+  },
+  "relation_count": 85,
+  "repositories": {
+    "Liplus-Project/liplus-language": {
+      "commit": "d0c8143d4c126ee7d1e44d914eb87c7b7d771a2e",
+      "judgment_count": 72
+    },
+    "Liplus-Project/neuron-graph-rag": {
+      "commit": "6030b5621130b1b448c350b1a3b14d84fd4331b1",
+      "judgment_count": 14
+    }
+  }
+}
