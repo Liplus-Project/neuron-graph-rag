@@ -13,6 +13,22 @@ PROVENANCE = {"source": "issue:116", "actor": "test"}
 
 
 class JudgmentGraphTests(unittest.TestCase):
+    @staticmethod
+    def _persistent_state(engine: NeuronGraphRAG) -> dict[str, list[tuple[object, ...]]]:
+        tables = [
+            row[0]
+            for row in engine.store.connection.execute(
+                "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+            )
+        ]
+        return {
+            table: sorted(
+                (tuple(row) for row in engine.store.connection.execute(f'SELECT * FROM "{table}"')),
+                key=repr,
+            )
+            for table in tables
+        }
+
     def test_lifecycle_supersede_and_audit_history(self) -> None:
         with NeuronGraphRAG() as engine:
             engine.judgments.add("base", "Use the old path", "Initial decision", PROVENANCE)
@@ -179,6 +195,94 @@ class JudgmentGraphTests(unittest.TestCase):
             self.assertEqual(integrity(restored)["sqlite_integrity"], "ok")
             with NeuronGraphRAG(restored) as engine:
                 self.assertEqual(engine.judgments.export(), expected)
+
+    def test_read_api_search_get_filters_and_never_mutates(self) -> None:
+        with NeuronGraphRAG() as engine:
+            engine.judgments.add(
+                "one:cache-policy",
+                "Prefer bounded cache invalidation",
+                "The fallback must remain deterministic",
+                {"repository": "Liplus-Project/one", "source": "wiki"},
+            )
+            engine.judgments.add(
+                "two:cache-policy",
+                "Archive the legacy cache policy",
+                "The replacement is active",
+                {"repository": "Liplus-Project/two", "source": "wiki"},
+            )
+            engine.judgments.archive("two:cache-policy", expected_revision=1)
+            before = self._persistent_state(engine)
+
+            default_results = engine.judgments.search_judgments("cache policy")
+            self.assertEqual(
+                [item["judgment_id"] for item in default_results],
+                ["one:cache-policy"],
+            )
+            self.assertEqual(default_results[0]["revision"], 1)
+            self.assertIn("score", default_results[0])
+            self.assertEqual(
+                set(default_results[0]["explanation"]),
+                {"sparse_score", "dense_score", "sparse_weight", "dense_weight"},
+            )
+            archived = engine.judgments.search_judgments(
+                "cache policy",
+                include_archived=True,
+                repository="two",
+            )
+            self.assertEqual([item["judgment_id"] for item in archived], ["two:cache-policy"])
+            exact = engine.judgments.get_judgment("two:cache-policy")
+            self.assertEqual(exact["lifecycle"], "archived")
+            with self.assertRaises(JudgmentContractError):
+                engine.judgments.search_judgments(" ")
+
+            self.assertEqual(self._persistent_state(engine), before)
+
+    def test_read_api_traversal_is_filtered_cycle_safe_and_deterministic(self) -> None:
+        with NeuronGraphRAG() as engine:
+            engine.judgments.add("a", "Alpha", "Reason", PROVENANCE)
+            engine.judgments.add(
+                "b", "Beta", "Reason", PROVENANCE,
+                relations=[{"target_id": "a", "relation_type": "supports"}],
+            )
+            engine.judgments.add(
+                "c", "Gamma", "Reason", PROVENANCE,
+                relations=[{"target_id": "b", "relation_type": "depends_on"}],
+            )
+            engine.judgments.update(
+                "a", "Alpha", "Reason", PROVENANCE, expected_revision=1,
+                relations=[{"target_id": "c", "relation_type": "informs"}],
+            )
+            before = self._persistent_state(engine)
+
+            outgoing = engine.judgments.traverse_judgments("a", max_hops=3)
+            self.assertEqual(
+                [(item["hop"], item["judgment"]["judgment_id"]) for item in outgoing],
+                [(1, "c"), (2, "b")],
+            )
+            incoming = engine.judgments.traverse_judgments(
+                "a", direction="incoming", relation_type="supports", max_hops=3
+            )
+            self.assertEqual(
+                [(item["hop"], item["judgment"]["judgment_id"]) for item in incoming],
+                [(1, "b")],
+            )
+            both = engine.judgments.traverse_judgments("a", direction="both", max_hops=3)
+            self.assertEqual(
+                [(item["hop"], item["judgment"]["judgment_id"]) for item in both],
+                [(1, "b"), (1, "c")],
+            )
+            engine.judgments.archive("b", expected_revision=1)
+            archived_state = self._persistent_state(engine)
+            self.assertEqual(engine.judgments.traverse_judgments("a", direction="incoming"), [])
+            included = engine.judgments.traverse_judgments(
+                "a", direction="incoming", max_hops=2, include_archived=True
+            )
+            self.assertEqual(
+                [(item["hop"], item["judgment"]["judgment_id"]) for item in included],
+                [(1, "b"), (2, "c")],
+            )
+            self.assertEqual(self._persistent_state(engine), archived_state)
+            self.assertNotEqual(before, archived_state)
 
 
 if __name__ == "__main__":

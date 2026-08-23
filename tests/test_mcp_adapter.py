@@ -48,16 +48,38 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         self.adapter.close()
         self.temporary.cleanup()
 
+    def _persistent_state(self) -> dict[str, list[tuple[object, ...]]]:
+        connection = self.adapter.engine.store.connection
+        tables = [
+            row[0]
+            for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+            )
+        ]
+        return {
+            table: sorted(
+                (tuple(row) for row in connection.execute(f'SELECT * FROM "{table}"')),
+                key=repr,
+            )
+            for table in tables
+        }
+
     async def test_tools_list_contract_and_structured_search_result(self) -> None:
         listed = await self.adapter.list_tools()
-        self.assertEqual([tool.name for tool in listed.tools], ["search", "record_source_use", "record_outcome", "write_judgment"])
+        self.assertEqual(
+            [tool.name for tool in listed.tools],
+            [
+                "search", "record_source_use", "record_outcome", "write_judgment",
+                "search_judgments", "get_judgment", "traverse_judgments",
+            ],
+        )
         self.assertEqual(
             [tool.description for tool in listed.tools[:3]],
             [SEARCH_DESCRIPTION, SOURCE_USE_DESCRIPTION, OUTCOME_DESCRIPTION],
         )
         self.assertEqual(
             [tool.annotations.idempotent_hint for tool in listed.tools],
-            [False, True, True, False],
+            [False, True, True, False, True, True, True],
         )
         for tool in listed.tools[:3]:
             self.assertFalse(tool.annotations.read_only_hint)
@@ -68,6 +90,13 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(listed.tools[3].annotations.destructive_hint)
         self.assertFalse(listed.tools[3].input_schema["additionalProperties"])
         self.assertFalse(listed.tools[3].output_schema["additionalProperties"])
+        for tool in listed.tools[4:]:
+            self.assertTrue(tool.annotations.read_only_hint)
+            self.assertFalse(tool.annotations.destructive_hint)
+            self.assertTrue(tool.annotations.idempotent_hint)
+            self.assertFalse(tool.annotations.open_world_hint)
+            self.assertFalse(tool.input_schema["additionalProperties"])
+            self.assertFalse(tool.output_schema["additionalProperties"])
 
         result = await self.adapter.call_tool(
             None,
@@ -187,6 +216,89 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
             self.adapter.engine.judgments.get("mcp-judgment")["statement"],
             "Use the domain API",
         )
+
+    async def test_judgment_read_tools_are_filtered_exact_and_persist_nothing(self) -> None:
+        graph = self.adapter.engine.judgments
+        graph.add(
+            "one:root", "Root judgment", "Canonical root",
+            {"repository": "Liplus-Project/one", "source": "wiki"},
+        )
+        graph.add(
+            "one:child", "Child judgment", "Supports root",
+            {"repository": "Liplus-Project/one", "source": "wiki"},
+            relations=[{"target_id": "one:root", "relation_type": "supports"}],
+        )
+        graph.add(
+            "two:legacy", "Legacy judgment", "Archived state",
+            {"repository": "Liplus-Project/two", "source": "wiki"},
+        )
+        graph.archive("two:legacy", expected_revision=1)
+        before = self._persistent_state()
+
+        searched = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="search_judgments",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "query": "judgment",
+                    "repository": "one",
+                },
+            ),
+        )
+        self.assertFalse(searched.is_error)
+        self.assertEqual(
+            {item["judgment_id"] for item in searched.structured_content["judgments"]},
+            {"one:root", "one:child"},
+        )
+        self.assertTrue(all("explanation" in item for item in searched.structured_content["judgments"]))
+
+        exact = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="get_judgment",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "judgment_id": "two:legacy",
+                },
+            ),
+        )
+        self.assertFalse(exact.is_error)
+        self.assertEqual(exact.structured_content["judgment"]["lifecycle"], "archived")
+
+        traversed = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="traverse_judgments",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "judgment_id": "one:root",
+                    "direction": "incoming",
+                    "relation_type": "supports",
+                    "max_hops": 2,
+                },
+            ),
+        )
+        self.assertFalse(traversed.is_error)
+        self.assertEqual(
+            [item["judgment"]["judgment_id"] for item in traversed.structured_content["results"]],
+            ["one:child"],
+        )
+
+        invalid = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="search_judgments",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "query": "judgment",
+                    "unexpected": True,
+                },
+            ),
+        )
+        self.assertTrue(invalid.is_error)
+        self.assertEqual(json.loads(invalid.content[0].text)["code"], "invalid_argument")
+        self.assertEqual(self._persistent_state(), before)
 
     async def test_feedback_receipt_exposes_quorum_evidence_and_replays(self) -> None:
         self.adapter.close()
@@ -512,6 +624,12 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         )
 
     async def test_stdio_protocol_smoke(self) -> None:
+        self.adapter.engine.judgments.add(
+            "stdio:judgment",
+            "Read judgments through stdio",
+            "The optional adapter exposes the core read contract",
+            {"repository": "Liplus-Project/stdio"},
+        )
         parameters = StdioServerParameters(
             command=sys.executable,
             args=["-m", "neuron_graph_rag_mcp", "--database", str(self.database)],
@@ -522,13 +640,31 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         ):
             await session.initialize()
             listed = await session.list_tools()
-            self.assertEqual([tool.name for tool in listed.tools], ["search", "record_source_use", "record_outcome", "write_judgment"])
+            self.assertEqual(
+                [tool.name for tool in listed.tools],
+                [
+                    "search", "record_source_use", "record_outcome", "write_judgment",
+                    "search_judgments", "get_judgment", "traverse_judgments",
+                ],
+            )
             result = await session.call_tool(
                 "search",
                 {"contract_version": CONTRACT_VERSION, "query": "cache"},
             )
             self.assertFalse(result.is_error)
             self.assertEqual(json.loads(result.content[0].text), result.structured_content)
+            judgment = await session.call_tool(
+                "get_judgment",
+                {
+                    "contract_version": CONTRACT_VERSION,
+                    "judgment_id": "stdio:judgment",
+                },
+            )
+            self.assertFalse(judgment.is_error)
+            self.assertEqual(
+                judgment.structured_content["judgment"]["statement"],
+                "Read judgments through stdio",
+            )
             source_use = await session.call_tool(
                 "record_source_use",
                 {

@@ -16,6 +16,18 @@ archive は通常 retrieval から外す論理的忘却であり、revision、pr
 
 MCP の `write_judgment` は同じ domain API へ写像し、model に raw SQL を公開しない。既存 `search`、`record_source_use`、`record_outcome` の contract と既定値は変更しない。
 
+## Read-only API
+
+`NeuronGraphRAG.judgments` は `search_judgments`、`get_judgment`、`traverse_judgments` も提供する。三操作は current judgment state を SQLite 正本から読み、judgment、revision、relation、retrieval trace、feedback、node、edge、activation を成功時・失敗時とも変更しない。
+
+`search_judgments(query, limit=5, include_archived=False, repository=None)` は judgment の `nodes` projection に既存 NGR と同じ lexical / dense scorer と process の有効 weight を適用する。結果は stable identity、current revision、lifecycle、statement、rationale、provenance、outgoing typed relation、score と lexical / dense の説明内訳を返す。既定候補は active のみで、archived は `include_archived=True` の時だけ候補に入る。`repository` は provenance の full repository または stable identity に使う basename namespace の完全一致で絞り込む。この検索は通常 `search` と異なり trace と動的 activation を保存せず、feedback の入力にもならない。
+
+`get_judgment(judgment_id)` は stable identity の完全一致で lifecycle を問わず current state を返す。`traverse_judgments(judgment_id, direction="outgoing", relation_type=None, max_hops=1, include_archived=False)` は relation type と `incoming` / `outgoing` / `both` を指定できる。探索は root を再訪しない cycle-safe BFS とし、hop、到達した judgment の stable identity、source identity、target identity、relation type、direction の順で決定的に返す。archived node は明示指定時だけ traversal result に含める。
+
+optional MCP adapter は同名の三 tool をこの domain API へ写像し、`readOnlyHint=true`、`destructiveHint=false`、`idempotentHint=true`、`openWorldHint=false` を宣言する。input / output schema は未知 field を拒否し、失敗は既存 `{code, message, retryable}` envelope を使う。
+
+この実装範囲は local SQLite core と optional local stdio MCP adapter の読み取り surface までである。SQLite からの Wiki 自動生成、共有フォルダ同期、remote / on-prem deployment は実装しておらず、将来の配置判断とする。
+
 ## Portability and recovery
 
 `tools/judgment_graph.py` は次を提供する。

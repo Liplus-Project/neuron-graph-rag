@@ -28,7 +28,7 @@
 10. 活性値は半減期に従って時間減衰する。
 11. 活性減衰はノード確信度とエッジ事実性を変更しない。
 12. 同一コーパスで通常のハイブリッド検索とグラフ統合検索を比較できる。
-13. 任意 MCP adapter の `search`、`record_source_use`、`record_outcome` 契約を、実装と transport から独立して定義する。
+13. 任意 MCP adapter の `search`、`record_source_use`、`record_outcome`、`write_judgment` と judgment 専用 read tool 契約を、実装と transport から独立して定義する。
 14. source-use を `retrieved`、`selected`、`validated`、`used` に分け、新規 `used` への遷移だけを即時 reinforcement に接続する。
 15. `corrected`、`rolled_back` などの delayed outcome を source-use と別に記録し、初期契約では edge weight を自動変更しない。
 16. MCP adapter は trace、node、enum、stage 順序、idempotency を境界で検証する。
@@ -106,6 +106,7 @@
 87. outcome-driven deactivation evaluation はcontrol / candidate、`corrected` / `rolled_back` / `superseded`、exact credited / sibling inverse、baseline floor、dormancy / reactivation、rank / locality、source isolation、exclusive outputを結果観測前に固定する。protocolはregistered output不在のfreeze-only PRで固定し、そのsquash merge後のsuccessor Issueでdevelopmentを一度だけ実行する。全hard gate通過時だけholdoutを一度開き、観測前後にquery、case、schedule、metric、gate、default、live configを変更しない。
 88. NGR 自身の新規 judgment graph は SQLite の stable identity、revision、lifecycle、provenance、typed relation を machine-readable 正本とする。add / update / supersede / archive / restore / hard-delete candidate は raw SQL でなく atomic domain API を通し、stale revision、dangling relation、部分更新、二重 successor を fail closed にする。archive は通常 retrieval から外す論理的忘却、hard delete は履歴参照のない archived candidate だけに許す物理削除として分離する。current graph の deterministic export / atomic import と SQLite backup / integrity-checked restore を維持し、既存 Wiki entry の本番移行は fixture 検証後に分離する。
 89. Li+ / NGR Decision Structure Wiki pilot は各 repository の index が列挙する entry だけを専用の新規 SQLite へ取り込み、repository namespace 付き identity、page 本文、Wiki URL、repository、取得 commit、source state、typed relation を保持する。duplicate identity、unknown relation target、parser ambiguity、partial publication、既存出力の上書きを fail closed にし、SQLite / supersession integrity、deterministic export、backup を検証する。Wiki、既存検索 DB、凍結済み feedback 実験 DB は変更せず、本 pilot だけで正本を切り替えない。
+90. judgment 専用 read API は `search_judgments`、`get_judgment`、`traverse_judgments` を提供し、current revision、lifecycle、statement、rationale、provenance、typed relation を返す。search は judgment の既存 node projection に同じ lexical / dense scorer と有効 weight を適用し、既定で active のみ、明示指定時だけ archived を含め、repository namespace で絞り込める。traversal は relation type、incoming / outgoing / both、1 以上の有限 hop を受け、cycle-safe な hop 優先・stable identity 順を維持する。三操作と対応 MCP tool は成功時・失敗時とも judgment、revision、relation、retrieval trace、feedback、node、edge、activation を永続変更せず、MCP は read-only annotation、未知 field を拒否する schema、既存 error envelope を持つ。既存 `search`、feedback、`write_judgment`、library default は変更しない。
 75. v3 implementation、prompt、manifest、query override、schema、集約、path audit、hash規則、gate、stop rule、testsをresult-free commitでpushした後、development stage / 4 case packet / 12 responses / resultを各一度だけ生成する。
 76. development全12 gate通過時だけholdout stageを一度生成し、異なるfresh 12 judgesで同じgateを評価する。packet、response、resultの上書き、観測後の規則変更、実LLM品質値のCI再生成を拒否する。
 

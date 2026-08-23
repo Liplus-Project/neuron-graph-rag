@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 from typing import Any, Iterable
 
 from .models import DocumentNode, TypedEdge
+from .retrieval import BM25Retriever, DenseRetriever, normalize_scores
 from .storage import SQLiteStore
 
 
@@ -20,8 +21,22 @@ class JudgmentContractError(ValueError):
 class JudgmentGraph:
     """Atomic domain API for the canonical SQLite judgment graph."""
 
-    def __init__(self, store: SQLiteStore) -> None:
+    def __init__(
+        self,
+        store: SQLiteStore,
+        *,
+        sparse_retriever: BM25Retriever | None = None,
+        dense_retriever: DenseRetriever | None = None,
+        sparse_weight: float = 0.55,
+        dense_weight: float = 0.45,
+        use_dense_retrieval: bool = True,
+    ) -> None:
         self.store = store
+        self.sparse_retriever = sparse_retriever or BM25Retriever()
+        self.dense_retriever = dense_retriever or DenseRetriever()
+        self.sparse_weight = sparse_weight
+        self.dense_weight = dense_weight
+        self.use_dense_retrieval = use_dense_retrieval
 
     @staticmethod
     def _now() -> str:
@@ -211,6 +226,9 @@ class JudgmentGraph:
             connection.execute("DELETE FROM judgments WHERE judgment_id = ?", (judgment_id,))
 
     def get(self, judgment_id: str) -> dict[str, Any]:
+        return self.get_judgment(judgment_id)
+
+    def get_judgment(self, judgment_id: str) -> dict[str, Any]:
         judgment_id = self._identity(judgment_id)
         row = self.store.connection.execute(
             """
@@ -233,6 +251,194 @@ class JudgmentGraph:
             "superseded_by": row["superseded_by"],
             "relations": [dict(item) for item in relations],
         }
+
+    def search_judgments(
+        self,
+        query: str,
+        *,
+        limit: int = 5,
+        include_archived: bool = False,
+        repository: str | None = None,
+    ) -> list[dict[str, Any]]:
+        query = self._text(query, "query")
+        if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 100:
+            raise JudgmentContractError("limit must be an integer from 1 through 100")
+        if not isinstance(include_archived, bool):
+            raise JudgmentContractError("include_archived must be a boolean")
+        repository = self._repository(repository)
+
+        rows = self.store.connection.execute(
+            "SELECT judgment_id FROM judgments ORDER BY judgment_id"
+        ).fetchall()
+        candidates: list[tuple[dict[str, Any], DocumentNode]] = []
+        for row in rows:
+            judgment = self.get_judgment(row["judgment_id"])
+            if judgment["lifecycle"] != "active" and not include_archived:
+                continue
+            if repository is not None and not self._repository_matches(
+                judgment["provenance"], repository
+            ):
+                continue
+            candidates.append((judgment, self.store.get_node(judgment["judgment_id"])))
+        if not candidates:
+            return []
+
+        nodes = [node for _, node in candidates]
+        sparse_raw = self.sparse_retriever.score(query, nodes)
+        dense_raw = (
+            self.dense_retriever.score(query, nodes)
+            if self.use_dense_retrieval
+            else {node.node_id: 0.0 for node in nodes}
+        )
+        sparse = normalize_scores(sparse_raw)
+        dense = normalize_scores(dense_raw)
+        weight_total = self.sparse_weight + self.dense_weight
+        results: list[dict[str, Any]] = []
+        for judgment, node in candidates:
+            score = (
+                sparse[node.node_id] * self.sparse_weight
+                + dense[node.node_id] * self.dense_weight
+            ) / weight_total
+            results.append(
+                {
+                    **judgment,
+                    "score": score,
+                    "explanation": {
+                        "sparse_score": sparse[node.node_id],
+                        "dense_score": dense[node.node_id],
+                        "sparse_weight": self.sparse_weight,
+                        "dense_weight": self.dense_weight,
+                    },
+                }
+            )
+        results.sort(key=lambda item: (-item["score"], item["judgment_id"]))
+        return results[:limit]
+
+    def traverse_judgments(
+        self,
+        judgment_id: str,
+        *,
+        direction: str = "outgoing",
+        relation_type: str | None = None,
+        max_hops: int = 1,
+        include_archived: bool = False,
+    ) -> list[dict[str, Any]]:
+        root = self.get_judgment(judgment_id)
+        if direction not in {"incoming", "outgoing", "both"}:
+            raise JudgmentContractError("direction must be incoming, outgoing, or both")
+        if relation_type is not None:
+            if not isinstance(relation_type, str) or _RELATION.fullmatch(relation_type) is None:
+                raise JudgmentContractError("invalid relation type")
+        if (
+            isinstance(max_hops, bool)
+            or not isinstance(max_hops, int)
+            or not 1 <= max_hops <= 32
+        ):
+            raise JudgmentContractError("max_hops must be an integer from 1 through 32")
+        if not isinstance(include_archived, bool):
+            raise JudgmentContractError("include_archived must be a boolean")
+        if root["lifecycle"] != "active" and not include_archived:
+            raise JudgmentContractError("archived root requires include_archived")
+
+        visited = {root["judgment_id"]}
+        frontier = [root["judgment_id"]]
+        traversed: list[dict[str, Any]] = []
+        for hop in range(1, max_hops + 1):
+            next_frontier: list[str] = []
+            for current_id in frontier:
+                edges = self._traversal_edges(
+                    current_id, direction=direction, relation_type=relation_type
+                )
+                for source_id, target_id, kind, edge_direction, neighbor_id in edges:
+                    if neighbor_id in visited:
+                        continue
+                    judgment = self.get_judgment(neighbor_id)
+                    if judgment["lifecycle"] != "active" and not include_archived:
+                        continue
+                    visited.add(neighbor_id)
+                    next_frontier.append(neighbor_id)
+                    traversed.append(
+                        {
+                            "hop": hop,
+                            "direction": edge_direction,
+                            "relation": {
+                                "source_id": source_id,
+                                "target_id": target_id,
+                                "relation_type": kind,
+                            },
+                            "judgment": judgment,
+                        }
+                    )
+            frontier = sorted(next_frontier)
+            if not frontier:
+                break
+        traversed.sort(
+            key=lambda item: (
+                item["hop"],
+                item["judgment"]["judgment_id"],
+                item["relation"]["source_id"],
+                item["relation"]["target_id"],
+                item["relation"]["relation_type"],
+                item["direction"],
+            )
+        )
+        return traversed
+
+    def _traversal_edges(
+        self,
+        judgment_id: str,
+        *,
+        direction: str,
+        relation_type: str | None,
+    ) -> list[tuple[str, str, str, str, str]]:
+        edges: list[tuple[str, str, str, str, str]] = []
+        if direction in {"outgoing", "both"}:
+            rows = self.store.connection.execute(
+                """
+                SELECT source_id, target_id, relation_type
+                FROM judgment_relations WHERE source_id = ?
+                ORDER BY target_id, relation_type
+                """,
+                (judgment_id,),
+            ).fetchall()
+            edges.extend(
+                (row["source_id"], row["target_id"], row["relation_type"], "outgoing", row["target_id"])
+                for row in rows
+                if relation_type is None or row["relation_type"] == relation_type
+            )
+        if direction in {"incoming", "both"}:
+            rows = self.store.connection.execute(
+                """
+                SELECT source_id, target_id, relation_type
+                FROM judgment_relations WHERE target_id = ?
+                ORDER BY source_id, relation_type
+                """,
+                (judgment_id,),
+            ).fetchall()
+            edges.extend(
+                (row["source_id"], row["target_id"], row["relation_type"], "incoming", row["source_id"])
+                for row in rows
+                if relation_type is None or row["relation_type"] == relation_type
+            )
+        return sorted(edges, key=lambda item: (item[4], item[2], item[3], item[0], item[1]))
+
+    @staticmethod
+    def _repository(value: str | None) -> str | None:
+        if value is None:
+            return None
+        if not isinstance(value, str):
+            raise JudgmentContractError("repository must be a string")
+        normalized = value.strip()
+        if not normalized or len(normalized) > 256 or any(ord(character) < 32 for character in normalized):
+            raise JudgmentContractError("repository is invalid")
+        return normalized
+
+    @staticmethod
+    def _repository_matches(provenance: dict[str, Any], repository: str) -> bool:
+        stored = provenance.get("repository")
+        if not isinstance(stored, str):
+            return False
+        return stored == repository or stored.rsplit("/", 1)[-1] == repository
 
     def export(self) -> dict[str, Any]:
         ids = [row[0] for row in self.store.connection.execute("SELECT judgment_id FROM judgments ORDER BY judgment_id")]
