@@ -24,6 +24,7 @@
 | [real-task-shadow-feedback-validation](https://github.com/Liplus-Project/neuron-graph-rag/wiki/real-task-shadow-feedback-validation) | active | confirmed-triggered reinforcement の次の実証は、客観的 outcome を事前登録した Codex 実タスクの non-serving shadow A/B とし、検索品質、誤強化率、Agent end-to-end 効果を default 採用前に測る。 |
 | [github-rag-mcp-replacement-compatibility](https://github.com/Liplus-Project/neuron-graph-rag/wiki/github-rag-mcp-replacement-compatibility) | active | public GitHub repository一つのread-only snapshotをNGR local indexへ接続する。github-rag-mcp `search` の保存済み raw capture と source URL、根拠を比較する。共有 source identity を確認しても最小 doc 検索 path の候補に限り、production github-rag-mcp、MCP authentication / transport、remote deployment、default変更は含まない。 |
 | [sqlite-canonical-judgment-graph](https://github.com/Liplus-Project/neuron-graph-rag/wiki/sqlite-canonical-judgment-graph) | active | NGR 自身の判断構造は SQLite の stable identity、revision、lifecycle、typed relation を machine-native 正本とし、raw SQL でなく atomic domain API で変更する。Wiki は移行 fixture の検証後に optional generated view へ下げる。 |
+| `neuron-graph-rag:user-owned-shared-database-home` | active | optional MCP server は明示 path を保ったまま `~/.ngrdb/knowledge.db` を client-neutral な user-owned 既定正本とし、file-backed SQLite の WAL / bounded busy timeout と fail-closed migration で同一端末・同一ユーザー内の共有を支える。 |
 
 ## Entry format
 
@@ -54,6 +55,7 @@ edge target は Decision Structure node slug とする。外部資料は `Edges`
 ## Source-of-truth boundary
 
 - 新規に domain API から登録された judgment graph の machine-readable 正本は SQLite である。詳細契約は [Canonical SQLite judgment graph](canonical-sqlite-judgment-graph.md) に置く。
+- SQLite domain API で直接登録し Wiki page を持たない judgment は、stable identity を索引の Node として記す。`neuron-graph-rag:user-owned-shared-database-home` は Issue #123 の判断を SQLite 正本へ登録した node である。
 - 既存 Wiki entry は検証済み import が行われるまで従来の正本境界を維持する。本変更だけで本番 Wiki entry を自動移行または削除しない。
 
 - `docs/Decision-Structure.md` は main repository における索引、format、vocabulary、所有境界、lifecycle の正本である。これは docs-owned であり、GitHub Wiki の `Decision-Structure.md` へ mirror する。

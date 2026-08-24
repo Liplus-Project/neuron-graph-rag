@@ -11,12 +11,28 @@ from typing import Any
 
 from .models import DocumentNode, FeedbackContractError, FeedbackReceipt, TypedEdge
 
+FILE_BUSY_TIMEOUT_MILLISECONDS = 5_000
+
 
 class SQLiteStore:
     def __init__(self, path: str | Path = ":memory:") -> None:
         self.path = str(path)
-        self.connection = sqlite3.connect(self.path)
+        file_backed = self.path != ":memory:"
+        self.connection = sqlite3.connect(
+            self.path,
+            timeout=FILE_BUSY_TIMEOUT_MILLISECONDS / 1_000,
+        )
         self.connection.row_factory = sqlite3.Row
+        if file_backed:
+            journal_mode = self.connection.execute(
+                "PRAGMA journal_mode = WAL"
+            ).fetchone()[0]
+            if str(journal_mode).lower() != "wal":
+                self.connection.close()
+                raise RuntimeError("file-backed SQLite database did not enable WAL mode")
+            self.connection.execute(
+                f"PRAGMA busy_timeout = {FILE_BUSY_TIMEOUT_MILLISECONDS}"
+            )
         self.connection.execute("PRAGMA foreign_keys = ON")
         self._transaction_depth = 0
         self._create_schema()

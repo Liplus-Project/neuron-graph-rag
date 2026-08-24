@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import json
 import math
+import os
 import re
 import sqlite3
 from pathlib import Path
@@ -17,6 +18,7 @@ from mcp.server.stdio import stdio_server
 from mcp.shared.exceptions import MCPError
 
 from neuron_graph_rag import FeedbackContractError, FeedbackLedger, SourceUseEvent
+from neuron_graph_rag.database_home import prepare_database, resolve_database
 from neuron_graph_rag.config_provenance import (
     effective_config_provenance,
     effective_search_surface,
@@ -1203,7 +1205,13 @@ def _open_unit_interval(value: str) -> float:
 
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run the local Neuron Graph RAG MCP server")
-    parser.add_argument("--database", required=True, help="Path to the local SQLite database")
+    parser.add_argument(
+        "--database",
+        help=(
+            "Path to the local SQLite database "
+            "(default: NGR_DATABASE or ~/.ngrdb/knowledge.db)"
+        ),
+    )
     parser.add_argument(
         "--relation-feedback-evidence-quorum",
         type=_positive_integer,
@@ -1306,4 +1314,10 @@ def main() -> None:
             arguments.outcome_driven_feedback_deactivation
         ),
     )
-    asyncio.run(_run(arguments.database, config=config))
+    try:
+        database = prepare_database(
+            resolve_database(arguments.database, environ=os.environ)
+        )
+    except ValueError as error:
+        parser.error(str(error))
+    asyncio.run(_run(database, config=config))
