@@ -1,0 +1,50 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v1",
+  "protocol_commit": "b3cc03a15b81f0e395ae564387a46fe57d320f31",
+  "issue": 131,
+  "observation_started_at": "2026-08-24T16:36:49.701Z",
+  "observation_completed_at": "2026-08-24T16:41:24.482Z",
+  "development": {
+    "search_calls": 4,
+    "stored_content_fetch_calls": 4,
+    "capture_registered_once": true,
+    "stage_executed_once": true,
+    "result_verified": true,
+    "status": "failed",
+    "failure_code": "hard-gate-failed",
+    "failed_hard_gates": [
+      "negative-control-non-regression",
+      "expected-source-top-k-completeness"
+    ]
+  },
+  "holdout": {
+    "search_calls": 0,
+    "stored_content_fetch_calls": 0,
+    "capture_registered": false,
+    "stage_executed": false,
+    "status": "not-run",
+    "reason": "development hard gates did not all pass"
+  },
+  "shared_database": {
+    "path": "~/.ngrdb/knowledge.db",
+    "bytes_before": 2875392,
+    "bytes_after": 2875392,
+    "sha256_before": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+    "sha256_after": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+    "unchanged": true
+  },
+  "artifacts": {
+    "tests/fixtures/github_retrieval_parity_v1.development.capture.json": "2102c2364a1980d1998758d33c740d3e9ddf47bf7bae4537a816ef1829e7cd26",
+    "tests/fixtures/github_retrieval_parity_v1.development.claim.json": "ddaf7a95c43dfc11dcf1b356e9b36eb590f78e2e5f59eb371b1775bcc160591f",
+    "tests/fixtures/github_retrieval_parity_v1.development.observed.json": "52e19b243b9d827e21a4eac0ae1a579963dbc1010a75e3cf99b665244d6b3381"
+  },
+  "safety": {
+    "protocol_or_query_changed_after_observation": false,
+    "live_search_retried": false,
+    "stage_retried": false,
+    "production_mutation": false,
+    "feedback_connected": false
+  },
+  "outcome": "unsupported",
+  "interpretation_scope": "fixed 12-document corpus and four development cases only; holdout was not observed"
+}
