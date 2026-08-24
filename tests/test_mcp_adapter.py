@@ -25,6 +25,7 @@ if MCP_AVAILABLE:
         SOFT_START_SOURCE_USE_DESCRIPTION,
         SOURCE_USE_DESCRIPTION,
         FeedbackMCPAdapter,
+        _build_parser,
     )
 
 from neuron_graph_rag import NeuronGraphRAG
@@ -873,6 +874,15 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
                 )
                 self.assertEqual(result.returncode, 2)
                 self.assertFalse(database.exists())
+
+    def test_database_argument_is_optional_and_custom_path_is_preserved(self) -> None:
+        parser = _build_parser()
+
+        self.assertIsNone(parser.parse_args([]).database)
+        self.assertEqual(
+            parser.parse_args(["--database", "custom.sqlite"]).database,
+            "custom.sqlite",
+        )
 
 
 if __name__ == "__main__":

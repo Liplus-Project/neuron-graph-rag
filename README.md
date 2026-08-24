@@ -68,6 +68,27 @@ python -m unittest discover -s tests -v
 uv run --python 3.11 --with-editable . python -m unittest discover -s tests -v
 ```
 
+### Shared database home
+
+optional MCP server は database path を次の優先順位で解決します。
+
+1. `--database <path>`
+2. `NGR_DATABASE`
+3. `~/.ngrdb/knowledge.db`
+
+したがって、同じ端末・同じユーザーで動く複数の AI client は、client 固有 directory ではなく user-owned な既定 database を共有できます。明示 path は従来どおり利用でき、core library の `NeuronGraphRAG()` と `SQLiteStore()` は引き続き `:memory:` が既定です。file-backed database は WAL と 5 秒の bounded busy timeout を使い、local process 間の read/write contention を SQLite transaction で直列化します。network drive、cloud sync、remote deployment はこの保証範囲に含みません。
+
+既存 database は自動移動しません。source、destination、backup を明示し、既存 output を上書きしない一回性 migration を実行します。
+
+```powershell
+python tools/migrate_database.py `
+  --source C:\path\to\existing\knowledge.db `
+  --destination ~/.ngrdb/knowledge.db `
+  --backup C:\path\to\backups\knowledge.before-shared-home.db
+```
+
+migration は source の integrity を確認し、SQLite backup API で backup と destination を作成して両方を再検証します。既存 destination または backup がある場合は、何も上書きせず停止します。
+
 ## Vertical slice demo
 
 ```bash
@@ -339,7 +360,7 @@ Canonical evidence gate evaluationは、quorum `3` と sibling normalization `1.
 ## Limits
 
 - 既定 dense encoder は learned semantic embedding ではありません。意味検索品質が必要な環境では差し替えが必要です。
-- SQLite を使う単一 process 向け MVP です。分散 ingestion や高並行 write は扱いません。
+- SQLite を使う local MVP です。同一端末・同一ユーザーの bounded な複数 process contention は WAL と busy timeout で扱いますが、分散 ingestion や高並行 write は扱いません。
 - edge は有向です。逆方向探索が必要なら逆 edge を明示的に登録します。
 - 成功判定は自動化しません。呼び出し側が利用 node を明示します。
 - reinforcement は credit assignment の最小実装として、成功結果の最大寄与経路を選びます。

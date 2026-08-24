@@ -10,7 +10,15 @@
 - 認証方式、transport、公開 endpoint、remote deployment が決定済みである
 - delayed outcome が既定 policy で現在の edge weight を自動的に減算または巻き戻す
 
-`src/neuron_graph_rag_mcp/` の optional adapter がこの契約を local stdio transport で実装する。`pip install -e '.[mcp]'` で追加依存を導入し、`neuron-graph-rag-mcp --database <path>` で起動する。NGR core は引き続き Python 標準ライブラリだけで動作する。
+`src/neuron_graph_rag_mcp/` の optional adapter がこの契約を local stdio transport で実装する。`pip install -e '.[mcp]'` で追加依存を導入し、`neuron-graph-rag-mcp` で起動する。NGR core は引き続き Python 標準ライブラリだけで動作する。
+
+### Shared database home
+
+stdio CLI の database path 解決順は、明示 `--database`、`NGR_DATABASE`、`~/.ngrdb/knowledge.db` とする。`--database` と環境変数は `~` を user home へ展開する。最後の既定値を使うときだけ adapter が `~/.ngrdb` を作成する。明示 path を渡す既存起動は同じ path を使い、core library の `:memory:` 既定は変更しない。
+
+file-backed SQLite connection は `journal_mode=WAL` と `busy_timeout=5000` milliseconds を適用し、foreign key、schema initialization、transaction commit、failure rollback の既存保証を維持する。保証する共有範囲は同一端末・同一ユーザーの local filesystem だけであり、network drive、cloud sync、remote deployment、分散 write は含めない。`:memory:` connection と read-only snapshot acquisition はこの connection policy の対象外である。
+
+既存 database の discovery、移動、merge は自動実行しない。移行時は `tools/migrate_database.py` に `--source`、`--destination`、`--backup` をすべて明示する。tool は source integrity を先に確認し、SQLite backup API で backup と destination を別々に作成して integrity と foreign key を検査する。三 path は相互に異なる必要があり、既存 destination または backup は fail closed で拒否する。source は移動・削除・変更しない。
 
 ### Local stabilization opt-in
 
