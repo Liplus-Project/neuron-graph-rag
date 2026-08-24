@@ -1,0 +1,59 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v1",
+  "protocol_commit": "b3cc03a15b81f0e395ae564387a46fe57d320f31",
+  "issue": 131,
+  "source_observation_commit": "b944f2beb8b8e7fd9957b4b0c520bf96ddec9b83",
+  "archived_at": "2026-08-24T16:49:08.443Z",
+  "transport": "phase-boundary-byte-preserving-archive",
+  "reason_ja": "freeze 時の output 不在 test と観測済み runtime output path が衝突するため、runtime path で一度だけ登録・実行・検証した evidence を CI / main 保全用の専用 path へ移送した。",
+  "runtime_verification": {
+    "capture_registered_once": true,
+    "stage_executed_once": true,
+    "command": "python tools/run_github_retrieval_parity.py --verify development",
+    "passed_before_transport": true,
+    "observation_reexecuted_for_transport": false
+  },
+  "artifacts": [
+    {
+      "kind": "capture",
+      "runtime_path": "tests/fixtures/github_retrieval_parity_v1.development.capture.json",
+      "archive_path": "tests/evidence/github_retrieval_parity_v1/github_retrieval_parity_v1.development.capture.json",
+      "sha256_before": "2102c2364a1980d1998758d33c740d3e9ddf47bf7bae4537a816ef1829e7cd26",
+      "sha256_after": "2102c2364a1980d1998758d33c740d3e9ddf47bf7bae4537a816ef1829e7cd26",
+      "git_blob_before": "622a4825fcdd1b49503cd7cdd34cce857c386d12",
+      "git_blob_after": "622a4825fcdd1b49503cd7cdd34cce857c386d12",
+      "byte_identity": true
+    },
+    {
+      "kind": "claim",
+      "runtime_path": "tests/fixtures/github_retrieval_parity_v1.development.claim.json",
+      "archive_path": "tests/evidence/github_retrieval_parity_v1/github_retrieval_parity_v1.development.claim.json",
+      "sha256_before": "ddaf7a95c43dfc11dcf1b356e9b36eb590f78e2e5f59eb371b1775bcc160591f",
+      "sha256_after": "ddaf7a95c43dfc11dcf1b356e9b36eb590f78e2e5f59eb371b1775bcc160591f",
+      "git_blob_before": "85380c49738772704d1e2ce6f944f27ad50f7812",
+      "git_blob_after": "85380c49738772704d1e2ce6f944f27ad50f7812",
+      "byte_identity": true
+    },
+    {
+      "kind": "result",
+      "runtime_path": "tests/fixtures/github_retrieval_parity_v1.development.observed.json",
+      "archive_path": "tests/evidence/github_retrieval_parity_v1/github_retrieval_parity_v1.development.observed.json",
+      "sha256_before": "52e19b243b9d827e21a4eac0ae1a579963dbc1010a75e3cf99b665244d6b3381",
+      "sha256_after": "52e19b243b9d827e21a4eac0ae1a579963dbc1010a75e3cf99b665244d6b3381",
+      "git_blob_before": "53635a89f0a50831be87e0fc3841a8800b8e6d94",
+      "git_blob_after": "53635a89f0a50831be87e0fc3841a8800b8e6d94",
+      "byte_identity": true
+    }
+  ],
+  "observation_audit": {
+    "path": "tests/fixtures/github_retrieval_parity_v1.observation-audit.json",
+    "sha256": "5cd40b20c0aabf6b3a327587ad04a3c6dc3853170d0d290d579ba1565383d14b",
+    "unchanged_during_transport": true,
+    "artifact_paths_resolve_through_transport_manifest": true
+  },
+  "post_transport": {
+    "runtime_paths_absent": true,
+    "holdout_paths_absent": true,
+    "frozen_artifacts_changed": false
+  }
+}

@@ -28,11 +28,18 @@ direct case では github-rag-mcp の top-5 に期待 source `README.md` がな�
 - shared `~/.ngrdb/knowledge.db` は観測前後とも `2875392` bytes、SHA-256 は `84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e` で不変だった。
 - github-rag-mcp の read-only search / stored-content fetch 以外の production 操作、NGR feedback / outcome、共有 DB write は行っていない。
 
+## Phase-boundary archival
+
+development capture / claim / result は frozen manifest が指定した runtime path で一度だけ exclusive register・stage 実行・verify した。その後、freeze absence test と観測済み output の path collision を解消し、CI / main 上で freeze commit の result-free 条件と immutable evidence の両方を保全するため、内容を変更せず `tests/evidence/github_retrieval_parity_v1/` へ `git mv` した。
+
+`tests/evidence/github_retrieval_parity_v1/transport-manifest.json` が各 runtime path と archive path、移送前後の SHA-256 / Git blob ID、runtime verification 済みであること、byte identity を記録する。archival のために search、stored-content fetch、capture register、stage、result verify を再実行していない。観測結果、評価条件、既存 observation audit の bytes も変更していない。
+
 ## Evidence
 
-- `tests/fixtures/github_retrieval_parity_v1.development.capture.json`: live response と stored-content response の raw capture
-- `tests/fixtures/github_retrieval_parity_v1.development.claim.json`: capture SHA-256 と one-time claim
-- `tests/fixtures/github_retrieval_parity_v1.development.observed.json`: case metric、cohort metric、gate、NGR replay resource
+- `tests/evidence/github_retrieval_parity_v1/github_retrieval_parity_v1.development.capture.json`: live response と stored-content response の raw capture
+- `tests/evidence/github_retrieval_parity_v1/github_retrieval_parity_v1.development.claim.json`: capture SHA-256 と one-time claim
+- `tests/evidence/github_retrieval_parity_v1/github_retrieval_parity_v1.development.observed.json`: case metric、cohort metric、gate、NGR replay resource
+- `tests/evidence/github_retrieval_parity_v1/transport-manifest.json`: runtime path から archive path への byte-preserving transport
 - `tests/fixtures/github_retrieval_parity_v1.observation-audit.json`: call count、artifact hash、shared DB 前後 hash、holdout 停止理由
 
 この evidence が扱うのは固定 repository commit の12文書と development 4 case だけである。GitHub issue、PR、review、comment、release、diff の取得 parity、別 corpus、長期運用、物理統合には一般化しない。
