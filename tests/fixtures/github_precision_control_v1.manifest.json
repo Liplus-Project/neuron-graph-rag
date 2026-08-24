@@ -7,16 +7,16 @@
     "identity_format": "github:{repository}:doc:{path}"
   },
   "artifact_sha256": {
-    "docs/precision-control-freeze-v1.md": "562ddfc47db8c310098351c0c727db79b3e70ee1079c27c593d1bffb1486272d",
+    "docs/precision-control-freeze-v1.md": "ab13cb15bb2f398b0e11e2efa3df50603ed45b9a8956dc34aed08728927d8f10",
     "src/neuron_graph_rag/precision_control.py": "77c3b1063848928fff8b5b88de277f4815433dfc64a45b4607a1b8559ef9715f",
-    "src/neuron_graph_rag/precision_control_evaluation.py": "08d1c6f52221eda529e1960da4c53327a753299bcd1c0442c8489ba9afcf3431",
-    "tests/test_precision_control.py": "f8e878b1585baa376a9932a81419b13b5d3bf3dc62de80845d48c9177ea1dab4",
+    "src/neuron_graph_rag/precision_control_evaluation.py": "b182ab9a8150a9bec128378decc44e0d843240388dedab54756b31485fccb88e",
+    "tests/test_precision_control.py": "f2e72025602ab7b226bbab95fdc9d76fb3be27f4634beea8f78eee09cca5e1ed",
     "tests/fixtures/github_precision_control_v1.corpus.json": "c6d832840d6478bddd68290e4d94941678b203a527056df71dd1a23e236ac3db",
     "tests/fixtures/github_precision_control_v1.queries.json": "4f23e89664189e796b0429b9d60c73643dba3e7a96040f9f2ee47f419c77e073",
     "tests/fixtures/github_precision_control_v1.gold.json": "9d782e7ea621adb784f58cd3f86f406d590ca449d85eae11dcf86fed85d726cd",
     "tests/fixtures/github_precision_control_v1.candidates.json": "9df0f11de5c2dd8b6de7575985092203e210d0bcbc22e36f8112ea0b9b5f3d66",
     "tests/fixtures/github_precision_control_v1.gate.json": "c5cbd00e4d76d141a2b41d48b52a9c3b942b6f341ebec39e2db48892eaebf1d0",
-    "tests/fixtures/github_precision_control_v1.result-schema.json": "ba9c2120ace8203e12cb104476a813aa261257fd28b4d2954ad30a9770757941",
+    "tests/fixtures/github_precision_control_v1.result-schema.json": "759704c74269b3b26cd3f79ac3a1c750d085bedce6ea79a71b5beb78ce27ce54",
     "tests/fixtures/github_precision_control_v1.result-free-audit.json": "0a07ddbaa44964956e54a8cd36ce95b3effa120140682ed017a8d72ce3917109"
   },
   "v1_immutable_sha256": {

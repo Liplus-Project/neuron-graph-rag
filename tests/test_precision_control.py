@@ -161,45 +161,27 @@ class PrecisionControlFreezeTest(unittest.TestCase):
     def _result(
         self, protocol: dict[str, object], stage: str, claim: bytes, passed: bool
     ) -> dict[str, object]:
-        gates = [
-            {
-                "gate_id": gate_id,
-                "hard": True,
-                "passed": passed,
-                "details": {},
-            }
-            for gate_id in evaluation.GATE_IDS
-        ]
-        candidates = []
-        for index, item in enumerate(protocol["candidates"]["candidates"]):
-            candidates.append(
-                {
-                    "candidate_id": item["candidate_id"],
-                    "cases": [],
-                    "cohorts": {},
-                    "explanations": [],
-                    "state": {},
-                    "all_hard_gates_pass": passed and index == 0,
-                }
-            )
-        return {
-            "protocol_id": evaluation.PROTOCOL_ID,
-            "protocol_commit": "0" * 40,
-            "stage": stage,
-            "status": "passed" if passed else "failed",
-            "claim_sha256": hashlib.sha256(claim).hexdigest(),
-            "protocol_hashes": dict(protocol["manifest"]["artifact_sha256"]),
-            "baseline": {
-                "baseline_id": "current-ngr",
-                "cases": [],
-                "cohorts": {},
-                "state": {},
-            },
-            "candidates": candidates,
-            "selected_candidate_id": candidates[0]["candidate_id"] if passed else None,
-            "gates": gates,
-            "all_hard_gates_pass": passed,
+        result = evaluation.build_synthetic_evaluated_result(protocol, stage, claim)
+        if passed:
+            return result
+        baseline_raw = {
+            "baseline_id": result["baseline"]["baseline_id"],
+            "cases": copy.deepcopy(result["baseline"]["cases"]),
+            "state": copy.deepcopy(result["baseline"]["state"]),
         }
+        candidate_raws = [
+            {
+                "candidate_id": item["candidate_id"],
+                "cases": copy.deepcopy(item["cases"]),
+                "explanations": copy.deepcopy(item["explanations"]),
+                "state": copy.deepcopy(item["state"]),
+            }
+            for item in result["candidates"]
+        ]
+        baseline_raw["state"]["replay_ranking_sha256"] = "f" * 64
+        return evaluation.evaluate_result_payload(
+            protocol, stage, claim, baseline_raw, candidate_raws
+        )
 
     def test_frozen_protocol_is_complete_disjoint_hashed_and_result_free(self) -> None:
         protocol = evaluation.load_protocol()
@@ -298,6 +280,98 @@ class PrecisionControlFreezeTest(unittest.TestCase):
                     evaluation.verify_result_payload(
                         synthetic, "development", tampered, claim
                     )
+
+    def test_evaluator_recomputes_nonempty_metrics_gates_and_selection(self) -> None:
+        protocol = evaluation.load_protocol()
+        with tempfile.TemporaryDirectory() as directory:
+            synthetic = dict(protocol)
+            synthetic["root"] = Path(directory)
+            claim = self._claim(synthetic, "development")
+            passed = self._result(synthetic, "development", claim, True)
+            evaluation.verify_result_payload(synthetic, "development", passed, claim)
+            self.assertEqual(len(passed["baseline"]["cases"]), 8)
+            self.assertEqual(len(passed["baseline"]["cohorts"]), 4)
+            self.assertTrue(
+                all(
+                    len(case["ranked_hits"]) == 20
+                    for case in passed["baseline"]["cases"]
+                )
+            )
+            self.assertEqual(passed["selected_candidate_id"], "absolute-floor-025")
+            self.assertTrue(passed["all_hard_gates_pass"])
+            self.assertTrue(all(gate["passed"] for gate in passed["gates"]))
+
+            failed = self._result(synthetic, "development", claim, False)
+            evaluation.verify_result_payload(synthetic, "development", failed, claim)
+            self.assertEqual(failed["status"], "failed")
+            self.assertIsNone(failed["selected_candidate_id"])
+            self.assertFalse(failed["gates"][2]["passed"])
+
+    def test_raw_result_metric_provenance_state_and_selection_tamper_fail_closed(
+        self,
+    ) -> None:
+        protocol = evaluation.load_protocol()
+        with tempfile.TemporaryDirectory() as directory:
+            synthetic = dict(protocol)
+            synthetic["root"] = Path(directory)
+            claim = self._claim(synthetic, "development")
+            valid = self._result(synthetic, "development", claim, True)
+            forbidden = protocol["gold"]["stages"]["development"][6]["forbidden_paths"][
+                0
+            ]
+            mutators = {
+                "empty cases": lambda value: value["baseline"]["cases"].clear(),
+                "case id": lambda value: value["baseline"]["cases"][0].update(
+                    case_id="tampered"
+                ),
+                "raw rank": lambda value: value["baseline"]["cases"][0]["ranked_hits"][
+                    0
+                ].update(rank=2),
+                "case rank regression": lambda value: value["candidates"][0]["cases"][
+                    0
+                ]["returned_source_paths"].reverse(),
+                "cohort mrr": lambda value: value["candidates"][0]["cohorts"][0].update(
+                    mrr=0.0
+                ),
+                "negative forbidden": lambda value: value["candidates"][0]["cases"][6][
+                    "returned_source_paths"
+                ].append(forbidden),
+                "relation provenance": lambda value: value["candidates"][0]["cases"][4][
+                    "ranked_hits"
+                ][0]["relation_paths"].clear(),
+                "explanation decision": lambda value: value["candidates"][0][
+                    "explanations"
+                ][0]["decisions"][0].update(accepted=False),
+                "state invariance": lambda value: value["candidates"][0][
+                    "state"
+                ].update(score_sha256="f" * 64),
+                "fresh database isolation": lambda value: value["candidates"][1][
+                    "state"
+                ].update(
+                    fresh_database_id=value["candidates"][0]["state"][
+                        "fresh_database_id"
+                    ]
+                ),
+                "candidate gate": lambda value: value["candidates"][0]["gates"][
+                    0
+                ].update(passed=False),
+                "candidate summary": lambda value: value["candidates"][0].update(
+                    all_hard_gates_pass=False
+                ),
+                "global gate": lambda value: value["gates"][0].update(passed=False),
+                "selection": lambda value: value.update(
+                    selected_candidate_id="top-ratio-055"
+                ),
+                "status": lambda value: value.update(status="failed"),
+            }
+            for name, mutate in mutators.items():
+                with self.subTest(name=name):
+                    tampered = copy.deepcopy(valid)
+                    mutate(tampered)
+                    with self.assertRaises(ValueError):
+                        evaluation.verify_result_payload(
+                            synthetic, "development", tampered, claim
+                        )
 
     def test_only_manifest_introduction_commit_is_accepted(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

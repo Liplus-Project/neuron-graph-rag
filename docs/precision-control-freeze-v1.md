@@ -87,6 +87,14 @@ opt-in時、各rank済み `SearchHit` は `precision_control` explanationに次�
 
 baselineはprecision controlを指定しない現行NGR rankingを保存する。各candidateは同一fixtureから作るfresh databaseで比較し、scoreの再学習やfeedbackを行わない。全hard gateが通ったdevelopmentだけがholdoutを一度開ける。holdoutにも同じgateとfresh database isolationを適用する。
 
+### Raw result evaluator
+
+各stageのbaselineと全candidateは、登録順8 caseを省略せず、各caseでcorpus全20件のpre-filter rank、final / entry / normalized graph score、source provenance、edge-only relation path、返却source pathを保存する。candidateはさらに全20 decisionをcaseごとに保存する。case、hit、source、relation path、decisionはunknown fieldを許さないexact schemaである。
+
+cohort rowは4 cohortを固定順で各2 case保持し、MRRとHit@5をraw returned pathとgoldからevaluatorが再計算する。state rowはprimary / replayの異なるfresh database identity、ranking / score / activation digest、edge before / after digest、feedback before / after countをexact schemaで保持する。
+
+result writer / verifierはpayloadの自己申告boolをauthorityにしない。evaluatorがraw case、hit、decision、provenance、stateからcandidate別11 gate、cohort aggregate、candidate summaryを再生成し、最初の全gate通過candidateを選ぶ。top-level gateは選択candidateのgateと一致し、通過candidateがなければcandidate全体のgate別ANDを記録する。derived field、gate、status、selectionのどれかが再計算結果と異なるpayload、または空のcase / cohortをfail closedに拒否する。
+
 ## One-time lifecycle と archive
 
 runtime outputとmain保存pathは最初から分離する。

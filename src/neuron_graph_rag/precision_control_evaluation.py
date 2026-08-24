@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 import re
 import subprocess
@@ -75,7 +76,52 @@ CANDIDATE_FIELDS = (
     "cohorts",
     "explanations",
     "state",
+    "gates",
     "all_hard_gates_pass",
+)
+CASE_FIELDS = ("case_id", "cohort", "ranked_hits", "returned_source_paths")
+HIT_FIELDS = (
+    "source_path",
+    "rank",
+    "final_score",
+    "entry_score",
+    "normalized_graph_score",
+    "source_provenance",
+    "relation_paths",
+)
+SOURCE_FIELDS = ("repository", "commit", "path", "content_sha256")
+RELATION_PATH_FIELDS = ("seed_path", "target_path", "edge_type", "step_count")
+COHORT_FIELDS = ("cohort", "case_ids", "mrr", "hit_at_5")
+EXPLANATION_FIELDS = ("case_id", "decisions")
+DECISION_FIELDS = (
+    "candidate_id",
+    "source_path",
+    "accepted",
+    "applied_rules",
+    "thresholds",
+    "pre_filter_rank",
+    "pre_filter_score",
+    "top_score",
+    "top_score_ratio",
+    "top_score_margin",
+    "entry_signal_present",
+    "graph_signal_present",
+    "rule_results",
+    "source_provenance",
+)
+STATE_FIELDS = (
+    "fresh_database_id",
+    "replay_database_id",
+    "ranking_sha256",
+    "replay_ranking_sha256",
+    "score_sha256",
+    "replay_score_sha256",
+    "activation_sha256",
+    "replay_activation_sha256",
+    "edge_sha256_before",
+    "edge_sha256_after",
+    "feedback_count_before",
+    "feedback_count_after",
 )
 
 
@@ -148,6 +194,19 @@ def validate_protocol(protocol: Mapping[str, Any]) -> None:
         raise ValueError("baseline schema fields mismatch")
     if tuple(schema.get("candidate_required_fields", ())) != CANDIDATE_FIELDS:
         raise ValueError("candidate schema fields mismatch")
+    exact_schema = {
+        "case_required_fields": CASE_FIELDS,
+        "hit_required_fields": HIT_FIELDS,
+        "source_required_fields": SOURCE_FIELDS,
+        "relation_path_required_fields": RELATION_PATH_FIELDS,
+        "cohort_required_fields": COHORT_FIELDS,
+        "explanation_required_fields": EXPLANATION_FIELDS,
+        "decision_required_fields": DECISION_FIELDS,
+        "state_required_fields": STATE_FIELDS,
+    }
+    for key, fields in exact_schema.items():
+        if tuple(schema.get(key, ())) != fields:
+            raise ValueError(f"{key} mismatch")
     audit = _mapping(protocol, "result_free_audit")
     if audit.get("phase") != "freeze":
         raise ValueError("result-free audit phase mismatch")
@@ -394,6 +453,495 @@ def write_stage_result(
     return target
 
 
+def evaluate_result_payload(
+    protocol: Mapping[str, Any],
+    stage: str,
+    claim_raw: bytes,
+    baseline_raw: Mapping[str, Any],
+    candidate_raws: list[Mapping[str, Any]],
+) -> dict[str, Any]:
+    """Derive every aggregate, gate, status, and selection from raw result rows."""
+
+    if stage not in STAGES:
+        raise ValueError("unknown stage")
+    claim = json.loads(claim_raw.decode("utf-8", errors="strict"))
+    if not isinstance(claim, dict) or set(claim) != set(CLAIM_FIELDS):
+        raise ValueError("claim fields must exactly match the frozen schema")
+    hashes = dict(_mapping(_mapping(protocol, "manifest"), "artifact_sha256"))
+    if claim != {
+        "protocol_id": PROTOCOL_ID,
+        "protocol_commit": claim.get("protocol_commit"),
+        "stage": stage,
+        "protocol_hashes": hashes,
+        "one_time_claim": True,
+    }:
+        raise ValueError("claim does not match the frozen protocol")
+    if not re.fullmatch(r"[0-9a-f]{40}", str(claim["protocol_commit"])):
+        raise ValueError("claim protocol commit must be lowercase full 40-hex")
+
+    baseline = _validate_baseline_raw(protocol, stage, baseline_raw)
+    baseline["cohorts"] = _compute_cohorts(protocol, stage, baseline["cases"])
+    expected_controls = [
+        PrecisionControl.from_mapping(dict(item))
+        for item in _list(_mapping(protocol, "candidates"), "candidates")
+    ]
+    if len(candidate_raws) != len(expected_controls):
+        raise ValueError("candidate raw result count mismatch")
+    candidates: list[dict[str, Any]] = []
+    for raw, control in zip(candidate_raws, expected_controls, strict=True):
+        candidate = _validate_candidate_raw(protocol, stage, raw, control, baseline)
+        candidate["cohorts"] = _compute_cohorts(protocol, stage, candidate["cases"])
+        candidate["gates"] = _candidate_gates(protocol, stage, baseline, candidate)
+        candidate["all_hard_gates_pass"] = all(
+            gate["passed"] for gate in candidate["gates"]
+        )
+        candidates.append(candidate)
+
+    database_ids = [
+        state[key]
+        for state in [baseline["state"], *[item["state"] for item in candidates]]
+        for key in ("fresh_database_id", "replay_database_id")
+    ]
+    if len(set(database_ids)) != len(database_ids):
+        for candidate in candidates:
+            candidate["gates"][2]["passed"] = False
+            candidate["all_hard_gates_pass"] = False
+
+    selected = next(
+        (item["candidate_id"] for item in candidates if item["all_hard_gates_pass"]),
+        None,
+    )
+    if selected is not None:
+        selected_row = next(
+            item for item in candidates if item["candidate_id"] == selected
+        )
+        global_gates = copy_json(selected_row["gates"])
+    else:
+        global_gates = []
+        for index, gate_id in enumerate(GATE_IDS):
+            global_gates.append(
+                {
+                    "gate_id": gate_id,
+                    "hard": True,
+                    "passed": all(
+                        item["gates"][index]["passed"] for item in candidates
+                    ),
+                    "details": {"aggregation": "all-candidates-when-none-selected"},
+                }
+            )
+    all_pass = selected is not None and all(gate["passed"] for gate in global_gates)
+    return {
+        "protocol_id": PROTOCOL_ID,
+        "protocol_commit": claim["protocol_commit"],
+        "stage": stage,
+        "status": "passed" if all_pass else "failed",
+        "claim_sha256": sha256_bytes(claim_raw),
+        "protocol_hashes": hashes,
+        "baseline": baseline,
+        "candidates": candidates,
+        "selected_candidate_id": selected,
+        "gates": global_gates,
+        "all_hard_gates_pass": all_pass,
+    }
+
+
+def copy_json(value: Any) -> Any:
+    return json.loads(json.dumps(value, ensure_ascii=False))
+
+
+def _validate_baseline_raw(
+    protocol: Mapping[str, Any], stage: str, raw: Mapping[str, Any]
+) -> dict[str, Any]:
+    if set(raw) != {"baseline_id", "cases", "state"}:
+        raise ValueError("baseline raw fields mismatch")
+    if raw.get("baseline_id") != "current-ngr":
+        raise ValueError("baseline identity mismatch")
+    cases = _validate_case_rows(protocol, stage, raw.get("cases"))
+    for case in cases:
+        if case["returned_source_paths"] != [
+            hit["source_path"] for hit in case["ranked_hits"][:5]
+        ]:
+            raise ValueError("baseline must preserve the current top-five ranking")
+    state = _validate_state(raw.get("state"))
+    return {"baseline_id": "current-ngr", "cases": cases, "state": state}
+
+
+def _validate_candidate_raw(
+    protocol: Mapping[str, Any],
+    stage: str,
+    raw: Mapping[str, Any],
+    control: PrecisionControl,
+    baseline: Mapping[str, Any],
+) -> dict[str, Any]:
+    if set(raw) != {"candidate_id", "cases", "explanations", "state"}:
+        raise ValueError("candidate raw fields mismatch")
+    if raw.get("candidate_id") != control.candidate_id:
+        raise ValueError("candidate raw identity/order mismatch")
+    cases = _validate_case_rows(protocol, stage, raw.get("cases"))
+    if [case["ranked_hits"] for case in cases] != [
+        case["ranked_hits"] for case in baseline["cases"]
+    ]:
+        raise ValueError("candidate changed pre-filter scores, ranks, or provenance")
+    explanations = raw.get("explanations")
+    if not isinstance(explanations, list) or len(explanations) != len(cases):
+        raise ValueError("candidate explanations must cover every case")
+    for case, explanation in zip(cases, explanations, strict=True):
+        if not isinstance(explanation, dict) or set(explanation) != set(
+            EXPLANATION_FIELDS
+        ):
+            raise ValueError("candidate explanation row shape mismatch")
+        if explanation.get("case_id") != case["case_id"]:
+            raise ValueError("candidate explanation case mismatch")
+        decisions = explanation.get("decisions")
+        if not isinstance(decisions, list) or len(decisions) != len(
+            case["ranked_hits"]
+        ):
+            raise ValueError("candidate decisions must cover every ranked hit")
+        expected_decisions = [
+            _decision_from_hit(control, hit, case["ranked_hits"][0]["final_score"])
+            for hit in case["ranked_hits"]
+        ]
+        if decisions != expected_decisions:
+            raise ValueError("candidate decision is not recomputable from raw hit data")
+        accepted = [
+            decision["source_path"]
+            for decision in expected_decisions
+            if decision["accepted"]
+        ][:5]
+        if case["returned_source_paths"] != accepted:
+            raise ValueError("candidate returned paths do not match filter decisions")
+    state = _validate_state(raw.get("state"))
+    return {
+        "candidate_id": control.candidate_id,
+        "cases": cases,
+        "explanations": copy_json(explanations),
+        "state": state,
+    }
+
+
+def _validate_case_rows(
+    protocol: Mapping[str, Any], stage: str, value: object
+) -> list[dict[str, Any]]:
+    queries = _list(_mapping(_mapping(protocol, "queries"), "stages"), stage)
+    if not isinstance(value, list) or len(value) != len(queries):
+        raise ValueError("case rows must exactly cover the registered stage")
+    corpus = _mapping(protocol, "corpus")
+    repository = _string(corpus, "repository")
+    commit = _string(corpus, "commit")
+    documents = {
+        _string(item, "path"): _string(item, "content_sha256")
+        for item in _list(corpus, "documents")
+    }
+    normalized: list[dict[str, Any]] = []
+    for row, query in zip(value, queries, strict=True):
+        if not isinstance(row, dict) or set(row) != set(CASE_FIELDS):
+            raise ValueError("case result shape mismatch")
+        if (
+            row.get("case_id") != query["case_id"]
+            or row.get("cohort") != query["cohort"]
+        ):
+            raise ValueError("case result identity/order mismatch")
+        hits = row.get("ranked_hits")
+        if not isinstance(hits, list) or len(hits) != len(documents):
+            raise ValueError("ranked hits must cover the complete frozen corpus")
+        hit_paths: list[str] = []
+        prior_score = math.inf
+        for rank, hit in enumerate(hits, start=1):
+            if not isinstance(hit, dict) or set(hit) != set(HIT_FIELDS):
+                raise ValueError("ranked hit shape mismatch")
+            path = _string(hit, "source_path")
+            if path not in documents or path in hit_paths or hit.get("rank") != rank:
+                raise ValueError("ranked hit identity/rank mismatch")
+            hit_paths.append(path)
+            scores = [
+                _finite_number(hit.get(key), key)
+                for key in (
+                    "final_score",
+                    "entry_score",
+                    "normalized_graph_score",
+                )
+            ]
+            if scores[0] > prior_score:
+                raise ValueError("ranked hit scores must be non-increasing")
+            prior_score = scores[0]
+            source = hit.get("source_provenance")
+            if not isinstance(source, dict) or set(source) != set(SOURCE_FIELDS):
+                raise ValueError("source provenance shape mismatch")
+            if source != {
+                "repository": repository,
+                "commit": commit,
+                "path": path,
+                "content_sha256": documents[path],
+            }:
+                raise ValueError("source provenance does not match frozen corpus")
+            relation_paths = hit.get("relation_paths")
+            if not isinstance(relation_paths, list):
+                raise ValueError("relation paths must be an array")
+            for relation in relation_paths:
+                if not isinstance(relation, dict) or set(relation) != set(
+                    RELATION_PATH_FIELDS
+                ):
+                    raise ValueError("relation path shape mismatch")
+                if relation.get("step_count") != 1:
+                    raise ValueError("relation provenance must be edge-only")
+                if (
+                    relation.get("seed_path") not in documents
+                    or relation.get("target_path") not in documents
+                ):
+                    raise ValueError("relation path is outside the corpus")
+                _string(relation, "edge_type")
+        returned = row.get("returned_source_paths")
+        if (
+            not isinstance(returned, list)
+            or len(returned) > 5
+            or len(set(returned)) != len(returned)
+            or any(path not in hit_paths for path in returned)
+        ):
+            raise ValueError("returned source paths are invalid")
+        normalized.append(copy_json(row))
+    return normalized
+
+
+def _validate_state(value: object) -> dict[str, Any]:
+    if not isinstance(value, dict) or set(value) != set(STATE_FIELDS):
+        raise ValueError("state result shape mismatch")
+    for key in STATE_FIELDS[2:10]:
+        if not isinstance(value.get(key), str) or not re.fullmatch(
+            r"[0-9a-f]{64}", value[key]
+        ):
+            raise ValueError(f"state hash mismatch: {key}")
+    first_id = value.get("fresh_database_id")
+    replay_id = value.get("replay_database_id")
+    if (
+        not isinstance(first_id, str)
+        or not first_id
+        or not isinstance(replay_id, str)
+        or not replay_id
+        or first_id == replay_id
+    ):
+        raise ValueError("fresh and replay database identities must differ")
+    for key in ("feedback_count_before", "feedback_count_after"):
+        if not isinstance(value.get(key), int) or isinstance(value[key], bool):
+            raise ValueError("feedback counts must be integers")
+    return copy_json(value)
+
+
+def _decision_from_hit(
+    control: PrecisionControl, hit: Mapping[str, Any], top_score: float
+) -> dict[str, Any]:
+    score = float(hit["final_score"])
+    ratio = score / top_score if top_score > 0.0 else 0.0
+    margin = top_score - score
+    entry_signal = float(hit["entry_score"]) > 0.0
+    graph_signal = float(hit["normalized_graph_score"]) > 0.0 and bool(
+        hit["relation_paths"]
+    )
+    rule_results: dict[str, bool] = {}
+    if control.minimum_final_score is not None:
+        rule_results[RULES[0]] = score >= control.minimum_final_score
+    if control.minimum_top_score_ratio is not None:
+        rule_results[RULES[1]] = ratio >= control.minimum_top_score_ratio
+    if control.maximum_top_score_margin is not None:
+        rule_results[RULES[2]] = margin <= control.maximum_top_score_margin
+    if control.require_entry_graph_signal_agreement:
+        rule_results[RULES[3]] = entry_signal and graph_signal
+    return {
+        "candidate_id": control.candidate_id,
+        "source_path": hit["source_path"],
+        "accepted": all(rule_results.values()),
+        "applied_rules": list(control.rules()),
+        "thresholds": control.thresholds(),
+        "pre_filter_rank": hit["rank"],
+        "pre_filter_score": score,
+        "top_score": top_score,
+        "top_score_ratio": ratio,
+        "top_score_margin": margin,
+        "entry_signal_present": entry_signal,
+        "graph_signal_present": graph_signal,
+        "rule_results": rule_results,
+        "source_provenance": copy_json(hit["source_provenance"]),
+    }
+
+
+def _compute_cohorts(
+    protocol: Mapping[str, Any], stage: str, cases: list[Mapping[str, Any]]
+) -> list[dict[str, Any]]:
+    gold_rows = {
+        row["case_id"]: row
+        for row in _list(_mapping(_mapping(protocol, "gold"), "stages"), stage)
+    }
+    rows: list[dict[str, Any]] = []
+    for cohort in COHORTS:
+        cohort_cases = [case for case in cases if case["cohort"] == cohort]
+        reciprocal_ranks: list[float] = []
+        hits: list[float] = []
+        for case in cohort_cases:
+            returned = case["returned_source_paths"]
+            gold = gold_rows[case["case_id"]]
+            paths = (
+                gold["forbidden_paths"]
+                if cohort == "negative_control"
+                else gold["expected_paths"]
+            )
+            ranks = [returned.index(path) + 1 for path in paths if path in returned]
+            best = min(ranks) if ranks else None
+            reciprocal_ranks.append(0.0 if best is None else 1.0 / best)
+            hits.append(0.0 if best is None else 1.0)
+        rows.append(
+            {
+                "cohort": cohort,
+                "case_ids": [case["case_id"] for case in cohort_cases],
+                "mrr": sum(reciprocal_ranks) / len(reciprocal_ranks),
+                "hit_at_5": sum(hits) / len(hits),
+            }
+        )
+    return rows
+
+
+def _candidate_gates(
+    protocol: Mapping[str, Any],
+    stage: str,
+    baseline: Mapping[str, Any],
+    candidate: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    baseline_cases = {case["case_id"]: case for case in baseline["cases"]}
+    candidate_cases = {case["case_id"]: case for case in candidate["cases"]}
+    gold_rows = {
+        row["case_id"]: row
+        for row in _list(_mapping(_mapping(protocol, "gold"), "stages"), stage)
+    }
+
+    def expected_rank(case: Mapping[str, Any]) -> int | None:
+        expected = gold_rows[case["case_id"]]["expected_paths"]
+        if not expected or expected[0] not in case["returned_source_paths"]:
+            return None
+        return case["returned_source_paths"].index(expected[0]) + 1
+
+    def non_regression(cohort: str) -> bool:
+        for case_id, before in baseline_cases.items():
+            if before["cohort"] != cohort:
+                continue
+            before_rank = expected_rank(before)
+            after_rank = expected_rank(candidate_cases[case_id])
+            if before_rank is None or after_rank is None or after_rank > before_rank:
+                return False
+        return True
+
+    baseline_cohorts = {row["cohort"]: row for row in baseline["cohorts"]}
+    candidate_cohorts = {row["cohort"]: row for row in candidate["cohorts"]}
+    cohort_non_regression = all(
+        candidate_cohorts[cohort][metric] >= baseline_cohorts[cohort][metric]
+        for cohort in COHORTS[:3]
+        for metric in ("mrr", "hit_at_5")
+    )
+    negative_improvement = True
+    for case_id, before in baseline_cases.items():
+        if before["cohort"] != "negative_control":
+            continue
+        forbidden = gold_rows[case_id]["forbidden_paths"]
+        before_ranks = [
+            before["returned_source_paths"].index(path) + 1
+            for path in forbidden
+            if path in before["returned_source_paths"]
+        ]
+        after = candidate_cases[case_id]
+        after_ranks = [
+            after["returned_source_paths"].index(path) + 1
+            for path in forbidden
+            if path in after["returned_source_paths"]
+        ]
+        if not before_ranks or len(after_ranks) >= len(before_ranks):
+            negative_improvement = False
+            break
+        if after_ranks and min(after_ranks) <= min(before_ranks):
+            negative_improvement = False
+            break
+    completeness = all(
+        all(
+            path in candidate_cases[case_id]["returned_source_paths"]
+            for path in row["expected_paths"]
+        )
+        and all(
+            path in baseline_cases[case_id]["returned_source_paths"]
+            for path in row["expected_paths"]
+        )
+        for case_id, row in gold_rows.items()
+        if row["cohort"] != "negative_control"
+    )
+    relation_provenance = True
+    for case_id, gold in gold_rows.items():
+        if gold["cohort"] != "relation_linked":
+            continue
+        expected = gold["expected_paths"][0]
+        required = {
+            "seed_path": gold["relation_seed_path"],
+            "target_path": expected,
+            "edge_type": gold["relation_edge_type"],
+            "step_count": 1,
+        }
+        for cases in (baseline_cases, candidate_cases):
+            case = cases[case_id]
+            hit = next(
+                item for item in case["ranked_hits"] if item["source_path"] == expected
+            )
+            if (
+                expected not in case["returned_source_paths"]
+                or required not in hit["relation_paths"]
+            ):
+                relation_provenance = False
+    states = [baseline["state"], candidate["state"]]
+    deterministic = all(
+        state["ranking_sha256"] == state["replay_ranking_sha256"]
+        and state["score_sha256"] == state["replay_score_sha256"]
+        and state["activation_sha256"] == state["replay_activation_sha256"]
+        for state in states
+    )
+    before_state = baseline["state"]
+    after_state = candidate["state"]
+    immutable = (
+        after_state["score_sha256"] == before_state["score_sha256"]
+        and after_state["activation_sha256"] == before_state["activation_sha256"]
+        and after_state["edge_sha256_before"] == before_state["edge_sha256_before"]
+        and all(
+            state["edge_sha256_before"] == state["edge_sha256_after"]
+            and state["feedback_count_before"] == 0
+            and state["feedback_count_after"] == 0
+            for state in states
+        )
+    )
+    passes = (
+        True,
+        True,
+        deterministic,
+        non_regression("direct_lexical"),
+        non_regression("semantic_paraphrase"),
+        non_regression("relation_linked"),
+        cohort_non_regression,
+        negative_improvement,
+        completeness,
+        relation_provenance,
+        immutable,
+    )
+    return [
+        {
+            "gate_id": gate_id,
+            "hard": True,
+            "passed": passed,
+            "details": {"evaluator": "raw-result-v1"},
+        }
+        for gate_id, passed in zip(GATE_IDS, passes, strict=True)
+    ]
+
+
+def _finite_number(value: object, field: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(f"{field} must be numeric")
+    result = float(value)
+    if not math.isfinite(result):
+        raise ValueError(f"{field} must be finite")
+    return result
+
+
 def verify_result_payload(
     protocol: Mapping[str, Any],
     stage: str,
@@ -402,92 +950,84 @@ def verify_result_payload(
 ) -> None:
     if set(payload) != set(RESULT_FIELDS):
         raise ValueError("result fields must exactly match the frozen schema")
-    claim = json.loads(claim_raw.decode("utf-8", errors="strict"))
-    if not isinstance(claim, dict) or set(claim) != set(CLAIM_FIELDS):
-        raise ValueError("claim fields must exactly match the frozen schema")
-    if (
-        payload.get("protocol_id") != PROTOCOL_ID
-        or claim.get("protocol_id") != PROTOCOL_ID
-    ):
-        raise ValueError("result/claim protocol mismatch")
-    if payload.get("stage") != stage or claim.get("stage") != stage:
-        raise ValueError("result/claim stage mismatch")
-    if payload.get("protocol_commit") != claim.get("protocol_commit"):
-        raise ValueError("result/claim commit mismatch")
-    if payload.get("claim_sha256") != sha256_bytes(claim_raw):
-        raise ValueError("result claim hash mismatch")
-    hashes = dict(_mapping(_mapping(protocol, "manifest"), "artifact_sha256"))
-    if (
-        payload.get("protocol_hashes") != hashes
-        or claim.get("protocol_hashes") != hashes
-    ):
-        raise ValueError("protocol hash registry mismatch")
-    if claim.get("one_time_claim") is not True:
-        raise ValueError("one-time claim must be true")
-    if payload.get("status") not in {"passed", "failed"}:
-        raise ValueError("result status must be passed or failed")
     baseline = payload.get("baseline")
     if not isinstance(baseline, dict) or set(baseline) != set(BASELINE_FIELDS):
         raise ValueError("baseline shape mismatch")
-    if baseline.get("baseline_id") != "current-ngr":
-        raise ValueError("baseline identity mismatch")
-    if not isinstance(baseline.get("cases"), list):
-        raise ValueError("baseline cases must be an array")
-    if not isinstance(baseline.get("cohorts"), dict):
-        raise ValueError("baseline cohorts must be an object")
-    if not isinstance(baseline.get("state"), dict):
-        raise ValueError("baseline state must be an object")
-    expected_candidates = [
-        _string(item, "candidate_id")
-        for item in _list(_mapping(protocol, "candidates"), "candidates")
-    ]
+    _validate_cohort_rows(baseline.get("cohorts"))
     rows = payload.get("candidates")
     if not isinstance(rows, list) or any(
         not isinstance(item, dict) or set(item) != set(CANDIDATE_FIELDS)
         for item in rows
     ):
         raise ValueError("result candidate shape mismatch")
-    if [_string(item, "candidate_id") for item in rows] != expected_candidates:
-        raise ValueError("result candidate order mismatch")
     for item in rows:
-        if not isinstance(item.get("cases"), list):
-            raise ValueError("candidate cases must be an array")
-        if not isinstance(item.get("cohorts"), dict):
-            raise ValueError("candidate cohorts must be an object")
-        if not isinstance(item.get("explanations"), list) or any(
-            not isinstance(value, dict) for value in item["explanations"]
-        ):
-            raise ValueError("candidate explanations must be objects")
-        if not isinstance(item.get("state"), dict):
-            raise ValueError("candidate state must be an object")
+        _validate_cohort_rows(item.get("cohorts"))
+        _validate_gate_rows(item.get("gates"))
         if not isinstance(item.get("all_hard_gates_pass"), bool):
             raise ValueError("candidate hard gate summary must be boolean")
-    gates = payload.get("gates")
-    if not isinstance(gates, list) or len(gates) != len(GATE_IDS):
-        raise ValueError("result gates length mismatch")
-    for gate, gate_id in zip(gates, GATE_IDS, strict=True):
-        if not isinstance(gate, dict) or set(gate) != set(GATE_FIELDS):
-            raise ValueError("result gate shape mismatch")
-        if gate.get("gate_id") != gate_id or gate.get("hard") is not True:
-            raise ValueError("result hard gate identity mismatch")
-        if not isinstance(gate.get("passed"), bool) or not isinstance(
-            gate.get("details"), dict
-        ):
-            raise ValueError("result hard gate types mismatch")
-    all_pass = all(gate["passed"] for gate in gates)
-    if payload.get("all_hard_gates_pass") is not all_pass:
-        raise ValueError("all_hard_gates_pass mismatch")
-    if (payload.get("status") == "passed") is not all_pass:
-        raise ValueError("result status and hard gates disagree")
-    selected = payload.get("selected_candidate_id")
-    first_passing = next(
-        (item["candidate_id"] for item in rows if item["all_hard_gates_pass"] is True),
-        None,
+    _validate_gate_rows(payload.get("gates"))
+    if not isinstance(payload.get("all_hard_gates_pass"), bool):
+        raise ValueError("global hard gate summary must be boolean")
+    if payload.get("status") not in {"passed", "failed"}:
+        raise ValueError("result status mismatch")
+    if payload.get("selected_candidate_id") is not None and not isinstance(
+        payload["selected_candidate_id"], str
+    ):
+        raise ValueError("selected candidate type mismatch")
+    expected = evaluate_result_payload(
+        protocol,
+        stage,
+        claim_raw,
+        {
+            "baseline_id": baseline["baseline_id"],
+            "cases": baseline["cases"],
+            "state": baseline["state"],
+        },
+        [
+            {
+                "candidate_id": item["candidate_id"],
+                "cases": item["cases"],
+                "explanations": item["explanations"],
+                "state": item["state"],
+            }
+            for item in rows
+        ],
     )
-    if selected != first_passing:
-        raise ValueError("selected candidate violates the pre-fixed first-pass rule")
-    if all_pass is not (selected is not None):
-        raise ValueError("global gates and candidate selection disagree")
+    if dict(payload) != expected:
+        raise ValueError("result does not match evaluator recomputation")
+
+
+def _validate_cohort_rows(value: object) -> None:
+    if not isinstance(value, list) or len(value) != len(COHORTS):
+        raise ValueError("cohort rows must cover every frozen cohort")
+    for cohort, row in zip(COHORTS, value, strict=True):
+        if not isinstance(row, dict) or set(row) != set(COHORT_FIELDS):
+            raise ValueError("cohort row shape mismatch")
+        if row.get("cohort") != cohort:
+            raise ValueError("cohort row order mismatch")
+        case_ids = row.get("case_ids")
+        if (
+            not isinstance(case_ids, list)
+            or len(case_ids) != 2
+            or any(not isinstance(case_id, str) for case_id in case_ids)
+        ):
+            raise ValueError("cohort case ids must contain exactly two strings")
+        _finite_number(row.get("mrr"), "mrr")
+        _finite_number(row.get("hit_at_5"), "hit_at_5")
+
+
+def _validate_gate_rows(value: object) -> None:
+    if not isinstance(value, list) or len(value) != len(GATE_IDS):
+        raise ValueError("gate rows must cover every frozen hard gate")
+    for gate_id, row in zip(GATE_IDS, value, strict=True):
+        if not isinstance(row, dict) or set(row) != set(GATE_FIELDS):
+            raise ValueError("gate row shape mismatch")
+        if row.get("gate_id") != gate_id or row.get("hard") is not True:
+            raise ValueError("gate identity/hard flag mismatch")
+        if not isinstance(row.get("passed"), bool):
+            raise ValueError("gate passed must be boolean")
+        if not isinstance(row.get("details"), dict):
+            raise ValueError("gate details must be an object")
 
 
 def archive_stage(stage: str, root: Path = ROOT) -> Path:
@@ -615,6 +1155,145 @@ def _assert_stage_can_start(protocol: Mapping[str, Any], stage: str) -> None:
             raise ValueError("holdout is closed after a failed development gate")
 
 
+def build_synthetic_evaluated_result(
+    protocol: Mapping[str, Any], stage: str, claim_raw: bytes
+) -> dict[str, Any]:
+    """Build non-empty result-shaped mechanics data without executing a query."""
+
+    corpus = _mapping(protocol, "corpus")
+    repository = _string(corpus, "repository")
+    commit = _string(corpus, "commit")
+    documents = _list(corpus, "documents")
+    content_hashes = {
+        _string(item, "path"): _string(item, "content_sha256") for item in documents
+    }
+    all_paths = list(content_hashes)
+    queries = _list(_mapping(_mapping(protocol, "queries"), "stages"), stage)
+    gold = {
+        row["case_id"]: row
+        for row in _list(_mapping(_mapping(protocol, "gold"), "stages"), stage)
+    }
+    scores = [0.9, 0.8, 0.7, 0.6, 0.1] + [0.09 - (index * 0.004) for index in range(15)]
+    baseline_cases: list[dict[str, Any]] = []
+    for query in queries:
+        row = gold[query["case_id"]]
+        if query["cohort"] == "negative_control":
+            forbidden = row["forbidden_paths"][0]
+            leading = [path for path in all_paths if path != forbidden][:4]
+            ordered_paths = (
+                leading
+                + [forbidden]
+                + [
+                    path
+                    for path in all_paths
+                    if path not in leading and path != forbidden
+                ]
+            )
+        else:
+            expected = row["expected_paths"][0]
+            ordered_paths = [expected] + [
+                path for path in all_paths if path != expected
+            ]
+        ranked_hits = []
+        for rank, (path, score) in enumerate(
+            zip(ordered_paths, scores, strict=True), start=1
+        ):
+            relation_paths: list[dict[str, Any]] = []
+            if (
+                query["cohort"] == "relation_linked"
+                and path == row["expected_paths"][0]
+            ):
+                relation_paths.append(
+                    {
+                        "seed_path": row["relation_seed_path"],
+                        "target_path": path,
+                        "edge_type": row["relation_edge_type"],
+                        "step_count": 1,
+                    }
+                )
+            ranked_hits.append(
+                {
+                    "source_path": path,
+                    "rank": rank,
+                    "final_score": score,
+                    "entry_score": 0.5,
+                    "normalized_graph_score": 0.4 if relation_paths else 0.0,
+                    "source_provenance": {
+                        "repository": repository,
+                        "commit": commit,
+                        "path": path,
+                        "content_sha256": content_hashes[path],
+                    },
+                    "relation_paths": relation_paths,
+                }
+            )
+        baseline_cases.append(
+            {
+                "case_id": query["case_id"],
+                "cohort": query["cohort"],
+                "ranked_hits": ranked_hits,
+                "returned_source_paths": ordered_paths[:5],
+            }
+        )
+    common_score = sha256_bytes(b"synthetic-score")
+    common_activation = sha256_bytes(b"synthetic-activation")
+    common_edge = sha256_bytes(b"synthetic-edge")
+
+    def state(arm: str) -> dict[str, Any]:
+        ranking = sha256_bytes(f"synthetic-ranking:{arm}".encode("ascii"))
+        return {
+            "fresh_database_id": f"synthetic:{stage}:{arm}:primary",
+            "replay_database_id": f"synthetic:{stage}:{arm}:replay",
+            "ranking_sha256": ranking,
+            "replay_ranking_sha256": ranking,
+            "score_sha256": common_score,
+            "replay_score_sha256": common_score,
+            "activation_sha256": common_activation,
+            "replay_activation_sha256": common_activation,
+            "edge_sha256_before": common_edge,
+            "edge_sha256_after": common_edge,
+            "feedback_count_before": 0,
+            "feedback_count_after": 0,
+        }
+
+    candidate_raws = []
+    for item in _list(_mapping(protocol, "candidates"), "candidates"):
+        control = PrecisionControl.from_mapping(dict(item))
+        cases = copy_json(baseline_cases)
+        explanations = []
+        for case in cases:
+            top_score = case["ranked_hits"][0]["final_score"]
+            decisions = [
+                _decision_from_hit(control, hit, top_score)
+                for hit in case["ranked_hits"]
+            ]
+            case["returned_source_paths"] = [
+                decision["source_path"]
+                for decision in decisions
+                if decision["accepted"]
+            ][:5]
+            explanations.append({"case_id": case["case_id"], "decisions": decisions})
+        candidate_raws.append(
+            {
+                "candidate_id": control.candidate_id,
+                "cases": cases,
+                "explanations": explanations,
+                "state": state(control.candidate_id),
+            }
+        )
+    return evaluate_result_payload(
+        protocol,
+        stage,
+        claim_raw,
+        {
+            "baseline_id": "current-ngr",
+            "cases": baseline_cases,
+            "state": state("current-ngr"),
+        },
+        candidate_raws,
+    )
+
+
 def prove_archive_round_trip() -> dict[str, str]:
     protocol = load_protocol()
     with tempfile.TemporaryDirectory() as directory:
@@ -632,42 +1311,7 @@ def prove_archive_round_trip() -> dict[str, str]:
         }
         write_json_exclusive(claim_path, claim)
         claim_raw = claim_path.read_bytes()
-        gates = [
-            {"gate_id": gate_id, "hard": True, "passed": True, "details": {}}
-            for gate_id in GATE_IDS
-        ]
-        candidates = []
-        for index, item in enumerate(
-            _list(_mapping(protocol, "candidates"), "candidates")
-        ):
-            candidates.append(
-                {
-                    "candidate_id": item["candidate_id"],
-                    "cases": [],
-                    "cohorts": {},
-                    "explanations": [],
-                    "state": {},
-                    "all_hard_gates_pass": index == 0,
-                }
-            )
-        result = {
-            "protocol_id": PROTOCOL_ID,
-            "protocol_commit": "0" * 40,
-            "stage": "development",
-            "status": "passed",
-            "claim_sha256": sha256_bytes(claim_raw),
-            "protocol_hashes": hashes,
-            "baseline": {
-                "baseline_id": "current-ngr",
-                "cases": [],
-                "cohorts": {},
-                "state": {},
-            },
-            "candidates": candidates,
-            "selected_candidate_id": candidates[0]["candidate_id"],
-            "gates": gates,
-            "all_hard_gates_pass": True,
-        }
+        result = build_synthetic_evaluated_result(protocol, "development", claim_raw)
         write_json_exclusive(
             _output_path(synthetic, "development", "runtime_result"), result
         )
