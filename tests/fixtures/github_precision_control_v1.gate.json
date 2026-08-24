@@ -1,0 +1,50 @@
+{
+  "protocol_id": "github-ngr-precision-control-v1",
+  "metric_k": 5,
+  "gates": [
+    {
+      "gate_id": "protocol-integrity",
+      "hard": true
+    },
+    {
+      "gate_id": "identity-separation",
+      "hard": true
+    },
+    {
+      "gate_id": "deterministic-fresh-db",
+      "hard": true
+    },
+    {
+      "gate_id": "direct-case-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "semantic-case-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "relation-case-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "cohort-mrr-hit-at-k-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "negative-forbidden-strict-improvement",
+      "hard": true
+    },
+    {
+      "gate_id": "expected-source-top-k-completeness",
+      "hard": true
+    },
+    {
+      "gate_id": "relation-source-path-provenance",
+      "hard": true
+    },
+    {
+      "gate_id": "immutable-post-ranking-isolation",
+      "hard": true
+    }
+  ]
+}

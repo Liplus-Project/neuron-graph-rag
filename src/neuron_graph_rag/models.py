@@ -58,9 +58,10 @@ class SearchHit:
     graph_fusion_component: float = 0.0
     final_fusion_strategy: str = "linear"
     graph_normalization: str = "max"
+    precision_control: dict[str, Any] | None = None
 
     def explain(self) -> dict[str, Any]:
-        return {
+        explanation = {
             "node_id": self.node.node_id,
             "scores": {
                 "sparse": self.sparse_score,
@@ -110,6 +111,9 @@ class SearchHit:
                 for path in self.paths
             ],
         }
+        if self.precision_control is not None:
+            explanation["precision_control"] = dict(self.precision_control)
+        return explanation
 
 
 @dataclass(frozen=True, slots=True)

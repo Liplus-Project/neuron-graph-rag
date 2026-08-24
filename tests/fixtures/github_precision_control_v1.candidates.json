@@ -1,0 +1,30 @@
+{
+  "protocol_id": "github-ngr-precision-control-v1",
+  "derivation": "Thresholds are fixed from the normalized score domain and channel-presence semantics before any registered query is executed; no v1 observed value is an input.",
+  "selection_rule": "Select the first candidate in the listed order that passes every development hard gate; if none passes, archive the failed result and do not open holdout.",
+  "candidates": [
+    {
+      "candidate_id": "absolute-floor-025",
+      "minimum_final_score": 0.25
+    },
+    {
+      "candidate_id": "top-ratio-055",
+      "minimum_top_score_ratio": 0.55
+    },
+    {
+      "candidate_id": "top-margin-020",
+      "maximum_top_score_margin": 0.2
+    },
+    {
+      "candidate_id": "entry-graph-agreement",
+      "require_entry_graph_signal_agreement": true
+    },
+    {
+      "candidate_id": "combined-balanced",
+      "minimum_final_score": 0.15,
+      "minimum_top_score_ratio": 0.4,
+      "maximum_top_score_margin": 0.4,
+      "require_entry_graph_signal_agreement": true
+    }
+  ]
+}
