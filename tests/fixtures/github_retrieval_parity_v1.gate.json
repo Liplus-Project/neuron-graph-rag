@@ -1,0 +1,52 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v1",
+  "comparison": {
+    "rank": "expected source rank on the cohort-appropriate retrieval axis",
+    "mrr": "mean reciprocal rank per cohort",
+    "hit_at_k": "expected source present at frozen top_k",
+    "non_regression": "NGR metric must be greater than or equal to github-rag-mcp"
+  },
+  "gates": [
+    {
+      "gate_id": "protocol-integrity",
+      "hard": true
+    },
+    {
+      "gate_id": "source-provenance-integrity",
+      "hard": true
+    },
+    {
+      "gate_id": "deterministic-replay",
+      "hard": true
+    },
+    {
+      "gate_id": "update-following",
+      "hard": true
+    },
+    {
+      "gate_id": "direct-case-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "negative-control-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "cohort-mrr-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "cohort-hit-at-k-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "expected-source-top-k-completeness",
+      "hard": true
+    },
+    {
+      "gate_id": "source-path-explanation-integrity",
+      "hard": true
+    }
+  ],
+  "latency_resource_policy": "record-only-not-a-hard-gate"
+}

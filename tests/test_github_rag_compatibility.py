@@ -6,10 +6,13 @@ from pathlib import Path
 from unittest.mock import patch
 
 from neuron_graph_rag import EngineConfig, NeuronGraphRAG
-from neuron_graph_rag.github_source import GitHubSnapshot, changed_paths, index_github_snapshot
+from neuron_graph_rag.github_source import (
+    GitHubSnapshot,
+    changed_paths,
+    index_github_snapshot,
+)
 from tools.acquire_github_snapshot import acquire_snapshot
 from tools.run_github_rag_compatibility import run_compatibility
-
 
 FIXTURES = Path(__file__).parent / "fixtures"
 SNAPSHOT = FIXTURES / "github_rag_compatibility.snapshot.json"
@@ -34,17 +37,29 @@ class GitHubRagCompatibilityTest(unittest.TestCase):
             receipt = index_github_snapshot(engine, snapshot)
             trace = engine.search("dense sparse rerank", now=0.0)
 
-        self.assertEqual(receipt.node_ids, ("github:Liplus-Project/github-rag-mcp:docs/Home.md",))
+        self.assertEqual(
+            receipt.node_ids, ("github:Liplus-Project/github-rag-mcp:docs/Home.md",)
+        )
         self.assertTrue(receipt.fingerprint.startswith("sha256:"))
-        self.assertEqual(trace.hits[0].node.metadata["source_adapter"], "github_read_only_snapshot")
+        self.assertEqual(
+            trace.hits[0].node.metadata["source_adapter"], "github_read_only_snapshot"
+        )
         self.assertEqual(trace.hits[0].node.metadata["source_url"], SNAPSHOT_URL)
 
-    def test_runner_requires_a_frozen_github_rag_mcp_capture_for_a_candidate_verdict(self) -> None:
-        result = run_compatibility(SNAPSHOT, CASES, updated_snapshot_path=UPDATED_SNAPSHOT)
+    def test_runner_requires_a_frozen_github_rag_mcp_capture_for_a_candidate_verdict(
+        self,
+    ) -> None:
+        result = run_compatibility(
+            SNAPSHOT, CASES, updated_snapshot_path=UPDATED_SNAPSHOT
+        )
 
         self.assertEqual(result["comparison_status"], "adapter_pipeline_only")
         self.assertEqual(result["verdict"], "inconclusive")
-        self.assertTrue(all(not case["github_rag_mcp"]["captured"] for case in result["comparisons"]))
+        self.assertTrue(
+            all(
+                not case["github_rag_mcp"]["captured"] for case in result["comparisons"]
+            )
+        )
         self.assertEqual(result["source_update"]["changed_paths"], ["docs/Home.md"])
         self.assertTrue(result["source_update"]["followed"])
 
@@ -59,7 +74,12 @@ class GitHubRagCompatibilityTest(unittest.TestCase):
         self.assertEqual(result["comparison_status"], "compared")
         self.assertEqual(result["verdict"], "continue_candidate")
         self.assertTrue(all(case["source_match"] for case in result["comparisons"]))
-        self.assertTrue(all(case["github_rag_mcp"]["raw_result"]["results"] for case in result["comparisons"]))
+        self.assertTrue(
+            all(
+                case["github_rag_mcp"]["raw_result"]["results"]
+                for case in result["comparisons"]
+            )
+        )
 
     def test_committed_result_is_the_canonical_observation(self) -> None:
         result = run_compatibility(
@@ -68,7 +88,9 @@ class GitHubRagCompatibilityTest(unittest.TestCase):
             github_rag_mcp_capture_path=CAPTURE,
             updated_snapshot_path=UPDATED_SNAPSHOT,
         )
-        canonical = json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+        canonical = (
+            json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+        )
 
         self.assertEqual(RESULT.read_text(encoding="utf-8"), canonical)
 
@@ -89,13 +111,24 @@ class GitHubRagCompatibilityTest(unittest.TestCase):
     def test_acquisition_uses_only_pinned_get_requests(self) -> None:
         responses = [
             {"sha": "c" * 40},
-            {"type": "file", "encoding": "base64", "sha": "d" * 40, "content": "SGVsbG8="},
+            {
+                "type": "file",
+                "encoding": "base64",
+                "sha": "d" * 40,
+                "content": "SGVsbG8=",
+            },
         ]
-        with patch("tools.acquire_github_snapshot.github_get", side_effect=responses) as get:
+        with patch(
+            "tools.acquire_github_snapshot.github_get", side_effect=responses
+        ) as get:
             snapshot = acquire_snapshot("octo/repo", "main", ["README.md"])
 
         self.assertEqual(snapshot["commit"], "c" * 40)
         self.assertEqual(snapshot["documents"][0]["content"], "Hello")
+        self.assertEqual(
+            snapshot["documents"][0]["content_sha256"],
+            "185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969",
+        )
         self.assertEqual(get.call_args_list[0].args[0], "/repos/octo/repo/commits/main")
         self.assertIn("ref=" + "c" * 40, get.call_args_list[1].args[0])
 

@@ -1,0 +1,89 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v1",
+  "request_defaults": {
+    "repo": "Liplus-Project/github-rag-mcp",
+    "type": "doc",
+    "top_k": 5,
+    "fusion": "rrf",
+    "rerank": true,
+    "graph_expand": true,
+    "graph_hops": 2
+  },
+  "ngr_engine_config": {
+    "sparse_weight": 0.55,
+    "dense_weight": 0.45,
+    "entry_weight": 0.55,
+    "graph_weight": 0.45,
+    "seed_count": 3,
+    "max_hops": 2,
+    "hop_decay": 0.7,
+    "activation_half_life_seconds": 3600.0,
+    "feedback_learning_rate": 0.2,
+    "sibling_feedback_normalization": 0.0,
+    "maximum_edge_weight": 2.0,
+    "maximum_activation": 10.0,
+    "max_paths_per_node": 4,
+    "max_propagation_expansions": 10000,
+    "activation_strategy": "current_positive_additive",
+    "activation_budget": 1.0,
+    "inhibition_ratio": 0.0,
+    "inhibition_top_k": 0,
+    "query_transmission_floor": 0.4,
+    "query_transmission_power": 1.0,
+    "recurrent_steps": 3,
+    "recurrent_decay": 0.5,
+    "convergence_tolerance": 1e-09,
+    "max_active_paths_per_node": 4,
+    "use_dense_retrieval": true,
+    "use_graph_propagation": true,
+    "graph_normalization": "max",
+    "final_fusion_strategy": "linear",
+    "rrf_k": 60
+  },
+  "stages": {
+    "development": [
+      {
+        "case_id": "dev-direct-stored-content",
+        "cohort": "direct_lexical",
+        "query": "vector_ids content_source index content_truncated"
+      },
+      {
+        "case_id": "dev-semantic-missed-delivery",
+        "cohort": "semantic_paraphrase",
+        "query": "How must missed repository updates be repaired without advancing past work that was not indexed?"
+      },
+      {
+        "case_id": "dev-relation-memory-philosophy",
+        "cohort": "relation_linked",
+        "query": "Where does the project explain in fuller detail why durable GitHub artifacts are preferred over replaying every conversation?"
+      },
+      {
+        "case_id": "dev-negative-vector-id-durability",
+        "cohort": "negative_control",
+        "query": "Should a vector_id from stored-content search be retained as a durable identifier for later sessions?"
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "holdout-direct-proxy-state",
+        "cohort": "direct_lexical",
+        "query": "RAG_WORKER_URL oauth-client.json oauth-tokens.json"
+      },
+      {
+        "case_id": "holdout-semantic-visible-memory",
+        "cohort": "semantic_paraphrase",
+        "query": "全部を覚えるのではなく、人間にも見える成果物から次の作業に必要な状態を取り戻す考え方"
+      },
+      {
+        "case_id": "holdout-relation-installation-guide",
+        "cohort": "relation_linked",
+        "query": "自己ホストと導入手順の詳しい案内先はどこか"
+      },
+      {
+        "case_id": "holdout-negative-published-version",
+        "cohort": "negative_control",
+        "query": "リポジトリに commit された placeholder version が公開 package の版数を決めるのか"
+      }
+    ]
+  }
+}

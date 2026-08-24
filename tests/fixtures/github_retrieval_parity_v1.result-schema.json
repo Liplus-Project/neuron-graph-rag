@@ -1,0 +1,27 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v1",
+  "top_level_fields": [
+    "protocol_id",
+    "protocol_commit",
+    "stage",
+    "status",
+    "failure_code",
+    "capture_sha256",
+    "protocol_hashes",
+    "source",
+    "cases",
+    "cohorts",
+    "update_following",
+    "deterministic_replay",
+    "resources",
+    "gates",
+    "all_hard_gates_pass",
+    "raw_github_rag_mcp_capture",
+    "interpretation_ja"
+  ],
+  "failure_codes": [
+    "hard-gate-failed",
+    "execution-failed"
+  ],
+  "output_policy": "registered capture, claim, and result are exclusive-create and never overwritten or rerun"
+}

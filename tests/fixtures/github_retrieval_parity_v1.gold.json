@@ -1,0 +1,63 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v1",
+  "stages": {
+    "development": [
+      {
+        "case_id": "dev-direct-stored-content",
+        "cohort": "direct_lexical",
+        "expected_source_id": "github:Liplus-Project/github-rag-mcp:README.md",
+        "forbidden_source_ids": []
+      },
+      {
+        "case_id": "dev-semantic-missed-delivery",
+        "cohort": "semantic_paraphrase",
+        "expected_source_id": "github:Liplus-Project/github-rag-mcp:docs/0-requirements.md",
+        "forbidden_source_ids": []
+      },
+      {
+        "case_id": "dev-relation-memory-philosophy",
+        "cohort": "relation_linked",
+        "expected_source_id": "github:Liplus-Project/github-rag-mcp:docs/1-memory-philosophy.md",
+        "relation_seed_source_id": "github:Liplus-Project/github-rag-mcp:README.md",
+        "forbidden_source_ids": []
+      },
+      {
+        "case_id": "dev-negative-vector-id-durability",
+        "cohort": "negative_control",
+        "expected_source_id": "github:Liplus-Project/github-rag-mcp:README.md",
+        "forbidden_source_ids": [
+          "github:Liplus-Project/github-rag-mcp:docs/installation.md"
+        ]
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "holdout-direct-proxy-state",
+        "cohort": "direct_lexical",
+        "expected_source_id": "github:Liplus-Project/github-rag-mcp:mcp-server/README.md",
+        "forbidden_source_ids": []
+      },
+      {
+        "case_id": "holdout-semantic-visible-memory",
+        "cohort": "semantic_paraphrase",
+        "expected_source_id": "github:Liplus-Project/github-rag-mcp:docs/1-memory-philosophy.ja.md",
+        "forbidden_source_ids": []
+      },
+      {
+        "case_id": "holdout-relation-installation-guide",
+        "cohort": "relation_linked",
+        "expected_source_id": "github:Liplus-Project/github-rag-mcp:docs/installation.ja.md",
+        "relation_seed_source_id": "github:Liplus-Project/github-rag-mcp:README.ja.md",
+        "forbidden_source_ids": []
+      },
+      {
+        "case_id": "holdout-negative-published-version",
+        "cohort": "negative_control",
+        "expected_source_id": "github:Liplus-Project/github-rag-mcp:docs/installation.ja.md",
+        "forbidden_source_ids": [
+          "github:Liplus-Project/github-rag-mcp:docs/0-requirements.ja.md"
+        ]
+      }
+    ]
+  }
+}

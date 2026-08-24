@@ -1,0 +1,20 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v1",
+  "top_level_fields": [
+    "protocol_id",
+    "protocol_commit",
+    "stage",
+    "captured_at",
+    "service",
+    "tool",
+    "cases"
+  ],
+  "case_fields": [
+    "case_id",
+    "request",
+    "raw_search",
+    "raw_stored_content"
+  ],
+  "stored_content_contract": "every keyword result vector_id, content_source=index, content_max_chars=8000, no not_found, exact frozen path plus body prefix",
+  "registration_policy": "exclusive-create-no-overwrite-no-recapture"
+}

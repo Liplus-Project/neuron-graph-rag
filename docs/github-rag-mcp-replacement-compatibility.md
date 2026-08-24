@@ -82,3 +82,7 @@ request, review, release, comment, and commit-diff acquisition; GitHub
 authentication; webhooks and polling; vector infrastructure; reranking; MCP
 transport; authentication; and remote deployment. The default NGR API and the
 github-rag-mcp production service are unchanged.
+
+## Successor boundary
+
+Issue #63 / #64 の本 spike は historical evidence として変更・再実行しない。hybrid document retrieval の同等性は、別 identity の corpus、query、gold、gate を結果前に固定する [GitHub RAG / NGR retrieval parity benchmark](github-retrieval-parity-benchmark.md) が判定する。successor は本 spike の snapshot、capture、result、case identity を入力へ再利用しない。
