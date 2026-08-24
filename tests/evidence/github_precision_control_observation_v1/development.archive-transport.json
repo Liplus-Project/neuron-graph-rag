@@ -1,0 +1,33 @@
+{
+  "protocol_id": "github-ngr-precision-control-v1",
+  "protocol_commit": "c1577cad5753bdafe9abf301bb60b1787a64927f",
+  "stage": "development",
+  "reason": "phase-boundary archival avoids the frozen absence-test and observation-output path collision",
+  "runtime_verified": true,
+  "files": [
+    {
+      "kind": "claim",
+      "runtime_path": "tests/runtime/github_precision_control_v1/development.claim.json",
+      "lifecycle_archive_path": "tests/evidence/github_precision_control_v1/development.claim.json",
+      "final_archive_path": "tests/evidence/github_precision_control_observation_v1/development.claim.json",
+      "sha256": "d3528a66849f8a25fcd4e7030bf199e0b3aa74f3a5d72737340f102ce39006af",
+      "byte_identity": true
+    },
+    {
+      "kind": "result",
+      "runtime_path": "tests/runtime/github_precision_control_v1/development.observed.json",
+      "lifecycle_archive_path": "tests/evidence/github_precision_control_v1/development.observed.json",
+      "final_archive_path": "tests/evidence/github_precision_control_observation_v1/development.observed.json",
+      "sha256": "d553830cbc6006170d6b78b5d864a10495b956954e5658075135b0bf93a0e844",
+      "byte_identity": true
+    },
+    {
+      "kind": "lifecycle_transport",
+      "runtime_path": null,
+      "lifecycle_archive_path": "tests/evidence/github_precision_control_v1/development.transport.json",
+      "final_archive_path": "tests/evidence/github_precision_control_observation_v1/development.lifecycle-transport.json",
+      "sha256": "dfeb0ca23164361d7a4d9560141e8b0a1190576097b1878acb2097c22905c5f2",
+      "byte_identity": true
+    }
+  ]
+}

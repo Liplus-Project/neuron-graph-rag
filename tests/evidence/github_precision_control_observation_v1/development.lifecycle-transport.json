@@ -1,0 +1,19 @@
+{
+  "protocol_id": "github-ngr-precision-control-v1",
+  "stage": "development",
+  "reason": "phase-boundary runtime-to-main evidence archival",
+  "files": [
+    {
+      "runtime_path": "tests/runtime/github_precision_control_v1/development.claim.json",
+      "archive_path": "tests/evidence/github_precision_control_v1/development.claim.json",
+      "sha256": "d3528a66849f8a25fcd4e7030bf199e0b3aa74f3a5d72737340f102ce39006af",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "tests/runtime/github_precision_control_v1/development.observed.json",
+      "archive_path": "tests/evidence/github_precision_control_v1/development.observed.json",
+      "sha256": "d553830cbc6006170d6b78b5d864a10495b956954e5658075135b0bf93a0e844",
+      "byte_identity": true
+    }
+  ]
+}
