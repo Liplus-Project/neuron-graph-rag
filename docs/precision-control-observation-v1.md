@@ -51,6 +51,16 @@ globalで失敗したhard gateは次の7件である。
 
 candidate別では `absolute-floor-025`、`top-ratio-055`、`top-margin-020` が `semantic-case-non-regression`、`negative-forbidden-strict-improvement`、`expected-source-top-k-completeness`、`relation-source-path-provenance` の4件に失敗した。`entry-graph-agreement` と `combined-balanced` はglobalと同じ7件に失敗した。いずれも11 hard gateの全通過には至っていない。
 
+### 観測事実とgate仕様の分離
+
+`absolute-floor-025`、`top-ratio-055`、`top-margin-020` はpositive targetのrankと、direct / semantic / relation cohortのMRR・Hit@5をbaselineと同じ値に保った。ただし出力全体が同一だったという意味ではない。`top-ratio-055` と `top-margin-020` は各caseの返却件数を削っている。3 candidateとも、baseline top-5に残った `pc-v1-dev-negative-002` のforbidden sourceを除去できなかった。
+
+`entry-graph-agreement` と `combined-balanced` は、両negative caseのforbidden sourceをtop-5から排除した。一方でdirect / semantic cohortはMRR・Hit@5がともに `0.0` まで低下し、relation cohortもbaselineのMRR `0.6666666666666666` / Hit@5 `1.0` からMRR `0.5` / Hit@5 `0.5` へ退行した。
+
+凍結evaluatorは保守的な仕様を持つ。case別non-regressionは、baseline側ですでにexpected sourceがmissingならcandidateが同じ状態を維持してもfalseになる。negative strict improvementも、baseline側ですでにforbidden sourceがabsentのcaseではcandidateがcleanな状態を維持してもfalseになる。そのため、globalでfalseになった7 gateを、7件の相互独立した実害として解釈しない。
+
+ただし `selected_candidate_id=null` というselection結果は、この保守的な仕様だけに依存しない。前3 candidateはbaselineに残ったnegative-002 forbidden sourceを改善できず、後2 candidateはpositive cohortを明白に退行させている。したがって凍結selection ruleの下で通過candidateが0件という結論は維持される。
+
 development evidenceのraw SHA-256は次のとおりである。
 
 - claim: `d3528a66849f8a25fcd4e7030bf199e0b3aa74f3a5d72737340f102ce39006af`
