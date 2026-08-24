@@ -115,6 +115,16 @@ JUDGMENT_TRAVERSE_DESCRIPTION = (
     "Traversal is cycle-safe, deterministic, and read-only. Active judgments are the default; "
     "include archived judgments only when explicitly requested."
 )
+RELATION_TYPE_REGISTRY_READ_DESCRIPTION = (
+    "List, get, or validate canonical judgment relation type definitions without changing "
+    "any persistent table. Unknown and deprecated relation types return structured advisory "
+    "warnings; validation never rejects a free-form relation assertion."
+)
+RELATION_TYPE_REGISTRY_WRITE_DESCRIPTION = (
+    "Register or revise one canonical judgment relation type through the atomic domain API. "
+    "Use expected_revision 0 to create a type and the exact current revision to update it. "
+    "Stale writes fail closed; deprecation remains advisory and does not reject assertions."
+)
 
 _IDEMPOTENCY = re.compile(r"^[A-Za-z0-9._:-]+$")
 _TRACE = re.compile(r"^[0-9a-f]{32}$")
@@ -222,6 +232,33 @@ JUDGMENT_TRAVERSE_INPUT = _object(
         "include_archived": {"type": "boolean", "default": False},
     },
     ["contract_version", "judgment_id"],
+)
+RELATION_TYPE_REGISTRY_READ_INPUT = _object(
+    {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "action": {"type": "string", "enum": ["list", "get", "validate"]},
+        "relation_type": {"type": "string", "minLength": 1, "maxLength": 64},
+        "revision": {"type": "integer", "minimum": 1},
+        "include_deprecated": {"type": "boolean", "default": True},
+    },
+    ["contract_version", "action"],
+)
+RELATION_TYPE_REGISTRY_WRITE_INPUT = _object(
+    {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "relation_type": {"type": "string", "minLength": 1, "maxLength": 64},
+        "definition": {"type": "string", "minLength": 1},
+        "namespace": {"type": "string", "minLength": 1, "maxLength": 128},
+        "provenance": {"type": "object"},
+        "expected_revision": {"type": "integer", "minimum": 0},
+        "lifecycle": {
+            "type": "string", "enum": ["active", "deprecated"], "default": "active"
+        },
+    },
+    [
+        "contract_version", "relation_type", "definition", "namespace",
+        "provenance", "expected_revision",
+    ],
 )
 
 _STEP_OUTPUT = _object(
@@ -455,8 +492,25 @@ _JUDGMENT_RELATION_OUTPUT = _object(
     {
         "target_id": {"type": "string"},
         "relation_type": {"type": "string"},
+        "relation_type_revision": {"type": ["integer", "null"], "minimum": 1},
+        "assertion_kind": {"type": "string", "const": "explicit"},
     },
-    ["target_id", "relation_type"],
+    ["target_id", "relation_type", "relation_type_revision", "assertion_kind"],
+)
+_ADVISORY_WARNING_OUTPUT = _object(
+    {
+        "code": {
+            "type": "string",
+            "enum": ["unknown_relation_type", "deprecated_relation_type"],
+        },
+        "message": {"type": "string"},
+        "relation_type": {"type": "string"},
+        "relation_type_revision": {"type": ["integer", "null"], "minimum": 1},
+        "lifecycle": {"type": "string", "enum": ["unknown", "deprecated"]},
+    },
+    [
+        "code", "message", "relation_type", "relation_type_revision", "lifecycle"
+    ],
 )
 _JUDGMENT_PROPERTIES = {
     "judgment_id": {"type": "string"},
@@ -467,6 +521,7 @@ _JUDGMENT_PROPERTIES = {
     "lifecycle": {"type": "string", "enum": ["active", "archived"]},
     "superseded_by": {"type": ["string", "null"]},
     "relations": {"type": "array", "items": _JUDGMENT_RELATION_OUTPUT},
+    "advisory_warnings": {"type": "array", "items": _ADVISORY_WARNING_OUTPUT},
 }
 _JUDGMENT_REQUIRED = list(_JUDGMENT_PROPERTIES)
 JUDGMENT_OUTPUT = _object(dict(_JUDGMENT_PROPERTIES), _JUDGMENT_REQUIRED)
@@ -505,8 +560,13 @@ _TRAVERSED_RELATION_OUTPUT = _object(
         "source_id": {"type": "string"},
         "target_id": {"type": "string"},
         "relation_type": {"type": "string"},
+        "relation_type_revision": {"type": ["integer", "null"], "minimum": 1},
+        "assertion_kind": {"type": "string", "const": "explicit"},
     },
-    ["source_id", "target_id", "relation_type"],
+    [
+        "source_id", "target_id", "relation_type",
+        "relation_type_revision", "assertion_kind",
+    ],
 )
 JUDGMENT_TRAVERSE_OUTPUT = _object(
     {
@@ -525,6 +585,44 @@ JUDGMENT_TRAVERSE_OUTPUT = _object(
         },
     },
     ["contract_version", "results"],
+)
+
+_RELATION_TYPE_OUTPUT = _object(
+    {
+        "relation_type": {"type": "string"},
+        "revision": {"type": "integer", "minimum": 1},
+        "definition": {"type": "string"},
+        "namespace": {"type": "string"},
+        "provenance": {"type": "object"},
+        "lifecycle": {"type": "string", "enum": ["active", "deprecated"]},
+        "created_at": {"type": "string"},
+        "is_current": {"type": "boolean"},
+    },
+    [
+        "relation_type", "revision", "definition", "namespace", "provenance",
+        "lifecycle", "created_at", "is_current",
+    ],
+)
+RELATION_TYPE_REGISTRY_READ_OUTPUT = _object(
+    {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "action": {"type": "string", "enum": ["list", "get", "validate"]},
+        "relation_types": {"type": "array", "items": _RELATION_TYPE_OUTPUT},
+        "advisory_warnings": {
+            "type": "array", "items": _ADVISORY_WARNING_OUTPUT
+        },
+    },
+    ["contract_version", "action", "relation_types", "advisory_warnings"],
+)
+RELATION_TYPE_REGISTRY_WRITE_OUTPUT = _object(
+    {
+        "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+        "relation_type": _RELATION_TYPE_OUTPUT,
+        "advisory_warnings": {
+            "type": "array", "items": _ADVISORY_WARNING_OUTPUT
+        },
+    },
+    ["contract_version", "relation_type", "advisory_warnings"],
 )
 
 
@@ -573,7 +671,7 @@ TOOLS = (
             {
                 "contract_version": {"type": "string"},
                 "action": {"type": "string"},
-                "judgment": {"type": ["object", "null"]},
+                "judgment": {"anyOf": [{"type": "null"}, JUDGMENT_OUTPUT]},
             },
             ["contract_version", "action", "judgment"],
         ),
@@ -599,6 +697,20 @@ TOOLS = (
         input_schema=JUDGMENT_TRAVERSE_INPUT,
         output_schema=JUDGMENT_TRAVERSE_OUTPUT,
         annotations=_annotations(idempotent=True, read_only=True),
+    ),
+    types.Tool(
+        name="read_relation_type_registry",
+        description=RELATION_TYPE_REGISTRY_READ_DESCRIPTION,
+        input_schema=RELATION_TYPE_REGISTRY_READ_INPUT,
+        output_schema=RELATION_TYPE_REGISTRY_READ_OUTPUT,
+        annotations=_annotations(idempotent=True, read_only=True),
+    ),
+    types.Tool(
+        name="write_relation_type_registry",
+        description=RELATION_TYPE_REGISTRY_WRITE_DESCRIPTION,
+        input_schema=RELATION_TYPE_REGISTRY_WRITE_INPUT,
+        output_schema=RELATION_TYPE_REGISTRY_WRITE_OUTPUT,
+        annotations=_annotations(idempotent=False),
     ),
 )
 
@@ -687,8 +799,12 @@ class FeedbackMCPAdapter:
                 output = self._search_judgments(arguments)
             elif params.name == "get_judgment":
                 output = self._get_judgment(arguments)
-            else:
+            elif params.name == "traverse_judgments":
                 output = self._traverse_judgments(arguments)
+            elif params.name == "read_relation_type_registry":
+                output = self._read_relation_type_registry(arguments)
+            else:
+                output = self._write_relation_type_registry(arguments)
             return self._success(output)
         except FeedbackContractError as error:
             return self._error(error.code, str(error), error.retryable)
@@ -1044,6 +1160,88 @@ class FeedbackMCPAdapter:
             include_archived=data.get("include_archived", False),
         )
         return {"contract_version": CONTRACT_VERSION, "results": results}
+
+    def _read_relation_type_registry(self, data: dict[str, Any]) -> dict[str, Any]:
+        self._keys(
+            data,
+            {
+                "contract_version", "action", "relation_type", "revision",
+                "include_deprecated",
+            },
+            {"contract_version", "action"},
+        )
+        self._version(data)
+        action = data["action"]
+        graph = self.engine.judgments
+        if action == "list":
+            if "relation_type" in data or "revision" in data:
+                raise ValueError("list does not accept relation_type or revision")
+            relation_types = graph.list_relation_types(
+                include_deprecated=data.get("include_deprecated", True)
+            )
+            warnings = [
+                warning
+                for record in relation_types
+                for warning in graph.validate_relation_type(record["relation_type"])
+            ]
+        elif action == "get":
+            if "relation_type" not in data or "include_deprecated" in data:
+                raise ValueError("get requires relation_type and does not accept include_deprecated")
+            record = graph.get_relation_type(
+                data["relation_type"], revision=data.get("revision")
+            )
+            relation_types = [record]
+            warnings = graph.validate_relation_type(data["relation_type"])
+        elif action == "validate":
+            if (
+                "relation_type" not in data
+                or "revision" in data
+                or "include_deprecated" in data
+            ):
+                raise ValueError("validate requires only relation_type")
+            warnings = graph.validate_relation_type(data["relation_type"])
+            try:
+                relation_types = [graph.get_relation_type(data["relation_type"])]
+            except KeyError:
+                relation_types = []
+        else:
+            raise ValueError("unsupported relation type registry action")
+        return {
+            "contract_version": CONTRACT_VERSION,
+            "action": action,
+            "relation_types": relation_types,
+            "advisory_warnings": warnings,
+        }
+
+    def _write_relation_type_registry(self, data: dict[str, Any]) -> dict[str, Any]:
+        allowed = {
+            "contract_version", "relation_type", "definition", "namespace",
+            "provenance", "expected_revision", "lifecycle",
+        }
+        self._keys(
+            data,
+            allowed,
+            {
+                "contract_version", "relation_type", "definition", "namespace",
+                "provenance", "expected_revision",
+            },
+        )
+        self._version(data)
+        record = self.engine.judgments.register_relation_type(
+            data["relation_type"],
+            data["definition"],
+            data["namespace"],
+            data["provenance"],
+            expected_revision=data["expected_revision"],
+            lifecycle=data.get("lifecycle", "active"),
+        )
+        return {
+            "contract_version": CONTRACT_VERSION,
+            "relation_type": record,
+            "advisory_warnings": self.engine.judgments.validate_relation_type(
+                data["relation_type"]
+            ),
+        }
 
     @staticmethod
     def _success(output: dict[str, Any]) -> types.CallToolResult:

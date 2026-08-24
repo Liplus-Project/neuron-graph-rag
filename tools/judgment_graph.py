@@ -91,6 +91,36 @@ def integrity(database: Path) -> dict[str, object]:
             ORDER BY 1, 3
             """
         ).fetchall()
+        relation_type_registry_inconsistencies = connection.execute(
+            """
+            SELECT registry.relation_type, registry.current_revision,
+                   registry.lifecycle
+            FROM judgment_relation_types AS registry
+            LEFT JOIN judgment_relation_type_revisions AS revision
+              ON revision.relation_type = registry.relation_type
+             AND revision.revision = registry.current_revision
+            WHERE revision.relation_type IS NULL
+               OR revision.lifecycle <> registry.lifecycle
+            ORDER BY registry.relation_type
+            """
+        ).fetchall()
+        relation_binding_inconsistencies = connection.execute(
+            """
+            SELECT relation.source_id, relation.target_id,
+                   relation.relation_type, relation.relation_type_revision,
+                   relation.assertion_kind
+            FROM judgment_relations AS relation
+            LEFT JOIN judgment_relation_type_revisions AS revision
+              ON revision.relation_type = relation.relation_type
+             AND revision.revision = relation.relation_type_revision
+            WHERE relation.assertion_kind <> 'explicit'
+               OR (
+                    relation.relation_type_revision IS NOT NULL
+                    AND revision.relation_type IS NULL
+               )
+            ORDER BY relation.source_id, relation.target_id, relation.relation_type
+            """
+        ).fetchall()
     result = {
         "sqlite_integrity": sqlite_status,
         "foreign_key_violations": foreign_keys,
@@ -99,6 +129,12 @@ def integrity(database: Path) -> dict[str, object]:
         "supersession_inconsistencies": [
             dict(row) for row in supersession_inconsistencies
         ],
+        "relation_type_registry_inconsistencies": [
+            dict(row) for row in relation_type_registry_inconsistencies
+        ],
+        "relation_binding_inconsistencies": [
+            dict(row) for row in relation_binding_inconsistencies
+        ],
     }
     if (
         sqlite_status != "ok"
@@ -106,6 +142,8 @@ def integrity(database: Path) -> dict[str, object]:
         or dangling
         or duplicate_successors
         or supersession_inconsistencies
+        or relation_type_registry_inconsistencies
+        or relation_binding_inconsistencies
     ):
         raise RuntimeError(json.dumps(result, sort_keys=True))
     return result

@@ -13,6 +13,37 @@ from .models import DocumentNode, FeedbackContractError, FeedbackReceipt, TypedE
 
 FILE_BUSY_TIMEOUT_MILLISECONDS = 5_000
 
+JUDGMENT_RELATION_TYPE_SEEDS = (
+    (
+        "depends_on",
+        "この結論は target が真であり続けることを前提にする。",
+    ),
+    (
+        "refines",
+        "target を置き換えずに、その範囲を狭めるか運用可能にする。",
+    ),
+    (
+        "supersedes",
+        "この結論が target を現在の状態として置き換える。",
+    ),
+    (
+        "conflicts_with",
+        "二つの現在の結論は同時に適用できない。",
+    ),
+    (
+        "informs",
+        "target に関連する判断材料を与えるが、target を制約しない。",
+    ),
+)
+JUDGMENT_RELATION_TYPE_NAMESPACE = "ngr.decision_structure"
+JUDGMENT_RELATION_TYPE_SEED_PROVENANCE = json.dumps(
+    {"document": "docs/Decision-Structure.md", "section": "Edge vocabulary"},
+    ensure_ascii=False,
+    sort_keys=True,
+    separators=(",", ":"),
+)
+JUDGMENT_RELATION_TYPE_SEED_TIMESTAMP = "2026-08-24T00:00:00.000000Z"
+
 
 class SQLiteStore:
     def __init__(self, path: str | Path = ":memory:") -> None:
@@ -315,16 +346,131 @@ class SQLiteStore:
                 PRIMARY KEY (judgment_id, revision)
             );
 
+            CREATE TABLE IF NOT EXISTS judgment_relation_types (
+                relation_type TEXT PRIMARY KEY,
+                current_revision INTEGER NOT NULL CHECK(current_revision >= 1),
+                lifecycle TEXT NOT NULL CHECK(lifecycle IN ('active', 'deprecated')),
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS judgment_relation_type_revisions (
+                relation_type TEXT NOT NULL
+                    REFERENCES judgment_relation_types(relation_type) ON DELETE RESTRICT,
+                revision INTEGER NOT NULL CHECK(revision >= 1),
+                definition TEXT NOT NULL,
+                namespace TEXT NOT NULL,
+                provenance_json TEXT NOT NULL,
+                lifecycle TEXT NOT NULL CHECK(lifecycle IN ('active', 'deprecated')),
+                created_at TEXT NOT NULL,
+                PRIMARY KEY (relation_type, revision)
+            );
+
             CREATE TABLE IF NOT EXISTS judgment_relations (
                 source_id TEXT NOT NULL REFERENCES judgments(judgment_id) ON DELETE CASCADE,
                 target_id TEXT NOT NULL REFERENCES judgments(judgment_id) ON DELETE RESTRICT,
                 relation_type TEXT NOT NULL,
+                relation_type_revision INTEGER,
+                assertion_kind TEXT NOT NULL DEFAULT 'explicit'
+                    CHECK(assertion_kind = 'explicit'),
                 created_at TEXT NOT NULL,
                 PRIMARY KEY (source_id, target_id, relation_type),
                 CHECK(source_id <> target_id)
             );
             """
         )
+        relation_columns = {
+            row["name"]
+            for row in self.connection.execute("PRAGMA table_info(judgment_relations)")
+        }
+        if "relation_type_revision" not in relation_columns:
+            self.connection.execute(
+                "ALTER TABLE judgment_relations ADD COLUMN relation_type_revision INTEGER"
+            )
+        if "assertion_kind" not in relation_columns:
+            self.connection.execute(
+                "ALTER TABLE judgment_relations ADD COLUMN assertion_kind TEXT NOT NULL "
+                "DEFAULT 'explicit' CHECK(assertion_kind = 'explicit')"
+            )
+        try:
+            with self.transaction() as connection:
+                for relation_type, definition in JUDGMENT_RELATION_TYPE_SEEDS:
+                    connection.execute(
+                        """
+                        INSERT OR IGNORE INTO judgment_relation_types(
+                            relation_type, current_revision, lifecycle, created_at, updated_at
+                        ) VALUES (?, 1, 'active', ?, ?)
+                        """,
+                        (
+                            relation_type,
+                            JUDGMENT_RELATION_TYPE_SEED_TIMESTAMP,
+                            JUDGMENT_RELATION_TYPE_SEED_TIMESTAMP,
+                        ),
+                    )
+                    connection.execute(
+                        """
+                        INSERT OR IGNORE INTO judgment_relation_type_revisions(
+                            relation_type, revision, definition, namespace,
+                            provenance_json, lifecycle, created_at
+                        ) VALUES (?, 1, ?, ?, ?, 'active', ?)
+                        """,
+                        (
+                            relation_type,
+                            definition,
+                            JUDGMENT_RELATION_TYPE_NAMESPACE,
+                            JUDGMENT_RELATION_TYPE_SEED_PROVENANCE,
+                            JUDGMENT_RELATION_TYPE_SEED_TIMESTAMP,
+                        ),
+                    )
+                    seeded_revision = connection.execute(
+                        """
+                        SELECT definition, namespace, provenance_json, lifecycle
+                        FROM judgment_relation_type_revisions
+                        WHERE relation_type = ? AND revision = 1
+                        """,
+                        (relation_type,),
+                    ).fetchone()
+                    expected = (
+                        definition,
+                        JUDGMENT_RELATION_TYPE_NAMESPACE,
+                        JUDGMENT_RELATION_TYPE_SEED_PROVENANCE,
+                        "active",
+                    )
+                    if seeded_revision is None or tuple(seeded_revision) != expected:
+                        raise RuntimeError(
+                            f"canonical relation type seed conflict: {relation_type}"
+                        )
+                    current = connection.execute(
+                        """
+                        SELECT registry.current_revision, registry.lifecycle,
+                               revision.lifecycle AS revision_lifecycle
+                        FROM judgment_relation_types AS registry
+                        LEFT JOIN judgment_relation_type_revisions AS revision
+                          ON revision.relation_type = registry.relation_type
+                         AND revision.revision = registry.current_revision
+                        WHERE registry.relation_type = ?
+                        """,
+                        (relation_type,),
+                    ).fetchone()
+                    if (
+                        current is None
+                        or current["revision_lifecycle"] is None
+                        or current["lifecycle"] != current["revision_lifecycle"]
+                    ):
+                        raise RuntimeError(
+                            f"invalid current relation type revision: {relation_type}"
+                        )
+                    connection.execute(
+                        """
+                        UPDATE judgment_relations
+                        SET relation_type_revision = 1, assertion_kind = 'explicit'
+                        WHERE relation_type = ? AND relation_type_revision IS NULL
+                        """,
+                        (relation_type,),
+                    )
+        except Exception:
+            self.connection.rollback()
+            raise
         self.connection.commit()
 
     def upsert_node(self, node: DocumentNode) -> None:

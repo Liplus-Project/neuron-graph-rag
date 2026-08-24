@@ -145,6 +145,7 @@ class NeuronGraphRAG:
             dense_weight=self.config.dense_weight,
             use_dense_retrieval=self.config.use_dense_retrieval,
         )
+        self.relation_types = self.judgments.relation_types
 
     def close(self) -> None:
         self.store.close()

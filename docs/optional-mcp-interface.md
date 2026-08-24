@@ -75,7 +75,7 @@ neuron-graph-rag-mcp \
 
 ## 2. Protocol envelope
 
-tool 名は `search`、`record_source_use`、`record_outcome`、`write_judgment`、`search_judgments`、`get_judgment`、`traverse_judgments` とする。すべての input と成功 output は JSON Schema で宣言し、未知 field を受け付けない。
+tool 名は `search`、`record_source_use`、`record_outcome`、`write_judgment`、`search_judgments`、`get_judgment`、`traverse_judgments`、`read_relation_type_registry`、`write_relation_type_registry` とする。すべての input と成功 output は JSON Schema で宣言し、未知 field を受け付けない。
 
 成功時は MCP envelope の `resultType` を `complete` とし、機械処理用の `structuredContent` と、その同じ JSON を直列化した `TextContent` を返す。これは [MCP 2026-07-28 tools specification](https://modelcontextprotocol.io/specification/2026-07-28/server/tools) の tool result、structured content、後方互換性の指針に合わせる。
 
@@ -106,10 +106,16 @@ tool の意味をこの文書だけに閉じ込めない。MCP client が `tools
 | `search_judgments` | `true` | `false` | `true` | `false` |
 | `get_judgment` | `true` | `false` | `true` | `false` |
 | `traverse_judgments` | `true` | `false` | `true` | `false` |
+| `read_relation_type_registry` | `true` | `false` | `true` | `false` |
+| `write_relation_type_registry` | `false` | `false` | `false` | `false` |
 
 `search` は edge を強化しないが、retrieval trace と動的 activation を保存するため read-only ではない。annotation は表示上の hint であり、認証・認可の代替ではない。
 
 judgment 専用三 tool は通常 `search` の feedback loop から分離されている。`search_judgments` は trace ID を発行せず、`get_judgment` は stable identity を完全一致で取得し、`traverse_judgments` は有限 hop の typed relation を決定的に辿る。三 tool は成功時・失敗時とも persistent table を変更しない。`search_judgments` と `traverse_judgments` は既定で active judgment だけを返し、archived は `include_archived=true` の時だけ含める。
+
+relation type registry の二 tool も通常の retrieval / feedback loop から分離する。`read_relation_type_registry` は `list`、`get`、`validate` を提供し、成功・失敗とも persistent table を変更しない。`validate` は active type に warning なし、未知 type に `unknown_relation_type`、deprecated type に `deprecated_relation_type` を返す。`write_relation_type_registry` は definition、namespace、provenance、lifecycle と `expected_revision` を atomic domain API へ渡し、stale update を既存 error envelope の `invalid_argument` として fail closed にする。warning は advisory-only で relation assertion を拒否しない。
+
+judgment relation output は既存 `target_id` と `relation_type` に加え、適用時の `relation_type_revision`（未知 type は `null`）と常に `explicit` の `assertion_kind` を返す。judgment output の `advisory_warnings` と registry tool output は `code`、`message`、`relation_type`、`relation_type_revision`、`lifecycle` だけを持ち、未知 field を許可しない。v0 は inferred assertion を返さず、canonical relation table に保存しない。
 
 ## 3. Shared identifiers and validation
 
@@ -554,3 +560,5 @@ MCP であることだけを理由に別 repository へ分離しない。次の�
 - persistent core では `trace_expires_at` が `null`、retention deployment では具体的な description と timestamp が一致する
 - retention expiry 後は両 feedback tool が `unknown_trace` を返す
 - core test、demo、eval が adapter なしで引き続き通る
+- relation type registry の read / validate が成功・失敗とも persistent table を変更せず、write が exact revision check と transaction rollback を守る
+- active / unknown / deprecated type の warning、strict input/output schema、tool annotation が契約に一致し、未知 / deprecated relation assertion が保存される
