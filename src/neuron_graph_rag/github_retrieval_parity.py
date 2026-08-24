@@ -40,6 +40,14 @@ GATE_IDS = (
     "expected-source-top-k-completeness",
     "source-path-explanation-integrity",
 )
+CLAIM_FIELDS = (
+    "protocol_id",
+    "protocol_commit",
+    "stage",
+    "capture_sha256",
+    "one_time_claim",
+)
+GATE_FIELDS = ("gate_id", "hard", "passed", "details")
 
 MANIFEST_PATH = FIXTURES / f"{STEM}.manifest.json"
 CURRENT_CORPUS_PATH = FIXTURES / f"{STEM}.corpus.json"
@@ -295,6 +303,45 @@ def verify_protocol_commit(protocol_commit: str, protocol: Mapping[str, Any]) ->
     if branch_check.returncode != 0:
         raise ValueError("protocol_commit must be merged into origin/main")
     manifest_relative = MANIFEST_PATH.relative_to(ROOT).as_posix()
+    first_parent = f"{protocol_commit}^1"
+    try:
+        _git_bytes(root, f"{first_parent}^{{commit}}")
+    except ValueError as error:
+        raise ValueError("protocol_commit must have a valid first parent") from error
+    parent_manifest = subprocess.run(
+        ["git", "cat-file", "-e", f"{first_parent}:{manifest_relative}"],
+        cwd=root,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if parent_manifest.returncode == 0:
+        raise ValueError(
+            "protocol_commit must be the commit that first introduces the manifest"
+        )
+    introductions = subprocess.run(
+        [
+            "git",
+            "log",
+            "--first-parent",
+            "--diff-filter=A",
+            "--format=%H",
+            protocol_commit,
+            "--",
+            manifest_relative,
+        ],
+        cwd=root,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if introductions.returncode != 0 or introductions.stdout.splitlines() != [
+        protocol_commit
+    ]:
+        raise ValueError(
+            "protocol_commit must be the manifest's unique first-parent introduction"
+        )
     if (
         _git_bytes(root, f"{protocol_commit}:{manifest_relative}")
         != (root / manifest_relative).read_bytes()
@@ -403,24 +450,51 @@ def run_registered_stage(stage: str, protocol_commit: str) -> Path:
             stage, protocol_commit, capture_sha256, protocol, error
         )
     write_json_exclusive(result_path, payload)
-    verify_result_payload(read_json(result_path), _mapping(protocol, "result_schema"))
+    _verify_registered_result(stage, protocol)
     return result_path
 
 
 def verify_registered_result(stage: str) -> None:
     protocol = load_protocol()
+    _verify_registered_result(stage, protocol)
+
+
+def _verify_registered_result(stage: str, protocol: Mapping[str, Any]) -> None:
     _validate_stage(stage)
     manifest = _mapping(protocol, "manifest")
     claim = read_json(_stage_path(manifest, stage, "claim"))
+    if list(claim) != list(CLAIM_FIELDS):
+        raise ValueError("stage claim field order mismatch")
+    if claim.get("protocol_id") != PROTOCOL_ID or claim.get("stage") != stage:
+        raise ValueError("stage claim protocol identity mismatch")
+    if claim.get("one_time_claim") is not True:
+        raise ValueError("stage claim must be marked one_time_claim")
+    protocol_commit = claim.get("protocol_commit")
+    if not isinstance(protocol_commit, str):
+        raise ValueError("stage claim protocol_commit must be a string")
+    verify_protocol_commit(protocol_commit, protocol)
+    capture_sha256 = claim.get("capture_sha256")
+    if (
+        not isinstance(capture_sha256, str)
+        or re.fullmatch(r"[0-9a-f]{64}", capture_sha256) is None
+    ):
+        raise ValueError("stage claim capture_sha256 must be full lowercase hex")
     result = read_json(_stage_path(manifest, stage, "result"))
     capture_path = _stage_path(manifest, stage, "capture")
-    if hashlib.sha256(capture_path.read_bytes()).hexdigest() != claim.get(
-        "capture_sha256"
-    ):
+    capture = read_json(capture_path)
+    if hashlib.sha256(capture_path.read_bytes()).hexdigest() != capture_sha256:
         raise ValueError("registered capture changed after the stage claim")
-    if result.get("capture_sha256") != claim.get("capture_sha256"):
-        raise ValueError("result does not match the stage claim")
     verify_result_payload(result, _mapping(protocol, "result_schema"))
+    if result.get("stage") != stage:
+        raise ValueError("result stage does not match the stage claim")
+    if result.get("protocol_commit") != protocol_commit:
+        raise ValueError("result protocol_commit does not match the stage claim")
+    if result.get("capture_sha256") != capture_sha256:
+        raise ValueError("result does not match the stage claim")
+    if result.get("protocol_hashes") != dict(_mapping(manifest, "artifact_sha256")):
+        raise ValueError("result protocol hashes do not match the frozen manifest")
+    if result.get("raw_github_rag_mcp_capture") != capture:
+        raise ValueError("result raw capture does not match the registered capture")
 
 
 def verify_result_payload(
@@ -431,23 +505,43 @@ def verify_result_payload(
         raise ValueError("result top-level field order mismatch")
     if payload.get("protocol_id") != PROTOCOL_ID or payload.get("stage") not in STAGES:
         raise ValueError("result protocol identity mismatch")
+    protocol_commit = payload.get("protocol_commit")
+    if (
+        not isinstance(protocol_commit, str)
+        or re.fullmatch(r"[0-9a-f]{40}", protocol_commit) is None
+    ):
+        raise ValueError("result protocol_commit must be full lowercase hex")
+    capture_sha256 = payload.get("capture_sha256")
+    if (
+        not isinstance(capture_sha256, str)
+        or re.fullmatch(r"[0-9a-f]{64}", capture_sha256) is None
+    ):
+        raise ValueError("result capture_sha256 must be full lowercase hex")
     gates = payload.get("gates")
-    if not isinstance(gates, list) or [
-        item.get("gate_id") for item in gates if isinstance(item, Mapping)
-    ] != list(GATE_IDS):
+    if not isinstance(gates, list) or len(gates) != len(GATE_IDS):
         raise ValueError("result hard gate order mismatch")
-    all_pass = all(
-        item.get("passed") is True for item in gates if isinstance(item, Mapping)
-    )
+    for index, item in enumerate(gates):
+        if not isinstance(item, Mapping) or list(item) != list(GATE_FIELDS):
+            raise ValueError("result hard gate shape mismatch")
+        if item.get("gate_id") != GATE_IDS[index]:
+            raise ValueError("result hard gate order mismatch")
+        if item.get("hard") is not True:
+            raise ValueError("result gate must be hard")
+        if type(item.get("passed")) is not bool:
+            raise ValueError("result gate passed must be boolean")
+        if not isinstance(item.get("details"), Mapping):
+            raise ValueError("result gate details must be an object")
+    all_pass = all(item["passed"] for item in gates)
     if payload.get("all_hard_gates_pass") is not all_pass:
         raise ValueError("result all_hard_gates_pass mismatch")
     status = payload.get("status")
-    if status == "passed" and not all_pass:
-        raise ValueError("passed result must pass every hard gate")
-    if status == "failed" and payload.get("failure_code") not in schema.get(
-        "failure_codes", []
-    ):
-        raise ValueError("failed result has an unknown failure code")
+    if status not in ("passed", "failed"):
+        raise ValueError("result status must be passed or failed")
+    if status == "passed":
+        if not all_pass or payload.get("failure_code") is not None:
+            raise ValueError("passed result must pass every hard gate")
+    elif all_pass or payload.get("failure_code") not in schema.get("failure_codes", []):
+        raise ValueError("failed result must fail a hard gate with a known code")
 
 
 def _execute_stage(
@@ -669,7 +763,7 @@ def _validate_capture(
         expected_request = {"query": expected_cases[case_id]["query"], **defaults}
         if row.get("request") != expected_request:
             raise ValueError("capture request differs from the frozen common request")
-        raw_search = _mapping_value(row, "raw_search")
+        raw_search = _mapping_value(row.get("raw_search"), "raw_search")
         if (
             raw_search.get("mode") != "search"
             or raw_search.get("filters_unmatched") != []
@@ -691,6 +785,8 @@ def _validate_capture(
             if path not in documents:
                 raise ValueError("raw search result path is outside the frozen corpus")
             vector_id = _required_string(item, "vector_id")
+            if vector_id in vector_paths:
+                raise ValueError("raw search result vector_id must be unique")
             vector_paths[vector_id] = path
             keyword.append(
                 {
@@ -699,7 +795,7 @@ def _validate_capture(
                     "raw": item,
                 }
             )
-        fetch = _mapping_value(row, "raw_stored_content")
+        fetch = _mapping_value(row.get("raw_stored_content"), "raw_stored_content")
         if (
             fetch.get("mode") != "fetch"
             or fetch.get("content_source") != "index"
@@ -747,17 +843,18 @@ def _validate_capture(
                 raise ValueError("graph result must be an object")
             path = item.get("doc_path")
             if (
-                item.get("repo") == current.repository
-                and item.get("type") == "doc"
-                and path in documents
+                item.get("repo") != current.repository
+                or item.get("type") != "doc"
+                or path not in documents
             ):
-                graph.append(
-                    {
-                        "rank": rank,
-                        "source_id": _source_identity(current.repository, str(path)),
-                        "raw": item,
-                    }
-                )
+                raise ValueError("graph result left the frozen document surface")
+            graph.append(
+                {
+                    "rank": rank,
+                    "source_id": _source_identity(current.repository, str(path)),
+                    "raw": item,
+                }
+            )
         captured[case_id] = {
             "keyword": keyword,
             "graph": graph,
@@ -960,8 +1057,8 @@ def _assert_stage_can_start(stage: str, protocol: Mapping[str, Any]) -> None:
         development = _stage_path(manifest, "development", "result")
         if not development.exists():
             raise RuntimeError("holdout is closed until development result exists")
+        _verify_registered_result("development", protocol)
         result = read_json(development)
-        verify_result_payload(result, _mapping(protocol, "result_schema"))
         if result.get("all_hard_gates_pass") is not True:
             raise RuntimeError(
                 "holdout is closed because development hard gates did not pass"

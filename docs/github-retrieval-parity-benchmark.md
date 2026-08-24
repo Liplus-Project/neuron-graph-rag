@@ -20,12 +20,12 @@ development と holdout は、expected、forbidden、relation seed を含む gol
 
 development / holdout はそれぞれ `capture -> claim -> result` の三 artifact を持ち、すべて exclusive-create で上書きを拒否する。
 
-- capture は frozen merge commit、stage、全 query の request、未加工 `search` response、全 keyword result の `vector_id` に対する未加工 stored-content response を保持する。
+- capture は frozen merge commit、stage、全 query の request、未加工 `search` response、全 keyword result の一意な `vector_id` に対する未加工 stored-content response を保持する。keyword / graph result はすべて固定 repository の `doc` と全 Markdown path の範囲内でなければならず、範囲外 result を黙って除外しない。
 - stored content は `content_source=index`、`content_max_chars=8000`、`not_found=[]` を要求し、`path + "\n\n" + source body` の固定 prefix と照合する。これにより main URL の path 一致だけで古い index content を同一 source と扱わない。
-- claim は capture SHA-256 を固定し、stage 開始後の再実行を拒否する。実行失敗も immutable failure result として保存する。
+- claim は exact field、protocol / stage / frozen merge commit、capture SHA-256、`one_time_claim=true` を固定し、stage 開始後の再実行を拒否する。result は同じ commit、manifest hash registry、登録 capture 全体、全 hard gate の厳格形状に一致しなければならない。実行失敗も immutable failure result として保存する。
 - holdout capture の登録は development result が全 hard gate を通るまで拒否する。
 
-観測 Issue は freeze PR の squash merge commit を `--protocol-commit` に渡す。その commit が `origin/main` に含まれ、実行中の全 artifact byte が manifest hash と一致するときだけ capture 登録と stage 実行を許可する。
+観測 Issue は freeze PR の squash merge commit を `--protocol-commit` に渡す。その commit が `origin/main` に含まれ、第一親には manifest が存在せず当該 commit で初めて同一 bytes の manifest が導入され、実行中の全 artifact byte が manifest hash と一致するときだけ capture 登録と stage 実行を許可する。manifest を既に含む後続 commit は同じ artifact bytes を保持していても拒否する。
 
 ```powershell
 $env:PYTHONPATH = "src"
