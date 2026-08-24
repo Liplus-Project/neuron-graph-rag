@@ -72,6 +72,7 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
             [
                 "search", "record_source_use", "record_outcome", "write_judgment",
                 "search_judgments", "get_judgment", "traverse_judgments",
+                "read_relation_type_registry", "write_relation_type_registry",
             ],
         )
         self.assertEqual(
@@ -80,7 +81,7 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         )
         self.assertEqual(
             [tool.annotations.idempotent_hint for tool in listed.tools],
-            [False, True, True, False, True, True, True],
+            [False, True, True, False, True, True, True, True, False],
         )
         for tool in listed.tools[:3]:
             self.assertFalse(tool.annotations.read_only_hint)
@@ -91,13 +92,19 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(listed.tools[3].annotations.destructive_hint)
         self.assertFalse(listed.tools[3].input_schema["additionalProperties"])
         self.assertFalse(listed.tools[3].output_schema["additionalProperties"])
-        for tool in listed.tools[4:]:
+        for tool in listed.tools[4:8]:
             self.assertTrue(tool.annotations.read_only_hint)
             self.assertFalse(tool.annotations.destructive_hint)
             self.assertTrue(tool.annotations.idempotent_hint)
             self.assertFalse(tool.annotations.open_world_hint)
             self.assertFalse(tool.input_schema["additionalProperties"])
             self.assertFalse(tool.output_schema["additionalProperties"])
+        self.assertFalse(listed.tools[8].annotations.read_only_hint)
+        self.assertFalse(listed.tools[8].annotations.destructive_hint)
+        self.assertFalse(listed.tools[8].annotations.idempotent_hint)
+        self.assertFalse(listed.tools[8].annotations.open_world_hint)
+        self.assertFalse(listed.tools[8].input_schema["additionalProperties"])
+        self.assertFalse(listed.tools[8].output_schema["additionalProperties"])
 
         result = await self.adapter.call_tool(
             None,
@@ -300,6 +307,90 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(invalid.is_error)
         self.assertEqual(json.loads(invalid.content[0].text)["code"], "invalid_argument")
         self.assertEqual(self._persistent_state(), before)
+
+    async def test_relation_type_registry_tools_warn_and_enforce_revision_checks(self) -> None:
+        before_reads = self._persistent_state()
+        active = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="read_relation_type_registry",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "action": "validate",
+                    "relation_type": "depends_on",
+                },
+            ),
+        )
+        unknown = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="read_relation_type_registry",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "action": "validate",
+                    "relation_type": "supports",
+                },
+            ),
+        )
+        invalid = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="read_relation_type_registry",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "action": "list",
+                    "relation_type": "depends_on",
+                },
+            ),
+        )
+        self.assertFalse(active.is_error)
+        self.assertEqual(active.structured_content["advisory_warnings"], [])
+        self.assertFalse(unknown.is_error)
+        self.assertEqual(
+            unknown.structured_content["advisory_warnings"][0]["code"],
+            "unknown_relation_type",
+        )
+        self.assertTrue(invalid.is_error)
+        self.assertEqual(self._persistent_state(), before_reads)
+
+        created = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="write_relation_type_registry",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "relation_type": "supports",
+                    "definition": "Source supports target.",
+                    "namespace": "test.relations",
+                    "provenance": {"source": "test"},
+                    "expected_revision": 0,
+                    "lifecycle": "deprecated",
+                },
+            ),
+        )
+        self.assertFalse(created.is_error)
+        self.assertEqual(created.structured_content["relation_type"]["revision"], 1)
+        self.assertEqual(
+            created.structured_content["advisory_warnings"][0]["code"],
+            "deprecated_relation_type",
+        )
+        before_stale = self._persistent_state()
+        stale = await self.adapter.call_tool(
+            None,
+            types.CallToolRequestParams(
+                name="write_relation_type_registry",
+                arguments={
+                    "contract_version": CONTRACT_VERSION,
+                    "relation_type": "supports",
+                    "definition": "Retry",
+                    "namespace": "test.relations",
+                    "provenance": {"source": "test"},
+                    "expected_revision": 0,
+                },
+            ),
+        )
+        self.assertTrue(stale.is_error)
+        self.assertEqual(self._persistent_state(), before_stale)
 
     async def test_feedback_receipt_exposes_quorum_evidence_and_replays(self) -> None:
         self.adapter.close()
@@ -646,6 +737,7 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
                 [
                     "search", "record_source_use", "record_outcome", "write_judgment",
                     "search_judgments", "get_judgment", "traverse_judgments",
+                    "read_relation_type_registry", "write_relation_type_registry",
                 ],
             )
             result = await session.call_tool(

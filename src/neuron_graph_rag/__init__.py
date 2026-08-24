@@ -1,6 +1,7 @@
 from .engine import EngineConfig, NeuronGraphRAG
 from .feedback import FeedbackLedger
 from .judgments import JudgmentContractError, JudgmentGraph
+from .ontology import RelationTypeContractError, RelationTypeRegistry
 from .models import (
     ActivationPath,
     ConfirmedEdge,
@@ -42,6 +43,8 @@ __all__ = [
     "FeedbackReceipt",
     "JudgmentContractError",
     "JudgmentGraph",
+    "RelationTypeContractError",
+    "RelationTypeRegistry",
     "NeuronGraphRAG",
     "NormalizedSiblingEdge",
     "OutcomeReceipt",

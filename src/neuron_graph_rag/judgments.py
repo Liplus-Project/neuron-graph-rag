@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 from typing import Any, Iterable
 
 from .models import DocumentNode, TypedEdge
+from .ontology import RelationTypeRegistry
 from .retrieval import BM25Retriever, DenseRetriever, normalize_scores
 from .storage import SQLiteStore
 
@@ -37,6 +38,7 @@ class JudgmentGraph:
         self.sparse_weight = sparse_weight
         self.dense_weight = dense_weight
         self.use_dense_retrieval = use_dense_retrieval
+        self.relation_types = RelationTypeRegistry(store)
 
     @staticmethod
     def _now() -> str:
@@ -241,16 +243,63 @@ class JudgmentGraph:
         if row is None:
             raise KeyError(f"Unknown judgment: {judgment_id}")
         relations = self.store.connection.execute(
-            "SELECT target_id, relation_type FROM judgment_relations WHERE source_id = ? ORDER BY target_id, relation_type",
+            """
+            SELECT target_id, relation_type, relation_type_revision, assertion_kind
+            FROM judgment_relations WHERE source_id = ?
+            ORDER BY target_id, relation_type
+            """,
             (judgment_id,),
         ).fetchall()
+        warnings = []
+        seen_warning_types: set[str] = set()
+        for relation in relations:
+            relation_type = relation["relation_type"]
+            if relation_type in seen_warning_types:
+                continue
+            relation_warnings = self.relation_types.validate(relation_type)
+            if relation_warnings:
+                seen_warning_types.add(relation_type)
+                warnings.extend(relation_warnings)
         return {
             "judgment_id": row["judgment_id"], "revision": row["current_revision"],
             "statement": row["statement"], "rationale": row["rationale"],
             "provenance": json.loads(row["provenance_json"]), "lifecycle": row["lifecycle"],
             "superseded_by": row["superseded_by"],
             "relations": [dict(item) for item in relations],
+            "advisory_warnings": warnings,
         }
+
+    def register_relation_type(
+        self,
+        relation_type: str,
+        definition: str,
+        namespace: str,
+        provenance: dict[str, Any],
+        *,
+        expected_revision: int,
+        lifecycle: str = "active",
+    ) -> dict[str, Any]:
+        return self.relation_types.register(
+            relation_type,
+            definition,
+            namespace,
+            provenance,
+            expected_revision=expected_revision,
+            lifecycle=lifecycle,
+        )
+
+    def get_relation_type(
+        self, relation_type: str, *, revision: int | None = None
+    ) -> dict[str, Any]:
+        return self.relation_types.get(relation_type, revision=revision)
+
+    def list_relation_types(
+        self, *, include_deprecated: bool = True
+    ) -> list[dict[str, Any]]:
+        return self.relation_types.list(include_deprecated=include_deprecated)
+
+    def validate_relation_type(self, relation_type: str) -> list[dict[str, Any]]:
+        return self.relation_types.validate(relation_type)
 
     def search_judgments(
         self,
@@ -349,7 +398,15 @@ class JudgmentGraph:
                 edges = self._traversal_edges(
                     current_id, direction=direction, relation_type=relation_type
                 )
-                for source_id, target_id, kind, edge_direction, neighbor_id in edges:
+                for (
+                    source_id,
+                    target_id,
+                    kind,
+                    type_revision,
+                    assertion_kind,
+                    edge_direction,
+                    neighbor_id,
+                ) in edges:
                     if neighbor_id in visited:
                         continue
                     judgment = self.get_judgment(neighbor_id)
@@ -365,6 +422,8 @@ class JudgmentGraph:
                                 "source_id": source_id,
                                 "target_id": target_id,
                                 "relation_type": kind,
+                                "relation_type_revision": type_revision,
+                                "assertion_kind": assertion_kind,
                             },
                             "judgment": judgment,
                         }
@@ -390,37 +449,47 @@ class JudgmentGraph:
         *,
         direction: str,
         relation_type: str | None,
-    ) -> list[tuple[str, str, str, str, str]]:
-        edges: list[tuple[str, str, str, str, str]] = []
+    ) -> list[tuple[str, str, str, int | None, str, str, str]]:
+        edges: list[tuple[str, str, str, int | None, str, str, str]] = []
         if direction in {"outgoing", "both"}:
             rows = self.store.connection.execute(
                 """
-                SELECT source_id, target_id, relation_type
+                SELECT source_id, target_id, relation_type,
+                       relation_type_revision, assertion_kind
                 FROM judgment_relations WHERE source_id = ?
                 ORDER BY target_id, relation_type
                 """,
                 (judgment_id,),
             ).fetchall()
             edges.extend(
-                (row["source_id"], row["target_id"], row["relation_type"], "outgoing", row["target_id"])
+                (
+                    row["source_id"], row["target_id"], row["relation_type"],
+                    row["relation_type_revision"], row["assertion_kind"],
+                    "outgoing", row["target_id"],
+                )
                 for row in rows
                 if relation_type is None or row["relation_type"] == relation_type
             )
         if direction in {"incoming", "both"}:
             rows = self.store.connection.execute(
                 """
-                SELECT source_id, target_id, relation_type
+                SELECT source_id, target_id, relation_type,
+                       relation_type_revision, assertion_kind
                 FROM judgment_relations WHERE target_id = ?
                 ORDER BY source_id, relation_type
                 """,
                 (judgment_id,),
             ).fetchall()
             edges.extend(
-                (row["source_id"], row["target_id"], row["relation_type"], "incoming", row["source_id"])
+                (
+                    row["source_id"], row["target_id"], row["relation_type"],
+                    row["relation_type_revision"], row["assertion_kind"],
+                    "incoming", row["source_id"],
+                )
                 for row in rows
                 if relation_type is None or row["relation_type"] == relation_type
             )
-        return sorted(edges, key=lambda item: (item[4], item[2], item[3], item[0], item[1]))
+        return sorted(edges, key=lambda item: (item[6], item[2], item[5], item[0], item[1]))
 
     @staticmethod
     def _repository(value: str | None) -> str | None:
@@ -441,12 +510,57 @@ class JudgmentGraph:
         return stored == repository or stored.rsplit("/", 1)[-1] == repository
 
     def export(self) -> dict[str, Any]:
-        ids = [row[0] for row in self.store.connection.execute("SELECT judgment_id FROM judgments ORDER BY judgment_id")]
-        return {"format": "ngr-judgment-graph/v1", "judgments": [self.get(item) for item in ids]}
+        ids = [
+            row[0]
+            for row in self.store.connection.execute(
+                "SELECT judgment_id FROM judgments ORDER BY judgment_id"
+            )
+        ]
+        relation_types = []
+        for registry in self.store.connection.execute(
+            "SELECT * FROM judgment_relation_types ORDER BY relation_type"
+        ):
+            revisions = []
+            for revision in self.store.connection.execute(
+                """
+                SELECT * FROM judgment_relation_type_revisions
+                WHERE relation_type = ? ORDER BY revision
+                """,
+                (registry["relation_type"],),
+            ):
+                revisions.append(
+                    {
+                        "revision": revision["revision"],
+                        "definition": revision["definition"],
+                        "namespace": revision["namespace"],
+                        "provenance": json.loads(revision["provenance_json"]),
+                        "lifecycle": revision["lifecycle"],
+                        "created_at": revision["created_at"],
+                    }
+                )
+            relation_types.append(
+                {
+                    "relation_type": registry["relation_type"],
+                    "current_revision": registry["current_revision"],
+                    "lifecycle": registry["lifecycle"],
+                    "created_at": registry["created_at"],
+                    "updated_at": registry["updated_at"],
+                    "revisions": revisions,
+                }
+            )
+        return {
+            "format": "ngr-judgment-graph/v2",
+            "relation_types": relation_types,
+            "judgments": [self.get(item) for item in ids],
+        }
 
     def import_graph(self, payload: dict[str, Any]) -> None:
-        if not isinstance(payload, dict) or payload.get("format") != "ngr-judgment-graph/v1":
+        if not isinstance(payload, dict) or payload.get("format") not in {
+            "ngr-judgment-graph/v1",
+            "ngr-judgment-graph/v2",
+        }:
             raise JudgmentContractError("unsupported judgment graph format")
+        format_version = payload["format"]
         records = payload.get("judgments")
         if not isinstance(records, list):
             raise JudgmentContractError("judgments must be a list")
@@ -457,8 +571,15 @@ class JudgmentGraph:
             for relation in record.get("relations", []):
                 if relation.get("target_id") not in ids:
                     raise JudgmentContractError("dangling relation")
+        relation_type_records = payload.get("relation_types", [])
+        if format_version == "ngr-judgment-graph/v2" and not isinstance(
+            relation_type_records, list
+        ):
+            raise JudgmentContractError("relation_types must be a list")
         now = self._now()
         with self.store.transaction() as connection:
+            if format_version == "ngr-judgment-graph/v2":
+                self._import_relation_types(connection, relation_type_records)
             for record in sorted(records, key=lambda item: item["judgment_id"]):
                 judgment_id = self._identity(record["judgment_id"])
                 revision = record.get("revision")
@@ -477,9 +598,30 @@ class JudgmentGraph:
                 self._insert_revision(connection, judgment_id, revision, statement, rationale, provenance, now)
                 self._sync_retrieval(connection, judgment_id, statement, rationale, provenance, ())
             for record in sorted(records, key=lambda item: item["judgment_id"]):
-                relations = self._relations(record.get("relations", []), source_id=record["judgment_id"])
+                relation_payload = record.get("relations", [])
+                relations = self._relations(
+                    [
+                        {
+                            "target_id": relation["target_id"],
+                            "relation_type": relation["relation_type"],
+                        }
+                        for relation in relation_payload
+                    ],
+                    source_id=record["judgment_id"],
+                )
                 self._require_targets(connection, relations)
-                self._replace_relations(connection, record["judgment_id"], relations, now)
+                bindings = None
+                if format_version == "ngr-judgment-graph/v2":
+                    bindings = self._import_relation_bindings(
+                        connection, relation_payload
+                    )
+                self._replace_relations(
+                    connection,
+                    record["judgment_id"],
+                    relations,
+                    now,
+                    bindings=bindings,
+                )
                 self._sync_retrieval(
                     connection, record["judgment_id"], record["statement"], record["rationale"],
                     record["provenance"], relations,
@@ -492,6 +634,207 @@ class JudgmentGraph:
                     "UPDATE judgments SET superseded_by = ? WHERE judgment_id = ?",
                     (successor, record["judgment_id"]),
                 )
+
+    @staticmethod
+    def _import_relation_types(connection: Any, records: list[Any]) -> None:
+        seen: set[str] = set()
+        if any(not isinstance(record, dict) for record in records):
+            raise JudgmentContractError("relation type record must be an object")
+        for record in sorted(records, key=lambda item: item.get("relation_type", "")):
+            relation_type = record.get("relation_type")
+            if not isinstance(relation_type, str) or _RELATION.fullmatch(relation_type) is None:
+                raise JudgmentContractError("invalid relation type")
+            if relation_type in seen:
+                raise JudgmentContractError("relation type identities must be unique")
+            seen.add(relation_type)
+            current_revision = record.get("current_revision")
+            lifecycle = record.get("lifecycle")
+            created_at = record.get("created_at")
+            updated_at = record.get("updated_at")
+            revisions = record.get("revisions")
+            if (
+                isinstance(current_revision, bool)
+                or not isinstance(current_revision, int)
+                or current_revision < 1
+                or lifecycle not in {"active", "deprecated"}
+                or not isinstance(created_at, str)
+                or not created_at
+                or not isinstance(updated_at, str)
+                or not updated_at
+                or not isinstance(revisions, list)
+            ):
+                raise JudgmentContractError("invalid relation type registry record")
+            existing = connection.execute(
+                "SELECT * FROM judgment_relation_types WHERE relation_type = ?",
+                (relation_type,),
+            ).fetchone()
+            existing_revision_numbers = {
+                row["revision"]
+                for row in connection.execute(
+                    """
+                    SELECT revision FROM judgment_relation_type_revisions
+                    WHERE relation_type = ?
+                    """,
+                    (relation_type,),
+                )
+            }
+            if existing is None:
+                connection.execute(
+                    """
+                    INSERT INTO judgment_relation_types(
+                        relation_type, current_revision, lifecycle, created_at, updated_at
+                    ) VALUES (?, ?, ?, ?, ?)
+                    """,
+                    (
+                        relation_type,
+                        current_revision,
+                        lifecycle,
+                        created_at,
+                        updated_at,
+                    ),
+                )
+            revision_numbers: set[int] = set()
+            for revision in sorted(revisions, key=lambda item: item.get("revision", 0)):
+                if not isinstance(revision, dict):
+                    raise JudgmentContractError("relation type revision must be an object")
+                number = revision.get("revision")
+                definition = revision.get("definition")
+                namespace = revision.get("namespace")
+                provenance = revision.get("provenance")
+                revision_lifecycle = revision.get("lifecycle")
+                revision_created_at = revision.get("created_at")
+                if (
+                    isinstance(number, bool)
+                    or not isinstance(number, int)
+                    or number < 1
+                    or number in revision_numbers
+                    or not isinstance(definition, str)
+                    or not definition.strip()
+                    or not isinstance(namespace, str)
+                    or not namespace
+                    or not isinstance(provenance, dict)
+                    or not provenance
+                    or revision_lifecycle not in {"active", "deprecated"}
+                    or not isinstance(revision_created_at, str)
+                    or not revision_created_at
+                ):
+                    raise JudgmentContractError("invalid relation type revision")
+                revision_numbers.add(number)
+                encoded = json.dumps(
+                    provenance,
+                    sort_keys=True,
+                    ensure_ascii=False,
+                    allow_nan=False,
+                    separators=(",", ":"),
+                )
+                existing_revision = connection.execute(
+                    """
+                    SELECT definition, namespace, provenance_json, lifecycle, created_at
+                    FROM judgment_relation_type_revisions
+                    WHERE relation_type = ? AND revision = ?
+                    """,
+                    (relation_type, number),
+                ).fetchone()
+                values = (
+                    definition.strip(),
+                    namespace,
+                    encoded,
+                    revision_lifecycle,
+                    revision_created_at,
+                )
+                if existing_revision is None:
+                    connection.execute(
+                        """
+                        INSERT INTO judgment_relation_type_revisions(
+                            relation_type, revision, definition, namespace,
+                            provenance_json, lifecycle, created_at
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                        """,
+                        (relation_type, number, *values),
+                    )
+                elif tuple(existing_revision) != values:
+                    raise JudgmentContractError(
+                        f"relation type revision conflict: {relation_type}@{number}"
+                    )
+            if current_revision not in revision_numbers:
+                raise JudgmentContractError("current relation type revision is missing")
+            if revision_numbers != set(range(1, current_revision + 1)):
+                raise JudgmentContractError(
+                    "relation type revisions must be contiguous through current_revision"
+                )
+            if not existing_revision_numbers <= revision_numbers:
+                raise JudgmentContractError(
+                    "destination has newer relation type revision history"
+                )
+            if existing is not None:
+                expected_registry = (
+                    current_revision,
+                    lifecycle,
+                    created_at,
+                    updated_at,
+                )
+                actual_registry = (
+                    existing["current_revision"],
+                    existing["lifecycle"],
+                    existing["created_at"],
+                    existing["updated_at"],
+                )
+                if existing["current_revision"] == current_revision:
+                    if actual_registry != expected_registry:
+                        raise JudgmentContractError(
+                            f"relation type registry conflict: {relation_type}"
+                        )
+                elif existing["current_revision"] < current_revision:
+                    if existing["created_at"] != created_at:
+                        raise JudgmentContractError(
+                            f"relation type registry origin conflict: {relation_type}"
+                        )
+                    connection.execute(
+                        """
+                        UPDATE judgment_relation_types
+                        SET current_revision = ?, lifecycle = ?, created_at = ?, updated_at = ?
+                        WHERE relation_type = ?
+                        """,
+                        (*expected_registry, relation_type),
+                    )
+                else:
+                    raise JudgmentContractError(
+                        "destination has newer relation type registry state"
+                    )
+
+    @staticmethod
+    def _import_relation_bindings(
+        connection: Any, relations: list[Any]
+    ) -> dict[tuple[str, str], tuple[int | None, str]]:
+        bindings: dict[tuple[str, str], tuple[int | None, str]] = {}
+        for relation in relations:
+            if not isinstance(relation, dict):
+                raise JudgmentContractError("relation must be an object")
+            revision = relation.get("relation_type_revision")
+            assertion_kind = relation.get("assertion_kind")
+            if (
+                (revision is not None and (
+                    isinstance(revision, bool)
+                    or not isinstance(revision, int)
+                    or revision < 1
+                ))
+                or assertion_kind != "explicit"
+            ):
+                raise JudgmentContractError("invalid relation binding")
+            relation_type = relation["relation_type"]
+            if revision is not None and connection.execute(
+                """
+                SELECT 1 FROM judgment_relation_type_revisions
+                WHERE relation_type = ? AND revision = ?
+                """,
+                (relation_type, revision),
+            ).fetchone() is None:
+                raise JudgmentContractError("unknown relation type revision binding")
+            bindings[(relation["target_id"], relation_type)] = (
+                revision,
+                assertion_kind,
+            )
+        return bindings
 
     @staticmethod
     def _require(connection: Any, judgment_id: str) -> Any:
@@ -514,9 +857,41 @@ class JudgmentGraph:
         )
 
     @staticmethod
-    def _replace_relations(connection: Any, source_id: str, relations: tuple[tuple[str, str], ...], now: str) -> None:
+    def _replace_relations(
+        connection: Any,
+        source_id: str,
+        relations: tuple[tuple[str, str], ...],
+        now: str,
+        *,
+        bindings: dict[tuple[str, str], tuple[int | None, str]] | None = None,
+    ) -> None:
         connection.execute("DELETE FROM judgment_relations WHERE source_id = ?", (source_id,))
-        connection.executemany("INSERT INTO judgment_relations VALUES (?, ?, ?, ?)", [(source_id, target, kind, now) for target, kind in relations])
+        rows = []
+        for target, kind in relations:
+            if bindings is None:
+                registry = connection.execute(
+                    """
+                    SELECT current_revision FROM judgment_relation_types
+                    WHERE relation_type = ?
+                    """,
+                    (kind,),
+                ).fetchone()
+                revision = None if registry is None else registry["current_revision"]
+                assertion_kind = "explicit"
+            else:
+                revision, assertion_kind = bindings[(target, kind)]
+            rows.append(
+                (source_id, target, kind, revision, assertion_kind, now)
+            )
+        connection.executemany(
+            """
+            INSERT INTO judgment_relations(
+                source_id, target_id, relation_type, relation_type_revision,
+                assertion_kind, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            rows,
+        )
 
     @staticmethod
     def _sync_retrieval(connection: Any, judgment_id: str, statement: str, rationale: str, provenance: dict[str, Any], relations: tuple[tuple[str, str], ...]) -> None:
