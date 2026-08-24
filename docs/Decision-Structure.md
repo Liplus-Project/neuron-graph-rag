@@ -25,6 +25,7 @@
 | [github-rag-mcp-replacement-compatibility](https://github.com/Liplus-Project/neuron-graph-rag/wiki/github-rag-mcp-replacement-compatibility) | active | public GitHub repository一つのread-only snapshotをNGR local indexへ接続する。github-rag-mcp `search` の保存済み raw capture と source URL、根拠を比較する。共有 source identity を確認しても最小 doc 検索 path の候補に限り、production github-rag-mcp、MCP authentication / transport、remote deployment、default変更は含まない。 |
 | [sqlite-canonical-judgment-graph](https://github.com/Liplus-Project/neuron-graph-rag/wiki/sqlite-canonical-judgment-graph) | active | NGR 自身の判断構造は SQLite の stable identity、revision、lifecycle、typed relation を machine-native 正本とし、raw SQL でなく atomic domain API で変更する。Wiki は移行 fixture の検証後に optional generated view へ下げる。 |
 | `neuron-graph-rag:user-owned-shared-database-home` | active | optional MCP server は明示 path を保ったまま `~/.ngrdb/knowledge.db` を client-neutral な user-owned 既定正本とし、file-backed SQLite の WAL / bounded busy timeout と fail-closed migration で同一端末・同一ユーザー内の共有を支える。 |
+| `neuron-graph-rag:selective-ontology-adoption` | active | NGR はオントロジーを全面採用せず、複数 AI が概念と関係の意味を共有するために有効な要素だけを選択導入する。最初の対象は stable concept/relation identity、自然言語定義、namespace、provenance、version/lifecycle、明示関係と推論関係の分離とし、包括的な固定分類体系や OWL/RDF reasoner は必要性が実証されるまで採用しない。 |
 
 ## Entry format
 
