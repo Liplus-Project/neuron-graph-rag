@@ -13,6 +13,7 @@ Neuron Graph RAG（NGR）は、ハイブリッド検索、型付き知識グラ�
 - [Optional MCP feedback interface](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/optional-mcp-interface.md)
 - [D1 corpus fixture](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/d1-corpus-fixture.md)
 - [Real-corpus benchmark](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/real-corpus-benchmark.md)
+- [GitHub RAG / NGR retrieval parity benchmark](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/github-retrieval-parity-benchmark.md)
 - [Node-first blind selection experiment](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/node-first-blind-selection-experiment.md)
 - [Feedback rank elasticity](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/feedback-rank-elasticity.md)
 - [Evidence-gated local feedback reinforcement](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/evidence-gated-local-feedback-reinforcement.md)

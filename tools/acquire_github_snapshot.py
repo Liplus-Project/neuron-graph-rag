@@ -4,13 +4,13 @@ from __future__ import annotations
 
 import argparse
 import base64
+import hashlib
 import json
 import os
 from pathlib import Path
 from typing import Any, Sequence
 from urllib.parse import quote
 from urllib.request import Request, urlopen
-
 
 API_ROOT = "https://api.github.com"
 
@@ -33,7 +33,9 @@ def acquire_snapshot(repository: str, ref: str, paths: Sequence[str]) -> dict[st
         raise ValueError("repository must be an owner/repository slug")
     if not paths:
         raise ValueError("at least one --path is required")
-    commit = str(github_get(f"/repos/{repository}/commits/{quote(ref, safe='')}")["sha"])
+    commit = str(
+        github_get(f"/repos/{repository}/commits/{quote(ref, safe='')}")["sha"]
+    )
     documents: list[dict[str, str]] = []
     for path in sorted(set(paths)):
         if not path or path.startswith("/") or ".." in Path(path).parts:
@@ -49,6 +51,7 @@ def acquire_snapshot(repository: str, ref: str, paths: Sequence[str]) -> dict[st
                 "path": path,
                 "blob_sha": str(payload["sha"]),
                 "content": content,
+                "content_sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
                 "source_url": f"https://github.com/{repository}/blob/{commit}/{path}",
             }
         )

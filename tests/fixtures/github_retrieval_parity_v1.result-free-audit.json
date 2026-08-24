@@ -1,0 +1,14 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v1",
+  "freeze_phase": true,
+  "live_github_rag_mcp_search_called": false,
+  "registered_query_executed_against_ngr": false,
+  "observed_capture_present": false,
+  "observed_claim_present": false,
+  "observed_result_present": false,
+  "predecessor_fixture_reused": false,
+  "predecessor_capture_reused": false,
+  "predecessor_result_reused": false,
+  "shared_database_used": false,
+  "feedback_or_outcome_connected": false
+}

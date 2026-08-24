@@ -1,0 +1,103 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v1",
+  "issue": 129,
+  "source": {
+    "repository": "Liplus-Project/github-rag-mcp",
+    "commit": "b26086bd91f9a8f87281b685b9ee73b2efaa50f5",
+    "previous_commit": "b4f1b44e324a4e8b189e63b8d82220c7486d6765",
+    "access": "public-read-only-github-snapshot-adapter",
+    "paths": [
+      "README.ja.md",
+      "README.md",
+      "docs/0-requirements.ja.md",
+      "docs/0-requirements.md",
+      "docs/1-memory-philosophy.ja.md",
+      "docs/1-memory-philosophy.md",
+      "docs/Home.md",
+      "docs/_Footer.md",
+      "docs/_Sidebar.md",
+      "docs/installation.ja.md",
+      "docs/installation.md",
+      "mcp-server/README.md"
+    ],
+    "changed_paths": [
+      "docs/0-requirements.ja.md",
+      "docs/0-requirements.md",
+      "docs/installation.ja.md",
+      "docs/installation.md"
+    ]
+  },
+  "relationships": [
+    {
+      "source_id": "github:Liplus-Project/github-rag-mcp:README.md",
+      "target_id": "github:Liplus-Project/github-rag-mcp:docs/1-memory-philosophy.md",
+      "edge_type": "links_to"
+    },
+    {
+      "source_id": "github:Liplus-Project/github-rag-mcp:README.ja.md",
+      "target_id": "github:Liplus-Project/github-rag-mcp:docs/installation.ja.md",
+      "edge_type": "links_to"
+    }
+  ],
+  "predecessor": {
+    "issues": [
+      63,
+      64
+    ],
+    "boundary": "reference-only; fixtures, captures, results, case identities, and observed values are not successor inputs",
+    "case_ids": [
+      "hybrid-retrieval",
+      "activity-indexing"
+    ],
+    "artifact_sha256": {
+      "tests/fixtures/github_rag_compatibility.snapshot.json": "ae70f32a6cf9945cbc53da553bca1a6a1d07fdef7669126816d6cb5441410410",
+      "tests/fixtures/github_rag_compatibility.updated.snapshot.json": "b1beb47b4a2ab68e76a8f5e1275a86e967083f7bf1db793189adbb5161312cd5",
+      "tests/fixtures/github_rag_compatibility.cases.json": "3df1423025830d6e913989f0c95d48257dcdb0ce8f4ecf594bc8ed0a9ecd9354",
+      "tests/fixtures/github_rag_compatibility.search.capture.json": "4222fcb185b52b00a5679629cc3321c41a65c859dc2314936c3a72f0b4acd7f7",
+      "tests/fixtures/github_rag_compatibility.result.json": "e4716d0ab7d09fab8a1c0a9a62288d273f8ad963d70571c511e5146830b18cec"
+    }
+  },
+  "protocol_artifacts": {
+    "current_corpus": "tests/fixtures/github_retrieval_parity_v1.corpus.json",
+    "previous_corpus": "tests/fixtures/github_retrieval_parity_v1.previous-corpus.json",
+    "queries": "tests/fixtures/github_retrieval_parity_v1.queries.json",
+    "gold": "tests/fixtures/github_retrieval_parity_v1.gold.json",
+    "gate": "tests/fixtures/github_retrieval_parity_v1.gate.json",
+    "capture_schema": "tests/fixtures/github_retrieval_parity_v1.capture-schema.json",
+    "result_schema": "tests/fixtures/github_retrieval_parity_v1.result-schema.json",
+    "audit": "tests/fixtures/github_retrieval_parity_v1.result-free-audit.json"
+  },
+  "outputs": {
+    "development": {
+      "capture": "tests/fixtures/github_retrieval_parity_v1.development.capture.json",
+      "claim": "tests/fixtures/github_retrieval_parity_v1.development.claim.json",
+      "result": "tests/fixtures/github_retrieval_parity_v1.development.observed.json"
+    },
+    "holdout": {
+      "capture": "tests/fixtures/github_retrieval_parity_v1.holdout.capture.json",
+      "claim": "tests/fixtures/github_retrieval_parity_v1.holdout.claim.json",
+      "result": "tests/fixtures/github_retrieval_parity_v1.holdout.observed.json"
+    }
+  },
+  "artifact_sha256": {
+    "README.md": "5a1438ea5c8eecbed015661ad1decd7451e0c07aa848efc110557334f7de3638",
+    "docs/Home.md": "e3f5bd107ae55a6b936625d9139f3fb92d2eb88aa202cb6ed17212c331fb1a65",
+    "docs/github-rag-mcp-replacement-compatibility.md": "481f54c66755957764fc50ad37b0d61be5097136fdde4d366074b1cc85b11721",
+    "docs/github-retrieval-parity-benchmark.md": "a617d8d2a821230469200769ecc507944b6b0a763609bc993b29f101b449f295",
+    "docs/requirements.md": "4e3bf59075021a65f46e2f2e9f09dfc654e7e0a489682b701fa80dad758eb277",
+    "src/neuron_graph_rag/github_source.py": "1732a7fccc828e81b3068c20af70f2b4bc19a49951db7f9536b33fcd72d57c04",
+    "src/neuron_graph_rag/github_retrieval_parity.py": "c48474b69c7ed8425b99d65ea4c7182062c34e17f0339b01db4e63e8785f7f39",
+    "tools/acquire_github_snapshot.py": "b0e7bc5d4b7b3e31da15dcfdb602dfde27cedaef818997246804d100bea73e8c",
+    "tools/run_github_retrieval_parity.py": "a35e70e24743f95db693616b86e596837401a958362819b2781f17d346e4b6da",
+    "tests/test_github_rag_compatibility.py": "04c0f4c165a0a6d9d2ef9a6318e0b7b0173f4b6523a18d2f3503963ff1bdcb6c",
+    "tests/test_github_retrieval_parity.py": "41088c5d633a0fbd19c58ac1b55f62be3359886d068f05a3952a17860c68278a",
+    "tests/fixtures/github_retrieval_parity_v1.corpus.json": "c83ca9d88e95fa11530d7bd0dcef049b41a333a3f23d62529a46d8e89ab373c2",
+    "tests/fixtures/github_retrieval_parity_v1.previous-corpus.json": "7b750da235f000e648d69f73a89e49c5f235152837308a91266cf8f586ea2480",
+    "tests/fixtures/github_retrieval_parity_v1.queries.json": "8b3162b5203431e2d8e3fcf48bea82dad961b42a7c1acf43f9b532f3a10a12d9",
+    "tests/fixtures/github_retrieval_parity_v1.gold.json": "358a5f035896f6972258caa63885ef59530144f141b76732d7f170f3605383ba",
+    "tests/fixtures/github_retrieval_parity_v1.gate.json": "1e9d3c2c3b0745501254c2c78afd0ca078b284652c5711c46648564088929ec2",
+    "tests/fixtures/github_retrieval_parity_v1.capture-schema.json": "39cfd23b44ca066c2742798a0fb82caf463d3a4b27ac0738e343682ce9e8c581",
+    "tests/fixtures/github_retrieval_parity_v1.result-schema.json": "e7462a0302da80e1dbe2784395200bf7b62c55a05445e3c94051994d3a2efdbd",
+    "tests/fixtures/github_retrieval_parity_v1.result-free-audit.json": "479c6a3579185c54be834b61e020434659ed36e80d335c2f89b0aa4d85ffaead"
+  }
+}

@@ -15,7 +15,6 @@ from typing import Any, Mapping
 
 from .engine import NeuronGraphRAG
 
-
 SNAPSHOT_SCHEMA_VERSION = 1
 
 
@@ -25,6 +24,10 @@ class GitHubDocument:
     blob_sha: str
     content: str
     source_url: str
+
+    @property
+    def content_sha256(self) -> str:
+        return hashlib.sha256(self.content.encode("utf-8")).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -54,11 +57,19 @@ class GitHubSnapshot:
             content = _required_string(item, "content")
             blob_sha = _required_string(item, "blob_sha")
             source_url = _required_string(item, "source_url")
+            content_sha256 = item.get("content_sha256")
+            actual_content_sha256 = hashlib.sha256(content.encode("utf-8")).hexdigest()
+            if content_sha256 is not None and content_sha256 != actual_content_sha256:
+                raise ValueError(f"GitHub snapshot content hash mismatch: {path}")
             expected_url = f"https://github.com/{repository}/blob/{commit}/{path}"
             if source_url != expected_url:
-                raise ValueError("GitHub snapshot source_url must pin repository, commit, and path")
+                raise ValueError(
+                    "GitHub snapshot source_url must pin repository, commit, and path"
+                )
             documents.append(GitHubDocument(path, blob_sha, content, source_url))
-        return cls(repository, commit, tuple(sorted(documents, key=lambda item: item.path)))
+        return cls(
+            repository, commit, tuple(sorted(documents, key=lambda item: item.path))
+        )
 
     @classmethod
     def read(cls, path: str | Path) -> "GitHubSnapshot":
@@ -109,6 +120,7 @@ def index_github_snapshot(
                 "commit": snapshot.commit,
                 "path": document.path,
                 "blob_sha": document.blob_sha,
+                "content_sha256": document.content_sha256,
                 "source_url": document.source_url,
             },
         )

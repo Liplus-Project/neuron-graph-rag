@@ -211,6 +211,8 @@ with NeuronGraphRAG("knowledge.db") as rag:
 
 GitHub の最小 read-only adapter 候補は、coreへGitHub clientを持ち込まず、固定snapshotをlocal indexへ接続する形で検証しています。[github-rag-mcp replacement compatibility spike](docs/github-rag-mcp-replacement-compatibility.md) は、public repository一つの取得、保存済み `search` capture との比較、one-document update follow-upだけを扱います。committed observation は github-rag-mcp の最小 doc 検索 path の候補に限り、production serviceやMCP replacementを主張するものではありません。
 
+hybrid document retrieval の successor 判定は [GitHub RAG / NGR retrieval parity benchmark](docs/github-retrieval-parity-benchmark.md) に分離しています。public repository の固定 commit と全 Markdown path、identity-disjoint な development / holdout、direct / semantic / relation / negative cohort、raw search / stored-content provenance、個別・cohort hard gateを結果前に固定します。本 freeze では登録 queryもlive github-rag-mcp searchも実行せず、merge後の別Issueでdevelopmentを一度だけ観測し、全gate通過時だけholdoutを一度開きます。
+
 既定 dense encoder は依存なしで再現可能な feature hashing です。実運用の埋め込みは callable を差し替えます。
 
 ```python
