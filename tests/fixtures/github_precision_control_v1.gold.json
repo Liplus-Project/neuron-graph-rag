@@ -1,0 +1,145 @@
+{
+  "protocol_id": "github-ngr-precision-control-v1",
+  "stages": {
+    "development": [
+      {
+        "case_id": "pc-v1-dev-direct-001",
+        "cohort": "direct_lexical",
+        "expected_paths": [
+          "README.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "pc-v1-dev-direct-002",
+        "cohort": "direct_lexical",
+        "expected_paths": [
+          "docs/optional-mcp-interface.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "pc-v1-dev-semantic-001",
+        "cohort": "semantic_paraphrase",
+        "expected_paths": [
+          "docs/canonical-sqlite-judgment-graph.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "pc-v1-dev-semantic-002",
+        "cohort": "semantic_paraphrase",
+        "expected_paths": [
+          "docs/historical-source-verification.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "pc-v1-dev-relation-001",
+        "cohort": "relation_linked",
+        "expected_paths": [
+          "docs/decision-wiki-pilot-migration.md"
+        ],
+        "forbidden_paths": [],
+        "relation_seed_path": "docs/Decision-Structure.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "pc-v1-dev-relation-002",
+        "cohort": "relation_linked",
+        "expected_paths": [
+          "docs/baseline-aware-soft-start-snapshot-evaluation.md"
+        ],
+        "forbidden_paths": [],
+        "relation_seed_path": "docs/soft-start-snapshot-evaluation.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "pc-v1-dev-negative-001",
+        "cohort": "negative_control",
+        "expected_paths": [],
+        "forbidden_paths": [
+          "docs/github-retrieval-parity-benchmark.md"
+        ]
+      },
+      {
+        "case_id": "pc-v1-dev-negative-002",
+        "cohort": "negative_control",
+        "expected_paths": [],
+        "forbidden_paths": [
+          "docs/github-retrieval-parity-observation-v1.md"
+        ]
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "pc-v1-holdout-direct-001",
+        "cohort": "direct_lexical",
+        "expected_paths": [
+          "docs/outcome-driven-feedback-deactivation.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "pc-v1-holdout-direct-002",
+        "cohort": "direct_lexical",
+        "expected_paths": [
+          "docs/sibling-relation-feedback-normalization.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "pc-v1-holdout-semantic-001",
+        "cohort": "semantic_paraphrase",
+        "expected_paths": [
+          "docs/anchored-fusion-calibration-experiment.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "pc-v1-holdout-semantic-002",
+        "cohort": "semantic_paraphrase",
+        "expected_paths": [
+          "docs/independent-retrieval-channels-experiment.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "pc-v1-holdout-relation-001",
+        "cohort": "relation_linked",
+        "expected_paths": [
+          "docs/feedback-adaptation-reproduction-experiment.md"
+        ],
+        "forbidden_paths": [],
+        "relation_seed_path": "docs/feedback-adaptation-experiment.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "pc-v1-holdout-relation-002",
+        "cohort": "relation_linked",
+        "expected_paths": [
+          "docs/real-task-feedback-shadow-protocol-v3.md"
+        ],
+        "forbidden_paths": [],
+        "relation_seed_path": "docs/real-task-feedback-shadow-protocol.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "pc-v1-holdout-negative-001",
+        "cohort": "negative_control",
+        "expected_paths": [],
+        "forbidden_paths": [
+          "docs/neural-dynamics-experiment.md"
+        ]
+      },
+      {
+        "case_id": "pc-v1-holdout-negative-002",
+        "cohort": "negative_control",
+        "expected_paths": [],
+        "forbidden_paths": [
+          "docs/neural-dynamics-local-competition-experiment.md"
+        ]
+      }
+    ]
+  }
+}

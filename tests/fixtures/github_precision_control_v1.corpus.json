@@ -1,0 +1,109 @@
+{
+  "protocol_id": "github-ngr-precision-control-v1",
+  "repository": "Liplus-Project/neuron-graph-rag",
+  "commit": "24d948da4ee61b1e5809a5ba89a1c4738512f384",
+  "documents": [
+    {
+      "path": "README.md",
+      "content_sha256": "5a1438ea5c8eecbed015661ad1decd7451e0c07aa848efc110557334f7de3638"
+    },
+    {
+      "path": "docs/optional-mcp-interface.md",
+      "content_sha256": "d4e1155e1cf92e7dbb71695828c97c9a5c26b0990948136aeba93cbf7ab5b5cd"
+    },
+    {
+      "path": "docs/canonical-sqlite-judgment-graph.md",
+      "content_sha256": "11053760688b0e3d074376c07236b51c4b5e12a7870e70231a5d2ef353997534"
+    },
+    {
+      "path": "docs/historical-source-verification.md",
+      "content_sha256": "a86360be1f2c65d584dfde9fda1833b772eb3a67edd0a73bed9ac7b2bfaf1d63"
+    },
+    {
+      "path": "docs/Decision-Structure.md",
+      "content_sha256": "da4a4d6991c6431e82b57c39b927c7860a1fb2ec9c4751c70605c156acb0aace"
+    },
+    {
+      "path": "docs/decision-wiki-pilot-migration.md",
+      "content_sha256": "96727ffb5cb1ccfdd744482d6f7d3b3693f98f4953c680989f644aee627b50d8"
+    },
+    {
+      "path": "docs/soft-start-snapshot-evaluation.md",
+      "content_sha256": "f19d578a3babb07a6a3c86dfe678bf0566e29871b80722a437bcb143a31ab980"
+    },
+    {
+      "path": "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+      "content_sha256": "0481abf383c60722a3d4b8416cf166eb4c67fa6f8e425eef63d1e9b2c44317f5"
+    },
+    {
+      "path": "docs/github-retrieval-parity-benchmark.md",
+      "content_sha256": "a617d8d2a821230469200769ecc507944b6b0a763609bc993b29f101b449f295"
+    },
+    {
+      "path": "docs/github-retrieval-parity-observation-v1.md",
+      "content_sha256": "410b900763edfa3b6b5937985c6f5e8bac6e3f5b816c86566d5e82544fa37a9b"
+    },
+    {
+      "path": "docs/outcome-driven-feedback-deactivation.md",
+      "content_sha256": "27ebe4c66151bfb78ba03e687961d3eb75d163a4bc843662686712ad5e0d517d"
+    },
+    {
+      "path": "docs/sibling-relation-feedback-normalization.md",
+      "content_sha256": "7b33ce4dace6e976d90471b705b4554ae3ead755c78e429d8c9d91a84b105521"
+    },
+    {
+      "path": "docs/anchored-fusion-calibration-experiment.md",
+      "content_sha256": "8b85629082a523bb099ddea843c17fad91019fcba5a5fac425304d8c7858e346"
+    },
+    {
+      "path": "docs/independent-retrieval-channels-experiment.md",
+      "content_sha256": "9563483ceaaacb06c1920cfe4c9a5e2df510862961dfd805832b94a51a82f980"
+    },
+    {
+      "path": "docs/feedback-adaptation-experiment.md",
+      "content_sha256": "f5e73fb8cd20639ae3ba2ea5fb9446e12e7ff109a294ab679eb6c886ac26538a"
+    },
+    {
+      "path": "docs/feedback-adaptation-reproduction-experiment.md",
+      "content_sha256": "46cf19f0e2761a6c1b6cc52194f40475da1c80c400c8a956f29e1b9d248ef550"
+    },
+    {
+      "path": "docs/real-task-feedback-shadow-protocol.md",
+      "content_sha256": "f5283247036d8cb0aa46afc2112bf891117e1dd81621e4e522d2cf137144fc50"
+    },
+    {
+      "path": "docs/real-task-feedback-shadow-protocol-v3.md",
+      "content_sha256": "aba0ecef7f10aaa3c9e0330c8a2ee8bf6f487fea75348e7fa01f86d822a92cac"
+    },
+    {
+      "path": "docs/neural-dynamics-experiment.md",
+      "content_sha256": "082c632f5ed53a7d85534c8992daf937a312bb096c6f75510a58663a175094f6"
+    },
+    {
+      "path": "docs/neural-dynamics-local-competition-experiment.md",
+      "content_sha256": "ce9cd5cb35189ac1cb574aaae118f5ddef1c5779b58fc10fc7c5b554e25c9103"
+    }
+  ],
+  "relationships": [
+    {
+      "source_path": "docs/Decision-Structure.md",
+      "target_path": "docs/decision-wiki-pilot-migration.md",
+      "edge_type": "informs"
+    },
+    {
+      "source_path": "docs/soft-start-snapshot-evaluation.md",
+      "target_path": "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+      "edge_type": "informs"
+    },
+    {
+      "source_path": "docs/feedback-adaptation-experiment.md",
+      "target_path": "docs/feedback-adaptation-reproduction-experiment.md",
+      "edge_type": "informs"
+    },
+    {
+      "source_path": "docs/real-task-feedback-shadow-protocol.md",
+      "target_path": "docs/real-task-feedback-shadow-protocol-v3.md",
+      "edge_type": "informs"
+    }
+  ]
+}

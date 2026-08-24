@@ -1,0 +1,93 @@
+{
+  "protocol_id": "github-ngr-precision-control-v1",
+  "request": {
+    "limit": 5,
+    "now": 0.0
+  },
+  "stages": {
+    "development": [
+      {
+        "case_id": "pc-v1-dev-direct-001",
+        "cohort": "direct_lexical",
+        "query": "Neuron Graph RAG typed graph activation success feedback"
+      },
+      {
+        "case_id": "pc-v1-dev-direct-002",
+        "cohort": "direct_lexical",
+        "query": "NGR_DATABASE database path precedence shared knowledge.db"
+      },
+      {
+        "case_id": "pc-v1-dev-semantic-001",
+        "cohort": "semantic_paraphrase",
+        "query": "persistent judgment revisions and lifecycle in a transactional source of truth"
+      },
+      {
+        "case_id": "pc-v1-dev-semantic-002",
+        "cohort": "semantic_paraphrase",
+        "query": "prove frozen evidence came from the commit that first introduced it"
+      },
+      {
+        "case_id": "pc-v1-dev-relation-001",
+        "cohort": "relation_linked",
+        "query": "repository namespaced migration of Decision Structure pages"
+      },
+      {
+        "case_id": "pc-v1-dev-relation-002",
+        "cohort": "relation_linked",
+        "query": "fresh baseline state and quorum capacity for soft start"
+      },
+      {
+        "case_id": "pc-v1-dev-negative-001",
+        "cohort": "negative_control",
+        "query": "Does the retrieval parity benchmark authorize modifying production feedback?"
+      },
+      {
+        "case_id": "pc-v1-dev-negative-002",
+        "cohort": "negative_control",
+        "query": "Did parity observation v1 validate universal production quality?"
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "pc-v1-holdout-direct-001",
+        "cohort": "direct_lexical",
+        "query": "signed contribution journal exact reversal dormant reactivation"
+      },
+      {
+        "case_id": "pc-v1-holdout-direct-002",
+        "cohort": "direct_lexical",
+        "query": "same source sibling normalization credited edge"
+      },
+      {
+        "case_id": "pc-v1-holdout-semantic-001",
+        "cohort": "semantic_paraphrase",
+        "query": "calibrate rank fusion while retaining a zero hop entry anchor"
+      },
+      {
+        "case_id": "pc-v1-holdout-semantic-002",
+        "cohort": "semantic_paraphrase",
+        "query": "separate lexical and relation lanes without a combined winner"
+      },
+      {
+        "case_id": "pc-v1-holdout-relation-001",
+        "cohort": "relation_linked",
+        "query": "reproduce credited feedback adaptation without reusing prior results"
+      },
+      {
+        "case_id": "pc-v1-holdout-relation-002",
+        "cohort": "relation_linked",
+        "query": "third revision of the real task feedback shadow protocol"
+      },
+      {
+        "case_id": "pc-v1-holdout-negative-001",
+        "cohort": "negative_control",
+        "query": "Does the neural dynamics experiment permit an unbounded parameter search?"
+      },
+      {
+        "case_id": "pc-v1-holdout-negative-002",
+        "cohort": "negative_control",
+        "query": "Did local competition results change the default activation strategy?"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "protocol_id": "github-ngr-precision-control-v1",
+  "phase": "freeze",
+  "registered_query_execution_count": 0,
+  "observed_result_count": 0,
+  "shared_database_opened": false,
+  "existing_experiment_database_opened": false,
+  "feedback_or_outcome_recorded": false,
+  "github_rag_mcp_called": false,
+  "v1_artifact_reused_or_modified": false
+}

@@ -1,0 +1,108 @@
+{
+  "protocol_id": "github-ngr-precision-control-v1",
+  "required_fields": [
+    "protocol_id",
+    "protocol_commit",
+    "stage",
+    "status",
+    "claim_sha256",
+    "protocol_hashes",
+    "baseline",
+    "candidates",
+    "selected_candidate_id",
+    "gates",
+    "all_hard_gates_pass"
+  ],
+  "statuses": [
+    "passed",
+    "failed"
+  ],
+  "gate_required_fields": [
+    "gate_id",
+    "hard",
+    "passed",
+    "details"
+  ],
+  "baseline_required_fields": [
+    "baseline_id",
+    "cases",
+    "cohorts",
+    "state"
+  ],
+  "candidate_required_fields": [
+    "candidate_id",
+    "cases",
+    "cohorts",
+    "explanations",
+    "state",
+    "gates",
+    "all_hard_gates_pass"
+  ],
+  "case_required_fields": [
+    "case_id",
+    "cohort",
+    "ranked_hits",
+    "returned_source_paths"
+  ],
+  "hit_required_fields": [
+    "source_path",
+    "rank",
+    "final_score",
+    "entry_score",
+    "normalized_graph_score",
+    "source_provenance",
+    "relation_paths"
+  ],
+  "source_required_fields": [
+    "repository",
+    "commit",
+    "path",
+    "content_sha256"
+  ],
+  "relation_path_required_fields": [
+    "seed_path",
+    "target_path",
+    "edge_type",
+    "step_count"
+  ],
+  "cohort_required_fields": [
+    "cohort",
+    "case_ids",
+    "mrr",
+    "hit_at_5"
+  ],
+  "explanation_required_fields": [
+    "case_id",
+    "decisions"
+  ],
+  "decision_required_fields": [
+    "candidate_id",
+    "source_path",
+    "accepted",
+    "applied_rules",
+    "thresholds",
+    "pre_filter_rank",
+    "pre_filter_score",
+    "top_score",
+    "top_score_ratio",
+    "top_score_margin",
+    "entry_signal_present",
+    "graph_signal_present",
+    "rule_results",
+    "source_provenance"
+  ],
+  "state_required_fields": [
+    "fresh_database_id",
+    "replay_database_id",
+    "ranking_sha256",
+    "replay_ranking_sha256",
+    "score_sha256",
+    "replay_score_sha256",
+    "activation_sha256",
+    "replay_activation_sha256",
+    "edge_sha256_before",
+    "edge_sha256_after",
+    "feedback_count_before",
+    "feedback_count_after"
+  ]
+}

@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
+from .dynamics import DynamicsSettings, propagate
+from .judgments import JudgmentGraph
 from .models import (
     DocumentNode,
     FeedbackReceipt,
@@ -20,10 +22,9 @@ from .models import (
     SearchTrace,
     TypedEdge,
 )
-from .dynamics import DynamicsSettings, propagate
+from .precision_control import PrecisionControl, apply_precision_control
 from .retrieval import BM25Retriever, DenseEncoder, DenseRetriever, normalize_scores
 from .storage import SQLiteStore
-from .judgments import JudgmentGraph
 
 
 @dataclass(frozen=True, slots=True)
@@ -57,6 +58,7 @@ class EngineConfig:
     graph_normalization: str = "max"
     final_fusion_strategy: str = "linear"
     rrf_k: int = 60
+    precision_control: PrecisionControl | None = None
 
     def __post_init__(self) -> None:
         for name in (
@@ -319,7 +321,21 @@ class NeuronGraphRAG:
                 graph_normalization=self.config.graph_normalization,
             ))
         hits.sort(key=lambda hit: (-hit.final_score, hit.node.node_id))
-        selected_hits = tuple(hits[:limit])
+        if self.config.precision_control is None:
+            selected_hits = tuple(hits[:limit])
+        else:
+            annotated_hits, accepted_hits = apply_precision_control(
+                hits, self.config.precision_control
+            )
+            hits = list(annotated_hits)
+            selected_hits = tuple(accepted_hits[:limit])
+            propagation_diagnostics["precision_control"] = {
+                "candidate_id": self.config.precision_control.candidate_id,
+                "accepted_node_ids": [hit.node.node_id for hit in accepted_hits],
+                "decisions": [
+                    hit.explain()["precision_control"] for hit in annotated_hits
+                ],
+            }
         trace_id = uuid.uuid4().hex
         self.store.create_retrieval(
             trace_id,
