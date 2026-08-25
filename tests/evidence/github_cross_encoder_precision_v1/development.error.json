@@ -1,0 +1,6 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v1",
+  "stage": "development",
+  "claim_sha256": "be3ad76fc7e0e0e2749fddb0111e059812226b616049e4559973dacdda0864e9",
+  "error": "KeyError: 'ranked_hits'"
+}

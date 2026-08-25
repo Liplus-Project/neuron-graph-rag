@@ -1,0 +1,113 @@
+{
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\deployments\\neuron-graph-rag\\.venv\\Scripts\\python.exe",
+        "-m",
+        "venv",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\venv"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "install",
+        "--require-hashes",
+        "-r",
+        "C:\\Users\\smile\\Codex\\workspace\\deployments\\neuron-graph-rag\\tests\\fixtures\\github_cross_encoder_precision_v1.requirements.lock"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "7b32e74a0adf277238505711fc65f1e44febc0b87ddc1928df123d380eb5e15c",
+      "stderr_sha256": "3e5e9cb50bda20c6173739b4e5fa49c3196635c688dfbb34aea5beecaa34c3c9"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "freeze",
+        "--all"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "8277fc3c15d4f930f37223b0a7e31b38586472ba1cc26b8e6f034d63c6f31a93",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_observation",
+        "model-fetch",
+        "--cache",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache",
+        "--output",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-verification.json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "99bdcfc0b3b8a78a7ab35fe98ad47e39a59a0e1b86af12515eb6f25fdf916995",
+      "stderr_sha256": "9a6e1d52d5846272dfe18773983df7d26ed3e0276b52e6cafaa3be6c05b7704f"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_observation",
+        "model-probe",
+        "--cache",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "97a5c883d6fdd8772aa62a393a08466c312761fbd44f3c450ac98b1199a115c8",
+      "stderr_sha256": "1df305135949ce6a7ab8ef3d750ee38ac2363411f749aeecbb96cf1d2285236b"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "tests.test_cross_encoder_precision"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "f48411e49a75122fbe3dff35302f1c58ec3688f9ece50985a6d335b43d2b8948"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "tests.test_cross_encoder_precision_observation"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "56e5ba983a84a60ed9555840a84bbe47a6ea9b9d28c62ee95500866701d6841c"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_evaluation",
+        "audit"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "59fac1a5fc83eae845c126490addacef09ae88e9a48250deff45fb6a9176cf17",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_evaluation",
+        "probe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "9b5961bd8538dfe5d42191637f34c177ca0ab3b1e8882553c79b381189cd734a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
