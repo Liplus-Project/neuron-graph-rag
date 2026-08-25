@@ -1,0 +1,6 @@
+# Experiment-only observation environment. Not a project default dependency surface.
+transformers==4.44.2
+torch==2.4.1
+safetensors==0.4.5
+sentencepiece==0.2.0
+psutil==6.0.0

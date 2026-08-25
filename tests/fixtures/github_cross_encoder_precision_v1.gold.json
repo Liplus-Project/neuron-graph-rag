@@ -1,0 +1,145 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v1",
+  "stages": {
+    "development": [
+      {
+        "case_id": "ce-v1-dev-direct-en",
+        "cohort": "direct_lexical",
+        "expected_paths": [
+          "docs/requirements.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "ce-v1-dev-direct-ja",
+        "cohort": "direct_lexical",
+        "expected_paths": [
+          "docs/mcp-feedback-stabilization-settings.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "ce-v1-dev-semantic-en",
+        "cohort": "semantic_paraphrase",
+        "expected_paths": [
+          "docs/canonical-evidence-gate-evaluation.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "ce-v1-dev-semantic-ja",
+        "cohort": "semantic_paraphrase",
+        "expected_paths": [
+          "docs/github-rag-mcp-replacement-compatibility.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "ce-v1-dev-relation-en",
+        "cohort": "relation_linked",
+        "expected_paths": [
+          "docs/node-first-blind-selection-experiment.md"
+        ],
+        "forbidden_paths": [],
+        "relation_seed_path": "docs/blind-llm-channel-selection-experiment.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "ce-v1-dev-relation-ja",
+        "cohort": "relation_linked",
+        "expected_paths": [
+          "docs/confirmed-outcome-feedback-reinforcement.md"
+        ],
+        "forbidden_paths": [],
+        "relation_seed_path": "docs/evidence-gated-local-feedback-reinforcement.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "ce-v1-dev-negative-en",
+        "cohort": "negative_control",
+        "expected_paths": [],
+        "forbidden_paths": [
+          "docs/precision-control-freeze-v1.md"
+        ]
+      },
+      {
+        "case_id": "ce-v1-dev-negative-ja",
+        "cohort": "negative_control",
+        "expected_paths": [],
+        "forbidden_paths": [
+          "docs/precision-control-observation-v1.md"
+        ]
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "ce-v1-holdout-direct-en",
+        "cohort": "direct_lexical",
+        "expected_paths": [
+          "docs/feedback-rank-elasticity.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "ce-v1-holdout-direct-ja",
+        "cohort": "direct_lexical",
+        "expected_paths": [
+          "docs/sibling-normalization-controlled-evaluation.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "ce-v1-holdout-semantic-en",
+        "cohort": "semantic_paraphrase",
+        "expected_paths": [
+          "docs/engine-backed-feedback-trajectory-experiment.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "ce-v1-holdout-semantic-ja",
+        "cohort": "semantic_paraphrase",
+        "expected_paths": [
+          "docs/anchored-bm25-graph-hybrid-experiment.md"
+        ],
+        "forbidden_paths": []
+      },
+      {
+        "case_id": "ce-v1-holdout-relation-en",
+        "cohort": "relation_linked",
+        "expected_paths": [
+          "docs/real-task-feedback-shadow-protocol-v2.md"
+        ],
+        "forbidden_paths": [],
+        "relation_seed_path": "docs/feedback-policy-comparison-evaluation.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "ce-v1-holdout-relation-ja",
+        "cohort": "relation_linked",
+        "expected_paths": [
+          "docs/d1-corpus-fixture.md"
+        ],
+        "forbidden_paths": [],
+        "relation_seed_path": "docs/real-corpus-benchmark.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "ce-v1-holdout-negative-en",
+        "cohort": "negative_control",
+        "expected_paths": [],
+        "forbidden_paths": [
+          "corpora/repository-native-controlled-v3/README.md"
+        ]
+      },
+      {
+        "case_id": "ce-v1-holdout-negative-ja",
+        "cohort": "negative_control",
+        "expected_paths": [],
+        "forbidden_paths": [
+          "corpora/canonical-evidence-gates-v1/development-meridian.md"
+        ]
+      }
+    ]
+  }
+}
