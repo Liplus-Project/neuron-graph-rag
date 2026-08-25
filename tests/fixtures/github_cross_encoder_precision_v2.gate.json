@@ -1,0 +1,55 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v2",
+  "gates": [
+    {
+      "gate_id": "protocol-source-model-lock-integrity",
+      "hard": true
+    },
+    {
+      "gate_id": "identity-separation",
+      "hard": true
+    },
+    {
+      "gate_id": "cpu-offline-deterministic-fresh-process",
+      "hard": true
+    },
+    {
+      "gate_id": "positive-case-rank-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "positive-cohort-mrr-hit-at-5-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "negative-non-worsening-and-aggregate-strict-improvement",
+      "hard": true
+    },
+    {
+      "gate_id": "positive-expected-source-top-5-completeness",
+      "hard": true
+    },
+    {
+      "gate_id": "relation-source-edge-only-provenance",
+      "hard": true
+    },
+    {
+      "gate_id": "cross-encoder-fusion-threshold-rank-recomputation",
+      "hard": true
+    },
+    {
+      "gate_id": "ngr-prefilter-state-immutability",
+      "hard": true
+    },
+    {
+      "gate_id": "default-surface-immutability",
+      "hard": true
+    }
+  ],
+  "notes": {
+    "baseline_missing_candidate_missing": "case non-regression passes; completeness is separate",
+    "baseline_clean_candidate_clean": "negative per-case non-worsening passes",
+    "stage_improvement": "aggregate forbidden count must strictly decrease",
+    "case_regression": "cohort average cannot mask it"
+  }
+}
