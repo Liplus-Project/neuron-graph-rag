@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import tempfile
 import unittest
@@ -12,6 +13,67 @@ from neuron_graph_rag import cross_encoder_precision_observation as observation
 
 
 class CrossEncoderPrecisionObservationTest(unittest.TestCase):
+    def test_archived_error_preserves_every_completed_worker_payload(self) -> None:
+        root = observation.ROOT
+        evidence = root / observation.EVIDENCE
+        manifest = observation.read_json(evidence / "raw-archive.json")
+        self.assertEqual(manifest["protocol_id"], observation.PROTOCOL_ID)
+        self.assertEqual(manifest["protocol_commit"], observation.PROTOCOL_COMMIT)
+        self.assertEqual(manifest["stage_execution_count"], 1)
+        self.assertEqual(manifest["post_error_reexecution_count"], 0)
+        self.assertEqual(manifest["holdout_execution_count"], 0)
+        self.assertEqual(manifest["registered_query_execution_count"], 48)
+        self.assertEqual(manifest["model_input_pair_count"], 7812)
+        self.assertEqual(manifest["model_forward_batch_count"], 1348)
+        self.assertEqual(len(manifest["files"]), 6)
+        for row in manifest["files"]:
+            path = root / row["archive_path"]
+            self.assertTrue(row["byte_identity"])
+            self.assertEqual(path.stat().st_size, row["size"])
+            self.assertEqual(observation.sha256_bytes(path.read_bytes()), row["sha256"])
+
+        payloads = {
+            path.stem: observation.read_json(path)
+            for path in (evidence / "raw/development").glob("*.json")
+        }
+        for kind in ("baseline", "base", "v2-m3"):
+            primary = payloads[f"{kind}-primary"]
+            replay = payloads[f"{kind}-replay"]
+            self.assertEqual(primary["cases"], replay["cases"])
+            self.assertEqual(primary["ranking_sha256"], replay["ranking_sha256"])
+            self.assertEqual(primary["activation_sha256"], replay["activation_sha256"])
+            self.assertNotEqual(primary["database_id"], replay["database_id"])
+            if kind != "baseline":
+                for payload in (primary, replay):
+                    chunks = sum(
+                        len(hit["chunks"])
+                        for case in payload["cases"]
+                        for hit in case["ranked_hits"]
+                    )
+                    batches = sum(
+                        math.ceil(len(hit["chunks"]) / observation.BATCH_SIZE)
+                        for case in payload["cases"]
+                        for hit in case["ranked_hits"]
+                    )
+                    self.assertEqual(payload["metrics"]["pair_count"], chunks)
+                    self.assertEqual(payload["metrics"]["window_count"], chunks)
+                    self.assertEqual(chunks, 1953)
+                    self.assertEqual(batches, 337)
+
+        protocol = observation.load_protocol(root)
+        self.assertEqual(
+            observation.verify_phase_state(protocol),
+            {"development": "archived-error", "holdout": "unobserved"},
+        )
+        claim = (evidence / "development.claim.json").read_bytes()
+        error = observation.read_json(evidence / "development.error.json")
+        self.assertEqual(error["claim_sha256"], observation.sha256_bytes(claim))
+        self.assertEqual(error["error"], "KeyError: 'ranked_hits'")
+        execution = observation.read_json(evidence / "execution-error.json")
+        self.assertEqual(len(execution["commands"]), 6)
+        self.assertTrue(all(row["returncode"] == 0 for row in execution["commands"]))
+        self.assertTrue(execution["shared_database_unchanged"])
+
     def test_observation_identity_and_offline_environment_are_fixed(self) -> None:
         self.assertEqual(
             observation.PROTOCOL_COMMIT,
