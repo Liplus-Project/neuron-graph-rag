@@ -7,6 +7,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from neuron_graph_rag import cross_encoder_precision_evaluation as evaluation
 
@@ -51,10 +52,6 @@ class CrossEncoderPrecisionFreezeTest(unittest.TestCase):
                     row["language"] for row in cases if row["cohort"] == cohort
                 ]
                 self.assertEqual(languages, ["en", "ja"])
-        self.assertEqual(
-            evaluation.verify_phase_state(protocol),
-            {"development": "unobserved", "holdout": "unobserved"},
-        )
         self.assertEqual(
             protocol["result_free_audit"]["registered_query_execution_count"], 0
         )
@@ -133,13 +130,15 @@ class CrossEncoderPrecisionFreezeTest(unittest.TestCase):
             surface.insert(5, hit)
             for rank, row in enumerate(surface, 1):
                 row["rank"] = rank
+                row["ngr_score"] = 1.0 / rank
         for model in models:
             hit = next(
                 row
                 for row in model["cases"][0]["ranked_hits"]
                 if row["source_path"] == positive_target
             )
-            hit["chunks"][0]["raw_logit"] = -4.0
+            for chunk in hit["chunks"]:
+                chunk["raw_logit"] = -4.0
             hit["raw_logit"] = -4.0
         clean_forbidden = protocol["gold"]["stages"]["development"][6][
             "forbidden_paths"
@@ -153,6 +152,7 @@ class CrossEncoderPrecisionFreezeTest(unittest.TestCase):
             surface.insert(5, hit)
             for rank, row in enumerate(surface, 1):
                 row["rank"] = rank
+                row["ngr_score"] = 1.0 / rank
         rebuilt = evaluation.evaluate_result_payload(
             protocol, "development", claim, baseline, models
         )
@@ -182,6 +182,33 @@ class CrossEncoderPrecisionFreezeTest(unittest.TestCase):
             "chunk max": lambda value: value["models"][0]["cases"][0]["ranked_hits"][
                 0
             ].update(raw_logit=-9.0),
+            "chunk text hash": lambda value: value["models"][0]["cases"][0][
+                "ranked_hits"
+            ][0]["chunks"][0].update(text_sha256="f" * 64),
+            "chunk bounds": lambda value: value["models"][0]["cases"][0]["ranked_hits"][
+                0
+            ]["chunks"][0].update(start_codepoint=999999, end_codepoint=1000000),
+            "chunk cardinality": lambda value: value["models"][0]["cases"][0][
+                "ranked_hits"
+            ][0]["chunks"].pop(),
+            "pair metric": lambda value: value["models"][0]["metrics"].update(
+                pair_count=1
+            ),
+            "window metric": lambda value: value["models"][0]["metrics"].update(
+                window_count=1
+            ),
+            "NGR non-finite": lambda value: value["baseline"]["cases"][0][
+                "ranked_hits"
+            ][0].update(ngr_score=float("nan")),
+            "NGR order": lambda value: value["baseline"]["cases"][0]["ranked_hits"][
+                0
+            ].update(ngr_score=0.01),
+            "relation shape": lambda value: value["baseline"]["cases"][4][
+                "ranked_hits"
+            ][0]["relation_paths"][0].update(extra=True),
+            "relation edge": lambda value: value["baseline"]["cases"][4]["ranked_hits"][
+                0
+            ]["relation_paths"][0].update(edge_type="unfrozen"),
             "derived score": lambda value: value["candidates"][0]["cases"][0]["scores"][
                 0
             ].update(final_score=-1.0),
@@ -192,6 +219,15 @@ class CrossEncoderPrecisionFreezeTest(unittest.TestCase):
             "status": lambda value: value.update(status="failed"),
             "state": lambda value: value["models"][0]["state"].update(
                 edge_sha256_after="f" * 64
+            ),
+            "state hash type": lambda value: value["models"][0]["state"].update(
+                sqlite_sha256_before=7, sqlite_sha256_after=7
+            ),
+            "state count type": lambda value: value["models"][0]["state"].update(
+                feedback_count_before=True
+            ),
+            "database identity": lambda value: value["models"][1]["state"].update(
+                fresh_database_id=value["models"][0]["state"]["fresh_database_id"]
             ),
         }
         for name, mutate in mutators.items():
@@ -207,6 +243,10 @@ class CrossEncoderPrecisionFreezeTest(unittest.TestCase):
         self,
     ) -> None:
         states = evaluation.prove_archive_round_trip()
+        self.assertEqual(
+            states["unobserved"],
+            {"development": "unobserved", "holdout": "unobserved"},
+        )
         self.assertEqual(states["development-passed"]["development"], "archived-passed")
         self.assertEqual(states["holdout-passed"]["holdout"], "archived-passed")
         self.assertEqual(states["development-failed"]["development"], "archived-failed")
@@ -254,6 +294,141 @@ class CrossEncoderPrecisionFreezeTest(unittest.TestCase):
             )
             evaluation._archive_stage(protocol, "development")
             with self.assertRaisesRegex(ValueError, "closed"):
+                evaluation._assert_stage_can_start(protocol, "holdout")
+
+    def test_lifecycle_claim_error_transport_and_cross_exclusivity_fail_closed(
+        self,
+    ) -> None:
+        source = evaluation.load_protocol()
+
+        with tempfile.TemporaryDirectory() as directory:
+            protocol = self._synthetic(Path(directory))
+            claim = self._claim(protocol)
+            result = evaluation.build_synthetic_evaluated_result(
+                source, "development", claim
+            )
+            evaluation.write_json_exclusive(
+                evaluation._output_path(protocol, "development", "runtime_result"),
+                result,
+            )
+            with (
+                patch.object(evaluation, "load_protocol", return_value=protocol),
+                self.assertRaises(FileExistsError),
+            ):
+                evaluation.write_stage_error("development", "must reject")
+
+        with tempfile.TemporaryDirectory() as directory:
+            protocol = self._synthetic(Path(directory))
+            claim = self._claim(protocol)
+            result = evaluation.build_synthetic_evaluated_result(
+                source, "development", claim
+            )
+            with patch.object(evaluation, "load_protocol", return_value=protocol):
+                evaluation.write_stage_error("development", "synthetic failure")
+                with self.assertRaises(FileExistsError):
+                    evaluation.write_stage_result("development", result)
+
+        with tempfile.TemporaryDirectory() as directory:
+            protocol = self._synthetic(Path(directory))
+            claim = self._claim(protocol)
+            claim_path = evaluation._output_path(
+                protocol, "development", "runtime_claim"
+            )
+            tampered_claim = json.loads(claim.decode("utf-8"))
+            tampered_claim["one_time_claim"] = False
+            claim_path.write_text(json.dumps(tampered_claim), encoding="utf-8")
+            result = evaluation.build_synthetic_evaluated_result(
+                source, "development", claim
+            )
+            evaluation.write_json_exclusive(
+                evaluation._output_path(protocol, "development", "runtime_result"),
+                result,
+            )
+            with self.assertRaisesRegex(ValueError, "claim"):
+                evaluation._archive_stage(protocol, "development")
+
+        with tempfile.TemporaryDirectory() as directory:
+            protocol = self._synthetic(Path(directory))
+            claim = self._claim(protocol)
+            error_path = evaluation._output_path(
+                protocol, "development", "runtime_error"
+            )
+            evaluation.write_json_exclusive(
+                error_path,
+                {
+                    "protocol_id": evaluation.PROTOCOL_ID,
+                    "stage": "development",
+                    "claim_sha256": evaluation.sha256_bytes(claim),
+                    "error": "synthetic",
+                    "extra": True,
+                },
+            )
+            with self.assertRaisesRegex(ValueError, "error evidence"):
+                evaluation._archive_stage(protocol, "development")
+
+        with tempfile.TemporaryDirectory() as directory:
+            protocol = self._synthetic(Path(directory))
+            self._claim(protocol)
+            with patch.object(evaluation, "load_protocol", return_value=protocol):
+                evaluation.write_stage_error("development", "synthetic failure")
+            evaluation._archive_stage(protocol, "development")
+            error_path = evaluation._output_path(
+                protocol, "development", "archive_error"
+            )
+            error_value = evaluation.read_json(error_path)
+            error_value["claim_sha256"] = "f" * 64
+            error_path.write_text(json.dumps(error_value), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "error evidence"):
+                evaluation.verify_phase_state(protocol)
+
+        with tempfile.TemporaryDirectory() as directory:
+            protocol = self._synthetic(Path(directory))
+            claim = self._claim(protocol)
+            result = evaluation.build_synthetic_evaluated_result(
+                source, "development", claim
+            )
+            evaluation.write_json_exclusive(
+                evaluation._output_path(protocol, "development", "runtime_result"),
+                result,
+            )
+            transport_path = evaluation._archive_stage(protocol, "development")
+            transport = evaluation.read_json(transport_path)
+            transport["stage_execution_count"] = 2
+            transport_path.write_text(
+                json.dumps(transport, ensure_ascii=False), encoding="utf-8"
+            )
+            with self.assertRaisesRegex(ValueError, "transport"):
+                evaluation.verify_phase_state(protocol)
+            with self.assertRaises((ValueError, FileExistsError)):
+                evaluation._assert_stage_can_start(protocol, "holdout")
+
+        with tempfile.TemporaryDirectory() as directory:
+            protocol = self._synthetic(Path(directory))
+            claim = self._claim(protocol)
+            result = evaluation.build_synthetic_evaluated_result(
+                source, "development", claim
+            )
+            evaluation.write_json_exclusive(
+                evaluation._output_path(protocol, "development", "runtime_result"),
+                result,
+            )
+            evaluation._archive_stage(protocol, "development")
+            claim_path = evaluation._output_path(
+                protocol, "development", "archive_claim"
+            )
+            claim_value = evaluation.read_json(claim_path)
+            claim_value["one_time_claim"] = False
+            claim_path.write_text(json.dumps(claim_value), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "claim"):
+                evaluation.verify_phase_state(protocol)
+
+        with tempfile.TemporaryDirectory() as directory:
+            protocol = self._synthetic(Path(directory))
+            incomplete = evaluation._output_path(
+                protocol, "development", "archive_result"
+            )
+            evaluation.write_json_exclusive(incomplete, {"all_hard_gates_pass": True})
+            with self.assertRaisesRegex(ValueError, "incomplete"):
                 evaluation._assert_stage_can_start(protocol, "holdout")
 
     def test_default_dependency_and_configuration_surfaces_are_unchanged(self) -> None:

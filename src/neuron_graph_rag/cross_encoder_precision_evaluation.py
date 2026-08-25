@@ -10,6 +10,7 @@ import re
 import subprocess
 import tempfile
 from collections.abc import Mapping
+from functools import cache
 from pathlib import Path
 from typing import Any
 
@@ -60,6 +61,34 @@ CLAIM_FIELDS = {
     "stage",
     "protocol_hashes",
     "one_time_claim",
+}
+RESULT_FIELDS = {
+    "protocol_id",
+    "protocol_commit",
+    "stage",
+    "status",
+    "claim_sha256",
+    "protocol_hashes",
+    "baseline",
+    "models",
+    "candidates",
+    "selected_candidate_id",
+    "gates",
+    "all_hard_gates_pass",
+}
+ERROR_FIELDS = {"protocol_id", "stage", "claim_sha256", "error"}
+TRANSPORT_FIELDS = {
+    "protocol_id",
+    "stage",
+    "reason",
+    "stage_execution_count",
+    "files",
+}
+TRANSPORT_FILE_FIELDS = {
+    "runtime_path",
+    "archive_path",
+    "sha256",
+    "byte_identity",
 }
 STATE_FIELDS = {
     "fresh_database_id",
@@ -145,6 +174,7 @@ def load_protocol(root: Path = ROOT) -> dict[str, Any]:
     fixture_root = root / "tests" / "fixtures"
     protocol: dict[str, Any] = {
         "root": root,
+        "source_root": root,
         "manifest_path": fixture_root / f"{STEM}.manifest.json",
         "manifest": read_json(fixture_root / f"{STEM}.manifest.json"),
     }
@@ -193,7 +223,25 @@ def validate_protocol(protocol: Mapping[str, Any]) -> None:
             row, "content_sha256"
         ):
             raise ValueError(f"source content hash mismatch: {path}")
-    _validate_cases(protocol, paths)
+    relationships: set[tuple[str, str, str]] = set()
+    for relation in _object_list(corpus, "relationships"):
+        if set(relation) != {"source_path", "target_path", "edge_type"}:
+            raise ValueError("frozen relationship shape mismatch")
+        key = (
+            _string(relation, "source_path"),
+            _string(relation, "target_path"),
+            _string(relation, "edge_type"),
+        )
+        if (
+            key in relationships
+            or key[0] not in paths
+            or key[1] not in paths
+            or key[0] == key[1]
+            or key[2] != "informs"
+        ):
+            raise ValueError("frozen relationship must be a unique in-corpus edge")
+        relationships.add(key)
+    _validate_cases(protocol, paths, relationships)
     models = _object_list(_mapping(protocol, "models"), "models")
     if [row.get("model_id") for row in models] != [
         "BAAI/bge-reranker-base",
@@ -250,6 +298,20 @@ def validate_protocol(protocol: Mapping[str, Any]) -> None:
     if tuple(row.get("candidate_id") for row in candidates) != CANDIDATE_IDS:
         raise ValueError("candidate order mismatch")
     schema = _mapping(protocol, "result_schema")
+    for key, fields in (
+        ("claim_exact_fields", CLAIM_FIELDS),
+        ("result_exact_fields", RESULT_FIELDS),
+        ("error_exact_fields", ERROR_FIELDS),
+        ("transport_exact_fields", TRANSPORT_FIELDS),
+        ("transport_file_exact_fields", TRANSPORT_FILE_FIELDS),
+    ):
+        value = schema.get(key)
+        if (
+            not isinstance(value, list)
+            or len(value) != len(fields)
+            or set(value) != fields
+        ):
+            raise ValueError(f"{key} does not exactly freeze lifecycle fields")
     passage = _mapping(schema, "passage")
     execution = _mapping(schema, "execution")
     if passage != {
@@ -294,7 +356,11 @@ def validate_protocol(protocol: Mapping[str, Any]) -> None:
             raise ValueError(f"{key} must remain false at freeze")
 
 
-def _validate_cases(protocol: Mapping[str, Any], paths: set[str]) -> None:
+def _validate_cases(
+    protocol: Mapping[str, Any],
+    paths: set[str],
+    relationships: set[tuple[str, str, str]],
+) -> None:
     queries = _mapping(_mapping(protocol, "queries"), "stages")
     gold = _mapping(_mapping(protocol, "gold"), "stages")
     all_case_ids: set[str] = set()
@@ -342,7 +408,12 @@ def _validate_cases(protocol: Mapping[str, Any], paths: set[str]) -> None:
                 raise ValueError("positive case shape mismatch")
             if case["cohort"] == "relation_linked":
                 seed = _string(row, "relation_seed_path")
-                if seed not in paths or _string(row, "relation_edge_type") != "informs":
+                edge_type = _string(row, "relation_edge_type")
+                if (
+                    seed not in paths
+                    or edge_type != "informs"
+                    or (seed, expected[0], edge_type) not in relationships
+                ):
                     raise ValueError("relation seed mismatch")
                 stage_ids.add(seed)
             stage_ids.update(expected + forbidden)
@@ -438,8 +509,9 @@ def evaluate_result_payload(
     claim = _validate_claim(protocol, stage, claim_raw)
     baseline = _validate_baseline(protocol, stage, baseline_raw)
     models = _validate_models(protocol, stage, model_raws, baseline)
+    state_rows = [baseline["state"], *[model["state"] for model in models]]
     candidates = [
-        _derive_candidate(protocol, stage, baseline, models, candidate_id)
+        _derive_candidate(protocol, stage, baseline, models, candidate_id, state_rows)
         for candidate_id in CANDIDATE_IDS
     ]
     selected = next(
@@ -474,21 +546,7 @@ def verify_result_payload(
     payload: Mapping[str, Any],
     claim_raw: bytes,
 ) -> None:
-    expected_fields = {
-        "protocol_id",
-        "protocol_commit",
-        "stage",
-        "status",
-        "claim_sha256",
-        "protocol_hashes",
-        "baseline",
-        "models",
-        "candidates",
-        "selected_candidate_id",
-        "gates",
-        "all_hard_gates_pass",
-    }
-    if set(payload) != expected_fields:
+    if set(payload) != RESULT_FIELDS:
         raise ValueError("result fields must exactly match the frozen schema")
     if payload.get("status") not in ("passed", "failed") or not isinstance(
         payload.get("all_hard_gates_pass"), bool
@@ -531,7 +589,15 @@ def write_stage_result(
     stage: str, payload: Mapping[str, Any], root: Path = ROOT
 ) -> Path:
     protocol = load_protocol(root)
-    claim = _output_path(protocol, stage, "runtime_claim").read_bytes()
+    claim_path = _output_path(protocol, stage, "runtime_claim")
+    if any(
+        _output_path(protocol, stage, key).exists()
+        for key in ("runtime_error", "archive_error", "archive_result", "transport")
+    ):
+        raise FileExistsError("result is exclusive with existing error evidence")
+    if not claim_path.is_file():
+        raise ValueError("registered runtime claim is required")
+    claim = claim_path.read_bytes()
     verify_result_payload(protocol, stage, payload, claim)
     target = _output_path(protocol, stage, "runtime_result")
     write_json_exclusive(target, payload)
@@ -541,18 +607,24 @@ def write_stage_result(
 def write_stage_error(stage: str, message: str, root: Path = ROOT) -> Path:
     protocol = load_protocol(root)
     claim = _output_path(protocol, stage, "runtime_claim")
+    if any(
+        _output_path(protocol, stage, key).exists()
+        for key in ("runtime_result", "archive_result", "archive_error", "transport")
+    ):
+        raise FileExistsError("error is exclusive with existing result evidence")
     if not claim.is_file() or not isinstance(message, str) or not message:
         raise ValueError("claim and non-empty error message are required")
+    claim_raw = claim.read_bytes()
+    _validate_claim(protocol, stage, claim_raw)
     target = _output_path(protocol, stage, "runtime_error")
-    write_json_exclusive(
-        target,
-        {
-            "protocol_id": PROTOCOL_ID,
-            "stage": stage,
-            "claim_sha256": sha256_bytes(claim.read_bytes()),
-            "error": message,
-        },
-    )
+    error_payload = {
+        "protocol_id": PROTOCOL_ID,
+        "stage": stage,
+        "claim_sha256": sha256_bytes(claim_raw),
+        "error": message,
+    }
+    _validate_error_payload(stage, error_payload, claim_raw)
+    write_json_exclusive(target, error_payload)
     return target
 
 
@@ -572,10 +644,25 @@ def _validate_claim(
             "protocol_hashes": hashes,
             "one_time_claim": True,
         }
+        or claim.get("one_time_claim") is not True
     ):
         raise ValueError("claim does not exactly bind the frozen protocol")
     _full_commit(claim["protocol_commit"])
     return claim
+
+
+def _validate_error_payload(
+    stage: str, payload: Mapping[str, Any], claim_raw: bytes
+) -> None:
+    if (
+        set(payload) != ERROR_FIELDS
+        or payload.get("protocol_id") != PROTOCOL_ID
+        or payload.get("stage") != stage
+        or payload.get("claim_sha256") != sha256_bytes(claim_raw)
+        or not isinstance(payload.get("error"), str)
+        or not payload["error"]
+    ):
+        raise ValueError("error evidence does not exactly bind the stage claim")
 
 
 def _validate_baseline(
@@ -628,24 +715,45 @@ def _validate_models(
         )
         base_by_id = {row["case_id"]: row for row in _object_list(baseline, "cases")}
         for case in cases:
-            expected = [
-                hit["source_path"]
-                for hit in base_by_id[case["case_id"]]["ranked_hits"][:20]
-            ]
-            if [hit["source_path"] for hit in case["ranked_hits"]] != expected:
+            expected_hits = base_by_id[case["case_id"]]["ranked_hits"][:20]
+            if [
+                (hit["source_path"], hit["rank"], hit["ngr_score"])
+                for hit in case["ranked_hits"]
+            ] != [
+                (hit["source_path"], hit["rank"], hit["ngr_score"])
+                for hit in expected_hits
+            ]:
                 raise ValueError("cross-encoder input must be the frozen NGR top-20")
         metrics = _mapping(raw, "metrics")
-        if set(metrics) != {
+        expected_metric_fields = {
             "latency_ms",
             "peak_rss_bytes",
             "cache_bytes",
             "pair_count",
             "window_count",
-        } or any(
-            not isinstance(value, (int, float)) or isinstance(value, bool) or value < 0
-            for value in metrics.values()
-        ):
+        }
+        if set(metrics) != expected_metric_fields:
             raise ValueError("model metrics shape mismatch")
+        latency = metrics.get("latency_ms")
+        if (
+            not isinstance(latency, (int, float))
+            or isinstance(latency, bool)
+            or not math.isfinite(float(latency))
+            or latency < 0
+        ):
+            raise TypeError("latency metric must be finite and non-negative")
+        for key in ("peak_rss_bytes", "cache_bytes", "pair_count", "window_count"):
+            value = metrics.get(key)
+            if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+                raise TypeError(f"{key} must be a non-negative integer")
+        raw_chunk_count = sum(
+            len(hit["chunks"]) for case in cases for hit in case["ranked_hits"]
+        )
+        if (
+            metrics["pair_count"] != raw_chunk_count
+            or metrics["window_count"] != raw_chunk_count
+        ):
+            raise ValueError("pair/window metrics must match raw chunk cardinality")
         rows.append(
             {
                 "model_id": raw["model_id"],
@@ -672,6 +780,15 @@ def _validate_case_rows(
         _string(row, "path"): _string(row, "content_sha256")
         for row in _object_list(_mapping(protocol, "corpus"), "documents")
     }
+    corpus_paths = set(corpus_hashes)
+    frozen_relations = {
+        (
+            _string(relation, "source_path"),
+            _string(relation, "target_path"),
+            _string(relation, "edge_type"),
+        )
+        for relation in _object_list(_mapping(protocol, "corpus"), "relationships")
+    }
     result = copy.deepcopy(rows)
     for row, query in zip(result, frozen, strict=True):
         required = {"case_id", "cohort", "ranked_hits"}
@@ -681,6 +798,7 @@ def _validate_case_rows(
         if len(hits) != expected_hits:
             raise ValueError("ranked hit cardinality mismatch")
         seen = set()
+        previous_order_key: tuple[float, str] | None = None
         for rank, hit in enumerate(hits, 1):
             fields = {
                 "source_path",
@@ -691,7 +809,12 @@ def _validate_case_rows(
             }
             if require_logits:
                 fields |= {"chunks", "raw_logit", "winning_chunk_index"}
-            if set(hit) != fields or hit.get("rank") != rank:
+            if (
+                set(hit) != fields
+                or not isinstance(hit.get("rank"), int)
+                or isinstance(hit.get("rank"), bool)
+                or hit.get("rank") != rank
+            ):
                 raise ValueError("ranked hit shape mismatch")
             path = _string(hit, "source_path")
             if path in seen or hit.get("source_sha256") != corpus_hashes.get(path):
@@ -701,6 +824,39 @@ def _validate_case_rows(
                 hit.get("ngr_score"), bool
             ):
                 raise TypeError("NGR score must be numeric")
+            ngr_score = float(hit["ngr_score"])
+            if not math.isfinite(ngr_score):
+                raise ValueError("NGR score must be finite")
+            order_key = (-ngr_score, path)
+            if previous_order_key is not None and order_key < previous_order_key:
+                raise ValueError("NGR hits must be score-desc/source-identity-asc")
+            previous_order_key = order_key
+            relations = _object_list(hit, "relation_paths")
+            relation_keys: set[tuple[str, str, str]] = set()
+            for relation in relations:
+                if set(relation) != {
+                    "seed_path",
+                    "target_path",
+                    "edge_type",
+                    "step_count",
+                }:
+                    raise ValueError("relation path shape mismatch")
+                seed = _string(relation, "seed_path")
+                target = _string(relation, "target_path")
+                edge_type = _string(relation, "edge_type")
+                relation_key = (seed, target, edge_type)
+                if (
+                    seed not in corpus_paths
+                    or target != path
+                    or target not in corpus_paths
+                    or not isinstance(relation.get("step_count"), int)
+                    or isinstance(relation.get("step_count"), bool)
+                    or relation.get("step_count") != 1
+                    or relation_key not in frozen_relations
+                    or relation_key in relation_keys
+                ):
+                    raise ValueError("relation path must be one frozen in-corpus edge")
+                relation_keys.add(relation_key)
             if require_logits:
                 chunks = _object_list(hit, "chunks")
                 if not chunks or any(
@@ -715,10 +871,25 @@ def _validate_case_rows(
                     for chunk in chunks
                 ):
                     raise ValueError("chunk score shape mismatch")
+                expected_chunks = _source_passages(protocol, path)
+                if len(chunks) != len(expected_chunks):
+                    raise ValueError("chunk cardinality does not match frozen source")
                 logits = []
-                for index, chunk in enumerate(chunks):
+                for index, (chunk, expected_chunk) in enumerate(
+                    zip(chunks, expected_chunks, strict=True)
+                ):
                     if (
-                        chunk.get("chunk_index") != index
+                        not isinstance(chunk.get("chunk_index"), int)
+                        or isinstance(chunk.get("chunk_index"), bool)
+                        or chunk.get("chunk_index") != index
+                        or not isinstance(chunk.get("start_codepoint"), int)
+                        or isinstance(chunk.get("start_codepoint"), bool)
+                        or chunk.get("start_codepoint")
+                        != expected_chunk["start_codepoint"]
+                        or not isinstance(chunk.get("end_codepoint"), int)
+                        or isinstance(chunk.get("end_codepoint"), bool)
+                        or chunk.get("end_codepoint") != expected_chunk["end_codepoint"]
+                        or chunk.get("text_sha256") != expected_chunk["text_sha256"]
                         or not isinstance(chunk.get("raw_logit"), (int, float))
                         or isinstance(chunk.get("raw_logit"), bool)
                         or not math.isfinite(float(chunk["raw_logit"]))
@@ -734,7 +905,12 @@ def _validate_case_rows(
                     default=-1,
                 )
                 if (
-                    hit.get("winning_chunk_index") != winner
+                    not isinstance(hit.get("winning_chunk_index"), int)
+                    or isinstance(hit.get("winning_chunk_index"), bool)
+                    or hit.get("winning_chunk_index") != winner
+                    or not isinstance(hit.get("raw_logit"), (int, float))
+                    or isinstance(hit.get("raw_logit"), bool)
+                    or not math.isfinite(float(hit["raw_logit"]))
                     or float(hit.get("raw_logit")) != logits[winner]
                 ):
                     raise ValueError("document max-chunk score mismatch")
@@ -748,7 +924,55 @@ def _validate_state(state: Mapping[str, Any]) -> dict[str, Any]:
         state.get(key) is not True for key in ("cpu_only", "offline", "fresh_process")
     ):
         raise ValueError("CPU/offline/fresh-process state required")
+    for key in (
+        "ranking_sha256",
+        "replay_ranking_sha256",
+        "activation_sha256",
+        "replay_activation_sha256",
+        "edge_sha256_before",
+        "edge_sha256_after",
+        "sqlite_sha256_before",
+        "sqlite_sha256_after",
+    ):
+        if not isinstance(state.get(key), str) or not re.fullmatch(
+            r"[0-9a-f]{64}", state[key]
+        ):
+            raise TypeError(f"{key} must be a lowercase SHA-256")
+    database_ids = (state.get("fresh_database_id"), state.get("replay_database_id"))
+    if any(not isinstance(value, str) or not value for value in database_ids):
+        raise TypeError("database ids must be non-empty strings")
+    if database_ids[0] == database_ids[1]:
+        raise ValueError("fresh and replay database identities must differ")
+    for key in ("feedback_count_before", "feedback_count_after"):
+        value = state.get(key)
+        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+            raise TypeError(f"{key} must be a non-negative integer")
     return dict(state)
+
+
+def _source_passages(
+    protocol: Mapping[str, Any], source_path: str
+) -> tuple[dict[str, Any], ...]:
+    corpus = _mapping(protocol, "corpus")
+    root = _path(protocol, "source_root")
+    return _frozen_source_passages(str(root), _string(corpus, "commit"), source_path)
+
+
+@cache
+def _frozen_source_passages(
+    root_value: str, commit: str, source_path: str
+) -> tuple[dict[str, Any], ...]:
+    raw = _git_bytes(Path(root_value), commit, source_path)
+    text = raw.decode("utf-8", errors="strict")
+    return tuple(
+        {
+            "chunk_index": chunk["chunk_index"],
+            "start_codepoint": chunk["start_codepoint"],
+            "end_codepoint": chunk["end_codepoint"],
+            "text_sha256": sha256_bytes(chunk["text"].encode("utf-8")),
+        }
+        for chunk in project_passages(text)
+    )
 
 
 def _derive_candidate(
@@ -757,6 +981,7 @@ def _derive_candidate(
     baseline: Mapping[str, Any],
     models: list[dict[str, Any]],
     candidate_id: str,
+    state_rows: list[dict[str, Any]],
 ) -> dict[str, Any]:
     model = models[0] if candidate_id.startswith("bge-base") else models[1]
     fusion = "rrf" if "-rrf-" in candidate_id else "ce"
@@ -813,7 +1038,7 @@ def _derive_candidate(
             }
         )
     cohorts = _cohorts(protocol, stage, cases)
-    gates = _candidate_gates(protocol, stage, baseline, model, cases, cohorts)
+    gates = _candidate_gates(protocol, stage, baseline, cases, cohorts, state_rows)
     return {
         "candidate_id": candidate_id,
         "cases": cases,
@@ -827,9 +1052,9 @@ def _candidate_gates(
     protocol: Mapping[str, Any],
     stage: str,
     baseline: Mapping[str, Any],
-    model: Mapping[str, Any],
     cases: list[dict[str, Any]],
     cohorts: list[dict[str, Any]],
+    state_rows: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     gold = {
         _string(row, "case_id"): row
@@ -898,24 +1123,21 @@ def _candidate_gates(
         for row in cohorts
         if row["cohort"] != "negative_control"
     )
-    states = [_mapping(baseline, "state"), _mapping(model, "state")]
-    deterministic = (
-        all(
-            state["ranking_sha256"] == state["replay_ranking_sha256"]
-            and state["activation_sha256"] == state["replay_activation_sha256"]
-            for state in states
-        )
-        and len(
-            {state["fresh_database_id"] for state in states}
-            | {state["replay_database_id"] for state in states}
-        )
-        == 4
-    )
+    database_ids = [
+        state[key]
+        for state in state_rows
+        for key in ("fresh_database_id", "replay_database_id")
+    ]
+    deterministic = all(
+        state["ranking_sha256"] == state["replay_ranking_sha256"]
+        and state["activation_sha256"] == state["replay_activation_sha256"]
+        for state in state_rows
+    ) and len(set(database_ids)) == len(database_ids)
     immutable = all(
         state["edge_sha256_before"] == state["edge_sha256_after"]
         and state["feedback_count_before"] == state["feedback_count_after"] == 0
         and state["sqlite_sha256_before"] == state["sqlite_sha256_after"]
-        for state in states
+        for state in state_rows
     )
     passed = (
         True,
@@ -1007,12 +1229,19 @@ def _archive_stage(protocol: Mapping[str, Any], stage: str) -> Path:
     if not claim_runtime.is_file() or result_runtime.exists() == error_runtime.exists():
         raise ValueError("claim and exactly one result/error are required")
     claim_raw = claim_runtime.read_bytes()
+    _validate_claim(protocol, stage, claim_raw)
     payload_runtime = result_runtime if result_runtime.exists() else error_runtime
     payload_archive = result_archive if result_runtime.exists() else error_archive
     payload_raw = payload_runtime.read_bytes()
     if result_runtime.exists():
         verify_result_payload(
             protocol,
+            stage,
+            json.loads(payload_raw.decode("utf-8", errors="strict")),
+            claim_raw,
+        )
+    else:
+        _validate_error_payload(
             stage,
             json.loads(payload_raw.decode("utf-8", errors="strict")),
             claim_raw,
@@ -1033,17 +1262,71 @@ def _archive_stage(protocol: Mapping[str, Any], stage: str) -> Path:
                 "byte_identity": archive.read_bytes() == raw,
             }
         )
-    write_json_exclusive(
-        transport,
+    transport_payload = {
+        "protocol_id": PROTOCOL_ID,
+        "stage": stage,
+        "reason": "phase-boundary byte-preserving archival",
+        "stage_execution_count": 1,
+        "files": files,
+    }
+    _validate_transport_payload(
+        protocol, stage, transport_payload, claim_raw, payload_archive, payload_raw
+    )
+    write_json_exclusive(transport, transport_payload)
+    return transport
+
+
+def _validate_transport_payload(
+    protocol: Mapping[str, Any],
+    stage: str,
+    payload: Mapping[str, Any],
+    claim_raw: bytes,
+    evidence_path: Path,
+    evidence_raw: bytes,
+) -> None:
+    if (
+        set(payload) != TRANSPORT_FIELDS
+        or payload.get("protocol_id") != PROTOCOL_ID
+        or payload.get("stage") != stage
+        or payload.get("reason") != "phase-boundary byte-preserving archival"
+        or payload.get("stage_execution_count") != 1
+        or isinstance(payload.get("stage_execution_count"), bool)
+    ):
+        raise ValueError("transport manifest shape mismatch")
+    files = _object_list(payload, "files")
+    if (
+        len(files) != 2
+        or any(set(row) != TRANSPORT_FILE_FIELDS for row in files)
+        or any(row.get("byte_identity") is not True for row in files)
+    ):
+        raise ValueError("transport file registry shape mismatch")
+    claim_archive = _output_path(protocol, stage, "archive_claim")
+    claim_runtime = _output_path(protocol, stage, "runtime_claim")
+    evidence_kind = (
+        "result" if evidence_path.name.endswith("observed.json") else "error"
+    )
+    evidence_runtime = _output_path(protocol, stage, f"runtime_{evidence_kind}")
+    expected = (
         {
-            "protocol_id": PROTOCOL_ID,
-            "stage": stage,
-            "reason": "phase-boundary byte-preserving archival",
-            "stage_execution_count": 1,
-            "files": files,
+            "runtime_path": _relative(protocol, claim_runtime),
+            "archive_path": _relative(protocol, claim_archive),
+            "sha256": sha256_bytes(claim_raw),
+            "byte_identity": True,
+        },
+        {
+            "runtime_path": _relative(protocol, evidence_runtime),
+            "archive_path": _relative(protocol, evidence_path),
+            "sha256": sha256_bytes(evidence_raw),
+            "byte_identity": True,
         },
     )
-    return transport
+    if tuple(files) != expected:
+        raise ValueError("transport manifest does not exactly bind archived bytes")
+    if (
+        claim_archive.read_bytes() != claim_raw
+        or evidence_path.read_bytes() != evidence_raw
+    ):
+        raise ValueError("transport byte identity check failed")
 
 
 def verify_phase_state(protocol: Mapping[str, Any]) -> dict[str, str]:
@@ -1069,6 +1352,7 @@ def verify_phase_state(protocol: Mapping[str, Any]) -> dict[str, str]:
         ):
             raise ValueError("archived stage is incomplete")
         claim_raw = claim.read_bytes()
+        _validate_claim(protocol, stage, claim_raw)
         payload = result if result.exists() else error
         if result.exists():
             value = read_json(result)
@@ -1078,23 +1362,17 @@ def verify_phase_state(protocol: Mapping[str, Any]) -> dict[str, str]:
             )
         else:
             value = read_json(error)
-            if set(value) != {
-                "protocol_id",
-                "stage",
-                "claim_sha256",
-                "error",
-            } or value.get("claim_sha256") != sha256_bytes(claim_raw):
-                raise ValueError("error evidence mismatch")
+            _validate_error_payload(stage, value, claim_raw)
             states[stage] = "archived-error"
         transport_value = read_json(transport)
-        files = _object_list(transport_value, "files")
-        if (
-            len(files) != 2
-            or any(row.get("byte_identity") is not True for row in files)
-            or [row.get("sha256") for row in files]
-            != [sha256_bytes(claim_raw), sha256_bytes(payload.read_bytes())]
-        ):
-            raise ValueError("transport byte identity mismatch")
+        _validate_transport_payload(
+            protocol,
+            stage,
+            transport_value,
+            claim_raw,
+            payload,
+            payload.read_bytes(),
+        )
     if states["holdout"] != "unobserved" and states["development"] != "archived-passed":
         raise ValueError("holdout requires passing development")
     return states
@@ -1117,11 +1395,11 @@ def _assert_stage_can_start(protocol: Mapping[str, Any], stage: str) -> None:
     ):
         raise FileExistsError(f"{stage} has already started")
     if stage == "holdout":
-        development = _output_path(protocol, "development", "archive_result")
-        if (
-            not development.is_file()
-            or read_json(development).get("all_hard_gates_pass") is not True
-        ):
+        phases = verify_phase_state(protocol)
+        if phases != {
+            "development": "archived-passed",
+            "holdout": "unobserved",
+        }:
             raise ValueError("holdout is closed unless development passed")
 
 
@@ -1208,6 +1486,7 @@ def build_synthetic_evaluated_result(
         _object_list(_mapping(protocol, "models"), "models")
     ):
         model_cases = []
+        raw_chunk_count = 0
         for case in baseline_cases:
             target = (
                 gold[case["case_id"]]["expected_paths"]
@@ -1228,19 +1507,17 @@ def build_synthetic_evaluated_result(
                     if positive
                     else (-4.0 if forbidden else 1.0 - hit["rank"] / 25.0)
                 )
+                source_chunks = _source_passages(protocol, hit["source_path"])
+                raw_chunk_count += len(source_chunks)
                 ranked_hits.append(
                     {
                         **copy.deepcopy(hit),
                         "chunks": [
                             {
-                                "chunk_index": 0,
-                                "start_codepoint": 0,
-                                "end_codepoint": 1,
-                                "text_sha256": sha256_bytes(
-                                    hit["source_path"].encode("utf-8")
-                                ),
+                                **chunk,
                                 "raw_logit": logit,
                             }
+                            for chunk in source_chunks
                         ],
                         "raw_logit": logit,
                         "winning_chunk_index": 0,
@@ -1263,8 +1540,8 @@ def build_synthetic_evaluated_result(
                     "latency_ms": 0.0,
                     "peak_rss_bytes": 0,
                     "cache_bytes": 0,
-                    "pair_count": 160,
-                    "window_count": 160,
+                    "pair_count": raw_chunk_count,
+                    "window_count": raw_chunk_count,
                 },
             }
         )
@@ -1273,7 +1550,11 @@ def build_synthetic_evaluated_result(
 
 def prove_archive_round_trip() -> dict[str, dict[str, str]]:
     source = load_protocol()
-    results = {}
+    results: dict[str, dict[str, str]] = {}
+    with tempfile.TemporaryDirectory() as directory:
+        unobserved = dict(source)
+        unobserved["root"] = Path(directory)
+        results["unobserved"] = verify_phase_state(unobserved)
     for scenario in (
         "development-passed",
         "holdout-passed",
@@ -1431,6 +1712,7 @@ def main(argv: list[str] | None = None) -> int:
         "protocol_id": PROTOCOL_ID,
         "registered_query_execution_count": 0,
         "model_inference_count": 0,
+        "observed_result_count": 0,
         "phase": verify_phase_state(protocol),
     }
     if args.command == "probe":

@@ -21,6 +21,25 @@
     "gates",
     "all_hard_gates_pass"
   ],
+  "error_exact_fields": [
+    "protocol_id",
+    "stage",
+    "claim_sha256",
+    "error"
+  ],
+  "transport_exact_fields": [
+    "protocol_id",
+    "stage",
+    "reason",
+    "stage_execution_count",
+    "files"
+  ],
+  "transport_file_exact_fields": [
+    "runtime_path",
+    "archive_path",
+    "sha256",
+    "byte_identity"
+  ],
   "passage": {
     "window_codepoints": 480,
     "overlap_codepoints": 80,

@@ -11,12 +11,12 @@
     "tests/fixtures/github_cross_encoder_precision_v1.models.json": "68218c03a66192b5ee1bec384b11bf5fa530271155f136278cf1f3c1772068d6",
     "tests/fixtures/github_cross_encoder_precision_v1.candidates.json": "2c2f1ab25f933a7354c0e4c06340c29e05122e15291d1e52a031722add3b22cf",
     "tests/fixtures/github_cross_encoder_precision_v1.gate.json": "cad51b76f3f38b90ea27ac0f4267d60ac263dcde43459bc529cf3e9f66c89fed",
-    "tests/fixtures/github_cross_encoder_precision_v1.result-schema.json": "a28b9e6ebe6110961622cd91c9937463eb92fcac5423828a5c8b04d220d3e8e5",
+    "tests/fixtures/github_cross_encoder_precision_v1.result-schema.json": "1c5b4c6add17ad760a4e3bc5a7ecc6b3fc41c4a63cb1adbc25ad4a963e50c782",
     "tests/fixtures/github_cross_encoder_precision_v1.result-free-audit.json": "4691b9387e608db268feecbcdf92252f9df1e858eb8ba4ca07966995235b6543",
     "tests/fixtures/github_cross_encoder_precision_v1.requirements.in": "2e245ccc1789378ec53a14443fb1d61bfe04dfbc785a724ccbfc201b9a9d981a",
     "tests/fixtures/github_cross_encoder_precision_v1.requirements.lock": "1e3a69692fadf6a4248039b202de45c6fed2aaf94376a53db653e7b1d59e2a79",
-    "src/neuron_graph_rag/cross_encoder_precision_evaluation.py": "8262296c2d9a3f065cb513f04c1533f58e53cac7454bd9ab7f625f877732cd87",
-    "tests/test_cross_encoder_precision.py": "ef5ca8d8203337062978f0968340f38209b59a66cc91d9d19dd44ba28aea936b",
+    "src/neuron_graph_rag/cross_encoder_precision_evaluation.py": "bf853188b3d9bace8959c69f8ec561197222d9aa09a844ab4896cab740a6ee4e",
+    "tests/test_cross_encoder_precision.py": "4edd0d0c93ab1e99a43073c193c941c676df1e69663e5a743f295c7955d41522",
     "docs/cross-encoder-precision-freeze-v1.md": "57891e3e8d41d1526706d80d688d1dc0712b3ebb8428841ae9f25108fafa53f7"
   },
   "predecessor_immutable_sha256": {
