@@ -322,9 +322,7 @@ class CrossEncoderPrecisionV2ObservationEvidenceTest(unittest.TestCase):
             ],
         )
 
-        raw_manifest = observation.read_json(
-            evidence / "development.raw-archive.json"
-        )
+        raw_manifest = observation.read_json(evidence / "development.raw-archive.json")
         expected_raw_hashes = {
             "baseline-primary.json": (
                 "b816256f4e174af7722b027e582196af620fb8d7384af292d96e8ae2115e78dc"
