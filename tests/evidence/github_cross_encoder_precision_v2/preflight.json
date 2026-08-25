@@ -1,0 +1,27 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v2",
+  "protocol_commit": "36c17aac3b49587c97d96bac51db668bf834177b",
+  "source_commit": "c32b3049fd3daaa2190faf5e3e85955a195ee88c",
+  "completed_at": "2026-08-25T11:42:20+00:00",
+  "external_root": "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2",
+  "cache_path": "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache",
+  "cache_bytes": 3427616927,
+  "cache_reused_as_verified_bytes_only": true,
+  "v1_evidence_semantic_content_read": false,
+  "shared_database_path": "C:\\Users\\smile\\.ngrdb\\knowledge.db",
+  "shared_database_sha256_before": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "shared_database_sha256_after": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "offline": true,
+  "trust_remote_code": false,
+  "batch_size": 8,
+  "preflight_forward_inference_count": 2,
+  "registered_query_execution_count": 0,
+  "observed_stage_inference_count": 0,
+  "claim_count": 0,
+  "phase": {
+    "development": "unobserved",
+    "holdout": "unobserved"
+  },
+  "model_report_sha256": "3ba27a74a3b695d88a4e6c670f85a69def1a1461931d53ded84fbf7340bcce3f",
+  "dependency_report_sha256": "00ee3f5636fc2f4f936ecf91a7144778eef57c48d621b2c471fb54980acb0e35"
+}

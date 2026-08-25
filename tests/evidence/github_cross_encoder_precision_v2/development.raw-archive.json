@@ -1,0 +1,53 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v2",
+  "protocol_commit": "36c17aac3b49587c97d96bac51db668bf834177b",
+  "stage": "development",
+  "stage_execution_count": 1,
+  "expected_worker_packet_count": 6,
+  "archived_worker_packet_count": 6,
+  "complete": true,
+  "files": [
+    {
+      "runtime_path": "C:/Users/smile/Codex/workspace/experiments/github_cross_encoder_precision_v2/runs/development/baseline-primary.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v2/raw/development/baseline-primary.json",
+      "size": 56304,
+      "sha256": "b816256f4e174af7722b027e582196af620fb8d7384af292d96e8ae2115e78dc",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "C:/Users/smile/Codex/workspace/experiments/github_cross_encoder_precision_v2/runs/development/baseline-replay.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v2/raw/development/baseline-replay.json",
+      "size": 56304,
+      "sha256": "8fb51c7f1f17af0f74d43410992a45d5eda2863f821147ef4c32ae177ee93989",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "C:/Users/smile/Codex/workspace/experiments/github_cross_encoder_precision_v2/runs/development/base-primary.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v2/raw/development/base-primary.json",
+      "size": 613599,
+      "sha256": "5d2ae8f0372627846c0bc1346d755ce56c15be8935a0cf669e71e92605b9cb45",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "C:/Users/smile/Codex/workspace/experiments/github_cross_encoder_precision_v2/runs/development/base-replay.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v2/raw/development/base-replay.json",
+      "size": 613599,
+      "sha256": "b5bc0f1ab5a3eacef4d59e4de125a1f41654e2f9ff8c9e1a72b7c19d9b79ebcf",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "C:/Users/smile/Codex/workspace/experiments/github_cross_encoder_precision_v2/runs/development/v2-m3-primary.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v2/raw/development/v2-m3-primary.json",
+      "size": 613119,
+      "sha256": "ce2638c95ee0383aea5f491804f7dd284c55f6f2c10aa92955fe2595db816d73",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "C:/Users/smile/Codex/workspace/experiments/github_cross_encoder_precision_v2/runs/development/v2-m3-replay.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v2/raw/development/v2-m3-replay.json",
+      "size": 613119,
+      "sha256": "ec014f6167520416a947714c1dc3b8f35db4cc60eeba2c314baf290c5b53b005",
+      "byte_identity": true
+    }
+  ]
+}
