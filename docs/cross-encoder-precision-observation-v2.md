@@ -20,4 +20,13 @@ claim後の例外またはgate failureではevidenceを保存し、同じprotoco
 
 ## 状態
 
-preflight evidenceとone-shot resultは未生成である。生成後は、claim/query/inference/arm/retry count、development/holdout phase、selected candidate、gate failure、shared databaseの不変性、archive hashをこの文書へ追記する。
+preflightは完了した。2 exact model revisionのrequired file全件を検証し、再利用cacheは `3,427,616,927` bytesだった。offline/local-files-only、CPU / float32 / `eval()` / inference mode、batch size 8のsynthetic probeをmodelごとに1回実行した。probe forward countは2であり、登録queryを含まない。v2 freeze 15 tests、observation 7 tests、full 370 tests、audit/probe、変更対象Ruffはgreenだった。
+
+shared `C:/Users/smile/.ngrdb/knowledge.db` のraw SHA-256はpreflight前後とも `84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e` である。preflight完了時点のclaim/query/observed-stage inference countは `0/0/0`、phaseはdevelopment/holdoutともに `unobserved` である。
+
+- preflight: `4c35e1846486cba6ac8b001df62f79fa4f39df5df3df0711a7769ed9f10df703`
+- model verification: `2c78d8df182e1a53127984d09161b21f1fe7dd8709f78df793abb653bb92b3cc`
+- dependency report: `5b80fa6c2470cf99004294b2b0d03bfcd15c102d62dda45594c8d1d8d44e8ad7`
+- preflight commands: `77c29f50eb8368e5dc59bdecbbd08c6e9e681b84777aeca2b928267cdf58eadc`
+
+one-shot resultは未生成である。生成後は、claim/query/inference/arm/retry count、development/holdout phase、selected candidate、gate failure、shared databaseの不変性、archive hashを追記する。
