@@ -8,6 +8,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import call, patch
 
+from neuron_graph_rag import cross_encoder_precision_v2_evaluation as evaluation
 from neuron_graph_rag import cross_encoder_precision_v2_observation as observation
 
 
@@ -255,6 +256,140 @@ class CrossEncoderPrecisionV2ObservationTest(unittest.TestCase):
             "sqlite_sha256_before": "sqlite",
             "sqlite_sha256_after": "sqlite",
         }
+
+
+class CrossEncoderPrecisionV2ObservationEvidenceTest(unittest.TestCase):
+    def test_committed_development_evidence_is_exact_and_fully_verified(self) -> None:
+        protocol = evaluation.load_protocol()
+        self.assertEqual(
+            evaluation.verify_phase_state(protocol),
+            {"development": "archived-failed", "holdout": "unobserved"},
+        )
+        evidence = evaluation.ROOT / observation.EVIDENCE
+        expected_hashes = {
+            "development.claim.json": (
+                "437450a4e8fdcc488b4409ac14cff9133c152c8945a11081e268f93ae08efdbc"
+            ),
+            "development.observed.json": (
+                "83e7cbbc7e09db2189edc535372d317ce69810c5601149d6acf5b2e308bae007"
+            ),
+            "development.transport.json": (
+                "7eafcb3a442bc3a5da94a25c0867b4bb283b468fd60dcd11444c2bb60e9d0838"
+            ),
+            "development.raw-archive.json": (
+                "7e9b3bc45fa6a7c65fad0f9c45414cad18fe17dc6559ea998179911be054aca7"
+            ),
+            "execution.json": (
+                "d41ba9a93b8048c0be15bb3fcf7d830a744ade6813f663e727c2a62e226496cd"
+            ),
+        }
+        for name, expected in expected_hashes.items():
+            self.assertEqual(
+                evaluation.sha256_bytes((evidence / name).read_bytes()), expected
+            )
+
+        claim_raw = (evidence / "development.claim.json").read_bytes()
+        result = observation.read_json(evidence / "development.observed.json")
+        evaluation.verify_result_payload(protocol, "development", result, claim_raw)
+        self.assertEqual(result["status"], "failed")
+        self.assertIsNone(result["selected_candidate_id"])
+        self.assertFalse(result["all_hard_gates_pass"])
+        self.assertEqual(len(result["candidates"]), 4)
+        self.assertTrue(
+            all(
+                candidate["all_hard_gates_pass"] is False
+                for candidate in result["candidates"]
+            )
+        )
+        self.assertEqual(
+            {gate["gate_id"] for gate in result["gates"] if not gate["passed"]},
+            {
+                "positive-case-rank-non-regression",
+                "positive-cohort-mrr-hit-at-5-non-regression",
+                "positive-expected-source-top-5-completeness",
+                "relation-source-edge-only-provenance",
+            },
+        )
+
+        transport = observation.read_json(evidence / "development.transport.json")
+        self.assertEqual(transport["stage_execution_count"], 1)
+        self.assertTrue(all(row["byte_identity"] for row in transport["files"]))
+        self.assertEqual(
+            [row["sha256"] for row in transport["files"]],
+            [
+                expected_hashes["development.claim.json"],
+                expected_hashes["development.observed.json"],
+            ],
+        )
+
+        raw_manifest = observation.read_json(
+            evidence / "development.raw-archive.json"
+        )
+        expected_raw_hashes = {
+            "baseline-primary.json": (
+                "b816256f4e174af7722b027e582196af620fb8d7384af292d96e8ae2115e78dc"
+            ),
+            "baseline-replay.json": (
+                "8fb51c7f1f17af0f74d43410992a45d5eda2863f821147ef4c32ae177ee93989"
+            ),
+            "base-primary.json": (
+                "5d2ae8f0372627846c0bc1346d755ce56c15be8935a0cf669e71e92605b9cb45"
+            ),
+            "base-replay.json": (
+                "b5bc0f1ab5a3eacef4d59e4de125a1f41654e2f9ff8c9e1a72b7c19d9b79ebcf"
+            ),
+            "v2-m3-primary.json": (
+                "ce2638c95ee0383aea5f491804f7dd284c55f6f2c10aa92955fe2595db816d73"
+            ),
+            "v2-m3-replay.json": (
+                "ec014f6167520416a947714c1dc3b8f35db4cc60eeba2c314baf290c5b53b005"
+            ),
+        }
+        self.assertEqual(raw_manifest["stage_execution_count"], 1)
+        self.assertEqual(raw_manifest["expected_worker_packet_count"], 6)
+        self.assertEqual(raw_manifest["archived_worker_packet_count"], 6)
+        self.assertTrue(raw_manifest["complete"])
+        self.assertTrue(all(row["byte_identity"] for row in raw_manifest["files"]))
+        self.assertEqual(
+            {
+                Path(row["archive_path"]).name: row["sha256"]
+                for row in raw_manifest["files"]
+            },
+            expected_raw_hashes,
+        )
+
+        raw_packets = [
+            observation.read_json(evidence / "raw/development" / name)
+            for name in expected_raw_hashes
+        ]
+        self.assertEqual(sum(len(packet["cases"]) for packet in raw_packets), 48)
+        self.assertEqual(len({packet["database_id"] for packet in raw_packets}), 6)
+        for name, expected in expected_raw_hashes.items():
+            self.assertEqual(
+                evaluation.sha256_bytes(
+                    (evidence / "raw/development" / name).read_bytes()
+                ),
+                expected,
+            )
+
+        execution = observation.read_json(evidence / "execution.json")
+        self.assertEqual(execution["claim_count"], 1)
+        self.assertEqual(execution["model_stage_process_count"], 4)
+        self.assertEqual(len(execution["commands"]), 6)
+        self.assertTrue(all(row["returncode"] == 0 for row in execution["commands"]))
+        self.assertEqual(
+            execution["phase"],
+            {"development": "archived-failed", "holdout": "unobserved"},
+        )
+        self.assertIsNone(execution["selected_candidate"]["development"])
+        self.assertEqual(
+            execution["shared_database_sha256_before"],
+            execution["shared_database_sha256_after"],
+        )
+        self.assertFalse((evidence / "execution-error.json").exists())
+        self.assertFalse((evidence / "development.error.json").exists())
+        for relative in protocol["manifest"]["outputs"]["holdout"].values():
+            self.assertFalse((evaluation.ROOT / relative).exists())
 
 
 if __name__ == "__main__":

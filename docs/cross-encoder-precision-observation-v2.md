@@ -29,4 +29,18 @@ shared `C:/Users/smile/.ngrdb/knowledge.db` のraw SHA-256はpreflight前後と�
 - dependency report: `5b80fa6c2470cf99004294b2b0d03bfcd15c102d62dda45594c8d1d8d44e8ad7`
 - preflight commands: `77c29f50eb8368e5dc59bdecbbd08c6e9e681b84777aeca2b928267cdf58eadc`
 
-one-shot resultは未生成である。生成後は、claim/query/inference/arm/retry count、development/holdout phase、selected candidate、gate failure、shared databaseの不変性、archive hashを追記する。
+## One-shot development result
+
+preflight evidence commit `2e6c234f43f52b23871b297ea638ab0b61e0dead` をpushした後、development claimをexclusive-createした。baseline primary/replay、bge-base primary/replay、bge-v2-m3 primary/replayを6個のfresh processと6個のfresh SQLite databaseで各1回だけ実行した。8 registered queriesを各processで一度実行したため、NGR searchは合計48回である。model側は4 processで合計7,812 query/chunk pairを評価した。primary/replayは各modelでcase、ranking hash、activation hashが一致し、6 database identityはすべて分離している。claim/worker arm/retry countは `1/6/0`、holdout claim/worker armは `0/0` である。
+
+4 candidateはすべて11 hard gateを通過せず、selected candidateはない。共通するfailed gateは `positive-case-rank-non-regression`、`positive-cohort-mrr-hit-at-5-non-regression`、`positive-expected-source-top-5-completeness`、`relation-source-edge-only-provenance` の4つである。phaseは `development=archived-failed`、`holdout=unobserved` である。停止規則に従いholdoutは開封せず、retry、再評価、threshold/query/gold/gate/selection変更を行っていない。NGR defaultとMCP configは変更せず、GitHub RAG parity v2開始条件は成立しない。
+
+shared databaseのraw SHA-256は実行前後とも `84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e` である。claim/resultはruntimeからarchiveへbyte-preservingに移送し、6 raw worker packetも専用external run rootからv2 archiveへbyte-preservingに保存した。model weight、cache、venv、fresh databaseはgit変更に含めない。
+
+観測後のv2専用23 tests、full 371 tests、変更対象Ruffはgreenである。専用testはresultのfrozen evaluator再検証、全11 gateとcandidate結論、primary/replay determinism、fresh database identity、48 query、shared database不変性、claim/result/raw packetのbyte hash、retry/error/holdout artifact不在を固定する。
+
+- development claim: `437450a4e8fdcc488b4409ac14cff9133c152c8945a11081e268f93ae08efdbc`
+- development result: `83e7cbbc7e09db2189edc535372d317ce69810c5601149d6acf5b2e308bae007`
+- development transport: `7eafcb3a442bc3a5da94a25c0867b4bb283b468fd60dcd11444c2bb60e9d0838`
+- raw archive manifest: `7e9b3bc45fa6a7c65fad0f9c45414cad18fe17dc6559ea998179911be054aca7`
+- execution report: `d41ba9a93b8048c0be15bb3fcf7d830a744ade6813f663e727c2a62e226496cd`

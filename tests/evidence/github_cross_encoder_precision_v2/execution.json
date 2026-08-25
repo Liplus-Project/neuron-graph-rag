@@ -1,0 +1,144 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v2",
+  "protocol_commit": "36c17aac3b49587c97d96bac51db668bf834177b",
+  "shared_database_sha256_before": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "shared_database_sha256_after": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "claim_count": 1,
+  "model_stage_process_count": 4,
+  "phase": {
+    "development": "archived-failed",
+    "holdout": "unobserved"
+  },
+  "selected_candidate": {
+    "development": null,
+    "holdout": null
+  },
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v2_observation",
+        "worker",
+        "--stage",
+        "development",
+        "--kind",
+        "baseline",
+        "--cache",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache",
+        "--database",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\baseline-primary.sqlite3",
+        "--output",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\baseline-primary.json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "7e794ddf187fd9c09bac45a020ea6eaadeb00d427828df5a2259c5d63de6063a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v2_observation",
+        "worker",
+        "--stage",
+        "development",
+        "--kind",
+        "baseline",
+        "--cache",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache",
+        "--database",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\baseline-replay.sqlite3",
+        "--output",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\baseline-replay.json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "7e794ddf187fd9c09bac45a020ea6eaadeb00d427828df5a2259c5d63de6063a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v2_observation",
+        "worker",
+        "--stage",
+        "development",
+        "--kind",
+        "base",
+        "--cache",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache",
+        "--database",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\base-primary.sqlite3",
+        "--output",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\base-primary.json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "7e794ddf187fd9c09bac45a020ea6eaadeb00d427828df5a2259c5d63de6063a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v2_observation",
+        "worker",
+        "--stage",
+        "development",
+        "--kind",
+        "base",
+        "--cache",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache",
+        "--database",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\base-replay.sqlite3",
+        "--output",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\base-replay.json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "7e794ddf187fd9c09bac45a020ea6eaadeb00d427828df5a2259c5d63de6063a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v2_observation",
+        "worker",
+        "--stage",
+        "development",
+        "--kind",
+        "v2-m3",
+        "--cache",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache",
+        "--database",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\v2-m3-primary.sqlite3",
+        "--output",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\v2-m3-primary.json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "7e794ddf187fd9c09bac45a020ea6eaadeb00d427828df5a2259c5d63de6063a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v2_observation",
+        "worker",
+        "--stage",
+        "development",
+        "--kind",
+        "v2-m3",
+        "--cache",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache",
+        "--database",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\v2-m3-replay.sqlite3",
+        "--output",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v2\\runs\\development\\v2-m3-replay.json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "7e794ddf187fd9c09bac45a020ea6eaadeb00d427828df5a2259c5d63de6063a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v2",
+  "stage": "development",
+  "reason": "phase-boundary byte-preserving archival",
+  "stage_execution_count": 1,
+  "files": [
+    {
+      "runtime_path": "tests/runtime/github_cross_encoder_precision_v2/development.claim.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v2/development.claim.json",
+      "sha256": "437450a4e8fdcc488b4409ac14cff9133c152c8945a11081e268f93ae08efdbc",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "tests/runtime/github_cross_encoder_precision_v2/development.observed.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v2/development.observed.json",
+      "sha256": "83e7cbbc7e09db2189edc535372d317ce69810c5601149d6acf5b2e308bae007",
+      "byte_identity": true
+    }
+  ]
+}
