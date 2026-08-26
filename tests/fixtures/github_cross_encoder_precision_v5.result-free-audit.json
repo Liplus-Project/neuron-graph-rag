@@ -1,0 +1,23 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v5",
+  "phase": "freeze",
+  "freeze_registered_query_execution_count": 0,
+  "freeze_model_inference_count": 0,
+  "freeze_observed_result_count": 0,
+  "count_scope": "v5 result-free freeze only; historical v1/v2/v3/v4 observations excluded",
+  "predecessor_evidence_semantic_content_opened": false,
+  "shared_database_opened": false,
+  "existing_experiment_database_opened": false,
+  "github_rag_mcp_called": false,
+  "feedback_or_outcome_recorded": false,
+  "model_cache_opened": false,
+  "model_weights_opened": false,
+  "model_weights_downloaded": false,
+  "model_forward_executed": false,
+  "wslc_image_build_count": 1,
+  "offline_synthetic_validation_count": 1,
+  "default_search_changed": false,
+  "default_dependencies_changed": false,
+  "mcp_config_changed": false,
+  "predecessor_evidence_changed": false
+}

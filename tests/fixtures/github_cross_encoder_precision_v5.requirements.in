@@ -1,0 +1,8 @@
+# Experiment-only WSLC container environment. Not a project default dependency surface.
+--index-url https://pypi.org/simple
+
+transformers==4.44.2
+torch @ https://download.pytorch.org/whl/cpu/torch-2.4.1%2Bcpu-cp311-cp311-linux_x86_64.whl#sha256=2b03e20f37557d211d14e3fb3f71709325336402db132a1e0dd8b47392185baf
+safetensors==0.4.5
+sentencepiece==0.2.0
+psutil==6.0.0
