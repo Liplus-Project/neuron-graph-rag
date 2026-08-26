@@ -49,6 +49,7 @@ EVIDENCE = Path("tests/evidence/github_cross_encoder_precision_v4")
 BATCH_SIZE = 8
 PYTHON_ARTIFACT = Path("downloads/cpython-3.11.15.tar.gz")
 BOOTSTRAP_LOG = Path("bootstrap-commands.tsv")
+BOOTSTRAP_FAILURE_LOG = Path("bootstrap-failures.tsv")
 EXCLUSIVE_MARKER = Path("exclusive-create.json")
 MODEL_REPORT = "model-verification.json"
 PREFLIGHT_FILES = (
@@ -176,7 +177,9 @@ def _require_linux_run_root(root: Path, external: Path) -> dict[str, Any]:
     }
 
 
-def _parse_bootstrap_log(path: Path) -> list[dict[str, Any]]:
+def _parse_bootstrap_log(
+    path: Path, *, require_all_success: bool = True
+) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for line in path.read_text(encoding="utf-8").splitlines():
         fields = line.split("\t")
@@ -200,8 +203,10 @@ def _parse_bootstrap_log(path: Path) -> list[dict[str, Any]]:
         range(1, len(rows) + 1)
     ):
         raise ValueError("bootstrap command sequence mismatch")
-    if any(row["returncode"] != 0 for row in rows):
+    if require_all_success and any(row["returncode"] != 0 for row in rows):
         raise ValueError("bootstrap command did not complete successfully")
+    if not require_all_success and all(row["returncode"] == 0 for row in rows):
+        raise ValueError("preserved bootstrap failure log has no failure")
     return rows
 
 
@@ -493,6 +498,13 @@ def preflight(
     model_report = read_json(model_report_path)
     _verify_model_report(protocol, model_report, cache)
     bootstrap_rows = _parse_bootstrap_log(external / BOOTSTRAP_LOG)
+    prior_bootstrap_rows = (
+        _parse_bootstrap_log(
+            external / BOOTSTRAP_FAILURE_LOG, require_all_success=False
+        )
+        if (external / BOOTSTRAP_FAILURE_LOG).is_file()
+        else []
+    )
     shared = shared_database_path()
     if not shared.is_file():
         raise FileNotFoundError("shared Windows database path is unavailable")
@@ -600,7 +612,11 @@ def preflight(
     write_json_exclusive(evidence_root / "platform-report.json", platform_report)
     write_json_exclusive(
         evidence_root / "preflight-commands.json",
-        {"bootstrap_commands": bootstrap_rows, "verification_commands": command_rows},
+        {
+            "prior_failed_bootstrap_commands": prior_bootstrap_rows,
+            "bootstrap_commands": bootstrap_rows,
+            "verification_commands": command_rows,
+        },
     )
     write_json_exclusive(evidence_root / "preflight.json", preflight_report)
     verify_preflight(root, external, cache)

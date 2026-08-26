@@ -65,6 +65,11 @@ class CrossEncoderPrecisionV4ObservationTest(unittest.TestCase):
         exclusive = 'mkdir "$RUN_ROOT" || return $?'
         self.assertLess(runner.index(parent), runner.index(exclusive))
         self.assertNotIn('mkdir -p "$RUN_ROOT"', runner)
+        self.assertIn('test ! -e "$RUN_ROOT/bootstrap-failures.tsv"', runner)
+        self.assertIn(
+            'mv "$RUN_ROOT/bootstrap-commands.tsv" "$RUN_ROOT/bootstrap-failures.tsv"',
+            runner,
+        )
 
     def test_bootstrap_log_requires_hashes_zero_rc_and_contiguous_sequence(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -90,6 +95,10 @@ class CrossEncoderPrecisionV4ObservationTest(unittest.TestCase):
             path.write_text(path.read_text(encoding="utf-8").replace("\t0\t", "\t1\t", 1), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "did not complete"):
                 observation._parse_bootstrap_log(path)
+            failed = observation._parse_bootstrap_log(
+                path, require_all_success=False
+            )
+            self.assertEqual(failed[0]["returncode"], 1)
 
     def test_worker_command_uses_v4_module_and_fresh_output(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

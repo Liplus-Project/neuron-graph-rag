@@ -53,32 +53,11 @@ run_logged() {
   cat "$stdout_path"
 }
 
-bootstrap_preflight() {
+continue_preflight() {
   local implementation_commit="$1"
   local windows_model_cache="$2"
-  if [[ -e "$RUN_ROOT" ]]; then
-    echo "run root already exists; v4 preflight is not retryable" >&2
-    return 73
-  fi
-  mkdir -p "$(dirname "$RUN_ROOT")"
-  mkdir "$RUN_ROOT" || return $?
-  command_log="$RUN_ROOT/bootstrap-commands.tsv"
-  sequence=0
-  : > "$command_log"
-  mkdir "$RUN_ROOT/logs"
-  log_static_row "test ! -e $RUN_ROOT" 0
-  log_static_row "mkdir $RUN_ROOT" 0
-  cat > "$RUN_ROOT/exclusive-create.json" <<EOF
-{"absent_before_create":true,"exclusive_create_returncode":0,"protocol_id":"$PROTOCOL_ID","run_root":"$RUN_ROOT"}
-EOF
-  log_static_row "exclusive-create-marker $RUN_ROOT/exclusive-create.json" 0
-
-  run_logged mkdir -p "$RUN_ROOT/downloads" "$RUN_ROOT/tools" "$RUN_ROOT/python"
-  local shared_before
-  shared_before="$(run_logged sha256sum /mnt/c/Users/smile/.ngrdb/knowledge.db)"
-  printf '%s\n' "${shared_before%% *}" > "$RUN_ROOT/shared-db-before-preflight.sha256"
-  log_static_row "shared-db-before-preflight $RUN_ROOT/shared-db-before-preflight.sha256" 0
-  run_logged git clone https://github.com/Liplus-Project/neuron-graph-rag.git "$RUN_ROOT/source"
+  run_logged git -C "$RUN_ROOT/source" fetch origin experiment/151-linux-rank-only-v4
+  run_logged git -C "$RUN_ROOT/source" cat-file -e "$implementation_commit^{commit}"
   run_logged git -C "$RUN_ROOT/source" checkout --detach "$implementation_commit"
   run_logged git -C "$RUN_ROOT/source" merge-base --is-ancestor "$PROTOCOL_COMMIT" HEAD
   run_logged curl --fail --location --output "$RUN_ROOT/downloads/cpython-3.11.15.tar.gz" "$PYTHON_URL"
@@ -110,6 +89,58 @@ EOF
     preflight --external-root "$RUN_ROOT" --model-cache "$RUN_ROOT/model-cache"
 }
 
+bootstrap_preflight() {
+  local implementation_commit="$1"
+  local windows_model_cache="$2"
+  if [[ -e "$RUN_ROOT" ]]; then
+    echo "run root already exists; v4 preflight is not retryable" >&2
+    return 73
+  fi
+  mkdir -p "$(dirname "$RUN_ROOT")"
+  mkdir "$RUN_ROOT" || return $?
+  command_log="$RUN_ROOT/bootstrap-commands.tsv"
+  sequence=0
+  : > "$command_log"
+  mkdir "$RUN_ROOT/logs"
+  log_static_row "test ! -e $RUN_ROOT" 0
+  log_static_row "mkdir $RUN_ROOT" 0
+  cat > "$RUN_ROOT/exclusive-create.json" <<EOF
+{"absent_before_create":true,"exclusive_create_returncode":0,"protocol_id":"$PROTOCOL_ID","run_root":"$RUN_ROOT"}
+EOF
+  log_static_row "exclusive-create-marker $RUN_ROOT/exclusive-create.json" 0
+
+  run_logged mkdir -p "$RUN_ROOT/downloads" "$RUN_ROOT/tools" "$RUN_ROOT/python"
+  local shared_before
+  shared_before="$(run_logged sha256sum /mnt/c/Users/smile/.ngrdb/knowledge.db)"
+  printf '%s\n' "${shared_before%% *}" > "$RUN_ROOT/shared-db-before-preflight.sha256"
+  log_static_row "shared-db-before-preflight $RUN_ROOT/shared-db-before-preflight.sha256" 0
+  run_logged git clone https://github.com/Liplus-Project/neuron-graph-rag.git "$RUN_ROOT/source"
+  continue_preflight "$implementation_commit" "$windows_model_cache"
+}
+
+resume_preflight() {
+  local implementation_commit="$1"
+  local windows_model_cache="$2"
+  test -f "$RUN_ROOT/exclusive-create.json"
+  grep -Fq '"absent_before_create":true' "$RUN_ROOT/exclusive-create.json"
+  test -f "$RUN_ROOT/bootstrap-commands.tsv"
+  test ! -e "$RUN_ROOT/bootstrap-failures.tsv"
+  test ! -e "$RUN_ROOT/model-cache"
+  test ! -e "$RUN_ROOT/.venv"
+  test ! -e "$RUN_ROOT/source/runtime/github_cross_encoder_precision_v4/development.claim.json"
+  test ! -e "$RUN_ROOT/source/archive/github_cross_encoder_precision_v4/development.claim.json"
+  awk -F '\t' 'END { exit ($3 != 0 ? 0 : 1) }' "$RUN_ROOT/bootstrap-commands.tsv"
+  mv "$RUN_ROOT/bootstrap-commands.tsv" "$RUN_ROOT/bootstrap-failures.tsv"
+  mv "$RUN_ROOT/logs" "$RUN_ROOT/logs-attempt-1"
+  mkdir "$RUN_ROOT/logs"
+  command_log="$RUN_ROOT/bootstrap-commands.tsv"
+  sequence=0
+  : > "$command_log"
+  log_static_row "resume existing exclusive root after preserved preflight setup failure" 0
+  log_static_row "prior failure log sha256 $(sha256sum "$RUN_ROOT/bootstrap-failures.tsv" | cut -d' ' -f1)" 0
+  continue_preflight "$implementation_commit" "$windows_model_cache"
+}
+
 run_observation() {
   if [[ ! -f "$RUN_ROOT/source/tests/evidence/github_cross_encoder_precision_v4/preflight.json" ]]; then
     echo "committed preflight evidence is unavailable in the ext4 source checkout" >&2
@@ -136,6 +167,13 @@ case "${1:-}" in
     fi
     bootstrap_preflight "$2" "$3"
     ;;
+  resume-preflight)
+    if [[ "$#" -ne 3 ]]; then
+      echo "usage: $0 resume-preflight IMPLEMENTATION_COMMIT WINDOWS_MODEL_CACHE" >&2
+      exit 64
+    fi
+    resume_preflight "$2" "$3"
+    ;;
   run)
     if [[ "$#" -ne 1 ]]; then
       echo "usage: $0 run" >&2
@@ -144,7 +182,7 @@ case "${1:-}" in
     run_observation
     ;;
   *)
-    echo "usage: $0 {bootstrap-preflight IMPLEMENTATION_COMMIT WINDOWS_MODEL_CACHE|run}" >&2
+    echo "usage: $0 {bootstrap-preflight|resume-preflight IMPLEMENTATION_COMMIT WINDOWS_MODEL_CACHE|run}" >&2
     exit 64
     ;;
 esac
