@@ -1,0 +1,62 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v4",
+  "claim_exact_fields": [
+    "protocol_id",
+    "protocol_commit",
+    "stage",
+    "protocol_hashes",
+    "one_time_claim"
+  ],
+  "result_exact_fields": [
+    "protocol_id",
+    "protocol_commit",
+    "stage",
+    "status",
+    "claim_sha256",
+    "protocol_hashes",
+    "baseline",
+    "models",
+    "candidates",
+    "selected_candidate_id",
+    "gates",
+    "all_hard_gates_pass"
+  ],
+  "error_exact_fields": [
+    "protocol_id",
+    "stage",
+    "claim_sha256",
+    "error"
+  ],
+  "transport_exact_fields": [
+    "protocol_id",
+    "stage",
+    "reason",
+    "stage_execution_count",
+    "files"
+  ],
+  "transport_file_exact_fields": [
+    "runtime_path",
+    "archive_path",
+    "sha256",
+    "byte_identity"
+  ],
+  "passage": {
+    "window_codepoints": 480,
+    "overlap_codepoints": 80,
+    "input": [
+      "query",
+      "chunk_text"
+    ],
+    "padding": true,
+    "truncation": true,
+    "max_length": 512,
+    "document_score": "max raw logit; earliest chunk wins ties"
+  },
+  "execution": {
+    "device": "cpu",
+    "dtype": "float32",
+    "eval": true,
+    "no_grad": true,
+    "batch_size": 8
+  }
+}
