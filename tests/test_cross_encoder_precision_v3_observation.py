@@ -145,6 +145,7 @@ class CrossEncoderPrecisionV3ObservationTest(unittest.TestCase):
     def test_windows_full_suite_uses_fresh_module_processes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
+            python = Path("python.exe")
             ids = [
                 "tests.test_alpha.AlphaTest.test_alpha",
                 "tests.test_beta.BetaTest.test_beta",
@@ -167,7 +168,7 @@ class CrossEncoderPrecisionV3ObservationTest(unittest.TestCase):
                     return_value=suite,
                 ),
             ):
-                commands = observation._full_test_commands(Path("python.exe"), root)
+                commands = observation._full_test_commands(python, root)
             self.assertEqual(
                 commands,
                 [
