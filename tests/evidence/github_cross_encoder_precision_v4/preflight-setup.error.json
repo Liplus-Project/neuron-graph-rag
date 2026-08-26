@@ -1,0 +1,53 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v4",
+  "issue": 151,
+  "phase": "preflight-setup",
+  "status": "error",
+  "performance": "not assessed",
+  "recorded_at": "2026-08-26T11:05:10Z",
+  "implementation_commit": "5172353e44fc859d84bd2379ca23add1688f0b6e",
+  "run_root": "/home/hal/ngr-experiments/github_cross_encoder_precision_v4",
+  "run_root_filesystem": "ext4",
+  "exclusive_create_marker_sha256": "2240b41fe5485f9542850eb2b550b328ded564da250d6d0a84f28b153a59cc04",
+  "setup_attempts": [
+    {
+      "kind": "initial-bootstrap",
+      "status": "error",
+      "last_sequence": 7,
+      "returncode": 128,
+      "error": "checkout target did not resolve because the supplied full commit SHA was incorrect",
+      "command_log": "bootstrap-failures.tsv",
+      "command_log_sha256": "c3ea015c985c6eca8747f4521d5e17da5176f3082662e74520c3bba994233079"
+    },
+    {
+      "kind": "single-resume",
+      "status": "error",
+      "last_sequence": 19,
+      "returncode": 1,
+      "error": "uv found no solution for frozen torch==2.4.1+cpu while installing the hash-locked Linux requirements",
+      "stderr_sha256": "b5dda1c36abf3c19d3eb3ac45ca4d54c462713c7a85aabbe3e6a827c04590d8d",
+      "command_log": "bootstrap-commands.tsv",
+      "command_log_sha256": "11d23311b0fcb0847e0e41910bf2aadad1d65477dc6f4306e42810aa1610357f"
+    }
+  ],
+  "resume_count": 1,
+  "additional_adjustment_after_setup_error": false,
+  "additional_resume_after_setup_error": false,
+  "development_claim_count": 0,
+  "holdout_claim_count": 0,
+  "model_copy_count": 0,
+  "model_load_count": 0,
+  "model_inference_count": 0,
+  "observed_result_count": 0,
+  "observed_error_count": 0,
+  "preflight_setup_error_count": 1,
+  "shared_database_sha256_before_run_root": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "shared_database_sha256_before_preflight": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "shared_database_sha256_after_setup_error": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "shared_database_unchanged": true,
+  "predecessor_evidence_used_as_protocol_input": false,
+  "predecessor_evidence_used_for_execution_design": false,
+  "predecessor_worker_packet_reused": false,
+  "same_version_observation_retry": false,
+  "stop_reason": "pre-claim Linux dependency setup failure"
+}
