@@ -1,0 +1,50 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v4",
+  "issue": 151,
+  "recorded_at": "2026-08-26T10:47:43Z",
+  "clean_handoff": {
+    "source_comment_url": "https://github.com/Liplus-Project/neuron-graph-rag/issues/151#issuecomment-5424136323",
+    "previous_executor_state": {
+      "development_claim_count": 0,
+      "holdout_claim_count": 0,
+      "run_root_absent": true,
+      "model_copy_count": 0,
+      "model_load_count": 0,
+      "model_inference_count": 0,
+      "result_count": 0,
+      "error_count": 0
+    }
+  },
+  "successor_executor": {
+    "task_identity": "/root/observe_linux_rankonly_v4_clean",
+    "role": "clean-handoff implementation and one-shot observer",
+    "distinct_from_previous_executor": true,
+    "semantic_unread_attested": true,
+    "forbidden_semantic_content_opened": false,
+    "forbidden_semantic_scope": [
+      "v1/v2/v3 observation source",
+      "v1/v2/v3 observation tests",
+      "v1/v2/v3 evidence JSON",
+      "v1/v2/v3 raw packets",
+      "v1/v2/v3 result or error semantic content"
+    ],
+    "audit_inputs": [
+      "Issue #151 body",
+      "Issue #151 clean handoff comment",
+      "current v4 files",
+      "v4 freeze fixture, evaluator, and tests"
+    ],
+    "prior_result_specific_literal_found_in_current_v4_files": false
+  },
+  "preclaim_state": {
+    "development_claim_count": 0,
+    "holdout_claim_count": 0,
+    "run_root": "/home/hal/ngr-experiments/github_cross_encoder_precision_v4",
+    "run_root_absent": true,
+    "model_activity_count": 0,
+    "result_count": 0,
+    "error_count": 0,
+    "shared_database_path": "C:\\Users\\smile\\.ngrdb\\knowledge.db",
+    "shared_database_sha256": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e"
+  }
+}
