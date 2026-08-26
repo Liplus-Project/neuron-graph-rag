@@ -20,4 +20,8 @@ claim 後の例外または gate failure では evidence を保存し、同じ p
 
 ## 状態
 
-preflight evidence と one-shot result は未生成である。claim count、registered query execution count、observed-stage inference count は `0/0/0`、development/holdout はともに unobserved である。
+preflight は `2026-08-26T02:53:55+00:00` に完了した。exact revisionのrequired model bytes、hash-lock dependency、2 modelのoffline probe、v3専用test、audit/probe、Windows per-test full suite 394件、変更対象lint、shared DB非接触を確認した。preflight command 403件はすべてreturn code 0である。
+
+claim count、registered query execution count、observed-stage inference count は `0/0/0`、probe forward countは2である。development/holdout はともに unobserved であり、shared DB SHA-256は前後とも `84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e` で一致した。v1/v2 worker packetは再利用せず、predecessor evidenceのsemantic contentは観測入力として読んでいない。
+
+preflight evidence commit/pushとremote CIが完了するまでdevelopment claimを作らない。
