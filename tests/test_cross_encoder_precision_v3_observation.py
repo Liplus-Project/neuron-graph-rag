@@ -333,5 +333,117 @@ class CrossEncoderPrecisionV3ObservationTest(unittest.TestCase):
         }
 
 
+class CrossEncoderPrecisionV3ObservationEvidenceTest(unittest.TestCase):
+    def test_committed_development_error_is_exact_and_fail_closed(self) -> None:
+        protocol = observation.load_protocol()
+        self.assertEqual(
+            observation.verify_phase_state(protocol),
+            {"development": "archived-error", "holdout": "unobserved"},
+        )
+        evidence = observation.ROOT / observation.EVIDENCE
+        expected_hashes = {
+            "development.claim.json": (
+                "a03032cc4f9a6eddef13b8565f84c61d5c4bd361e98e6b7920585cdfccc2851a"
+            ),
+            "development.error.json": (
+                "c643d3418d8d6e811f86de41ae2e31e7feb0d53df0f19dccda81c7382c87c55c"
+            ),
+            "development.raw-archive.json": (
+                "0912f5e3f28a5e56c2041c9d9e5573960e892eb9f888d8bb3ca9daae2fa27c51"
+            ),
+            "development.transport.json": (
+                "0e8e04ec5ede4effb5e3d2cf2d4443007985bfb0f904a3332a9e944a60cd7484"
+            ),
+            "execution-error.json": (
+                "9cd48c739727bee3070827eb58ffa2e6c20ecfffb98b42a8104a45585883a71c"
+            ),
+        }
+        for name, expected in expected_hashes.items():
+            self.assertEqual(
+                observation.sha256_bytes((evidence / name).read_bytes()), expected
+            )
+
+        claim_raw = (evidence / "development.claim.json").read_bytes()
+        error = observation.read_json(evidence / "development.error.json")
+        self.assertEqual(error["claim_sha256"], observation.sha256_bytes(claim_raw))
+        self.assertEqual(error["error"], "RuntimeError: command failed (3221225477): ")
+
+        transport = observation.read_json(evidence / "development.transport.json")
+        self.assertEqual(transport["stage_execution_count"], 1)
+        self.assertTrue(all(row["byte_identity"] for row in transport["files"]))
+        self.assertEqual(
+            [row["sha256"] for row in transport["files"]],
+            [
+                expected_hashes["development.claim.json"],
+                expected_hashes["development.error.json"],
+            ],
+        )
+
+        raw_manifest = observation.read_json(evidence / "development.raw-archive.json")
+        expected_raw_hashes = {
+            "baseline-primary.json": (
+                "cf7e40482926184b2a0131b085a3df333341cb407d519964783cce0dc6b51b2f"
+            ),
+            "baseline-replay.json": (
+                "8d4f41f9738be3480deb386254a0260a7edd544d45b8061cf31ce89573fab03d"
+            ),
+            "base-primary.json": (
+                "c78971a6437e14db057d2bb33c1b8ccac77483068fccbdf355c485ebc4aa70dc"
+            ),
+        }
+        self.assertEqual(raw_manifest["stage_execution_count"], 1)
+        self.assertEqual(raw_manifest["expected_worker_packet_count"], 6)
+        self.assertEqual(raw_manifest["archived_worker_packet_count"], 3)
+        self.assertEqual(raw_manifest["fresh_process_identity_count"], 3)
+        self.assertEqual(raw_manifest["fresh_database_identity_count"], 3)
+        self.assertFalse(raw_manifest["complete"])
+        self.assertTrue(all(row["byte_identity"] for row in raw_manifest["files"]))
+        self.assertEqual(
+            {
+                Path(row["archive_path"]).name: row["sha256"]
+                for row in raw_manifest["files"]
+            },
+            expected_raw_hashes,
+        )
+
+        raw_packets = [
+            observation.read_json(evidence / "raw/development" / name)
+            for name in expected_raw_hashes
+        ]
+        self.assertEqual(sum(len(packet["cases"]) for packet in raw_packets), 24)
+        self.assertEqual(len({packet["process_id"] for packet in raw_packets}), 3)
+        self.assertEqual(len({packet["database_id"] for packet in raw_packets}), 3)
+        self.assertEqual(raw_packets[0]["cases"], raw_packets[1]["cases"])
+        for name, expected in expected_raw_hashes.items():
+            self.assertEqual(
+                observation.sha256_bytes(
+                    (evidence / "raw/development" / name).read_bytes()
+                ),
+                expected,
+            )
+
+        execution = observation.read_json(evidence / "execution-error.json")
+        self.assertEqual(len(execution["commands"]), 4)
+        self.assertEqual(
+            [row["returncode"] for row in execution["commands"]],
+            [0, 0, 0, 3221225477],
+        )
+        self.assertTrue(
+            all(
+                row["command_sha256"] == observation.canonical_sha256(row["command"])
+                for row in execution["commands"]
+            )
+        )
+        self.assertTrue(execution["shared_database_unchanged"])
+        self.assertEqual(
+            execution["phase"],
+            {"development": "archived-error", "holdout": "unobserved"},
+        )
+        self.assertFalse((evidence / "execution.json").exists())
+        self.assertFalse((evidence / "development.observed.json").exists())
+        for relative in protocol["manifest"]["outputs"]["holdout"].values():
+            self.assertFalse((observation.ROOT / relative).exists())
+
+
 if __name__ == "__main__":
     unittest.main()

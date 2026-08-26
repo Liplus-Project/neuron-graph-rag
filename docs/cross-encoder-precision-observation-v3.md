@@ -24,4 +24,10 @@ preflight は `2026-08-26T02:53:55+00:00` に完了した。exact revisionのreq
 
 claim count、registered query execution count、observed-stage inference count は `0/0/0`、probe forward countは2である。development/holdout はともに unobserved であり、shared DB SHA-256は前後とも `84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e` で一致した。v1/v2 worker packetは再利用せず、predecessor evidenceのsemantic contentは観測入力として読んでいない。
 
-preflight evidence commit/pushとremote CIが完了するまでdevelopment claimを作らない。
+## One-shot development result
+
+preflight evidence commit `7346a510f9db53f9351def9b30f184dea8b06c6e` のpushとremote CI success後、development claimを一度だけ作成した。baseline primary/replayとbase primaryはreturn code 0で完了したが、4番目のfresh processであるbase replayがWindows access violation `3221225477 (0xC0000005)` でstderrを残さず終了した。
+
+claim/error/transport、execution-error、完了済み3 raw worker packetをbyte-preservingにarchiveした。3 packetは3個のfresh process identityとfresh SQLite database identityを持ち、baseline primary/replayのcaseは一致する。base replayのpartial database、model cache、venvはgitへ含めない。shared DB SHA-256は前後とも `84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e` で一致した。
+
+phaseはdevelopment=`archived-error`、holdout=`unobserved`である。rank-only evaluator result、selected candidate、hard gate判定は生成されていないため、rank-only候補の性能についてpass/failいずれの結論も支持しない。同versionの再試行、raw packet再利用、tuning、再評価は行わず、holdoutとGitHub RAG parity v2を開かない。後続観測が必要な場合は、v3 error evidenceを保存したままsuccessor result-free protocolを先に固定する。
