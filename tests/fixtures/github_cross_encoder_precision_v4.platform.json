@@ -1,0 +1,71 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v4",
+  "substrate": "WSL2",
+  "wsl_version": 2,
+  "distribution": "Ubuntu",
+  "os": "linux",
+  "architecture": "x86_64",
+  "libc": "gnu",
+  "platform_tag": "x86_64-unknown-linux-gnu",
+  "python": {
+    "implementation": "CPython",
+    "version": "3.11.15",
+    "uv_key": "cpython-3.11.15-linux-x86_64-gnu",
+    "source": "python-build-standalone",
+    "release": "20260807",
+    "artifact_url": "https://github.com/astral-sh/python-build-standalone/releases/download/20260807/cpython-3.11.15%2B20260807-x86_64-unknown-linux-gnu-install_only_stripped.tar.gz",
+    "artifact_size": 30939767,
+    "artifact_sha256": "69dfac9d0f15a0b9281a38486f212cbf76421609228c184dc0d34a0533d57ba6"
+  },
+  "resolver": {
+    "name": "uv",
+    "version": "0.12.3",
+    "build": "507230998",
+    "host": "x86_64-pc-windows-msvc",
+    "compile_command": [
+      "uv",
+      "pip",
+      "compile",
+      "--generate-hashes",
+      "--python-version",
+      "3.11.15",
+      "--python-platform",
+      "x86_64-unknown-linux-gnu",
+      "--torch-backend",
+      "cpu",
+      "--constraint",
+      "tests/fixtures/github_cross_encoder_precision_v3.requirements.lock",
+      "--output-file",
+      "tests/fixtures/github_cross_encoder_precision_v4.requirements.lock",
+      "tests/fixtures/github_cross_encoder_precision_v4.requirements.in"
+    ]
+  },
+  "dependency_lock": {
+    "format": "requirements.txt",
+    "input_sha256": "2e245ccc1789378ec53a14443fb1d61bfe04dfbc785a724ccbfc201b9a9d981a",
+    "v3_constraint_sha256": "1e3a69692fadf6a4248039b202de45c6fed2aaf94376a53db653e7b1d59e2a79",
+    "sha256": "db3310ea9f1b27b63d0c4e4085223502e3353787835c6233355ae3c23bff6df4",
+    "install_mode": "require-hashes",
+    "network_after_install": false
+  },
+  "run_root": {
+    "filesystem": "ext4",
+    "must_be_absolute": true,
+    "forbidden_prefixes": [
+      "/mnt"
+    ],
+    "dedicated_to_protocol": true,
+    "exclusive_create": true
+  },
+  "execution": {
+    "device": "cpu",
+    "dtype": "float32",
+    "eval": true,
+    "inference_mode": true,
+    "batch_size": 8,
+    "fresh_process": true,
+    "fresh_database": true,
+    "offline": true,
+    "local_files_only": true
+  }
+}
