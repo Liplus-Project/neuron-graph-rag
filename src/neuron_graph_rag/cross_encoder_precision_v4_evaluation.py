@@ -298,9 +298,9 @@ def main(argv: list[str] | None = None) -> int:
         "freeze_observed_result_count": 0,
         "historical_v1_v2_v3_observations_included": False,
         "platform_contract_sha256": hashlib.sha256(
-            json.dumps(
-                protocol["platform"], ensure_ascii=False, sort_keys=True
-            ).encode("utf-8")
+            json.dumps(protocol["platform"], ensure_ascii=False, sort_keys=True).encode(
+                "utf-8"
+            )
         ).hexdigest(),
         "phase": verify_phase_state(protocol),
     }

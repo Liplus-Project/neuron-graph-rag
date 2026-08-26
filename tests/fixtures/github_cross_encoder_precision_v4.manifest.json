@@ -6,8 +6,8 @@
   },
   "artifact_sha256": {
     "docs/cross-encoder-precision-freeze-v4.md": "2570322759b367255beee4e9a7562e9c2e53c3cfb41ff22844caad398d48f250",
-    "src/neuron_graph_rag/cross_encoder_precision_v4_evaluation.py": "0fcc9f47d46c7eb1c100a5fb4cc2137981145458a6d3d00f45fa407791bcd9b7",
-    "tests/test_cross_encoder_precision_v4.py": "1cf47746aa1575bf84d69e992da4b036e201963357b75409dc9187865f8782bb",
+    "src/neuron_graph_rag/cross_encoder_precision_v4_evaluation.py": "019ec1a70c5079b0c400fd8aba4e87286bad3dda92bfb86a78ba5db8631fd480",
+    "tests/test_cross_encoder_precision_v4.py": "1c3d892fc3d490f6c5860516544692b4eb627de207b905e7b07e1e66d0ece131",
     "tests/fixtures/github_cross_encoder_precision_v4.corpus.json": "8cfb000f8600e456394abc6aa5e01b6d71e37d38af3b8d04040314d7000bd429",
     "tests/fixtures/github_cross_encoder_precision_v4.queries.json": "d1d98bc78a79867fcb4d88359096a47deca0a897455d27e9be9f52bea276ca18",
     "tests/fixtures/github_cross_encoder_precision_v4.gold.json": "797e31d7630cfec09e6291fb42379664ad39d336e4b5759b1f50d96f2e623a4c",

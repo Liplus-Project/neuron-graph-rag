@@ -80,8 +80,14 @@ class CrossEncoderPrecisionV4FreezeTest(v3_tests.CrossEncoderPrecisionV3FreezeTe
             expected["protocol_id"] = evaluation.PROTOCOL_ID
             self.assertEqual(expected, v4[key], key)
         self.assertEqual(
-            (ROOT / "tests/fixtures/github_cross_encoder_precision_v3.requirements.in").read_bytes(),
-            (ROOT / "tests/fixtures/github_cross_encoder_precision_v4.requirements.in").read_bytes(),
+            (
+                ROOT
+                / "tests/fixtures/github_cross_encoder_precision_v3.requirements.in"
+            ).read_bytes(),
+            (
+                ROOT
+                / "tests/fixtures/github_cross_encoder_precision_v4.requirements.in"
+            ).read_bytes(),
         )
 
         def versions(lock: str) -> dict[str, str]:
