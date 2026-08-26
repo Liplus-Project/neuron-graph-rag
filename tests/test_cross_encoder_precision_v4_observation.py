@@ -58,9 +58,9 @@ class CrossEncoderPrecisionV4ObservationTest(unittest.TestCase):
         )
 
     def test_runner_creates_only_the_missing_parent_before_exclusive_root(self) -> None:
-        runner = (observation.ROOT / "tools/run_cross_encoder_precision_v4_wsl.sh").read_text(
-            encoding="utf-8"
-        )
+        runner = (
+            observation.ROOT / "tools/run_cross_encoder_precision_v4_wsl.sh"
+        ).read_text(encoding="utf-8")
         parent = 'mkdir -p "$(dirname "$RUN_ROOT")"'
         exclusive = 'mkdir "$RUN_ROOT" || return $?'
         self.assertLess(runner.index(parent), runner.index(exclusive))
@@ -71,7 +71,9 @@ class CrossEncoderPrecisionV4ObservationTest(unittest.TestCase):
             runner,
         )
 
-    def test_bootstrap_log_requires_hashes_zero_rc_and_contiguous_sequence(self) -> None:
+    def test_bootstrap_log_requires_hashes_zero_rc_and_contiguous_sequence(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "commands.tsv"
             command = "git checkout --detach abc"
@@ -92,12 +94,13 @@ class CrossEncoderPrecisionV4ObservationTest(unittest.TestCase):
             )
             rows = observation._parse_bootstrap_log(path)
             self.assertEqual(rows[0]["returncode"], 0)
-            path.write_text(path.read_text(encoding="utf-8").replace("\t0\t", "\t1\t", 1), encoding="utf-8")
+            path.write_text(
+                path.read_text(encoding="utf-8").replace("\t0\t", "\t1\t", 1),
+                encoding="utf-8",
+            )
             with self.assertRaisesRegex(ValueError, "did not complete"):
                 observation._parse_bootstrap_log(path)
-            failed = observation._parse_bootstrap_log(
-                path, require_all_success=False
-            )
+            failed = observation._parse_bootstrap_log(path, require_all_success=False)
             self.assertEqual(failed[0]["returncode"], 1)
 
     def test_worker_command_uses_v4_module_and_fresh_output(self) -> None:
@@ -110,6 +113,7 @@ class CrossEncoderPrecisionV4ObservationTest(unittest.TestCase):
             cache.mkdir()
             output = stage_root / "baseline-primary.json"
             rows: list[dict[str, object]] = []
+
             def write_packet(*_args: object, **_kwargs: object) -> str:
                 output.write_text(json.dumps({"status": "ok"}), encoding="utf-8")
                 return ""
@@ -164,7 +168,10 @@ class CrossEncoderPrecisionV4ObservationTest(unittest.TestCase):
                 patch.object(
                     observation,
                     "verify_phase_state",
-                    return_value={"development": "archived-error", "holdout": "unobserved"},
+                    return_value={
+                        "development": "archived-error",
+                        "holdout": "unobserved",
+                    },
                 ),
                 patch.object(observation, "load_protocol", return_value={}),
                 self.assertRaisesRegex(RuntimeError, "one-shot failure"),
@@ -269,7 +276,18 @@ class CrossEncoderPrecisionV4ObservationTest(unittest.TestCase):
                 result = observation.run_conditional(
                     root, root / "external", root / "cache"
                 )
-            self.assertEqual(run_stage.call_args_list, [call("development", root, (root / "external").resolve(), (root / "cache").resolve(), [])])
+            self.assertEqual(
+                run_stage.call_args_list,
+                [
+                    call(
+                        "development",
+                        root,
+                        (root / "external").resolve(),
+                        (root / "cache").resolve(),
+                        [],
+                    )
+                ],
+            )
             self.assertEqual(result["execution"]["holdout_claim_count"], 0)
 
     def test_holdout_error_records_claim_without_retry(self) -> None:

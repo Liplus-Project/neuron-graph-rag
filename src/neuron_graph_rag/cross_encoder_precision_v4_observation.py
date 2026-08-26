@@ -136,9 +136,10 @@ def _require_linux_run_root(root: Path, external: Path) -> dict[str, Any]:
         raise ValueError("external root must equal the frozen WSL run root")
     if root.resolve() != (external / "source").resolve():
         raise ValueError("frozen source checkout must be run-root/source")
-    if PurePosixPath(str(external)) == PurePosixPath("/mnt") or PurePosixPath(
-        "/mnt"
-    ) in PurePosixPath(str(external)).parents:
+    if (
+        PurePosixPath(str(external)) == PurePosixPath("/mnt")
+        or PurePosixPath("/mnt") in PurePosixPath(str(external)).parents
+    ):
         raise ValueError("run root must not use a WSL Windows mount")
     marker = external / EXCLUSIVE_MARKER
     if not marker.is_file():
@@ -199,9 +200,7 @@ def _parse_bootstrap_log(
         if row["command_sha256"] != sha256_bytes(command.encode("utf-8")):
             raise ValueError("bootstrap command hash mismatch")
         rows.append(row)
-    if not rows or [row["sequence"] for row in rows] != list(
-        range(1, len(rows) + 1)
-    ):
+    if not rows or [row["sequence"] for row in rows] != list(range(1, len(rows) + 1)):
         raise ValueError("bootstrap command sequence mismatch")
     if require_all_success and any(row["returncode"] != 0 for row in rows):
         raise ValueError("bootstrap command did not complete successfully")
@@ -242,13 +241,20 @@ def _runtime_platform_report(root: Path, external: Path) -> dict[str, Any]:
         "environment": external / ".venv",
         "database": external / "databases" / "development",
         "worker_output": external / "runs" / "development",
-        "runtime_claim": root / "runtime/github_cross_encoder_precision_v4/development.claim.json",
-        "runtime_result": root / "runtime/github_cross_encoder_precision_v4/development.observed.json",
-        "runtime_error": root / "runtime/github_cross_encoder_precision_v4/development.error.json",
-        "archive_claim": root / "archive/github_cross_encoder_precision_v4/development.claim.json",
-        "archive_result": root / "archive/github_cross_encoder_precision_v4/development.observed.json",
-        "archive_error": root / "archive/github_cross_encoder_precision_v4/development.error.json",
-        "transport": root / "transport/github_cross_encoder_precision_v4/development.transport.json",
+        "runtime_claim": root
+        / "runtime/github_cross_encoder_precision_v4/development.claim.json",
+        "runtime_result": root
+        / "runtime/github_cross_encoder_precision_v4/development.observed.json",
+        "runtime_error": root
+        / "runtime/github_cross_encoder_precision_v4/development.error.json",
+        "archive_claim": root
+        / "archive/github_cross_encoder_precision_v4/development.claim.json",
+        "archive_result": root
+        / "archive/github_cross_encoder_precision_v4/development.observed.json",
+        "archive_error": root
+        / "archive/github_cross_encoder_precision_v4/development.error.json",
+        "transport": root
+        / "transport/github_cross_encoder_precision_v4/development.transport.json",
     }
     resolved = {key: str(value.resolve()) for key, value in runtime_paths.items()}
     if len(set(resolved.values())) != len(resolved):
@@ -343,12 +349,17 @@ def model_copy_verify(source_cache: Path, cache: Path, output: Path) -> None:
         revision = _BASE._string(spec, "revision")
         source = _BASE._snapshot_path(source_cache, model_id, revision)
         source_report = _BASE._verify_snapshot(spec, source)
-        destination = cache / ("models--" + model_id.replace("/", "--")) / "snapshots" / revision
+        destination = (
+            cache / ("models--" + model_id.replace("/", "--")) / "snapshots" / revision
+        )
         for frozen in _BASE._rows(spec, "required_files"):
             relative = _BASE._string(frozen, "path")
             target = destination / relative
             target.parent.mkdir(parents=True, exist_ok=True)
-            with (source / relative).open("rb") as source_handle, target.open("xb") as target_handle:
+            with (
+                (source / relative).open("rb") as source_handle,
+                target.open("xb") as target_handle,
+            ):
                 shutil.copyfileobj(source_handle, target_handle, length=1024 * 1024)
         destination_report = _BASE._verify_snapshot(spec, destination)
         for frozen in _BASE._rows(spec, "required_files"):
@@ -390,7 +401,9 @@ def _verify_model_report(
     if len(rows) != len(frozen):
         raise ValueError("model verification report cardinality mismatch")
     for spec, row in zip(frozen, rows, strict=True):
-        if row != _BASE._verify_snapshot(spec, Path(_BASE._string(row, "snapshot_path"))):
+        if row != _BASE._verify_snapshot(
+            spec, Path(_BASE._string(row, "snapshot_path"))
+        ):
             raise ValueError("model verification report is not reproducible")
 
 
@@ -415,8 +428,7 @@ def _verify_preclaim(root: Path) -> dict[str, Any]:
             "result_count": 0,
             "error_count": 0,
         }
-        or successor.get("task_identity")
-        != "/root/observe_linux_rankonly_v4_clean"
+        or successor.get("task_identity") != "/root/observe_linux_rankonly_v4_clean"
         or successor.get("distinct_from_previous_executor") is not True
         or successor.get("forbidden_semantic_content_opened") is not False
         or successor.get("semantic_unread_attested") is not True
@@ -508,9 +520,9 @@ def preflight(
     shared = shared_database_path()
     if not shared.is_file():
         raise FileNotFoundError("shared Windows database path is unavailable")
-    recorded_before = (external / SHARED_BEFORE_PREFLIGHT).read_text(
-        encoding="utf-8"
-    ).strip()
+    recorded_before = (
+        (external / SHARED_BEFORE_PREFLIGHT).read_text(encoding="utf-8").strip()
+    )
     if len(recorded_before) != 64:
         raise ValueError("shared database preflight hash record mismatch")
     shared_before = _BASE.hash_file_shared(shared)
@@ -533,7 +545,10 @@ def preflight(
         command_rows,
     )
     probe = json.loads(probe_output)
-    if probe.get("forward_inference_count") != 2 or probe.get("batch_size") != BATCH_SIZE:
+    if (
+        probe.get("forward_inference_count") != 2
+        or probe.get("batch_size") != BATCH_SIZE
+    ):
         raise ValueError("offline model probe did not cover both frozen models")
     for arguments in (
         [
@@ -663,7 +678,9 @@ def verify_preflight(
     }
     if any(report.get(key) != value for key, value in exact.items()):
         raise ValueError("preflight report identity mismatch")
-    if report.get("implementation_commit") != _BASE._git_output(root, "rev-parse", "HEAD"):
+    if report.get("implementation_commit") != _BASE._git_output(
+        root, "rev-parse", "HEAD"
+    ):
         raise ValueError("preflight implementation commit mismatch")
     if report.get("model_report_sha256") != canonical_sha256(model_report):
         raise ValueError("preflight model report binding mismatch")
@@ -678,7 +695,9 @@ def verify_preflight(
         raise ValueError("dependency report is not reproducible")
     if platform_value != _runtime_platform_report(root, external):
         raise ValueError("platform report is not reproducible")
-    if not commands.get("bootstrap_commands") or not commands.get("verification_commands"):
+    if not commands.get("bootstrap_commands") or not commands.get(
+        "verification_commands"
+    ):
         raise ValueError("preflight command evidence is missing")
     shared_hash = _BASE.hash_file_shared(shared_database_path())
     if (
@@ -734,7 +753,9 @@ def _run_worker(
         "--output",
         str(output),
     ]
-    _BASE._run_logged(command, root, _worker_environment(root, offline=True), command_rows)
+    _BASE._run_logged(
+        command, root, _worker_environment(root, offline=True), command_rows
+    )
     return read_json(output)
 
 
@@ -797,7 +818,9 @@ def run_conditional(
     development: dict[str, Any] | None = None
     holdout: dict[str, Any] | None = None
     try:
-        development = _run_stage_once("development", root, external, cache, execution_rows)
+        development = _run_stage_once(
+            "development", root, external, cache, execution_rows
+        )
         if development.get("all_hard_gates_pass") is True:
             holdout = _run_stage_once("holdout", root, external, cache, execution_rows)
     except BaseException as error:
@@ -847,7 +870,9 @@ def run_conditional(
         "phase": phases,
         "selected_candidate": {
             "development": development.get("selected_candidate_id"),
-            "holdout": None if holdout is None else holdout.get("selected_candidate_id"),
+            "holdout": None
+            if holdout is None
+            else holdout.get("selected_candidate_id"),
         },
         "commands": execution_rows,
     }
@@ -870,7 +895,9 @@ def main(argv: list[str] | None = None) -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     for name in ("preflight", "verify-preflight", "run"):
         command = commands.add_parser(name)
-        command.add_argument("--external-root", type=Path, default=default_external_root())
+        command.add_argument(
+            "--external-root", type=Path, default=default_external_root()
+        )
         command.add_argument("--model-cache", type=Path, default=default_model_cache())
     copy_command = commands.add_parser("model-copy-verify")
     copy_command.add_argument("--source-cache", type=Path, required=True)
@@ -897,7 +924,13 @@ def main(argv: list[str] | None = None) -> int:
     elif arguments.command == "model-probe":
         result = model_probe(arguments.cache)
     else:
-        worker(arguments.stage, arguments.kind, arguments.cache, arguments.database, arguments.output)
+        worker(
+            arguments.stage,
+            arguments.kind,
+            arguments.cache,
+            arguments.database,
+            arguments.output,
+        )
         result = {"status": "completed"}
     print(json.dumps(result, ensure_ascii=False, sort_keys=True))
     return 0
