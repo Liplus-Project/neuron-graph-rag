@@ -1,0 +1,449 @@
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import Mock, call, patch
+
+from neuron_graph_rag import cross_encoder_precision_v3_observation as observation
+
+
+class CrossEncoderPrecisionV3ObservationTest(unittest.TestCase):
+    def test_observation_identity_and_offline_environment_are_fixed(self) -> None:
+        self.assertEqual(
+            observation.PROTOCOL_COMMIT,
+            "b762645d2521a3e23ac201b662ea1cbf25e2a260",
+        )
+        self.assertEqual(
+            observation.SOURCE_COMMIT,
+            "c32b3049fd3daaa2190faf5e3e85955a195ee88c",
+        )
+        self.assertEqual(observation.BATCH_SIZE, 8)
+        with patch.dict(os.environ, {}, clear=True):
+            environment = observation._worker_environment(Path("C:/repo"), offline=True)
+        self.assertEqual(environment["HF_HUB_OFFLINE"], "1")
+        self.assertEqual(environment["TRANSFORMERS_OFFLINE"], "1")
+        self.assertEqual(environment["PYTHONUTF8"], "1")
+
+    def test_combine_state_binds_distinct_fresh_and_replay_runs(self) -> None:
+        primary = self._state("primary")
+        replay = self._state("replay")
+        state = observation._combine_state(primary, replay)
+        self.assertEqual(state["fresh_database_id"], "primary-db")
+        self.assertEqual(state["replay_database_id"], "replay-db")
+        self.assertEqual(state["ranking_sha256"], "primary-ranking")
+        self.assertEqual(state["replay_ranking_sha256"], "replay-ranking")
+        self.assertTrue(state["cpu_only"])
+        self.assertTrue(state["offline"])
+        self.assertTrue(state["fresh_process"])
+
+    def test_snapshot_verification_checks_git_and_lfs_content(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            snapshot = Path(directory)
+            regular = b"config"
+            weights = b"weights"
+            (snapshot / "config.json").write_bytes(regular)
+            (snapshot / "model.safetensors").write_bytes(weights)
+            spec = {
+                "model_id": "example/model",
+                "revision": "a" * 40,
+                "license": "mit",
+                "required_files": [
+                    {
+                        "path": "config.json",
+                        "size": len(regular),
+                        "git_blob_id": hashlib.sha1(
+                            f"blob {len(regular)}\0".encode("ascii") + regular,
+                            usedforsecurity=False,
+                        ).hexdigest(),
+                        "lfs_sha256": None,
+                    },
+                    {
+                        "path": "model.safetensors",
+                        "size": len(weights),
+                        "git_blob_id": "unused",
+                        "lfs_sha256": hashlib.sha256(weights).hexdigest(),
+                    },
+                ],
+            }
+            report = observation._verify_snapshot(spec, snapshot)
+            self.assertEqual(
+                [row["hash_kind"] for row in report["files"]],
+                ["git_blob_id", "lfs_sha256"],
+            )
+            (snapshot / "model.safetensors").write_bytes(b"tampered")
+            with self.assertRaisesRegex(ValueError, "size mismatch"):
+                observation._verify_snapshot(spec, snapshot)
+
+    def test_verify_preflight_rejects_tampered_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            evidence = root / observation.EVIDENCE
+            fixture = root / "tests/fixtures"
+            evidence.mkdir(parents=True)
+            fixture.mkdir(parents=True)
+            lock = fixture / "github_cross_encoder_precision_v3.requirements.lock"
+            lock.write_bytes(b"locked\n")
+            external = root / "external"
+            cache = external / "model-cache"
+            cache.mkdir(parents=True)
+            model_report = {"models": []}
+            dependency = {"lock_sha256": observation.sha256_bytes(lock.read_bytes())}
+            report = {
+                "protocol_id": observation.PROTOCOL_ID,
+                "protocol_commit": observation.PROTOCOL_COMMIT,
+                "source_commit": observation.SOURCE_COMMIT,
+                "external_root": str(external.resolve()),
+                "cache_path": str(cache.resolve()),
+                "cache_reused_as_verified_model_bytes_only": True,
+                "v1_evidence_semantic_content_read": False,
+                "v2_evidence_semantic_content_read": False,
+                "v1_worker_packet_reused": False,
+                "v2_worker_packet_reused": False,
+                "offline": True,
+                "trust_remote_code": False,
+                "batch_size": observation.BATCH_SIZE,
+                "full_test_process_isolation": (
+                    "per-test" if os.name == "nt" else "single-discover"
+                ),
+                "claim_count": 0,
+                "registered_query_execution_count": 0,
+                "observed_stage_inference_count": 0,
+                "phase": {"development": "unobserved", "holdout": "unobserved"},
+                "model_report_sha256": observation.canonical_sha256(model_report),
+                "dependency_report_sha256": observation.canonical_sha256(dependency),
+                "shared_database_sha256_before": "d" * 64,
+                "shared_database_sha256_after": "d" * 64,
+            }
+            for name, value in (
+                ("preflight.json", report),
+                ("model-verification.json", model_report),
+                ("dependency-report.json", dependency),
+                ("preflight-commands.json", {"commands": [{"returncode": 0}]}),
+            ):
+                (evidence / name).write_text(json.dumps(value), encoding="utf-8")
+            with (
+                patch.object(observation, "load_protocol", return_value={}),
+                patch.object(observation, "verify_protocol_commit"),
+                patch.object(observation, "_verify_model_report"),
+                patch.object(
+                    observation, "shared_database_path", return_value=root / "shared.db"
+                ),
+                patch.object(observation, "hash_file_shared", return_value="d" * 64),
+            ):
+                observation.verify_preflight(root, external, cache)
+                report["claim_count"] = 1
+                (evidence / "preflight.json").write_text(
+                    json.dumps(report), encoding="utf-8"
+                )
+                with self.assertRaisesRegex(ValueError, "identity mismatch"):
+                    observation.verify_preflight(root, external, cache)
+
+    def test_windows_full_suite_uses_fresh_module_processes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            python = Path("python.exe")
+            ids = [
+                "tests.test_alpha.AlphaTest.test_alpha",
+                "tests.test_beta.BetaTest.test_beta",
+                "tests.test_cross_encoder_precision.FreezeTest.test_first",
+                "tests.test_cross_encoder_precision.FreezeTest.test_second",
+            ]
+            suite = unittest.TestSuite(
+                [
+                    Mock(id=Mock(return_value=ids[0])),
+                    unittest.TestSuite(
+                        [Mock(id=Mock(return_value=test_id)) for test_id in ids[1:]]
+                    ),
+                ]
+            )
+            with (
+                patch.object(observation.os, "name", "nt"),
+                patch.object(
+                    observation.unittest.defaultTestLoader,
+                    "discover",
+                    return_value=suite,
+                ),
+            ):
+                commands = observation._full_test_commands(python, root)
+            self.assertEqual(
+                commands,
+                [
+                    [
+                        "python.exe",
+                        "-m",
+                        "unittest",
+                        "tests.test_alpha.AlphaTest.test_alpha",
+                    ],
+                    [
+                        "python.exe",
+                        "-m",
+                        "unittest",
+                        "tests.test_beta.BetaTest.test_beta",
+                    ],
+                    [
+                        "python.exe",
+                        "-m",
+                        "unittest",
+                        "tests.test_cross_encoder_precision.FreezeTest.test_first",
+                    ],
+                    [
+                        "python.exe",
+                        "-m",
+                        "unittest",
+                        "tests.test_cross_encoder_precision.FreezeTest.test_second",
+                    ],
+                ],
+            )
+
+    def test_failed_development_never_starts_holdout_and_records_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            external = root / "external"
+            cache = root / "cache"
+            (root / observation.EVIDENCE).mkdir(parents=True)
+            error = RuntimeError("one-shot failure")
+            with (
+                patch.object(
+                    observation,
+                    "verify_preflight",
+                    return_value={"shared_database_sha256_before": "e" * 64},
+                ),
+                patch.object(observation, "_run_stage_once", side_effect=error) as run,
+                patch.object(
+                    observation, "shared_database_path", return_value=root / "shared.db"
+                ),
+                patch.object(observation, "hash_file_shared", return_value="e" * 64),
+                patch.object(observation, "load_protocol", return_value={}),
+                patch.object(
+                    observation,
+                    "verify_phase_state",
+                    return_value={"development": "error", "holdout": "unobserved"},
+                ),
+                self.assertRaisesRegex(RuntimeError, "one-shot failure"),
+            ):
+                observation.run_conditional(root, external, cache)
+            self.assertEqual(
+                run.call_args_list,
+                [call("development", root, external, cache, [])],
+            )
+            failure = json.loads(
+                (root / observation.EVIDENCE / "execution-error.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(failure["phase"]["holdout"], "unobserved")
+            self.assertTrue(failure["shared_database_unchanged"])
+
+    def test_holdout_runs_only_after_development_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            external = root / "external"
+            cache = root / "cache"
+            (root / observation.EVIDENCE).mkdir(parents=True)
+            development = {
+                "all_hard_gates_pass": True,
+                "selected_candidate_id": "base",
+            }
+            holdout = {
+                "all_hard_gates_pass": True,
+                "selected_candidate_id": "base",
+            }
+            with (
+                patch.object(
+                    observation,
+                    "verify_preflight",
+                    return_value={"shared_database_sha256_before": "f" * 64},
+                ),
+                patch.object(
+                    observation,
+                    "_run_stage_once",
+                    side_effect=[development, holdout],
+                ) as run,
+                patch.object(
+                    observation, "shared_database_path", return_value=root / "shared.db"
+                ),
+                patch.object(observation, "hash_file_shared", return_value="f" * 64),
+                patch.object(observation, "load_protocol", return_value={}),
+                patch.object(
+                    observation,
+                    "verify_phase_state",
+                    return_value={"development": "passed", "holdout": "passed"},
+                ),
+            ):
+                result = observation.run_conditional(root, external, cache)
+            self.assertEqual(
+                [row.args[0] for row in run.call_args_list], ["development", "holdout"]
+            )
+            self.assertEqual(result["execution"]["claim_count"], 2)
+            self.assertEqual(result["execution"]["stage_process_count"], 12)
+            self.assertEqual(result["execution"]["baseline_stage_process_count"], 4)
+            self.assertEqual(result["execution"]["model_stage_process_count"], 8)
+
+    def test_six_fresh_worker_packets_archive_byte_for_byte(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            stage_root = root / "external/development"
+            stage_root.mkdir(parents=True)
+            names = [
+                f"{kind}-{replay}.json"
+                for kind in ("baseline", "base", "v2-m3")
+                for replay in ("primary", "replay")
+            ]
+            for index, name in enumerate(names):
+                packet = {
+                    "worker": index,
+                    "process_id": f"process-{index}",
+                    "database_id": f"database-{index}",
+                }
+                (stage_root / name).write_text(
+                    json.dumps(packet) + "\n", encoding="utf-8"
+                )
+            manifest_path = observation._archive_raw_workers(
+                "development", stage_root, root
+            )
+            manifest = observation.read_json(manifest_path)
+            self.assertTrue(manifest["complete"])
+            self.assertEqual(manifest["archived_worker_packet_count"], 6)
+            self.assertEqual(manifest["fresh_process_identity_count"], 6)
+            self.assertEqual(manifest["fresh_database_identity_count"], 6)
+            for row in manifest["files"]:
+                archive = root / row["archive_path"]
+                self.assertEqual(
+                    observation.sha256_bytes(archive.read_bytes()), row["sha256"]
+                )
+                self.assertTrue(row["byte_identity"])
+
+    @staticmethod
+    def _state(prefix: str) -> dict[str, object]:
+        return {
+            "process_id": f"{prefix}-process",
+            "database_id": f"{prefix}-db",
+            "ranking_sha256": f"{prefix}-ranking",
+            "activation_sha256": f"{prefix}-activation",
+            "edge_sha256_before": "edge",
+            "edge_sha256_after": "edge",
+            "feedback_count_before": 0,
+            "feedback_count_after": 0,
+            "sqlite_sha256_before": "sqlite",
+            "sqlite_sha256_after": "sqlite",
+        }
+
+
+class CrossEncoderPrecisionV3ObservationEvidenceTest(unittest.TestCase):
+    def test_committed_development_error_is_exact_and_fail_closed(self) -> None:
+        protocol = observation.load_protocol()
+        self.assertEqual(
+            observation.verify_phase_state(protocol),
+            {"development": "archived-error", "holdout": "unobserved"},
+        )
+        evidence = observation.ROOT / observation.EVIDENCE
+        expected_hashes = {
+            "development.claim.json": (
+                "a03032cc4f9a6eddef13b8565f84c61d5c4bd361e98e6b7920585cdfccc2851a"
+            ),
+            "development.error.json": (
+                "c643d3418d8d6e811f86de41ae2e31e7feb0d53df0f19dccda81c7382c87c55c"
+            ),
+            "development.raw-archive.json": (
+                "0912f5e3f28a5e56c2041c9d9e5573960e892eb9f888d8bb3ca9daae2fa27c51"
+            ),
+            "development.transport.json": (
+                "0e8e04ec5ede4effb5e3d2cf2d4443007985bfb0f904a3332a9e944a60cd7484"
+            ),
+            "execution-error.json": (
+                "9cd48c739727bee3070827eb58ffa2e6c20ecfffb98b42a8104a45585883a71c"
+            ),
+        }
+        for name, expected in expected_hashes.items():
+            self.assertEqual(
+                observation.sha256_bytes((evidence / name).read_bytes()), expected
+            )
+
+        claim_raw = (evidence / "development.claim.json").read_bytes()
+        error = observation.read_json(evidence / "development.error.json")
+        self.assertEqual(error["claim_sha256"], observation.sha256_bytes(claim_raw))
+        self.assertEqual(error["error"], "RuntimeError: command failed (3221225477): ")
+
+        transport = observation.read_json(evidence / "development.transport.json")
+        self.assertEqual(transport["stage_execution_count"], 1)
+        self.assertTrue(all(row["byte_identity"] for row in transport["files"]))
+        self.assertEqual(
+            [row["sha256"] for row in transport["files"]],
+            [
+                expected_hashes["development.claim.json"],
+                expected_hashes["development.error.json"],
+            ],
+        )
+
+        raw_manifest = observation.read_json(evidence / "development.raw-archive.json")
+        expected_raw_hashes = {
+            "baseline-primary.json": (
+                "cf7e40482926184b2a0131b085a3df333341cb407d519964783cce0dc6b51b2f"
+            ),
+            "baseline-replay.json": (
+                "8d4f41f9738be3480deb386254a0260a7edd544d45b8061cf31ce89573fab03d"
+            ),
+            "base-primary.json": (
+                "c78971a6437e14db057d2bb33c1b8ccac77483068fccbdf355c485ebc4aa70dc"
+            ),
+        }
+        self.assertEqual(raw_manifest["stage_execution_count"], 1)
+        self.assertEqual(raw_manifest["expected_worker_packet_count"], 6)
+        self.assertEqual(raw_manifest["archived_worker_packet_count"], 3)
+        self.assertEqual(raw_manifest["fresh_process_identity_count"], 3)
+        self.assertEqual(raw_manifest["fresh_database_identity_count"], 3)
+        self.assertFalse(raw_manifest["complete"])
+        self.assertTrue(all(row["byte_identity"] for row in raw_manifest["files"]))
+        self.assertEqual(
+            {
+                Path(row["archive_path"]).name: row["sha256"]
+                for row in raw_manifest["files"]
+            },
+            expected_raw_hashes,
+        )
+
+        raw_packets = [
+            observation.read_json(evidence / "raw/development" / name)
+            for name in expected_raw_hashes
+        ]
+        self.assertEqual(sum(len(packet["cases"]) for packet in raw_packets), 24)
+        self.assertEqual(len({packet["process_id"] for packet in raw_packets}), 3)
+        self.assertEqual(len({packet["database_id"] for packet in raw_packets}), 3)
+        self.assertEqual(raw_packets[0]["cases"], raw_packets[1]["cases"])
+        for name, expected in expected_raw_hashes.items():
+            self.assertEqual(
+                observation.sha256_bytes(
+                    (evidence / "raw/development" / name).read_bytes()
+                ),
+                expected,
+            )
+
+        execution = observation.read_json(evidence / "execution-error.json")
+        self.assertEqual(len(execution["commands"]), 4)
+        self.assertEqual(
+            [row["returncode"] for row in execution["commands"]],
+            [0, 0, 0, 3221225477],
+        )
+        self.assertTrue(
+            all(
+                row["command_sha256"] == observation.canonical_sha256(row["command"])
+                for row in execution["commands"]
+            )
+        )
+        self.assertTrue(execution["shared_database_unchanged"])
+        self.assertEqual(
+            execution["phase"],
+            {"development": "archived-error", "holdout": "unobserved"},
+        )
+        self.assertFalse((evidence / "execution.json").exists())
+        self.assertFalse((evidence / "development.observed.json").exists())
+        for relative in protocol["manifest"]["outputs"]["holdout"].values():
+            self.assertFalse((observation.ROOT / relative).exists())
+
+
+if __name__ == "__main__":
+    unittest.main()

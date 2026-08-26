@@ -1,0 +1,6 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v3",
+  "stage": "development",
+  "claim_sha256": "a03032cc4f9a6eddef13b8565f84c61d5c4bd361e98e6b7920585cdfccc2851a",
+  "error": "RuntimeError: command failed (3221225477): "
+}

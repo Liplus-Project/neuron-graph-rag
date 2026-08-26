@@ -1,0 +1,31 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v3",
+  "protocol_commit": "b762645d2521a3e23ac201b662ea1cbf25e2a260",
+  "source_commit": "c32b3049fd3daaa2190faf5e3e85955a195ee88c",
+  "completed_at": "2026-08-26T02:53:55+00:00",
+  "external_root": "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v3",
+  "cache_path": "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache",
+  "cache_bytes": 3427616927,
+  "cache_reused_as_verified_model_bytes_only": true,
+  "v1_evidence_semantic_content_read": false,
+  "v2_evidence_semantic_content_read": false,
+  "v1_worker_packet_reused": false,
+  "v2_worker_packet_reused": false,
+  "shared_database_path": "C:\\Users\\smile\\.ngrdb\\knowledge.db",
+  "shared_database_sha256_before": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "shared_database_sha256_after": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "offline": true,
+  "trust_remote_code": false,
+  "batch_size": 8,
+  "preflight_forward_inference_count": 2,
+  "full_test_process_isolation": "per-test",
+  "registered_query_execution_count": 0,
+  "observed_stage_inference_count": 0,
+  "claim_count": 0,
+  "phase": {
+    "development": "unobserved",
+    "holdout": "unobserved"
+  },
+  "model_report_sha256": "10617b69289ac71ce7f1ade596d5e74d5d4095c9bbed91f92444458e6528429a",
+  "dependency_report_sha256": "743ae3239d3c46fd440a635bbdef2b773b6561aa8e04d525596ecce7e422b906"
+}

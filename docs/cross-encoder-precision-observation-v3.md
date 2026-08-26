@@ -1,0 +1,33 @@
+# Cross-encoder precision one-shot observation v3
+
+## 範囲
+
+Issue #147 は freeze merge commit `b762645d2521a3e23ac201b662ea1cbf25e2a260` だけを protocol input として、`github-ngr-cross-encoder-precision-v3` を一度だけ観測する。v3 の fixture、candidate 順、rank-only evaluator、11 hard gate、exact model revision、dependency lock、NGR default は変更しない。
+
+v1/v2 の raw packet、evidence の semantic content、database、run output は v3 観測の入力にしない。predecessor evidence は v3 manifest に固定された byte hash との一致だけを確認する。既存 model cache は凍結 registry に列挙された model bytes の供給面としてだけ再利用し、claim 前に required file 全件の size と LFS SHA-256 または git blob ID を再検証する。shared database、既存 experiment database、github-rag-mcp、feedback/outcome、production serviceへ接続しない。
+
+## Preflight と専用実行面
+
+観測は v3 専用 venv、external run root、fresh SQLite database、fresh process、claim/result/error/transport を使用する。model cache 検証後は `HF_HUB_OFFLINE=1`、`TRANSFORMERS_OFFLINE=1`、local-files-only、`trust_remote_code=False`、CPU/float32/eval/inference-mode、batch size 8へ固定する。synthetic probe は登録 query を含まず、観測 stage の model inference count に含めない。
+
+preflight は凍結 protocol、model bytes、dependency、offline probe、v3 専用/full tests、audit/probe、変更対象 lint、shared database の前後 SHA-256 を検証し、claim 前の evidence として独立 commit へ保存する。Windows では単一 process の resource 蓄積を観測入力と混同しないよう、同じ discover suite の全 test を test method ごとの fresh process で実行する。preflight と remote CI が通過するまで development claim を作らない。
+
+## One-shot lifecycle
+
+development claim を exclusive-createし、baseline primary/replay、base primary/replay、v2-m3 primary/replayを6個のfresh processとfresh SQLite databaseで各一度だけ実行する。worker raw packet は v3 専用 archive へ byte-preserving に保存する。rank-only evaluator で raw packet から一意な result を算出・再検証して即 archive し、全 development hard gate が pass した場合だけ holdout を一度開く。
+
+claim 後の例外または gate failure では evidence を保存し、同じ protocol version の再試行、再評価、tuning、candidate/query/gold/gate/selection変更を行わない。model weight、cache、venv、fresh database は git へ追加しない。
+
+## 状態
+
+preflight は `2026-08-26T02:53:55+00:00` に完了した。exact revisionのrequired model bytes、hash-lock dependency、2 modelのoffline probe、v3専用test、audit/probe、Windows per-test full suite 394件、変更対象lint、shared DB非接触を確認した。preflight command 403件はすべてreturn code 0である。
+
+claim count、registered query execution count、observed-stage inference count は `0/0/0`、probe forward countは2である。development/holdout はともに unobserved であり、shared DB SHA-256は前後とも `84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e` で一致した。v1/v2 worker packetは再利用せず、predecessor evidenceのsemantic contentは観測入力として読んでいない。
+
+## One-shot development result
+
+preflight evidence commit `7346a510f9db53f9351def9b30f184dea8b06c6e` のpushとremote CI success後、development claimを一度だけ作成した。baseline primary/replayとbase primaryはreturn code 0で完了したが、4番目のfresh processであるbase replayがWindows access violation `3221225477 (0xC0000005)` でstderrを残さず終了した。
+
+claim/error/transport、execution-error、完了済み3 raw worker packetをbyte-preservingにarchiveした。3 packetは3個のfresh process identityとfresh SQLite database identityを持ち、baseline primary/replayのcaseは一致する。base replayのpartial database、model cache、venvはgitへ含めない。shared DB SHA-256は前後とも `84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e` で一致した。
+
+phaseはdevelopment=`archived-error`、holdout=`unobserved`である。rank-only evaluator result、selected candidate、hard gate判定は生成されていないため、rank-only候補の性能についてpass/failいずれの結論も支持しない。同versionの再試行、raw packet再利用、tuning、再評価は行わず、holdoutとGitHub RAG parity v2を開かない。後続観測が必要な場合は、v3 error evidenceを保存したままsuccessor result-free protocolを先に固定する。

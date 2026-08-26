@@ -1,0 +1,95 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v3",
+  "protocol_commit": "b762645d2521a3e23ac201b662ea1cbf25e2a260",
+  "cache_path": "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache",
+  "models": [
+    {
+      "model_id": "BAAI/bge-reranker-base",
+      "revision": "2cfc18c9415c912f9d8155881c133215df768a70",
+      "license": "mit",
+      "snapshot_path": "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache\\models--BAAI--bge-reranker-base\\snapshots\\2cfc18c9415c912f9d8155881c133215df768a70",
+      "files": [
+        {
+          "path": "config.json",
+          "size": 799,
+          "hash_kind": "git_blob_id",
+          "verified_hash": "ff248a5f7d76e27b10778b3c593c9fba1df4c448"
+        },
+        {
+          "path": "model.safetensors",
+          "size": 1112206140,
+          "hash_kind": "lfs_sha256",
+          "verified_hash": "ced967c45fd1902eb92716c9ceeca7c95a936770ea9db611f5a841b926e33fbd"
+        },
+        {
+          "path": "sentencepiece.bpe.model",
+          "size": 5069051,
+          "hash_kind": "lfs_sha256",
+          "verified_hash": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "size": 279,
+          "hash_kind": "git_blob_id",
+          "verified_hash": "68171d1ff68b731a33d119708476692c094a466b"
+        },
+        {
+          "path": "tokenizer.json",
+          "size": 17098107,
+          "hash_kind": "lfs_sha256",
+          "verified_hash": "9eb652ac4e40cc093272bbbe0f55d521cf67570060227109b5cdc20945a4489e"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 443,
+          "hash_kind": "git_blob_id",
+          "verified_hash": "059214673d9d6d2ee319411e2ffec8c024b816d5"
+        }
+      ]
+    },
+    {
+      "model_id": "BAAI/bge-reranker-v2-m3",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "license": "apache-2.0",
+      "snapshot_path": "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache\\models--BAAI--bge-reranker-v2-m3\\snapshots\\953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "files": [
+        {
+          "path": "config.json",
+          "size": 795,
+          "hash_kind": "git_blob_id",
+          "verified_hash": "9f62673cb00ec41dcec8947b9ed16f6f2eb23ba2"
+        },
+        {
+          "path": "model.safetensors",
+          "size": 2271071852,
+          "hash_kind": "lfs_sha256",
+          "verified_hash": "d9e3e081faff1eefb84019509b2f5558fd74c1a05a2c7db22f74174fcedb5286"
+        },
+        {
+          "path": "sentencepiece.bpe.model",
+          "size": 5069051,
+          "hash_kind": "lfs_sha256",
+          "verified_hash": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "size": 964,
+          "hash_kind": "git_blob_id",
+          "verified_hash": "b1879d702821e753ffe4245048eee415d54a9385"
+        },
+        {
+          "path": "tokenizer.json",
+          "size": 17098273,
+          "hash_kind": "lfs_sha256",
+          "verified_hash": "69564b696052886ed0ac63fa393e928384e0f8caada38c1f4864a9bfbf379c15"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 1173,
+          "hash_kind": "git_blob_id",
+          "verified_hash": "328a00a9a560aadcf2a3064f917517359eb3cc26"
+        }
+      ]
+    }
+  ]
+}
