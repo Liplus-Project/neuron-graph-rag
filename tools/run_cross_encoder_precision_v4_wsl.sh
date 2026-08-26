@@ -60,6 +60,7 @@ bootstrap_preflight() {
     echo "run root already exists; v4 preflight is not retryable" >&2
     return 73
   fi
+  mkdir -p "$(dirname "$RUN_ROOT")"
   mkdir "$RUN_ROOT" || return $?
   command_log="$RUN_ROOT/bootstrap-commands.tsv"
   sequence=0

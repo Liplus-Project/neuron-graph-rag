@@ -57,6 +57,15 @@ class CrossEncoderPrecisionV4ObservationTest(unittest.TestCase):
             value["successor_executor"]["forbidden_semantic_content_opened"]
         )
 
+    def test_runner_creates_only_the_missing_parent_before_exclusive_root(self) -> None:
+        runner = (observation.ROOT / "tools/run_cross_encoder_precision_v4_wsl.sh").read_text(
+            encoding="utf-8"
+        )
+        parent = 'mkdir -p "$(dirname "$RUN_ROOT")"'
+        exclusive = 'mkdir "$RUN_ROOT" || return $?'
+        self.assertLess(runner.index(parent), runner.index(exclusive))
+        self.assertNotIn('mkdir -p "$RUN_ROOT"', runner)
+
     def test_bootstrap_log_requires_hashes_zero_rc_and_contiguous_sequence(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "commands.tsv"
