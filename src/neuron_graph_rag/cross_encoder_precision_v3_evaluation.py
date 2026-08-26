@@ -739,9 +739,7 @@ def _validate_models(
         )
         base_by_id = {row["case_id"]: row for row in _object_list(baseline, "cases")}
         for case in cases:
-            expected_hits = base_by_id[case["case_id"]]["ranked_hits"][
-                : len(case["ranked_hits"])
-            ]
+            expected_hits = base_by_id[case["case_id"]]["ranked_hits"][:20]
             if [
                 (hit["source_path"], hit["rank"], hit["ngr_score"])
                 for hit in case["ranked_hits"]
@@ -821,9 +819,7 @@ def _validate_case_rows(
         if set(row) != required or row.get("cohort") != query.get("cohort"):
             raise ValueError("case shape mismatch")
         hits = _object_list(row, "ranked_hits")
-        if len(hits) != expected_hits and not (
-            require_logits and 0 <= len(hits) <= expected_hits
-        ):
+        if len(hits) != expected_hits:
             raise ValueError("ranked hit cardinality mismatch")
         seen = set()
         previous_order_key: tuple[float, str] | None = None

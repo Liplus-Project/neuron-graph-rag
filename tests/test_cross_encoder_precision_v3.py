@@ -175,40 +175,10 @@ class CrossEncoderPrecisionV3FreezeTest(unittest.TestCase):
                 ],
             )
 
-    def test_negative_mixed_short_empty_and_ties_round_trip(self) -> None:
+    def test_positive_negative_mixed_round_trip_and_short_empty_ties_derive(
+        self,
+    ) -> None:
         protocol = evaluation.load_protocol()
-        scenarios = (
-            ("positive", 20, 10.0),
-            ("negative", 20, -10.0),
-            ("mixed", 20, 0.0),
-            ("short", 4, 0.0),
-            ("empty", 0, 0.0),
-        )
-        for name, hit_count, shift in scenarios:
-            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
-                synthetic = dict(protocol)
-                synthetic["root"] = Path(directory)
-                claim = self._claim(synthetic)
-                valid = evaluation.build_synthetic_evaluated_result(
-                    protocol, "development", claim
-                )
-                baseline = evaluation._raw_baseline(valid["baseline"])
-                models = [evaluation._raw_model(row) for row in valid["models"]]
-                self._truncate_model_cases(models, hit_count)
-                self._shift_logits(models, shift)
-                result = evaluation.evaluate_result_payload(
-                    protocol, "development", claim, baseline, models
-                )
-                evaluation.verify_result_payload(protocol, "development", result, claim)
-                expected = min(5, hit_count)
-                self.assertTrue(
-                    all(
-                        len(case["returned_source_paths"]) == expected
-                        for candidate in result["candidates"]
-                        for case in candidate["cases"]
-                    )
-                )
-
         with tempfile.TemporaryDirectory() as directory:
             synthetic = dict(protocol)
             synthetic["root"] = Path(directory)
@@ -216,7 +186,60 @@ class CrossEncoderPrecisionV3FreezeTest(unittest.TestCase):
             valid = evaluation.build_synthetic_evaluated_result(
                 protocol, "development", claim
             )
+        scenarios = (
+            ("positive", 10.0),
+            ("negative", -10.0),
+            ("mixed", 0.0),
+        )
+        for name, shift in scenarios:
+            with self.subTest(name=name):
+                baseline = evaluation._raw_baseline(valid["baseline"])
+                models = [evaluation._raw_model(row) for row in valid["models"]]
+                self._shift_logits(models, shift)
+                result = evaluation.evaluate_result_payload(
+                    protocol, "development", claim, baseline, models
+                )
+                evaluation.verify_result_payload(protocol, "development", result, claim)
+                self.assertTrue(
+                    all(
+                        len(case["returned_source_paths"]) == 5
+                        for candidate in result["candidates"]
+                        for case in candidate["cases"]
+                    )
+                )
+
         baseline = evaluation._raw_baseline(valid["baseline"])
+        for hit_count in (4, 0):
+            with self.subTest(prefilter_hits=hit_count):
+                models = [evaluation._raw_model(row) for row in valid["models"]]
+                self._truncate_model_cases(models, hit_count)
+                state_rows = [
+                    valid["baseline"]["state"],
+                    *[model["state"] for model in models],
+                ]
+                derived = [
+                    evaluation._derive_candidate(
+                        protocol,
+                        "development",
+                        valid["baseline"],
+                        models,
+                        candidate_id,
+                        state_rows,
+                    )
+                    for candidate_id in evaluation.CANDIDATE_IDS
+                ]
+                self.assertTrue(
+                    all(
+                        len(case["returned_source_paths"]) == min(5, hit_count)
+                        for candidate in derived
+                        for case in candidate["cases"]
+                    )
+                )
+                with self.assertRaisesRegex(ValueError, "cardinality"):
+                    evaluation.evaluate_result_payload(
+                        protocol, "development", claim, baseline, models
+                    )
+
         models = [evaluation._raw_model(row) for row in valid["models"]]
         for model in models:
             hits = model["cases"][0]["ranked_hits"]
@@ -253,7 +276,7 @@ class CrossEncoderPrecisionV3FreezeTest(unittest.TestCase):
                     candidate["cases"][0]["returned_source_paths"][:2], paths
                 )
 
-    def test_empty_derived_and_gate_tampering_fail_closed(self) -> None:
+    def test_derived_path_and_gate_tampering_fail_closed(self) -> None:
         protocol = evaluation.load_protocol()
         with tempfile.TemporaryDirectory() as directory:
             synthetic = dict(protocol)
@@ -262,26 +285,20 @@ class CrossEncoderPrecisionV3FreezeTest(unittest.TestCase):
             valid = evaluation.build_synthetic_evaluated_result(
                 protocol, "development", claim
             )
-        baseline = evaluation._raw_baseline(valid["baseline"])
-        models = [evaluation._raw_model(row) for row in valid["models"]]
-        self._truncate_model_cases(models, 0)
-        result = evaluation.evaluate_result_payload(
-            protocol, "development", claim, baseline, models
-        )
         for name, mutate in (
             (
-                "derived empty paths",
+                "derived paths",
                 lambda value: value["candidates"][0]["cases"][0][
                     "returned_source_paths"
-                ].append(protocol["corpus"]["documents"][0]["path"]),
+                ].clear(),
             ),
             (
-                "empty completeness gate",
-                lambda value: value["candidates"][0]["gates"][6].update(passed=True),
+                "derived completeness gate",
+                lambda value: value["candidates"][0]["gates"][6].update(passed=False),
             ),
         ):
             with self.subTest(name=name):
-                tampered = copy.deepcopy(result)
+                tampered = copy.deepcopy(valid)
                 mutate(tampered)
                 with self.assertRaises(ValueError):
                     evaluation.verify_result_payload(

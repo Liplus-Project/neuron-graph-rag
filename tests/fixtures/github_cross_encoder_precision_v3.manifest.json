@@ -15,8 +15,8 @@
     "tests/fixtures/github_cross_encoder_precision_v3.result-free-audit.json": "a9d5c6365e843feedc126ceb3c13477006f7866032ed7acb3757b180ac51c4b4",
     "tests/fixtures/github_cross_encoder_precision_v3.requirements.in": "2e245ccc1789378ec53a14443fb1d61bfe04dfbc785a724ccbfc201b9a9d981a",
     "tests/fixtures/github_cross_encoder_precision_v3.requirements.lock": "1e3a69692fadf6a4248039b202de45c6fed2aaf94376a53db653e7b1d59e2a79",
-    "src/neuron_graph_rag/cross_encoder_precision_v3_evaluation.py": "67ce9b4c07aa7ddf714a17c61bf0cd69bab49618fd4de400540e2ab76a59796f",
-    "tests/test_cross_encoder_precision_v3.py": "a33f17b0028227157e19e886a48c72aab073c659af7887b77d86488c6b0627e9",
+    "src/neuron_graph_rag/cross_encoder_precision_v3_evaluation.py": "b7af009a7af2245e821fd7b43655aa209accb2c5de49dba9126c0c7285bdbb9c",
+    "tests/test_cross_encoder_precision_v3.py": "a7c841b6c949093c70303bcb059463abd6ed3bf22ae493cd3f3580b5bec1f5a6",
     "docs/cross-encoder-precision-freeze-v3.md": "747b49aeb7cc7f7c6a79505b17e567c65227f45fd4dacb23adf3a464449f9f07"
   },
   "predecessor_immutable_sha256": {
