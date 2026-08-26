@@ -289,7 +289,8 @@ def _validate_container_contract(protocol: Mapping[str, Any]) -> None:
 def validate_protocol(protocol: Mapping[str, Any]) -> None:
     audit = _mapping(protocol, "result_free_audit")
     if audit.get("count_scope") != (
-        "v5 result-free freeze only; historical v1/v2/v3/v4 observations excluded"
+        "v5 registered query/model inference/observed result counts only; "
+        "historical v1/v2/v3/v4 observations excluded"
     ):
         raise ValueError("result-free count scope mismatch")
     for key in (
@@ -316,11 +317,15 @@ def validate_protocol(protocol: Mapping[str, Any]) -> None:
     ):
         if audit.get(key) is not False:
             raise ValueError(f"{key} must remain false at freeze")
-    if (
-        audit.get("wslc_image_build_count") != 1
-        or audit.get("offline_synthetic_validation_count") != 1
+    if audit.get("container_acceptance_count_scope") != (
+        "final accepted v5 container contract only; pre-finalization iterative "
+        "image builds and offline validations excluded"
     ):
-        raise ValueError("freeze build/validation count mismatch")
+        raise ValueError("container acceptance count scope mismatch")
+    if audit.get("accepted_wslc_image_build_count") != 1:
+        raise ValueError("accepted WSLC image build count mismatch")
+    if audit.get("accepted_offline_synthetic_validation_count") != 1:
+        raise ValueError("accepted offline synthetic validation count mismatch")
 
     adapted = dict(protocol)
     adapted_audit = dict(audit)

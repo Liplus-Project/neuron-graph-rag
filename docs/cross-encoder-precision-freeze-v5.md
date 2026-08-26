@@ -14,6 +14,8 @@ freeze auditは次を固定する。
 - v1-v4 evidence semantic content、model cache / weight、既存venv、既存v4 run root、共有Windows SQLiteをopenしない
 - predecessor artifactはmanifestのSHA-256だけでbyte immutabilityを検証する
 
+query / inference / resultのcount scopeはv5 freezeだけであり、過去versionの観測を含めない。container側のcountはfreeze期間全体の試行回数ではなく、最終固定contractに採用したimage build=`1`とoffline synthetic validation=`1`だけを表す。Containerfileやvalidatorを最終化する前のiterative build / validationはこのaccepted countから明示的に除外する。
+
 ## 不変のrank-only意味
 
 v5のcorpus、development / holdout各8件のbilingual query / gold、2 exact model revision、480/80 passage projection、batch size 8、NGR top24、model prefilter exact top20、4 candidate順、CE / RRF式、top5、tie-break、selection rule、11 hard gateはv4と同一である。corpus sourceは`c32b3049fd3daaa2190faf5e3e85955a195ee88c`へ固定する。

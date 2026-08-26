@@ -45,6 +45,18 @@ class CrossEncoderPrecisionV5FreezeTest(v4_tests.CrossEncoderPrecisionV4FreezeTe
         self.assertEqual(audit["freeze_registered_query_execution_count"], 0)
         self.assertEqual(audit["freeze_model_inference_count"], 0)
         self.assertEqual(audit["freeze_observed_result_count"], 0)
+        self.assertEqual(
+            audit["count_scope"],
+            "v5 registered query/model inference/observed result counts only; "
+            "historical v1/v2/v3/v4 observations excluded",
+        )
+        self.assertEqual(
+            audit["container_acceptance_count_scope"],
+            "final accepted v5 container contract only; pre-finalization iterative "
+            "image builds and offline validations excluded",
+        )
+        self.assertEqual(audit["accepted_wslc_image_build_count"], 1)
+        self.assertEqual(audit["accepted_offline_synthetic_validation_count"], 1)
         self.assertFalse(audit["predecessor_evidence_semantic_content_opened"])
         self.assertFalse(audit["model_cache_opened"])
         self.assertFalse(audit["model_weights_opened"])
@@ -65,6 +77,38 @@ class CrossEncoderPrecisionV5FreezeTest(v4_tests.CrossEncoderPrecisionV4FreezeTe
                 for path in output_paths
             )
         )
+
+    def test_result_free_audit_count_scopes_fail_closed(self) -> None:
+        protocol = evaluation.load_protocol()
+        for name, mutate in (
+            (
+                "result scope",
+                lambda row: row["result_free_audit"].update(count_scope="all runs"),
+            ),
+            (
+                "container scope",
+                lambda row: row["result_free_audit"].update(
+                    container_acceptance_count_scope="all builds"
+                ),
+            ),
+            (
+                "accepted build count",
+                lambda row: row["result_free_audit"].update(
+                    accepted_wslc_image_build_count=2
+                ),
+            ),
+            (
+                "accepted validation count",
+                lambda row: row["result_free_audit"].update(
+                    accepted_offline_synthetic_validation_count=2
+                ),
+            ),
+        ):
+            with self.subTest(name=name):
+                tampered = copy.deepcopy(protocol)
+                mutate(tampered)
+                with self.assertRaises(ValueError):
+                    evaluation.validate_protocol(tampered)
 
     def test_v4_v5_semantic_diff_and_predecessor_byte_immutability(self) -> None:
         v5 = evaluation.load_protocol()

@@ -5,9 +5,9 @@
     "commit": "c32b3049fd3daaa2190faf5e3e85955a195ee88c"
   },
   "artifact_sha256": {
-    "docs/cross-encoder-precision-freeze-v5.md": "3a08387fdb45331379e4cf475b760556f03e38ddf61b357496c23db1f0988858",
-    "src/neuron_graph_rag/cross_encoder_precision_v5_evaluation.py": "ca53f3ea4bdcfea3b5d842d3ad155b3d20b9b21d4e5427ee2b098069d74d35f3",
-    "tests/test_cross_encoder_precision_v5.py": "f11502501144bd2dc0a8538a4a937ac251c0207cf419fdbfae56a0ba53246496",
+    "docs/cross-encoder-precision-freeze-v5.md": "93220400adf6809a5b72a8d102bb5306276f70da2894fb316f523164fde4322e",
+    "src/neuron_graph_rag/cross_encoder_precision_v5_evaluation.py": "a351a514828426e311f38c36fbeba65da21a67650196adc6ec3ad16eb6cfd68b",
+    "tests/test_cross_encoder_precision_v5.py": "3061ac59453992621d505213c56400e4688b91e77f313d311574483caf250b79",
     "containers/github_cross_encoder_precision_v5/Containerfile": "9789fad18401159ade7951209c7bf69dc1a45697fd8bb34a5b38ee3315783ef1",
     "containers/github_cross_encoder_precision_v5/validate_runtime.py": "57ca66cf30bff3a3beca85a55a18816a293cd7d9f5ac809ca9071429a9834fba",
     "tests/fixtures/github_cross_encoder_precision_v5.corpus.json": "c767e4a2c2eee6b6902521f38b3a57a5674e29d0b8cb39d37f07973b25a7ac9e",
@@ -17,7 +17,7 @@
     "tests/fixtures/github_cross_encoder_precision_v5.candidates.json": "2a9fdd80cc57e5f6c43879b4397722909402fa0e4538e917c89deb5498f8b2c9",
     "tests/fixtures/github_cross_encoder_precision_v5.gate.json": "00e67b2aa156c449e6703c009e1be8c7fc651012961e6321feb78babc1b503cf",
     "tests/fixtures/github_cross_encoder_precision_v5.result-schema.json": "6ca3661ab4a2ddcb0b257674300205b562fa73813aa0d8394058e4c4722bffbe",
-    "tests/fixtures/github_cross_encoder_precision_v5.result-free-audit.json": "7af2a4706190920c988f1e754044cf78546a7158061fa983ad0a2a29c6849166",
+    "tests/fixtures/github_cross_encoder_precision_v5.result-free-audit.json": "5e09bdda7f0ca67f464b7bcaebb9ddabd968c9993e30056dbc16dee09fa119ec",
     "tests/fixtures/github_cross_encoder_precision_v5.platform.json": "5ddcf37de9db408cf0a74890abce10e5bbab046494a79865e72b3ef58ff73523",
     "tests/fixtures/github_cross_encoder_precision_v5.dependency-artifacts.json": "6e5a05a83b6fa914c7bdbff1983d2e7e9351ef9975cd25752ca4c60ce0c90a14",
     "tests/fixtures/github_cross_encoder_precision_v5.requirements.in": "7d2eac3956b8c982b434ff2cd55c19223816e5fa7983ba23566d67857d9dc53b",
