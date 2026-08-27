@@ -44,3 +44,18 @@ claim後の例外、native signal、OOM、dependency/runtime/container failure�
 timeoutをretryへ変換しない。pass/fail/errorのいずれでもraw packetとgit evidenceの
 byte identity、fresh container/process/DB identity、primary/replay determinism、state不変、
 shared DB SHA不変をterminal evidenceへ残す。
+
+## 観測結果
+
+implementation commit `8cd56af049fd0afa7bb3b3602f31939df182480b`からpreflightを
+一度開始した。exact `--no-cache` build自体はreturn code 0で完了したが、rebuilt image ID
+`sha256:00c544ce37579c40eb328acf63269a38874dc21c6b2ccefc2c3a19121a6a9d14`が
+freeze registryの
+`sha256:bc105cebf12e144ef0e178b18b3ff95367bf7567113fdfe524c6c7c2de2b4dd2`
+と一致しなかったため、preflightはfail-closedで停止した。
+
+v5専用volumeは未作成、development / holdout claim=`0/0`、registered query、
+model copy/load/inference、observed result/errorはすべて`0`である。shared Windows DB SHA-256は
+preflight前後とも
+`84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e`で不変だった。
+developmentとholdoutを開かず、性能は`not assessed`、同version retryなしで停止した。

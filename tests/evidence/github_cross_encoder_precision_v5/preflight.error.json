@@ -1,0 +1,64 @@
+{
+  "commands": [
+    {
+      "command": [
+        "wslc",
+        "volume",
+        "inspect",
+        "github-cross-encoder-precision-v5-runtime"
+      ],
+      "command_sha256": "eb01ff09e3ceb0c19b775b1d665b763f483a5cc52544e2c3101511d8938fa967",
+      "returncode": 1,
+      "stderr_sha256": "4e9e6475c4d97c966b3e2ce7c3eb4f5d674d343f087b3d034d58c31dd4f471ca",
+      "stdout_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "command": [
+        "wslc",
+        "--version"
+      ],
+      "command_sha256": "08e41e2a5773f3c1a6a0273944a26bf830b1d4fb84106f722918e590e755006b",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "227e92f850731c644562e9ccfff30798ca55c7c32094046a743d3b50d437d8d3"
+    },
+    {
+      "command": [
+        "wslc",
+        "build",
+        "--no-cache",
+        "--file",
+        "containers/github_cross_encoder_precision_v5/Containerfile",
+        "--tag",
+        "ngr-cross-encoder-precision-v5:freeze",
+        "."
+      ],
+      "command_sha256": "5f0ef6b3e6e292d46b1c7ac17de9b7bf2158a01aa34ea7ccfc46c07bffd199ba",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "51b4d49408e9b8fe42b8949f7a59b5901467682dad9ff8d79b0470951e1c06c4"
+    },
+    {
+      "command": [
+        "wslc",
+        "image",
+        "inspect",
+        "ngr-cross-encoder-precision-v5:freeze"
+      ],
+      "command_sha256": "65238c6ffedc1b116fb77f91f970c197f73dcc277f62a75bfd8c556f4c7c26dd",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "bdb2105872741953b4f07a20373ca5776180bca7a0993f37eeb6cd30d32b3b2d"
+    }
+  ],
+  "development_claim_count": 0,
+  "error": "ValueError: rebuilt image identity mismatch",
+  "implementation_commit": "8cd56af049fd0afa7bb3b3602f31939df182480b",
+  "observed_stage_inference_count": 0,
+  "protocol_commit": "d5c25d7998d634cac0aa96511f59a9cce0b7725a",
+  "protocol_id": "github-ngr-cross-encoder-precision-v5",
+  "registered_query_execution_count": 0,
+  "result_count": 0,
+  "retry_count": 0,
+  "shared_database_sha256_before_preflight": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e"
+}
