@@ -140,9 +140,15 @@ class CrossEncoderPrecisionV6FreezeTest(v5_tests.CrossEncoderPrecisionV5FreezeTe
             ),
             (0, 0, 0),
         )
-        self.assertEqual(audit["accepted_wslc_image_build_count"], 2)
-        self.assertEqual(audit["accepted_runtime_content_report_count"], 2)
-        self.assertEqual(audit["accepted_offline_synthetic_validation_count"], 2)
+        self.assertEqual(audit["freeze_outcome"], "fail_closed_offline_attestation_not_exact")
+        self.assertEqual(audit["one_shot_wslc_image_build_count"], 2)
+        self.assertEqual(audit["runtime_content_report_count"], 2)
+        self.assertEqual(audit["offline_attestation_report_count"], 2)
+        self.assertEqual(audit["additional_wslc_image_build_count"], 0)
+        self.assertEqual(audit["additional_offline_report_run_count"], 0)
+        self.assertFalse(audit["accepted_image"])
+        self.assertFalse(audit["successor_observation_allowed"])
+        self.assertEqual(audit["performance"], "not assessed")
         self.assertFalse(audit["predecessor_evidence_semantic_content_opened"])
         self.assertFalse(audit["model_cache_opened"])
         self.assertFalse(audit["model_weights_opened"])
@@ -178,10 +184,14 @@ class CrossEncoderPrecisionV6FreezeTest(v5_tests.CrossEncoderPrecisionV5FreezeTe
         protocol = evaluation.load_protocol()
         for name, key, value in (
             ("result scope", "count_scope", "all runs"),
-            ("container scope", "container_acceptance_count_scope", "all builds"),
-            ("build count", "accepted_wslc_image_build_count", 1),
-            ("fingerprint count", "accepted_runtime_content_report_count", 1),
-            ("attestation count", "accepted_offline_synthetic_validation_count", 1),
+            ("container scope", "container_attempt_count_scope", "all builds"),
+            ("build count", "one_shot_wslc_image_build_count", 1),
+            ("fingerprint count", "runtime_content_report_count", 1),
+            ("attestation count", "offline_attestation_report_count", 1),
+            ("additional build", "additional_wslc_image_build_count", 1),
+            ("additional report", "additional_offline_report_run_count", 1),
+            ("accepted image", "accepted_image", True),
+            ("successor", "successor_observation_allowed", True),
         ):
             tampered = copy.deepcopy(protocol)
             tampered["result_free_audit"][key] = value
@@ -224,7 +234,7 @@ class CrossEncoderPrecisionV6FreezeTest(v5_tests.CrossEncoderPrecisionV5FreezeTe
     def test_v2_v3_semantic_diff_and_predecessor_byte_immutability(self) -> None:
         self.test_v5_v6_semantic_diff_and_predecessor_byte_immutability()
 
-    def test_linux_platform_contract_accepts_content_identity_not_image_identity(self) -> None:
+    def test_content_identity_matches_but_exact_attestation_fails_closed(self) -> None:
         protocol = evaluation.load_protocol()
         contract = protocol["platform"]["content_equivalence"]
         root = protocol["root"]
@@ -232,10 +242,27 @@ class CrossEncoderPrecisionV6FreezeTest(v5_tests.CrossEncoderPrecisionV5FreezeTe
         content_b = evaluation._read_canonical_json(root / contract["runtime_content_build_b"]["path"])
         attestation_a = evaluation._read_canonical_json(root / contract["attestation_build_a"]["path"])
         attestation_b = evaluation._read_canonical_json(root / contract["attestation_build_b"]["path"])
-        evaluation.validate_content_equivalence(
-            content_a, content_b, attestation_a, attestation_b, protocol,
-            image_id_a="sha256:" + "a" * 64, image_id_b="sha256:" + "b" * 64,
+        self.assertEqual(content_a, content_b)
+        self.assertEqual(attestation_a, attestation_b)
+        extras, missing = evaluation.installed_distribution_delta(content_a, attestation_a)
+        self.assertEqual(
+            extras,
+            [
+                "pip-24.0.dist-info",
+                "setuptools-79.0.1.dist-info",
+                "wheel-0.46.3.dist-info",
+            ],
         )
+        self.assertEqual(missing, [])
+        for image_id_a, image_id_b in (
+            ("sha256:" + "a" * 64, "sha256:" + "b" * 64),
+            ("sha256:" + "a" * 64, "sha256:" + "a" * 64),
+        ):
+            with self.assertRaises(evaluation.ExactInstalledDistributionError):
+                evaluation.validate_content_equivalence(
+                    content_a, content_b, attestation_a, attestation_b, protocol,
+                    image_id_a=image_id_a, image_id_b=image_id_b,
+                )
         tampered = copy.deepcopy(content_b)
         tampered["normalized_entries"][0]["size"] += 1
         with self.assertRaises(ValueError):
@@ -245,7 +272,7 @@ class CrossEncoderPrecisionV6FreezeTest(v5_tests.CrossEncoderPrecisionV5FreezeTe
             )
 
     def test_linux_platform_contract_accepts_only_frozen_ext4_metadata(self) -> None:
-        self.test_linux_platform_contract_accepts_content_identity_not_image_identity()
+        self.test_content_identity_matches_but_exact_attestation_fails_closed()
 
     def test_container_contract_rejects_platform_image_and_routing_tamper(self) -> None:
         protocol = evaluation.load_protocol()
@@ -256,6 +283,8 @@ class CrossEncoderPrecisionV6FreezeTest(v5_tests.CrossEncoderPrecisionV5FreezeTe
             ("wrong WSLC", lambda row: row["platform"]["wslc"].update(version="2.9.3.0")),
             ("index fallback", lambda row: row["platform"]["resolver"].update(index_fallback=True)),
             ("exclusion registry", lambda row: row["platform"]["content_equivalence"].update(exclusion_registry_sha256="f" * 64)),
+            ("accepted image", lambda row: row["platform"]["container"].update(accepted_image="build_a")),
+            ("successor", lambda row: row["platform"]["content_equivalence"].update(successor_observation_allowed=True)),
             ("PyPI torch", lambda row: next(item for item in row["dependency_artifacts"]["artifacts"] if item["name"] == "torch").update(url="https://files.pythonhosted.org/torch.whl")),
         ):
             tampered = copy.deepcopy(protocol)

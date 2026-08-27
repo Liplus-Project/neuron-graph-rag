@@ -247,7 +247,7 @@ def _validate_container_contract(protocol: Mapping[str, Any]) -> None:
             not re.fullmatch(r"sha256:[0-9a-f]{64}", str(row.get("id")))
             for row in (build_a, build_b)
         )
-        or container.get("accepted_image") != "build_a"
+        or container.get("accepted_image") is not None
     ):
         raise ValueError("pinned Linux amd64 image identity mismatch")
     containerfile = root / _string(container, "containerfile")
@@ -362,6 +362,53 @@ def validate_attestation(value: Mapping[str, Any], protocol: Mapping[str, Any]) 
         raise ValueError("offline runtime attestation mismatch")
 
 
+class ExactInstalledDistributionError(ValueError):
+    def __init__(self, *, extras: list[str], missing: list[str]) -> None:
+        self.extras = extras
+        self.missing = missing
+        super().__init__(
+            "offline attestation is not the exact installed distribution set"
+        )
+
+
+def installed_distribution_delta(
+    report: Mapping[str, Any], attestation: Mapping[str, Any]
+) -> tuple[list[str], list[str]]:
+    installed: dict[str, str] = {}
+    for entry in report.get("normalized_entries", []):
+        path = str(entry.get("path", ""))
+        parts = path.split("/")
+        if (
+            len(parts) == 3
+            and parts[0] == "site-packages"
+            and parts[1].endswith(".dist-info")
+            and parts[2] == "METADATA"
+        ):
+            stem = parts[1][: -len(".dist-info")]
+            name, separator, _version = stem.rpartition("-")
+            if not separator:
+                raise ValueError("installed dist-info identity is malformed")
+            canonical = re.sub(r"[-_.]+", "-", name).lower()
+            if canonical in installed:
+                raise ValueError("duplicate installed distribution identity")
+            installed[canonical] = parts[1]
+    declared = {
+        re.sub(r"[-_.]+", "-", str(row.get("name", ""))).lower()
+        for row in attestation.get("distributions", [])
+    }
+    extras = sorted(installed[name] for name in set(installed) - declared)
+    missing = sorted(declared - set(installed))
+    return extras, missing
+
+
+def validate_exact_installed_distributions(
+    report: Mapping[str, Any], attestation: Mapping[str, Any]
+) -> None:
+    extras, missing = installed_distribution_delta(report, attestation)
+    if extras or missing:
+        raise ExactInstalledDistributionError(extras=extras, missing=missing)
+
+
 def validate_content_equivalence(
     report_a: Mapping[str, Any],
     report_b: Mapping[str, Any],
@@ -381,6 +428,8 @@ def validate_content_equivalence(
         raise ValueError("build A/B runtime content fingerprints differ")
     if dict(attestation_a) != dict(attestation_b):
         raise ValueError("build A/B offline runtime attestations differ")
+    validate_exact_installed_distributions(report_a, attestation_a)
+    validate_exact_installed_distributions(report_b, attestation_b)
 
 
 def _validate_content_equivalence(
@@ -407,22 +456,66 @@ def _validate_content_equivalence(
         if _sha256(path) != record.get("sha256"):
             raise ValueError("runtime report registry hash mismatch")
         reports[key] = _read_canonical_json(path)
-    validate_content_equivalence(
-        reports["runtime_content_build_a"],
-        reports["runtime_content_build_b"],
-        reports["attestation_build_a"],
-        reports["attestation_build_b"],
-        protocol,
-        image_id_a=image_id_a,
-        image_id_b=image_id_b,
-    )
+    try:
+        validate_content_equivalence(
+            reports["runtime_content_build_a"],
+            reports["runtime_content_build_b"],
+            reports["attestation_build_a"],
+            reports["attestation_build_b"],
+            protocol,
+            image_id_a=image_id_a,
+            image_id_b=image_id_b,
+        )
+    except ExactInstalledDistributionError as error:
+        if error.extras != [
+            "pip-24.0.dist-info",
+            "setuptools-79.0.1.dist-info",
+            "wheel-0.46.3.dist-info",
+        ] or error.missing:
+            raise ValueError("unexpected exact-distribution attestation failure") from error
+    else:
+        raise ValueError("v6 must remain failed after incomplete attestation")
     if contract.get("fingerprint_sha256") != reports["runtime_content_build_a"].get("fingerprint_sha256"):
-        raise ValueError("accepted runtime fingerprint registry mismatch")
+        raise ValueError("recorded runtime fingerprint registry mismatch")
     attestation_sha = hashlib.sha256(
         _CONTENT.canonical_json_bytes(reports["attestation_build_a"])
     ).hexdigest()
     if contract.get("attestation_sha256") != attestation_sha:
-        raise ValueError("accepted runtime attestation registry mismatch")
+        raise ValueError("recorded runtime attestation registry mismatch")
+    if (
+        contract.get("fingerprint_reports_equal") is not True
+        or contract.get("attestation_reports_equal") is not True
+        or contract.get("exact_installed_distribution_set_attested") is not False
+        or contract.get("freeze_outcome")
+        != "fail_closed_offline_attestation_not_exact"
+        or contract.get("successor_observation_allowed") is not False
+    ):
+        raise ValueError("v6 failure outcome contract mismatch")
+    failure = _mapping(contract, "failure_evidence")
+    failure_path = "tests/evidence/github_cross_encoder_precision_v6/freeze-attestation.error.json"
+    if failure.get("path") != failure_path or _sha256(root / failure_path) != failure.get("sha256"):
+        raise ValueError("v6 failure evidence registry mismatch")
+    failure_value = _BASE.read_json(root / failure_path)
+    if (
+        failure_value.get("outcome") != "fail_closed_offline_attestation_not_exact"
+        or failure_value.get("accepted_image") is not None
+        or failure_value.get("successor_observation_allowed") is not False
+        or failure_value.get("performance") != "not assessed"
+        or _mapping(failure_value, "freeze_counts")
+        != {
+            "registered_query_count": 0,
+            "model_forward_inference_count": 0,
+            "observed_result_count": 0,
+        }
+        or _mapping(_mapping(failure_value, "builds"), "build_a").get("count") != 1
+        or _mapping(_mapping(failure_value, "builds"), "build_b").get("count") != 1
+        or _mapping(failure_value, "builds").get("additional_build_count") != 0
+        or _mapping(failure_value, "offline_attestation").get(
+            "additional_report_run_count"
+        )
+        != 0
+    ):
+        raise ValueError("v6 failure evidence content mismatch")
 
 
 def validate_protocol(protocol: Mapping[str, Any]) -> None:
@@ -456,16 +549,29 @@ def validate_protocol(protocol: Mapping[str, Any]) -> None:
     ):
         if audit.get(key) is not False:
             raise ValueError(f"{key} must remain false at freeze")
-    if audit.get("container_acceptance_count_scope") != (
-        "v6 one-shot build A/B and offline report collection only"
+    if audit.get("freeze_outcome") != "fail_closed_offline_attestation_not_exact":
+        raise ValueError("v6 freeze outcome mismatch")
+    if audit.get("container_attempt_count_scope") != (
+        "v6 one-shot build A/B and their original offline report collection only"
     ):
-        raise ValueError("container acceptance count scope mismatch")
-    if audit.get("accepted_wslc_image_build_count") != 2:
-        raise ValueError("accepted WSLC image build count mismatch")
-    if audit.get("accepted_runtime_content_report_count") != 2:
-        raise ValueError("accepted runtime content report count mismatch")
-    if audit.get("accepted_offline_synthetic_validation_count") != 2:
-        raise ValueError("accepted offline synthetic validation count mismatch")
+        raise ValueError("container attempt count scope mismatch")
+    for key, expected in (
+        ("one_shot_wslc_image_build_count", 2),
+        ("runtime_content_report_count", 2),
+        ("offline_attestation_report_count", 2),
+        ("additional_wslc_image_build_count", 0),
+        ("additional_offline_report_run_count", 0),
+    ):
+        if audit.get(key) != expected:
+            raise ValueError(f"{key} mismatch")
+    if (
+        audit.get("accepted_image") is not False
+        or audit.get("successor_observation_allowed") is not False
+        or audit.get("performance") != "not assessed"
+        or audit.get("failure_evidence")
+        != "tests/evidence/github_cross_encoder_precision_v6/freeze-attestation.error.json"
+    ):
+        raise ValueError("fail-closed audit outcome mismatch")
 
     adapted = dict(protocol)
     adapted_audit = dict(audit)
@@ -533,7 +639,10 @@ def main(argv: list[str] | None = None) -> int:
         "freeze_model_inference_count": 0,
         "freeze_observed_result_count": 0,
         "historical_v1_v2_v3_v4_v5_observations_included": False,
-        "accepted_image_id": _mapping(_mapping(container, "images"), "build_a")["id"],
+        "freeze_outcome": "fail_closed_offline_attestation_not_exact",
+        "accepted_image_id": None,
+        "successor_observation_allowed": False,
+        "performance": "not assessed",
         "fingerprint_sha256": _mapping(
             _mapping(protocol, "platform"), "content_equivalence"
         )["fingerprint_sha256"],

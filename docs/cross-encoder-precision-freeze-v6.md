@@ -1,10 +1,10 @@
-# Cross-encoder precision benchmark freeze v6
+# Cross-encoder precision benchmark freeze failure v6
 
 ## 目的とresult-free境界
 
 v5 one-shot observationはWSLC `--no-cache` rebuildに成功したが、freeze時とrebuild時のlocal image IDが異なったため、volume作成前にfail-closed停止した。v6はv5へ追加調整や再試行を行わず、独立buildの同値判定だけをlocal image IDからnormalized runtime content fingerprintとoffline runtime attestationへ切り替える。
 
-本freeze中の登録query、model forward / inference、observed resultは`0/0/0`である。v1-v5 evidenceのsemantic content、raw packet、model cache / weight、既存venv / run root、共有Windows SQLiteはopenしていない。predecessorはmanifestのSHA-256 registryだけでbyte immutabilityを検証する。
+本freeze中の登録query、model forward / inference、observed resultは`0/0/0`である。v1-v5 evidenceのsemantic content、raw packet、model cache / weight、既存venv / run root、共有Windows SQLiteはopenしていない。predecessorはmanifestのSHA-256 registryだけでbyte immutabilityを検証する。build後にoffline attestationがexact installed distribution setを証明しないことが判明したため、v6は`fail_closed_offline_attestation_not_exact`で停止し、performanceは`not assessed`である。
 
 ## 不変のrank-only意味
 
@@ -26,7 +26,7 @@ v6 evaluatorはv3の凍結rank-only evaluatorをisolated moduleとして読み�
 - build A: tag `ngr-cross-encoder-precision-v6:freeze`、return code `0`、local image ID `sha256:03134b1593ee804ca3d03c90aee2cc40d64e4e81c87282ac2626ec83ba33e222`
 - build B: tag `ngr-cross-encoder-precision-v6:rebuild-check`、return code `0`、local image ID `sha256:1d259121e8184d9342ae71a9c483904fe875e19f0991ebbffd03a97ede88b6ec`
 
-local image IDはbuilt artifactの識別子として保存するが、独立build間の内容同値判定には使用しない。Aをsuccessor observationのaccepted imageとし、同Issueでは再buildしない。
+local image IDはbuilt artifactの識別子として保存するが、独立build間の内容同値判定には使用しない。Aは当初successor observation用candidateとして記録したが、後述のattestation failureによりaccepted imageは存在しない。build A/Bは各1回で封印し、追加buildしない。
 
 ## Normalized runtime content fingerprint v1
 
@@ -34,16 +34,18 @@ algorithmは`ngr.wslc-runtime-content/v1`である。Python executable、`/usr/l
 
 directory/file timestamp、ctime、inode、UID/GID、container/layer ID、build timestamp、tar順、host pathは入力にしない。content / symlink target差、missing / extra / duplicate path、path traversal、case collisionを拒否する。canonical JSONはkey sort、compact separator、UTF-8、newlineなしである。
 
-build A/Bは各17,435 entries、fingerprint `238fda19d59c723d4b7f0535c5fd55e94fec3ced5707be2f128fe6a677dcd975`で完全一致した。canonical report bytesのSHA-256も両方`c4a0310df4c23700a76a3abd29aa1d5b5403b94f4e296845664517dceacae7ba`である。
+build A/Bは各17,435 entries、fingerprint `238fda19d59c723d4b7f0535c5fd55e94fec3ced5707be2f128fe6a677dcd975`で完全一致した。canonical report bytesのSHA-256も両方`c4a0310df4c23700a76a3abd29aa1d5b5403b94f4e296845664517dceacae7ba`である。この一致はcontent fingerprint比較の成功だけを表し、offline attestation contractの成功を意味しない。
 
 ## Offline runtime attestation
 
-build A/Bをhost bind mountなし、`--network none`のfresh containerで各1回検証した。Linux amd64 / CPython 3.11.15、exact 26 distribution、`torch==2.4.1+cpu`、`torch.version.cuda is None`、CUDA / triton / nvidia distribution不在、CPU float32 synthetic tensor、outbound network disabled、container filesystem exclusive-create、query / inference / result=`0/0/0`を確認した。
+build A/Bをhost bind mountなし、`--network none`のfresh containerで各1回検証した。validatorは期待26 distributionのversion、Linux amd64 / CPython 3.11.15、`torch==2.4.1+cpu`、`torch.version.cuda is None`、CUDA / triton / nvidia distribution不在、CPU float32 synthetic tensor、outbound network disabled、container filesystem exclusive-create、query / inference / result=`0/0/0`を報告した。
 
-canonical attestation bytesのSHA-256はA/Bとも`43dd98cefc6b40ebeeb9cb01ab1374e1f845e94b8f4622acf09f684e5b2d47fe`で完全一致した。attestationはmodel repository/cache/weight、SQLite、registered queryをopenしない。
+canonical attestation bytesのSHA-256はA/Bとも`43dd98cefc6b40ebeeb9cb01ab1374e1f845e94b8f4622acf09f684e5b2d47fe`で一致した。しかし保存済みruntime content reportの`site-packages/*.dist-info/METADATA`は29件であり、attestationが列挙しない`pip-24.0.dist-info`、`setuptools-79.0.1.dist-info`、`wheel-0.46.3.dist-info`を含む。したがってattestationはexact installed distribution setではなくallowlist subsetの投影であり、A/B一致でも必須gateを満たさない。
+
+この発見後はaccepted imageを追加runせず、validator修正、追加build、追加report取得を行っていない。実測とfailure理由は`tests/evidence/github_cross_encoder_precision_v6/freeze-attestation.error.json`へ保存する。
 
 ## Lifecycle
 
 manifestはdevelopment / holdoutそれぞれにv6専用runtime、archive、transport pathを持つ。phase verifierはsynthetic unobserved、development archived pass / fail / error、holdout archivedを同じ検証器へ通し、重複、部分archive、hash不一致、claimなしresult、development gate不通過時のholdoutを拒否する。
 
-successor observationはv6 freezeのsquash merge commitだけをprotocol inputにできる。accepted build Aを再buildせずexact tag/local image IDで存在確認し、fingerprint/attestationをfreeze registryへ再照合する。その後だけfresh container/process/DBで新しいv6 packetを生成できる。preflight evidence commit/push後にdevelopmentをexactly once実行し、claim後例外はerror archiveして同versionを再試行しない。
+v6はsuccessful freezeではなく、accepted imageを持たないfail-closed記録である。successor observationは許可せず、development / holdoutを開始しない。v6専用runtime / archive / transport pathは未観測のまま保持し、既存packetを移送・変換・再利用しない。

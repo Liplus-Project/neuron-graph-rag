@@ -29,7 +29,7 @@
         "id": "sha256:1d259121e8184d9342ae71a9c483904fe875e19f0991ebbffd03a97ede88b6ec"
       }
     },
-    "accepted_image": "build_a",
+    "accepted_image": null,
     "image_identity_contract": "local image IDs identify built artifacts but do not establish or reject cross-build content equivalence",
     "builds": {
       "build_a": {
@@ -103,7 +103,16 @@
       "sha256": "43dd98cefc6b40ebeeb9cb01ab1374e1f845e94b8f4622acf09f684e5b2d47fe"
     },
     "fingerprint_sha256": "238fda19d59c723d4b7f0535c5fd55e94fec3ced5707be2f128fe6a677dcd975",
-    "attestation_sha256": "43dd98cefc6b40ebeeb9cb01ab1374e1f845e94b8f4622acf09f684e5b2d47fe"
+    "attestation_sha256": "43dd98cefc6b40ebeeb9cb01ab1374e1f845e94b8f4622acf09f684e5b2d47fe",
+    "fingerprint_reports_equal": true,
+    "attestation_reports_equal": true,
+    "exact_installed_distribution_set_attested": false,
+    "freeze_outcome": "fail_closed_offline_attestation_not_exact",
+    "failure_evidence": {
+      "path": "tests/evidence/github_cross_encoder_precision_v6/freeze-attestation.error.json",
+      "sha256": "9d403516b718c708aaf20b65f8a56b410e3870434d1d5fa04dd283500042543f"
+    },
+    "successor_observation_allowed": false
   },
   "python": {
     "implementation": "CPython",
