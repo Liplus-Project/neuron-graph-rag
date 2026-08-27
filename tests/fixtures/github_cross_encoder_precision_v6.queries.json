@@ -1,0 +1,105 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v6",
+  "stages": {
+    "development": [
+      {
+        "case_id": "ce-v1-dev-direct-en",
+        "cohort": "direct_lexical",
+        "language": "en",
+        "query": "Which requirements define repository-native storage and deterministic retrieval?"
+      },
+      {
+        "case_id": "ce-v1-dev-direct-ja",
+        "cohort": "direct_lexical",
+        "language": "ja",
+        "query": "MCPフィードバック安定化の固定設定を説明する文書はどれですか。"
+      },
+      {
+        "case_id": "ce-v1-dev-semantic-en",
+        "cohort": "semantic_paraphrase",
+        "language": "en",
+        "query": "How is admissible evidence canonically screened before evaluation?"
+      },
+      {
+        "case_id": "ce-v1-dev-semantic-ja",
+        "cohort": "semantic_paraphrase",
+        "language": "ja",
+        "query": "GitHub検索MCPを置換するときの互換性境界を説明してください。"
+      },
+      {
+        "case_id": "ce-v1-dev-relation-en",
+        "cohort": "relation_linked",
+        "language": "en",
+        "query": "Which node-first experiment is informed by blind LLM channel selection?"
+      },
+      {
+        "case_id": "ce-v1-dev-relation-ja",
+        "cohort": "relation_linked",
+        "language": "ja",
+        "query": "証拠ゲート付きlocal feedbackからつながるconfirmed outcome reinforcementはどれですか。"
+      },
+      {
+        "case_id": "ce-v1-dev-negative-en",
+        "cohort": "negative_control",
+        "language": "en",
+        "query": "Find the unrelated prior precision freeze when asking only about cross-encoder relevance."
+      },
+      {
+        "case_id": "ce-v1-dev-negative-ja",
+        "cohort": "negative_control",
+        "language": "ja",
+        "query": "cross-encoder関連度とは無関係な旧precision観測文書を除外してください。"
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "ce-v1-holdout-direct-en",
+        "cohort": "direct_lexical",
+        "language": "en",
+        "query": "Where is feedback rank elasticity measured?"
+      },
+      {
+        "case_id": "ce-v1-holdout-direct-ja",
+        "cohort": "direct_lexical",
+        "language": "ja",
+        "query": "sibling normalizationのcontrolled evaluationを記述する文書はどれですか。"
+      },
+      {
+        "case_id": "ce-v1-holdout-semantic-en",
+        "cohort": "semantic_paraphrase",
+        "language": "en",
+        "query": "Which experiment follows feedback trajectories through an engine-backed run?"
+      },
+      {
+        "case_id": "ce-v1-holdout-semantic-ja",
+        "cohort": "semantic_paraphrase",
+        "language": "ja",
+        "query": "固定anchorを使うBM25とgraphのhybrid実験を探してください。"
+      },
+      {
+        "case_id": "ce-v1-holdout-relation-en",
+        "cohort": "relation_linked",
+        "language": "en",
+        "query": "Which real-task shadow protocol is informed by feedback policy comparison?"
+      },
+      {
+        "case_id": "ce-v1-holdout-relation-ja",
+        "cohort": "relation_linked",
+        "language": "ja",
+        "query": "real corpus benchmarkからつながるD1 corpus fixtureはどれですか。"
+      },
+      {
+        "case_id": "ce-v1-holdout-negative-en",
+        "cohort": "negative_control",
+        "language": "en",
+        "query": "Exclude the unrelated repository-native v3 overview from a focused reranker query."
+      },
+      {
+        "case_id": "ce-v1-holdout-negative-ja",
+        "cohort": "negative_control",
+        "language": "ja",
+        "query": "reranker評価と無関係なcanonical gateのmeridian fixtureを除外してください。"
+      }
+    ]
+  }
+}
