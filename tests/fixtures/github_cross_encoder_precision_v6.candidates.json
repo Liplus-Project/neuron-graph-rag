@@ -1,0 +1,28 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v6",
+  "rrf_constant": 60,
+  "top_k": 5,
+  "selection": "first all-hard-gates-pass candidate in frozen order; otherwise holdout remains closed",
+  "candidates": [
+    {
+      "candidate_id": "bge-base-rrf-rank-only",
+      "model_id": "BAAI/bge-reranker-base",
+      "fusion": "rrf"
+    },
+    {
+      "candidate_id": "bge-base-ce-rank-only",
+      "model_id": "BAAI/bge-reranker-base",
+      "fusion": "ce"
+    },
+    {
+      "candidate_id": "bge-v2-m3-rrf-rank-only",
+      "model_id": "BAAI/bge-reranker-v2-m3",
+      "fusion": "rrf"
+    },
+    {
+      "candidate_id": "bge-v2-m3-ce-rank-only",
+      "model_id": "BAAI/bge-reranker-v2-m3",
+      "fusion": "ce"
+    }
+  ]
+}

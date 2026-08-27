@@ -1,0 +1,48 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v6",
+  "phase": "freeze",
+  "status": "failed",
+  "outcome": "fail_closed_offline_attestation_not_exact",
+  "reason": "保存済みruntime content reportは29 installed distributionsを含むが、offline attestationはallowlist 26件だけを列挙しており、exact installed distribution setを証明しない",
+  "finding": "https://github.com/Liplus-Project/neuron-graph-rag/pull/158#issuecomment-5436833527",
+  "builds": {
+    "build_a": {
+      "count": 1,
+      "return_code": 0,
+      "local_image_id": "sha256:03134b1593ee804ca3d03c90aee2cc40d64e4e81c87282ac2626ec83ba33e222"
+    },
+    "build_b": {
+      "count": 1,
+      "return_code": 0,
+      "local_image_id": "sha256:1d259121e8184d9342ae71a9c483904fe875e19f0991ebbffd03a97ede88b6ec"
+    },
+    "additional_build_count": 0
+  },
+  "runtime_content": {
+    "reports_byte_equal": true,
+    "report_sha256": "c4a0310df4c23700a76a3abd29aa1d5b5403b94f4e296845664517dceacae7ba",
+    "fingerprint_sha256": "238fda19d59c723d4b7f0535c5fd55e94fec3ced5707be2f128fe6a677dcd975",
+    "entry_count": 17435
+  },
+  "offline_attestation": {
+    "reports_byte_equal": true,
+    "report_sha256": "43dd98cefc6b40ebeeb9cb01ab1374e1f845e94b8f4622acf09f684e5b2d47fe",
+    "declared_distribution_count": 26,
+    "installed_distribution_count": 29,
+    "unreported_installed_distributions": [
+      "pip-24.0.dist-info",
+      "setuptools-79.0.1.dist-info",
+      "wheel-0.46.3.dist-info"
+    ],
+    "exact_installed_distribution_set_attested": false,
+    "additional_report_run_count": 0
+  },
+  "freeze_counts": {
+    "registered_query_count": 0,
+    "model_forward_inference_count": 0,
+    "observed_result_count": 0
+  },
+  "accepted_image": null,
+  "successor_observation_allowed": false,
+  "performance": "not assessed"
+}
