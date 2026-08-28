@@ -1,0 +1,126 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v8",
+  "repository": "Liplus-Project/neuron-graph-rag",
+  "commit": "c32b3049fd3daaa2190faf5e3e85955a195ee88c",
+  "selection_rule": "Result-independent set difference from precision-control v1 and parity v1 source identities; 18 unused docs Markdown plus six unused corpus Markdown selected before any score or result.",
+  "documents": [
+    {
+      "path": "corpora/repository-native-controlled-v3/README.md",
+      "content_sha256": "621214a1f6d3f0298baa3b06c0a5e0f810fe92f371841a245c6980c991dccfdf"
+    },
+    {
+      "path": "corpora/canonical-evidence-gates-v1/development-meridian.md",
+      "content_sha256": "efd932b229448bbf7045c5d9071dd28273bea3006b8d8f2270f4e30f27c5a5a1"
+    },
+    {
+      "path": "docs/anchored-bm25-graph-hybrid-experiment.md",
+      "content_sha256": "489edd55f8632fb0f0d1b2ae82a4c950ebd473b0794200da94b18cf4cd8f40ca"
+    },
+    {
+      "path": "docs/blind-llm-channel-selection-experiment.md",
+      "content_sha256": "a919764c2a7ff23d9b20fc8d1fdc5b6829d0d5f8d50af0b0a05206a900a558fc"
+    },
+    {
+      "path": "docs/canonical-evidence-gate-evaluation.md",
+      "content_sha256": "7c90282dd14ca53cea666fc7b43f9bb97d4f70fd0055b8bab0435a95c75c11a6"
+    },
+    {
+      "path": "docs/confirmed-outcome-feedback-reinforcement.md",
+      "content_sha256": "c01bbd167239aa645a19cfcb4e910babe51d323470fe0d13b05fbd077059b79e"
+    },
+    {
+      "path": "docs/d1-corpus-fixture.md",
+      "content_sha256": "48955824f79f39ee09f45d1f3469131a3054a76bbd20bca6c7d8988e7df668cd"
+    },
+    {
+      "path": "docs/engine-backed-feedback-trajectory-experiment.md",
+      "content_sha256": "b1e010850045bfc7316170764d55902274fb74b3d7b6507fee38392706a3676a"
+    },
+    {
+      "path": "docs/evidence-gated-local-feedback-reinforcement.md",
+      "content_sha256": "f8f08ff8d8aeb5949231ddc18154931123ca43f479d23e1a6b56090301659827"
+    },
+    {
+      "path": "docs/feedback-policy-comparison-evaluation.md",
+      "content_sha256": "96ddd7735e8ce5bea6972cdc27fb92a7ab261e5ad92a3611d00579a27c16ede0"
+    },
+    {
+      "path": "docs/feedback-rank-elasticity.md",
+      "content_sha256": "6ca16e872e810f523133ffa4741a68ee201cc9baae6dbb07968eec2d3e4bcb61"
+    },
+    {
+      "path": "docs/github-rag-mcp-replacement-compatibility.md",
+      "content_sha256": "481f54c66755957764fc50ad37b0d61be5097136fdde4d366074b1cc85b11721"
+    },
+    {
+      "path": "docs/mcp-feedback-stabilization-settings.md",
+      "content_sha256": "14e9ac2193d4b5a7a39f747907e7cacd72d4b14c2e3a5a37fec9135a2962f530"
+    },
+    {
+      "path": "docs/node-first-blind-selection-experiment.md",
+      "content_sha256": "bab4a67739e8eb360487ed166e3cccf98247d905f1389ab03b7a7ab02ab995b5"
+    },
+    {
+      "path": "docs/precision-control-freeze-v1.md",
+      "content_sha256": "ab13cb15bb2f398b0e11e2efa3df50603ed45b9a8956dc34aed08728927d8f10"
+    },
+    {
+      "path": "docs/precision-control-observation-v1.md",
+      "content_sha256": "29b8df891395fd40117a8f4d90bfef7ccce68cbdf1906f618e050e1a4571d4ea"
+    },
+    {
+      "path": "docs/real-corpus-benchmark.md",
+      "content_sha256": "8e88d8133d0082ac0de9bcd360b64f704ff77591bc570f189364ec60c41ee19b"
+    },
+    {
+      "path": "docs/real-task-feedback-shadow-protocol-v2.md",
+      "content_sha256": "270cb257ea23a3f5d4e09ec5a522e7e1ab24171e115204fa35bfa0fdea8a25bd"
+    },
+    {
+      "path": "docs/requirements.md",
+      "content_sha256": "4e3bf59075021a65f46e2f2e9f09dfc654e7e0a489682b701fa80dad758eb277"
+    },
+    {
+      "path": "docs/sibling-normalization-controlled-evaluation.md",
+      "content_sha256": "909bf1196a9b1e169f6fe62e61575b76e3b2351b78cedb07bbad7a1f471b205b"
+    },
+    {
+      "path": "corpora/canonical-evidence-gates-v1/README.md",
+      "content_sha256": "f92220b8b4f247daf84dc59956e7f6ad49a46b514e867fb4e82389b2fa7396ee"
+    },
+    {
+      "path": "corpora/feedback-policy-comparison-v1/README.md",
+      "content_sha256": "fdf11cfc08fc58873397d45517095d5b8af0fb87ecf9f6ae321e34ba2a7224d4"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v1/README.md",
+      "content_sha256": "a66e48cdefb651e5e44bbb2bd3c555ec0f1a17aef90cf2309eba0d5e5c0b248c"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v2/README.md",
+      "content_sha256": "e59210c8aea5857b7764b92ba27d3270419c60ee81c4af591faf6250930307d0"
+    }
+  ],
+  "relationships": [
+    {
+      "source_path": "docs/blind-llm-channel-selection-experiment.md",
+      "target_path": "docs/node-first-blind-selection-experiment.md",
+      "edge_type": "informs"
+    },
+    {
+      "source_path": "docs/evidence-gated-local-feedback-reinforcement.md",
+      "target_path": "docs/confirmed-outcome-feedback-reinforcement.md",
+      "edge_type": "informs"
+    },
+    {
+      "source_path": "docs/feedback-policy-comparison-evaluation.md",
+      "target_path": "docs/real-task-feedback-shadow-protocol-v2.md",
+      "edge_type": "informs"
+    },
+    {
+      "source_path": "docs/real-corpus-benchmark.md",
+      "target_path": "docs/d1-corpus-fixture.md",
+      "edge_type": "informs"
+    }
+  ]
+}
