@@ -1,0 +1,21 @@
+{
+  "accepted_image_rebuild_count": 0,
+  "attestation_rerun_count": 0,
+  "development_claim_count": 0,
+  "future_runtime_volume": "github-cross-encoder-precision-v9-runtime",
+  "holdout_claim_count": 0,
+  "model_forward_inference_count": 0,
+  "model_import_count": 0,
+  "model_load_count": 0,
+  "observed_result_count": 0,
+  "path_freeze_volume": "github-cross-encoder-precision-v9-path-freeze",
+  "path_freeze_volume_reusable": false,
+  "performance": "not assessed",
+  "phase": "path-freeze",
+  "predecessor_semantic_content_opened": false,
+  "protocol_id": "github-ngr-cross-encoder-precision-v9",
+  "registered_query_execution_count": 0,
+  "retry_count": 0,
+  "runtime_report_rerun_count": 0,
+  "shared_database_opened": false
+}
