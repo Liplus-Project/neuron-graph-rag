@@ -94,7 +94,7 @@ class CrossEncoderPrecisionV8FreezeTest(unittest.TestCase):
         }
         return report, attestation
 
-    def test_pending_protocol_is_hashed_disjoint_bilingual_and_result_free(self) -> None:
+    def test_success_protocol_is_hashed_disjoint_bilingual_and_result_free(self) -> None:
         protocol = evaluation.load_protocol()
         evaluation.validate_protocol(protocol)
         audit = protocol["result_free_audit"]
@@ -106,37 +106,51 @@ class CrossEncoderPrecisionV8FreezeTest(unittest.TestCase):
             ),
             (0, 0, 0),
         )
-        self.assertEqual(audit["freeze_outcome"], evaluation.PENDING_OUTCOME)
+        self.assertEqual(audit["freeze_outcome"], evaluation.SUCCESS_OUTCOME)
         self.assertEqual(
             (
                 audit["one_shot_wslc_image_build_count"],
                 audit["runtime_content_report_count"],
                 audit["offline_attestation_report_count"],
             ),
-            (0, 0, 0),
+            (2, 2, 2),
         )
-        self.assertFalse(audit["accepted_image"])
-        self.assertFalse(audit["successor_observation_allowed"])
+        self.assertTrue(audit["accepted_image"])
+        self.assertTrue(audit["successor_observation_allowed"])
         self.assertEqual(len(protocol["expected_distributions"]["distributions"]), 29)
         self.assertEqual(len(protocol["corpus"]["documents"]), 24)
         for stage in evaluation.STAGES:
             self.assertEqual(len(protocol["queries"]["stages"][stage]), 8)
 
-    def test_pending_one_shot_paths_are_absent_and_fail_closed(self) -> None:
+    def test_one_shot_reports_bind_exact_correspondence_and_build_a(self) -> None:
         protocol = evaluation.load_protocol()
         contract = protocol["platform"]["content_equivalence"]
-        self.assertIsNone(contract["fingerprint_sha256"])
-        self.assertIsNone(contract["attestation_sha256"])
-        self.assertFalse(contract["exact_installed_distribution_set_attested"])
-        self.assertFalse(contract["successor_observation_allowed"])
-        self.assertIsNone(contract["metadata_correspondence_sha256"])
+        self.assertEqual(
+            protocol["platform"]["container"]["accepted_image"]["build"], "build_a"
+        )
+        self.assertTrue(contract["exact_installed_distribution_set_attested"])
+        self.assertTrue(contract["successor_observation_allowed"])
+        self.assertTrue(contract["fingerprint_reports_equal"])
+        self.assertTrue(contract["attestation_reports_equal"])
+        self.assertTrue(contract["filesystem_inventory_reports_equal"])
+        self.assertTrue(contract["metadata_correspondence_reports_equal"])
         for key in (
             "runtime_content_build_a",
             "runtime_content_build_b",
             "attestation_build_a",
             "attestation_build_b",
         ):
-            self.assertFalse((ROOT / contract[key]["path"]).exists())
+            path = ROOT / contract[key]["path"]
+            self.assertTrue(path.is_file())
+            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), contract[key]["sha256"])
+        report = evaluation._read_canonical_json(
+            ROOT / contract["runtime_content_build_a"]["path"]
+        )
+        self.assertEqual(report["fingerprint_sha256"], contract["fingerprint_sha256"])
+        self.assertEqual(
+            report["metadata_correspondence_sha256"],
+            contract["metadata_correspondence_sha256"],
+        )
 
     def test_exact_29_accepts_order_and_different_image_ids(self) -> None:
         report, attestation = self._synthetic()

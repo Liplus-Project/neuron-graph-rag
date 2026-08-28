@@ -22,14 +22,18 @@
     "images": {
       "build_a": {
         "tag": "ngr-cross-encoder-precision-v8:freeze",
-        "id": null
+        "id": "sha256:136ad9466799109bf32b4b96b611c9db9a099bcc47cf78243f26c7227bc16742"
       },
       "build_b": {
         "tag": "ngr-cross-encoder-precision-v8:rebuild-check",
-        "id": null
+        "id": "sha256:67572463b924a21eb039d586a6beb661216ac95db38b497420471192066e1b97"
       }
     },
-    "accepted_image": null,
+    "accepted_image": {
+      "build": "build_a",
+      "id": "sha256:136ad9466799109bf32b4b96b611c9db9a099bcc47cf78243f26c7227bc16742",
+      "tag": "ngr-cross-encoder-precision-v8:freeze"
+    },
     "image_identity_contract": "local image IDs identify built artifacts but do not establish or reject cross-build content equivalence",
     "builds": {
       "build_a": {
@@ -43,7 +47,7 @@
           "ngr-cross-encoder-precision-v8:freeze",
           "."
         ],
-        "return_code": null,
+        "return_code": 0,
         "wslc_version": "2.9.4.0"
       },
       "build_b": {
@@ -57,7 +61,7 @@
           "ngr-cross-encoder-precision-v8:rebuild-check",
           "."
         ],
-        "return_code": null,
+        "return_code": 0,
         "wslc_version": "2.9.4.0"
       }
     },
@@ -88,31 +92,31 @@
     "exclusion_registry_sha256": "d2118598bc69fd5524419ee8dee73dae431a00f6d7a844b6dec3c8597878dc5e",
     "runtime_content_build_a": {
       "path": "tests/fixtures/github_cross_encoder_precision_v8.runtime-content.build-a.json",
-      "sha256": null
+      "sha256": "7d754e4e1713f90654ae05c749379d08920e31fede89ab25ba075c0b582bcee8"
     },
     "runtime_content_build_b": {
       "path": "tests/fixtures/github_cross_encoder_precision_v8.runtime-content.build-b.json",
-      "sha256": null
+      "sha256": "7d754e4e1713f90654ae05c749379d08920e31fede89ab25ba075c0b582bcee8"
     },
     "attestation_build_a": {
       "path": "tests/fixtures/github_cross_encoder_precision_v8.attestation.build-a.json",
-      "sha256": null
+      "sha256": "045c813894bed25e3eae29a38fa6366013a0600ce8d0952a40ae29008747a50b"
     },
     "attestation_build_b": {
       "path": "tests/fixtures/github_cross_encoder_precision_v8.attestation.build-b.json",
-      "sha256": null
+      "sha256": "045c813894bed25e3eae29a38fa6366013a0600ce8d0952a40ae29008747a50b"
     },
-    "fingerprint_sha256": null,
-    "attestation_sha256": null,
-    "metadata_correspondence_sha256": null,
-    "fingerprint_reports_equal": false,
-    "attestation_reports_equal": false,
-    "exact_installed_distribution_set_attested": false,
-    "freeze_outcome": "pending_one_shot_wslc",
+    "fingerprint_sha256": "8969a259ffdfe822a70ac8bd8ce52dc7223b6e6a2b51ca21c095fe14a388b2bc",
+    "attestation_sha256": "045c813894bed25e3eae29a38fa6366013a0600ce8d0952a40ae29008747a50b",
+    "metadata_correspondence_sha256": "30348d7b8a352e0ab15d98871c71df5240ffbf1547c58564fd951cd451c377c4",
+    "fingerprint_reports_equal": true,
+    "attestation_reports_equal": true,
+    "exact_installed_distribution_set_attested": true,
+    "freeze_outcome": "accepted_exact_installed_distribution_freeze",
     "failure_evidence": null,
-    "successor_observation_allowed": false,
-    "filesystem_inventory_reports_equal": false,
-    "metadata_correspondence_reports_equal": false,
+    "successor_observation_allowed": true,
+    "filesystem_inventory_reports_equal": true,
+    "metadata_correspondence_reports_equal": true,
     "expected_distribution_registry_sha256": "fcd07622f7009156149b1b26aaa5c71e4b7d8876cb11754f691dcbe596a1a78e"
   },
   "python": {

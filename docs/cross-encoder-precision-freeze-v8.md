@@ -45,4 +45,8 @@ development / holdoutはv8専用runtime、archive、transport、claim / result /
 
 ## freeze outcome
 
-prebuild段階では`pending_one_shot_wslc`であり、image ID、runtime report、attestation、accepted imageを持たない。one-shot完了後、成功なら`accepted_exact_installed_distribution_freeze`、失敗なら`fail_closed_exact_installed_distribution_freeze`へ一度だけ遷移し、build / report回数とresult-free countをfixtureへ固定する。
+one-shot WSLCは成功し、`accepted_exact_installed_distribution_freeze`へ遷移した。build A / Bはそれぞれ一回だけ`--no-cache`で実行し、runtime content reportとattestationも各imageにつき一回だけ取得した。追加buildと追加reportは0回である。
+
+build Aは`sha256:136ad9466799109bf32b4b96b611c9db9a099bcc47cf78243f26c7227bc16742`、build Bは`sha256:67572463b924a21eb039d586a6beb661216ac95db38b497420471192066e1b97`である。local image IDは異なるが、A/Bのnormalized content reportはSHA-256 `7d754e4e1713f90654ae05c749379d08920e31fede89ab25ba075c0b582bcee8`、attestationはSHA-256 `045c813894bed25e3eae29a38fa6366013a0600ce8d0952a40ae29008747a50b`でbyte-for-byte一致した。fingerprintは`8969a259ffdfe822a70ac8bd8ce52dc7223b6e6a2b51ca21c095fe14a388b2bc`、METADATA correspondence diagnosticは`30348d7b8a352e0ab15d98871c71df5240ffbf1547c58564fd951cd451c377c4`で一致し、expected / importlib / filesystemの29 distributionがexact matchした。build Aをaccepted imageとする。
+
+freeze registered query / model inference / observed resultは`0/0/0`、performanceは`not assessed`のままである。このsuccessful freezeのsquash merge commitのみを、別Issueのsuccessor observation inputにできる。
