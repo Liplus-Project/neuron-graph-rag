@@ -1,0 +1,64 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v7",
+  "phase": "freeze",
+  "status": "failed",
+  "outcome": "fail_closed_exact_installed_distribution_freeze",
+  "reason": "build Aのruntime content report生成がnormalized contentとfilesystem METADATA inventoryの不一致を検出し、reportを出力せず終了した",
+  "error": {
+    "type": "ValueError",
+    "message": "normalized content and filesystem METADATA inventory differ",
+    "location": "containers/github_cross_encoder_precision_v7/runtime_content.py:_validate_inventory_entry_correspondence"
+  },
+  "builds": {
+    "build_a": {
+      "count": 1,
+      "return_code": 0,
+      "local_image_id": "sha256:b5ea5e34e2eda6e4ef3b4c7602a0f49914efbb5073af9198ab0c062ddc8b5fcf"
+    },
+    "build_b": {
+      "count": 1,
+      "return_code": 0,
+      "local_image_id": "sha256:147bdae512c7a527f8a83189b5b74421a586b1d1b9cd09de2fea013b6f45545c"
+    },
+    "additional_build_count": 0
+  },
+  "reports": {
+    "runtime_content_build_a": {
+      "count": 1,
+      "return_code": 1,
+      "partial_output_path": "tests/evidence/github_cross_encoder_precision_v7/runtime-content.build-a.partial",
+      "partial_output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "partial_output_size": 0
+    },
+    "runtime_content_build_b": {
+      "count": 0,
+      "return_code": null
+    },
+    "attestation_build_a": {
+      "count": 0,
+      "return_code": null
+    },
+    "attestation_build_b": {
+      "count": 0,
+      "return_code": null
+    },
+    "additional_report_run_count": 0
+  },
+  "exact_inventory": {
+    "expected_distribution_count": 29,
+    "actual_distribution_count": null,
+    "filesystem_distribution_count": null,
+    "three_way_match_established": false
+  },
+  "fingerprint_sha256": null,
+  "attestation_sha256": null,
+  "freeze_counts": {
+    "registered_query_count": 0,
+    "model_forward_inference_count": 0,
+    "observed_result_count": 0
+  },
+  "accepted_image": null,
+  "successor_observation_allowed": false,
+  "performance": "not assessed",
+  "retry_allowed": false
+}
