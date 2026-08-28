@@ -1,0 +1,96 @@
+{
+  "commands": [
+    {
+      "command": [
+        "wslc",
+        "volume",
+        "inspect",
+        "github-cross-encoder-precision-v8-runtime"
+      ],
+      "command_sha256": "bd1328b7320bc849e4ee79eb3ea603c9f28f1944d08b7e1e29c8c887264305f5",
+      "returncode": 1,
+      "stderr_sha256": "7dc10849542a7577841cc749975fec8eee07f8bc5647e5248b66c7ce7fcdf672",
+      "stdout_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "command": [
+        "wslc",
+        "--version"
+      ],
+      "command_sha256": "08e41e2a5773f3c1a6a0273944a26bf830b1d4fb84106f722918e590e755006b",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "227e92f850731c644562e9ccfff30798ca55c7c32094046a743d3b50d437d8d3"
+    },
+    {
+      "command": [
+        "wslc",
+        "image",
+        "inspect",
+        "ngr-cross-encoder-precision-v8:freeze"
+      ],
+      "command_sha256": "1b01bc57d69e03c874e52d5af646007243f1ae9a366f68de1efac2cf3c73375d",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "92dd716c663471d37f779eb40c1fd0a687db1b36fc8fc444cf00987c7cd955bb"
+    },
+    {
+      "command": [
+        "wslc",
+        "volume",
+        "create",
+        "github-cross-encoder-precision-v8-runtime"
+      ],
+      "command_sha256": "f31cc5c079ca3ac8c7dfb10083c5883543322d06e809a81e2fc0d797c749732a",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "da5f3218e777e4847a17f01e1b517d1908c589bef114732a3f29f6ae4f5e155d"
+    },
+    {
+      "binary_export": true,
+      "command": [
+        "git",
+        "archive",
+        "--format=tar",
+        "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f"
+      ],
+      "command_sha256": "e24f908e538a39870357f9f956b7bf442210a0bf7e5d8ff62dc05877b0efed84",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e0bd213e137d9796f84d06bf195bf8c453fee0668a033ed3e13f2b39ee803fa5"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--interactive",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v8-runtime:\\opt\\ngr-v8\\runtime",
+        "--entrypoint",
+        "/bin/sh",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-c",
+        "test ! -e /opt/ngr-v8/runtime/frozen-source && mkdir /opt/ngr-v8/runtime/frozen-source && tar -xf - -C /opt/ngr-v8/runtime/frozen-source && test -f /opt/ngr-v8/runtime/frozen-source/tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "command_sha256": "d807f2352ee42a3b827bc6c8d03ea7073361be7a981022930a3d3b62fcc07178",
+      "returncode": 1,
+      "stderr_sha256": "593feab3fe73ec4c2d72e6f204922f684570b75a09309b9102c6f3391de77a53",
+      "stdin_sha256": "e0bd213e137d9796f84d06bf195bf8c453fee0668a033ed3e13f2b39ee803fa5",
+      "stdin_size": 38522880,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "development_claim_count": 0,
+  "error": "RuntimeError: command failed (1): ボリュームの指定が無効です: 'github-cross-encoder-precision-v8-runtime:\\opt\\ngr-v8\\runtime'。コンテナー パスは絶対パス ('/' で始まる) である必要があります。必要な形式: <ホスト パス | 名前付きボリューム>:<コンテナー パス>[:モード]\r\nエラー コード: E_INVALIDARG\r\n",
+  "implementation_commit": "165b57fa7c04a0b8cfa1ad41586317a5c113b3f4",
+  "observed_stage_inference_count": 0,
+  "protocol_commit": "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f",
+  "protocol_id": "github-ngr-cross-encoder-precision-v8",
+  "registered_query_execution_count": 0,
+  "result_count": 0,
+  "retry_count": 0,
+  "shared_database_sha256_before_preflight": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e"
+}
