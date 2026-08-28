@@ -317,9 +317,10 @@ class CrossEncoderPrecisionV8FreezeTest(unittest.TestCase):
             def pretend_metadata_symlink(path: Path) -> bool:
                 return path == metadata or original(path)
 
-            with mock.patch.object(Path, "is_symlink", pretend_metadata_symlink):
-                with self.assertRaises(ValueError):
-                    content.collect_filesystem_distribution_inventory(root)
+            with mock.patch.object(
+                Path, "is_symlink", pretend_metadata_symlink
+            ), self.assertRaises(ValueError):
+                content.collect_filesystem_distribution_inventory(root)
 
     def test_entry_fingerprint_ignores_enumeration_and_stat_metadata(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

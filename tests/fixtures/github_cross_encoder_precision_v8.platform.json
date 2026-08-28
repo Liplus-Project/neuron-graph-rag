@@ -13,7 +13,7 @@
     "validation_script": "containers/github_cross_encoder_precision_v8/validate_runtime.py",
     "validation_script_sha256": "97215417f90948104bdaa962fc31d24bc4053b3df9f1b17d0ebb9e2ca355b8e4",
     "fingerprint_tool": "containers/github_cross_encoder_precision_v8/runtime_content.py",
-    "fingerprint_tool_sha256": "a501f34712ebd54ee6f581dba293724ded42993c0edaa99eaf4b6ca73b8d3aba",
+    "fingerprint_tool_sha256": "b2ecde006de3961e11d543a5c3c28c028b1b54bc4bb34c9beb8bb7448daea99f",
     "base_image": {
       "tag": "python:3.11.15-slim-bookworm",
       "digest": "sha256:d29f48a31a8b408ed19272ca1e7b10ebae13b240a27e862d3d4217c528e2e0c3",

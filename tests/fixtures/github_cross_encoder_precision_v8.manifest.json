@@ -1,7 +1,7 @@
 {
   "artifact_sha256": {
     "containers/github_cross_encoder_precision_v8/Containerfile": "87594ecbf5dd590cdff46f4ab9d94e6f4c021163de859bb54aac632f04cb1e50",
-    "containers/github_cross_encoder_precision_v8/runtime_content.py": "a501f34712ebd54ee6f581dba293724ded42993c0edaa99eaf4b6ca73b8d3aba",
+    "containers/github_cross_encoder_precision_v8/runtime_content.py": "b2ecde006de3961e11d543a5c3c28c028b1b54bc4bb34c9beb8bb7448daea99f",
     "containers/github_cross_encoder_precision_v8/validate_runtime.py": "97215417f90948104bdaa962fc31d24bc4053b3df9f1b17d0ebb9e2ca355b8e4",
     "docs/cross-encoder-precision-freeze-v8.md": "cb4745c5409fa30671653ab8e8a772e15a2ee66cb7aab1cb3f874ef730b5dd70",
     "src/neuron_graph_rag/cross_encoder_precision_v8_evaluation.py": "f4fba62c331072e9bfb6e8299d01dc6f6e8456e98428f2c1932e5ec0ebbff6b2",
@@ -12,13 +12,13 @@
     "tests/fixtures/github_cross_encoder_precision_v8.gate.json": "a84d95a82fff39bebdfc7e7af1891d2a96de3b5e9591ae5e03251c721b4a4f98",
     "tests/fixtures/github_cross_encoder_precision_v8.gold.json": "3caeceaacaf7ed6238d6951119294a81ba6a577bdb375ece9369b5a0b26fba95",
     "tests/fixtures/github_cross_encoder_precision_v8.models.json": "f8517c050b9ac2e10b1fa73fd4fc34c2a39f03830f5a29cf36847410a602a2b5",
-    "tests/fixtures/github_cross_encoder_precision_v8.platform.json": "7fef995a8a980dbe9fbbfa8d823084af139993a54557057ddc3c8170a3712ef5",
+    "tests/fixtures/github_cross_encoder_precision_v8.platform.json": "54beb996aed0507edccbd7d69c9fbd5d60ca8d43f0ded5f3a5a8968018df3d67",
     "tests/fixtures/github_cross_encoder_precision_v8.queries.json": "f311db068625d202f450b9b82e9d475a55dcc126830a865a4d734ae5955c6e8a",
     "tests/fixtures/github_cross_encoder_precision_v8.requirements.in": "7d2eac3956b8c982b434ff2cd55c19223816e5fa7983ba23566d67857d9dc53b",
     "tests/fixtures/github_cross_encoder_precision_v8.requirements.lock": "0734b63356d6a0c102c87fcb014495fb251352e32d77b18fffad82c170f2efd4",
     "tests/fixtures/github_cross_encoder_precision_v8.result-free-audit.json": "4f681a85752a92d0f07d4e4c5e71d5bdc2e651f58c1029e33e21b75aee065279",
     "tests/fixtures/github_cross_encoder_precision_v8.result-schema.json": "885e19b82f39272f553f6910d5044a01956285d21d5e697e7e35ac4368b7494d",
-    "tests/test_cross_encoder_precision_v8.py": "cd9b0a539307330cf3e82db70ed93c9aa77645b74afcc7fa72e4c27dd49fcd7d"
+    "tests/test_cross_encoder_precision_v8.py": "9b9c5c93c5deef6ca41bc8159fc8abb759ab76e4a22ac9edc1279af70380a484"
   },
   "container_paths": {
     "dependency_report": "/opt/ngr-v8/dependency-report.json",

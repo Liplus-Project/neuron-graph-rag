@@ -525,7 +525,7 @@ def validate_report(report: Mapping[str, Any]) -> None:
         raise ValueError("filesystem distribution count mismatch")
     raw_diagnostic = report.get("metadata_correspondence")
     if not isinstance(raw_diagnostic, Mapping):
-        raise ValueError("runtime METADATA correspondence diagnostic shape mismatch")
+        raise TypeError("runtime METADATA correspondence diagnostic shape mismatch")
     diagnostic = _validate_inventory_entry_correspondence(
         entries,
         distributions,
