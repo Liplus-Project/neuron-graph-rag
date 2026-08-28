@@ -47,4 +47,25 @@ DB SHA不変をterminal evidenceへ残す。
 
 ## 観測結果
 
-Preflightおよびone-shot結果は未記録である。観測後、この節を保存evidenceに基づいて更新する。
+implementation commit `165b57fa7c04a0b8cfa1ad41586317a5c113b3f4`からpreflightを
+一度開始した。accepted imageのread-only inspectと専用volumeのexclusive create、exact freeze
+commitのarchiveまでは成功したが、archiveをcontainerへ展開する最初の`wslc run`で停止した。
+
+Windows host上でPOSIX container root `/opt/ngr-v8/runtime`が
+`\\opt\\ngr-v8\\runtime`へ文字列化され、named volume指定が
+`github-cross-encoder-precision-v8-runtime:\\opt\\ngr-v8\\runtime`となった。WSLCはcontainer
+pathが`/`から始まるabsolute pathではないとして`E_INVALIDARG`を返し、preflightはclaim前に
+fail-closedした。raw failure evidence
+`tests/evidence/github_cross_encoder_precision_v8/preflight.error.json`のSHA-256は
+`df97b812b052cc421408cdab3b89cbe25529e3167bdc4903c68c892f3c451280`である。
+
+development / holdout claim=`0/0`、registered query=`0`、preflight / observed-stage model
+inference=`0/0`、result=`0`である。accepted image rebuild、runtime report rerun、attestation
+rerunも`0/0/0`である。専用volumeは1回作成されたが、同じv8のpreflightまたはone-shotへ
+再利用しない。shared Windows DBはSQLiteでopenせず、preflight開始時SHA-256
+`84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e`だけを記録した。
+post-error hashは保存packetに含まれないため、観測時点の前後不変性を追加主張しない。
+
+developmentとholdoutは未観測、性能は`not assessed`である。同version retry、volume再利用、
+result生成、tuning、再評価を行わず停止する。後続観測が必要な場合は、このfailure evidenceを
+不変に保ち、container path serializationを修正したsuccessor result-free protocolを先に固定する。

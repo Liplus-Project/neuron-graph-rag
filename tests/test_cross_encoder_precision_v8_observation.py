@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import tempfile
 import unittest
@@ -72,6 +73,44 @@ class CrossEncoderPrecisionV8ObservationTest(unittest.TestCase):
         self.assertNotIn('"build"', preflight)
         self.assertNotIn("runtime_content.py", preflight)
         self.assertNotIn("validate_runtime.py", preflight)
+
+    def test_saved_preflight_error_is_terminal_and_result_free(self) -> None:
+        evidence = observation.ROOT / observation.EVIDENCE
+        raw_path = evidence / "preflight.error.json"
+        summary_path = evidence / "preflight-container-path-error.json"
+        self.assertEqual(
+            hashlib.sha256(raw_path.read_bytes()).hexdigest(),
+            "df97b812b052cc421408cdab3b89cbe25529e3167bdc4903c68c892f3c451280",
+        )
+        raw = json.loads(raw_path.read_text(encoding="utf-8"))
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        self.assertEqual(summary["failure_evidence_sha256"], hashlib.sha256(raw_path.read_bytes()).hexdigest())
+        self.assertEqual(raw["commands"][-1]["returncode"], 1)
+        self.assertIn("E_INVALIDARG", raw["error"])
+        self.assertIn(
+            f"{observation.VOLUME}:\\opt\\ngr-v8\\runtime",
+            raw["commands"][-1]["command"],
+        )
+        for key in (
+            "development_claim_count",
+            "holdout_claim_count",
+            "registered_query_execution_count",
+            "preflight_forward_inference_count",
+            "observed_stage_inference_count",
+            "result_count",
+            "accepted_image_rebuild_count",
+            "runtime_report_rerun_count",
+            "attestation_rerun_count",
+            "post_error_retry_count",
+        ):
+            self.assertEqual(summary[key], 0)
+        self.assertEqual(summary["target_volume_create_count"], 1)
+        self.assertEqual(summary["performance"], "not assessed")
+        self.assertFalse(summary["shared_database_post_error_hash_recorded"])
+        self.assertEqual(
+            {path.name for path in evidence.iterdir()},
+            {"preflight.error.json", "preflight-container-path-error.json"},
+        )
 
     def test_verify_preflight_rejects_nonzero_observation_counts(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
