@@ -56,8 +56,20 @@ evidenceへ保存する。success / errorのどちらでもretryは0で、path-f
 
 ## outcome
 
-prebuild時点ではpath smokeは未実行である。registered query / model inference / observed
-result=`0/0/0`、development / holdout claim=`0/0`、performance=`not assessed`を維持する。
-remote CI green後のone-shot outcomeは
-`tests/evidence/github_cross_encoder_precision_v9/`へpassまたはerrorとして固定し、この節を同じPRで
-terminal factへ更新する。
+prebuild commit `9c8f649bb2f5e5ce759634e82f4ec32b66df69ab`のremote CIが2 checksともgreenに
+なった後、path smokeを一度だけ実行してpassした。run command SHA-256は
+`9517832cd15138ae8c895668c0d10691f56f528ce8486c369b98e9ce7c54bc28`、return codeは`0`、
+stdout / stderr SHA-256は
+`ee08f9d372df9cc4d131d6a23fd98d4f23bac012c3edacdd81968d9ecf70bee4` /
+`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`である。
+
+containerは`/opt/ngr-v9/path-freeze`を認識し、mount identity
+`91|8:32|/volumes/github-cross-encoder-precision-v9-path-freeze/_data|/opt/ngr-v9/path-freeze|ext4`
+を返した。sentinelはexact destinationで作成・読取され、そのSHA-256は
+`f3fad15f0c91aa25cfbe4ba32c647584045aadf425305f7c2c10536006c65ce2`である。
+
+path smoke run=`1`、retry=`0`でterminalとし、path-freeze volumeを再利用しない。future runtime
+volumeはsmoke後もabsentである。registered query / model import / load / forward / observed
+result=`0/0/0/0/0`、development / holdout claim=`0/0`、performance=`not assessed`を維持した。
+v8 raw failure evidenceは同じSHA-256でbyte不変である。成功したresult-free transport freezeだけを
+後続v9 observationの必要条件とし、このPRはretrieval parityまたは性能を支持しない。
