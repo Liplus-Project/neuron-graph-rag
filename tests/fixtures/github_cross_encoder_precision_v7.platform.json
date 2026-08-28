@@ -1,0 +1,200 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v7",
+  "substrate": "WSLC",
+  "wslc": {
+    "version": "2.9.4.0",
+    "platform": "windows-wsl-built-in-container"
+  },
+  "container": {
+    "os": "linux",
+    "architecture": "amd64",
+    "containerfile": "containers/github_cross_encoder_precision_v7/Containerfile",
+    "containerfile_sha256": "2a3160b7edce599412e9980f2dc89bf1b06164048f8f8ca15362e2890d590f12",
+    "validation_script": "containers/github_cross_encoder_precision_v7/validate_runtime.py",
+    "validation_script_sha256": "fd88ae411d039c8c8bcca85b4d6352969e259768cd1d0973492cc075a3400d9b",
+    "fingerprint_tool": "containers/github_cross_encoder_precision_v7/runtime_content.py",
+    "fingerprint_tool_sha256": "95d98b066753db2acc8ce32a5463f183574735f4194e3bf8b3511fe0b2e40a2b",
+    "base_image": {
+      "tag": "python:3.11.15-slim-bookworm",
+      "digest": "sha256:d29f48a31a8b408ed19272ca1e7b10ebae13b240a27e862d3d4217c528e2e0c3",
+      "local_image_id": "sha256:f0c05afecbd16040caff4c000954567c7e3b56fc6c1f783fa10a55cba3ccfbfc"
+    },
+    "images": {
+      "build_a": {
+        "tag": "ngr-cross-encoder-precision-v7:freeze",
+        "id": "sha256:b5ea5e34e2eda6e4ef3b4c7602a0f49914efbb5073af9198ab0c062ddc8b5fcf"
+      },
+      "build_b": {
+        "tag": "ngr-cross-encoder-precision-v7:rebuild-check",
+        "id": "sha256:147bdae512c7a527f8a83189b5b74421a586b1d1b9cd09de2fea013b6f45545c"
+      }
+    },
+    "accepted_image": null,
+    "image_identity_contract": "local image IDs identify built artifacts but do not establish or reject cross-build content equivalence",
+    "builds": {
+      "build_a": {
+        "command": [
+          "wslc",
+          "build",
+          "--no-cache",
+          "--file",
+          "containers/github_cross_encoder_precision_v7/Containerfile",
+          "--tag",
+          "ngr-cross-encoder-precision-v7:freeze",
+          "."
+        ],
+        "return_code": 0,
+        "wslc_version": "2.9.4.0"
+      },
+      "build_b": {
+        "command": [
+          "wslc",
+          "build",
+          "--no-cache",
+          "--file",
+          "containers/github_cross_encoder_precision_v7/Containerfile",
+          "--tag",
+          "ngr-cross-encoder-precision-v7:rebuild-check",
+          "."
+        ],
+        "return_code": 0,
+        "wslc_version": "2.9.4.0"
+      }
+    },
+    "run_command_templates": {
+      "attestation": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "{tag}"
+      ],
+      "runtime_content": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--entrypoint",
+        "python",
+        "{tag}",
+        "/opt/ngr-v7/runtime_content.py"
+      ]
+    }
+  },
+  "content_equivalence": {
+    "algorithm_version": "ngr.wslc-runtime-content/v2",
+    "exclusion_registry_sha256": "f66a97c2ee88d1e4cc9b29a5a785d6ce6cee766e69879202d58ce686f8c84885",
+    "runtime_content_build_a": {
+      "path": "tests/evidence/github_cross_encoder_precision_v7/runtime-content.build-a.partial",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "run_count": 1,
+      "return_code": 1
+    },
+    "runtime_content_build_b": {
+      "path": "tests/fixtures/github_cross_encoder_precision_v7.runtime-content.build-b.json",
+      "sha256": null,
+      "run_count": 0,
+      "return_code": null
+    },
+    "attestation_build_a": {
+      "path": "tests/fixtures/github_cross_encoder_precision_v7.attestation.build-a.json",
+      "sha256": null,
+      "run_count": 0,
+      "return_code": null
+    },
+    "attestation_build_b": {
+      "path": "tests/fixtures/github_cross_encoder_precision_v7.attestation.build-b.json",
+      "sha256": null,
+      "run_count": 0,
+      "return_code": null
+    },
+    "fingerprint_sha256": null,
+    "attestation_sha256": null,
+    "fingerprint_reports_equal": false,
+    "attestation_reports_equal": false,
+    "exact_installed_distribution_set_attested": false,
+    "freeze_outcome": "fail_closed_exact_installed_distribution_freeze",
+    "failure_evidence": {
+      "path": "tests/evidence/github_cross_encoder_precision_v7/freeze-runtime-content.error.json",
+      "sha256": "23925a5db1e42d21c7eb23ebe95f542283c668ebc021686087cddfbab7899f84"
+    },
+    "successor_observation_allowed": false,
+    "filesystem_inventory_reports_equal": false,
+    "expected_distribution_registry_sha256": "5c4863032bf8e3a47f623a53107d04031bac9b6229dbaf2113e523d05df64aac"
+  },
+  "python": {
+    "implementation": "CPython",
+    "version": "3.11.15",
+    "abi": "cp311"
+  },
+  "resolver": {
+    "name": "uv",
+    "version": "0.12.3",
+    "build": "507230998",
+    "host": "x86_64-pc-windows-msvc",
+    "default_index": "https://pypi.org/simple",
+    "torch_route": "direct-url-only",
+    "torch_source": "https://download.pytorch.org/whl/cpu",
+    "index_fallback": false,
+    "compile_command": [
+      "uv",
+      "pip",
+      "compile",
+      "--generate-hashes",
+      "--emit-index-url",
+      "--emit-index-annotation",
+      "--python-version",
+      "3.11.15",
+      "--python-platform",
+      "x86_64-unknown-linux-gnu",
+      "--constraint",
+      "tests/fixtures/github_cross_encoder_precision_v4.requirements.lock",
+      "--output-file",
+      "tests/fixtures/github_cross_encoder_precision_v7.requirements.lock",
+      "tests/fixtures/github_cross_encoder_precision_v7.requirements.in"
+    ]
+  },
+  "installer": {
+    "name": "pip",
+    "version": "24.0",
+    "only_binary": true,
+    "require_hashes": true,
+    "ignore_installed": true,
+    "report_path": "/opt/ngr-v7/dependency-report.json"
+  },
+  "dependency_lock": {
+    "input_path": "tests/fixtures/github_cross_encoder_precision_v7.requirements.in",
+    "input_sha256": "7d2eac3956b8c982b434ff2cd55c19223816e5fa7983ba23566d67857d9dc53b",
+    "lock_path": "tests/fixtures/github_cross_encoder_precision_v7.requirements.lock",
+    "lock_sha256": "3003c3a2ff67dc5520c209613dbe5fcdc60b7b5e9447dbdc77fc4554e8f22ef8",
+    "artifacts_path": "tests/fixtures/github_cross_encoder_precision_v7.dependency-artifacts.json",
+    "artifacts_sha256": "ae54398c84fcc5ca4f962e36630d9b4326649b2280892ac600752da8cd1699f9",
+    "artifact_count": 26
+  },
+  "run_root": {
+    "path": "/opt/ngr-v7/runtime",
+    "filesystem": "container",
+    "exclusive_create": true,
+    "host_bind_mount": false,
+    "shared_windows_database": false,
+    "future_observation_volume": "github-cross-encoder-precision-v7-runtime"
+  },
+  "execution": {
+    "device": "cpu",
+    "dtype": "float32",
+    "eval": true,
+    "inference_mode": true,
+    "batch_size": 8,
+    "fresh_process": true,
+    "fresh_database": true,
+    "offline_validation": true,
+    "local_files_only": true
+  },
+  "expected_distribution_registry": {
+    "path": "tests/fixtures/github_cross_encoder_precision_v7.expected-distributions.json",
+    "sha256": "5c4863032bf8e3a47f623a53107d04031bac9b6229dbaf2113e523d05df64aac",
+    "count": 29
+  }
+}
