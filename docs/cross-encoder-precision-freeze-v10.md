@@ -64,7 +64,20 @@ DBはSQLite接続もhash読取も行わない。
 
 ## outcome
 
-prebuild時点ではcache freeze evidenceは未作成である。remote CI green後のexactly-once実行結果を
-`tests/evidence/github_cross_encoder_precision_v10/`へpassまたはerrorとして追記し、この節を実測値で
-更新する。successful result-free freezeだけが、別Issueでdevelopmentを一度開始する前提となる。
-retrieval parityや物理統合可能性は性能観測まで支持しない。
+implementation commit `45704eefb6610501d100c18ebc024e820aa428dd`のCore CI / Optional MCP
+adapterがgreenになった後、cache freezeをexactly once実行してpassした。cache-freeze volume create=`1`、
+model-copy verifier run=`1`、retry=`0`である。source初期化直後までmodel-cache targetはabsentで、verifierが
+exclusive-createした。
+
+2 model revisions / 12 required files / 3,427,616,927 bytesをsourceで検証し、copy後の全file SHA-256一致を
+確認した。model verification SHA-256は
+`380ae8c602d1c0049adc495eaea97f31aca25984cbf6ed286594df35bf07e0c9`、pass summaryは
+`cca6ee778acb18b7dd921b754657f92bda39af2ccdf6827a86f052634ab41910`、evidence manifestに登録した
+count auditは`f55da694e51f8d4e7296cdb03e157452c78410eb40030d55165a30a4c908eaa7`である。
+
+v9 predecessor 20 filesはprebuild / post-freezeでbyte identityが一致し、future runtime volumeはabsentである。
+development / holdout claim=`0/0`、registered query / model import / load / forward / observed result=
+`0/0/0/0/0`、performance=`not assessed`でterminalとする。cache-freeze volumeは後続観測に再利用しない。
+
+このsuccessful result-free freezeだけが、別Issueでdevelopmentを一度開始する前提となる。retrieval parityや
+物理統合可能性は性能観測まで支持しない。
