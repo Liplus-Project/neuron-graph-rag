@@ -62,3 +62,28 @@ load / forward、observed result、shared database openはすべて0、performan
 このfreezeのpassはparameterized root bindingとexact offline source-byte validationだけを支持する。retrieval
 performance、retrieval parity、物理統合可能性、NGR default変更は支持しない。後続developmentは別Issueで
 exactly once実行する。
+
+## 観測結果
+
+prebuild implementation commit `085b66133e8acc68930273d1d8f306494f04af43`をpushし、GitHub Actions
+run `33262111375`のCore CI / Optional MCPがともにgreenであることを確認してから、v11 freezeをexactly
+once実行した。結果はpassである。同じprotocolのretryは行わず、専用root-freeze volumeはterminalかつ
+non-reusableとして保持する。future runtime volumeは実行前後ともabsentである。
+
+root-freeze volume createは1、root-binding verifier runは1、retryとverifier retryは0だった。wrapperと
+distinct `_BASE`のbindingは一致し、新frozen-sourceから23 protocol artifacts / 6,555,670 bytesと24 corpus
+documents / 151,585 bytesを登録SHA-256どおり検証した。v10 predecessor 23 artifactsは実行前後でbyte
+不変だった。旧rootのcreate / mount / read、v10 runtime / cache-freeze volume mount、accepted image rebuild、
+model-cache copy、model import / load / forward、registered query、development / holdout claim、observed result、
+shared SQLite openはすべて0である。
+
+主要evidence SHA-256は次のとおりである。
+
+- `root-binding-verification.json`: `af35fa36a1e1be2ed1ef22790dbcc7a3943d351fad892c18e852c947566c8a89`
+- `root-freeze.pass.json`: `ee86431e6603dd1eabd557778366ff05183a843c79d890f0d97fb9bcc9b26387`
+- `count-audit.json`: `806c0f0f2c72d57e6e1d0a755086cdb14a8a8812d9e3dc3e0ab723b87f2ddc10`
+- `evidence-manifest.json`: `522e223e57a8855371e18623952404156c593853ba32b91e93039152b2befae6`
+
+このpassのperformanceは`not assessed`であり、retrieval performance、retrieval parity、物理統合可能性を
+主張しない。後続のmodel-cache development / queryはこのterminal volumeを再利用せず、別Issueの新protocolで
+実施する。
