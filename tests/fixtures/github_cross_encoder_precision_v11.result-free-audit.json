@@ -1,0 +1,22 @@
+{
+  "accepted_image_rebuild_count": 0,
+  "development_claim_count": 0,
+  "future_runtime_volume": "github-cross-encoder-precision-v11-runtime",
+  "holdout_claim_count": 0,
+  "model_cache_copy_count": 0,
+  "model_forward_inference_count": 0,
+  "model_import_count": 0,
+  "model_load_count": 0,
+  "observed_result_count": 0,
+  "performance": "not assessed",
+  "phase": "parameterized-root-freeze",
+  "protocol_id": "github-ngr-cross-encoder-precision-v11",
+  "registered_query_execution_count": 0,
+  "retry_count": 0,
+  "root_binding_verifier_run_limit": 1,
+  "root_freeze_volume": "github-cross-encoder-precision-v11-root-freeze",
+  "root_freeze_volume_reusable": false,
+  "shared_database_open_count": 0,
+  "v10_cache_freeze_volume_reused": false,
+  "v10_runtime_volume_reused": false
+}
