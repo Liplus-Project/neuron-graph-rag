@@ -60,5 +60,32 @@ development / holdout gate だけに基づき、環境成立だけで retrieval 
 
 ## 観測結果
 
-未実行。preflight evidence を commit / push し、remote CI green を確認した後に development を一度だけ
-開始する。pass / fail / error のいずれもこの節へ記録し、同じ v10 は再試行しない。
+implementation commit `a7b8867056543a47a5a2f64ffd3977f92f59d2d3` から preflight を一度開始した。
+runtime volume absence、WSLC version、accepted image identity、v10 cache-freeze / v1-v9 immutable registry、
+shared DB の開始時 SHA-256 を検証し、専用 runtime volume を exclusive-create した。exact cache-freeze
+commit と current harness source を distinct strict POSIX destination へ展開し、source initialization 後も
+model-cache が absent であることを確認した。frozen v10 verifier による 2 model revisions / 12 required
+files / 3,427,616,927 bytes の runtime model-cache exclusive copy は一度成功した。
+
+続く synthetic probe の最初の container process で terminal error となった。v10 wrapper が frozen v8
+observation module の surface globals を v10 runtime path へ更新した一方、underlying v5 harness の
+`direct_git_bytes` は旧 `/opt/ngr-v8/runtime/frozen-source` を保持していた。probe は model import / load /
+forward より前の protocol source validation で
+`FileNotFoundError: /opt/ngr-v8/runtime/frozen-source/corpora/repository-native-controlled-v3/README.md`
+として fail-closed した。
+
+raw failure evidence `tests/evidence/github_cross_encoder_precision_v10_observation/preflight.error.json` の
+SHA-256 は `88f8e0b71be42751ff5414a3c793d5f08e2c52d7c8689bc6e27e00cf20f4f038` である。runtime
+volume create=`1`、model-copy verifier run=`1`、synthetic probe process=`1`、development / holdout
+claim=`0/0`、registered query / preflight forward / observed-stage inference / result=`0/0/0/0`、retry=`0`
+である。accepted image rebuild、runtime report rerun、attestation rerun、v10 cache-freeze volume の mount /
+read / reuse はいずれも 0 である。
+
+shared Windows DB の preflight 前と error 後の SHA-256 はともに
+`84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e` であり、SQLite では open して
+いない。development と holdout は未観測、performance は `not assessed` である。同じ v10 の
+preflight、runtime volume、model copy、probe、development を再試行しない。
+
+次候補軸は、successor protocol を先に freeze し、v8 wrapper surface だけでなく frozen v5 harness の
+source / frozen-source root まで新 runtime root へ一貫して bind してから synthetic probe を開く境界である。
+v10 raw failure と terminal evidence は byte 不変の predecessor として保存する。
