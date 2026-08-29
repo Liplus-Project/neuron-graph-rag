@@ -1,0 +1,39 @@
+{
+  "accepted_image": {
+    "id": "sha256:136ad9466799109bf32b4b96b611c9db9a099bcc47cf78243f26c7227bc16742",
+    "tag": "ngr-cross-encoder-precision-v8:freeze"
+  },
+  "cache_freeze_immutable_sha256": {
+    "docs/cross-encoder-precision-freeze-v10.md": "549f5bba5432f807c39453d2b2227b24f876dfddcdd84277fbb3d4e7b226ff3b",
+    "src/neuron_graph_rag/cross_encoder_precision_v10_observation.py": "3b43ce2ab2d29441e48e596a6fd0193bc0408a1309b4c0e49e37e39852319308",
+    "tests/evidence/github_cross_encoder_precision_v10/accepted-image-inspect.json": "a8e3c98f637c82120306564d311c587b5fecda962296cbfd74d72a5ba9aa47df",
+    "tests/evidence/github_cross_encoder_precision_v10/cache-freeze-commands.json": "657e08a3e286e7b38ca2693429b99f6043b5bb78859c17f314ec61747448491c",
+    "tests/evidence/github_cross_encoder_precision_v10/cache-freeze.pass.json": "cca6ee778acb18b7dd921b754657f92bda39af2ccdf6827a86f052634ab41910",
+    "tests/evidence/github_cross_encoder_precision_v10/count-audit.json": "f55da694e51f8d4e7296cdb03e157452c78410eb40030d55165a30a4c908eaa7",
+    "tests/evidence/github_cross_encoder_precision_v10/evidence-manifest.json": "61a46b04b9966ee54663449dff36c48d32a6c079f53a8a231ab12247392fb556",
+    "tests/evidence/github_cross_encoder_precision_v10/model-verification.json": "380ae8c602d1c0049adc495eaea97f31aca25984cbf6ed286594df35bf07e0c9",
+    "tests/evidence/github_cross_encoder_precision_v10/source-cache-identity.json": "40798bb55e648a1ae1daa0ae4616f6135f2cf9ee06cc3cc86cca575bc640ce8b",
+    "tests/evidence/github_cross_encoder_precision_v10/source-initialization.json": "0103a05b3340b8542f68b2caea7eaf7d984c1cb74836d0a66d65fed692dd12fc",
+    "tests/evidence/github_cross_encoder_precision_v10/volume-identity.json": "3b54c34c8ab136e9d65c388a5d5d7174518894cbc4500fc71885719d68abeaf6",
+    "tests/fixtures/github_cross_encoder_precision_v10.manifest.json": "3ad16e2118db7d73924405e6404c1ae0c477d26e493609aa41fa713a14bad5c2",
+    "tests/fixtures/github_cross_encoder_precision_v10.result-free-audit.json": "abb929588fc6efefe10f792e54daaa64a9f24faf54282f45b87002d35f78ce53",
+    "tests/test_cross_encoder_precision_v10.py": "8f8088772854d4a8139c2e223cc171ca598cc782f72e7c091cb0ac1a722ce308",
+    "tools/run_cross_encoder_precision_v10_freeze_wslc.ps1": "e6291990af4c3e3ac845f6b3acd614eeab581bdb2de8519fa036032791e47032"
+  },
+  "cache_freeze_volume": "github-cross-encoder-precision-v10-cache-freeze",
+  "cache_freeze_volume_reusable": false,
+  "container_paths": {
+    "archive": "/opt/ngr-v10/runtime/archive",
+    "databases": "/opt/ngr-v10/runtime/databases",
+    "model_cache": "/opt/ngr-v10/runtime/model-cache",
+    "root": "/opt/ngr-v10/runtime",
+    "runs": "/opt/ngr-v10/runtime/runs",
+    "source": "/opt/ngr-v10/runtime/source",
+    "transport": "/opt/ngr-v10/runtime/transport"
+  },
+  "freeze_commit": "e75d1e065441b794ce83b68f62d55747741052e5",
+  "phase": "performance-observation",
+  "protocol_id": "github-ngr-cross-encoder-precision-v10",
+  "runtime_volume": "github-cross-encoder-precision-v10-runtime",
+  "v8_protocol_commit": "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f"
+}
