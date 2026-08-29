@@ -885,6 +885,75 @@ def _write_terminal_manifest(evidence: Path, status: str) -> None:
     )
 
 
+def finalize_preflight_error(root: Path = ROOT) -> dict[str, Any]:
+    evidence = root / EVIDENCE
+    raw_path = evidence / "preflight.error.json"
+    terminal_path = evidence / "preflight-terminal.json"
+    if not raw_path.is_file():
+        raise FileNotFoundError("v9 raw preflight error evidence is missing")
+    if (evidence / "preflight.json").exists():
+        raise ValueError("successful preflight evidence cannot be finalized as error")
+    if terminal_path.exists() or (
+        evidence / "observation-evidence-manifest.json"
+    ).exists():
+        raise FileExistsError("v9 preflight error is already terminal")
+    raw = read_json(raw_path)
+    for key in (
+        "development_claim_count",
+        "holdout_claim_count",
+        "registered_query_execution_count",
+        "preflight_forward_inference_count",
+        "observed_stage_inference_count",
+        "result_count",
+        "retry_count",
+    ):
+        if raw.get(key) != 0:
+            raise ValueError("v9 raw preflight error count mismatch")
+    if raw.get("runtime_volume_create_count") != 1:
+        raise ValueError("v9 raw preflight error volume count mismatch")
+    error = str(raw.get("error", ""))
+    if "dedicated ext4 model cache already exists" not in error:
+        raise ValueError("v9 raw preflight error cause mismatch")
+    before = raw.get("shared_database_sha256_before_preflight")
+    after = _hash_shared_database()
+    terminal = {
+        "protocol_id": PROTOCOL_ID,
+        "status": "error",
+        "phase": "preflight",
+        "implementation_commit": raw.get("implementation_commit"),
+        "raw_failure_sha256": sha256_file(raw_path),
+        "failure_point": "model-copy-verify",
+        "failure_cause": "dedicated model cache existed before exclusive copy",
+        "next_candidate_axis": (
+            "source initialization must leave /opt/ngr-v9/runtime/model-cache "
+            "absent until frozen model-copy verification exclusively creates it"
+        ),
+        "runtime_volume_create_count": 1,
+        "development_claim_count": 0,
+        "holdout_claim_count": 0,
+        "registered_query_execution_count": 0,
+        "preflight_forward_inference_count": 0,
+        "observed_stage_inference_count": 0,
+        "result_count": 0,
+        "retry_count": 0,
+        "same_protocol_retry_allowed": False,
+        "accepted_image_rebuild_count": 0,
+        "runtime_report_rerun_count": 0,
+        "attestation_rerun_count": 0,
+        "path_freeze_volume_mounted": False,
+        "path_freeze_volume_read": False,
+        "path_freeze_volume_reused": False,
+        "shared_database_sha256_before_preflight": before,
+        "shared_database_sha256_after_error": after,
+        "shared_database_post_error_hash_recorded": True,
+        "shared_database_unchanged": before == after,
+        "performance": "not assessed",
+    }
+    _write_json_exclusive(terminal_path, terminal)
+    _write_terminal_manifest(evidence, "preflight-error")
+    return terminal
+
+
 def run_once(root: Path = ROOT) -> dict[str, Any]:
     report = verify_preflight(root)
     evidence = root / EVIDENCE
@@ -1031,7 +1100,33 @@ def audit_evidence(root: Path = ROOT) -> dict[str, Any]:
             )
         ):
             raise ValueError("v9 preflight error counts are not result-free")
-        return {"protocol_id": PROTOCOL_ID, "status": "preflight-error"}
+        terminal_path = evidence / "preflight-terminal.json"
+        manifest_path = evidence / "observation-evidence-manifest.json"
+        if not terminal_path.is_file() or not manifest_path.is_file():
+            return {
+                "protocol_id": PROTOCOL_ID,
+                "status": "preflight-error-unfinalized",
+            }
+        terminal = read_json(terminal_path)
+        manifest = _verify_hash_manifest(
+            evidence, "observation-evidence-manifest.json", exact=True
+        )
+        if (
+            terminal.get("raw_failure_sha256") != sha256_file(evidence / "preflight.error.json")
+            or terminal.get("shared_database_unchanged") is not True
+            or terminal.get("retry_count") != 0
+            or terminal.get("performance") != "not assessed"
+            or manifest.get("status") != "preflight-error"
+        ):
+            raise ValueError("v9 terminal preflight error evidence mismatch")
+        return {
+            "protocol_id": PROTOCOL_ID,
+            "status": "preflight-error",
+            "raw_failure_sha256": terminal["raw_failure_sha256"],
+            "shared_database_unchanged": True,
+            "retry_count": 0,
+            "performance": "not assessed",
+        }
     report = verify_preflight(root)
     terminal = evidence / "observation-evidence-manifest.json"
     if not terminal.exists():
@@ -1082,6 +1177,7 @@ def main(argv: list[str] | None = None) -> int:
     commands.add_parser("verify-preflight")
     commands.add_parser("run")
     commands.add_parser("audit")
+    commands.add_parser("finalize-preflight-error")
     copy = commands.add_parser("model-copy-verify")
     copy.add_argument("--source-cache", required=True)
     copy.add_argument("--cache", required=True)
@@ -1113,6 +1209,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_once()
     elif arguments.command == "audit":
         result = audit_evidence()
+    elif arguments.command == "finalize-preflight-error":
+        result = finalize_preflight_error()
     elif arguments.command == "model-copy-verify":
         result = _container_model_copy(
             arguments.source_cache, arguments.cache, arguments.output

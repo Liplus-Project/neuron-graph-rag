@@ -169,6 +169,42 @@ class CrossEncoderPrecisionV9PerformanceObservationTest(unittest.TestCase):
                 (evidence / "observation-evidence-manifest.json").is_file()
             )
 
+    def test_preflight_error_finalizer_preserves_raw_and_records_post_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            evidence = root / observation.EVIDENCE
+            evidence.mkdir(parents=True)
+            raw = {
+                "protocol_id": observation.PROTOCOL_ID,
+                "implementation_commit": "e" * 40,
+                "error": "FileExistsError: dedicated ext4 model cache already exists",
+                "runtime_volume_create_count": 1,
+                "development_claim_count": 0,
+                "holdout_claim_count": 0,
+                "registered_query_execution_count": 0,
+                "preflight_forward_inference_count": 0,
+                "observed_stage_inference_count": 0,
+                "result_count": 0,
+                "retry_count": 0,
+                "shared_database_sha256_before_preflight": "f" * 64,
+            }
+            raw_path = evidence / "preflight.error.json"
+            raw_path.write_text(json.dumps(raw), encoding="utf-8")
+            raw_before = raw_path.read_bytes()
+            with patch.object(
+                observation, "_hash_shared_database", return_value="f" * 64
+            ):
+                terminal = observation.finalize_preflight_error(root)
+            self.assertEqual(raw_path.read_bytes(), raw_before)
+            self.assertEqual(terminal["retry_count"], 0)
+            self.assertEqual(terminal["development_claim_count"], 0)
+            self.assertTrue(terminal["shared_database_post_error_hash_recorded"])
+            self.assertTrue(terminal["shared_database_unchanged"])
+            self.assertEqual(terminal["performance"], "not assessed")
+            self.assertTrue(
+                (evidence / "observation-evidence-manifest.json").is_file()
+            )
+
     def test_holdout_opens_only_for_selected_all_gate_development(self) -> None:
         scenarios = (
             ({"all_hard_gates_pass": False, "selected_candidate_id": None}, 1),

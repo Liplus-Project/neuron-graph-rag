@@ -1,6 +1,6 @@
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("preflight", "verify-preflight", "run", "audit")]
+    [ValidateSet("preflight", "verify-preflight", "run", "audit", "finalize-preflight-error")]
     [string]$Action = "audit"
 )
 
