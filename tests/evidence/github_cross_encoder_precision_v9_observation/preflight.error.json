@@ -1,0 +1,165 @@
+{
+  "commands": [
+    {
+      "command": [
+        "wslc",
+        "volume",
+        "inspect",
+        "github-cross-encoder-precision-v9-runtime"
+      ],
+      "command_sha256": "173bec2c1796f1cde1342cbb4ba478d9c99a727bf2aab1e6bc2dbdbf76116db0",
+      "expected_absence_probe": true,
+      "returncode": 1,
+      "stderr_sha256": "42b8c67302f82a35e0ec36308c25c512e6468dce41e84232b8f9c15c62eba547",
+      "stdout_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "command": [
+        "wslc",
+        "--version"
+      ],
+      "command_sha256": "08e41e2a5773f3c1a6a0273944a26bf830b1d4fb84106f722918e590e755006b",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "227e92f850731c644562e9ccfff30798ca55c7c32094046a743d3b50d437d8d3"
+    },
+    {
+      "command": [
+        "wslc",
+        "image",
+        "inspect",
+        "ngr-cross-encoder-precision-v8:freeze"
+      ],
+      "command_sha256": "55a43661b731e643f020498d2910512605bbf88821f34ae85294cd8e1d6397fb",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "92dd716c663471d37f779eb40c1fd0a687db1b36fc8fc444cf00987c7cd955bb"
+    },
+    {
+      "command": [
+        "wslc",
+        "volume",
+        "create",
+        "github-cross-encoder-precision-v9-runtime"
+      ],
+      "command_sha256": "8634b4f043b25ed15efd5578bfe11fb86ea8819e5d502da7f867907d1465fda1",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "346d7da9fd528fcd234be9d7b93cd833761118cf2239c7c913ad08e9d0f43e25"
+    },
+    {
+      "binary_export": true,
+      "command": [
+        "git",
+        "archive",
+        "--format=tar",
+        "25790b5218ccc7a5741dbdf6a19d1f7723d7afeb"
+      ],
+      "command_sha256": "64454665913caa2f7e65f5602977f3f6d2905b4607ea6ad5ac1573c805c4eef1",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "7f56d05e592113702794f649b3f5004f3b0d9b751a7ac2c0208833306d28e7bf"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--interactive",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v9-runtime:/opt/ngr-v9/runtime",
+        "--entrypoint",
+        "/bin/sh",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-c",
+        "set -eu; test ! -e '/opt/ngr-v9/runtime/frozen-source'; mkdir '/opt/ngr-v9/runtime/frozen-source'; tar -xf - -C '/opt/ngr-v9/runtime/frozen-source'; test -f '/opt/ngr-v9/runtime/frozen-source/tests/fixtures/github_cross_encoder_precision_v8.manifest.json'"
+      ],
+      "command_sha256": "52e1ebb85686df560de2bb2575411c523273eb823ab033e6535dc184f9ee1256",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdin_sha256": "7f56d05e592113702794f649b3f5004f3b0d9b751a7ac2c0208833306d28e7bf",
+      "stdin_size": 38645760,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v9-runtime:/opt/ngr-v9/runtime",
+        "--volume",
+        "C:\\Users\\smile\\Codex\\workspace\\deployments\\neuron-graph-rag:/input/source:ro",
+        "--entrypoint",
+        "/bin/sh",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-c",
+        "set -eu; test -d '/opt/ngr-v9/runtime'; test ! -e '/opt/ngr-v9/runtime/source'; mkdir -p /opt/ngr-v9/runtime/model-cache /opt/ngr-v9/runtime/databases /opt/ngr-v9/runtime/runs /opt/ngr-v9/runtime/archive /opt/ngr-v9/runtime/transport; mkdir '/opt/ngr-v9/runtime/source'; cp -a /input/source/. '/opt/ngr-v9/runtime/source/'; rm -rf '/opt/ngr-v9/runtime/source/.git'; test -f '/opt/ngr-v9/runtime/source/tests/fixtures/github_cross_encoder_precision_v8.manifest.json'"
+      ],
+      "command_sha256": "e0e8351b30658d1e6eacecb3e7a3d2bcbe2a1063bade5eb5327d125556afa83d",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v9-runtime:/opt/ngr-v9/runtime",
+        "--volume",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache:/input/models:ro",
+        "--env",
+        "PYTHONPATH=/opt/ngr-v9/runtime/source/src",
+        "--env",
+        "HF_HUB_OFFLINE=1",
+        "--env",
+        "TRANSFORMERS_OFFLINE=1",
+        "--env",
+        "HF_HOME=/opt/ngr-v9/runtime/model-cache",
+        "--env",
+        "HF_HUB_CACHE=/opt/ngr-v9/runtime/model-cache",
+        "--env",
+        "NO_PROXY=*",
+        "--workdir",
+        "/opt/ngr-v9/runtime/source",
+        "--entrypoint",
+        "python",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v9_performance_observation",
+        "model-copy-verify",
+        "--source-cache",
+        "/input/models",
+        "--cache",
+        "/opt/ngr-v9/runtime/model-cache",
+        "--output",
+        "/opt/ngr-v9/runtime/model-verification.json"
+      ],
+      "command_sha256": "4a6fb08f76fcee00f1b3a7f8acd117b0f9f72fb1d21c3c306b6c3aa17b886364",
+      "returncode": 1,
+      "stderr_sha256": "9e0414931f8557fe8a1f22dc6a059ffc0d5da68f50ccffca894b27343f56a716",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "development_claim_count": 0,
+  "error": "RuntimeError: command failed (1): Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/ngr-v9/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v9_performance_observation.py\", line 1145, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/opt/ngr-v9/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v9_performance_observation.py\", line 1117, in main\n    result = _container_model_copy(\n             ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/ngr-v9/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v9_performance_observation.py\", line 246, in _container_model_copy\n    predecessor._container_model_copy(\n  File \"/opt/ngr-v9/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v5_observation.py\", line 296, in _container_model_copy\n    _v4.model_copy_verify(source, cache, output)\n  File \"/opt/ngr-v9/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v4_observation.py\", line 342, in model_copy_verify\n    raise FileExistsError(\"dedicated ext4 model cache already exists\")\nFileExistsError: dedicated ext4 model cache already exists\n",
+  "freeze_commit": "25790b5218ccc7a5741dbdf6a19d1f7723d7afeb",
+  "holdout_claim_count": 0,
+  "implementation_commit": "90ff1c56ccc884ff63626995c2350f837be8ad08",
+  "observed_stage_inference_count": 0,
+  "preflight_forward_inference_count": 0,
+  "protocol_id": "github-ngr-cross-encoder-precision-v9",
+  "registered_query_execution_count": 0,
+  "result_count": 0,
+  "retry_count": 0,
+  "runtime_volume_create_count": 1,
+  "shared_database_sha256_before_preflight": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e"
+}
