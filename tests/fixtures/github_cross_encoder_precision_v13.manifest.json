@@ -1,0 +1,53 @@
+{
+  "accepted_image": {
+    "id": "sha256:136ad9466799109bf32b4b96b611c9db9a099bcc47cf78243f26c7227bc16742",
+    "tag": "ngr-cross-encoder-precision-v8:freeze"
+  },
+  "accepted_image_rebuild_allowed": false,
+  "commit_freeze_volume": "github-cross-encoder-precision-v13-commit-freeze",
+  "container_paths": {
+    "commit_identity_report": "/opt/ngr-v13/commit-freeze/commit-identity-verification.json",
+    "model_cache": "/opt/ngr-v13/commit-freeze/model-cache",
+    "old_frozen_source": "/opt/ngr-v8/runtime/frozen-source",
+    "protocol_source": "/opt/ngr-v13/commit-freeze/frozen-source",
+    "root": "/opt/ngr-v13/commit-freeze",
+    "source": "/opt/ngr-v13/commit-freeze/source",
+    "source_identity": "/opt/ngr-v13/commit-freeze/source/tests/fixtures/github_cross_encoder_precision_v13.source-identity.json"
+  },
+  "expected_evidence": [
+    "accepted-image-inspect.json",
+    "commit-freeze-commands.json",
+    "commit-freeze.pass.json|commit-freeze.error.json",
+    "commit-identity-verification.json",
+    "count-audit.json",
+    "evidence-manifest.json",
+    "source-identity.json",
+    "volume-identity.json"
+  ],
+  "frozen_protocol_commit": "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f",
+  "future_runtime_volume": "github-cross-encoder-precision-v13-runtime",
+  "phase": "git-free-protocol-identity-freeze",
+  "predecessor_immutable_sha256": {
+    "docs/cross-encoder-precision-observation-v12.md": "75cbc83620401bed83775fb017ba835f0d21e70b7e93ede96dfc98d9b3990b5e",
+    "src/neuron_graph_rag/cross_encoder_precision_v12_performance_observation.py": "022ad67d2e5703fb305b37f31fd2f5726c5fa2e59cb08b46ad27e8a5439a69c8",
+    "tests/evidence/github_cross_encoder_precision_v12_observation/dependency-report.json": "c2c98e1316cc607491c10bafb5b30d52cbeb337382bdd059f022e5c0f12912ad",
+    "tests/evidence/github_cross_encoder_precision_v12_observation/execution-error.json": "14b0d4ddeead9a155c26b80553ceccf6e86b460e06f1775c2a9f49564e0d6c64",
+    "tests/evidence/github_cross_encoder_precision_v12_observation/model-verification.json": "64c2f3831a49fabf0b5ab98953889188396d8403c87af9e4d5dcfab3c63178c4",
+    "tests/evidence/github_cross_encoder_precision_v12_observation/observation-evidence-manifest.json": "cf84eb12d15b1fc906ac9947267b2d48bc3657feee9b5aa592b5b17f7fb3e954",
+    "tests/evidence/github_cross_encoder_precision_v12_observation/platform-report.json": "eb0a0befe667d53fdf194e884a5766a68551adea6fc6a6110fad7922d20d4b8f",
+    "tests/evidence/github_cross_encoder_precision_v12_observation/preclaim.json": "d36c249bc73a8110671857fc9bf0b908aba9bc15579dd3c2e841cd1d16746719",
+    "tests/evidence/github_cross_encoder_precision_v12_observation/preflight-ci-green.json": "d0d98963787883c66ac10ecc5a7fa82be2ac9f23d220f2c620935e2211826199",
+    "tests/evidence/github_cross_encoder_precision_v12_observation/preflight-commands.json": "95524fe1f91c3f2173a6ee0bd750d270b2c384278fa898cca560161de25d6e8a",
+    "tests/evidence/github_cross_encoder_precision_v12_observation/preflight-evidence-manifest.json": "9083b7d788659b537c5576d9bcce97b564573b5ea1cc228d30b8c8bc855c37ea",
+    "tests/evidence/github_cross_encoder_precision_v12_observation/preflight.json": "e5d2cff4bdfd683a11f8ada2543d33795a2b637c30c60a21ba57e527001b432d",
+    "tests/fixtures/github_cross_encoder_precision_v12_observation.manifest.json": "beebe281b2aa89f7daf14961520b0d2c558c698078ae2c7e675ad477625f6f84",
+    "tests/test_cross_encoder_precision_v12_performance_observation.py": "87481245395306a8c2746e3c2341f6456d015e2ce15ce23f70ab07e949340c6b",
+    "tools/run_cross_encoder_precision_v12_observation_wslc.ps1": "208da0a53e43bfb6f36428a6a61236cad3bb640d1e9ae9e34cdba74ca3cc4394"
+  },
+  "predecessor_merge_commit": "20a20007bdc4e25a6146a401e147c4c4552aa2a1",
+  "protocol_id": "github-ngr-cross-encoder-precision-v13",
+  "result_free_audit_sha256": "baa0a778b423209f77ed2fb6860ceae44b313f3648287a792b91c5c448ec890f",
+  "result_free_only": true,
+  "source_identity_sha256": "64d3f3f08fa077c02a000ad4dc11edcc7a0b2da42ced92f0f3547ae805ffcee2",
+  "wslc_version": "2.9.4.0"
+}
