@@ -1,0 +1,33 @@
+{
+  "accepted_image_rebuilt": false,
+  "additional_attestation_run_count": 0,
+  "additional_runtime_report_run_count": 0,
+  "batch_size": 8,
+  "completed_at": "2026-08-29T23:56:36+00:00",
+  "dependency_report_sha256": "41e513eb10be2375e796fb4b9568fc4cfddc39700006fe573f0ca0a653da45f6",
+  "development_claim_count": 0,
+  "freeze_commit": "39f2cebc6b3b43ac1060a2ce519e8906fa598f57",
+  "holdout_claim_count": 0,
+  "implementation_commit": "ced0af7aa9cb5d3e5300ba8012372b7edafb34ad",
+  "local_files_only": true,
+  "model_report_sha256": "7c92e7d9712cb987539bb65ed1f7034adffc51ba047abd6bc00098bac116036f",
+  "observed_stage_inference_count": 0,
+  "offline": true,
+  "phase": {
+    "development": "unobserved",
+    "holdout": "unobserved"
+  },
+  "platform_report_sha256": "6d4c4051c9314e865371a983c81f7d2db0ef0d443eaecc947073fc764f37e13e",
+  "preclaim_sha256": "e95ee5c371d585ef36d187218bb5d9f0a8a014e7bd00af08d7eb59ff22200428",
+  "predecessor_evidence_semantic_content_opened": false,
+  "predecessor_packet_reused": false,
+  "preflight_forward_inference_count": 2,
+  "protocol_id": "github-ngr-cross-encoder-precision-v12",
+  "registered_query_execution_count": 0,
+  "result_count": 0,
+  "retry_count": 0,
+  "shared_database_sha256_after_preflight": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "shared_database_sha256_before_preflight": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "trust_remote_code": false,
+  "v8_protocol_commit": "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f"
+}

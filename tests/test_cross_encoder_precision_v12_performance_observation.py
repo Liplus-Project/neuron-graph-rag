@@ -206,6 +206,16 @@ class CrossEncoderPrecisionV12PerformanceObservationTest(unittest.TestCase):
         ):
             self.assertFalse(report[key])
 
+        original = {
+            "path_freeze_volume": observation.V11_ROOT_FREEZE_VOLUME,
+            "path_freeze_volume_mounted": False,
+            "path_freeze_volume_read": False,
+        }
+        self.assertEqual(
+            observation._canonical_lifecycle_value(report),
+            observation.canonical_sha256(original),
+        )
+
     def test_manifest_freezes_v11_closure_and_v8_image_contract(self) -> None:
         contract = observation._stored_freeze_contract(observation.ROOT)
         self.assertEqual(contract["v11_artifact_count"], 14)

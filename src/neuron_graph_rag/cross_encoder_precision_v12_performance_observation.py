@@ -220,6 +220,32 @@ def _write_lifecycle_json_exclusive(path: Path, value: object) -> None:
     _write_json_exclusive(path, value)
 
 
+def _canonical_lifecycle_value(value: object) -> str:
+    if isinstance(value, dict) and "v11_root_freeze_volume" in value:
+        value = dict(value)
+        value["path_freeze_volume"] = value.pop("v11_root_freeze_volume")
+        value["path_freeze_volume_mounted"] = value.pop(
+            "v11_root_freeze_volume_mounted"
+        )
+        value["path_freeze_volume_read"] = value.pop(
+            "v11_root_freeze_volume_read"
+        )
+        for name in (
+            "v11_root_freeze_volume_reused",
+            "v10_runtime_volume_mounted",
+            "v10_runtime_volume_read",
+            "v10_runtime_volume_reused",
+            "v10_cache_freeze_volume_mounted",
+            "v10_cache_freeze_volume_read",
+            "v10_cache_freeze_volume_reused",
+            "old_v8_root_created",
+            "old_v8_root_mounted",
+            "old_v8_root_read",
+        ):
+            value.pop(name)
+    return canonical_sha256(value)
+
+
 def _container_command(
     *arguments: str,
     extra_volumes: Sequence[str] = (),
@@ -455,12 +481,15 @@ def _v12_scope() -> Any:
     replacements = _lifecycle_replacements()
     original = {name: getattr(lifecycle, name) for name in replacements}
     configure = lifecycle.lifecycle._configure_container_harness
+    canonical = lifecycle.lifecycle.canonical_sha256
     for name, value in replacements.items():
         setattr(lifecycle, name, value)
     lifecycle.lifecycle._configure_container_harness = _configure_container_harness
+    lifecycle.lifecycle.canonical_sha256 = _canonical_lifecycle_value
     try:
         yield
     finally:
+        lifecycle.lifecycle.canonical_sha256 = canonical
         lifecycle.lifecycle._configure_container_harness = configure
         for name, value in original.items():
             setattr(lifecycle, name, value)
