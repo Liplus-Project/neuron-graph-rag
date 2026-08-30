@@ -1,0 +1,19 @@
+{
+  "configured_claim_source_root": "/opt/ngr-v15/root-normalization-freeze/source",
+  "configured_frozen_source_root": "/opt/ngr-v15/root-normalization-freeze/frozen-source",
+  "git_free_identity": {
+    "artifact_registry_sha256": "45d42d11c4f104a3c2dc2793cf21a1222b76f9b0a6f4b980b9ee8cc34f8d7aed",
+    "corpus_commit": "c32b3049fd3daaa2190faf5e3e85955a195ee88c",
+    "corpus_document_count": 24,
+    "corpus_path": "tests/fixtures/github_cross_encoder_precision_v8.corpus.json",
+    "corpus_sha256": "dcbb31fce97a9dbfdca1da68834826a3796aa1bb67136e480a44da2ca7233985",
+    "frozen_protocol_commit": "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f",
+    "identity_schema": "ngr.git-free-protocol-identity/v1",
+    "manifest_path": "tests/fixtures/github_cross_encoder_precision_v8.manifest.json",
+    "manifest_sha256": "88d96b18179fe8844124a27786efe368c2d7f887d22fbfa92733e94f7956ca33",
+    "protocol_artifact_count": 23,
+    "source_archive_commit": "20a20007bdc4e25a6146a401e147c4c4552aa2a1"
+  },
+  "identity_schema": "ngr.claim-source-root-normalization/v1",
+  "source_archive_commit": "388eb9a2a658535bae63399168b3e1b2a5a8921a"
+}

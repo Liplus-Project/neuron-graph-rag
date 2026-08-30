@@ -1,0 +1,53 @@
+{
+  "accepted_image": {
+    "id": "sha256:136ad9466799109bf32b4b96b611c9db9a099bcc47cf78243f26c7227bc16742",
+    "tag": "ngr-cross-encoder-precision-v8:freeze"
+  },
+  "accepted_image_rebuild_allowed": false,
+  "container_paths": {
+    "claim_source_root_report": "/opt/ngr-v15/root-normalization-freeze/claim-source-root-verification.json",
+    "model_cache": "/opt/ngr-v15/root-normalization-freeze/model-cache",
+    "old_frozen_source": "/opt/ngr-v8/runtime/frozen-source",
+    "protocol_source": "/opt/ngr-v15/root-normalization-freeze/frozen-source",
+    "root": "/opt/ngr-v15/root-normalization-freeze",
+    "source": "/opt/ngr-v15/root-normalization-freeze/source",
+    "source_identity": "/opt/ngr-v15/root-normalization-freeze/source/tests/fixtures/github_cross_encoder_precision_v15.source-identity.json"
+  },
+  "expected_evidence": [
+    "accepted-image-inspect.json",
+    "root-normalization-commands.json",
+    "root-normalization.pass.json|root-normalization.error.json",
+    "claim-source-root-verification.json",
+    "count-audit.json",
+    "evidence-manifest.json",
+    "source-identity.json",
+    "volume-identity.json"
+  ],
+  "frozen_protocol_commit": "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f",
+  "future_runtime_volume": "github-cross-encoder-precision-v15-runtime",
+  "phase": "claim-source-root-normalization-freeze",
+  "predecessor_immutable_sha256": {
+    "docs/cross-encoder-precision-observation-v14.md": "112dbfa83cd8b5b65b9bf5c32e4a1c558da856c7cdece570c6a24d1d4dc50acf",
+    "src/neuron_graph_rag/cross_encoder_precision_v14_performance_observation.py": "559308d522395ca847c4b0671d5043d90267c5b09978a385791ce17d17752b17",
+    "tests/evidence/github_cross_encoder_precision_v14_observation/dependency-report.json": "0242cff6fd14e2687cc46742923f7373f66cd829b10f9ef1126198d3330446d9",
+    "tests/evidence/github_cross_encoder_precision_v14_observation/execution-error.json": "a5de91beb8677ed9db1d0d3acc63cb610dafd3538caee22200af574100dcd50f",
+    "tests/evidence/github_cross_encoder_precision_v14_observation/model-verification.json": "bc955c333d7c662fd223fa73ffc5485493da11ca339febd28a763421e0aa2b01",
+    "tests/evidence/github_cross_encoder_precision_v14_observation/observation-evidence-manifest.json": "6d5ca7f72362c7dba3fbacf6ff7a6ba8a922e26de87b59063789ad052424d028",
+    "tests/evidence/github_cross_encoder_precision_v14_observation/platform-report.json": "d79a80e75a1ba9bf595dd9f1fe0061223d9f99b4880ce889a590d9886a2a3497",
+    "tests/evidence/github_cross_encoder_precision_v14_observation/preclaim.json": "0a5fa37ec4d6b40a68432f427cd8e2d3f184cff29fbbfe39a14d36bfae067864",
+    "tests/evidence/github_cross_encoder_precision_v14_observation/preflight-ci-green.json": "3c69fbf9d92166ac067c8b2f900330e4f52e5736235544500798e940a5b9d0f0",
+    "tests/evidence/github_cross_encoder_precision_v14_observation/preflight-commands.json": "beb983a686cfe2a37a86828cc2b94755738f008532e3bc9f606e0b29e86b3608",
+    "tests/evidence/github_cross_encoder_precision_v14_observation/preflight-evidence-manifest.json": "beac5d13447d2d326c549ca85e9111d57f54d2afddb3ba0dd67b25b46155a182",
+    "tests/evidence/github_cross_encoder_precision_v14_observation/preflight.json": "b7f4a251ed6aed7394191f81e610d24314c2ca831cea593294d3e9a367cad2bd",
+    "tests/fixtures/github_cross_encoder_precision_v14_observation.manifest.json": "d8a3856ad704e3bb8c70ff5a35a9ba9d6bcb0e2febe6a1bd353445374f7da429",
+    "tests/test_cross_encoder_precision_v14_performance_observation.py": "15e36b859bd0352358ad0c26e3df37dcd523c17ebffae5337260dd4f57ec51da",
+    "tools/run_cross_encoder_precision_v14_observation_wslc.ps1": "04a597da32d123600d6b51b644400f147afeedf03821ac26930664ec4b2ff02a"
+  },
+  "predecessor_merge_commit": "388eb9a2a658535bae63399168b3e1b2a5a8921a",
+  "protocol_id": "github-ngr-cross-encoder-precision-v15",
+  "result_free_audit_sha256": "a9133fa56aed6eea3e2484e341263e5d2ee3ec531e8e78feec62a20bf5773ab8",
+  "result_free_only": true,
+  "root_normalization_freeze_volume": "github-cross-encoder-precision-v15-root-normalization-freeze",
+  "source_identity_sha256": "4003217b41cff642c275c8af1b5469749f97e73f4e1901102f8531350ef7632e",
+  "wslc_version": "2.9.4.0"
+}
