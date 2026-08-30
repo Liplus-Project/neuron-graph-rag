@@ -1,0 +1,8 @@
+{
+  "files_sha256": {
+    "preflight-terminal.json": "b88249b8680dc590d3519c2e4d7af55e3a788caf55918e75e4616f25b8fb4ed9",
+    "preflight.error.json": "3602cadcdb4b24f131d0ea8090e9d9ec3cd8292ac9ecc992625d9ab822af1bd3"
+  },
+  "protocol_id": "github-ngr-cross-encoder-precision-v17",
+  "status": "preflight-error"
+}
