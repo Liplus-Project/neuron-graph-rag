@@ -69,3 +69,25 @@ shared DB SHA-256はpreflight前後とも
 manifest SHA-256は`beac5d13447d2d326c549ca85e9111d57f54d2afddb3ba0dd67b25b46155a182`である。
 development / holdout performanceは引き続き`not assessed`であり、preflight evidence commitのCI green前には
 developmentを開かない。
+
+## Development実測
+
+preflight evidence commit `2847cfd6e49879cf313a8c704efdf1fd464b8d17` のCore / Optional MCP CI
+run `33294680229`がgreenになった後、development one-shotをexactly once開始した。preflight evidence syncと
+shared DB hash再検証は成功したが、最初のdevelopment claim containerでterminal errorになった。
+
+v13 git-free verifierはfrozen source identity root
+`/opt/ngr-v14/runtime/frozen-source`を要求した一方、actual claim pathは
+`/opt/ngr-v14/runtime/source`からprotocolをloadしたため、
+`ValueError: protocol root does not match frozen source identity`でfail-closedした。claim fileの
+exclusive-create前に停止したためdevelopment / holdout claim=`0/0`、worker process=`0`、observed result=`0`、
+retry=`0`であり、holdoutは開いていない。shared DBの観測後SHA-256も
+`84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e`で不変だった。
+
+raw execution error SHA-256は`a5de91beb8677ed9db1d0d3acc63cb610dafd3538caee22200af574100dcd50f`、
+terminal evidence manifest SHA-256は
+`6d5ca7f72362c7dba3fbacf6ff7a6ba8a922e26de87b59063789ad052424d028`である。同じv14 preflight、claim、
+development、holdoutは再実行しない。performanceは`not assessed`であり、retrieval parity、physical
+integration、production performance、NGR default変更を支持しない。successorはactual claim pathがloadする
+sourceとgit-free identity verifierのexpected rootをresult-free protocolで一致させてから、別protocolとして
+freeze・観測する必要がある。

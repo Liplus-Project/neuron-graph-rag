@@ -639,6 +639,79 @@ def finalize_preflight_error(root: Path = ROOT) -> dict[str, Any]:
 
 
 def audit_evidence(root: Path = ROOT) -> dict[str, Any]:
+    evidence = root / EVIDENCE
+    execution_error = evidence / "execution-error.json"
+    if execution_error.is_file():
+        verify_preflight(root)
+        if (evidence / "execution.json").exists():
+            raise ValueError("v14 terminal evidence contains two outcomes")
+        with _v14_scope(), lifecycle._lifecycle_scope():
+            manifest = lifecycle.lifecycle._verify_hash_manifest(
+                evidence, "observation-evidence-manifest.json", exact=True
+            )
+        error = read_json(execution_error)
+        if (
+            error.get("retry_count") != 0
+            or error.get("development_claim_count") != 0
+            or error.get("holdout_claim_count") != 0
+            or error.get("shared_database_unchanged") is not True
+            or error.get("recovery_errors") != []
+            or manifest.get("status") != "error"
+        ):
+            raise ValueError("v14 pre-claim terminal error mismatch")
+        cause = str(error.get("error", ""))
+        if (
+            "ValueError: protocol root does not match frozen source identity"
+            not in cause
+        ):
+            raise ValueError("v14 pre-claim failure cause mismatch")
+        commands = error.get("commands")
+        if not isinstance(commands, list):
+            raise TypeError("v14 terminal command registry must be an array")
+        claim_rows = [
+            row
+            for row in commands
+            if isinstance(row, dict)
+            and isinstance(row.get("command"), list)
+            and "claim" in row["command"]
+        ]
+        if len(claim_rows) != 1 or claim_rows[0].get("returncode") != 1:
+            raise ValueError("v14 failed claim command mismatch")
+        if any(
+            isinstance(row, dict)
+            and isinstance(row.get("command"), list)
+            and ("worker" in row["command"] or "finalize" in row["command"])
+            for row in commands
+        ):
+            raise ValueError("v14 pre-claim failure executed a worker")
+        command_text = "\n".join(
+            str(value)
+            for row in commands
+            if isinstance(row, dict) and isinstance(row.get("command"), list)
+            for value in row["command"]
+        )
+        for forbidden in (
+            V13_COMMIT_FREEZE_VOLUME,
+            V12_RUNTIME_VOLUME,
+            V11_ROOT_FREEZE_VOLUME,
+            V10_RUNTIME_VOLUME,
+            V10_CACHE_FREEZE_VOLUME,
+            serialize_container_path(OLD_V8_ROOT),
+        ):
+            if forbidden in command_text:
+                raise ValueError(f"v14 terminal command crossed boundary: {forbidden}")
+        return {
+            "protocol_id": PROTOCOL_ID,
+            "status": "error",
+            "failure_point": "development-claim-protocol-root",
+            "development_claim_count": 0,
+            "holdout_claim_count": 0,
+            "worker_process_count": 0,
+            "observed_result_count": 0,
+            "retry_count": 0,
+            "shared_database_unchanged": True,
+            "performance": "not assessed",
+        }
     with _v14_scope():
         result = lifecycle.audit_evidence(root)
     terminal_path = root / EVIDENCE / "preflight-terminal.json"

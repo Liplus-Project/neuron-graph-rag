@@ -314,14 +314,22 @@ class CrossEncoderPrecisionV14PerformanceObservationTest(unittest.TestCase):
             self.assertEqual(failure["development_claim_count"], 0)
             self.assertEqual(failure["holdout_claim_count"], 0)
 
-    def test_audit_delegates_to_generic_lifecycle_under_v14_scope(self) -> None:
-        expected = {"protocol_id": observation.PROTOCOL_ID, "status": "complete"}
-        with patch.object(
-            observation.lifecycle, "audit_evidence", return_value=expected
-        ) as audit:
-            result = observation.audit_evidence(observation.ROOT)
-        self.assertEqual(result, expected)
-        audit.assert_called_once_with(observation.ROOT)
+    def test_terminal_root_mismatch_is_fail_closed_and_result_free(self) -> None:
+        result = observation.audit_evidence(observation.ROOT)
+        self.assertEqual(result["status"], "error")
+        self.assertEqual(
+            result["failure_point"], "development-claim-protocol-root"
+        )
+        for key in (
+            "development_claim_count",
+            "holdout_claim_count",
+            "worker_process_count",
+            "observed_result_count",
+            "retry_count",
+        ):
+            self.assertEqual(result[key], 0)
+        self.assertTrue(result["shared_database_unchanged"])
+        self.assertEqual(result["performance"], "not assessed")
 
     def test_preflight_error_is_terminal_and_forbids_retry(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
