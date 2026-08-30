@@ -1,0 +1,18 @@
+{
+  "accepted_image_rebuild_count": 0,
+  "container_git_executable_invocation_count": 0,
+  "container_subprocess_invocation_count": 0,
+  "development_claim_count": 0,
+  "development_run_limit": 1,
+  "holdout_claim_count": 0,
+  "observed_result_count": 0,
+  "performance": "not assessed",
+  "phase": "preflight",
+  "preflight_run_limit": 1,
+  "protocol_id": "github-ngr-cross-encoder-precision-v18",
+  "registered_query_execution_count": 0,
+  "retry_count": 0,
+  "same_protocol_retry_allowed": false,
+  "shared_database_open_count": 0,
+  "terminal_audit_run_limit": 1
+}
