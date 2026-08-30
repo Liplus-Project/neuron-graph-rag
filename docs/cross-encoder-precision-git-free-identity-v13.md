@@ -50,3 +50,31 @@ dedicated volume createとcommit identity verifier runは各exactly once、retry
 このfreezeのpassはgit-free commit identity bindingとexact offline source-byte validationだけを支持する。
 retrieval performance、retrieval parity、物理統合可能性、NGR default変更は支持しない。後続developmentは
 terminal volumeを再利用せず、別Issueの新protocolで実行する。
+
+## 観測結果
+
+prebuild implementation commit `870b129457e2a6800f3254336231ce12b96f48ee`をpushし、GitHub Actions
+run `33293221626`のCore CI / Optional MCPがともにgreenであることを確認してから、v13 freezeをexactly
+once実行した。結果はpassである。同じprotocolのretryは行わず、commit-freeze volumeはterminalかつ
+non-reusableとして保持する。future runtime volumeは実行前後ともabsentである。
+
+commit-freeze volume createは1、commit identity verifier runは1、retryとverifier retryは0だった。
+wrapper、distinct base、evaluation wrapper / base、nested protocol evaluator / baseの6 surfacesへ同じ
+git-free verifierをbindした。expected / verified frozen protocol commitはともに
+`d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f`で、source archive commit
+`20a20007bdc4e25a6146a401e147c4c4552aa2a1`、23 protocol artifacts / 6,555,670 bytes、24 corpus
+documents / 151,585 bytesをexactに検証した。v12 predecessor 15 artifactsは実行前後でbyte不変だった。
+
+accepted image rebuild、container git executable / subprocess invocation、model-cache copy、model import /
+load / forward、registered query、development / holdout claim、worker process、observed result、shared SQLite
+openはすべて0である。旧rootのcreate / mount / readとv10 / v11 / v12 volume mountも0である。
+
+主要evidence SHA-256は次のとおりである。
+
+- `commit-identity-verification.json`: `8d11bbd15e4a05bbd5c8d13a93c4cbf124a35a48e62bd9c2a89858dd48f588bb`
+- `commit-freeze.pass.json`: `6ae0d3b1d842677d264387fe499245d5f9e4e242267dbc1a1561a5783ab9fcec`
+- `count-audit.json`: `54f14b87ecddec2c1c5572c4996c3888fbb9acd4e8366f7acd03960f5d823bcb`
+- `evidence-manifest.json`: `b068f3001f396e2e4442c90ac6e84f1d08a093b04c5a29b73b9ccfe601ad8c10`
+
+このpassのperformanceは`not assessed`であり、retrieval performance、retrieval parity、物理統合可能性を
+主張しない。後続development / queryはこのterminal volumeを再利用せず、別Issueの新protocolで実施する。
