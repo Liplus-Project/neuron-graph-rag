@@ -1,0 +1,16 @@
+{
+  "checks": [
+    {
+      "conclusion": "success",
+      "name": "Optional MCP adapter",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "CI",
+      "status": "completed"
+    }
+  ],
+  "preflight_evidence_commit": "2847cfd6e49879cf313a8c704efdf1fd464b8d17",
+  "protocol_id": "github-ngr-cross-encoder-precision-v14"
+}

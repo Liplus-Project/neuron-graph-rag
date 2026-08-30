@@ -1,0 +1,845 @@
+from __future__ import annotations
+
+import argparse
+import json
+from collections.abc import Mapping, Sequence
+from contextlib import contextmanager
+from pathlib import Path, PurePosixPath
+from typing import Any
+
+from . import cross_encoder_precision_v10_observation as model_freeze
+from . import cross_encoder_precision_v10_performance_observation as lifecycle
+from . import cross_encoder_precision_v13_observation as git_free_freeze
+
+PROTOCOL_ID = "github-ngr-cross-encoder-precision-v14"
+FREEZE_COMMIT = "56d32bac8144b96b03a6813d8732600a3491f8c9"
+V8_PROTOCOL_COMMIT = lifecycle.V8_PROTOCOL_COMMIT
+ROOT = Path(__file__).resolve().parents[2]
+MANIFEST = Path(
+    "tests/fixtures/github_cross_encoder_precision_v14_observation.manifest.json"
+)
+EVIDENCE = Path("tests/evidence/github_cross_encoder_precision_v14_observation")
+
+IMAGE = lifecycle.IMAGE
+IMAGE_ID = lifecycle.IMAGE_ID
+WSLC_VERSION = lifecycle.WSLC_VERSION
+VOLUME = "github-cross-encoder-precision-v14-runtime"
+V13_COMMIT_FREEZE_VOLUME = git_free_freeze.COMMIT_FREEZE_VOLUME
+V12_RUNTIME_VOLUME = "github-cross-encoder-precision-v12-runtime"
+V11_ROOT_FREEZE_VOLUME = "github-cross-encoder-precision-v11-root-freeze"
+V10_RUNTIME_VOLUME = "github-cross-encoder-precision-v10-runtime"
+V10_CACHE_FREEZE_VOLUME = "github-cross-encoder-precision-v10-cache-freeze"
+CONTAINER_ROOT = PurePosixPath("/opt/ngr-v14/runtime")
+CONTAINER_SOURCE = CONTAINER_ROOT / "source"
+CONTAINER_CACHE = CONTAINER_ROOT / "model-cache"
+CONTAINER_PROTOCOL_SOURCE = CONTAINER_ROOT / "frozen-source"
+CONTAINER_DATABASES = CONTAINER_ROOT / "databases"
+CONTAINER_RUNS = CONTAINER_ROOT / "runs"
+CONTAINER_ARCHIVE = CONTAINER_ROOT / "archive"
+CONTAINER_TRANSPORT = CONTAINER_ROOT / "transport"
+CONTAINER_MODEL_REGISTRY = (
+    CONTAINER_SOURCE / "tests/fixtures/github_cross_encoder_precision_v8.models.json"
+)
+OLD_V8_ROOT = PurePosixPath("/opt/ngr-v8/runtime")
+BATCH_SIZE = lifecycle.BATCH_SIZE
+SHARED_DATABASE = lifecycle.SHARED_DATABASE
+MODEL_CACHE = lifecycle.MODEL_CACHE
+WORKERS = lifecycle.WORKERS
+
+V13_COMMIT_IDENTITY_SHA256 = (
+    "8d11bbd15e4a05bbd5c8d13a93c4cbf124a35a48e62bd9c2a89858dd48f588bb"
+)
+V13_PASS_SHA256 = (
+    "6ae0d3b1d842677d264387fe499245d5f9e4e242267dbc1a1561a5783ab9fcec"
+)
+V13_COUNT_AUDIT_SHA256 = (
+    "54f14b87ecddec2c1c5572c4996c3888fbb9acd4e8366f7acd03960f5d823bcb"
+)
+V13_EVIDENCE_MANIFEST_SHA256 = (
+    "b068f3001f396e2e4442c90ac6e84f1d08a093b04c5a29b73b9ccfe601ad8c10"
+)
+
+canonical_sha256 = lifecycle.canonical_sha256
+sha256_file = lifecycle.sha256_file
+_write_json_exclusive = lifecycle._write_json_exclusive
+_hash_shared_database = lifecycle._hash_shared_database
+read_json = lifecycle.read_json
+
+
+def serialize_container_path(value: PurePosixPath | str) -> str:
+    return model_freeze.serialize_container_path(value)
+
+
+def named_volume_spec(
+    volume: str,
+    destination: PurePosixPath | str,
+    *,
+    mode: str | None = None,
+) -> str:
+    return model_freeze.named_volume_spec(volume, destination, mode=mode)
+
+
+def host_bind_spec(
+    source: Path,
+    destination: PurePosixPath | str,
+    *,
+    mode: str,
+) -> str:
+    return model_freeze.host_bind_spec(source, destination, mode=mode)
+
+
+def _manifest(root: Path) -> dict[str, Any]:
+    value = read_json(root / MANIFEST)
+    if not isinstance(value, dict):
+        raise TypeError("v14 observation manifest must be an object")
+    return value
+
+
+def _expected_container_paths() -> dict[str, str]:
+    return {
+        "root": serialize_container_path(CONTAINER_ROOT),
+        "source": serialize_container_path(CONTAINER_SOURCE),
+        "model_cache": serialize_container_path(CONTAINER_CACHE),
+        "protocol_source": serialize_container_path(CONTAINER_PROTOCOL_SOURCE),
+        "databases": serialize_container_path(CONTAINER_DATABASES),
+        "runs": serialize_container_path(CONTAINER_RUNS),
+        "archive": serialize_container_path(CONTAINER_ARCHIVE),
+        "transport": serialize_container_path(CONTAINER_TRANSPORT),
+        "old_v8_root": serialize_container_path(OLD_V8_ROOT),
+    }
+
+
+def _verify_v13_inputs(root: Path) -> dict[str, Any]:
+    manifest = _manifest(root)
+    expected_header = {
+        "protocol_id": PROTOCOL_ID,
+        "phase": "performance-observation",
+        "freeze_commit": FREEZE_COMMIT,
+        "v8_protocol_commit": V8_PROTOCOL_COMMIT,
+        "runtime_volume": VOLUME,
+        "v13_commit_freeze_volume": V13_COMMIT_FREEZE_VOLUME,
+        "v13_commit_freeze_volume_reusable": False,
+        "accepted_image": {"tag": IMAGE, "id": IMAGE_ID},
+        "accepted_image_rebuild_allowed": False,
+        "container_git_executable_allowed": False,
+        "wslc_version": WSLC_VERSION,
+    }
+    for key, expected in expected_header.items():
+        if manifest.get(key) != expected:
+            raise ValueError(f"v14 observation manifest mismatch: {key}")
+    if manifest.get("container_paths") != _expected_container_paths():
+        raise ValueError("v14 observation container path registry mismatch")
+    registry = manifest.get("v13_immutable_sha256")
+    if not isinstance(registry, dict) or len(registry) != 15:
+        raise ValueError("v14 v13 registry must contain exactly 15 files")
+    for relative, expected in registry.items():
+        path = root / str(relative)
+        if not path.is_file() or sha256_file(path) != expected:
+            raise ValueError(f"v13 artifact changed: {relative}")
+    anchors = {
+        "tests/evidence/github_cross_encoder_precision_v13/commit-identity-verification.json": V13_COMMIT_IDENTITY_SHA256,
+        "tests/evidence/github_cross_encoder_precision_v13/commit-freeze.pass.json": V13_PASS_SHA256,
+        "tests/evidence/github_cross_encoder_precision_v13/count-audit.json": V13_COUNT_AUDIT_SHA256,
+        "tests/evidence/github_cross_encoder_precision_v13/evidence-manifest.json": V13_EVIDENCE_MANIFEST_SHA256,
+    }
+    for relative, expected in anchors.items():
+        if registry.get(relative) != expected:
+            raise ValueError(f"v13 anchor is not frozen: {relative}")
+    prebuild = git_free_freeze.validate_prebuild(root)
+    terminal = git_free_freeze.audit_evidence(root)
+    if terminal.get("status") != "pass":
+        raise ValueError("successful v13 git-free identity evidence is required")
+    return {
+        "v13_artifact_count": len(registry),
+        "v13_predecessor_artifact_count": prebuild["predecessor_artifact_count"],
+        "v13_commit_identity_sha256": V13_COMMIT_IDENTITY_SHA256,
+        "v13_pass_sha256": V13_PASS_SHA256,
+        "v13_count_audit_sha256": V13_COUNT_AUDIT_SHA256,
+        "v13_evidence_manifest_sha256": V13_EVIDENCE_MANIFEST_SHA256,
+    }
+
+
+def _stored_freeze_contract(root: Path) -> dict[str, Any]:
+    v13_contract = _verify_v13_inputs(root)
+    image_contract = lifecycle.predecessor._stored_freeze_contract(root)
+    return {
+        **v13_contract,
+        "accepted_image": image_contract["accepted_image"],
+        "runtime_content_sha256": image_contract["runtime_content_sha256"],
+        "attestation_sha256": image_contract["attestation_sha256"],
+        "fingerprint_sha256": image_contract["fingerprint_sha256"],
+        "metadata_correspondence_sha256": image_contract[
+            "metadata_correspondence_sha256"
+        ],
+        "expected_distribution_count": image_contract[
+            "expected_distribution_count"
+        ],
+        "accepted_image_rebuild_count": 0,
+        "runtime_content_report_rerun_count": 0,
+        "attestation_report_rerun_count": 0,
+        "v13_commit_freeze_volume_mounted": False,
+        "v13_commit_freeze_volume_read": False,
+        "v13_commit_freeze_volume_copied": False,
+        "v13_commit_freeze_volume_reused": False,
+        "v12_runtime_volume_mounted": False,
+        "v12_runtime_volume_read": False,
+        "v12_runtime_volume_reused": False,
+        "v11_root_freeze_volume_mounted": False,
+        "v11_root_freeze_volume_read": False,
+        "v11_root_freeze_volume_copied": False,
+        "v11_root_freeze_volume_reused": False,
+        "v10_runtime_volume_mounted": False,
+        "v10_runtime_volume_read": False,
+        "v10_runtime_volume_reused": False,
+        "v10_cache_freeze_volume_mounted": False,
+        "v10_cache_freeze_volume_read": False,
+        "v10_cache_freeze_volume_reused": False,
+        "old_v8_root_created": False,
+        "old_v8_root_mounted": False,
+        "old_v8_root_read": False,
+    }
+
+
+def _write_lifecycle_json_exclusive(path: Path, value: object) -> None:
+    if path.name == "platform-report.json" and isinstance(value, dict):
+        value = dict(value)
+        value["v13_commit_freeze_volume"] = value.pop("path_freeze_volume")
+        value["v13_commit_freeze_volume_mounted"] = value.pop(
+            "path_freeze_volume_mounted"
+        )
+        value["v13_commit_freeze_volume_read"] = value.pop(
+            "path_freeze_volume_read"
+        )
+        value.update(
+            {
+                "v13_commit_freeze_volume_reused": False,
+                "v12_runtime_volume_mounted": False,
+                "v12_runtime_volume_read": False,
+                "v12_runtime_volume_reused": False,
+                "v11_root_freeze_volume_mounted": False,
+                "v11_root_freeze_volume_read": False,
+                "v11_root_freeze_volume_reused": False,
+                "v10_runtime_volume_mounted": False,
+                "v10_runtime_volume_read": False,
+                "v10_runtime_volume_reused": False,
+                "v10_cache_freeze_volume_mounted": False,
+                "v10_cache_freeze_volume_read": False,
+                "v10_cache_freeze_volume_reused": False,
+                "old_v8_root_created": False,
+                "old_v8_root_mounted": False,
+                "old_v8_root_read": False,
+            }
+        )
+    _write_json_exclusive(path, value)
+
+
+def _canonical_lifecycle_value(value: object) -> str:
+    if isinstance(value, dict) and "v13_commit_freeze_volume" in value:
+        value = dict(value)
+        value["path_freeze_volume"] = value.pop("v13_commit_freeze_volume")
+        value["path_freeze_volume_mounted"] = value.pop(
+            "v13_commit_freeze_volume_mounted"
+        )
+        value["path_freeze_volume_read"] = value.pop(
+            "v13_commit_freeze_volume_read"
+        )
+        for name in (
+            "v13_commit_freeze_volume_reused",
+            "v12_runtime_volume_mounted",
+            "v12_runtime_volume_read",
+            "v12_runtime_volume_reused",
+            "v11_root_freeze_volume_mounted",
+            "v11_root_freeze_volume_read",
+            "v11_root_freeze_volume_reused",
+            "v10_runtime_volume_mounted",
+            "v10_runtime_volume_read",
+            "v10_runtime_volume_reused",
+            "v10_cache_freeze_volume_mounted",
+            "v10_cache_freeze_volume_read",
+            "v10_cache_freeze_volume_reused",
+            "old_v8_root_created",
+            "old_v8_root_mounted",
+            "old_v8_root_read",
+        ):
+            value.pop(name)
+    return canonical_sha256(value)
+
+
+def _container_command(
+    *arguments: str,
+    extra_volumes: Sequence[str] = (),
+    name: str | None = None,
+) -> list[str]:
+    command = ["wslc", "run", "--rm", "--network", "none"]
+    if name is not None:
+        command.extend(["--name", name])
+    command.extend(["--volume", named_volume_spec(VOLUME, CONTAINER_ROOT)])
+    for volume in extra_volumes:
+        command.extend(["--volume", volume])
+    command.extend(
+        [
+            "--env",
+            f"PYTHONPATH={serialize_container_path(CONTAINER_SOURCE / 'src')}",
+            "--env",
+            "HF_HUB_OFFLINE=1",
+            "--env",
+            "TRANSFORMERS_OFFLINE=1",
+            "--env",
+            f"HF_HOME={serialize_container_path(CONTAINER_CACHE)}",
+            "--env",
+            f"HF_HUB_CACHE={serialize_container_path(CONTAINER_CACHE)}",
+            "--env",
+            "NO_PROXY=*",
+            "--workdir",
+            serialize_container_path(CONTAINER_SOURCE),
+            "--entrypoint",
+            "python",
+            IMAGE,
+            "-m",
+            "neuron_graph_rag.cross_encoder_precision_v14_performance_observation",
+            *arguments,
+        ]
+    )
+    return command
+
+
+def _source_initialization_script() -> str:
+    root = serialize_container_path(CONTAINER_ROOT)
+    source = serialize_container_path(CONTAINER_SOURCE)
+    cache = serialize_container_path(CONTAINER_CACHE)
+    old_root = serialize_container_path(OLD_V8_ROOT)
+    paths = " ".join(
+        serialize_container_path(path)
+        for path in (
+            CONTAINER_DATABASES,
+            CONTAINER_RUNS,
+            CONTAINER_ARCHIVE,
+            CONTAINER_TRANSPORT,
+        )
+    )
+    fixture = serialize_container_path(
+        CONTAINER_SOURCE
+        / "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+    )
+    return (
+        "set -eu; "
+        f"test -d '{root}'; test ! -e '{source}'; test ! -e '{cache}'; "
+        f"test ! -e '{old_root}'; mkdir -p {paths}; mkdir '{source}'; "
+        f"cp -a /input/source/. '{source}/'; "
+        f"rm -rf '{source}/.git'; test -f '{fixture}'; "
+        f"test ! -e '{cache}'; test ! -e '{old_root}'"
+    )
+
+
+def _container_model_copy(source: str, cache: str, output: str) -> dict[str, Any]:
+    return model_freeze._container_model_copy_verify(
+        source,
+        cache,
+        serialize_container_path(CONTAINER_MODEL_REGISTRY),
+        output,
+    )
+
+
+def _configure_container_harness() -> None:
+    root = Path(serialize_container_path(CONTAINER_ROOT))
+    source = Path(serialize_container_path(CONTAINER_SOURCE))
+    cache = Path(serialize_container_path(CONTAINER_CACHE))
+    protocol_source = Path(serialize_container_path(CONTAINER_PROTOCOL_SOURCE))
+    evidence = Path(serialize_container_path(CONTAINER_SOURCE / EVIDENCE.as_posix()))
+    old_root = Path(serialize_container_path(OLD_V8_ROOT))
+    if old_root.exists():
+        raise FileExistsError("old v8 runtime root must remain absent")
+    identity = read_json(
+        source
+        / "tests/fixtures/github_cross_encoder_precision_v13.source-identity.json"
+    )
+    if not isinstance(identity, dict):
+        raise TypeError("v13 source identity must be an object")
+    git_free_freeze.bind_git_free_commit_verifier(
+        lifecycle.predecessor,
+        volume=VOLUME,
+        root=root,
+        source=source,
+        cache=cache,
+        protocol_source=protocol_source,
+        evidence=evidence,
+        identity=identity,
+    )
+
+
+def _verification_commands(root: Path) -> tuple[list[str], ...]:
+    python = root / ".venv" / "Scripts" / "python.exe"
+    return (
+        [
+            "uvx",
+            "--offline",
+            "ruff",
+            "check",
+            "src/neuron_graph_rag/cross_encoder_precision_v14_performance_observation.py",
+            "tests/test_cross_encoder_precision_v14_performance_observation.py",
+        ],
+        [
+            str(python),
+            "-m",
+            "unittest",
+            "tests.test_cross_encoder_precision_v8",
+            "tests.test_cross_encoder_precision_v8_observation",
+            "tests.test_cross_encoder_precision_v10",
+            "tests.test_cross_encoder_precision_v10_performance_observation",
+            "tests.test_cross_encoder_precision_v11_observation",
+            "tests.test_cross_encoder_precision_v12_performance_observation",
+            "tests.test_cross_encoder_precision_v13_observation",
+            "tests.test_cross_encoder_precision_v14_performance_observation",
+        ],
+        [
+            str(python),
+            "-m",
+            "neuron_graph_rag.cross_encoder_precision_v8_evaluation",
+            "audit",
+        ],
+        [
+            str(python),
+            "-m",
+            "neuron_graph_rag.cross_encoder_precision_v8_evaluation",
+            "probe",
+        ],
+        [
+            str(python),
+            "-m",
+            "neuron_graph_rag.cross_encoder_precision_v10_observation",
+            "audit",
+        ],
+        [
+            str(python),
+            "-m",
+            "neuron_graph_rag.cross_encoder_precision_v13_observation",
+            "audit",
+        ],
+        [
+            str(python),
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_*.py",
+        ],
+    )
+
+
+def _run_stage_host(
+    stage: str,
+    root: Path,
+    rows: list[dict[str, Any]],
+    claim_counts: dict[str, int],
+) -> dict[str, Any]:
+    lifecycle.lifecycle._run_logged(
+        _container_command("claim", "--stage", stage), root, rows
+    )
+    claim_counts[stage] += 1
+    stage_root = CONTAINER_RUNS / stage
+    database_root = CONTAINER_DATABASES / stage
+    for kind, replay in WORKERS:
+        identity = f"ngr-v14-{stage}-{kind}-{replay}"
+        command = _container_command(
+            "worker",
+            "--stage",
+            stage,
+            "--kind",
+            kind,
+            "--replay",
+            replay,
+            "--database",
+            serialize_container_path(database_root / f"{kind}-{replay}.sqlite3"),
+            "--output",
+            serialize_container_path(stage_root / f"{kind}-{replay}.json"),
+            name=identity,
+        )
+        insert_at = command.index("--workdir")
+        command[insert_at:insert_at] = [
+            "--env",
+            f"NGR_V8_CONTAINER_IDENTITY={identity}",
+        ]
+        lifecycle.lifecycle._run_logged(command, root, rows)
+    result = json.loads(
+        lifecycle.lifecycle._run_logged(
+            _container_command("finalize", "--stage", stage), root, rows
+        )
+    )
+    lifecycle._export_volume_evidence(root, rows)
+    return result
+
+
+def _lifecycle_replacements() -> Mapping[str, Any]:
+    return {
+        "PROTOCOL_ID": PROTOCOL_ID,
+        "FREEZE_COMMIT": FREEZE_COMMIT,
+        "V8_PROTOCOL_COMMIT": V8_PROTOCOL_COMMIT,
+        "ROOT": ROOT,
+        "MANIFEST": MANIFEST,
+        "EVIDENCE": EVIDENCE,
+        "IMAGE": IMAGE,
+        "IMAGE_ID": IMAGE_ID,
+        "WSLC_VERSION": WSLC_VERSION,
+        "VOLUME": VOLUME,
+        "CACHE_FREEZE_VOLUME": V13_COMMIT_FREEZE_VOLUME,
+        "CONTAINER_ROOT": CONTAINER_ROOT,
+        "CONTAINER_SOURCE": CONTAINER_SOURCE,
+        "CONTAINER_CACHE": CONTAINER_CACHE,
+        "CONTAINER_DATABASES": CONTAINER_DATABASES,
+        "CONTAINER_RUNS": CONTAINER_RUNS,
+        "CONTAINER_ARCHIVE": CONTAINER_ARCHIVE,
+        "CONTAINER_TRANSPORT": CONTAINER_TRANSPORT,
+        "CONTAINER_MODEL_REGISTRY": CONTAINER_MODEL_REGISTRY,
+        "_manifest": _manifest,
+        "_write_lifecycle_json_exclusive": _write_lifecycle_json_exclusive,
+        "_verify_cache_freeze_inputs": _verify_v13_inputs,
+        "_stored_freeze_contract": _stored_freeze_contract,
+        "_container_command": _container_command,
+        "_source_initialization_script": _source_initialization_script,
+        "_container_model_copy": _container_model_copy,
+        "_verification_commands": _verification_commands,
+        "_run_stage_host": _run_stage_host,
+    }
+
+
+@contextmanager
+def _v14_scope() -> Any:
+    replacements = _lifecycle_replacements()
+    original = {name: getattr(lifecycle, name) for name in replacements}
+    configure = lifecycle.lifecycle._configure_container_harness
+    canonical = lifecycle.lifecycle.canonical_sha256
+    for name, value in replacements.items():
+        setattr(lifecycle, name, value)
+    lifecycle.lifecycle._configure_container_harness = _configure_container_harness
+    lifecycle.lifecycle.canonical_sha256 = _canonical_lifecycle_value
+    try:
+        yield
+    finally:
+        lifecycle.lifecycle.canonical_sha256 = canonical
+        lifecycle.lifecycle._configure_container_harness = configure
+        for name, value in original.items():
+            setattr(lifecycle, name, value)
+
+
+def preflight(root: Path = ROOT, model_cache: Path | None = None) -> dict[str, Any]:
+    source_cache = (
+        model_freeze.discover_source_cache(root)
+        if model_cache is None
+        else model_cache
+    )
+    with _v14_scope():
+        return lifecycle.preflight(root, source_cache)
+
+
+def verify_preflight(root: Path = ROOT) -> dict[str, Any]:
+    with _v14_scope():
+        return lifecycle.verify_preflight(root)
+
+
+def run_once(root: Path = ROOT) -> dict[str, Any]:
+    with _v14_scope():
+        return lifecycle.run_once(root)
+
+
+def _write_terminal_manifest(evidence: Path, status: str) -> None:
+    registry = {
+        path.relative_to(evidence).as_posix(): sha256_file(path)
+        for path in sorted(evidence.rglob("*"), key=lambda item: item.as_posix())
+        if path.is_file() and path.name != "observation-evidence-manifest.json"
+    }
+    _write_json_exclusive(
+        evidence / "observation-evidence-manifest.json",
+        {"protocol_id": PROTOCOL_ID, "status": status, "files_sha256": registry},
+    )
+
+
+def finalize_preflight_error(root: Path = ROOT) -> dict[str, Any]:
+    evidence = root / EVIDENCE
+    raw_path = evidence / "preflight.error.json"
+    terminal_path = evidence / "preflight-terminal.json"
+    if not raw_path.is_file():
+        raise FileNotFoundError("v14 raw preflight error evidence is missing")
+    if (evidence / "preflight.json").exists():
+        raise ValueError("successful preflight cannot be finalized as error")
+    if terminal_path.exists() or (
+        evidence / "observation-evidence-manifest.json"
+    ).exists():
+        raise FileExistsError("v14 preflight error is already terminal")
+    raw = read_json(raw_path)
+    for key in (
+        "development_claim_count",
+        "holdout_claim_count",
+        "registered_query_execution_count",
+        "observed_stage_inference_count",
+        "result_count",
+        "retry_count",
+    ):
+        if raw.get(key) != 0:
+            raise ValueError("v14 raw preflight error result count mismatch")
+    if raw.get("preflight_forward_inference_count") not in {0, 2}:
+        raise ValueError("v14 raw preflight probe count mismatch")
+    before = raw.get("shared_database_sha256_before_preflight")
+    after: str | None = None
+    post_hash_error: str | None = None
+    try:
+        after = _hash_shared_database()
+    except (OSError, RuntimeError, ValueError) as error:
+        post_hash_error = f"{type(error).__name__}: {error}"
+    terminal = {
+        "protocol_id": PROTOCOL_ID,
+        "status": "error",
+        "phase": "preflight",
+        "implementation_commit": raw.get("implementation_commit"),
+        "raw_failure_sha256": sha256_file(raw_path),
+        "failure_cause": raw.get("error"),
+        "runtime_volume_create_count": raw.get("runtime_volume_create_count"),
+        "development_claim_count": 0,
+        "holdout_claim_count": 0,
+        "registered_query_execution_count": 0,
+        "preflight_forward_inference_count": raw.get(
+            "preflight_forward_inference_count"
+        ),
+        "observed_stage_inference_count": 0,
+        "result_count": 0,
+        "retry_count": 0,
+        "same_protocol_retry_allowed": False,
+        "accepted_image_rebuild_count": 0,
+        "runtime_report_rerun_count": 0,
+        "attestation_rerun_count": 0,
+        "v13_commit_freeze_volume_mounted": False,
+        "v13_commit_freeze_volume_read": False,
+        "v13_commit_freeze_volume_reused": False,
+        "v12_runtime_volume_mounted": False,
+        "v12_runtime_volume_read": False,
+        "v12_runtime_volume_reused": False,
+        "v11_root_freeze_volume_mounted": False,
+        "v11_root_freeze_volume_read": False,
+        "v11_root_freeze_volume_reused": False,
+        "v10_runtime_volume_mounted": False,
+        "v10_runtime_volume_read": False,
+        "v10_runtime_volume_reused": False,
+        "v10_cache_freeze_volume_mounted": False,
+        "v10_cache_freeze_volume_read": False,
+        "v10_cache_freeze_volume_reused": False,
+        "old_v8_root_created": False,
+        "old_v8_root_mounted": False,
+        "old_v8_root_read": False,
+        "shared_database_sha256_before_preflight": before,
+        "shared_database_sha256_after_error": after,
+        "shared_database_post_error_hash_recorded": after is not None,
+        "shared_database_post_error_hash_error": post_hash_error,
+        "shared_database_unchanged": before is not None and before == after,
+        "performance": "not assessed",
+    }
+    _write_json_exclusive(terminal_path, terminal)
+    _write_terminal_manifest(evidence, "preflight-error")
+    return terminal
+
+
+def audit_evidence(root: Path = ROOT) -> dict[str, Any]:
+    evidence = root / EVIDENCE
+    execution_error = evidence / "execution-error.json"
+    if execution_error.is_file():
+        _stored_freeze_contract(root)
+        if (evidence / "execution.json").exists():
+            raise ValueError("v14 terminal evidence contains two outcomes")
+        with _v14_scope(), lifecycle._lifecycle_scope():
+            manifest = lifecycle.lifecycle._verify_hash_manifest(
+                evidence, "observation-evidence-manifest.json", exact=True
+            )
+        preflight = read_json(evidence / "preflight.json")
+        error = read_json(execution_error)
+        if (
+            preflight.get("preflight_forward_inference_count") != 2
+            or preflight.get("development_claim_count") != 0
+            or preflight.get("holdout_claim_count") != 0
+            or preflight.get("registered_query_execution_count") != 0
+            or preflight.get("observed_stage_inference_count") != 0
+            or preflight.get("result_count") != 0
+            or preflight.get("retry_count") != 0
+            or error.get("retry_count") != 0
+            or error.get("development_claim_count") != 0
+            or error.get("holdout_claim_count") != 0
+            or error.get("shared_database_unchanged") is not True
+            or error.get("recovery_errors") != []
+            or manifest.get("status") != "error"
+        ):
+            raise ValueError("v14 pre-claim terminal error mismatch")
+        before = preflight.get("shared_database_sha256_before_preflight")
+        if (
+            before is None
+            or before != preflight.get("shared_database_sha256_after_preflight")
+            or before != error.get("shared_database_sha256_before_preflight")
+            or before != error.get("shared_database_sha256_before_claim")
+            or before != error.get("shared_database_sha256_after_observation")
+        ):
+            raise ValueError("v14 terminal shared database hash mismatch")
+        cause = str(error.get("error", ""))
+        if (
+            "ValueError: protocol root does not match frozen source identity"
+            not in cause
+        ):
+            raise ValueError("v14 pre-claim failure cause mismatch")
+        commands = error.get("commands")
+        if not isinstance(commands, list):
+            raise TypeError("v14 terminal command registry must be an array")
+        claim_rows = [
+            row
+            for row in commands
+            if isinstance(row, dict)
+            and isinstance(row.get("command"), list)
+            and "claim" in row["command"]
+        ]
+        if len(claim_rows) != 1 or claim_rows[0].get("returncode") != 1:
+            raise ValueError("v14 failed claim command mismatch")
+        if any(
+            isinstance(row, dict)
+            and isinstance(row.get("command"), list)
+            and ("worker" in row["command"] or "finalize" in row["command"])
+            for row in commands
+        ):
+            raise ValueError("v14 pre-claim failure executed a worker")
+        command_text = "\n".join(
+            str(value)
+            for row in commands
+            if isinstance(row, dict) and isinstance(row.get("command"), list)
+            for value in row["command"]
+        )
+        for forbidden in (
+            V13_COMMIT_FREEZE_VOLUME,
+            V12_RUNTIME_VOLUME,
+            V11_ROOT_FREEZE_VOLUME,
+            V10_RUNTIME_VOLUME,
+            V10_CACHE_FREEZE_VOLUME,
+            serialize_container_path(OLD_V8_ROOT),
+        ):
+            if forbidden in command_text:
+                raise ValueError(f"v14 terminal command crossed boundary: {forbidden}")
+        return {
+            "protocol_id": PROTOCOL_ID,
+            "status": "error",
+            "failure_point": "development-claim-protocol-root",
+            "development_claim_count": 0,
+            "holdout_claim_count": 0,
+            "worker_process_count": 0,
+            "observed_result_count": 0,
+            "retry_count": 0,
+            "shared_database_unchanged": True,
+            "performance": "not assessed",
+        }
+    with _v14_scope():
+        result = lifecycle.audit_evidence(root)
+    terminal_path = root / EVIDENCE / "preflight-terminal.json"
+    if result.get("status") == "preflight-error" and terminal_path.is_file():
+        terminal = read_json(terminal_path)
+        for key in (
+            "v13_commit_freeze_volume_mounted",
+            "v13_commit_freeze_volume_read",
+            "v13_commit_freeze_volume_reused",
+            "v12_runtime_volume_mounted",
+            "v12_runtime_volume_read",
+            "v12_runtime_volume_reused",
+            "v11_root_freeze_volume_mounted",
+            "v11_root_freeze_volume_read",
+            "v11_root_freeze_volume_reused",
+            "v10_runtime_volume_mounted",
+            "v10_runtime_volume_read",
+            "v10_runtime_volume_reused",
+            "v10_cache_freeze_volume_mounted",
+            "v10_cache_freeze_volume_read",
+            "v10_cache_freeze_volume_reused",
+            "old_v8_root_created",
+            "old_v8_root_mounted",
+            "old_v8_root_read",
+        ):
+            if terminal.get(key) is not False:
+                raise ValueError(f"v14 terminal boundary mismatch: {key}")
+    return result
+
+
+def _read_json_command(path: str) -> dict[str, Any]:
+    return lifecycle._read_json_command(path)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Observe parameterized WSLC rank benchmark v14 once"
+    )
+    commands = parser.add_subparsers(dest="command", required=True)
+    for name in (
+        "preflight",
+        "verify-preflight",
+        "run",
+        "audit",
+        "finalize-preflight-error",
+        "dependency-report",
+    ):
+        commands.add_parser(name)
+    copy = commands.add_parser("model-copy-verify")
+    copy.add_argument("--source-cache", required=True)
+    copy.add_argument("--cache", required=True)
+    copy.add_argument("--output", required=True)
+    probe = commands.add_parser("model-probe")
+    probe.add_argument("--cache", required=True)
+    read = commands.add_parser("read-json")
+    read.add_argument("path")
+    claim = commands.add_parser("claim")
+    claim.add_argument("--stage", required=True)
+    worker = commands.add_parser("worker")
+    worker.add_argument("--stage", required=True)
+    worker.add_argument("--kind", required=True)
+    worker.add_argument("--replay", required=True)
+    worker.add_argument("--database", required=True)
+    worker.add_argument("--output", required=True)
+    finalize = commands.add_parser("finalize")
+    finalize.add_argument("--stage", required=True)
+    failure = commands.add_parser("fail-stage")
+    failure.add_argument("--stage", required=True)
+    failure.add_argument("--message", required=True)
+    arguments = parser.parse_args(argv)
+    if arguments.command == "preflight":
+        result = preflight()
+    elif arguments.command == "verify-preflight":
+        result = verify_preflight()
+    elif arguments.command == "run":
+        result = run_once()
+    elif arguments.command == "audit":
+        result = audit_evidence()
+    elif arguments.command == "finalize-preflight-error":
+        result = finalize_preflight_error()
+    elif arguments.command == "model-copy-verify":
+        result = _container_model_copy(
+            arguments.source_cache, arguments.cache, arguments.output
+        )
+    elif arguments.command == "read-json":
+        result = _read_json_command(arguments.path)
+    else:
+        with _v14_scope(), lifecycle._lifecycle_scope():
+            if arguments.command == "model-probe":
+                result = lifecycle.lifecycle._container_model_probe(arguments.cache)
+            elif arguments.command == "dependency-report":
+                result = lifecycle.lifecycle._dependency_report()
+            elif arguments.command == "claim":
+                result = lifecycle.lifecycle._container_claim(arguments.stage)
+            elif arguments.command == "worker":
+                result = lifecycle.lifecycle._container_worker(
+                    arguments.stage,
+                    arguments.kind,
+                    arguments.replay,
+                    arguments.database,
+                    arguments.output,
+                )
+            elif arguments.command == "finalize":
+                result = lifecycle.lifecycle._container_finalize(arguments.stage)
+            else:
+                result = lifecycle.lifecycle._container_fail_stage(
+                    arguments.stage, arguments.message
+                )
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
