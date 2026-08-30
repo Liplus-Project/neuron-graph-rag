@@ -1,0 +1,21 @@
+{
+  "accepted_image_rebuilt": false,
+  "additional_attestation_run_count": 0,
+  "additional_runtime_report_run_count": 0,
+  "development_claim_count": 0,
+  "freeze_commit": "7a4b63d65c5abc84e7550856a965572837b238b0",
+  "holdout_claim_count": 0,
+  "implementation_commit": "51605f4efb64b45f3aaae5f04602890b701a1d58",
+  "observed_stage_inference_count": 0,
+  "phase": {
+    "development": "unobserved",
+    "holdout": "unobserved"
+  },
+  "predecessor_evidence_semantic_content_opened": false,
+  "predecessor_packet_reused": false,
+  "protocol_id": "github-ngr-cross-encoder-precision-v18",
+  "registered_query_execution_count": 0,
+  "result_count": 0,
+  "retry_count": 0,
+  "v8_protocol_commit": "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f"
+}

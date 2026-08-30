@@ -53,6 +53,24 @@ dedicated / related targeted、Ruff、auditsだけを再検証し、full suite�
 evidenceをcommit / pushし、そのremote CI green後だけdevelopment claimを開く。preflight errorはその場で
 terminal化・hash固定し、同じv18 protocolを再試行しない。
 
+### Preflight実測
+
+prebuild implementation commit `51605f4efb64b45f3aaae5f04602890b701a1d58`に対するGitHub Actions run
+`33342936425`はCore / Optional MCPともgreenだった。その後、2026-08-30T23:56:06Zにv18 preflightを
+exactly once実行し、成功した。同一v18 preflightのretryは0である。
+
+runtime volume createは1、accepted image rebuildは0、networkは`none`だった。model 2 revisionsのrequired
+filesは12 files / 3,427,616,927 bytesで、read-only source cacheからのexclusive-copy後に全bytes一致した。
+synthetic probe forwardは2、development claim、holdout claim、registered query、result、retryはいずれも0で
+ある。shared Windows SQLiteはopenせず、前後SHA-256はともに
+`84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e`だった。v10からv17までの禁止volumeは
+mount、read、reuseせず、旧`/opt/ngr-v8/runtime`もcreate、mount、readしていない。self-auditはliteral
+`neuron_graph_rag.cross_encoder_precision_v18_performance_observation`で実行され、`__main__`は使われなかった。
+
+preflight evidence manifest SHA-256は
+`f28fe36099564db2d578c1bc65dd9afcc15e7c58d8a32cdea41fce8165fcd2aa`である。performanceは引き続き
+`not assessed`であり、developmentはこのevidence commitのremote CI greenまで閉じたままとする。
+
 ## Developmentとholdout
 
 `tools/run_cross_encoder_precision_v18_observation_wslc.ps1 run`はpushed remote HEADとCI greenを検証してから
