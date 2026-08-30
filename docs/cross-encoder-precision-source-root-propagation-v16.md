@@ -48,3 +48,30 @@ full suiteはPR前に1回だけ実行し、以後は共通 / core code変更時�
 
 v16のpassはexact source-root propagation、6-surface binding、git-free exact source-byte verificationだけを
 支持する。rank performance、retrieval parity、物理統合可能性、NGR default変更は支持しない。
+
+## Terminal execution result
+
+prebuild commit `c0fdeffd75a6f21d4abd2784cc937e5ee6420346`のPR CI run `33319201845`がCore /
+Optional MCPともgreenで、専用freeze volumeとfuture runtime volumeのabsenceを確認した後、v16 one-shotを
+exactly once実行した。statusはpassで、同じv16は再実行しない。
+
+actual loaderはclaim source rootを`PosixPath`として運び、共通resolverはconfigured source
+`/opt/ngr-v16/source-root-propagation-freeze/source`とのexact一致を確認してconfigured frozen source
+`/opt/ngr-v16/source-root-propagation-freeze/frozen-source`へ正規化した。同一verifierはdistinct 6 surfacesへ
+bindされ、frozen protocol 23 artifactsとcorpus 24 documentsのexact bytesをgit / subprocessなしで検証した。
+
+専用volume createは1、verifier runは1、retryは0、future runtime volumeは前後ともabsent、v15 predecessor
+14 artifactsはbyte不変だった。accepted image rebuild、model-cache copy、model import / load / forward、
+registered query、development / holdout claim、worker、result、shared SQLite open、container git / subprocessは
+すべて0で、v10-v15 volumeはmountしていない。
+
+主要SHA-256は次のとおりである。
+
+- `source-root-propagation-verification.json`: `8dc0fc41cde99db000208e05fb203dd1c8cdf57595492c9d8280bd702897825e`
+- `source-root-propagation.pass.json`: `50b78e8f2702298fb59edb7a1a446cab298571dc6107f9a690515a9e97eded49`
+- `count-audit.json`: `52e849aba9e368ea8159aef6377939d67455fe6f4338c0d5c19c43918b620656`
+- `evidence-manifest.json`: `7e7652a9846ef0dfaf68cfacd4270dc04fbe8ef20dea835214d7d504bfccfd87`
+
+このpassはsource-root propagationとexact byte verificationのresult-free範囲だけを支持する。rank performance、
+retrieval parity、物理統合可能性は未評価で、NGR defaultは変更しない。後続performance observationはterminal
+v16 volumeを再利用せず、別protocolで実行する。
