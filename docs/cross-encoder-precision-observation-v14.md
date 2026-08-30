@@ -54,3 +54,18 @@ SQLiteだけをmutableにする。
 観測前はperformanceを`not assessed`とする。terminal evidence固定後も、主張は実測したrank-only gate、
 selected candidate、holdout開閉、count、hashの範囲に限定する。retrieval parity、physical integration、
 production performance、NGR default変更をこのprotocolだけから主張しない。
+
+## Preflight実測
+
+prebuild implementation commit `8b10b7b9e5d71e65d1929a33bfc68c4f8fc2641f` のCore / Optional MCP
+CI run `33294338833`がgreenになった後、v14 preflightをexactly once実行した。runtime volumeは開始時absentで
+exclusive-createされ、accepted image rebuild、旧volumeのmount / read / reuse、旧v8 rootのcreate / mount /
+read、registered query、development / holdout claim、result、retryはいずれも0だった。model-cacheはsource
+initializationでは作成されず、read-only source cacheから2 revisions / 12 files / 3,427,616,927 bytesをexact
+hash付きでcopyした。synthetic probeは2 forward inferenceを完了した。
+
+shared DB SHA-256はpreflight前後とも
+`84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e`で不変だった。preflight evidence
+manifest SHA-256は`beac5d13447d2d326c549ca85e9111d57f54d2afddb3ba0dd67b25b46155a182`である。
+development / holdout performanceは引き続き`not assessed`であり、preflight evidence commitのCI green前には
+developmentを開かない。

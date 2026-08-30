@@ -1,0 +1,235 @@
+{
+  "all_required_files_byte_identical": true,
+  "cache_path": "/opt/ngr-v14/runtime/model-cache",
+  "model_count": 2,
+  "model_forward_inference_count": 0,
+  "model_import_count": 0,
+  "model_load_count": 0,
+  "models": [
+    {
+      "model_id": "BAAI/bge-reranker-base",
+      "required_files": [
+        {
+          "git_blob_id": "ff248a5f7d76e27b10778b3c593c9fba1df4c448",
+          "lfs_sha256": null,
+          "path": "config.json",
+          "registry_git_blob_id": "ff248a5f7d76e27b10778b3c593c9fba1df4c448",
+          "sha256": "289adf7ada1eb6b4afa7589a48a032d45a076cf2e46dcdb3b4cabc33be14f708",
+          "size": 799
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "ced967c45fd1902eb92716c9ceeca7c95a936770ea9db611f5a841b926e33fbd",
+          "path": "model.safetensors",
+          "registry_git_blob_id": "2602cf45b8859e9f240d6bd2e01e3d0b22d589c8",
+          "sha256": "ced967c45fd1902eb92716c9ceeca7c95a936770ea9db611f5a841b926e33fbd",
+          "size": 1112206140
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+          "path": "sentencepiece.bpe.model",
+          "registry_git_blob_id": "7a3f40a75f870bc1f21700cd414dc2acc431583c",
+          "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+          "size": 5069051
+        },
+        {
+          "git_blob_id": "68171d1ff68b731a33d119708476692c094a466b",
+          "lfs_sha256": null,
+          "path": "special_tokens_map.json",
+          "registry_git_blob_id": "68171d1ff68b731a33d119708476692c094a466b",
+          "sha256": "d5469a60db23249c7f8945013d78df30b44b6bf686c6bb4740f4223f77b1b535",
+          "size": 279
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "9eb652ac4e40cc093272bbbe0f55d521cf67570060227109b5cdc20945a4489e",
+          "path": "tokenizer.json",
+          "registry_git_blob_id": "a128fc2756518dd55d7cad49e3b6663d01a07f95",
+          "sha256": "9eb652ac4e40cc093272bbbe0f55d521cf67570060227109b5cdc20945a4489e",
+          "size": 17098107
+        },
+        {
+          "git_blob_id": "059214673d9d6d2ee319411e2ffec8c024b816d5",
+          "lfs_sha256": null,
+          "path": "tokenizer_config.json",
+          "registry_git_blob_id": "059214673d9d6d2ee319411e2ffec8c024b816d5",
+          "sha256": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b",
+          "size": 443
+        }
+      ],
+      "revision": "2cfc18c9415c912f9d8155881c133215df768a70"
+    },
+    {
+      "model_id": "BAAI/bge-reranker-v2-m3",
+      "required_files": [
+        {
+          "git_blob_id": "9f62673cb00ec41dcec8947b9ed16f6f2eb23ba2",
+          "lfs_sha256": null,
+          "path": "config.json",
+          "registry_git_blob_id": "9f62673cb00ec41dcec8947b9ed16f6f2eb23ba2",
+          "sha256": "13dcd6c31d9fec9d1d8e158702072f62d7fa7d312a64b9fe057bec9a08cfe41a",
+          "size": 795
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "d9e3e081faff1eefb84019509b2f5558fd74c1a05a2c7db22f74174fcedb5286",
+          "path": "model.safetensors",
+          "registry_git_blob_id": "773a0a7d7cc8a010835938a3a82a87eac8b21909",
+          "sha256": "d9e3e081faff1eefb84019509b2f5558fd74c1a05a2c7db22f74174fcedb5286",
+          "size": 2271071852
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+          "path": "sentencepiece.bpe.model",
+          "registry_git_blob_id": "7a3f40a75f870bc1f21700cd414dc2acc431583c",
+          "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+          "size": 5069051
+        },
+        {
+          "git_blob_id": "b1879d702821e753ffe4245048eee415d54a9385",
+          "lfs_sha256": null,
+          "path": "special_tokens_map.json",
+          "registry_git_blob_id": "b1879d702821e753ffe4245048eee415d54a9385",
+          "sha256": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835",
+          "size": 964
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "69564b696052886ed0ac63fa393e928384e0f8caada38c1f4864a9bfbf379c15",
+          "path": "tokenizer.json",
+          "registry_git_blob_id": "1c98a28b19c084901b2622d8e8b15e85eed13bff",
+          "sha256": "69564b696052886ed0ac63fa393e928384e0f8caada38c1f4864a9bfbf379c15",
+          "size": 17098273
+        },
+        {
+          "git_blob_id": "328a00a9a560aadcf2a3064f917517359eb3cc26",
+          "lfs_sha256": null,
+          "path": "tokenizer_config.json",
+          "registry_git_blob_id": "328a00a9a560aadcf2a3064f917517359eb3cc26",
+          "sha256": "7e4c1cc848840aeccdd763458c18dd525eb0f795c992e00ebe9c28554e7db2d4",
+          "size": 1173
+        }
+      ],
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    }
+  ],
+  "protocol_id": "github-ngr-cross-encoder-precision-v10",
+  "required_file_count": 12,
+  "required_file_size": 3427616927,
+  "source_cache_path": "/input/models",
+  "source_cache_read_only": true,
+  "source_models": [
+    {
+      "model_id": "BAAI/bge-reranker-base",
+      "required_files": [
+        {
+          "git_blob_id": "ff248a5f7d76e27b10778b3c593c9fba1df4c448",
+          "lfs_sha256": null,
+          "path": "config.json",
+          "registry_git_blob_id": "ff248a5f7d76e27b10778b3c593c9fba1df4c448",
+          "sha256": "289adf7ada1eb6b4afa7589a48a032d45a076cf2e46dcdb3b4cabc33be14f708",
+          "size": 799
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "ced967c45fd1902eb92716c9ceeca7c95a936770ea9db611f5a841b926e33fbd",
+          "path": "model.safetensors",
+          "registry_git_blob_id": "2602cf45b8859e9f240d6bd2e01e3d0b22d589c8",
+          "sha256": "ced967c45fd1902eb92716c9ceeca7c95a936770ea9db611f5a841b926e33fbd",
+          "size": 1112206140
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+          "path": "sentencepiece.bpe.model",
+          "registry_git_blob_id": "7a3f40a75f870bc1f21700cd414dc2acc431583c",
+          "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+          "size": 5069051
+        },
+        {
+          "git_blob_id": "68171d1ff68b731a33d119708476692c094a466b",
+          "lfs_sha256": null,
+          "path": "special_tokens_map.json",
+          "registry_git_blob_id": "68171d1ff68b731a33d119708476692c094a466b",
+          "sha256": "d5469a60db23249c7f8945013d78df30b44b6bf686c6bb4740f4223f77b1b535",
+          "size": 279
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "9eb652ac4e40cc093272bbbe0f55d521cf67570060227109b5cdc20945a4489e",
+          "path": "tokenizer.json",
+          "registry_git_blob_id": "a128fc2756518dd55d7cad49e3b6663d01a07f95",
+          "sha256": "9eb652ac4e40cc093272bbbe0f55d521cf67570060227109b5cdc20945a4489e",
+          "size": 17098107
+        },
+        {
+          "git_blob_id": "059214673d9d6d2ee319411e2ffec8c024b816d5",
+          "lfs_sha256": null,
+          "path": "tokenizer_config.json",
+          "registry_git_blob_id": "059214673d9d6d2ee319411e2ffec8c024b816d5",
+          "sha256": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b",
+          "size": 443
+        }
+      ],
+      "revision": "2cfc18c9415c912f9d8155881c133215df768a70"
+    },
+    {
+      "model_id": "BAAI/bge-reranker-v2-m3",
+      "required_files": [
+        {
+          "git_blob_id": "9f62673cb00ec41dcec8947b9ed16f6f2eb23ba2",
+          "lfs_sha256": null,
+          "path": "config.json",
+          "registry_git_blob_id": "9f62673cb00ec41dcec8947b9ed16f6f2eb23ba2",
+          "sha256": "13dcd6c31d9fec9d1d8e158702072f62d7fa7d312a64b9fe057bec9a08cfe41a",
+          "size": 795
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "d9e3e081faff1eefb84019509b2f5558fd74c1a05a2c7db22f74174fcedb5286",
+          "path": "model.safetensors",
+          "registry_git_blob_id": "773a0a7d7cc8a010835938a3a82a87eac8b21909",
+          "sha256": "d9e3e081faff1eefb84019509b2f5558fd74c1a05a2c7db22f74174fcedb5286",
+          "size": 2271071852
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+          "path": "sentencepiece.bpe.model",
+          "registry_git_blob_id": "7a3f40a75f870bc1f21700cd414dc2acc431583c",
+          "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+          "size": 5069051
+        },
+        {
+          "git_blob_id": "b1879d702821e753ffe4245048eee415d54a9385",
+          "lfs_sha256": null,
+          "path": "special_tokens_map.json",
+          "registry_git_blob_id": "b1879d702821e753ffe4245048eee415d54a9385",
+          "sha256": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835",
+          "size": 964
+        },
+        {
+          "git_blob_id": null,
+          "lfs_sha256": "69564b696052886ed0ac63fa393e928384e0f8caada38c1f4864a9bfbf379c15",
+          "path": "tokenizer.json",
+          "registry_git_blob_id": "1c98a28b19c084901b2622d8e8b15e85eed13bff",
+          "sha256": "69564b696052886ed0ac63fa393e928384e0f8caada38c1f4864a9bfbf379c15",
+          "size": 17098273
+        },
+        {
+          "git_blob_id": "328a00a9a560aadcf2a3064f917517359eb3cc26",
+          "lfs_sha256": null,
+          "path": "tokenizer_config.json",
+          "registry_git_blob_id": "328a00a9a560aadcf2a3064f917517359eb3cc26",
+          "sha256": "7e4c1cc848840aeccdd763458c18dd525eb0f795c992e00ebe9c28554e7db2d4",
+          "size": 1173
+        }
+      ],
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    }
+  ],
+  "target_absent_before_exclusive_create": true,
+  "target_exclusive_create": true
+}
