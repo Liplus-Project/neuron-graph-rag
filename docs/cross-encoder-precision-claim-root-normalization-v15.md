@@ -47,3 +47,27 @@ non-reusableで、同じv15を再試行しない。future runtimeは実行前後
 このfreezeのpassはexact claim source root normalization、6-surface binding、git-free exact source-byte
 validationだけを支持する。retrieval performance、retrieval parity、物理統合可能性、NGR default変更は
 支持しない。後続performance observationはterminal v15 volumeを再利用せず、別protocolで実行する。
+
+## Terminal execution result
+
+prebuild commit `b41291728bb460a8ef67a8dad21cf4997a5635cc`のCore / Optional MCP CIがgreenで、
+専用freeze volumeとfuture runtime volumeのabsenceを確認した後、v15 one-shotをexactly once実行した。
+実行はroot normalization verifier内でterminal errorとなった。actual 6-surface graphの
+`wrapper._BASE._v4._BASE.verify_protocol_commit`呼び出しからprotocol rootがstring以外で渡され、resolverが
+`TypeError: protocol root must be a string`としてfail-closedした。verifier完了前のため
+`claim-source-root-verification.json`は生成されず、root normalizationのpassは成立していない。
+
+terminal evidenceは`tests/evidence/github_cross_encoder_precision_v15/`に固定した。statusは`error`、専用volume
+createは1、verifier runは1、retryは0、future runtime volumeは実行前後ともabsent、v14 predecessor 15
+artifactsはbyte不変である。accepted image rebuild、model-cache copy、model import / load / forward、registered
+query、development / holdout claim、worker、result、shared SQLite open、container git / subprocessはすべて0で、
+v10-v14 volumeはmountしていない。
+
+主要SHA-256は次のとおりである。
+
+- `root-normalization.error.json`: `25efdb4222ee89b2c0e0c653275b69f7f35e13a0756056f1c437fd98e0380e22`
+- `count-audit.json`: `33be26e7d6b33580133a1353bb45c9ea2d743f4d1a99ba30b99aae197d41c169`
+- `evidence-manifest.json`: `d8d4a48d98bbe918f077969568376673d062fb019244046adb02d909a6ecd3f8`
+
+このterminal errorはroot normalizationの成立、performance、parity、物理統合可能性のいずれも支持しない。
+同じv15 protocolとterminal volumeは再実行または再利用せず、修正検証は別protocolで行う。
