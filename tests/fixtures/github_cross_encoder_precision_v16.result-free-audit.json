@@ -1,0 +1,21 @@
+{
+  "accepted_image_rebuild_count": 0,
+  "container_git_executable_invocation_count": 0,
+  "container_subprocess_invocation_count": 0,
+  "development_claim_count": 0,
+  "holdout_claim_count": 0,
+  "model_cache_copy_count": 0,
+  "model_forward_inference_count": 0,
+  "model_import_count": 0,
+  "model_load_count": 0,
+  "observed_result_count": 0,
+  "performance": "not assessed",
+  "phase": "source-root-propagation-freeze",
+  "protocol_id": "github-ngr-cross-encoder-precision-v16",
+  "registered_query_execution_count": 0,
+  "retry_count": 0,
+  "shared_database_open_count": 0,
+  "source_root_propagation_freeze_volume_reusable": false,
+  "source_root_propagation_verifier_run_limit": 1,
+  "worker_process_count": 0
+}

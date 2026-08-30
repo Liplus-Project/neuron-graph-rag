@@ -1,0 +1,52 @@
+{
+  "accepted_image": {
+    "id": "sha256:136ad9466799109bf32b4b96b611c9db9a099bcc47cf78243f26c7227bc16742",
+    "tag": "ngr-cross-encoder-precision-v8:freeze"
+  },
+  "accepted_image_rebuild_allowed": false,
+  "container_paths": {
+    "model_cache": "/opt/ngr-v16/source-root-propagation-freeze/model-cache",
+    "old_frozen_source": "/opt/ngr-v8/runtime/frozen-source",
+    "protocol_source": "/opt/ngr-v16/source-root-propagation-freeze/frozen-source",
+    "root": "/opt/ngr-v16/source-root-propagation-freeze",
+    "source": "/opt/ngr-v16/source-root-propagation-freeze/source",
+    "source_identity": "/opt/ngr-v16/source-root-propagation-freeze/source/tests/fixtures/github_cross_encoder_precision_v16.source-identity.json",
+    "source_root_propagation_report": "/opt/ngr-v16/source-root-propagation-freeze/source-root-propagation-verification.json"
+  },
+  "expected_evidence": [
+    "accepted-image-inspect.json",
+    "source-root-propagation-commands.json",
+    "source-root-propagation.pass.json|source-root-propagation.error.json",
+    "source-root-propagation-verification.json",
+    "count-audit.json",
+    "evidence-manifest.json",
+    "source-identity.json",
+    "volume-identity.json"
+  ],
+  "frozen_protocol_commit": "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f",
+  "future_runtime_volume": "github-cross-encoder-precision-v16-runtime",
+  "phase": "source-root-propagation-freeze",
+  "predecessor_immutable_sha256": {
+    "docs/cross-encoder-precision-claim-root-normalization-v15.md": "6a83a21f9565b8a5d06362aac6a46f4fd9fbfd13bd30c4725ed275db74ec2edb",
+    "src/neuron_graph_rag/cross_encoder_precision_v15_observation.py": "84f181a5527ae71f279d2a70ef73706636c809531d0e2d5113899dddd770c21e",
+    "tests/evidence/github_cross_encoder_precision_v15/accepted-image-inspect.json": "a8e3c98f637c82120306564d311c587b5fecda962296cbfd74d72a5ba9aa47df",
+    "tests/evidence/github_cross_encoder_precision_v15/count-audit.json": "33be26e7d6b33580133a1353bb45c9ea2d743f4d1a99ba30b99aae197d41c169",
+    "tests/evidence/github_cross_encoder_precision_v15/evidence-manifest.json": "d8d4a48d98bbe918f077969568376673d062fb019244046adb02d909a6ecd3f8",
+    "tests/evidence/github_cross_encoder_precision_v15/root-normalization-commands.json": "d6fb4aa976d2b735f5cbf5d07fa9e514f2a3ffa20adeaaef6a40b5f489afde4b",
+    "tests/evidence/github_cross_encoder_precision_v15/root-normalization.error.json": "25efdb4222ee89b2c0e0c653275b69f7f35e13a0756056f1c437fd98e0380e22",
+    "tests/evidence/github_cross_encoder_precision_v15/source-identity.json": "df37d41fef78ef088f15ad2427e8b1837240f006efc111789f09796c5e593b78",
+    "tests/evidence/github_cross_encoder_precision_v15/volume-identity.json": "9398eddf2eccc10176ef87fd088998e5800b051b2be77034258fd1f58099d377",
+    "tests/fixtures/github_cross_encoder_precision_v15.manifest.json": "d93855b7c8d43ba36fb7092ae07366a510c39e4ee99cfe98b610460fd110900e",
+    "tests/fixtures/github_cross_encoder_precision_v15.result-free-audit.json": "a9133fa56aed6eea3e2484e341263e5d2ee3ec531e8e78feec62a20bf5773ab8",
+    "tests/fixtures/github_cross_encoder_precision_v15.source-identity.json": "4003217b41cff642c275c8af1b5469749f97e73f4e1901102f8531350ef7632e",
+    "tests/test_cross_encoder_precision_v15_observation.py": "ab2e5e5c5db2f759c4268c099b770564554b5f702e7ee695900215ac225be9c3",
+    "tools/run_cross_encoder_precision_v15_freeze_wslc.ps1": "ed3441c2471948405d76f27bb23b464e116258e8259b5156e8c258c5543b844e"
+  },
+  "predecessor_merge_commit": "452869e8c78e6f93f771864beae3d44a120a2c8a",
+  "protocol_id": "github-ngr-cross-encoder-precision-v16",
+  "result_free_audit_sha256": "2026747f4af734a91beba2fa5de63e416851f873ada025d911cfbf731b49c6ed",
+  "result_free_only": true,
+  "source_identity_sha256": "fa1a7087a51fcbd3297148844ed65581108aeed7cdd6448f0e5df1b6232e192f",
+  "source_root_propagation_freeze_volume": "github-cross-encoder-precision-v16-source-root-propagation-freeze",
+  "wslc_version": "2.9.4.0"
+}
