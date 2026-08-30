@@ -1,0 +1,15 @@
+{
+  "files_sha256": {
+    "dependency-report.json": "c2c98e1316cc607491c10bafb5b30d52cbeb337382bdd059f022e5c0f12912ad",
+    "execution-error.json": "14b0d4ddeead9a155c26b80553ceccf6e86b460e06f1775c2a9f49564e0d6c64",
+    "model-verification.json": "64c2f3831a49fabf0b5ab98953889188396d8403c87af9e4d5dcfab3c63178c4",
+    "platform-report.json": "eb0a0befe667d53fdf194e884a5766a68551adea6fc6a6110fad7922d20d4b8f",
+    "preclaim.json": "d36c249bc73a8110671857fc9bf0b908aba9bc15579dd3c2e841cd1d16746719",
+    "preflight-ci-green.json": "d0d98963787883c66ac10ecc5a7fa82be2ac9f23d220f2c620935e2211826199",
+    "preflight-commands.json": "95524fe1f91c3f2173a6ee0bd750d270b2c384278fa898cca560161de25d6e8a",
+    "preflight-evidence-manifest.json": "9083b7d788659b537c5576d9bcce97b564573b5ea1cc228d30b8c8bc855c37ea",
+    "preflight.json": "e5d2cff4bdfd683a11f8ada2543d33795a2b637c30c60a21ba57e527001b432d"
+  },
+  "protocol_id": "github-ngr-cross-encoder-precision-v12",
+  "status": "error"
+}
