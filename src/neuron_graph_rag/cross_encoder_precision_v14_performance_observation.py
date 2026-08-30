@@ -642,16 +642,24 @@ def audit_evidence(root: Path = ROOT) -> dict[str, Any]:
     evidence = root / EVIDENCE
     execution_error = evidence / "execution-error.json"
     if execution_error.is_file():
-        verify_preflight(root)
+        _stored_freeze_contract(root)
         if (evidence / "execution.json").exists():
             raise ValueError("v14 terminal evidence contains two outcomes")
         with _v14_scope(), lifecycle._lifecycle_scope():
             manifest = lifecycle.lifecycle._verify_hash_manifest(
                 evidence, "observation-evidence-manifest.json", exact=True
             )
+        preflight = read_json(evidence / "preflight.json")
         error = read_json(execution_error)
         if (
-            error.get("retry_count") != 0
+            preflight.get("preflight_forward_inference_count") != 2
+            or preflight.get("development_claim_count") != 0
+            or preflight.get("holdout_claim_count") != 0
+            or preflight.get("registered_query_execution_count") != 0
+            or preflight.get("observed_stage_inference_count") != 0
+            or preflight.get("result_count") != 0
+            or preflight.get("retry_count") != 0
+            or error.get("retry_count") != 0
             or error.get("development_claim_count") != 0
             or error.get("holdout_claim_count") != 0
             or error.get("shared_database_unchanged") is not True
@@ -659,6 +667,15 @@ def audit_evidence(root: Path = ROOT) -> dict[str, Any]:
             or manifest.get("status") != "error"
         ):
             raise ValueError("v14 pre-claim terminal error mismatch")
+        before = preflight.get("shared_database_sha256_before_preflight")
+        if (
+            before is None
+            or before != preflight.get("shared_database_sha256_after_preflight")
+            or before != error.get("shared_database_sha256_before_preflight")
+            or before != error.get("shared_database_sha256_before_claim")
+            or before != error.get("shared_database_sha256_after_observation")
+        ):
+            raise ValueError("v14 terminal shared database hash mismatch")
         cause = str(error.get("error", ""))
         if (
             "ValueError: protocol root does not match frozen source identity"

@@ -315,7 +315,12 @@ class CrossEncoderPrecisionV14PerformanceObservationTest(unittest.TestCase):
             self.assertEqual(failure["holdout_claim_count"], 0)
 
     def test_terminal_root_mismatch_is_fail_closed_and_result_free(self) -> None:
-        result = observation.audit_evidence(observation.ROOT)
+        with patch.object(
+            observation,
+            "_hash_shared_database",
+            side_effect=AssertionError("terminal audit must not reopen shared DB"),
+        ):
+            result = observation.audit_evidence(observation.ROOT)
         self.assertEqual(result["status"], "error")
         self.assertEqual(
             result["failure_point"], "development-claim-protocol-root"
