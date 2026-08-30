@@ -289,6 +289,52 @@ class CrossEncoderPrecisionV12PerformanceObservationTest(unittest.TestCase):
             self.assertEqual(failure["development_claim_count"], 0)
             self.assertEqual(failure["holdout_claim_count"], 0)
 
+    def test_audit_accepts_only_exact_preclaim_git_absence_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            evidence = root / observation.EVIDENCE
+            evidence.mkdir(parents=True)
+            (evidence / "execution-error.json").write_text(
+                json.dumps(
+                    {
+                        "error": (
+                            "FileNotFoundError: [Errno 2] No such file or "
+                            "directory: 'git'"
+                        ),
+                        "retry_count": 0,
+                        "development_claim_count": 0,
+                        "holdout_claim_count": 0,
+                        "shared_database_unchanged": True,
+                        "recovery_errors": [],
+                        "commands": [
+                            {
+                                "command": ["python", "claim", "development"],
+                                "returncode": 1,
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (evidence / "observation-evidence-manifest.json").write_text(
+                "{}", encoding="utf-8"
+            )
+            with (
+                patch.object(observation, "verify_preflight", return_value={}),
+                patch.object(
+                    observation.lifecycle.lifecycle,
+                    "_verify_hash_manifest",
+                    return_value={"status": "error"},
+                ),
+            ):
+                result = observation.audit_evidence(root)
+            self.assertEqual(result["status"], "error")
+            self.assertEqual(result["failure_point"], "development-claim")
+            self.assertEqual(result["development_claim_count"], 0)
+            self.assertEqual(result["holdout_claim_count"], 0)
+            self.assertEqual(result["retry_count"], 0)
+            self.assertEqual(result["performance"], "not assessed")
+
     def test_preflight_error_is_terminal_and_forbids_retry(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -1,0 +1,108 @@
+{
+  "commands": [
+    {
+      "command": [
+        "gh",
+        "api",
+        "repos/Liplus-Project/neuron-graph-rag/commits/287c1bbbe6ed83e8677f787edd5ec678d55c65cd/check-runs"
+      ],
+      "command_sha256": "a184137eabae0e08b06a82df3162eab23f733549a0b8c608cf22ca22c4d12290",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "b952a3b5a50c2ebf6d32973fd1a3002d75fb5d17d323a3713a140658100ff773"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v12-runtime:/opt/ngr-v12/runtime",
+        "--volume",
+        "C:\\Users\\smile\\Codex\\workspace\\deployments\\neuron-graph-rag\\tests\\evidence\\github_cross_encoder_precision_v12_observation:/input/evidence:ro",
+        "--entrypoint",
+        "/bin/sh",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-c",
+        "mkdir -p '/opt/ngr-v12/runtime/source/tests/evidence/github_cross_encoder_precision_v12_observation' && cp -a /input/evidence/. '/opt/ngr-v12/runtime/source/tests/evidence/github_cross_encoder_precision_v12_observation/'"
+      ],
+      "command_sha256": "f492bc48edcd53999424270608e1b9d45c925f2e6b596ff4f58c5c13171eb202",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v12-runtime:/opt/ngr-v12/runtime",
+        "--env",
+        "PYTHONPATH=/opt/ngr-v12/runtime/source/src",
+        "--env",
+        "HF_HUB_OFFLINE=1",
+        "--env",
+        "TRANSFORMERS_OFFLINE=1",
+        "--env",
+        "HF_HOME=/opt/ngr-v12/runtime/model-cache",
+        "--env",
+        "HF_HUB_CACHE=/opt/ngr-v12/runtime/model-cache",
+        "--env",
+        "NO_PROXY=*",
+        "--workdir",
+        "/opt/ngr-v12/runtime/source",
+        "--entrypoint",
+        "python",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v12_performance_observation",
+        "claim",
+        "--stage",
+        "development"
+      ],
+      "command_sha256": "3ab0ec342d80690f9e1977d168875a50fe3ae95c4d3d075221bba252b25292b8",
+      "returncode": 1,
+      "stderr_sha256": "f2292bc83831a289506f6d9d30ceb1d23688f000794959fbc5dce2f01e2bfcca",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v12-runtime:/opt/ngr-v12/runtime:ro",
+        "--volume",
+        "C:\\Users\\smile\\Codex\\workspace\\deployments\\neuron-graph-rag\\tests\\evidence\\github_cross_encoder_precision_v12_observation:/output:rw",
+        "--entrypoint",
+        "/bin/sh",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-c",
+        "cp -an '/opt/ngr-v12/runtime/source/tests/evidence/github_cross_encoder_precision_v12_observation/.' /output/"
+      ],
+      "command_sha256": "9428f3cb4e457f958bbd19de48ebfa333c81db7945f5fc704c201e27d0bae9d7",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "development_claim_count": 0,
+  "error": "RuntimeError: command failed (1): Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/ngr-v12/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v12_performance_observation.py\", line 686, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/opt/ngr-v12/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v12_performance_observation.py\", line 666, in main\n    result = lifecycle.lifecycle._container_claim(arguments.stage)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/ngr-v12/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v9_performance_observation.py\", line 276, in _container_claim\n    return predecessor._container_claim(stage)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/ngr-v12/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v5_observation.py\", line 336, in _container_claim\n    path = evaluation.register_stage_claim(stage, PROTOCOL_COMMIT, CONTAINER_SOURCE)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/ngr-v12/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v3_evaluation.py\", line 508, in register_stage_claim\n    verify_protocol_commit(protocol_commit, protocol)\n  File \"/opt/ngr-v12/runtime/source/src/neuron_graph_rag/cross_encoder_precision_v3_evaluation.py\", line 472, in verify_protocol_commit\n    subprocess.run(\n  File \"/usr/local/lib/python3.11/subprocess.py\", line 548, in run\n    with Popen(*popenargs, **kwargs) as process:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/subprocess.py\", line 1026, in __init__\n    self._execute_child(args, executable, preexec_fn, close_fds,\n  File \"/usr/local/lib/python3.11/subprocess.py\", line 1955, in _execute_child\n    raise child_exception_type(errno_num, err_msg, err_filename)\nFileNotFoundError: [Errno 2] No such file or directory: 'git'\n",
+  "freeze_commit": "39f2cebc6b3b43ac1060a2ce519e8906fa598f57",
+  "holdout_claim_count": 0,
+  "preflight_evidence_commit": "287c1bbbe6ed83e8677f787edd5ec678d55c65cd",
+  "protocol_id": "github-ngr-cross-encoder-precision-v12",
+  "recovery_errors": [],
+  "retry_count": 0,
+  "shared_database_sha256_after_observation": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "shared_database_sha256_before_claim": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "shared_database_sha256_before_preflight": "84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e",
+  "shared_database_unchanged": true
+}
