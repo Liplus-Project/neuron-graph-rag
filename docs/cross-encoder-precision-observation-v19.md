@@ -61,6 +61,23 @@ dedicated / related targeted、Ruff、auditsだけを再検証し、full suite�
 evidenceをcommit / pushし、そのremote CI green後だけdevelopment claimを開く。preflight errorはその場で
 terminal化・hash固定し、同じv19 protocolを再試行しない。
 
+### Preflight実測
+
+prebuild implementation commit `0d17a767baaf7edd24acce0a9d07a3810fe2c3f6`に対するGitHub Actions run
+`33344937227`はCore / Optional MCPともgreenだった。その後、2026-08-31T00:37:41Zにv19 preflightを
+exactly once実行し、成功した。同一v19 preflightのretryは0である。
+
+runtime volume createは1、accepted image rebuildは0、networkは`none`だった。model 2 revisionsのrequired
+filesは12 files / 3,427,616,927 bytesで、read-only source cacheからのexclusive-copy後に全bytes一致した。
+synthetic probe forwardは2、development claim、holdout claim、registered query、result、retryはいずれも0で
+ある。shared Windows SQLiteはopenせず、前後SHA-256はともに
+`84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e`だった。v10からv18までの禁止volumeは
+mount、read、reuseせず、旧`/opt/ngr-v8/runtime`もcreate、mount、readしていない。
+
+preflight evidence manifest SHA-256は
+`dc296667d9a1c8632574021e526f85a82598880d6f822c72be4780e9c7d3be86`である。performanceは引き続き
+`not assessed`であり、developmentはこのevidence commitのremote CI greenまで閉じたままとする。
+
 ## Developmentとholdout
 
 `tools/run_cross_encoder_precision_v19_observation_wslc.ps1 run`はpushed remote HEADとCI greenを検証してから
