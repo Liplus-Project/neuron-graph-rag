@@ -1,0 +1,8 @@
+{
+  "clarifies_terminal_evidence_manifest_sha256": "ec2c90506d0bec979f64fe33cd052db5726ce4baffb15d356815a9fc0e89816f",
+  "files_sha256": {
+    "count-audit-clarification.json": "9ee8821fae09f8859d9be48dbba1accbbf11e6adc9ecbf3a22a2e5c8c33ee686"
+  },
+  "protocol_id": "github-ngr-cross-encoder-precision-v18",
+  "status": "error"
+}

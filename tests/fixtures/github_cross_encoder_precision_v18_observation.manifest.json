@@ -1,0 +1,53 @@
+{
+  "accepted_image": {
+    "id": "sha256:136ad9466799109bf32b4b96b611c9db9a099bcc47cf78243f26c7227bc16742",
+    "tag": "ngr-cross-encoder-precision-v8:freeze"
+  },
+  "accepted_image_rebuild_allowed": false,
+  "container_git_executable_allowed": false,
+  "container_paths": {
+    "archive": "/opt/ngr-v18/runtime/archive",
+    "databases": "/opt/ngr-v18/runtime/databases",
+    "model_cache": "/opt/ngr-v18/runtime/model-cache",
+    "old_v8_root": "/opt/ngr-v8/runtime",
+    "protocol_source": "/opt/ngr-v18/runtime/frozen-source",
+    "root": "/opt/ngr-v18/runtime",
+    "runs": "/opt/ngr-v18/runtime/runs",
+    "source": "/opt/ngr-v18/runtime/source",
+    "transport": "/opt/ngr-v18/runtime/transport"
+  },
+  "freeze_commit": "7a4b63d65c5abc84e7550856a965572837b238b0",
+  "observation_audit_sha256": "bfbb4269f7662c3fd0d34c73905a987477b6fb6e84e43c34cc8f485df917962d",
+  "phase": "performance-observation",
+  "predecessor_immutable_sha256": {
+    "docs/cross-encoder-precision-observation-v17.md": "97ae519ac86d17e17290dd0fbb5fe2a6aafc3b5ff2831514b196fe7caf401c22",
+    "src/neuron_graph_rag/cross_encoder_precision_v17_performance_observation.py": "411f2560bce6ac97fe4dce8730eb716eea43f7b1ca25fe83fd2597773ad3a838",
+    "src/neuron_graph_rag/rank_observation_lifecycle.py": "1f33578f988f365b7daab7202d89309955e9192581f02ae43607cfdcac0c3ff6",
+    "tests/evidence/github_cross_encoder_precision_v17_observation/count-audit.json": "aec92f0248113675b4b1370183bfa0d778b1b1502a29e404894411435edcdbf2",
+    "tests/evidence/github_cross_encoder_precision_v17_observation/observation-evidence-manifest.json": "b44018a94aacbee8998c4d54e2bc1670be985dbe1f0de60b432c29d323675af4",
+    "tests/evidence/github_cross_encoder_precision_v17_observation/preflight-terminal.json": "b88249b8680dc590d3519c2e4d7af55e3a788caf55918e75e4616f25b8fb4ed9",
+    "tests/evidence/github_cross_encoder_precision_v17_observation/preflight.error.json": "3602cadcdb4b24f131d0ea8090e9d9ec3cd8292ac9ecc992625d9ab822af1bd3",
+    "tests/evidence/github_cross_encoder_precision_v17_observation/terminal-evidence-manifest.json": "37e4e0b2ddc4896436a76a5632db1ed9cccf0974d3f1c70ce4027fd73b354191",
+    "tests/fixtures/github_cross_encoder_precision_v17.observation-audit.json": "0b0988d18b254895648b242c17be70ce5603acda39a34d229d42a263865d691a",
+    "tests/fixtures/github_cross_encoder_precision_v17.source-identity.json": "949a12fac04faac7d05def3b5ecc3048012dad186513ae7aaf89071a3a457d29",
+    "tests/fixtures/github_cross_encoder_precision_v17_observation.manifest.json": "0dea5dc391059eb8c735b5ab9a590b5118e7f96fa80c90645940ac33dbd43b1e",
+    "tests/test_cross_encoder_precision_v17_performance_observation.py": "f31258839eb89be6038cffaa652b74734249108d14d326639ae153c90749fa77",
+    "tools/run_cross_encoder_precision_v17_observation_wslc.ps1": "6f26a543e51ebfbd6358432f7d61a6b769d1acd8cbc93bfbfb151ef78f90a322"
+  },
+  "predecessor_terminal_evidence_semantic_content_opened": false,
+  "preflight_result_free": true,
+  "protocol_id": "github-ngr-cross-encoder-precision-v18",
+  "runtime_volume": "github-cross-encoder-precision-v18-runtime",
+  "source_identity_sha256": "668deccceace0e0cb78fe05d25ea256f5e5dd56a981aec56cde67d739558efa0",
+  "v10_cache_freeze_volume": "github-cross-encoder-precision-v10-cache-freeze",
+  "v10_runtime_volume": "github-cross-encoder-precision-v10-runtime",
+  "v11_root_freeze_volume": "github-cross-encoder-precision-v11-root-freeze",
+  "v12_runtime_volume": "github-cross-encoder-precision-v12-runtime",
+  "v13_commit_freeze_volume": "github-cross-encoder-precision-v13-commit-freeze",
+  "v14_runtime_volume": "github-cross-encoder-precision-v14-runtime",
+  "v15_root_normalization_freeze_volume": "github-cross-encoder-precision-v15-root-normalization-freeze",
+  "v16_source_root_propagation_freeze_volume": "github-cross-encoder-precision-v16-source-root-propagation-freeze",
+  "v17_runtime_volume": "github-cross-encoder-precision-v17-runtime",
+  "v8_protocol_commit": "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f",
+  "wslc_version": "2.9.4.0"
+}
