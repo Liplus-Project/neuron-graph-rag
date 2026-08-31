@@ -1,0 +1,113 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v21",
+  "identity_schema": "ngr.intent-aware-observation-stage/v1",
+  "stages": {
+    "development": {
+      "identity": "github-ngr-cross-encoder-precision-v20-development-7b6b4f9d",
+      "cases": [
+        {
+          "case_id": "v21-dev-direct-en-aurora",
+          "cohort": "direct_lexical",
+          "language": "en",
+          "query": "Where is aurora ledger worker slot cardinality recorded?"
+        },
+        {
+          "case_id": "v21-dev-direct-ja-tsubame",
+          "cohort": "direct_lexical",
+          "language": "ja",
+          "query": "つばめ索引のexclusive claim順序を記録した文書はどれですか。"
+        },
+        {
+          "case_id": "v21-dev-semantic-en-harbor",
+          "cohort": "semantic_paraphrase",
+          "language": "en",
+          "query": "Which note quarantines unsigned event envelopes until origin attestation succeeds?"
+        },
+        {
+          "case_id": "v21-dev-semantic-ja-sakura",
+          "cohort": "semantic_paraphrase",
+          "language": "ja",
+          "query": "送信元を確認してから配送票を隔離queueへ受け入れる仕組みを探してください。"
+        },
+        {
+          "case_id": "v21-dev-relation-en-ember",
+          "cohort": "relation_linked",
+          "language": "en",
+          "query": "Which related route receives its checkpoint from the cobalt map?"
+        },
+        {
+          "case_id": "v21-dev-relation-ja-yuzu",
+          "cohort": "relation_linked",
+          "language": "ja",
+          "query": "雲の起点から署名checkpointを継承する関連経路はどれですか。"
+        },
+        {
+          "case_id": "v21-dev-negative-en-amber",
+          "cohort": "negative_control",
+          "language": "en",
+          "query": "Find winter storage guidance without amber compressor rollback"
+        },
+        {
+          "case_id": "v21-dev-negative-ja-aka",
+          "cohort": "negative_control",
+          "language": "ja",
+          "query": "白いcache運用を探し、赤いcache削除手順を除外"
+        }
+      ]
+    },
+    "holdout": {
+      "identity": "github-ngr-cross-encoder-precision-v20-holdout-c31e958a",
+      "cases": [
+        {
+          "case_id": "v21-holdout-direct-en-lunar",
+          "cohort": "direct_lexical",
+          "language": "en",
+          "query": "Where does lunar quorum require three independent acknowledgements?"
+        },
+        {
+          "case_id": "v21-holdout-direct-ja-hotaru",
+          "cohort": "direct_lexical",
+          "language": "ja",
+          "query": "蛍windowの再送受付と締切条件を定義する文書はどれですか。"
+        },
+        {
+          "case_id": "v21-holdout-semantic-en-orchard",
+          "cohort": "semantic_paraphrase",
+          "language": "en",
+          "query": "Which design waits for two receipts before one bounded mutation?"
+        },
+        {
+          "case_id": "v21-holdout-semantic-ja-nagi",
+          "cohort": "semantic_paraphrase",
+          "language": "ja",
+          "query": "独立した二つの証拠が揃うまで変更を保留する設計を探してください。"
+        },
+        {
+          "case_id": "v21-holdout-relation-en-silver",
+          "cohort": "relation_linked",
+          "language": "en",
+          "query": "Which related turn consumes the identity published by the violet anchor?"
+        },
+        {
+          "case_id": "v21-holdout-relation-ja-kane",
+          "cohort": "relation_linked",
+          "language": "ja",
+          "query": "水の起点から上流identityを受け取る関連経路はどれですか。"
+        },
+        {
+          "case_id": "v21-holdout-negative-en-copper",
+          "cohort": "negative_control",
+          "language": "en",
+          "query": "Find spring storage guidance excluding copper drain override"
+        },
+        {
+          "case_id": "v21-holdout-negative-ja-kiiro",
+          "cohort": "negative_control",
+          "language": "ja",
+          "query": "青いcache点検を探し、黄色いcache破棄を除外"
+        }
+      ]
+    }
+  }
+}
+
