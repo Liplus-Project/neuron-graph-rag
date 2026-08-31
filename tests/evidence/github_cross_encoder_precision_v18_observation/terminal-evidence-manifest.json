@@ -1,0 +1,20 @@
+{
+  "files_sha256": {
+    "count-audit.json": "1b0ad113f6ca1e404eb87e06b29ab22fd9bedfc6131577036fa78c16b571b224",
+    "dependency-report.json": "1e8a0000d4d0d0fde9e89bb9c1fac535c5a864bceabfcbb187c9e5e28da1a63e",
+    "development.claim.json": "d3fcdbe07e01c7ebf8b0017340dcd78214a794522c65805fff25b5f03ecdb5d7",
+    "development.error.json": "5dea55713eb494ed8d7d84b098f78c19654011a8e99ec3996df6573eccd8236e",
+    "development.transport.json": "f76ff92f37c24d0abaf94734e723fbaa3ec6d3345e8534c61ee1ed5c1db4d9fb",
+    "execution-error.json": "259ec86b35fd38d650ca921c649a5256d7e26c6cbd2686e2f906751a375af16f",
+    "model-verification.json": "2066be3e58bf809acd60ec2161fed0b127c44964f7f4d4329bd3d2e743f49015",
+    "observation-evidence-manifest.json": "dad351e5591607d1b3c5d28616bfa4e63aedbd40ef206969d7374417f67c8149",
+    "platform-report.json": "fef105096a9c3104f66fb2c80d86a8dae7a9f6f46012f6425d91b4a526f90868",
+    "preclaim.json": "2d323adf71651fdad217d3a19ac2f3a434f5a1f770b0ed50f4c8366720380e32",
+    "preflight-ci-green.json": "b3a178f215db7d139c54ab2728cbfa2f0ab099006acfe563b8df56a812a3c40a",
+    "preflight-commands.json": "5338a375267e31473753a0da8bc66c5e475da831965a8b5b655a7abd35f77cc0",
+    "preflight-evidence-manifest.json": "f28fe36099564db2d578c1bc65dd9afcc15e7c58d8a32cdea41fce8165fcd2aa",
+    "preflight.json": "8cc6f1eb838a0e99d092760a45ed6ecf3c90e9f80bc709693ce7ea45cf4cbf74"
+  },
+  "protocol_id": "github-ngr-cross-encoder-precision-v18",
+  "status": "error"
+}

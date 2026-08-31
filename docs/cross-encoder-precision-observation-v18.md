@@ -80,6 +80,32 @@ gateがpassしselected candidateがある場合だけholdoutをexactly once開�
 OOMではholdoutを開かず、result / errorのいずれもretry 0とする。同一v18 protocolとterminal volumeは再実行・
 再利用しない。
 
+## Terminal実測
+
+preflight evidence commit `43944ff56ea6dfb9b8e36cb8d7c2fcfa187bd24c`に対するGitHub Actions run
+`33343200534`がCore / Optional MCPともgreenになった後、v18 developmentをexactly once実行した。development
+claimは1だったが、最初の`ngr-v18-development-baseline-primary` workerが
+`sqlite3.OperationalError: unable to open database file`でterminal errorになった。
+
+失敗したdatabase pathは
+`/opt/ngr-v18/runtime/databases/development/baseline-primary.sqlite3`で、未作成だった親directoryは
+`/opt/ngr-v18/runtime/databases/development`である。source initializationは
+`/opt/ngr-v18/runtime/databases`までを作成した一方、stage hostは`development` child directoryを作成せずに
+SQLite pathをworkerへ渡した。実行済みv18 source、test、fixture、runner bytesは変更せず、このroot causeと
+terminal evidenceだけを固定する。
+
+holdout claim、registered query、retryは0で、shared Windows SQLiteはopenせず前後SHA-256も不変だった。
+execution evidence上で実行されたdevelopment worker commandは最初の1件だけで、performance result / finalizeは
+生成されていない。immutable count auditの`worker_process_count` / `observed_result_count`はfrozen worker slotsを
+各6と記録しているため、これを実測済みperformance result数とは解釈しない。terminal statusとperformanceは
+それぞれ`error` / `not assessed`である。
+
+count audit、observation evidence manifest、terminal evidence manifestのSHA-256は順に
+`1b0ad113f6ca1e404eb87e06b29ab22fd9bedfc6131577036fa78c16b571b224`、
+`dad351e5591607d1b3c5d28616bfa4e63aedbd40ef206969d7374417f67c8149`、
+`ec2c90506d0bec979f64fe33cd052db5726ce4baffb15d356815a9fc0e89816f`である。predecessor artifacts 13件は
+byte不変で、同一v18 protocolのretryは0、terminal runtimeは再利用不可である。
+
 ## 主張境界
 
 観測前のperformanceは`not assessed`である。terminal evidence後も、性能、GitHub RAG / NGR retrieval parity、
