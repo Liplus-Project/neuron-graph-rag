@@ -102,6 +102,33 @@ worker / observed resultは各6、finalizeは1だった。全commandのreturn co
 2,377,826,304 bytes / 2,413,035,520 bytesだった。これはprotocol環境における実測値であり、production性能を
 表すものではない。
 
+品質指標は次のとおりだった。各cohort列は`MRR / hit@5`、forbidden列は2 negative casesのtop 5に含まれた
+forbidden pathの合計である。
+
+| Ranking | Direct | Semantic | Relation | Forbidden top 5 |
+| --- | ---: | ---: | ---: | ---: |
+| current NGR baseline | 0.125000 / 0.500000 | 0.291666 / 1.000000 | 0.750000 / 1.000000 | 2 |
+| bge-base RRF rank-only | 0.375000 / 1.000000 | 0.500000 / 1.000000 | 0.500000 / 1.000000 | 2 |
+| bge-base CE rank-only | 0.750000 / 1.000000 | 0.500000 / 0.500000 | 0.266666 / 1.000000 | 1 |
+| bge-v2-m3 RRF rank-only | 0.250000 / 0.500000 | 0.500000 / 1.000000 | 0.750000 / 1.000000 | 2 |
+| bge-v2-m3 CE rank-only | 1.000000 / 1.000000 | 0.750000 / 1.000000 | 0.666666 / 1.000000 | 2 |
+
+bge-base CEはbaselineに対してforbidden top 5 countを2から1へ減らした。bge-v2-m3 CEはdirect MRRを
+0.125000から1.000000、semantic MRRを0.291666から0.750000へ上げた一方、relation MRRは0.750000から
+0.666666へ下がり、forbidden top 5 countは2のままだった。
+
+candidate別のfailed hard gateは次のとおりである。
+
+| Candidate | Failed hard gate IDs |
+| --- | --- |
+| bge-base RRF rank-only | `positive-case-rank-non-regression`; `positive-cohort-mrr-hit-at-5-non-regression`; `negative-non-worsening-and-aggregate-strict-improvement`; `relation-source-edge-only-provenance` |
+| bge-base CE rank-only | `positive-case-rank-non-regression`; `positive-cohort-mrr-hit-at-5-non-regression`; `positive-expected-source-top-5-completeness`; `relation-source-edge-only-provenance` |
+| bge-v2-m3 RRF rank-only | `positive-case-rank-non-regression`; `negative-non-worsening-and-aggregate-strict-improvement`; `positive-expected-source-top-5-completeness`; `relation-source-edge-only-provenance` |
+| bge-v2-m3 CE rank-only | `positive-case-rank-non-regression`; `positive-cohort-mrr-hit-at-5-non-regression`; `negative-non-worsening-and-aggregate-strict-improvement`; `relation-source-edge-only-provenance` |
+
+`relation-source-edge-only-provenance`は4 candidateに共通して失敗した。このため、一部cohortのMRR改善や
+forbidden count減少だけをcandidate選択またはparity成立へ読み替えない。
+
 4 candidateはいずれも全hard gateを満たさず、development statusは`failed`、selected candidateは`null`だった。
 したがってholdout claim / holdout workerは0のまま開いていない。performanceはdevelopment範囲で`observed`だが、
 GitHub RAG / NGR retrieval parityは成立しておらず、default surface変更も行わない。observation evidence manifest
