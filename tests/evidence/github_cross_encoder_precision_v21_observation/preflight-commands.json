@@ -1,0 +1,324 @@
+{
+  "commands": [
+    {
+      "command": [
+        "wslc",
+        "volume",
+        "inspect",
+        "github-cross-encoder-precision-v21-runtime"
+      ],
+      "command_sha256": "9ef074d07bcbbe49623e585a77276b6873668dd1942d30e77401740b694f33b5",
+      "expected_absence_probe": true,
+      "returncode": 1,
+      "stderr_sha256": "ad64e401737f33f95fd3d4d7a07abb67a1ce6b107f44cb31567707b9e6d86bdf",
+      "stdout_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "command": [
+        "wslc",
+        "--version"
+      ],
+      "command_sha256": "08e41e2a5773f3c1a6a0273944a26bf830b1d4fb84106f722918e590e755006b",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "227e92f850731c644562e9ccfff30798ca55c7c32094046a743d3b50d437d8d3"
+    },
+    {
+      "command": [
+        "wslc",
+        "image",
+        "inspect",
+        "ngr-cross-encoder-precision-v8:freeze"
+      ],
+      "command_sha256": "55a43661b731e643f020498d2910512605bbf88821f34ae85294cd8e1d6397fb",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "92dd716c663471d37f779eb40c1fd0a687db1b36fc8fc444cf00987c7cd955bb"
+    },
+    {
+      "command": [
+        "wslc",
+        "volume",
+        "create",
+        "github-cross-encoder-precision-v21-runtime"
+      ],
+      "command_sha256": "f24693efa73ca1033debf0869f335c24f98f2f213444a85688c1472802e3513c",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "8f110b1466877c98efdb1b569672c0f32a6e7d1b1f76989bcc087eb03c19665b"
+    },
+    {
+      "binary_export": true,
+      "command": [
+        "git",
+        "archive",
+        "--format=tar",
+        "33b465c7422e8eeae1153e323a46a662a97f8fee"
+      ],
+      "command_sha256": "7d49dc13c6fe0373a3c7e02486a4c9dc373630cc16931d756be7ed5b2f0875a0",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "b444231b5dca6ccf56148c186223c4cfa05ddfbde66584a9a68b02c088523579"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--interactive",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v21-runtime:/opt/ngr-v21/runtime",
+        "--entrypoint",
+        "/bin/sh",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-c",
+        "set -eu; test ! -e '/opt/ngr-v21/runtime/frozen-source'; mkdir '/opt/ngr-v21/runtime/frozen-source'; tar -xf - -C '/opt/ngr-v21/runtime/frozen-source'; test -f '/opt/ngr-v21/runtime/frozen-source/tests/fixtures/github_cross_encoder_precision_v8.manifest.json'"
+      ],
+      "command_sha256": "24e2ce54fe3630b38e0113f6d0ce1184cd30f448b547d66f1c89b3f0a376fa9c",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdin_sha256": "b444231b5dca6ccf56148c186223c4cfa05ddfbde66584a9a68b02c088523579",
+      "stdin_size": 43304960,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v21-runtime:/opt/ngr-v21/runtime",
+        "--volume",
+        "C:\\Users\\smile\\Codex\\workspace\\deployments\\neuron-graph-rag:/input/source:ro",
+        "--entrypoint",
+        "/bin/sh",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-c",
+        "set -eu; test -d '/opt/ngr-v21/runtime'; test ! -e '/opt/ngr-v21/runtime/source'; test ! -e '/opt/ngr-v21/runtime/model-cache'; test ! -e '/opt/ngr-v8/runtime'; mkdir -p /opt/ngr-v21/runtime/databases /opt/ngr-v21/runtime/runs /opt/ngr-v21/runtime/archive /opt/ngr-v21/runtime/transport; mkdir '/opt/ngr-v21/runtime/source'; cp -a /input/source/. '/opt/ngr-v21/runtime/source/'; rm -rf '/opt/ngr-v21/runtime/source/.git'; test -f '/opt/ngr-v21/runtime/source/tests/fixtures/github_cross_encoder_precision_v8.manifest.json'; test ! -e '/opt/ngr-v21/runtime/model-cache'; test ! -e '/opt/ngr-v8/runtime'"
+      ],
+      "command_sha256": "94c2451e87226fe5bcab677792c947b0f660348afe7ce9c74b375069dd938a2e",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v21-runtime:/opt/ngr-v21/runtime",
+        "--volume",
+        "C:\\Users\\smile\\Codex\\workspace\\experiments\\github_cross_encoder_precision_v1\\model-cache:/input/models:ro",
+        "--env",
+        "PYTHONPATH=/opt/ngr-v21/runtime/source/src",
+        "--env",
+        "HF_HUB_OFFLINE=1",
+        "--env",
+        "TRANSFORMERS_OFFLINE=1",
+        "--env",
+        "HF_HOME=/opt/ngr-v21/runtime/model-cache",
+        "--env",
+        "HF_HUB_CACHE=/opt/ngr-v21/runtime/model-cache",
+        "--env",
+        "NO_PROXY=*",
+        "--workdir",
+        "/opt/ngr-v21/runtime/source",
+        "--entrypoint",
+        "python",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v21_intent_aware_observation",
+        "model-copy-verify",
+        "--source-cache",
+        "/input/models",
+        "--cache",
+        "/opt/ngr-v21/runtime/model-cache",
+        "--output",
+        "/opt/ngr-v21/runtime/model-verification.json"
+      ],
+      "command_sha256": "bd67a86a9f03d691f578219dcc1a4ab0cc1ad77d6e0d43526f647c22525712b4",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "c94941dfa5c4313b64c0732fbf1b29b686a18a5c8d595e7b0fe6f7a7534e6545"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v21-runtime:/opt/ngr-v21/runtime",
+        "--env",
+        "PYTHONPATH=/opt/ngr-v21/runtime/source/src",
+        "--env",
+        "HF_HUB_OFFLINE=1",
+        "--env",
+        "TRANSFORMERS_OFFLINE=1",
+        "--env",
+        "HF_HOME=/opt/ngr-v21/runtime/model-cache",
+        "--env",
+        "HF_HUB_CACHE=/opt/ngr-v21/runtime/model-cache",
+        "--env",
+        "NO_PROXY=*",
+        "--workdir",
+        "/opt/ngr-v21/runtime/source",
+        "--entrypoint",
+        "python",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v21_intent_aware_observation",
+        "model-probe",
+        "--cache",
+        "/opt/ngr-v21/runtime/model-cache"
+      ],
+      "command_sha256": "6ec4a2a78d9e9da7afa9cae7a4a2d7662e32b2ac51362645ee164dc3782de511",
+      "returncode": 0,
+      "stderr_sha256": "47fc7d6ad88dcaac3eed6fb6f48b7a469e96c1e93173e8d8d11fc462280336e8",
+      "stdout_sha256": "97f2570be98a0632b745b848ec50e92953d7a311b328c4acca7ab32c28b1fb7a"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v21-runtime:/opt/ngr-v21/runtime",
+        "--env",
+        "PYTHONPATH=/opt/ngr-v21/runtime/source/src",
+        "--env",
+        "HF_HUB_OFFLINE=1",
+        "--env",
+        "TRANSFORMERS_OFFLINE=1",
+        "--env",
+        "HF_HOME=/opt/ngr-v21/runtime/model-cache",
+        "--env",
+        "HF_HUB_CACHE=/opt/ngr-v21/runtime/model-cache",
+        "--env",
+        "NO_PROXY=*",
+        "--workdir",
+        "/opt/ngr-v21/runtime/source",
+        "--entrypoint",
+        "python",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v21_intent_aware_observation",
+        "dependency-report"
+      ],
+      "command_sha256": "5cc381cba9561a840b2c80af8839d21c0d6ffb45ddafe0f33eff2e21d139313e",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "30383d3a81a93f12c518cfb773365a8766720ab5528055bbb3b3294125b97f51"
+    },
+    {
+      "command": [
+        "uvx",
+        "--offline",
+        "ruff",
+        "check",
+        "src\\neuron_graph_rag\\cross_encoder_precision_v21_intent_aware_observation.py",
+        "tests/test_cross_encoder_precision_v21_intent_aware_observation.py"
+      ],
+      "command_sha256": "d2f0888d666e050c8730ff24b13410a4cfc1fd747d54ae682335fc2ad2cc5968",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\deployments\\neuron-graph-rag\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "tests.test_cross_encoder_precision_v19_performance_observation",
+        "tests.test_cross_encoder_precision_v20_intent_aware_freeze",
+        "tests.test_cross_encoder_precision_v21_intent_aware_observation"
+      ],
+      "command_sha256": "f640ce6c6215ed0be229750463d68b047edda12eccd0f2972ed5981c0b353432",
+      "returncode": 0,
+      "stderr_sha256": "0f4e837ac0bcf824427974487750293c21cb1d5be06eb81669d466f90a3fb763",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\deployments\\neuron-graph-rag\\.venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v19_performance_observation",
+        "audit"
+      ],
+      "command_sha256": "9b0dd51bf54356acecf7f1aebc178f2fda86c694aec856cc8f0e3e91ae0441c0",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e8a7f1e3f064d2d18dc14d3924b66a2ea060e82a6977c5f62c6b34bc796574e2"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\deployments\\neuron-graph-rag\\.venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v20_intent_aware_freeze",
+        "audit"
+      ],
+      "command_sha256": "06ec7c1ae9ecdf9029db9dfcc8222957eec606099d0cf9804e91cf72b14f9352",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "a3ffc9231a129668ee8929e25e110bd440ea6212e55ceb1a6909f6ad1322cc46"
+    },
+    {
+      "command": [
+        "C:\\Users\\smile\\Codex\\workspace\\deployments\\neuron-graph-rag\\.venv\\Scripts\\python.exe",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v21_intent_aware_observation",
+        "audit"
+      ],
+      "command_sha256": "fb163770d84383df56f48ae44dcb4454e18b3670c5eb9e296019fc13bb35facb",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "4b275d7ad5f3d84a787acd1b72f565166863d53ba11d89456cc86597c0b10655"
+    },
+    {
+      "command": [
+        "wslc",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--volume",
+        "github-cross-encoder-precision-v21-runtime:/opt/ngr-v21/runtime",
+        "--env",
+        "PYTHONPATH=/opt/ngr-v21/runtime/source/src",
+        "--env",
+        "HF_HUB_OFFLINE=1",
+        "--env",
+        "TRANSFORMERS_OFFLINE=1",
+        "--env",
+        "HF_HOME=/opt/ngr-v21/runtime/model-cache",
+        "--env",
+        "HF_HUB_CACHE=/opt/ngr-v21/runtime/model-cache",
+        "--env",
+        "NO_PROXY=*",
+        "--workdir",
+        "/opt/ngr-v21/runtime/source",
+        "--entrypoint",
+        "python",
+        "ngr-cross-encoder-precision-v8:freeze",
+        "-m",
+        "neuron_graph_rag.cross_encoder_precision_v21_intent_aware_observation",
+        "read-json",
+        "/opt/ngr-v21/runtime/model-verification.json"
+      ],
+      "command_sha256": "5e2b4e09edf50499f366353e59d08d13e1f954b16268d38efd8b197c0ca34694",
+      "returncode": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "c94941dfa5c4313b64c0732fbf1b29b686a18a5c8d595e7b0fe6f7a7534e6545"
+    }
+  ]
+}

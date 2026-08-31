@@ -1,0 +1,125 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v21",
+  "repository": "Liplus-Project/neuron-graph-rag-v21-fresh",
+  "selection_rule": "Fresh synthetic operational topics and paths created for v21 before model execution; no v19 path or text is reused.",
+  "documents": [
+    {
+      "path": "fresh/v21/aurora-ledger.md",
+      "text": "# Aurora Ledger\nThe aurora ledger records frozen worker slot cardinality and exclusive claim sequencing for polar archive jobs."
+    },
+    {
+      "path": "fresh/v21/tsubame-index.md",
+      "text": "# つばめ索引\nつばめ索引は、夜間配送の固定slot数とexclusive claimの順序を記録する運用台帳です。"
+    },
+    {
+      "path": "fresh/v21/glass-harbor.md",
+      "text": "# Glass Harbor\nA quarantine harbor accepts event envelopes only after checksum attestations and rejects envelopes with an unbound origin."
+    },
+    {
+      "path": "fresh/v21/sakura-envelope.md",
+      "text": "# 桜封筒\n桜封筒は、署名済み配送票を検査してから隔離queueへ入れ、送信元が未束縛なら受理しません。"
+    },
+    {
+      "path": "fresh/v21/cobalt-map.md",
+      "text": "# Cobalt Map\nThe cobalt map defines the source checkpoint for an inter-service route handoff."
+    },
+    {
+      "path": "fresh/v21/ember-route.md",
+      "text": "# Ember Route\nThe ember route applies the checkpoint handed off by the cobalt map to preserve downstream routing context."
+    },
+    {
+      "path": "fresh/v21/kumo-seed.md",
+      "text": "# 雲の起点\n雲の起点は、監査経路へ渡す最初の署名checkpointを定義します。"
+    },
+    {
+      "path": "fresh/v21/yuzu-route.md",
+      "text": "# 柚子経路\n柚子経路は、雲の起点から渡された署名checkpointを使って監査経路を継承します。"
+    },
+    {
+      "path": "fresh/v21/winter-storage.md",
+      "text": "# Winter Storage\nWinter storage guidance keeps sealed parcels in a dry vault and rotates inventory weekly."
+    },
+    {
+      "path": "fresh/v21/amber-compressor.md",
+      "text": "# Amber Compressor Rollback\nWinter storage guidance for the amber compressor rollback drains pressure before deleting the emergency journal."
+    },
+    {
+      "path": "fresh/v21/shiro-cache.md",
+      "text": "# 白いcache運用\n白いcache運用は、読み取り専用snapshotを週次で検査し、保持期限を記録します。"
+    },
+    {
+      "path": "fresh/v21/aka-cache.md",
+      "text": "# 赤いcache削除手順\n白いcache運用と同じ画面にある赤いcache削除手順は、緊急purgeと強制削除を実行します。"
+    },
+    {
+      "path": "fresh/v21/lunar-quorum.md",
+      "text": "# Lunar Quorum\nThe lunar quorum file defines three independent acknowledgements before a sealed batch can advance."
+    },
+    {
+      "path": "fresh/v21/hotaru-window.md",
+      "text": "# 蛍window\n蛍windowは、短時間の再送受付と締切後の拒否条件を定義する運用文書です。"
+    },
+    {
+      "path": "fresh/v21/silent-orchard.md",
+      "text": "# Silent Orchard\nThe orchard delays a mutation until two independent receipts agree, then applies one bounded update."
+    },
+    {
+      "path": "fresh/v21/nagi-bridge.md",
+      "text": "# 凪の橋\n凪の橋は、二つの独立receiptが一致するまで変更を保留し、合意後に一度だけ限定更新します。"
+    },
+    {
+      "path": "fresh/v21/violet-anchor.md",
+      "text": "# Violet Anchor\nThe violet anchor publishes the upstream identity used by a rotating handoff."
+    },
+    {
+      "path": "fresh/v21/silver-turn.md",
+      "text": "# Silver Turn\nThe silver turn consumes the upstream identity from the violet anchor and keeps the rotation provenance."
+    },
+    {
+      "path": "fresh/v21/mizu-seed.md",
+      "text": "# 水の起点\n水の起点は、交代処理へ渡す上流identityを公開します。"
+    },
+    {
+      "path": "fresh/v21/kane-route.md",
+      "text": "# 鐘の経路\n鐘の経路は、水の起点から受け取った上流identityと交代provenanceを保持します。"
+    },
+    {
+      "path": "fresh/v21/spring-storage.md",
+      "text": "# Spring Storage\nSpring storage guidance labels clean containers and verifies ventilation before weekly intake."
+    },
+    {
+      "path": "fresh/v21/copper-drain.md",
+      "text": "# Copper Drain Override\nSpring storage guidance for the copper drain override empties the safety channel before forced shutdown."
+    },
+    {
+      "path": "fresh/v21/ao-cache.md",
+      "text": "# 青いcache点検\n青いcache点検は、保存中のsnapshotを読み取り専用で照合し、検査時刻を残します。"
+    },
+    {
+      "path": "fresh/v21/kiiro-cache.md",
+      "text": "# 黄色いcache破棄\n青いcache点検と同じ一覧にある黄色いcache破棄は、強制purgeと領域解放を実行します。"
+    }
+  ],
+  "relationships": [
+    {
+      "source_path": "fresh/v21/cobalt-map.md",
+      "target_path": "fresh/v21/ember-route.md",
+      "edge_type": "informs"
+    },
+    {
+      "source_path": "fresh/v21/kumo-seed.md",
+      "target_path": "fresh/v21/yuzu-route.md",
+      "edge_type": "informs"
+    },
+    {
+      "source_path": "fresh/v21/violet-anchor.md",
+      "target_path": "fresh/v21/silver-turn.md",
+      "edge_type": "informs"
+    },
+    {
+      "source_path": "fresh/v21/mizu-seed.md",
+      "target_path": "fresh/v21/kane-route.md",
+      "edge_type": "informs"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v21",
+  "stages": {
+    "development": [
+      {
+        "case_id": "v21-dev-direct-en-aurora",
+        "cohort": "direct_lexical",
+        "expected_path": "fresh/v21/aurora-ledger.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v21-dev-direct-ja-tsubame",
+        "cohort": "direct_lexical",
+        "expected_path": "fresh/v21/tsubame-index.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v21-dev-semantic-en-harbor",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "fresh/v21/glass-harbor.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v21-dev-semantic-ja-sakura",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "fresh/v21/sakura-envelope.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v21-dev-relation-en-ember",
+        "cohort": "relation_linked",
+        "expected_path": "fresh/v21/ember-route.md",
+        "forbidden_path": null,
+        "relation_seed_path": "fresh/v21/cobalt-map.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "v21-dev-relation-ja-yuzu",
+        "cohort": "relation_linked",
+        "expected_path": "fresh/v21/yuzu-route.md",
+        "forbidden_path": null,
+        "relation_seed_path": "fresh/v21/kumo-seed.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "v21-dev-negative-en-amber",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "fresh/v21/amber-compressor.md"
+      },
+      {
+        "case_id": "v21-dev-negative-ja-aka",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "fresh/v21/aka-cache.md"
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "v21-holdout-direct-en-lunar",
+        "cohort": "direct_lexical",
+        "expected_path": "fresh/v21/lunar-quorum.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v21-holdout-direct-ja-hotaru",
+        "cohort": "direct_lexical",
+        "expected_path": "fresh/v21/hotaru-window.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v21-holdout-semantic-en-orchard",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "fresh/v21/silent-orchard.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v21-holdout-semantic-ja-nagi",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "fresh/v21/nagi-bridge.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v21-holdout-relation-en-silver",
+        "cohort": "relation_linked",
+        "expected_path": "fresh/v21/silver-turn.md",
+        "forbidden_path": null,
+        "relation_seed_path": "fresh/v21/violet-anchor.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "v21-holdout-relation-ja-kane",
+        "cohort": "relation_linked",
+        "expected_path": "fresh/v21/kane-route.md",
+        "forbidden_path": null,
+        "relation_seed_path": "fresh/v21/mizu-seed.md",
+        "relation_edge_type": "informs"
+      },
+      {
+        "case_id": "v21-holdout-negative-en-copper",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "fresh/v21/copper-drain.md"
+      },
+      {
+        "case_id": "v21-holdout-negative-ja-kiiro",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "fresh/v21/kiiro-cache.md"
+      }
+    ]
+  }
+}
+
