@@ -1,0 +1,37 @@
+{
+  "actual_execution_counts": {
+    "actual_finalize_count": 0,
+    "actual_observed_result_count": 0,
+    "actual_successful_worker_count": 0,
+    "actual_worker_launch_count": 1,
+    "development_claim_count": 1,
+    "holdout_claim_count": 0,
+    "registered_query_execution_count": 0,
+    "retry_count": 0
+  },
+  "clarification_version": 1,
+  "count_semantics": {
+    "legacy_observed_result_count": 6,
+    "legacy_observed_result_count_valid_as_actual": false,
+    "legacy_worker_process_count": 6,
+    "legacy_worker_process_count_semantics": "planned-slot-cardinality",
+    "planned_worker_slot_count": 6
+  },
+  "correction_reason": "The frozen terminal audit defaulted both legacy counts to 6 * claim_count after an error report omitted stage_process_count. The execution command log records one worker launch with returncode 1, no successful worker output, and no finalize command.",
+  "failed_database_path": "/opt/ngr-v18/runtime/databases/development/baseline-primary.sqlite3",
+  "interpretation_authority": {
+    "actual_execution_and_result_counts": "actual_execution_counts",
+    "legacy_count_audit_retained_for_byte_history": true,
+    "performance": "not assessed",
+    "status": "error"
+  },
+  "missing_database_parent_directory": "/opt/ngr-v18/runtime/databases/development",
+  "protocol_id": "github-ngr-cross-encoder-precision-v18",
+  "raw_terminal_evidence_unchanged": true,
+  "source_artifacts": {
+    "count-audit.json": "1b0ad113f6ca1e404eb87e06b29ab22fd9bedfc6131577036fa78c16b571b224",
+    "execution-error.json": "259ec86b35fd38d650ca921c649a5256d7e26c6cbd2686e2f906751a375af16f",
+    "observation-evidence-manifest.json": "dad351e5591607d1b3c5d28616bfa4e63aedbd40ef206969d7374417f67c8149",
+    "terminal-evidence-manifest.json": "ec2c90506d0bec979f64fe33cd052db5726ce4baffb15d356815a9fc0e89816f"
+  }
+}

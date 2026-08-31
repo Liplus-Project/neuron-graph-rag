@@ -96,15 +96,27 @@ terminal evidenceだけを固定する。
 
 holdout claim、registered query、retryは0で、shared Windows SQLiteはopenせず前後SHA-256も不変だった。
 execution evidence上で実行されたdevelopment worker commandは最初の1件だけで、performance result / finalizeは
-生成されていない。immutable count auditの`worker_process_count` / `observed_result_count`はfrozen worker slotsを
-各6と記録しているため、これを実測済みperformance result数とは解釈しない。terminal statusとperformanceは
-それぞれ`error` / `not assessed`である。
+生成されていない。terminal statusとperformanceはそれぞれ`error` / `not assessed`である。
 
 count audit、observation evidence manifest、terminal evidence manifestのSHA-256は順に
 `1b0ad113f6ca1e404eb87e06b29ab22fd9bedfc6131577036fa78c16b571b224`、
 `dad351e5591607d1b3c5d28616bfa4e63aedbd40ef206969d7374417f67c8149`、
 `ec2c90506d0bec979f64fe33cd052db5726ce4baffb15d356815a9fc0e89816f`である。predecessor artifacts 13件は
 byte不変で、同一v18 protocolのretryは0、terminal runtimeは再利用不可である。
+
+### Count clarification
+
+frozen terminal auditはerror reportに`stage_process_count`がない場合、claim数に6を乗じて
+`worker_process_count`と`observed_result_count`の両方へfallbackした。そのため旧count auditの各6はplanned
+worker slot cardinalityであり、actual countとしては誤りである。既存count audit、execution error、terminal
+manifestを含むraw terminal evidenceはbyte不変で保持する。
+
+append-only `count-audit-clarification.json`をactual countの機械可読authorityとする。planned worker slotsは6、
+actual worker launchは1、successful workerは0、actual observed resultは0、finalizeは0である。clarification
+SHA-256は`9ee8821fae09f8859d9be48dbba1accbbf11e6adc9ecbf3a22a2e5c8c33ee686`、それだけをexact登録し、旧terminal
+manifest SHAも参照するclarification final manifest SHA-256は
+`f77ec5c85b4a65f251d82ede69e61c1060ef1c969f6430093bdaf3f5691ec633`である。actual execution / result countを
+解釈するときはclarificationの`actual_execution_counts`を優先し、旧count auditの2 fieldsを使わない。
 
 ## 主張境界
 
