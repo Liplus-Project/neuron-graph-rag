@@ -14,12 +14,16 @@ holdoutもprotocol validityと両candidateの全candidate gateをpassした。fa
 
 品質値は`MRR / hit@5`で示す。
 
+evidence id `current-ngr-prefilter`は、workerがintent decomposition後のpositive clauseだけを
+`engine.search(intent.positive_query, ...)`へ渡したprefilterである。現行defaultがoriginal / full queryを渡す検索との
+比較ではないため、以下では`positive-clause NGR prefilter`と表示する。
+
 | stage | candidate | direct | semantic | relation | forbidden top 5 |
 | --- | --- | ---: | ---: | ---: | ---: |
-| development | current-ngr-prefilter | 1.0 / 1.0 | 0.75 / 1.0 | 1.0 / 1.0 | 2 |
+| development | positive-clause NGR prefilter (`current-ngr-prefilter`) | 1.0 / 1.0 | 0.75 / 1.0 | 1.0 / 1.0 | 2 |
 | development | base-intent-aware | 1.0 / 1.0 | 1.0 / 1.0 | 1.0 / 1.0 | 1 |
 | development | v2-m3-intent-aware | 1.0 / 1.0 | 1.0 / 1.0 | 1.0 / 1.0 | 0 |
-| holdout | current-ngr-prefilter | 1.0 / 1.0 | 0.75 / 1.0 | 1.0 / 1.0 | 2 |
+| holdout | positive-clause NGR prefilter (`current-ngr-prefilter`) | 1.0 / 1.0 | 0.75 / 1.0 | 1.0 / 1.0 | 2 |
 | holdout | base-intent-aware | 1.0 / 1.0 | 0.75 / 1.0 | 1.0 / 1.0 | 1 |
 | holdout | v2-m3-intent-aware | 1.0 / 1.0 | 1.0 / 1.0 | 1.0 / 1.0 | 0 |
 
@@ -29,10 +33,10 @@ holdoutもprotocol validityと両candidateの全candidate gateをpassした。fa
 
 | stage | candidate | latency ms | peak RSS MiB | pair count |
 | --- | --- | ---: | ---: | ---: |
-| development | current-ngr-prefilter | 608.22 / 556.15 | 31.94 / 31.93 | 0 / 0 |
+| development | positive-clause NGR prefilter (`current-ngr-prefilter`) | 608.22 / 556.15 | 31.94 / 31.93 | 0 / 0 |
 | development | base-intent-aware | 10498.60 / 7386.81 | 911.83 / 913.52 | 240 / 240 |
 | development | v2-m3-intent-aware | 22121.32 / 19115.43 | 1712.35 / 1712.14 | 240 / 240 |
-| holdout | current-ngr-prefilter | 550.96 / 517.71 | 31.52 / 31.43 | 0 / 0 |
+| holdout | positive-clause NGR prefilter (`current-ngr-prefilter`) | 550.96 / 517.71 | 31.52 / 31.43 | 0 / 0 |
 | holdout | base-intent-aware | 7367.12 / 7352.16 | 913.68 / 913.62 | 240 / 240 |
 | holdout | v2-m3-intent-aware | 18876.03 / 18951.45 | 1712.51 / 1712.25 | 240 / 240 |
 
@@ -49,8 +53,19 @@ terminal後とも`84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c26
 `e0c7957fa7195341dad7c3e014bbcc1d4c8c26c9715551bfdf9b93eadfa03083`、terminal manifest
 `0cbf5235dc312c67db5fa2f9d8f4116b8ff5d09141b085e7abf15fe6cb43693c`である。
 
+本fileはprebuild registry外に置いたappend-only報告面である。実行済みsource、fixtures、runner、raw evidence、
+manifestsのbytesは変更せず、観測後の説明とclaim boundaryだけを追記する。
+
+## Scope deviation
+
+v21 moduleは1,228行である。v19 lifecycleとstage contractは再利用したが、worker、quality評価、gate、finalizerの
+version-specific実装面は大きく、module全体がthin compositionを満たしたとは主張しない。実行済みprotocol bytesを
+同じPRでrefactorせず、この構造改善はfollow-up [Issue #196](https://github.com/Liplus-Project/neuron-graph-rag/issues/196)
+へ分離する。
+
 ## 主張境界
 
 実測主張はfrozen v21 synthetic corpus、fresh development / holdout identity、CPU-only accepted imageに限定する。
 両intent-aware candidateがこのfixture上で全gateをpassした事実を記録するが、GitHub RAG parity、production performance、
-physical integration、NGR default変更へ一般化しない。
+physical integration、NGR default変更へ一般化しない。candidate gateのbaselineはintent decomposition後の
+positive-clause NGR prefilterであり、original / full queryを使う現行defaultとの品質・性能比較は測定していない。
