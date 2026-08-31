@@ -30,7 +30,8 @@ relevance判定をranking inputへ渡すことをschemaで拒否する。
 query textはpositive clauseと0個以上のexclusion clauseへdeterministicに分解する。各candidateはpositive clauseのlogitと
 exclusion clauseごとのlogitを持ち、exclusion relevanceの最大値をpenaltyとしてfusion scoreから引く。relation intentが
 query textにあり、有効なrelation pathがcandidate sourceをtargetにするときだけ固定bonusを加える。relation pathsは
-出力へ改変せず保持する。prefilter rank / score、positive logit、exclusion penalty、relation bonus以外のsignalは使わない。
+exact schemaで受け、出力では各field/valueを変更せず再構築する。JSONのkey orderやwhitespaceを含むbyte identityは保証しない。
+prefilter rank / score、positive logit、exclusion penalty、relation bonus以外のsignalは使わない。
 
 このdecompositionはen / jaの明示markerを対象にしたfrozen contractであり、自然言語理解の完全性を主張しない。次の
 実測protocolではfresh development / holdout identitiesを使用し、unknown intentやmarker coverageも独立して評価する。

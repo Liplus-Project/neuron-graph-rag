@@ -74,8 +74,14 @@ class IntentAwareRankFusionTests(unittest.TestCase):
         ranked = fuse_intent_aware_ranks("cache without v8", rows)
         self.assertEqual(ranked[0]["source_path"], "docs/clean.md")
 
-    def test_relation_bonus_preserves_exact_paths(self) -> None:
+    def test_relation_path_preserves_field_values_not_input_key_order(self) -> None:
         path = {
+            "step_count": 1,
+            "edge_type": "informs",
+            "target_path": "docs/related.md",
+            "seed_path": "docs/seed.md",
+        }
+        expected = {
             "seed_path": "docs/seed.md",
             "target_path": "docs/related.md",
             "edge_type": "informs",
@@ -87,7 +93,11 @@ class IntentAwareRankFusionTests(unittest.TestCase):
         ]
         ranked = fuse_intent_aware_ranks("related cache decision", rows)
         self.assertEqual(ranked[0]["source_path"], "docs/related.md")
-        self.assertEqual(ranked[0]["relation_paths"], [path])
+        self.assertEqual(ranked[0]["relation_paths"], [expected])
+        self.assertNotEqual(
+            list(ranked[0]["relation_paths"][0]),
+            list(path),
+        )
 
     def test_relation_path_target_must_match_candidate(self) -> None:
         path = {
@@ -152,6 +162,19 @@ class IntentAwareFreezeTests(unittest.TestCase):
         self.assertIn("relation-source-edge-only-provenance", protocol)
         self.assertNotIn("relation-source-edge-only-provenance", candidate)
 
+    def test_relation_contract_is_field_exact_without_byte_identity(self) -> None:
+        contract = json.loads((ROOT / v20.INTENT_CONTRACT).read_text(encoding="utf-8"))
+        self.assertEqual(
+            contract["ranking_contract"]["relation_processing"],
+            {
+                "bonus_requires_query_relation_intent": True,
+                "path_target_must_equal_candidate_source": True,
+                "returned_path_schema": "exact",
+                "returned_path_field_values": "unchanged",
+                "byte_identity_claimed": False,
+            },
+        )
+
     def test_positive_case_non_regression_is_not_relaxed(self) -> None:
         contract = json.loads((ROOT / v20.GATE_OWNERSHIP).read_text(encoding="utf-8"))
         self.assertEqual(
@@ -185,6 +208,7 @@ class IntentAwareFreezeTests(unittest.TestCase):
         self.assertIn("performanceは`not assessed`", text)
         self.assertIn("gold expected path", text)
         self.assertIn("positive per-case rank non-regression", text)
+        self.assertIn("byte identityは保証しない", text)
 
     def test_manifest_mutation_fails_closed(self) -> None:
         manifest = json.loads((ROOT / v20.MANIFEST).read_text(encoding="utf-8"))

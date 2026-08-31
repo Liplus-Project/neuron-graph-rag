@@ -142,7 +142,9 @@ def validate_prebuild(root: Path = ROOT) -> dict[str, Any]:
         "relation_processing": {
             "bonus_requires_query_relation_intent": True,
             "path_target_must_equal_candidate_source": True,
-            "returned_paths_preserved_byte-for-byte": True,
+            "returned_path_schema": "exact",
+            "returned_path_field_values": "unchanged",
+            "byte_identity_claimed": False,
         },
     }
     if ranking_contract != expected_ranking_contract:

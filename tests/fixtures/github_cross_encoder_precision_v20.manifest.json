@@ -38,13 +38,13 @@
     "tools/run_cross_encoder_precision_v19_observation_wslc.ps1": "cb8db69d4241dee0b828d731f1e0bfab845fbaa6bfcc0af08b474315a9696c95"
   },
   "protocol_artifact_sha256": {
-    "docs/cross-encoder-precision-observation-v20.md": "7855bdaff41084aefaaa0742a1650bcfba6640c1425444d1ed454d29569d4a35",
-    "src/neuron_graph_rag/cross_encoder_precision_v20_intent_aware_freeze.py": "9e41bfa5d25c2c79b0c4c6e0321514e74551cb99e99e84901e5b2a71366310a7",
+    "docs/cross-encoder-precision-observation-v20.md": "cf9638502104fdfff512f79148d77c05e8f5c4d90c8a94b90b3876eaf613fb08",
+    "src/neuron_graph_rag/cross_encoder_precision_v20_intent_aware_freeze.py": "c428d54dc57f1ae8c0c5b7b9ec968ea91d85cdc12d9409b186d5a1ae373171bd",
     "src/neuron_graph_rag/intent_aware_rank_fusion.py": "c73a9e18c1e71d2fc08b2c9ea098bf9cfe388ed143da1a0062dd79a5d211b720",
     "tests/fixtures/github_cross_encoder_precision_v20.future-identities.json": "dab8d75ba982d9c5300f83be7553f2c9c681094c9d7b86a941130eb7314719a7",
     "tests/fixtures/github_cross_encoder_precision_v20.gate-ownership.json": "ae57aee84977ceb033f450ee56e15e43ce74786443fd8621f36b33ee0b092af7",
-    "tests/fixtures/github_cross_encoder_precision_v20.intent-aware-contract.json": "b54458438780dad548e77bfb0ddc4937dc589109da9c5d4ec4693105a003a9f9",
+    "tests/fixtures/github_cross_encoder_precision_v20.intent-aware-contract.json": "ad202e533a8743747b3487093fc39e281b30dbc59d8677e63400e0360a113fb0",
     "tests/fixtures/github_cross_encoder_precision_v20.result-free-audit.json": "3c730cf9208e67aa87c6a418ca1e991b07d98aabc8fc6e33829a8a62f55d63c6",
-    "tests/test_cross_encoder_precision_v20_intent_aware_freeze.py": "cc946b9a6e8689665854681a0d3d542685a03609b4a2e7f738fd427be7106420"
+    "tests/test_cross_encoder_precision_v20_intent_aware_freeze.py": "a2acdcf008f4ea6b53924a5504b86a279a4f234d1e49fdad9cbb2a2859dc7665"
   }
 }

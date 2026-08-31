@@ -32,7 +32,9 @@
     "relation_processing": {
       "bonus_requires_query_relation_intent": true,
       "path_target_must_equal_candidate_source": true,
-      "returned_paths_preserved_byte-for-byte": true
+      "returned_path_schema": "exact",
+      "returned_path_field_values": "unchanged",
+      "byte_identity_claimed": false
     }
   }
 }
