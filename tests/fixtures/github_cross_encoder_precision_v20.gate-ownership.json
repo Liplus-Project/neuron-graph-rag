@@ -1,0 +1,26 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v20",
+  "protocol_validity_gates": [
+    "protocol-source-contract-integrity",
+    "identity-separation",
+    "baseline-prefilter-validity",
+    "relation-source-edge-only-provenance",
+    "production-signal-only",
+    "default-surface-immutability"
+  ],
+  "candidate_controllable_gates": [
+    "positive-case-rank-non-regression",
+    "positive-cohort-mrr-hit-at-5-non-regression",
+    "negative-non-worsening-and-aggregate-strict-improvement",
+    "positive-expected-source-top-5-completeness",
+    "intent-aware-fusion-rank-only-recomputation",
+    "relation-path-preservation"
+  ],
+  "positive_case_non_regression": {
+    "comparator": "candidate_rank <= baseline_rank",
+    "when": "baseline expected source is in top_k",
+    "missing_candidate": "fail",
+    "cohort_average_can_mask_case_regression": false
+  },
+  "selection": "protocol validity must pass before candidate gates; first candidate passing every candidate-controllable hard gate may open holdout"
+}

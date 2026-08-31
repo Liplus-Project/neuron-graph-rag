@@ -1,0 +1,9 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v20",
+  "identity_schema": "ngr.intent-aware-next-observation/v1",
+  "development": "github-ngr-cross-encoder-precision-v20-development-7b6b4f9d",
+  "holdout": "github-ngr-cross-encoder-precision-v20-holdout-c31e958a",
+  "v19_case_role": "diagnostic-design-input-only",
+  "v19_result_packet_reuse_allowed": false,
+  "future_observation_requires_successor_protocol": true
+}

@@ -1,0 +1,19 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v20",
+  "status": "pass",
+  "phase": "intent-aware-rank-gate-freeze",
+  "model_import_count": 0,
+  "model_load_count": 0,
+  "model_forward_inference_count": 0,
+  "registered_query_execution_count": 0,
+  "development_claim_count": 0,
+  "holdout_claim_count": 0,
+  "worker_process_count": 0,
+  "observed_result_count": 0,
+  "shared_database_open_count": 0,
+  "runtime_volume_create_count": 0,
+  "retry_count": 0,
+  "v19_artifacts_unchanged": true,
+  "v19_results_reused_as_performance_evidence": false,
+  "performance": "not assessed"
+}

@@ -1,0 +1,38 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v20",
+  "helper_module": "neuron_graph_rag.intent_aware_rank_fusion",
+  "production_signal_keys": [
+    "source_path",
+    "prefilter_rank",
+    "prefilter_score",
+    "positive_logit",
+    "exclusion_logits",
+    "relation_paths"
+  ],
+  "ranking_contract": {
+    "query_intent": {
+      "input": "query_text",
+      "positive_clause_required": true,
+      "exclusion_clause_logits": "one per decomposed exclusion clause",
+      "languages": [
+        "en",
+        "ja"
+      ]
+    },
+    "fusion": {
+      "prefilter_rank_weight": 0.15,
+      "prefilter_score_weight": 0.15,
+      "positive_logit_weight": 1.0,
+      "exclusion_penalty_weight": 1.0,
+      "relation_path_bonus": 0.25,
+      "rrf_constant": 60,
+      "top_k": 5,
+      "tie_break": "source_path ascending"
+    },
+    "relation_processing": {
+      "bonus_requires_query_relation_intent": true,
+      "path_target_must_equal_candidate_source": true,
+      "returned_paths_preserved_byte-for-byte": true
+    }
+  }
+}
