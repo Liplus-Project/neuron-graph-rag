@@ -1,0 +1,62 @@
+{
+  "baseline_evidence_id": "positive-clause-ngr-prefilter",
+  "candidate_gate_ids": [
+    "positive-case-rank-non-regression",
+    "positive-cohort-mrr-hit-at-5-non-regression",
+    "negative-non-worsening-and-aggregate-strict-improvement",
+    "positive-expected-source-top-5-completeness",
+    "intent-aware-fusion-rank-only-recomputation",
+    "relation-path-preservation"
+  ],
+  "evidence_path": "tests/evidence/github_cross_encoder_precision_v22_observation",
+  "fixture_paths": {
+    "corpus": "tests/fixtures/github_cross_encoder_precision_v22.corpus.json",
+    "gold": "tests/fixtures/github_cross_encoder_precision_v22.gold.json",
+    "model_registry": "tests/fixtures/github_cross_encoder_precision_v8.models.json",
+    "queries": "tests/fixtures/github_cross_encoder_precision_v22.queries.json"
+  },
+  "fusion_config": {
+    "exclusion_penalty_weight": 1.0,
+    "positive_logit_weight": 1.0,
+    "prefilter_rank_weight": 0.15,
+    "prefilter_score_weight": 0.15,
+    "relation_path_bonus": 0.25,
+    "rrf_constant": 60,
+    "top_k": 5
+  },
+  "immutable_v21_registries": {
+    "tests/evidence/github_cross_encoder_precision_v21_observation/terminal-evidence-manifest.json": "0cbf5235dc312c67db5fa2f9d8f4116b8ff5d09141b085e7abf15fe6cb43693c",
+    "tests/fixtures/github_cross_encoder_precision_v21_observation.manifest.json": "ea7d83097c00ed1a262f4c9209b409964bbc73795f1822c88b56c20e078c317b"
+  },
+  "model_execution_count": 0,
+  "models": [
+    {
+      "candidate_id": "base-intent-aware",
+      "kind": "base",
+      "model_id": "BAAI/bge-reranker-base",
+      "revision": "2cfc18c9415c912f9d8155881c133215df768a70"
+    },
+    {
+      "candidate_id": "v2-m3-intent-aware",
+      "kind": "v2-m3",
+      "model_id": "BAAI/bge-reranker-v2-m3",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    }
+  ],
+  "performance": "not assessed",
+  "phase": "result-free-engine-scaffold",
+  "protocol_gate_ids": [
+    "protocol-source-contract-integrity",
+    "identity-separation",
+    "baseline-prefilter-validity",
+    "relation-source-edge-only-provenance",
+    "production-signal-only",
+    "default-surface-immutability"
+  ],
+  "protocol_id": "github-ngr-cross-encoder-precision-v22",
+  "result_count": 0,
+  "stage_identities": {
+    "development": "github-ngr-cross-encoder-precision-v22-development-engine-4a7e91d2",
+    "holdout": "github-ngr-cross-encoder-precision-v22-holdout-engine-8c3f6b10"
+  }
+}
