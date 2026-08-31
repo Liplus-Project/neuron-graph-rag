@@ -1,0 +1,55 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v8",
+  "protocol_commit": "d2fdf7720e2a9dde7e8d666cf4fd9f314fd3d12f",
+  "stage": "development",
+  "stage_execution_count": 1,
+  "expected_worker_packet_count": 6,
+  "archived_worker_packet_count": 6,
+  "complete": true,
+  "fresh_process_identity_count": 6,
+  "fresh_database_identity_count": 6,
+  "files": [
+    {
+      "runtime_path": "/opt/ngr-v19/runtime/runs/development/baseline-primary.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v19_observation/raw/development/baseline-primary.json",
+      "size": 42818,
+      "sha256": "78179da9a4beeecc6d62a09ea88129268e893806c7e2e0ee8eb8b958f6d8e044",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "/opt/ngr-v19/runtime/runs/development/baseline-replay.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v19_observation/raw/development/baseline-replay.json",
+      "size": 42817,
+      "sha256": "05236ad787b3c3bb46d4081cf4203f48444d8bdd9aaa821c2fdd176e4f1ac71b",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "/opt/ngr-v19/runtime/runs/development/base-primary.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v19_observation/raw/development/base-primary.json",
+      "size": 408090,
+      "sha256": "c6cda92a35e35b82ad698d6fbf9e4dc0ed3ab907149477eed16bdc82413b073a",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "/opt/ngr-v19/runtime/runs/development/base-replay.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v19_observation/raw/development/base-replay.json",
+      "size": 408089,
+      "sha256": "4e6cfc9bf0b08c25204e6d9ff11625c64280c71ef8f2c17145217ba35d230933",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "/opt/ngr-v19/runtime/runs/development/v2-m3-primary.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v19_observation/raw/development/v2-m3-primary.json",
+      "size": 407601,
+      "sha256": "bf1ef2aeb6a12190e1e23f1aa6765e5883d6502a8e1105886a72069e40e226e1",
+      "byte_identity": true
+    },
+    {
+      "runtime_path": "/opt/ngr-v19/runtime/runs/development/v2-m3-replay.json",
+      "archive_path": "tests/evidence/github_cross_encoder_precision_v19_observation/raw/development/v2-m3-replay.json",
+      "size": 407601,
+      "sha256": "63c1c2c40c6366ef29465b5375c4d910e46fff20f900b87bb3bb6beb07e9622b",
+      "byte_identity": true
+    }
+  ]
+}

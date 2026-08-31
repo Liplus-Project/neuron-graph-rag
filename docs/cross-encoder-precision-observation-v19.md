@@ -87,6 +87,28 @@ selected candidateがある場合だけholdoutをexactly once開く。selected�
 holdoutを開かず、result / errorのいずれもretry 0とする。同一v19 protocolとterminal volumeは再実行・再利用
 しない。
 
+### Development実測
+
+preflight evidence commit `af0cb59d3f4a5dc71debb2eaeee7826c676d9354`に対するGitHub Actions run
+`33353194262`はCore / Optional MCPともgreenだった。その後、v19 developmentをexactly once実行した。
+stage directory initializationは1、development claimは1、planned worker slotsは6、actual worker launch / successful
+worker / observed resultは各6、finalizeは1だった。全commandのreturn codeは0で、shared Windows SQLiteはopenせず、
+前後SHA-256はともに`84a3fc590eee990579e3ef8130294129934fe93e25f18ac249eece19813c261e`だった。
+同一v19 developmentのretryは0である。
+
+1,953 pairsに対する`BAAI/bge-reranker-base`のprimary / replay latencyは130,854.886 ms /
+127,312.911 ms、peak RSSは1,387,855,872 bytes / 1,404,841,984 bytesだった。
+`BAAI/bge-reranker-v2-m3`のprimary / replay latencyは430,410.446 ms / 423,496.594 ms、peak RSSは
+2,377,826,304 bytes / 2,413,035,520 bytesだった。これはprotocol環境における実測値であり、production性能を
+表すものではない。
+
+4 candidateはいずれも全hard gateを満たさず、development statusは`failed`、selected candidateは`null`だった。
+したがってholdout claim / holdout workerは0のまま開いていない。performanceはdevelopment範囲で`observed`だが、
+GitHub RAG / NGR retrieval parityは成立しておらず、default surface変更も行わない。observation evidence manifest
+SHA-256は`83044dcbcbb586440a2055bd8f80bb09b404bb8aa8b76cc47894e3609e8e527e`、count audit SHA-256は
+`9a85dea0d16deb66adfb64795fc99b1f7f79b39efb1fc32b6fc2b4eb9cd43be3`、terminal evidence manifest SHA-256は
+`953c856ec0160e56843e6bf5ab461a280fe7305e8b4501253c7da922c0c98907`である。
+
 ## 主張境界
 
 観測前のperformanceは`not assessed`である。terminal evidence後も、性能、GitHub RAG / NGR retrieval parity、
