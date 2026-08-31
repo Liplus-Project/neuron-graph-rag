@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import inspect
 import json
 import unittest
@@ -349,6 +350,62 @@ class IntentAwareObservationEngineTests(unittest.TestCase):
         self.assertTrue(
             all(not candidate["gates"] for candidate in result["candidates"])
         )
+
+    def _assert_development_raw_rejected(
+        self,
+        raw: dict[tuple[str, str], dict[str, object]],
+        message: str,
+    ) -> None:
+        fixture = self.engine.load_finalizer_fixture(ROOT, "development")
+        claim = _read(V21_EVIDENCE / "development.claim.json")
+        with self.assertRaisesRegex(ValueError, message):
+            self.engine.finalize_stage(
+                "development",
+                claim=claim,
+                claim_sha256="0" * 64,
+                raw=raw,
+                fixture=fixture,
+                validity=shared.ProtocolValidityInputs(True, True, 24),
+            )
+
+    def test_finalizer_rejects_replay_model_revision_mismatch(self) -> None:
+        raw = copy.deepcopy(_raw("development"))
+        raw[("base", "replay")]["revision"] = "wrong-revision"
+        self._assert_development_raw_rejected(raw, "model identity mismatch")
+
+    def test_finalizer_rejects_baseline_model_identity(self) -> None:
+        for key in (("baseline", "primary"), ("baseline", "replay")):
+            for field in ("model_id", "revision"):
+                with self.subTest(key=key, field=field):
+                    raw = copy.deepcopy(_raw("development"))
+                    raw[key][field] = "unexpected"
+                    self._assert_development_raw_rejected(
+                        raw, "model identity mismatch"
+                    )
+
+    def test_finalizer_rejects_worker_packet_identity_mismatch(self) -> None:
+        mutations = (
+            (("base", "primary"), "protocol_id", "wrong-protocol"),
+            (("baseline", "replay"), "stage", "holdout"),
+            (("base", "primary"), "kind", "v2-m3"),
+            (("v2-m3", "replay"), "replay", "primary"),
+        )
+        for key, field, value in mutations:
+            with self.subTest(key=key, field=field):
+                raw = copy.deepcopy(_raw("development"))
+                raw[key][field] = value
+                self._assert_development_raw_rejected(
+                    raw, f"{field} identity mismatch"
+                )
+
+    def test_finalizer_requires_exact_worker_packet_set(self) -> None:
+        missing = copy.deepcopy(_raw("development"))
+        del missing[("base", "replay")]
+        self._assert_development_raw_rejected(missing, "packet set mismatch")
+
+        extra = copy.deepcopy(_raw("development"))
+        extra[("base", "shadow")] = copy.deepcopy(extra[("base", "replay")])
+        self._assert_development_raw_rejected(extra, "packet set mismatch")
 
     def test_v21_reference_behavior_parity_without_model_execution(self) -> None:
         for stage in shared.STAGES:

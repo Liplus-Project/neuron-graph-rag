@@ -13,7 +13,9 @@ shared engineは次のpure observation責務だけを持つ。
 - protocol、fixture path、stage identity、model identity、gate ID、fusion weightsをspecから受けて検証する。
 - worker用にcorpus、relationship、queryを読み、production検索とscorerを注入してcaseを生成する。
 - finalizer用にqueryとgoldを読み、quality、protocol validity、candidate gateの順で評価する。
-- claim identity、primary/replay一致、model identity、state集約、candidate選択を検証し、上記評価結果のpayloadを組み立てる。
+- claim identityとexact 6 worker packet setを検証する。各packetのprotocol / stage / kind / replay identity、
+  primary/replay双方のmodel identity、cases一致をfail closedにした後、state集約、candidate選択、上記評価結果の
+  payload組み立てを行う。baseline packetのmodel IDとrevisionは双方ともnullでなければならない。
 
 workerはgoldを受け取らない。worker fixture loaderもgold pathを開かず、`gold`、`expected`、`forbidden`、
 evaluation labelをworker APIまたはproduction signalへ渡さない。goldを読むのはfinalizerだけであり、protocol

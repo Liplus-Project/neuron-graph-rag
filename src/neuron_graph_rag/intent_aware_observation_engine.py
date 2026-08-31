@@ -549,6 +549,49 @@ class IntentAwareObservationEngine:
             ),
         )
 
+    def _validate_worker_packets(
+        self,
+        raw: Mapping[tuple[str, str], Mapping[str, Any]],
+        stage: str,
+    ) -> None:
+        expected_keys = {
+            (kind, replay)
+            for kind in ("baseline", *(model.kind for model in self.spec.models))
+            for replay in ("primary", "replay")
+        }
+        actual_keys = set(raw)
+        if actual_keys != expected_keys:
+            missing = sorted(expected_keys - actual_keys)
+            extra = sorted(actual_keys - expected_keys, key=repr)
+            raise ValueError(
+                f"worker packet set mismatch: missing={missing!r}, extra={extra!r}"
+            )
+        for kind, replay in sorted(expected_keys):
+            packet = raw[(kind, replay)]
+            for identity_field, expected in (
+                ("protocol_id", self.spec.protocol_id),
+                ("stage", stage),
+                ("kind", kind),
+                ("replay", replay),
+            ):
+                if packet.get(identity_field) != expected:
+                    raise ValueError(
+                        f"{kind} {replay} worker packet {identity_field} "
+                        "identity mismatch"
+                    )
+            model = None if kind == "baseline" else self.spec.model(kind)
+            expected_model_id = None if model is None else model.model_id
+            expected_revision = None if model is None else model.revision
+            if (
+                "model_id" not in packet
+                or "revision" not in packet
+                or packet["model_id"] != expected_model_id
+                or packet["revision"] != expected_revision
+            ):
+                raise ValueError(
+                    f"{kind} {replay} worker packet model identity mismatch"
+                )
+
     def finalize_stage(
         self,
         stage: str,
@@ -563,6 +606,7 @@ class IntentAwareObservationEngine:
             raise ValueError("claim protocol identity mismatch")
         if claim.get("stage_identity") != self.spec.stage_identity(stage):
             raise ValueError("claim stage identity mismatch")
+        self._validate_worker_packets(raw, stage)
         baseline_primary = raw[("baseline", "primary")]
         baseline_replay = raw[("baseline", "replay")]
         if baseline_primary["cases"] != baseline_replay["cases"]:
@@ -589,11 +633,6 @@ class IntentAwareObservationEngine:
             replay = raw[(model.kind, "replay")]
             if primary["cases"] != replay["cases"]:
                 raise ValueError(f"{model.kind} replay cases differ")
-            if (
-                primary.get("model_id") != model.model_id
-                or primary.get("revision") != model.revision
-            ):
-                raise ValueError(f"{model.kind} model identity mismatch")
             cases = [
                 {**case, "query": query_by_id[str(case["case_id"])]}
                 for case in primary["cases"]
