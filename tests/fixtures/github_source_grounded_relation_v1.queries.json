@@ -1,0 +1,89 @@
+{
+  "protocol_id": "github-ngr-source-grounded-relation-seed-v1",
+  "stages": {
+    "development": [
+      {
+        "case_id": "v24-dev-direct-d1-corpus-contract",
+        "cohort": "direct_lexical",
+        "query": "Where is the read-only D1 corpus acquisition and transformation contract documented?"
+      },
+      {
+        "case_id": "v24-dev-direct-real-corpus-gates",
+        "cohort": "direct_lexical",
+        "query": "Which benchmark defines H1 through H4 for the real corpus evaluation?"
+      },
+      {
+        "case_id": "v24-dev-semantic-parity",
+        "cohort": "semantic_paraphrase",
+        "query": "Find the protocol that compares two document retrievers on an identical immutable repository snapshot."
+      },
+      {
+        "case_id": "v24-dev-semantic-node-choice",
+        "cohort": "semantic_paraphrase",
+        "query": "Which experiment lets multiple judges choose evidence nodes before any answer text is compared?"
+      },
+      {
+        "case_id": "v24-dev-relation-evidence-sibling",
+        "cohort": "relation_linked",
+        "query": "Which related design is linked from Evidence-gated local feedback reinforcement for weakening uncredited same-source siblings?"
+      },
+      {
+        "case_id": "v24-dev-relation-settings-canonical",
+        "cohort": "relation_linked",
+        "query": "MCP Feedback Stabilization Settingsから関連リンクとして参照されるcanonical gate評価文書はどれですか。"
+      },
+      {
+        "case_id": "v24-dev-negative-elasticity",
+        "cohort": "negative_control",
+        "query": "Locate documentation for fixed Git source identity validation while excluding feedback elasticity experiments."
+      },
+      {
+        "case_id": "v24-dev-negative-history",
+        "cohort": "negative_control",
+        "query": "Find the controlled real-corpus ranking gates without historical blob verification guidance."
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "v24-holdout-direct-neural",
+        "cohort": "direct_lexical",
+        "query": "Where is the finite activation budget neural dynamics experiment specified?"
+      },
+      {
+        "case_id": "v24-holdout-direct-local",
+        "cohort": "direct_lexical",
+        "query": "Which experiment scopes recurrent competition to local neighbors?"
+      },
+      {
+        "case_id": "v24-holdout-semantic-anchor",
+        "cohort": "semantic_paraphrase",
+        "query": "Find the study that preserves entry retrieval as a residual while excluding zero-hop graph signal."
+      },
+      {
+        "case_id": "v24-holdout-semantic-fusion",
+        "cohort": "semantic_paraphrase",
+        "query": "Which evaluation calibrates graph normalization and bottom-centered reciprocal-rank fusion?"
+      },
+      {
+        "case_id": "v24-holdout-relation-deactivation-baseline",
+        "cohort": "relation_linked",
+        "query": "Which baseline-aware snapshot evaluation is linked from Outcome-driven feedback deactivation?"
+      },
+      {
+        "case_id": "v24-holdout-relation-confirmed-interface",
+        "cohort": "relation_linked",
+        "query": "Confirmed-outcome feedback reinforcementから参照される関連MCP interface文書はどれですか。"
+      },
+      {
+        "case_id": "v24-holdout-negative-channels",
+        "cohort": "negative_control",
+        "query": "Find the precision-control registration contract while excluding independent retrieval channel experiments."
+      },
+      {
+        "case_id": "v24-holdout-negative-precision",
+        "cohort": "negative_control",
+        "query": "Locate the independent channel protocol without precision-control freeze material."
+      }
+    ]
+  }
+}

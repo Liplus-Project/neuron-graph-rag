@@ -1,0 +1,243 @@
+{
+  "protocol_id": "github-ngr-source-grounded-relation-seed-v1",
+  "issue": 200,
+  "phase": "result-free-freeze",
+  "source": {
+    "repository": "Liplus-Project/neuron-graph-rag",
+    "commit": "74a7ae1b4b9dbe822ef719e4a4b7d0a8b5b3066c",
+    "access": "git-show-read-only-fixed-commit",
+    "generated_by": "tools/acquire_source_grounded_relation_corpus.py",
+    "paths": [
+      "docs/anchored-bm25-graph-hybrid-experiment.md",
+      "docs/anchored-fusion-calibration-experiment.md",
+      "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+      "docs/canonical-evidence-gate-evaluation.md",
+      "docs/confirmed-outcome-feedback-reinforcement.md",
+      "docs/d1-corpus-fixture.md",
+      "docs/evidence-gated-local-feedback-reinforcement.md",
+      "docs/feedback-rank-elasticity.md",
+      "docs/github-retrieval-parity-benchmark.md",
+      "docs/historical-source-verification.md",
+      "docs/independent-retrieval-channels-experiment.md",
+      "docs/mcp-feedback-stabilization-settings.md",
+      "docs/neural-dynamics-experiment.md",
+      "docs/neural-dynamics-local-competition-experiment.md",
+      "docs/node-first-blind-selection-experiment.md",
+      "docs/optional-mcp-interface.md",
+      "docs/outcome-driven-feedback-deactivation.md",
+      "docs/precision-control-freeze-v1.md",
+      "docs/real-corpus-benchmark.md",
+      "docs/sibling-relation-feedback-normalization.md"
+    ],
+    "content_sha256": {
+      "docs/anchored-bm25-graph-hybrid-experiment.md": "489edd55f8632fb0f0d1b2ae82a4c950ebd473b0794200da94b18cf4cd8f40ca",
+      "docs/anchored-fusion-calibration-experiment.md": "8b85629082a523bb099ddea843c17fad91019fcba5a5fac425304d8c7858e346",
+      "docs/baseline-aware-soft-start-snapshot-evaluation.md": "0481abf383c60722a3d4b8416cf166eb4c67fa6f8e425eef63d1e9b2c44317f5",
+      "docs/canonical-evidence-gate-evaluation.md": "7c90282dd14ca53cea666fc7b43f9bb97d4f70fd0055b8bab0435a95c75c11a6",
+      "docs/confirmed-outcome-feedback-reinforcement.md": "c01bbd167239aa645a19cfcb4e910babe51d323470fe0d13b05fbd077059b79e",
+      "docs/d1-corpus-fixture.md": "48955824f79f39ee09f45d1f3469131a3054a76bbd20bca6c7d8988e7df668cd",
+      "docs/evidence-gated-local-feedback-reinforcement.md": "f8f08ff8d8aeb5949231ddc18154931123ca43f479d23e1a6b56090301659827",
+      "docs/feedback-rank-elasticity.md": "6ca16e872e810f523133ffa4741a68ee201cc9baae6dbb07968eec2d3e4bcb61",
+      "docs/github-retrieval-parity-benchmark.md": "a617d8d2a821230469200769ecc507944b6b0a763609bc993b29f101b449f295",
+      "docs/historical-source-verification.md": "a86360be1f2c65d584dfde9fda1833b772eb3a67edd0a73bed9ac7b2bfaf1d63",
+      "docs/independent-retrieval-channels-experiment.md": "9563483ceaaacb06c1920cfe4c9a5e2df510862961dfd805832b94a51a82f980",
+      "docs/mcp-feedback-stabilization-settings.md": "14e9ac2193d4b5a7a39f747907e7cacd72d4b14c2e3a5a37fec9135a2962f530",
+      "docs/neural-dynamics-experiment.md": "082c632f5ed53a7d85534c8992daf937a312bb096c6f75510a58663a175094f6",
+      "docs/neural-dynamics-local-competition-experiment.md": "ce9cd5cb35189ac1cb574aaae118f5ddef1c5779b58fc10fc7c5b554e25c9103",
+      "docs/node-first-blind-selection-experiment.md": "bab4a67739e8eb360487ed166e3cccf98247d905f1389ab03b7a7ab02ab995b5",
+      "docs/optional-mcp-interface.md": "d4e1155e1cf92e7dbb71695828c97c9a5c26b0990948136aeba93cbf7ab5b5cd",
+      "docs/outcome-driven-feedback-deactivation.md": "27ebe4c66151bfb78ba03e687961d3eb75d163a4bc843662686712ad5e0d517d",
+      "docs/precision-control-freeze-v1.md": "ab13cb15bb2f398b0e11e2efa3df50603ed45b9a8956dc34aed08728927d8f10",
+      "docs/real-corpus-benchmark.md": "8e88d8133d0082ac0de9bcd360b64f704ff77591bc570f189364ec60c41ee19b",
+      "docs/sibling-relation-feedback-normalization.md": "7b33ce4dace6e976d90471b705b4554ae3ead755c78e429d8c9d91a84b105521"
+    }
+  },
+  "relationships": [
+    {
+      "source_path": "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+      "target_path": "docs/confirmed-outcome-feedback-reinforcement.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "0481abf383c60722a3d4b8416cf166eb4c67fa6f8e425eef63d1e9b2c44317f5",
+      "target_content_sha256": "c01bbd167239aa645a19cfcb4e910babe51d323470fe0d13b05fbd077059b79e"
+    },
+    {
+      "source_path": "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+      "target_path": "docs/historical-source-verification.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "0481abf383c60722a3d4b8416cf166eb4c67fa6f8e425eef63d1e9b2c44317f5",
+      "target_content_sha256": "a86360be1f2c65d584dfde9fda1833b772eb3a67edd0a73bed9ac7b2bfaf1d63"
+    },
+    {
+      "source_path": "docs/canonical-evidence-gate-evaluation.md",
+      "target_path": "docs/evidence-gated-local-feedback-reinforcement.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "7c90282dd14ca53cea666fc7b43f9bb97d4f70fd0055b8bab0435a95c75c11a6",
+      "target_content_sha256": "f8f08ff8d8aeb5949231ddc18154931123ca43f479d23e1a6b56090301659827"
+    },
+    {
+      "source_path": "docs/confirmed-outcome-feedback-reinforcement.md",
+      "target_path": "docs/evidence-gated-local-feedback-reinforcement.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "c01bbd167239aa645a19cfcb4e910babe51d323470fe0d13b05fbd077059b79e",
+      "target_content_sha256": "f8f08ff8d8aeb5949231ddc18154931123ca43f479d23e1a6b56090301659827"
+    },
+    {
+      "source_path": "docs/confirmed-outcome-feedback-reinforcement.md",
+      "target_path": "docs/optional-mcp-interface.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "c01bbd167239aa645a19cfcb4e910babe51d323470fe0d13b05fbd077059b79e",
+      "target_content_sha256": "d4e1155e1cf92e7dbb71695828c97c9a5c26b0990948136aeba93cbf7ab5b5cd"
+    },
+    {
+      "source_path": "docs/evidence-gated-local-feedback-reinforcement.md",
+      "target_path": "docs/feedback-rank-elasticity.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "f8f08ff8d8aeb5949231ddc18154931123ca43f479d23e1a6b56090301659827",
+      "target_content_sha256": "6ca16e872e810f523133ffa4741a68ee201cc9baae6dbb07968eec2d3e4bcb61"
+    },
+    {
+      "source_path": "docs/evidence-gated-local-feedback-reinforcement.md",
+      "target_path": "docs/optional-mcp-interface.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "f8f08ff8d8aeb5949231ddc18154931123ca43f479d23e1a6b56090301659827",
+      "target_content_sha256": "d4e1155e1cf92e7dbb71695828c97c9a5c26b0990948136aeba93cbf7ab5b5cd"
+    },
+    {
+      "source_path": "docs/evidence-gated-local-feedback-reinforcement.md",
+      "target_path": "docs/sibling-relation-feedback-normalization.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "f8f08ff8d8aeb5949231ddc18154931123ca43f479d23e1a6b56090301659827",
+      "target_content_sha256": "7b33ce4dace6e976d90471b705b4554ae3ead755c78e429d8c9d91a84b105521"
+    },
+    {
+      "source_path": "docs/mcp-feedback-stabilization-settings.md",
+      "target_path": "docs/canonical-evidence-gate-evaluation.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "14e9ac2193d4b5a7a39f747907e7cacd72d4b14c2e3a5a37fec9135a2962f530",
+      "target_content_sha256": "7c90282dd14ca53cea666fc7b43f9bb97d4f70fd0055b8bab0435a95c75c11a6"
+    },
+    {
+      "source_path": "docs/mcp-feedback-stabilization-settings.md",
+      "target_path": "docs/evidence-gated-local-feedback-reinforcement.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "14e9ac2193d4b5a7a39f747907e7cacd72d4b14c2e3a5a37fec9135a2962f530",
+      "target_content_sha256": "f8f08ff8d8aeb5949231ddc18154931123ca43f479d23e1a6b56090301659827"
+    },
+    {
+      "source_path": "docs/mcp-feedback-stabilization-settings.md",
+      "target_path": "docs/optional-mcp-interface.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "14e9ac2193d4b5a7a39f747907e7cacd72d4b14c2e3a5a37fec9135a2962f530",
+      "target_content_sha256": "d4e1155e1cf92e7dbb71695828c97c9a5c26b0990948136aeba93cbf7ab5b5cd"
+    },
+    {
+      "source_path": "docs/optional-mcp-interface.md",
+      "target_path": "docs/confirmed-outcome-feedback-reinforcement.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "d4e1155e1cf92e7dbb71695828c97c9a5c26b0990948136aeba93cbf7ab5b5cd",
+      "target_content_sha256": "c01bbd167239aa645a19cfcb4e910babe51d323470fe0d13b05fbd077059b79e"
+    },
+    {
+      "source_path": "docs/optional-mcp-interface.md",
+      "target_path": "docs/mcp-feedback-stabilization-settings.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "d4e1155e1cf92e7dbb71695828c97c9a5c26b0990948136aeba93cbf7ab5b5cd",
+      "target_content_sha256": "14e9ac2193d4b5a7a39f747907e7cacd72d4b14c2e3a5a37fec9135a2962f530"
+    },
+    {
+      "source_path": "docs/optional-mcp-interface.md",
+      "target_path": "docs/outcome-driven-feedback-deactivation.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "d4e1155e1cf92e7dbb71695828c97c9a5c26b0990948136aeba93cbf7ab5b5cd",
+      "target_content_sha256": "27ebe4c66151bfb78ba03e687961d3eb75d163a4bc843662686712ad5e0d517d"
+    },
+    {
+      "source_path": "docs/outcome-driven-feedback-deactivation.md",
+      "target_path": "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "27ebe4c66151bfb78ba03e687961d3eb75d163a4bc843662686712ad5e0d517d",
+      "target_content_sha256": "0481abf383c60722a3d4b8416cf166eb4c67fa6f8e425eef63d1e9b2c44317f5"
+    },
+    {
+      "source_path": "docs/outcome-driven-feedback-deactivation.md",
+      "target_path": "docs/confirmed-outcome-feedback-reinforcement.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "27ebe4c66151bfb78ba03e687961d3eb75d163a4bc843662686712ad5e0d517d",
+      "target_content_sha256": "c01bbd167239aa645a19cfcb4e910babe51d323470fe0d13b05fbd077059b79e"
+    },
+    {
+      "source_path": "docs/outcome-driven-feedback-deactivation.md",
+      "target_path": "docs/optional-mcp-interface.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "27ebe4c66151bfb78ba03e687961d3eb75d163a4bc843662686712ad5e0d517d",
+      "target_content_sha256": "d4e1155e1cf92e7dbb71695828c97c9a5c26b0990948136aeba93cbf7ab5b5cd"
+    }
+  ],
+  "arms": [
+    "original-full-query-ngr-default",
+    "source-grounded-relation-seed"
+  ],
+  "maximum_predecessor_query_similarity": 0.72,
+  "predecessor_query_gold": [
+    {
+      "queries": "tests/fixtures/github_cross_encoder_precision_v8.queries.json",
+      "gold": "tests/fixtures/github_cross_encoder_precision_v8.gold.json"
+    },
+    {
+      "queries": "tests/fixtures/github_cross_encoder_precision_v21.queries.json",
+      "gold": "tests/fixtures/github_cross_encoder_precision_v21.gold.json"
+    },
+    {
+      "queries": "tests/fixtures/github_cross_encoder_precision_v23_real.queries.json",
+      "gold": "tests/fixtures/github_cross_encoder_precision_v23_real.gold.json"
+    },
+    {
+      "queries": "tests/fixtures/github_retrieval_parity_v1.queries.json",
+      "gold": "tests/fixtures/github_retrieval_parity_v1.gold.json"
+    }
+  ],
+  "protocol_artifacts": {
+    "corpus": "tests/fixtures/github_source_grounded_relation_v1.corpus.json",
+    "queries": "tests/fixtures/github_source_grounded_relation_v1.queries.json",
+    "gold": "tests/fixtures/github_source_grounded_relation_v1.gold.json",
+    "gate": "tests/fixtures/github_source_grounded_relation_v1.gate.json",
+    "audit": "tests/fixtures/github_source_grounded_relation_v1.result-free-audit.json"
+  },
+  "outputs": {
+    "development": "tests/evidence/github_source_grounded_relation_v1/development.observed.json",
+    "holdout": "tests/evidence/github_source_grounded_relation_v1/holdout.observed.json"
+  },
+  "claims": {
+    "development": "tests/evidence/github_source_grounded_relation_v1/development.claim.json",
+    "holdout": "tests/evidence/github_source_grounded_relation_v1/holdout.claim.json"
+  },
+  "artifact_sha256": {
+    "docs/source-grounded-relation-seed-retrieval-experiment.md": "1c5166cc8e5e86cc383cd8801b8fab2f7552054ec3d1c80bc99b1e4b84390135",
+    "src/neuron_graph_rag/source_grounded_relation_observation.py": "db680145424eb3d759d029284bdce79deabf5ca9d470b579d217716da4db349c",
+    "tests/fixtures/github_source_grounded_relation_v1.corpus.json": "f172ad98fbb4f6e8a3983f2eda9a336119b6e8ee75432de3579ff5889f9e4365",
+    "tests/fixtures/github_source_grounded_relation_v1.gate.json": "43fce26051a2f2c1310e2ccfdf22c20f323ad77118534199d63468f5be31c2c2",
+    "tests/fixtures/github_source_grounded_relation_v1.gold.json": "72478b075acdba496a1e340799c4e363d2fa9aba8bb7551b4085060fcc09a8f4",
+    "tests/fixtures/github_source_grounded_relation_v1.queries.json": "e268910ea18423391292d40cac5235a6603c7b907a04c897b0fe62a74b0a6765",
+    "tests/fixtures/github_source_grounded_relation_v1.result-free-audit.json": "dbb6951ab7afc1f145011d882013871d44ed0909247621a41e681f800ce2ec6d",
+    "tests/test_source_grounded_relation_observation.py": "83afd46b39be858568016998a627ba668c890622b9f13f30fd329a30c084b026",
+    "tools/acquire_source_grounded_relation_corpus.py": "7974f91ca885b081b994f868dd28d40ba80e9bcfe5e8ce6c8209ebaaeadcbdd5",
+    "tools/run_source_grounded_relation_observation.py": "9ab680d07af7843880190b842e1d05518e0eef532d9689000eabf2770e98efa0"
+  }
+}

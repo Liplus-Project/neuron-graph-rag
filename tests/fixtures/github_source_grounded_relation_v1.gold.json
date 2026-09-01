@@ -1,0 +1,113 @@
+{
+  "protocol_id": "github-ngr-source-grounded-relation-seed-v1",
+  "stages": {
+    "development": [
+      {
+        "case_id": "v24-dev-direct-d1-corpus-contract",
+        "cohort": "direct_lexical",
+        "expected_path": "docs/d1-corpus-fixture.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v24-dev-direct-real-corpus-gates",
+        "cohort": "direct_lexical",
+        "expected_path": "docs/real-corpus-benchmark.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v24-dev-semantic-parity",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "docs/github-retrieval-parity-benchmark.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v24-dev-semantic-node-choice",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "docs/node-first-blind-selection-experiment.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v24-dev-relation-evidence-sibling",
+        "cohort": "relation_linked",
+        "expected_path": "docs/sibling-relation-feedback-normalization.md",
+        "forbidden_path": null,
+        "relation_seed_path": "docs/evidence-gated-local-feedback-reinforcement.md",
+        "relation_edge_type": "markdown_link"
+      },
+      {
+        "case_id": "v24-dev-relation-settings-canonical",
+        "cohort": "relation_linked",
+        "expected_path": "docs/canonical-evidence-gate-evaluation.md",
+        "forbidden_path": null,
+        "relation_seed_path": "docs/mcp-feedback-stabilization-settings.md",
+        "relation_edge_type": "markdown_link"
+      },
+      {
+        "case_id": "v24-dev-negative-elasticity",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "docs/feedback-rank-elasticity.md"
+      },
+      {
+        "case_id": "v24-dev-negative-history",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "docs/historical-source-verification.md"
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "v24-holdout-direct-neural",
+        "cohort": "direct_lexical",
+        "expected_path": "docs/neural-dynamics-experiment.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v24-holdout-direct-local",
+        "cohort": "direct_lexical",
+        "expected_path": "docs/neural-dynamics-local-competition-experiment.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v24-holdout-semantic-anchor",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "docs/anchored-bm25-graph-hybrid-experiment.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v24-holdout-semantic-fusion",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "docs/anchored-fusion-calibration-experiment.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v24-holdout-relation-deactivation-baseline",
+        "cohort": "relation_linked",
+        "expected_path": "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+        "forbidden_path": null,
+        "relation_seed_path": "docs/outcome-driven-feedback-deactivation.md",
+        "relation_edge_type": "markdown_link"
+      },
+      {
+        "case_id": "v24-holdout-relation-confirmed-interface",
+        "cohort": "relation_linked",
+        "expected_path": "docs/optional-mcp-interface.md",
+        "forbidden_path": null,
+        "relation_seed_path": "docs/confirmed-outcome-feedback-reinforcement.md",
+        "relation_edge_type": "markdown_link"
+      },
+      {
+        "case_id": "v24-holdout-negative-channels",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "docs/independent-retrieval-channels-experiment.md"
+      },
+      {
+        "case_id": "v24-holdout-negative-precision",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "docs/precision-control-freeze-v1.md"
+      }
+    ]
+  }
+}
