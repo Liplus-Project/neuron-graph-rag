@@ -11,6 +11,17 @@ retryは0であり、この結果を再実行で置き換えない。
 `docs/Home.md -> docs/decision-wiki-pilot-migration.md`の`informs` relation pathが付かなかった。もう一つの
 relation-linked caseは期待したrelation pathを保持した。
 
+## Provenance boundary
+
+real GitHub由来なのは、固定commit `79b456d620f1b37746669ea1fe1e57c385f5e4ed`のGit blobsから取得した12 documentsの
+path、text、content SHA-256である。4本の`informs` relation edgesとdevelopment / holdoutのquery / goldは、
+このprotocolの評価構造としてfixture authorが固定したものである。GitHub上のhyperlinks、imports、commit historyから
+relationを抽出または検証したものではない。
+
+したがって今回のrelation gate failureは、real repository text上に固定したsynthetic evaluation edgeについてtraversal
+provenanceを測った結果であり、実repositoryのdependency discovery性能を示さない。source-grounded relation acquisitionを
+評価する場合は、既存v23 bytesを変更せず、取得provenanceを固定したsuccessor protocolとして別に設計する。
+
 ## Development metrics
 
 以下はprotocol gateより前に生成されたdescriptive evidenceである。candidate gate pass、candidate selection、quality優越を
@@ -43,5 +54,5 @@ candidate nonregression / strict-improvement gatesは未評価である。
 - terminal evidence manifest SHA-256:
   `6487342f8b33e3643a9e65832d193c818f32ef15dc760dba4cb41766b874f01c`
 
-この観測は固定12-file corpusとdevelopment 8 casesに限られる。holdout evidence、NGR default変更、production性能、
-physical integrationを主張しない。
+この観測は固定12-file document corpusとfixture-authored evaluation structureのdevelopment 8 casesに限られる。holdout
+evidence、NGR default変更、production性能、physical integration、実repository dependency discovery性能を主張しない。
