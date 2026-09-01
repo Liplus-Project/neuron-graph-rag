@@ -1,0 +1,11 @@
+{
+  "files_sha256": {
+    "dependency-report.json": "6dae3d91d367d01dfe67e816d31b651c592b830efdbf98860210891108db4763",
+    "model-verification.json": "81322b18e11d97ddda64fa6853c0250363fcb507c28e44ca671991739471f931",
+    "platform-report.json": "a07df9e4cb6f430ae50708a26c1d1d32ebc40a0fbd40b995c55acc51b2e89638",
+    "preclaim.json": "e14f3ca6852305231cefebaddf3738b6f9906b7130a14008a4902f5b79bd6ba9",
+    "preflight-commands.json": "d86b1835cb0d82c31ba672ae895ca83e629c072f36abd667a0a815d031a632e2",
+    "preflight.json": "86a60c6c32a7402b504ed26ee88f4494bfbb0ad64ace80337de47f924ee29fe3"
+  },
+  "protocol_id": "github-ngr-cross-encoder-precision-v23-real-tasks"
+}

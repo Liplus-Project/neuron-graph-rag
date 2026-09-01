@@ -1,0 +1,28 @@
+{
+  "files_sha256": {
+    "count-audit.json": "6851a1615b1738f6fcb59511e851e1871f5ba661cbf2b94c9f43ba4c729a1fee",
+    "dependency-report.json": "6dae3d91d367d01dfe67e816d31b651c592b830efdbf98860210891108db4763",
+    "development.claim.json": "f0a6f80624e9fe8259f839b8771d847b9ca20601a3bce8a79dce0973c39f4876",
+    "development.observed.json": "81c54010876bb361c9dbf8f14192f021bcaa5ad0ec9ffc56d9e250b0e41d17a6",
+    "development.transport.json": "4144cdc9a4d327f53a1db497c7ddd70a28d2a1618fe8e0c18c25320f1eb3fd1a",
+    "execution.json": "4a4ec49091d741365b48ea639ffb69f886f4bd8be801a5f9f6bfd760eadd839a",
+    "model-verification.json": "81322b18e11d97ddda64fa6853c0250363fcb507c28e44ca671991739471f931",
+    "observation-evidence-manifest.json": "2821bc5951909c4eb4e000868746e9725c2b055ab4446b04eee0b22fb527546e",
+    "platform-report.json": "a07df9e4cb6f430ae50708a26c1d1d32ebc40a0fbd40b995c55acc51b2e89638",
+    "preclaim.json": "e14f3ca6852305231cefebaddf3738b6f9906b7130a14008a4902f5b79bd6ba9",
+    "preflight-ci-green.json": "b6d8484065f845f590ba03af51ff042b525715a0fbd170ecbb87ce8d769acc7d",
+    "preflight-commands.json": "d86b1835cb0d82c31ba672ae895ca83e629c072f36abd667a0a815d031a632e2",
+    "preflight-evidence-manifest.json": "7496288701a88c6562883eeb3dc21dbea3e2cd8949714f826a71333b0624fbe1",
+    "preflight.json": "86a60c6c32a7402b504ed26ee88f4494bfbb0ad64ace80337de47f924ee29fe3",
+    "raw/development/base-primary.json": "68c384e09093189e555891a2e844575e67babe697fb0b5e2a6f8c0d6fcf178ad",
+    "raw/development/base-replay.json": "8e8aac78063e950b5b33d42f84f106d6e250ae5523cdaeef5aabe1d77c4efdbd",
+    "raw/development/baseline-primary.json": "c5f9f7632e63238497800594744ca18a9a440f3e36b8bbda217a7d49212a6838",
+    "raw/development/baseline-replay.json": "10be0931299e5ac8a76fc6cd492f958b955589da06bde8925bc0982b50ed6745",
+    "raw/development/default-primary.json": "1c26cfbe38ad4aefde8147afed3abe2fd176eeba9d7b1ba9cf07345eab9c225a",
+    "raw/development/default-replay.json": "876646fc4b5b9d541b690e30cf43571243680b8506bada50526179792d5fcb70",
+    "raw/development/v2-m3-primary.json": "8088d83956f91440764ae69055cc2cd08832b75acf2e0eed85b8c045f5bf192a",
+    "raw/development/v2-m3-replay.json": "11ce1bb0bf41e02fb3f418701c18f0747b8c2fb967d97770a6687e51bd494bb7"
+  },
+  "protocol_id": "github-ngr-cross-encoder-precision-v23-real-tasks",
+  "status": "complete"
+}

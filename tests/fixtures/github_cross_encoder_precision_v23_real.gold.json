@@ -1,0 +1,113 @@
+{
+  "protocol_id": "github-ngr-cross-encoder-precision-v23-real-tasks",
+  "stages": {
+    "development": [
+      {
+        "case_id": "v23-real-dev-direct-d1-loader",
+        "cohort": "direct_lexical",
+        "expected_path": "src/neuron_graph_rag/d1_fixture.py",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v23-real-dev-direct-history",
+        "cohort": "direct_lexical",
+        "expected_path": "docs/historical-source-verification.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v23-real-dev-semantic-config",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "src/neuron_graph_rag/config_provenance.py",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v23-real-dev-semantic-sibling",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "docs/sibling-relation-feedback-normalization.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v23-real-dev-relation-home-migration",
+        "cohort": "relation_linked",
+        "expected_path": "docs/decision-wiki-pilot-migration.md",
+        "forbidden_path": null,
+        "relation_edge_type": "informs",
+        "relation_seed_path": "docs/Home.md"
+      },
+      {
+        "case_id": "v23-real-dev-relation-feedback-reproduction",
+        "cohort": "relation_linked",
+        "expected_path": "docs/feedback-adaptation-reproduction-experiment.md",
+        "forbidden_path": null,
+        "relation_edge_type": "informs",
+        "relation_seed_path": "docs/feedback-adaptation-experiment.md"
+      },
+      {
+        "case_id": "v23-real-dev-negative-settings",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "docs/sibling-relation-feedback-normalization.md"
+      },
+      {
+        "case_id": "v23-real-dev-negative-engine",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "docs/cross-encoder-precision-observation-v20.md"
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "v23-real-holdout-direct-evaluation",
+        "cohort": "direct_lexical",
+        "expected_path": "src/neuron_graph_rag/evaluation.py",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v23-real-holdout-direct-mcp",
+        "cohort": "direct_lexical",
+        "expected_path": "docs/mcp-feedback-stabilization-settings.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v23-real-holdout-semantic-migration",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "docs/decision-wiki-pilot-migration.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v23-real-holdout-semantic-engine",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "docs/intent-aware-observation-engine.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v23-real-holdout-relation-sibling-settings",
+        "cohort": "relation_linked",
+        "expected_path": "docs/mcp-feedback-stabilization-settings.md",
+        "forbidden_path": null,
+        "relation_edge_type": "informs",
+        "relation_seed_path": "docs/sibling-relation-feedback-normalization.md"
+      },
+      {
+        "case_id": "v23-real-holdout-relation-home-evaluation",
+        "cohort": "relation_linked",
+        "expected_path": "src/neuron_graph_rag/evaluation.py",
+        "forbidden_path": null,
+        "relation_edge_type": "informs",
+        "relation_seed_path": "docs/Home.md"
+      },
+      {
+        "case_id": "v23-real-holdout-negative-reproduction",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "docs/feedback-adaptation-experiment.md"
+      },
+      {
+        "case_id": "v23-real-holdout-negative-evaluation",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "src/neuron_graph_rag/d1_fixture.py"
+      }
+    ]
+  }
+}
