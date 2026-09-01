@@ -1,0 +1,113 @@
+{
+  "protocol_id": "github-ngr-source-grounded-relation-seed-v2",
+  "stages": {
+    "development": [
+      {
+        "case_id": "v25-dev-direct-boundary-zero",
+        "cohort": "direct_lexical",
+        "expected_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v25-dev-direct-boundary-one",
+        "cohort": "direct_lexical",
+        "expected_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v25-dev-semantic-boundary-three",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v25-dev-semantic-boundary-ten",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v25-dev-relation-boundary-zero",
+        "cohort": "relation_linked",
+        "expected_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+        "forbidden_path": null,
+        "relation_seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+        "relation_edge_type": "markdown_link"
+      },
+      {
+        "case_id": "v25-dev-relation-boundary-one",
+        "cohort": "relation_linked",
+        "expected_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+        "forbidden_path": null,
+        "relation_seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+        "relation_edge_type": "markdown_link"
+      },
+      {
+        "case_id": "v25-dev-negative-boundary-three",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md"
+      },
+      {
+        "case_id": "v25-dev-negative-boundary-ten",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md"
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "v25-holdout-direct-signal-zero",
+        "cohort": "direct_lexical",
+        "expected_path": "corpora/repository-native-controlled-v3/signal-stability-credit-0.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v25-holdout-direct-signal-one",
+        "cohort": "direct_lexical",
+        "expected_path": "corpora/repository-native-controlled-v3/signal-stability-credit-1.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v25-holdout-semantic-signal-three",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "corpora/repository-native-controlled-v3/signal-stability-credit-3.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v25-holdout-semantic-signal-ten",
+        "cohort": "semantic_paraphrase",
+        "expected_path": "corpora/repository-native-controlled-v3/signal-stability-credit-10.md",
+        "forbidden_path": null
+      },
+      {
+        "case_id": "v25-holdout-relation-signal-zero",
+        "cohort": "relation_linked",
+        "expected_path": "corpora/repository-native-controlled-v3/signal-stability-credit-0.md",
+        "forbidden_path": null,
+        "relation_seed_path": "corpora/repository-native-controlled-v3/signal-stability-overview.md",
+        "relation_edge_type": "markdown_link"
+      },
+      {
+        "case_id": "v25-holdout-relation-signal-one",
+        "cohort": "relation_linked",
+        "expected_path": "corpora/repository-native-controlled-v3/signal-stability-credit-1.md",
+        "forbidden_path": null,
+        "relation_seed_path": "corpora/repository-native-controlled-v3/signal-stability-overview.md",
+        "relation_edge_type": "markdown_link"
+      },
+      {
+        "case_id": "v25-holdout-negative-signal-three",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "corpora/repository-native-controlled-v3/signal-stability-credit-3.md"
+      },
+      {
+        "case_id": "v25-holdout-negative-signal-ten",
+        "cohort": "negative_control",
+        "expected_path": null,
+        "forbidden_path": "corpora/repository-native-controlled-v3/signal-stability-credit-10.md"
+      }
+    ]
+  }
+}

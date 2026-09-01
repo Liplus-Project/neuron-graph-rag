@@ -1,0 +1,258 @@
+{
+  "protocol_id": "github-ngr-source-grounded-relation-seed-v2",
+  "issue": 203,
+  "phase": "result-free-freeze-v2",
+  "lifecycle_contract": {
+    "registry_policy": "append-only-exclusive-canonical-json",
+    "stage_order": [
+      "development",
+      "conditional-holdout"
+    ],
+    "partial_evidence_policy": "preserve-and-refuse-retry",
+    "holdout_open_condition": "development-passed-and-candidate-selected",
+    "freeze_identity_scope": "protocol-artifacts-only",
+    "observation_identity_scope": "registered-claim-raw-output"
+  },
+  "source": {
+    "repository": "Liplus-Project/neuron-graph-rag",
+    "commit": "8b3cdf5052cc382687cf3efbb6d728ddd473d75d",
+    "access": "git-show-read-only-fixed-commit",
+    "generated_by": "tools/acquire_source_grounded_relation_corpus_v2.py",
+    "paths": [
+      "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+      "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+      "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+      "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+      "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+      "corpora/repository-native-controlled-v3/evidence-continuity-credit-0.md",
+      "corpora/repository-native-controlled-v3/evidence-continuity-credit-1.md",
+      "corpora/repository-native-controlled-v3/evidence-continuity-credit-10.md",
+      "corpora/repository-native-controlled-v3/evidence-continuity-credit-3.md",
+      "corpora/repository-native-controlled-v3/evidence-continuity-overview.md",
+      "corpora/repository-native-controlled-v3/signal-stability-credit-0.md",
+      "corpora/repository-native-controlled-v3/signal-stability-credit-1.md",
+      "corpora/repository-native-controlled-v3/signal-stability-credit-10.md",
+      "corpora/repository-native-controlled-v3/signal-stability-credit-3.md",
+      "corpora/repository-native-controlled-v3/signal-stability-overview.md"
+    ],
+    "content_sha256": {
+      "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+      "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+      "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+      "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+      "corpora/repository-native-controlled-v3/boundary-recovery-overview.md": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+      "corpora/repository-native-controlled-v3/evidence-continuity-credit-0.md": "c6d4756eac7dccd3342279cd7a0c81595ddb209f53b9e678ec7c02c8eaa3b401",
+      "corpora/repository-native-controlled-v3/evidence-continuity-credit-1.md": "90e217d3a53f43efcc7e5b455229ba9140980ae58f467fe0fc68952004f521e0",
+      "corpora/repository-native-controlled-v3/evidence-continuity-credit-10.md": "55f06876f1f28237926a0889c895d50b88b41c9e4cdf5b15ddeb3e01e82fe7af",
+      "corpora/repository-native-controlled-v3/evidence-continuity-credit-3.md": "710ebe6f56ee261b74eb4558122f88065bae69f23317e905e7942827620c4070",
+      "corpora/repository-native-controlled-v3/evidence-continuity-overview.md": "e99d0886f0f35b197387229d5b401afb8dd8be06a2fa56bce7e33d6ffb8f6a24",
+      "corpora/repository-native-controlled-v3/signal-stability-credit-0.md": "1dfff7e4518bd267b029bb27cb808ce68a0067316defca6f6dc378ebb81db578",
+      "corpora/repository-native-controlled-v3/signal-stability-credit-1.md": "ea596b49c14c46be88f152bdbf2c853c186890f20b5802aee5200d61fd950aeb",
+      "corpora/repository-native-controlled-v3/signal-stability-credit-10.md": "5097cb9df0a1d5a8bba3aadab7b55a2dc9308a15388dc4952a5b48cc96df5fcb",
+      "corpora/repository-native-controlled-v3/signal-stability-credit-3.md": "197484b964a5946e12d0497b1088bfb552a1cb431e973b572bd45182fc9cda36",
+      "corpora/repository-native-controlled-v3/signal-stability-overview.md": "1808c4d771d0a05f356407853db6d8593b75f270ff1e808a40200e9b010f1d69"
+    }
+  },
+  "relationships": [
+    {
+      "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+      "target_content_sha256": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+      "target_content_sha256": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+      "target_content_sha256": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+      "target_content_sha256": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/evidence-continuity-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-0.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "e99d0886f0f35b197387229d5b401afb8dd8be06a2fa56bce7e33d6ffb8f6a24",
+      "target_content_sha256": "c6d4756eac7dccd3342279cd7a0c81595ddb209f53b9e678ec7c02c8eaa3b401"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/evidence-continuity-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-1.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "e99d0886f0f35b197387229d5b401afb8dd8be06a2fa56bce7e33d6ffb8f6a24",
+      "target_content_sha256": "90e217d3a53f43efcc7e5b455229ba9140980ae58f467fe0fc68952004f521e0"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/evidence-continuity-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-10.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "e99d0886f0f35b197387229d5b401afb8dd8be06a2fa56bce7e33d6ffb8f6a24",
+      "target_content_sha256": "55f06876f1f28237926a0889c895d50b88b41c9e4cdf5b15ddeb3e01e82fe7af"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/evidence-continuity-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-3.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "e99d0886f0f35b197387229d5b401afb8dd8be06a2fa56bce7e33d6ffb8f6a24",
+      "target_content_sha256": "710ebe6f56ee261b74eb4558122f88065bae69f23317e905e7942827620c4070"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/signal-stability-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/signal-stability-credit-0.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "1808c4d771d0a05f356407853db6d8593b75f270ff1e808a40200e9b010f1d69",
+      "target_content_sha256": "1dfff7e4518bd267b029bb27cb808ce68a0067316defca6f6dc378ebb81db578"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/signal-stability-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/signal-stability-credit-1.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "1808c4d771d0a05f356407853db6d8593b75f270ff1e808a40200e9b010f1d69",
+      "target_content_sha256": "ea596b49c14c46be88f152bdbf2c853c186890f20b5802aee5200d61fd950aeb"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/signal-stability-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/signal-stability-credit-10.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "1808c4d771d0a05f356407853db6d8593b75f270ff1e808a40200e9b010f1d69",
+      "target_content_sha256": "5097cb9df0a1d5a8bba3aadab7b55a2dc9308a15388dc4952a5b48cc96df5fcb"
+    },
+    {
+      "source_path": "corpora/repository-native-controlled-v3/signal-stability-overview.md",
+      "target_path": "corpora/repository-native-controlled-v3/signal-stability-credit-3.md",
+      "edge_type": "markdown_link",
+      "acquisition_method": "markdown-relative-link-regex-v1",
+      "source_content_sha256": "1808c4d771d0a05f356407853db6d8593b75f270ff1e808a40200e9b010f1d69",
+      "target_content_sha256": "197484b964a5946e12d0497b1088bfb552a1cb431e973b572bd45182fc9cda36"
+    }
+  ],
+  "arms": [
+    "original-full-query-ngr-default",
+    "source-grounded-relation-seed"
+  ],
+  "maximum_predecessor_query_similarity": 0.72,
+  "predecessor_query_gold": [
+    {
+      "queries": "tests/fixtures/github_cross_encoder_precision_v8.queries.json",
+      "gold": "tests/fixtures/github_cross_encoder_precision_v8.gold.json"
+    },
+    {
+      "queries": "tests/fixtures/github_cross_encoder_precision_v21.queries.json",
+      "gold": "tests/fixtures/github_cross_encoder_precision_v21.gold.json"
+    },
+    {
+      "queries": "tests/fixtures/github_cross_encoder_precision_v23_real.queries.json",
+      "gold": "tests/fixtures/github_cross_encoder_precision_v23_real.gold.json"
+    },
+    {
+      "queries": "tests/fixtures/github_retrieval_parity_v1.queries.json",
+      "gold": "tests/fixtures/github_retrieval_parity_v1.gold.json"
+    },
+    {
+      "queries": "tests/fixtures/github_source_grounded_relation_v1.queries.json",
+      "gold": "tests/fixtures/github_source_grounded_relation_v1.gold.json"
+    }
+  ],
+  "predecessor_identity_sha256": {
+    "tests/fixtures/github_source_grounded_relation_v1.manifest.json": "fc748b00b51321da7a613f440dcc20adb04e90422986016a789d16ff7f2a8ea7",
+    "tests/fixtures/github_cross_encoder_precision_v8.corpus.json": "dcbb31fce97a9dbfdca1da68834826a3796aa1bb67136e480a44da2ca7233985",
+    "tests/fixtures/github_cross_encoder_precision_v21.corpus.json": "f1d124be81e2d7aeb902f6f4c945ae99acb754afece16459b71d3f3fb91f117a",
+    "tests/fixtures/github_cross_encoder_precision_v23_real.corpus.json": "6db9689017235968b191a3844f243c5b54996ee92aeab8b4c79ca08afb095ae5",
+    "tests/fixtures/github_retrieval_parity_v1.corpus.json": "c83ca9d88e95fa11530d7bd0dcef049b41a333a3f23d62529a46d8e89ab373c2",
+    "tests/fixtures/github_retrieval_parity_v1.previous-corpus.json": "7b750da235f000e648d69f73a89e49c5f235152837308a91266cf8f586ea2480",
+    "tests/fixtures/github_cross_encoder_precision_v19_observation.manifest.json": "c98a2f91ad7cd69a12895ad4e27e7c9d03ea24c70fcf72f7800ae9ccc70a2fc9",
+    "tests/fixtures/github_cross_encoder_precision_v19.source-identity.json": "326c16944a085dc2348df57c0523b737ec08d2e02e499805cd80307e681883aa",
+    "tests/fixtures/github_cross_encoder_precision_v8.queries.json": "f311db068625d202f450b9b82e9d475a55dcc126830a865a4d734ae5955c6e8a",
+    "tests/fixtures/github_cross_encoder_precision_v8.gold.json": "3caeceaacaf7ed6238d6951119294a81ba6a577bdb375ece9369b5a0b26fba95",
+    "tests/fixtures/github_cross_encoder_precision_v21.queries.json": "acc4b7c2442792639fd790ce9a7637bbbb45ba0a752570eac440eb813989545e",
+    "tests/fixtures/github_cross_encoder_precision_v21.gold.json": "4cd8a9ed8fe5cd85c98c3b8385cad031d5f8ae02c2d6c67158cef957aabbb8b5",
+    "tests/fixtures/github_cross_encoder_precision_v23_real.queries.json": "810c4fe96018002a0979c0f5563c789f022f6c68f7342f0cc85f43cfe2059b70",
+    "tests/fixtures/github_cross_encoder_precision_v23_real.gold.json": "7e72b798cbe0a939114a04074ee3c07b2960ce19c91576f7599f8967e74b809a",
+    "tests/fixtures/github_retrieval_parity_v1.queries.json": "8b3162b5203431e2d8e3fcf48bea82dad961b42a7c1acf43f9b532f3a10a12d9",
+    "tests/fixtures/github_retrieval_parity_v1.gold.json": "358a5f035896f6972258caa63885ef59530144f141b76732d7f170f3605383ba",
+    "tests/fixtures/github_source_grounded_relation_v1.queries.json": "e268910ea18423391292d40cac5235a6603c7b907a04c897b0fe62a74b0a6765",
+    "tests/fixtures/github_source_grounded_relation_v1.gold.json": "72478b075acdba496a1e340799c4e363d2fa9aba8bb7551b4085060fcc09a8f4"
+  },
+  "predecessor_source_corpora": [
+    "tests/fixtures/github_cross_encoder_precision_v8.corpus.json",
+    "tests/fixtures/github_cross_encoder_precision_v21.corpus.json",
+    "tests/fixtures/github_cross_encoder_precision_v23_real.corpus.json",
+    "tests/fixtures/github_retrieval_parity_v1.corpus.json",
+    "tests/fixtures/github_retrieval_parity_v1.previous-corpus.json",
+    "tests/fixtures/github_source_grounded_relation_v1.corpus.json"
+  ],
+  "protocol_artifacts": {
+    "corpus": "tests/fixtures/github_source_grounded_relation_v2.corpus.json",
+    "queries": "tests/fixtures/github_source_grounded_relation_v2.queries.json",
+    "gold": "tests/fixtures/github_source_grounded_relation_v2.gold.json",
+    "gate": "tests/fixtures/github_source_grounded_relation_v2.gate.json",
+    "audit": "tests/fixtures/github_source_grounded_relation_v2.result-free-audit.json"
+  },
+  "outputs": {
+    "development": "tests/evidence/github_source_grounded_relation_v2/development.observed.json",
+    "holdout": "tests/evidence/github_source_grounded_relation_v2/holdout.observed.json"
+  },
+  "claims": {
+    "development": "tests/evidence/github_source_grounded_relation_v2/development.claim.json",
+    "holdout": "tests/evidence/github_source_grounded_relation_v2/holdout.claim.json"
+  },
+  "raw_packets": {
+    "development": {
+      "original-full-query-ngr-default": {
+        "primary": "tests/evidence/github_source_grounded_relation_v2/raw/development/original-full-query-ngr-default.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v2/raw/development/original-full-query-ngr-default.replay.json"
+      },
+      "source-grounded-relation-seed": {
+        "primary": "tests/evidence/github_source_grounded_relation_v2/raw/development/source-grounded-relation-seed.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v2/raw/development/source-grounded-relation-seed.replay.json"
+      }
+    },
+    "holdout": {
+      "original-full-query-ngr-default": {
+        "primary": "tests/evidence/github_source_grounded_relation_v2/raw/holdout/original-full-query-ngr-default.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v2/raw/holdout/original-full-query-ngr-default.replay.json"
+      },
+      "source-grounded-relation-seed": {
+        "primary": "tests/evidence/github_source_grounded_relation_v2/raw/holdout/source-grounded-relation-seed.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v2/raw/holdout/source-grounded-relation-seed.replay.json"
+      }
+    }
+  },
+  "artifact_sha256": {
+    "docs/source-grounded-relation-seed-retrieval-v2.md": "82eb5bbc67ae0bb431aea5f0bbd8728e03b5145108aab8ea578282a9f8e95085",
+    "src/neuron_graph_rag/source_grounded_relation_observation_v2.py": "2eff2afcd995358f8c6dde8aab1972714cd64ea77dfccd7b9f5eb9ff7839beb6",
+    "tests/fixtures/github_source_grounded_relation_v2.corpus.json": "ebfc7938f6d1f7c61111ebd1108af198bb2bd5c673770e55f42eb1b031f0cb0c",
+    "tests/fixtures/github_source_grounded_relation_v2.gate.json": "f0bf8867fe56f261714bf3d976d6e1b9f11fceb5ea33918d19aae7b01b9847fd",
+    "tests/fixtures/github_source_grounded_relation_v2.gold.json": "de5880705894ea60b57073ce733b93c1abb227c89d7535ee1b58644b7703cc14",
+    "tests/fixtures/github_source_grounded_relation_v2.queries.json": "bc7ad05c847e111bf613b24adc7c6c50b4871e78585cb5ea8eef5cb889f3e1ac",
+    "tests/fixtures/github_source_grounded_relation_v2.result-free-audit.json": "af6f2c831b33792decdb9e8ba1b7f8fd7b061211dfc88be895a3f39c1436e92c",
+    "tests/test_source_grounded_relation_observation_v2.py": "79464c45e09b4ad22fac73b69d45ba0f8acc7ac7640049d698187e1ce07ef30d",
+    "tools/acquire_source_grounded_relation_corpus_v2.py": "72850b2713b13e4b4d79846c8307d2f778e01e8722c04ee8e06ad865bd70867d",
+    "tools/run_source_grounded_relation_observation_v2.py": "9caf7b6d5717cf8edb334f168e1a39a8a2b2f7dfbb681bc76dde44b0614b3bfe"
+  }
+}
