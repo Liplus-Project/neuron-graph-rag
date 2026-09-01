@@ -1,0 +1,15 @@
+{
+  "protocol_id": "github-ngr-source-grounded-relation-seed-v1",
+  "phase": "result-free-freeze",
+  "development_run_count": 0,
+  "holdout_run_count": 0,
+  "retry_count": 0,
+  "observed_result_count": 0,
+  "shared_database_open_count": 0,
+  "worker_gold_open_count": 0,
+  "fresh_sqlite_per_worker": true,
+  "fresh_query_gold_split_frozen_before_observation": true,
+  "predecessor_copy_paraphrase_near_transform_count": 0,
+  "same_protocol_retry_allowed": false,
+  "performance": "not assessed"
+}
