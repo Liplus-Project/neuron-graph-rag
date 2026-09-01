@@ -1,0 +1,112 @@
+{
+  "identity_schema": "ngr.intent-aware-observation-stage/v1",
+  "protocol_id": "github-ngr-cross-encoder-precision-v23-real-tasks",
+  "stages": {
+    "development": {
+      "cases": [
+        {
+          "case_id": "v23-real-dev-direct-d1-loader",
+          "cohort": "direct_lexical",
+          "language": "en",
+          "query": "Where is the D1 fixture loader and transformation code implemented?"
+        },
+        {
+          "case_id": "v23-real-dev-direct-history",
+          "cohort": "direct_lexical",
+          "language": "ja",
+          "query": "過去protocolの登録commit blobを検証する境界を定義した文書はどれですか。"
+        },
+        {
+          "case_id": "v23-real-dev-semantic-config",
+          "cohort": "semantic_paraphrase",
+          "language": "en",
+          "query": "Which component separates effective retrieval and feedback settings into reproducible fingerprints?"
+        },
+        {
+          "case_id": "v23-real-dev-semantic-sibling",
+          "cohort": "semantic_paraphrase",
+          "language": "ja",
+          "query": "成功したrelation edgeと同じsourceの未採用edgeだけを局所的に弱める設計を探してください。"
+        },
+        {
+          "case_id": "v23-real-dev-relation-home-migration",
+          "cohort": "relation_linked",
+          "language": "en",
+          "query": "Which related migration guide is informed by the project Home document?"
+        },
+        {
+          "case_id": "v23-real-dev-relation-feedback-reproduction",
+          "cohort": "relation_linked",
+          "language": "ja",
+          "query": "feedback adaptation実験からinforms関係で接続された再現protocolはどれですか。"
+        },
+        {
+          "case_id": "v23-real-dev-negative-settings",
+          "cohort": "negative_control",
+          "language": "en",
+          "query": "Find MCP feedback stabilization settings without the sibling feedback normalization design"
+        },
+        {
+          "case_id": "v23-real-dev-negative-engine",
+          "cohort": "negative_control",
+          "language": "en",
+          "query": "Locate the reusable intent-aware observation engine architecture without the v20 freeze protocol"
+        }
+      ],
+      "identity": "github-ngr-cross-encoder-precision-v23-real-development-1f7c9b42"
+    },
+    "holdout": {
+      "cases": [
+        {
+          "case_id": "v23-real-holdout-direct-evaluation",
+          "cohort": "direct_lexical",
+          "language": "en",
+          "query": "Where is the repository evaluation implementation with reciprocal-rank reporting?"
+        },
+        {
+          "case_id": "v23-real-holdout-direct-mcp",
+          "cohort": "direct_lexical",
+          "language": "ja",
+          "query": "MCPのrelation feedback quorumとsibling normalizationのCLI設定を規定する文書はどれですか。"
+        },
+        {
+          "case_id": "v23-real-holdout-semantic-migration",
+          "cohort": "semantic_paraphrase",
+          "language": "en",
+          "query": "Which guide describes importing indexed decisions atomically into a disposable SQLite bundle?"
+        },
+        {
+          "case_id": "v23-real-holdout-semantic-engine",
+          "cohort": "semantic_paraphrase",
+          "language": "ja",
+          "query": "workerからgoldを隔離しfinalizerでqualityとgateを順番に評価する共通部品の説明を探してください。"
+        },
+        {
+          "case_id": "v23-real-holdout-relation-sibling-settings",
+          "cohort": "relation_linked",
+          "language": "en",
+          "query": "Which related settings guide is informed by sibling relation feedback normalization?"
+        },
+        {
+          "case_id": "v23-real-holdout-relation-home-evaluation",
+          "cohort": "relation_linked",
+          "language": "ja",
+          "query": "Home文書からinforms関係で接続されたevaluation実装はどれですか。"
+        },
+        {
+          "case_id": "v23-real-holdout-negative-reproduction",
+          "cohort": "negative_control",
+          "language": "en",
+          "query": "Find the trace-credited feedback reproduction procedure without the original feedback adaptation experiment plan"
+        },
+        {
+          "case_id": "v23-real-holdout-negative-evaluation",
+          "cohort": "negative_control",
+          "language": "en",
+          "query": "Locate the default NGR evaluation code without D1 fixture utilities"
+        }
+      ],
+      "identity": "github-ngr-cross-encoder-precision-v23-real-holdout-83d4ea61"
+    }
+  }
+}

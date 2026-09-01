@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -71,12 +72,23 @@ class ModelIdentity:
 
 
 @dataclass(frozen=True)
+class RetrievalArmIdentity:
+    kind: str
+    evidence_id: str
+    query_mode: str
+
+
+@dataclass(frozen=True)
 class IntentAwareObservationSpec:
     protocol_id: str
     fixture_paths: ObservationFixturePaths
     stage_identities: tuple[tuple[str, str], ...]
     models: tuple[ModelIdentity, ...]
     baseline_evidence_id: str = "positive-clause-ngr-prefilter"
+    baseline_kind: str = "baseline"
+    baseline_query_mode: str = "positive"
+    ablation_arms: tuple[RetrievalArmIdentity, ...] = ()
+    selection_policy: str = "first-passing"
     protocol_gate_ids: tuple[str, ...] = PROTOCOL_GATE_IDS
     candidate_gate_ids: tuple[str, ...] = CANDIDATE_GATE_IDS
     fusion_config: intent_aware_rank_fusion.IntentAwareFusionConfig = field(
@@ -95,8 +107,31 @@ class IntentAwareObservationSpec:
                 return value
         raise ValueError(f"unsupported intent-aware observation model kind: {kind}")
 
+    def retrieval_arm(self, kind: str) -> RetrievalArmIdentity:
+        if kind == self.baseline_kind:
+            return RetrievalArmIdentity(
+                kind=kind,
+                evidence_id=self.baseline_evidence_id,
+                query_mode=self.baseline_query_mode,
+            )
+        for value in self.ablation_arms:
+            if value.kind == kind:
+                return value
+        raise ValueError(f"unsupported retrieval arm kind: {kind}")
+
+    def worker_kinds(self) -> tuple[str, ...]:
+        return (
+            self.baseline_kind,
+            *(arm.kind for arm in self.ablation_arms),
+            *(model.kind for model in self.models),
+        )
+
     def validate(self) -> None:
-        if not self.protocol_id.strip() or not self.baseline_evidence_id.strip():
+        if (
+            not self.protocol_id.strip()
+            or not self.baseline_evidence_id.strip()
+            or not self.baseline_kind.strip()
+        ):
             raise ValueError("protocol and baseline identities must be non-empty")
         identities = dict(self.stage_identities)
         if (
@@ -117,8 +152,37 @@ class IntentAwareObservationSpec:
             raise ValueError("at least one model identity is required")
         for attribute in ("kind", "candidate_id", "model_id", "revision"):
             values = [getattr(model, attribute) for model in self.models]
-            if len(set(values)) != len(values) or any(not value.strip() for value in values):
-                raise ValueError(f"model {attribute} values must be unique and non-empty")
+            if len(set(values)) != len(values) or any(
+                not value.strip() for value in values
+            ):
+                raise ValueError(
+                    f"model {attribute} values must be unique and non-empty"
+                )
+        retrieval_arms = (
+            RetrievalArmIdentity(
+                self.baseline_kind,
+                self.baseline_evidence_id,
+                self.baseline_query_mode,
+            ),
+            *self.ablation_arms,
+        )
+        for attribute in ("kind", "evidence_id"):
+            values = [getattr(arm, attribute) for arm in retrieval_arms]
+            if len(set(values)) != len(values) or any(
+                not value.strip() for value in values
+            ):
+                raise ValueError(
+                    f"retrieval arm {attribute} values must be unique and non-empty"
+                )
+        if any(arm.query_mode not in {"full", "positive"} for arm in retrieval_arms):
+            raise ValueError("retrieval arm query mode must be full or positive")
+        if len(set(self.worker_kinds())) != len(self.worker_kinds()):
+            raise ValueError("worker kinds must be unique")
+        if self.selection_policy not in {
+            "first-passing",
+            "lowest-development-primary-latency",
+        }:
+            raise ValueError("unsupported candidate selection policy")
         if self.protocol_gate_ids != PROTOCOL_GATE_IDS:
             raise ValueError("protocol gate IDs differ from the v20 contract")
         if self.candidate_gate_ids != CANDIDATE_GATE_IDS:
@@ -200,9 +264,13 @@ class IntentAwareObservationEngine:
             set(row) != {"source_path", "target_path", "edge_type"}
             for row in relationships
         ):
-            raise ValueError("worker relationship schema contains non-production fields")
+            raise ValueError(
+                "worker relationship schema contains non-production fields"
+            )
         queries = self._stage_rows(query_fixture, stage)
-        if any(set(row) != {"case_id", "cohort", "language", "query"} for row in queries):
+        if any(
+            set(row) != {"case_id", "cohort", "language", "query"} for row in queries
+        ):
             raise ValueError("worker query schema contains evaluation-only fields")
         repository = corpus.get("repository")
         if not isinstance(repository, str) or not repository.strip():
@@ -238,16 +306,29 @@ class IntentAwareObservationEngine:
         prefilter_search: PrefilterSearch,
         score_query: ScoreQuery | None = None,
     ) -> dict[str, Any]:
-        model = None if kind == "baseline" else self.spec.model(kind)
+        try:
+            retrieval_arm = self.spec.retrieval_arm(kind)
+        except ValueError:
+            retrieval_arm = None
+        model = None if retrieval_arm is not None else self.spec.model(kind)
         if (model is None) != (score_query is None):
-            raise ValueError("baseline has no scorer and model candidates require one")
+            raise ValueError(
+                "retrieval arms have no scorer and model candidates require one"
+            )
         pair_count = 0
         cases: list[JsonObject] = []
         document_count = len(fixture.documents)
         for query in fixture.queries:
             query_text = str(query["query"])
             intent = intent_aware_rank_fusion.decompose_query_intent(query_text)
-            prefilter = [dict(row) for row in prefilter_search(intent.positive_query, document_count)]
+            search_query = (
+                query_text
+                if retrieval_arm is not None and retrieval_arm.query_mode == "full"
+                else intent.positive_query
+            )
+            prefilter = [
+                dict(row) for row in prefilter_search(search_query, document_count)
+            ]
             if len(prefilter) != document_count:
                 raise ValueError("prefilter must rank the complete protocol corpus")
             if model is None:
@@ -269,9 +350,7 @@ class IntentAwareObservationEngine:
                 scored, pairs = score_query(
                     exclusion, prefilter, fixture.documents, model
                 )
-                exclusion_rows.append(
-                    {str(row["source_path"]): row for row in scored}
-                )
+                exclusion_rows.append({str(row["source_path"]): row for row in scored})
                 pair_count += pairs
             positive = {str(row["source_path"]): row for row in positive_rows}
             signals = [
@@ -312,11 +391,7 @@ class IntentAwareObservationEngine:
         hits = case.get("ranked_hits")
         if not isinstance(hits, list):
             raise TypeError("ranked hits must be a list")
-        return [
-            str(row["source_path"])
-            for row in hits[:5]
-            if isinstance(row, Mapping)
-        ]
+        return [str(row["source_path"]) for row in hits[:5] if isinstance(row, Mapping)]
 
     def quality(
         self,
@@ -365,21 +440,17 @@ class IntentAwareObservationEngine:
     def _state_is_immutable(state: Mapping[str, Any]) -> bool:
         return bool(
             state.get("ranking_sha256") == state.get("replay_ranking_sha256")
-            and state.get("activation_sha256")
-            == state.get("replay_activation_sha256")
+            and state.get("activation_sha256") == state.get("replay_activation_sha256")
             and state.get("edge_sha256_before") == state.get("edge_sha256_after")
             and state.get("feedback_count_before")
             == state.get("feedback_count_after")
             == 0
-            and state.get("sqlite_sha256_before")
-            == state.get("sqlite_sha256_after")
+            and state.get("sqlite_sha256_before") == state.get("sqlite_sha256_after")
             and state.get("fresh_database_id") != state.get("replay_database_id")
         )
 
     @staticmethod
-    def _gate_rows(
-        ids: Sequence[str], values: Sequence[bool]
-    ) -> list[dict[str, Any]]:
+    def _gate_rows(ids: Sequence[str], values: Sequence[bool]) -> list[dict[str, Any]]:
         return [
             {"gate_id": gate_id, "hard": True, "passed": bool(value)}
             for gate_id, value in zip(ids, values, strict=True)
@@ -414,11 +485,7 @@ class IntentAwareObservationEngine:
                 continue
             hits = baseline_by_case[str(gold["case_id"])]["ranked_hits"]
             target = next(
-                (
-                    row
-                    for row in hits
-                    if row["source_path"] == gold["expected_path"]
-                ),
+                (row for row in hits if row["source_path"] == gold["expected_path"]),
                 None,
             )
             relation_ok &= bool(
@@ -459,12 +526,8 @@ class IntentAwareObservationEngine:
         baseline: Mapping[str, Any],
         gold_rows: Sequence[Mapping[str, Any]],
     ) -> list[dict[str, Any]]:
-        baseline_cases = {
-            str(row["case_id"]): row for row in baseline["cases"]
-        }
-        candidate_cases = {
-            str(row["case_id"]): row for row in candidate["cases"]
-        }
+        baseline_cases = {str(row["case_id"]): row for row in baseline["cases"]}
+        candidate_cases = {str(row["case_id"]): row for row in candidate["cases"]}
         positive_nonregression = True
         completeness = True
         negative_nonworse = True
@@ -499,9 +562,7 @@ class IntentAwareObservationEngine:
                 candidate_present = forbidden in candidate_paths
                 baseline_forbidden += int(baseline_present)
                 candidate_forbidden += int(candidate_present)
-                negative_nonworse &= not (
-                    candidate_present and not baseline_present
-                )
+                negative_nonworse &= not (candidate_present and not baseline_present)
             case = candidate_cases[case_id]
             expected_ranking = intent_aware_rank_fusion.fuse_intent_aware_ranks(
                 str(case["query"]),
@@ -509,19 +570,14 @@ class IntentAwareObservationEngine:
                 config=self.spec.fusion_config,
             )
             recomputed &= expected_ranking == case["ranked_hits"]
-            signals = {
-                row["source_path"]: row for row in case["production_signals"]
-            }
+            signals = {row["source_path"]: row for row in case["production_signals"]}
             relation_preserved &= all(
-                row["relation_paths"]
-                == signals[row["source_path"]]["relation_paths"]
+                row["relation_paths"] == signals[row["source_path"]]["relation_paths"]
                 for row in case["ranked_hits"]
             )
             if gold.get("cohort") == "relation_linked" and expected in candidate_paths:
                 hit = next(
-                    row
-                    for row in case["ranked_hits"]
-                    if row["source_path"] == expected
+                    row for row in case["ranked_hits"] if row["source_path"] == expected
                 )
                 relation_preserved &= self._relation_path(gold) in hit["relation_paths"]
         baseline_quality = baseline["quality"]
@@ -556,7 +612,7 @@ class IntentAwareObservationEngine:
     ) -> None:
         expected_keys = {
             (kind, replay)
-            for kind in ("baseline", *(model.kind for model in self.spec.models))
+            for kind in self.spec.worker_kinds()
             for replay in ("primary", "replay")
         }
         actual_keys = set(raw)
@@ -579,7 +635,11 @@ class IntentAwareObservationEngine:
                         f"{kind} {replay} worker packet {identity_field} "
                         "identity mismatch"
                     )
-            model = None if kind == "baseline" else self.spec.model(kind)
+            try:
+                self.spec.retrieval_arm(kind)
+                model = None
+            except ValueError:
+                model = self.spec.model(kind)
             expected_model_id = None if model is None else model.model_id
             expected_revision = None if model is None else model.revision
             if (
@@ -607,8 +667,9 @@ class IntentAwareObservationEngine:
         if claim.get("stage_identity") != self.spec.stage_identity(stage):
             raise ValueError("claim stage identity mismatch")
         self._validate_worker_packets(raw, stage)
-        baseline_primary = raw[("baseline", "primary")]
-        baseline_replay = raw[("baseline", "replay")]
+        baseline_key = self.spec.baseline_kind
+        baseline_primary = raw[(baseline_key, "primary")]
+        baseline_replay = raw[(baseline_key, "replay")]
         if baseline_primary["cases"] != baseline_replay["cases"]:
             raise ValueError("baseline replay cases differ")
         baseline = {
@@ -623,8 +684,28 @@ class IntentAwareObservationEngine:
                 "replay": baseline_replay["metrics"],
             },
         }
+        ablations = []
+        for arm in self.spec.ablation_arms:
+            primary = raw[(arm.kind, "primary")]
+            replay = raw[(arm.kind, "replay")]
+            if primary["cases"] != replay["cases"]:
+                raise ValueError(f"{arm.kind} replay cases differ")
+            ablations.append(
+                {
+                    "candidate_id": arm.evidence_id,
+                    "query_mode": arm.query_mode,
+                    "cases": primary["cases"],
+                    "quality": self.quality(primary["cases"], fixture.gold),
+                    "state": observation_support._combine_state(primary, replay),
+                    "metrics": {
+                        "primary": primary["metrics"],
+                        "replay": replay["metrics"],
+                    },
+                }
+            )
         candidates = []
         states = [baseline["state"]]
+        states.extend(arm["state"] for arm in ablations)
         query_by_id = {
             str(row["case_id"]): str(row["query"]) for row in fixture.queries
         }
@@ -657,7 +738,7 @@ class IntentAwareObservationEngine:
             validity, baseline["cases"], candidates, states, fixture.gold
         )
         protocol_pass = all(row["passed"] for row in protocol_gates)
-        selected: str | None = None
+        passing: list[dict[str, Any]] = []
         for candidate in candidates:
             gates = (
                 self.candidate_gates(candidate, baseline, fixture.gold)
@@ -674,10 +755,26 @@ class IntentAwareObservationEngine:
             eligible = stage == "development" or candidate["candidate_id"] == claim.get(
                 "selected_candidate_id"
             )
-            if selected is None and eligible and candidate["all_candidate_gates_pass"]:
-                selected = str(candidate["candidate_id"])
-        if stage == "holdout" and selected != claim.get("selected_candidate_id"):
-            selected = None
+            if eligible and candidate["all_candidate_gates_pass"]:
+                passing.append(candidate)
+        selected: str | None = None
+        if stage == "holdout" or self.spec.selection_policy == "first-passing":
+            if passing:
+                selected = str(passing[0]["candidate_id"])
+        elif passing:
+
+            def latency_key(candidate: Mapping[str, Any]) -> tuple[float, str]:
+                latency = candidate["metrics"]["primary"].get("latency_ms")
+                if (
+                    not isinstance(latency, (int, float))
+                    or isinstance(latency, bool)
+                    or not math.isfinite(float(latency))
+                    or latency < 0
+                ):
+                    raise ValueError("candidate primary latency is invalid")
+                return float(latency), str(candidate["candidate_id"])
+
+            selected = str(min(passing, key=latency_key)["candidate_id"])
         return {
             "protocol_id": self.spec.protocol_id,
             "stage": stage,
@@ -686,7 +783,9 @@ class IntentAwareObservationEngine:
             "protocol_validity_pass": protocol_pass,
             "candidate_gates_evaluated": protocol_pass,
             "baseline": baseline,
+            "ablations": ablations,
             "candidates": candidates,
+            "selection_policy": self.spec.selection_policy,
             "selected_candidate_id": selected,
             "all_hard_gates_pass": selected is not None,
             "performance": "assessed",

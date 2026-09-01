@@ -4,6 +4,7 @@ import copy
 import inspect
 import json
 import unittest
+from dataclasses import replace
 from pathlib import Path
 from unittest.mock import patch
 
@@ -11,9 +12,7 @@ from neuron_graph_rag import intent_aware_observation_engine as shared
 from neuron_graph_rag import intent_aware_rank_fusion
 
 ROOT = Path(__file__).resolve().parents[1]
-V21_EVIDENCE = Path(
-    "tests/evidence/github_cross_encoder_precision_v21_observation"
-)
+V21_EVIDENCE = Path("tests/evidence/github_cross_encoder_precision_v21_observation")
 V21_CORPUS = Path("tests/fixtures/github_cross_encoder_precision_v21.corpus.json")
 V21_QUERIES = Path("tests/fixtures/github_cross_encoder_precision_v21.queries.json")
 V21_GOLD = Path("tests/fixtures/github_cross_encoder_precision_v21.gold.json")
@@ -70,6 +69,23 @@ def _raw(stage: str) -> dict[tuple[str, str], dict[str, object]]:
     }
 
 
+def _real_arm_spec() -> shared.IntentAwareObservationSpec:
+    return replace(
+        _v21_spec(),
+        baseline_kind="default",
+        baseline_query_mode="full",
+        baseline_evidence_id="original-full-query-ngr-default",
+        ablation_arms=(
+            shared.RetrievalArmIdentity(
+                kind="baseline",
+                evidence_id="positive-clause-ngr-prefilter-ablation",
+                query_mode="positive",
+            ),
+        ),
+        selection_policy="lowest-development-primary-latency",
+    )
+
+
 def _behavior_projection(value: dict[str, object]) -> dict[str, object]:
     baseline = value["baseline"]
     candidates = value["candidates"]
@@ -78,8 +94,7 @@ def _behavior_projection(value: dict[str, object]) -> dict[str, object]:
     return {
         "protocol_validity_gates": value["protocol_validity_gates"],
         "baseline": {
-            key: baseline[key]
-            for key in ("candidate_id", "cases", "quality")
+            key: baseline[key] for key in ("candidate_id", "cases", "quality")
         },
         "candidates": [
             {
@@ -131,9 +146,7 @@ class IntentAwareObservationEngineTests(unittest.TestCase):
             opened.append(path)
             return json.loads(path.read_text(encoding="utf-8"))
 
-        engine = shared.IntentAwareObservationEngine(
-            _v21_spec(), object_reader=reader
-        )
+        engine = shared.IntentAwareObservationEngine(_v21_spec(), object_reader=reader)
         fixture = engine.load_worker_fixture(ROOT, "development")
         self.assertEqual(len(fixture.documents), 24)
         self.assertNotIn(ROOT / V21_GOLD, opened)
@@ -213,6 +226,50 @@ class IntentAwareObservationEngineTests(unittest.TestCase):
             shared.EXPECTED_PRODUCTION_SIGNAL_KEYS,
         )
         self.assertEqual(case["ranked_hits"][0]["source_path"], "docs/alpha.md")
+
+    def test_retrieval_arms_distinguish_full_default_from_positive_ablation(
+        self,
+    ) -> None:
+        engine = shared.IntentAwareObservationEngine(_real_arm_spec())
+        fixture = shared.WorkerFixture(
+            repository="example/repository",
+            documents=(
+                {"path": "docs/alpha.md", "text": "alpha"},
+                {"path": "docs/beta.md", "text": "beta"},
+            ),
+            relationships=(),
+            queries=(
+                {
+                    "case_id": "negative",
+                    "cohort": "negative_control",
+                    "language": "en",
+                    "query": "find alpha without beta",
+                },
+            ),
+        )
+        searched: list[str] = []
+
+        def prefilter(query: str, limit: int) -> list[dict[str, object]]:
+            searched.append(query)
+            self.assertEqual(limit, 2)
+            return [
+                {
+                    "source_path": "docs/alpha.md",
+                    "rank": 1,
+                    "ngr_score": 1.0,
+                    "relation_paths": [],
+                },
+                {
+                    "source_path": "docs/beta.md",
+                    "rank": 2,
+                    "ngr_score": 0.5,
+                    "relation_paths": [],
+                },
+            ]
+
+        engine.build_worker_cases(fixture, "default", prefilter_search=prefilter)
+        engine.build_worker_cases(fixture, "baseline", prefilter_search=prefilter)
+        self.assertEqual(searched, ["find alpha without beta", "find alpha"])
 
     def _assert_v21_worker_case_parity(self, stage: str, kind: str) -> None:
         fixture = self.engine.load_worker_fixture(ROOT, stage)
@@ -314,16 +371,12 @@ class IntentAwareObservationEngineTests(unittest.TestCase):
         object.__setattr__(
             changed,
             "fusion_config",
-            intent_aware_rank_fusion.IntentAwareFusionConfig(
-                positive_logit_weight=0.5
-            ),
+            intent_aware_rank_fusion.IntentAwareFusionConfig(positive_logit_weight=0.5),
         )
         with self.assertRaisesRegex(ValueError, "fusion weights"):
             changed.validate()
         self.assertEqual(self.engine.spec.protocol_gate_ids, shared.PROTOCOL_GATE_IDS)
-        self.assertEqual(
-            self.engine.spec.candidate_gate_ids, shared.CANDIDATE_GATE_IDS
-        )
+        self.assertEqual(self.engine.spec.candidate_gate_ids, shared.CANDIDATE_GATE_IDS)
         self.assertEqual(
             intent_aware_rank_fusion.PRODUCTION_SIGNAL_KEYS,
             shared.EXPECTED_PRODUCTION_SIGNAL_KEYS,
@@ -394,9 +447,7 @@ class IntentAwareObservationEngineTests(unittest.TestCase):
             with self.subTest(key=key, field=field):
                 raw = copy.deepcopy(_raw("development"))
                 raw[key][field] = value
-                self._assert_development_raw_rejected(
-                    raw, f"{field} identity mismatch"
-                )
+                self._assert_development_raw_rejected(raw, f"{field} identity mismatch")
 
     def test_finalizer_requires_exact_worker_packet_set(self) -> None:
         missing = copy.deepcopy(_raw("development"))
@@ -429,6 +480,41 @@ class IntentAwareObservationEngineTests(unittest.TestCase):
                 self.assertNotIn("peak_rss_bytes", projection)
                 self.assertNotIn('"metrics"', projection)
                 self.assertNotIn('"performance"', projection)
+
+    def test_latency_policy_selects_fastest_passing_candidate_not_spec_order(
+        self,
+    ) -> None:
+        engine = shared.IntentAwareObservationEngine(_real_arm_spec())
+        raw = copy.deepcopy(_raw("development"))
+        for replay in ("primary", "replay"):
+            raw[("default", replay)] = copy.deepcopy(raw[("baseline", replay)])
+            raw[("default", replay)]["kind"] = "default"
+        raw[("base", "primary")]["metrics"]["latency_ms"] = 200.0
+        raw[("v2-m3", "primary")]["metrics"]["latency_ms"] = 100.0
+        gates = [
+            {"gate_id": gate_id, "hard": True, "passed": True}
+            for gate_id in shared.CANDIDATE_GATE_IDS
+        ]
+        with (
+            patch.object(engine, "protocol_gates", return_value=gates),
+            patch.object(engine, "candidate_gates", return_value=gates),
+        ):
+            result = engine.finalize_stage(
+                "development",
+                claim={
+                    "protocol_id": engine.spec.protocol_id,
+                    "stage_identity": engine.spec.stage_identity("development"),
+                },
+                claim_sha256="0" * 64,
+                raw=raw,
+                fixture=engine.load_finalizer_fixture(ROOT, "development"),
+                validity=shared.ProtocolValidityInputs(True, True, 24),
+            )
+        self.assertEqual(result["selected_candidate_id"], "v2-m3-intent-aware")
+        self.assertEqual(
+            result["ablations"][0]["candidate_id"],
+            "positive-clause-ngr-prefilter-ablation",
+        )
 
 
 if __name__ == "__main__":

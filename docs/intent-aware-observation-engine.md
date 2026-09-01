@@ -13,7 +13,7 @@ shared engineは次のpure observation責務だけを持つ。
 - protocol、fixture path、stage identity、model identity、gate ID、fusion weightsをspecから受けて検証する。
 - worker用にcorpus、relationship、queryを読み、production検索とscorerを注入してcaseを生成する。
 - finalizer用にqueryとgoldを読み、quality、protocol validity、candidate gateの順で評価する。
-- claim identityとexact 6 worker packet setを検証する。各packetのprotocol / stage / kind / replay identity、
+- claim identityとspecから導出したexact worker packet setを検証する。各packetのprotocol / stage / kind / replay identity、
   primary/replay双方のmodel identity、cases一致をfail closedにした後、state集約、candidate選択、上記評価結果の
   payload組み立てを行う。baseline packetのmodel IDとrevisionは双方ともnullでなければならない。
 
@@ -24,6 +24,23 @@ validityが一つでもfailした場合はcandidate gateを評価しない。
 stage initialization、planned / actual / successful count、claim count、worker transport、failure transport、
 terminal audit、evidence fixateは既存のrank observation lifecycle / stage contractの責務に残す。shared engineは
 container command、stage directory、runtime volume、evidence copyを作らず、これらの既存部品を置き換えない。
+
+`intent_aware_observation_runtime.py`は、このpure engineを既存lifecycleへ接続するprotocol非依存adapterである。real corpus
+freshness validation、worker/finalizer raw assembly、failure/transport/evidence plumbing、source-root wiringを共有するが、stage
+initialization、count lifecycle、terminal auditの意味論は既存実装へ委譲する。version moduleはprotocol identityとfixturesを
+configとして注入し、runtime処理を複製しない。
+
+## Retrieval armとselection injection
+
+後続protocolはmodelを使わないretrieval armについて、worker kind、evidence ID、query mode (`full` / `positive`)を
+specへ注入できる。primary baselineは一つに固定し、追加armはablationとして別payloadへ記録する。candidate gateは常に
+primary baselineと比較し、ablationをcurrent defaultまたはgate baselineへ読み替えない。v21互換specの既定値は
+`baseline` / `positive` / `first-passing`のままである。
+
+candidate selectionもspec injectionであり、`first-passing`または
+`lowest-development-primary-latency`を選ぶ。後者は全hard gateを通過したdevelopment candidateだけを対象に、primary
+workerのlatency最小、同値時はcandidate IDのlexical順で一意に決める。holdoutはdevelopmentで選んだcandidateだけを
+評価し、順序をquality優越として扱わない。
 
 ## v21 parity boundary
 
