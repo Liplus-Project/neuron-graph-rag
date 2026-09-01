@@ -228,15 +228,37 @@
     "development": "tests/evidence/github_source_grounded_relation_v1/development.claim.json",
     "holdout": "tests/evidence/github_source_grounded_relation_v1/holdout.claim.json"
   },
+  "raw_packets": {
+    "development": {
+      "original-full-query-ngr-default": {
+        "primary": "tests/evidence/github_source_grounded_relation_v1/raw/development/original-full-query-ngr-default.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v1/raw/development/original-full-query-ngr-default.replay.json"
+      },
+      "source-grounded-relation-seed": {
+        "primary": "tests/evidence/github_source_grounded_relation_v1/raw/development/source-grounded-relation-seed.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v1/raw/development/source-grounded-relation-seed.replay.json"
+      }
+    },
+    "holdout": {
+      "original-full-query-ngr-default": {
+        "primary": "tests/evidence/github_source_grounded_relation_v1/raw/holdout/original-full-query-ngr-default.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v1/raw/holdout/original-full-query-ngr-default.replay.json"
+      },
+      "source-grounded-relation-seed": {
+        "primary": "tests/evidence/github_source_grounded_relation_v1/raw/holdout/source-grounded-relation-seed.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v1/raw/holdout/source-grounded-relation-seed.replay.json"
+      }
+    }
+  },
   "artifact_sha256": {
-    "docs/source-grounded-relation-seed-retrieval-experiment.md": "1c5166cc8e5e86cc383cd8801b8fab2f7552054ec3d1c80bc99b1e4b84390135",
-    "src/neuron_graph_rag/source_grounded_relation_observation.py": "db680145424eb3d759d029284bdce79deabf5ca9d470b579d217716da4db349c",
+    "docs/source-grounded-relation-seed-retrieval-experiment.md": "44f08b825429995f225b0234e590578ded804a827067f783ba2bf7015c19c052",
+    "src/neuron_graph_rag/source_grounded_relation_observation.py": "9f4d89934516227eaf648c160a822a2dae9984a91a42bf4f4b3d59450e8caabb",
     "tests/fixtures/github_source_grounded_relation_v1.corpus.json": "f172ad98fbb4f6e8a3983f2eda9a336119b6e8ee75432de3579ff5889f9e4365",
     "tests/fixtures/github_source_grounded_relation_v1.gate.json": "43fce26051a2f2c1310e2ccfdf22c20f323ad77118534199d63468f5be31c2c2",
     "tests/fixtures/github_source_grounded_relation_v1.gold.json": "72478b075acdba496a1e340799c4e363d2fa9aba8bb7551b4085060fcc09a8f4",
     "tests/fixtures/github_source_grounded_relation_v1.queries.json": "e268910ea18423391292d40cac5235a6603c7b907a04c897b0fe62a74b0a6765",
     "tests/fixtures/github_source_grounded_relation_v1.result-free-audit.json": "dbb6951ab7afc1f145011d882013871d44ed0909247621a41e681f800ce2ec6d",
-    "tests/test_source_grounded_relation_observation.py": "83afd46b39be858568016998a627ba668c890622b9f13f30fd329a30c084b026",
+    "tests/test_source_grounded_relation_observation.py": "ec346ac9c08eed26d9434d4a12c7cd88179683ab78ebabda9fd9a7f3ab8ac724",
     "tools/acquire_source_grounded_relation_corpus.py": "7974f91ca885b081b994f868dd28d40ba80e9bcfe5e8ce6c8209ebaaeadcbdd5",
     "tools/run_source_grounded_relation_observation.py": "9ab680d07af7843880190b842e1d05518e0eef532d9689000eabf2770e98efa0"
   }

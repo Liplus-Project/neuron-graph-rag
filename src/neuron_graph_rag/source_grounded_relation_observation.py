@@ -21,6 +21,7 @@ STEM = "github_source_grounded_relation_v1"
 PROTOCOL_ID = "github-ngr-source-grounded-relation-seed-v1"
 STAGES = ("development", "holdout")
 ARMS = ("original-full-query-ngr-default", "source-grounded-relation-seed")
+RUNS = ("primary", "replay")
 COHORTS = (
     "direct_lexical",
     "semantic_paraphrase",
@@ -84,6 +85,19 @@ def _read_json(path: Path, *, require_canonical: bool = True) -> dict[str, Any]:
     if require_canonical and raw != _encoded(payload):
         raise ValueError(f"non-canonical JSON: {path}")
     return payload
+
+
+def _git_bytes(root: Path, object_name: str) -> bytes:
+    result = subprocess.run(
+        ["git", "show", object_name],
+        cwd=root,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if result.returncode != 0:
+        raise ValueError(f"git object is unavailable: {object_name}")
+    return result.stdout
 
 
 def _mapping(value: Mapping[str, Any], key: str) -> Mapping[str, Any]:
@@ -324,6 +338,37 @@ def _validate_artifact_hashes(protocol: Mapping[str, Any]) -> None:
             raise ValueError(f"frozen artifact hash mismatch: {relative}")
 
 
+def _raw_packet_paths(
+    protocol: Mapping[str, Any], stage: str | None = None
+) -> dict[tuple[str, str, str], Path]:
+    root = Path(protocol["root"])
+    raw_packets = _mapping(_mapping(protocol, "manifest"), "raw_packets")
+    if set(raw_packets) != set(STAGES):
+        raise ValueError("raw packet stages must match the frozen stages")
+    paths: dict[tuple[str, str, str], Path] = {}
+    for registered_stage in STAGES:
+        stage_packets = _mapping(raw_packets, registered_stage)
+        if set(stage_packets) != set(ARMS):
+            raise ValueError("raw packet arms must match the frozen arms")
+        for arm in ARMS:
+            arm_packets = _mapping(stage_packets, arm)
+            if set(arm_packets) != set(RUNS):
+                raise ValueError("raw packet runs must be primary and replay")
+            for run in RUNS:
+                relative = _string(arm_packets, run)
+                relative_path = Path(relative)
+                if relative_path.is_absolute() or ".." in relative_path.parts:
+                    raise ValueError("raw packet path must stay inside the repository")
+                paths[(registered_stage, arm, run)] = root / relative_path
+    if len({path.resolve() for path in paths.values()}) != len(paths):
+        raise ValueError("raw packet paths must be unique")
+    if stage is not None:
+        if stage not in STAGES:
+            raise ValueError("unknown stage")
+        return {key: path for key, path in paths.items() if key[0] == stage}
+    return paths
+
+
 def validate_worker_protocol(protocol: Mapping[str, Any]) -> None:
     _validate_source_contract(protocol)
     _validate_query_cases(protocol)
@@ -368,6 +413,9 @@ def validate_protocol(
                     raise ValueError(
                         f"registered {registry[:-1]} must be absent at freeze"
                     )
+        for artifact in _raw_packet_paths(protocol).values():
+            if artifact.exists():
+                raise ValueError("registered raw packet must be absent at freeze")
     _validate_artifact_hashes(protocol)
 
 
@@ -526,13 +574,21 @@ def _hit_payload(hit: Any, snapshot: GitHubSnapshot) -> dict[str, Any]:
 
 
 def run_worker(
-    protocol: Mapping[str, Any], stage: str, arm: str, database: Path
+    protocol: Mapping[str, Any],
+    stage: str,
+    arm: str,
+    database: Path,
+    *,
+    protocol_commit: str,
+    run: str,
 ) -> dict[str, Any]:
     """Run a gold-blind arm against one fresh SQLite database."""
     if "gold" in protocol:
         raise ValueError("worker protocol must not expose gold")
-    if stage not in STAGES or arm not in ARMS:
-        raise ValueError("unknown stage or arm")
+    if stage not in STAGES or arm not in ARMS or run not in RUNS:
+        raise ValueError("unknown stage, arm, or run")
+    if not re.fullmatch(r"[0-9a-f]{40}", protocol_commit):
+        raise ValueError("protocol commit must be lowercase full SHA")
     if database.exists():
         raise FileExistsError("worker database must be fresh")
     snapshot = protocol["corpus"]
@@ -623,7 +679,92 @@ def run_worker(
                     "hits": hits,
                 }
             )
-    return {"stage": stage, "arm": arm, "cases": observed}
+    return {
+        "protocol_id": PROTOCOL_ID,
+        "protocol_commit": protocol_commit,
+        "stage": stage,
+        "arm": arm,
+        "run": run,
+        "attempt": 1,
+        "retry_count": 0,
+        "cases": observed,
+    }
+
+
+def _validate_worker_packet(
+    packet: Mapping[str, Any],
+    *,
+    stage: str,
+    arm: str,
+    run: str,
+    protocol_commit: str,
+) -> None:
+    expected_keys = {
+        "protocol_id",
+        "protocol_commit",
+        "stage",
+        "arm",
+        "run",
+        "attempt",
+        "retry_count",
+        "cases",
+    }
+    if set(packet) != expected_keys:
+        raise ValueError("raw worker packet fields do not match the frozen schema")
+    expected_identity = {
+        "protocol_id": PROTOCOL_ID,
+        "protocol_commit": protocol_commit,
+        "stage": stage,
+        "arm": arm,
+        "run": run,
+        "attempt": 1,
+        "retry_count": 0,
+    }
+    if any(packet.get(key) != value for key, value in expected_identity.items()):
+        raise ValueError("raw worker packet identity mismatch")
+    _rows(packet, "cases")
+
+
+def _persist_worker_packet(
+    protocol: Mapping[str, Any],
+    packet: Mapping[str, Any],
+    *,
+    stage: str,
+    arm: str,
+    run: str,
+    protocol_commit: str,
+) -> Path:
+    _validate_worker_packet(
+        packet,
+        stage=stage,
+        arm=arm,
+        run=run,
+        protocol_commit=protocol_commit,
+    )
+    path = _raw_packet_paths(protocol, stage)[(stage, arm, run)]
+    _exclusive_write(path, packet)
+    return path
+
+
+def _load_registered_worker_packets(
+    protocol: Mapping[str, Any], stage: str, protocol_commit: str
+) -> dict[str, dict[str, Mapping[str, Any]]]:
+    paths = _raw_packet_paths(protocol, stage)
+    workers: dict[str, dict[str, Mapping[str, Any]]] = {
+        run: {} for run in RUNS
+    }
+    for run in RUNS:
+        for arm in ARMS:
+            packet = _read_json(paths[(stage, arm, run)])
+            _validate_worker_packet(
+                packet,
+                stage=stage,
+                arm=arm,
+                run=run,
+                protocol_commit=protocol_commit,
+            )
+            workers[run][arm] = packet
+    return workers
 
 
 def _rank(hits: Sequence[Mapping[str, Any]], expected: str | None) -> int:
@@ -692,15 +833,18 @@ def _arm_metrics(
 def finalize_stage(
     protocol: Mapping[str, Any],
     stage: str,
-    primary_workers: Mapping[str, Mapping[str, Any]],
-    replay_workers: Mapping[str, Mapping[str, Any]],
     protocol_commit: str,
     shared_database_sha256: str,
 ) -> dict[str, Any]:
-    """Read gold only after all workers have completed."""
+    """Read the exact registered raw packet set, then open gold."""
+    workers = _load_registered_worker_packets(protocol, stage, protocol_commit)
+    primary_workers = workers["primary"]
+    replay_workers = workers["replay"]
     gold_rows = _rows(_mapping(_mapping(protocol, "gold"), "stages"), stage)
     metrics = {arm: _arm_metrics(primary_workers[arm], gold_rows) for arm in ARMS}
-    deterministic = all(primary_workers[arm] == replay_workers[arm] for arm in ARMS)
+    deterministic = all(
+        primary_workers[arm]["cases"] == replay_workers[arm]["cases"] for arm in ARMS
+    )
     baseline = metrics[ARMS[0]]
     candidate = metrics[ARMS[1]]
     base_cases = {row["case_id"]: row for row in baseline["cases"]}
@@ -779,28 +923,88 @@ def finalize_stage(
     }
 
 
-def verify_protocol_commit(
-    protocol: Mapping[str, Any], commit: str, *, verify_artifacts: bool = True
-) -> None:
+def verify_protocol_commit(protocol: Mapping[str, Any], commit: str) -> None:
     if not re.fullmatch(r"[0-9a-f]{40}", commit):
         raise ValueError("protocol commit must be lowercase full SHA")
     root = Path(protocol["root"])
-    subprocess.run(
-        ["git", "merge-base", "--is-ancestor", commit, "HEAD"], cwd=root, check=True
+    manifest = _mapping(protocol, "manifest")
+    _git_bytes(root, f"{commit}^{{commit}}")
+    branch_check = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", commit, "origin/main"],
+        cwd=root,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
     )
-    if not verify_artifacts:
-        return
-    for relative, expected in _mapping(
-        _mapping(protocol, "manifest"), "artifact_sha256"
-    ).items():
-        result = subprocess.run(
-            ["git", "show", f"{commit}:{relative}"],
-            cwd=root,
-            check=True,
-            stdout=subprocess.PIPE,
+    if branch_check.returncode != 0:
+        raise ValueError("protocol commit must be merged into origin/main")
+    manifest_relative = MANIFEST_PATH.relative_to(ROOT).as_posix()
+    first_parent = f"{commit}^1"
+    try:
+        _git_bytes(root, f"{first_parent}^{{commit}}")
+    except ValueError as error:
+        raise ValueError("protocol commit must have a valid first parent") from error
+    parent_manifest = subprocess.run(
+        ["git", "cat-file", "-e", f"{first_parent}:{manifest_relative}"],
+        cwd=root,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if parent_manifest.returncode == 0:
+        raise ValueError(
+            "protocol commit must be the commit that first introduces the manifest"
         )
-        if hashlib.sha256(result.stdout).hexdigest() != expected:
+    introductions = subprocess.run(
+        [
+            "git",
+            "log",
+            "--first-parent",
+            "--diff-filter=A",
+            "--format=%H",
+            commit,
+            "--",
+            manifest_relative,
+        ],
+        cwd=root,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if introductions.returncode != 0 or introductions.stdout.splitlines() != [commit]:
+        raise ValueError(
+            "protocol commit must be the manifest's unique first-parent introduction"
+        )
+    if (
+        _git_bytes(root, f"{commit}:{manifest_relative}")
+        != (root / manifest_relative).read_bytes()
+    ):
+        raise ValueError("running manifest drifted from the frozen merge commit")
+    for relative, expected in _mapping(manifest, "artifact_sha256").items():
+        registered = _git_bytes(root, f"{commit}:{relative}")
+        if hashlib.sha256(registered).hexdigest() != expected:
             raise ValueError(f"protocol commit artifact mismatch: {relative}")
+        if _sha256(root / str(relative)) != expected:
+            raise ValueError(f"running artifact drifted from freeze: {relative}")
+    frozen_absent = [
+        *(str(path) for path in _mapping(manifest, "claims").values()),
+        *(str(path) for path in _mapping(manifest, "outputs").values()),
+        *(
+            path.relative_to(root).as_posix()
+            for path in _raw_packet_paths(protocol).values()
+        ),
+    ]
+    for relative in frozen_absent:
+        exists = subprocess.run(
+            ["git", "cat-file", "-e", f"{commit}:{relative}"],
+            cwd=root,
+            check=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if exists.returncode == 0:
+            raise ValueError("frozen merge commit must not contain observation artifacts")
 
 
 def run_stage(
@@ -811,7 +1015,7 @@ def run_stage(
     root: Path = ROOT,
 ) -> dict[str, Any]:
     worker_protocol = load_worker_protocol(root)
-    verify_protocol_commit(worker_protocol, protocol_commit, verify_artifacts=False)
+    verify_protocol_commit(worker_protocol, protocol_commit)
     if stage not in STAGES:
         raise ValueError("unknown stage")
     manifest = _mapping(worker_protocol, "manifest")
@@ -823,6 +1027,8 @@ def run_stage(
         raise FileExistsError("refusing to overwrite observed output")
     if expected_claim.exists():
         raise FileExistsError("stage attempt is already claimed; retry is forbidden")
+    if any(path.exists() for path in _raw_packet_paths(worker_protocol, stage).values()):
+        raise FileExistsError("stage raw evidence already exists; retry is forbidden")
     if stage == "holdout":
         development = root / str(_mapping(manifest, "outputs")["development"])
         if not development.exists():
@@ -843,24 +1049,46 @@ def run_stage(
         },
     )
     shared_before = _sha256(shared_database)
-    primary: dict[str, Mapping[str, Any]] = {}
-    replay: dict[str, Mapping[str, Any]] = {}
     with TemporaryDirectory(prefix=f"ngr-{STEM}-{stage}-") as directory:
         temporary = Path(directory)
         for arm in ARMS:
-            primary[arm] = run_worker(
-                worker_protocol, stage, arm, temporary / f"{arm}-primary.sqlite"
+            primary = run_worker(
+                worker_protocol,
+                stage,
+                arm,
+                temporary / f"{arm}-primary.sqlite",
+                protocol_commit=protocol_commit,
+                run="primary",
             )
-            replay[arm] = run_worker(
-                worker_protocol, stage, arm, temporary / f"{arm}-replay.sqlite"
+            _persist_worker_packet(
+                worker_protocol,
+                primary,
+                stage=stage,
+                arm=arm,
+                run="primary",
+                protocol_commit=protocol_commit,
+            )
+            replay = run_worker(
+                worker_protocol,
+                stage,
+                arm,
+                temporary / f"{arm}-replay.sqlite",
+                protocol_commit=protocol_commit,
+                run="replay",
+            )
+            _persist_worker_packet(
+                worker_protocol,
+                replay,
+                stage=stage,
+                arm=arm,
+                run="replay",
+                protocol_commit=protocol_commit,
             )
     if _sha256(shared_database) != shared_before:
         raise RuntimeError("shared database changed")
-    protocol = load_protocol(root, require_result_free=stage == "development")
+    protocol = load_protocol(root, require_result_free=False)
     verify_protocol_commit(protocol, protocol_commit)
-    result = finalize_stage(
-        protocol, stage, primary, replay, protocol_commit, shared_before
-    )
+    result = finalize_stage(protocol, stage, protocol_commit, shared_before)
     _exclusive_write(output, result)
     return result
 

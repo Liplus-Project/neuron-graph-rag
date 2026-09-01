@@ -25,15 +25,15 @@ candidateはrelation path completeness、relation MRR、relation hit@5をbaselin
 
 ## One-shot boundary
 
-各armのprimary / replayはそれぞれfresh SQLiteを使う。shared SQLiteはbyte hashの前後確認だけを行い、開かない。runnerはworkerへcorpus、source-grounded relation、queryだけを渡し、全worker完了後にfinalizerが初めてgoldを開く。primary / replay raw packetは最終outputへ残す。
+各armのprimary / replayはそれぞれfresh SQLiteを使う。shared SQLiteはbyte hashの前後確認だけを行い、開かない。runnerはworkerへcorpus、source-grounded relation、queryだけを渡す。各workerは完了直後にprotocol ID、freeze commit、stage、arm、primary / replay、attempt、retry countを含むraw packetをmanifest登録pathへexclusive createする。finalizerはstageに登録された4 packetの完全な集合だけをdiskから再読込してidentityを検証し、その後初めてgoldを開く。raw packetは最終outputにも残す。
 
-各stageはworker開始前に登録claimをexclusive createする。claimは失敗時も削除せず、claimまたはoutputが既にあれば再実行を拒否するため、attemptは1回、retryは0である。freeze PRではdevelopment / holdoutを実行せず、claim / outputを作らない。
+各stageはworker開始前に登録claimをexclusive createする。claimと完了済みraw packetはfinalizer error、shared SQLite hash mismatch、process interruptionでも削除せず、上書きしない。claim、raw packet、outputのいずれかが既にあれば再実行を拒否するため、attemptは1回、retryは0である。freeze PRではdevelopment / holdoutを実行せず、claim / raw packet / outputを作らない。
 
 freezeがmainへmergeされた後のsuccessorだけがdevelopmentを一度実行できる。developmentでcandidateが全gateを通った場合だけholdoutを一度開く。同一protocolの再実行、output上書き、観測後のquery、gold、edge、metric、gate変更は禁止する。passing resultでもNGR default、MCP config、physical integrationを自動変更しない。
 
 ## Result-free verification
 
-freeze時は次を確認する。
+freeze時は次を確認する。successor runnerが受け取るfreeze commitはfull lowercase SHAで、manifest pathをfirst-parent history上で一意に初回導入したcommitでなければならない。そのcommitが`origin/main`に含まれること、commit内manifest bytesとruntime manifest bytesが一致すること、commit内とruntimeの全登録artifact hashが一致すること、commitにclaim / raw packet / outputが存在しないことをfail closedで検証する。manifest自身を`artifact_sha256`へ含めるself-hash cycleは作らない。
 
 ```powershell
 $env:PYTHONPATH='src'
