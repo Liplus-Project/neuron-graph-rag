@@ -252,7 +252,7 @@
   },
   "artifact_sha256": {
     "docs/source-grounded-relation-seed-retrieval-experiment.md": "44f08b825429995f225b0234e590578ded804a827067f783ba2bf7015c19c052",
-    "src/neuron_graph_rag/source_grounded_relation_observation.py": "9f4d89934516227eaf648c160a822a2dae9984a91a42bf4f4b3d59450e8caabb",
+    "src/neuron_graph_rag/source_grounded_relation_observation.py": "075d67e50bde1f7addd141e5b931029ea72edd4212096542d81566bc460fcb6d",
     "tests/fixtures/github_source_grounded_relation_v1.corpus.json": "f172ad98fbb4f6e8a3983f2eda9a336119b6e8ee75432de3579ff5889f9e4365",
     "tests/fixtures/github_source_grounded_relation_v1.gate.json": "43fce26051a2f2c1310e2ccfdf22c20f323ad77118534199d63468f5be31c2c2",
     "tests/fixtures/github_source_grounded_relation_v1.gold.json": "72478b075acdba496a1e340799c4e363d2fa9aba8bb7551b4085060fcc09a8f4",

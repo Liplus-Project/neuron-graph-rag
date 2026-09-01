@@ -92,8 +92,7 @@ def _git_bytes(root: Path, object_name: str) -> bytes:
         ["git", "show", object_name],
         cwd=root,
         check=False,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
     if result.returncode != 0:
         raise ValueError(f"git object is unavailable: {object_name}")
@@ -933,8 +932,7 @@ def verify_protocol_commit(protocol: Mapping[str, Any], commit: str) -> None:
         ["git", "merge-base", "--is-ancestor", commit, "origin/main"],
         cwd=root,
         check=False,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
     if branch_check.returncode != 0:
         raise ValueError("protocol commit must be merged into origin/main")
@@ -948,8 +946,7 @@ def verify_protocol_commit(protocol: Mapping[str, Any], commit: str) -> None:
         ["git", "cat-file", "-e", f"{first_parent}:{manifest_relative}"],
         cwd=root,
         check=False,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
     if parent_manifest.returncode == 0:
         raise ValueError(
@@ -968,8 +965,7 @@ def verify_protocol_commit(protocol: Mapping[str, Any], commit: str) -> None:
         ],
         cwd=root,
         check=False,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         text=True,
     )
     if introductions.returncode != 0 or introductions.stdout.splitlines() != [commit]:
@@ -1000,8 +996,7 @@ def verify_protocol_commit(protocol: Mapping[str, Any], commit: str) -> None:
             ["git", "cat-file", "-e", f"{commit}:{relative}"],
             cwd=root,
             check=False,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
         )
         if exists.returncode == 0:
             raise ValueError("frozen merge commit must not contain observation artifacts")
