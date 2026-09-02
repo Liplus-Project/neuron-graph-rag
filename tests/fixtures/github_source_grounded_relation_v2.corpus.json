@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "repository": "Liplus-Project/neuron-graph-rag",
+  "commit": "8b3cdf5052cc382687cf3efbb6d728ddd473d75d",
+  "documents": [
+    {
+      "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+      "blob_sha": "4400b1c6a3d7e29fd7aeea94f09e3b3155f6ad13",
+      "content": "# Boundary recovery credit 0\n\n## Corpus metadata\n\n- Corpus cluster: `boundary-recovery`\n- Corpus node ID: `v3-boundary-recovery-credit-0`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md\n- Feedback credit ceiling: `0`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は boundary recovery cluster の credit なしの比較点です。境界の観測を保持しても、credited feedback を受け取る余地はありません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+      "blob_sha": "f92d4fe3f9432a1b70374c2fc3bdb31c527d2a8a",
+      "content": "# Boundary recovery credit 1\n\n## Corpus metadata\n\n- Corpus cluster: `boundary-recovery`\n- Corpus node ID: `v3-boundary-recovery-credit-1`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md\n- Feedback credit ceiling: `1`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は boundary recovery cluster の一回までの credited feedback ceiling を表します。単一の回復 credit を記録でき、追加の credit を暗黙に許可しません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+      "blob_sha": "3afe2b9afe64a1ba45f5793c86b15a686476e38f",
+      "content": "# Boundary recovery credit 10\n\n## Corpus metadata\n\n- Corpus cluster: `boundary-recovery`\n- Corpus node ID: `v3-boundary-recovery-credit-10`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md\n- Feedback credit ceiling: `10`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は boundary recovery cluster の十回までの credited feedback ceiling を表します。長い回復反復を比較できる headroom を持ち、十一回目以降を暗黙に許可しません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+      "blob_sha": "eb69f1fd5b2e5d5f199ade77a229214b3e202c94",
+      "content": "# Boundary recovery credit 3\n\n## Corpus metadata\n\n- Corpus cluster: `boundary-recovery`\n- Corpus node ID: `v3-boundary-recovery-credit-3`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md\n- Feedback credit ceiling: `3`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は boundary recovery cluster の三回までの credited feedback ceiling を表します。短い回復反復を比較できる headroom を持ち、四回目以降を暗黙に許可しません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+      "blob_sha": "a152877eddb821414975991bfbfd987ddcff93c6",
+      "content": "# Boundary recovery overview\n\n## Corpus metadata\n\n- Corpus cluster: `boundary-recovery`\n- Corpus node ID: `v3-boundary-recovery-overview`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/boundary-recovery-overview.md\n- Feedback credit ceiling: `10`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの public source document は boundary recovery cluster の入口です。境界違反の観測と回復記録を分け、credited feedback の受け取り回数を source document の ceiling で制約します。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n\n## 文書間の明示的な参照\n\n- credit を受け取らない基準状態は [Boundary recovery credit 0](boundary-recovery-credit-0.md) を参照します。\n- 一回までの credit 状態は [Boundary recovery credit 1](boundary-recovery-credit-1.md) を参照します。\n- 三回までの credit 状態は [Boundary recovery credit 3](boundary-recovery-credit-3.md) を参照します。\n- 十回までの ceiling 状態は [Boundary recovery credit 10](boundary-recovery-credit-10.md) を参照します。\n",
+      "content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-overview.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-0.md",
+      "blob_sha": "88a920779b7332856a1d5c631c88a4211734b7dd",
+      "content": "# Evidence continuity credit 0\n\n## Corpus metadata\n\n- Corpus cluster: `evidence-continuity`\n- Corpus node ID: `v3-evidence-continuity-credit-0`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/evidence-continuity-credit-0.md\n- Feedback credit ceiling: `0`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は evidence continuity cluster の credit なしの比較点です。evidence の継続性を保持しても、credited feedback を受け取る余地はありません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "c6d4756eac7dccd3342279cd7a0c81595ddb209f53b9e678ec7c02c8eaa3b401",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/evidence-continuity-credit-0.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-1.md",
+      "blob_sha": "742d93fc17b69d364f374268ba6d6e9da63325e4",
+      "content": "# Evidence continuity credit 1\n\n## Corpus metadata\n\n- Corpus cluster: `evidence-continuity`\n- Corpus node ID: `v3-evidence-continuity-credit-1`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/evidence-continuity-credit-1.md\n- Feedback credit ceiling: `1`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は evidence continuity cluster の一回までの credited feedback ceiling を表します。単一の continuity credit を記録でき、追加の credit を暗黙に許可しません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "90e217d3a53f43efcc7e5b455229ba9140980ae58f467fe0fc68952004f521e0",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/evidence-continuity-credit-1.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-10.md",
+      "blob_sha": "d4c591e2af401039590308bcab1998f10a2508c6",
+      "content": "# Evidence continuity credit 10\n\n## Corpus metadata\n\n- Corpus cluster: `evidence-continuity`\n- Corpus node ID: `v3-evidence-continuity-credit-10`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/evidence-continuity-credit-10.md\n- Feedback credit ceiling: `10`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は evidence continuity cluster の十回までの credited feedback ceiling を表します。長い continuity 反復を比較できる headroom を持ち、十一回目以降を暗黙に許可しません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "55f06876f1f28237926a0889c895d50b88b41c9e4cdf5b15ddeb3e01e82fe7af",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/evidence-continuity-credit-10.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/evidence-continuity-credit-3.md",
+      "blob_sha": "265e4bd9ffb1c33665f4858cbcb23b44548727ae",
+      "content": "# Evidence continuity credit 3\n\n## Corpus metadata\n\n- Corpus cluster: `evidence-continuity`\n- Corpus node ID: `v3-evidence-continuity-credit-3`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/evidence-continuity-credit-3.md\n- Feedback credit ceiling: `3`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は evidence continuity cluster の三回までの credited feedback ceiling を表します。短い continuity 反復を比較できる headroom を持ち、四回目以降を暗黙に許可しません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "710ebe6f56ee261b74eb4558122f88065bae69f23317e905e7942827620c4070",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/evidence-continuity-credit-3.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/evidence-continuity-overview.md",
+      "blob_sha": "771a161259624cd1b2ce4d7e68f9c96915afde31",
+      "content": "# Evidence continuity overview\n\n## Corpus metadata\n\n- Corpus cluster: `evidence-continuity`\n- Corpus node ID: `v3-evidence-continuity-overview`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/evidence-continuity-overview.md\n- Feedback credit ceiling: `10`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの public source document は evidence continuity cluster の入口です。evidence の継続性と credit の記録を分け、credited feedback の受け取り回数を source document の ceiling で制約します。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n\n## 文書間の明示的な参照\n\n- credit を受け取らない基準状態は [Evidence continuity credit 0](evidence-continuity-credit-0.md) を参照します。\n- 一回までの credit 状態は [Evidence continuity credit 1](evidence-continuity-credit-1.md) を参照します。\n- 三回までの credit 状態は [Evidence continuity credit 3](evidence-continuity-credit-3.md) を参照します。\n- 十回までの ceiling 状態は [Evidence continuity credit 10](evidence-continuity-credit-10.md) を参照します。\n",
+      "content_sha256": "e99d0886f0f35b197387229d5b401afb8dd8be06a2fa56bce7e33d6ffb8f6a24",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/evidence-continuity-overview.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/signal-stability-credit-0.md",
+      "blob_sha": "ff29ceb69b9846b3e735e02219a0e6b34b5da013",
+      "content": "# Signal stability credit 0\n\n## Corpus metadata\n\n- Corpus cluster: `signal-stability`\n- Corpus node ID: `v3-signal-stability-credit-0`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/signal-stability-credit-0.md\n- Feedback credit ceiling: `0`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は signal stability cluster の credit なしの比較点です。観測記録を残しても、credited feedback を受け取る余地はありません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "1dfff7e4518bd267b029bb27cb808ce68a0067316defca6f6dc378ebb81db578",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/signal-stability-credit-0.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/signal-stability-credit-1.md",
+      "blob_sha": "88494460104b7e1217450164a1702b80b6b5c22f",
+      "content": "# Signal stability credit 1\n\n## Corpus metadata\n\n- Corpus cluster: `signal-stability`\n- Corpus node ID: `v3-signal-stability-credit-1`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/signal-stability-credit-1.md\n- Feedback credit ceiling: `1`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は signal stability cluster の一回までの credited feedback ceiling を表します。単一の credit を記録でき、追加の credit を暗黙に許可しません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "ea596b49c14c46be88f152bdbf2c853c186890f20b5802aee5200d61fd950aeb",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/signal-stability-credit-1.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/signal-stability-credit-10.md",
+      "blob_sha": "9621e0677ac4d5db4f04624084fe84dd4e633de3",
+      "content": "# Signal stability credit 10\n\n## Corpus metadata\n\n- Corpus cluster: `signal-stability`\n- Corpus node ID: `v3-signal-stability-credit-10`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/signal-stability-credit-10.md\n- Feedback credit ceiling: `10`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は signal stability cluster の十回までの credited feedback ceiling を表します。長い反復を比較できる headroom を持ち、十一回目以降を暗黙に許可しません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "5097cb9df0a1d5a8bba3aadab7b55a2dc9308a15388dc4952a5b48cc96df5fcb",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/signal-stability-credit-10.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/signal-stability-credit-3.md",
+      "blob_sha": "8c718f118764b2fd7ab9bc8c86353208698ebd9d",
+      "content": "# Signal stability credit 3\n\n## Corpus metadata\n\n- Corpus cluster: `signal-stability`\n- Corpus node ID: `v3-signal-stability-credit-3`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/signal-stability-credit-3.md\n- Feedback credit ceiling: `3`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの source document は signal stability cluster の三回までの credited feedback ceiling を表します。短い反復を比較できる headroom を持ち、四回目以降を暗黙に許可しません。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n",
+      "content_sha256": "197484b964a5946e12d0497b1088bfb552a1cb431e973b572bd45182fc9cda36",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/signal-stability-credit-3.md"
+    },
+    {
+      "path": "corpora/repository-native-controlled-v3/signal-stability-overview.md",
+      "blob_sha": "015f630c3b19e5acaae6bb69ac51cc7e62f34349",
+      "content": "# Signal stability overview\n\n## Corpus metadata\n\n- Corpus cluster: `signal-stability`\n- Corpus node ID: `v3-signal-stability-overview`\n- Source URL: https://github.com/Liplus-Project/neuron-graph-rag/blob/main/corpora/repository-native-controlled-v3/signal-stability-overview.md\n- Feedback credit ceiling: `10`\n- License: Apache-2.0\n\n## Controlled corpus status\n\nこの public source document は signal stability cluster の入口です。観測した signal と stability boundary を分け、credited feedback の受け取り回数を source document の ceiling で制約します。評価 query、gold、schedule、runner、gate、manifest、result、既定値は定義しません。\n\n## 文書間の明示的な参照\n\n- credit を受け取らない基準状態は [Signal stability credit 0](signal-stability-credit-0.md) を参照します。\n- 一回までの credit 状態は [Signal stability credit 1](signal-stability-credit-1.md) を参照します。\n- 三回までの credit 状態は [Signal stability credit 3](signal-stability-credit-3.md) を参照します。\n- 十回までの ceiling 状態は [Signal stability credit 10](signal-stability-credit-10.md) を参照します。\n",
+      "content_sha256": "1808c4d771d0a05f356407853db6d8593b75f270ff1e808a40200e9b010f1d69",
+      "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/signal-stability-overview.md"
+    }
+  ]
+}

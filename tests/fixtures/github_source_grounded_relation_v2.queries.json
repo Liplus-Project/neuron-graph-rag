@@ -1,0 +1,89 @@
+{
+  "protocol_id": "github-ngr-source-grounded-relation-seed-v2",
+  "stages": {
+    "development": [
+      {
+        "case_id": "v25-dev-direct-boundary-zero",
+        "cohort": "direct_lexical",
+        "query": "Which boundary recovery document defines the zero-credit state?"
+      },
+      {
+        "case_id": "v25-dev-direct-boundary-one",
+        "cohort": "direct_lexical",
+        "query": "Where is the boundary recovery state after one credit recorded?"
+      },
+      {
+        "case_id": "v25-dev-semantic-boundary-three",
+        "cohort": "semantic_paraphrase",
+        "query": "Find the recovery note for the checkpoint reached after three confirmations."
+      },
+      {
+        "case_id": "v25-dev-semantic-boundary-ten",
+        "cohort": "semantic_paraphrase",
+        "query": "Locate the recovery ceiling state produced by ten accumulated credits."
+      },
+      {
+        "case_id": "v25-dev-relation-boundary-zero",
+        "cohort": "relation_linked",
+        "query": "Boundary recovery overviewから関連リンクとして参照されるcredit 0文書はどれですか。"
+      },
+      {
+        "case_id": "v25-dev-relation-boundary-one",
+        "cohort": "relation_linked",
+        "query": "Which one-credit state is linked as related material from Boundary recovery overview?"
+      },
+      {
+        "case_id": "v25-dev-negative-boundary-three",
+        "cohort": "negative_control",
+        "query": "Find the uncredited boundary baseline without returning the three-credit recovery file."
+      },
+      {
+        "case_id": "v25-dev-negative-boundary-ten",
+        "cohort": "negative_control",
+        "query": "Locate the first-credit recovery state while excluding the ten-credit ceiling document."
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "v25-holdout-direct-signal-zero",
+        "cohort": "direct_lexical",
+        "query": "Which signal stability document defines the zero-credit state?"
+      },
+      {
+        "case_id": "v25-holdout-direct-signal-one",
+        "cohort": "direct_lexical",
+        "query": "Where is the signal stability state after one credit recorded?"
+      },
+      {
+        "case_id": "v25-holdout-semantic-signal-three",
+        "cohort": "semantic_paraphrase",
+        "query": "Find the stability note for a signal that has accumulated three confirmations."
+      },
+      {
+        "case_id": "v25-holdout-semantic-signal-ten",
+        "cohort": "semantic_paraphrase",
+        "query": "Locate the stable signal ceiling produced by ten accumulated credits."
+      },
+      {
+        "case_id": "v25-holdout-relation-signal-zero",
+        "cohort": "relation_linked",
+        "query": "Signal stability overviewから関連リンクとして参照されるcredit 0文書はどれですか。"
+      },
+      {
+        "case_id": "v25-holdout-relation-signal-one",
+        "cohort": "relation_linked",
+        "query": "Which one-credit state is linked as related material from Signal stability overview?"
+      },
+      {
+        "case_id": "v25-holdout-negative-signal-three",
+        "cohort": "negative_control",
+        "query": "Find the uncredited signal baseline without returning the three-credit stability file."
+      },
+      {
+        "case_id": "v25-holdout-negative-signal-ten",
+        "cohort": "negative_control",
+        "query": "Locate the first-credit signal state while excluding the ten-credit ceiling document."
+      }
+    ]
+  }
+}

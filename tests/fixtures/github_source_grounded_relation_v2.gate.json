@@ -1,0 +1,45 @@
+{
+  "protocol_id": "github-ngr-source-grounded-relation-seed-v2",
+  "gates": [
+    {
+      "gate_id": "protocol-validity",
+      "hard": true
+    },
+    {
+      "gate_id": "deterministic-replay",
+      "hard": true
+    },
+    {
+      "gate_id": "relation-path-completeness-strict-improvement",
+      "hard": true
+    },
+    {
+      "gate_id": "relation-mrr-strict-improvement",
+      "hard": true
+    },
+    {
+      "gate_id": "relation-hit-at-5-strict-improvement",
+      "hard": true
+    },
+    {
+      "gate_id": "direct-per-case-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "semantic-per-case-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "direct-cohort-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "semantic-cohort-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "negative-forbidden-count-non-regression",
+      "hard": true
+    }
+  ]
+}
