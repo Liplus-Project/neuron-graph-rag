@@ -1,0 +1,94 @@
+{
+  "protocol_id": "github-ngr-source-grounded-relation-seed-v3",
+  "issue": 206,
+  "phase": "result-free-freeze-v3",
+  "inherited_protocol_manifest": {
+    "path": "tests/fixtures/github_source_grounded_relation_v2.manifest.json",
+    "sha256": "07bcbbdd702abc0106186704b76249729e7c5e1565ca1e8497f3494a642c4894"
+  },
+  "inherited_protocol_artifacts": {
+    "corpus": {
+      "path": "tests/fixtures/github_source_grounded_relation_v2.corpus.json",
+      "sha256": "ebfc7938f6d1f7c61111ebd1108af198bb2bd5c673770e55f42eb1b031f0cb0c"
+    },
+    "queries": {
+      "path": "tests/fixtures/github_source_grounded_relation_v2.queries.json",
+      "sha256": "bc7ad05c847e111bf613b24adc7c6c50b4871e78585cb5ea8eef5cb889f3e1ac"
+    },
+    "gold": {
+      "path": "tests/fixtures/github_source_grounded_relation_v2.gold.json",
+      "sha256": "de5880705894ea60b57073ce733b93c1abb227c89d7535ee1b58644b7703cc14"
+    },
+    "gate": {
+      "path": "tests/fixtures/github_source_grounded_relation_v2.gate.json",
+      "sha256": "f0bf8867fe56f261714bf3d976d6e1b9f11fceb5ea33918d19aae7b01b9847fd"
+    }
+  },
+  "predecessor_manifest_sha256": {
+    "tests/fixtures/github_source_grounded_relation_v1.manifest.json": "fc748b00b51321da7a613f440dcc20adb04e90422986016a789d16ff7f2a8ea7",
+    "tests/fixtures/github_source_grounded_relation_v2.manifest.json": "07bcbbdd702abc0106186704b76249729e7c5e1565ca1e8497f3494a642c4894"
+  },
+  "lifecycle_contract": {
+    "registry_policy": "append-only-exclusive-canonical-json",
+    "stage_order": [
+      "development",
+      "conditional-holdout"
+    ],
+    "partial_evidence_policy": "preserve-and-refuse-retry",
+    "holdout_open_condition": "development-passed-and-candidate-selected",
+    "freeze_identity_scope": "protocol-artifacts-only",
+    "observation_identity_scope": "registered-claim-raw-output"
+  },
+  "whole_module_probe": {
+    "test_module": "tests.test_source_grounded_relation_observation_v3",
+    "result_free_phase": "result-free",
+    "synthetic_post_observation_phases": [
+      "development-closed",
+      "holdout-eligible"
+    ],
+    "real_query_execution_count": 0,
+    "shared_database_open_count": 0
+  },
+  "audit": "tests/fixtures/github_source_grounded_relation_v3.result-free-audit.json",
+  "outputs": {
+    "development": "tests/evidence/github_source_grounded_relation_v3/development.observed.json",
+    "holdout": "tests/evidence/github_source_grounded_relation_v3/holdout.observed.json"
+  },
+  "claims": {
+    "development": "tests/evidence/github_source_grounded_relation_v3/development.claim.json",
+    "holdout": "tests/evidence/github_source_grounded_relation_v3/holdout.claim.json"
+  },
+  "raw_packets": {
+    "development": {
+      "original-full-query-ngr-default": {
+        "primary": "tests/evidence/github_source_grounded_relation_v3/raw/development/original-full-query-ngr-default.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v3/raw/development/original-full-query-ngr-default.replay.json"
+      },
+      "source-grounded-relation-seed": {
+        "primary": "tests/evidence/github_source_grounded_relation_v3/raw/development/source-grounded-relation-seed.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v3/raw/development/source-grounded-relation-seed.replay.json"
+      }
+    },
+    "holdout": {
+      "original-full-query-ngr-default": {
+        "primary": "tests/evidence/github_source_grounded_relation_v3/raw/holdout/original-full-query-ngr-default.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v3/raw/holdout/original-full-query-ngr-default.replay.json"
+      },
+      "source-grounded-relation-seed": {
+        "primary": "tests/evidence/github_source_grounded_relation_v3/raw/holdout/source-grounded-relation-seed.primary.json",
+        "replay": "tests/evidence/github_source_grounded_relation_v3/raw/holdout/source-grounded-relation-seed.replay.json"
+      }
+    }
+  },
+  "artifact_sha256": {
+    ".github/workflows/ci.yml": "a31552bd63f9a191045c808a16e97443ea3ba8a99616424ec6b25180b3f302dc",
+    "docs/source-grounded-relation-seed-retrieval-v3.md": "7513d647a0fc228f70b76bf6b3e5b57e58c840d027fb34ca8106a8c4553caa80",
+    "src/neuron_graph_rag/source_grounded_relation_observation_v3.py": "39bf2d4a47bd1f15084588c90f5caf7347c8f07f5ab18a52e0f3e766689c565e",
+    "tests/fixtures/github_source_grounded_relation_v3.result-free-audit.json": "95cd86c0701234bb4bce6ef63f4fd15524088c5439bda3a9909043812b0eee56",
+    "tests/test_source_grounded_relation_observation_v3.py": "ad7f6804a9d152feece885ea1fa65948cd0c6bfd4f4e275104d16057f5fd4887",
+    "tests/test_source_grounded_relation_observation_v3_probe.py": "e4f2673c774a768c1aba114afc41ccc6a9ac4a06e3d85fac3fd915405554722f",
+    "tools/acquire_source_grounded_relation_corpus_v3.py": "f0cf94144458606f10e24a0bdc7c629fb30842a271e39b60e3a396d3a66e3f7a",
+    "tools/probe_source_grounded_relation_observation_v3.py": "c597380044655299a6996a84a9699f90249263f8bf3e486d1e77f436f0d602b8",
+    "tools/run_source_grounded_relation_observation_v3.py": "f1b97ea49fe6fa517e402d687722262cd215cb1be903ee5465acbd74b4d2f4ff"
+  }
+}
