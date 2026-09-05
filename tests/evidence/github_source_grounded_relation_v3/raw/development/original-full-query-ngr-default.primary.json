@@ -1,0 +1,891 @@
+{
+  "protocol_id": "github-ngr-source-grounded-relation-seed-v3",
+  "protocol_commit": "51a338469475e5786c5f20c4c049a498ee82eedd",
+  "stage": "development",
+  "arm": "original-full-query-ngr-default",
+  "run": "primary",
+  "attempt": 1,
+  "retry_count": 0,
+  "cases": [
+    {
+      "case_id": "v25-dev-direct-boundary-zero",
+      "query": "Which boundary recovery document defines the zero-credit state?",
+      "referenced_seed_paths": [],
+      "hits": [
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "content_sha256": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+          "sparse_score": 0.9262243266536305,
+          "dense_score": 0.8102122325557845,
+          "entry_score": 0.8740188843095997,
+          "graph_activation": 1.5740188843095997,
+          "final_score": 0.9307103863702799,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "content_sha256": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+          "sparse_score": 0.9241934098774452,
+          "dense_score": 0.7821873903034581,
+          "entry_score": 0.8602907010691511,
+          "graph_activation": 1.560290701069151,
+          "final_score": 0.9192351026519556,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+          "sparse_score": 1.0,
+          "dense_score": 1.0,
+          "entry_score": 1.0,
+          "graph_activation": 1.0,
+          "final_score": 0.8358923768232808,
+          "relation_paths": []
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "content_sha256": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+          "sparse_score": 0.9262243266536305,
+          "dense_score": 0.7767220861790607,
+          "entry_score": 0.8589483184400741,
+          "graph_activation": 0.7,
+          "final_score": 0.6725462389183373,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "content_sha256": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+          "sparse_score": 0.9297257391189526,
+          "dense_score": 0.7672400940938537,
+          "entry_score": 0.8566071988576582,
+          "graph_activation": 0.7,
+          "final_score": 0.6712586231480085,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "v25-dev-direct-boundary-one",
+      "query": "Where is the boundary recovery state after one credit recorded?",
+      "referenced_seed_paths": [],
+      "hits": [
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "content_sha256": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+          "sparse_score": 0.9270779308433995,
+          "dense_score": 0.8637679048540515,
+          "entry_score": 0.898588419148193,
+          "graph_activation": 1.598588419148193,
+          "final_score": 0.9442236305315062,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "content_sha256": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+          "sparse_score": 0.9251022718064683,
+          "dense_score": 0.8625068202180658,
+          "entry_score": 0.8969343185916872,
+          "graph_activation": 1.596934318591687,
+          "final_score": 0.9428482486504374,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+          "sparse_score": 1.0,
+          "dense_score": 1.0,
+          "entry_score": 1.0,
+          "graph_activation": 1.0,
+          "final_score": 0.8314983485491421,
+          "relation_paths": []
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "content_sha256": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+          "sparse_score": 0.930536085309745,
+          "dense_score": 0.8438277031371878,
+          "entry_score": 0.8915173133320944,
+          "graph_activation": 0.7,
+          "final_score": 0.6873833663170514,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "content_sha256": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+          "sparse_score": 0.9270779308433995,
+          "dense_score": 0.7976454446608559,
+          "entry_score": 0.8688333120612548,
+          "graph_activation": 0.7,
+          "final_score": 0.6749071656180896,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "v25-dev-semantic-boundary-three",
+      "query": "Find the recovery note for the checkpoint reached after three confirmations.",
+      "referenced_seed_paths": [],
+      "hits": [
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "content_sha256": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+          "sparse_score": 0.9273121589478102,
+          "dense_score": 0.8459864114147038,
+          "entry_score": 0.8907155725579123,
+          "graph_activation": 1.5907155725579123,
+          "final_score": 0.9398935649068518,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "content_sha256": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+          "sparse_score": 0.9273121589478102,
+          "dense_score": 0.7956477637618841,
+          "entry_score": 0.8680631811141435,
+          "graph_activation": 1.5680631811141434,
+          "final_score": 0.921026579399606,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+          "sparse_score": 1.0,
+          "dense_score": 1.0,
+          "entry_score": 1.0,
+          "graph_activation": 1.0,
+          "final_score": 0.8328915538158643,
+          "relation_paths": []
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "content_sha256": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+          "sparse_score": 0.924401980612316,
+          "dense_score": 0.776261820433694,
+          "entry_score": 0.8577389085319362,
+          "graph_activation": 0.7,
+          "final_score": 0.6697804873636699,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "content_sha256": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+          "sparse_score": 0.9302407186469225,
+          "dense_score": 0.5050286160314446,
+          "entry_score": 0.7388952724699575,
+          "graph_activation": 0.7,
+          "final_score": 0.6044164875295817,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "v25-dev-semantic-boundary-ten",
+      "query": "Locate the recovery ceiling state produced by ten accumulated credits.",
+      "referenced_seed_paths": [],
+      "hits": [
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "content_sha256": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+          "sparse_score": 0.9253652132592928,
+          "dense_score": 0.9226311773708621,
+          "entry_score": 0.924134897109499,
+          "graph_activation": 1.6241348971094989,
+          "final_score": 0.9582741934102246,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "content_sha256": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+          "sparse_score": 0.9256644445102314,
+          "dense_score": 0.9068854719029666,
+          "entry_score": 0.9172139068369622,
+          "graph_activation": 1.6172139068369622,
+          "final_score": 0.9525500459625664,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+          "sparse_score": 1.0,
+          "dense_score": 1.0,
+          "entry_score": 1.0,
+          "graph_activation": 1.0,
+          "final_score": 0.8270705812681403,
+          "relation_paths": []
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "content_sha256": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+          "sparse_score": 0.9283514089711586,
+          "dense_score": 0.8969933228358619,
+          "entry_score": 0.9142402702102752,
+          "graph_activation": 0.7,
+          "final_score": 0.6967815555033495,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "content_sha256": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+          "sparse_score": 0.9283514089711586,
+          "dense_score": 0.8786418688304859,
+          "entry_score": 0.905982115907856,
+          "graph_activation": 0.7,
+          "final_score": 0.692239570637019,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "v25-dev-relation-boundary-zero",
+      "query": "Boundary recovery overviewから関連リンクとして参照されるcredit 0文書はどれですか。",
+      "referenced_seed_paths": [],
+      "hits": [
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "content_sha256": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+          "sparse_score": 0.924401980612316,
+          "dense_score": 0.8162238189116189,
+          "entry_score": 0.8757218078470024,
+          "graph_activation": 1.5757218078470023,
+          "final_score": 0.9316469943158514,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "content_sha256": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+          "sparse_score": 0.9302407186469225,
+          "dense_score": 0.785827559749829,
+          "entry_score": 0.8652547971432305,
+          "graph_activation": 1.5652547971432305,
+          "final_score": 0.9229009338666256,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+          "sparse_score": 1.0,
+          "dense_score": 1.0,
+          "entry_score": 1.0,
+          "graph_activation": 1.0,
+          "final_score": 0.8355834054964693,
+          "relation_paths": []
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "content_sha256": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+          "sparse_score": 0.9273121589478102,
+          "dense_score": 0.7406572924439723,
+          "entry_score": 0.8433174690210832,
+          "graph_activation": 0.7,
+          "final_score": 0.6637329918091243,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "content_sha256": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+          "sparse_score": 0.9273121589478102,
+          "dense_score": 0.7191891197967782,
+          "entry_score": 0.8336567913298458,
+          "graph_activation": 0.7,
+          "final_score": 0.6584196190789436,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "v25-dev-relation-boundary-one",
+      "query": "Which one-credit state is linked as related material from Boundary recovery overview?",
+      "referenced_seed_paths": [],
+      "hits": [
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+          "sparse_score": 1.0,
+          "dense_score": 1.0,
+          "entry_score": 1.0,
+          "graph_activation": 1.0,
+          "final_score": 0.8790301359784931,
+          "relation_paths": []
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "content_sha256": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+          "sparse_score": 0.586057579272109,
+          "dense_score": 0.7673871353092983,
+          "entry_score": 0.6676558794888442,
+          "graph_activation": 1.367655879488844,
+          "final_score": 0.8172107337188643,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "content_sha256": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+          "sparse_score": 0.5882436712584124,
+          "dense_score": 0.753765031946393,
+          "entry_score": 0.6627282835680037,
+          "graph_activation": 1.3627282835680037,
+          "final_score": 0.8128792284065209,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "content_sha256": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+          "sparse_score": 0.5848086551912631,
+          "dense_score": 0.749085688479552,
+          "entry_score": 0.6587333201709932,
+          "graph_activation": 0.7,
+          "final_score": 0.5926244212789915,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "content_sha256": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+          "sparse_score": 0.586057579272109,
+          "dense_score": 0.6142343598161762,
+          "entry_score": 0.5987371305169393,
+          "graph_activation": 0.7,
+          "final_score": 0.5596265169692619,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "v25-dev-negative-boundary-three",
+      "query": "Find the uncredited boundary baseline without returning the three-credit recovery file.",
+      "referenced_seed_paths": [],
+      "hits": [
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "content_sha256": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+          "sparse_score": 0.9251022718064683,
+          "dense_score": 0.9073146413913489,
+          "entry_score": 0.9170978381196646,
+          "graph_activation": 1.6170978381196646,
+          "final_score": 0.9544038109658155,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "content_sha256": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+          "sparse_score": 0.9305360853097452,
+          "dense_score": 0.8345638739840013,
+          "entry_score": 0.8873485902131606,
+          "graph_activation": 1.5873485902131605,
+          "final_score": 0.9297632140396143,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+          "sparse_score": 1.0,
+          "dense_score": 1.0,
+          "entry_score": 1.0,
+          "graph_activation": 1.0,
+          "final_score": 0.8282762980644713,
+          "relation_paths": []
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "content_sha256": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+          "sparse_score": 0.9270779308433996,
+          "dense_score": 0.8145185916211836,
+          "entry_score": 0.8764262281934024,
+          "graph_activation": 0.7,
+          "final_score": 0.6768278341515013,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "content_sha256": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+          "sparse_score": 0.9270779308433996,
+          "dense_score": 0.8001337430124631,
+          "entry_score": 0.8699530463194782,
+          "graph_activation": 0.7,
+          "final_score": 0.6732675841208431,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "v25-dev-negative-boundary-ten",
+      "query": "Locate the first-credit recovery state while excluding the ten-credit ceiling document.",
+      "referenced_seed_paths": [],
+      "hits": [
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+          "content_sha256": "f3cd075403a0379066903c75cccc8013f7353cfeefcb7cf99880b5001229575c",
+          "sparse_score": 0.9261359053707481,
+          "dense_score": 0.9603159623817623,
+          "entry_score": 0.9415169310257046,
+          "graph_activation": 1.6415169310257045,
+          "final_score": 0.9678343120641375,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-1.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+          "content_sha256": "45cc391da38f558c7c812e76f7279a77c3448f0fc4c39d32414824f227ac2f84",
+          "sparse_score": 0.9255960276819274,
+          "dense_score": 0.8797084110269956,
+          "entry_score": 0.9049466001872082,
+          "graph_activation": 1.6049466001872081,
+          "final_score": 0.9376953610568266,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-0.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+          "content_sha256": "001de08dfb3507c945304d6eb9d7188a0eedda070165cfbb8d2eeafcb1cdb670",
+          "sparse_score": 1.0,
+          "dense_score": 1.0,
+          "entry_score": 1.0,
+          "graph_activation": 1.0,
+          "final_score": 0.8241366790038631,
+          "relation_paths": []
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+          "content_sha256": "fa0f2209c50c03af5a5be1110e46b084479f3bf387dc75cc5f671b151c51e6f1",
+          "sparse_score": 0.9260037874225405,
+          "dense_score": 0.871160630230026,
+          "entry_score": 0.901324366685909,
+          "graph_activation": 0.7,
+          "final_score": 0.6876240769799541,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-3.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "source_url": "https://github.com/Liplus-Project/neuron-graph-rag/blob/8b3cdf5052cc382687cf3efbb6d728ddd473d75d/corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+          "content_sha256": "019a84e5e11a4ef388ce6338a0f249d3ab90df1b5f515373b9b809263b91be83",
+          "sparse_score": 0.9260037874225405,
+          "dense_score": 0.8664898320802408,
+          "entry_score": 0.8992225075185056,
+          "graph_activation": 0.7,
+          "final_score": 0.6864680544378823,
+          "relation_paths": [
+            {
+              "seed_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+              "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+              "steps": [
+                {
+                  "source_path": "corpora/repository-native-controlled-v3/boundary-recovery-overview.md",
+                  "target_path": "corpora/repository-native-controlled-v3/boundary-recovery-credit-10.md",
+                  "edge_type": "markdown_link"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
