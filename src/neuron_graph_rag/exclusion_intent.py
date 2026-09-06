@@ -36,10 +36,20 @@ _NEGATED_ENGLISH_PREFIX = re.compile(
     r"\b(?:do|does|did|is|are|was|were|will)\s+not\b)"
     r"(?:[\s,:;-]+[A-Za-z0-9_]+){0,3}[\s,:;-]*$)"
 )
+_NEGATED_ENGLISH_SUFFIX = re.compile(
+    r"(?i:^\s*(?:"
+    r"-free\b|"
+    r"(?:is|are|was|were)\s+not\s+"
+    r"(?:used|accepted|enabled|supported|allowed|included|returned|"
+    r"selected|required|present)\b"
+    r"))"
+)
 _NEGATED_JAPANESE_SUFFIX = re.compile(
     r"^\s*(?:を|は|が)?\s*(?:"
-    r"使わない|使用しない|用いない|含まない|"
-    r"含めない|不要|除外する|除く|なし)"
+    r"使わない|使用しない|利用しない|用いない|含まない|"
+    r"含めない|不要|除外する|除く|なし|"
+    r"使われていない|使用されていない|利用されていない|"
+    r"採用されていない|許可されていない|受け付けられていない)"
 )
 _TOKEN_STOP_WORDS = frozenset(
     {
@@ -182,6 +192,7 @@ def _mention_is_negated(text: str, start: int, end: int) -> bool:
         return False
     return bool(
         _NEGATED_ENGLISH_PREFIX.search(prefix)
+        or _NEGATED_ENGLISH_SUFFIX.match(suffix)
         or _NEGATED_JAPANESE_SUFFIX.match(suffix)
     )
 
@@ -243,6 +254,8 @@ def _decision(hit: SearchHit, intent: RetrievalIntent) -> dict[str, Any]:
                 negated_match = True
             else:
                 direct_match = True
+        if negated_match:
+            negated_mentions.append(clause)
         if direct_match:
             matched.append(
                 {
@@ -250,9 +263,9 @@ def _decision(hit: SearchHit, intent: RetrievalIntent) -> dict[str, Any]:
                     "reason": "direct_phrase_match",
                 }
             )
-        elif phrase_matches and negated_match:
-            negated_mentions.append(clause)
-        elif _token_identifier_match(hit.node.text, clause):
+        elif not phrase_matches and _token_identifier_match(
+            hit.node.text, clause
+        ):
             matched.append(
                 {
                     "clause": clause,

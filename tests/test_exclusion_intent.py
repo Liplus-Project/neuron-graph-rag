@@ -17,6 +17,12 @@ CASES = json.loads(
         encoding="utf-8"
     )
 )
+CANDIDATE_NEGATION_CASES = json.loads(
+    (
+        ROOT
+        / "tests/fixtures/exclusion_intent_candidate_negation_v1.cases.json"
+    ).read_text(encoding="utf-8")
+)
 SOURCE_GROUNDED_CORPUS = json.loads(
     (
         ROOT
@@ -78,6 +84,67 @@ class ExclusionIntentParsingTest(unittest.TestCase):
 
 
 class ExclusionIntentSearchTest(unittest.TestCase):
+    def test_subject_negation_does_not_negate_exclusion_mention(self) -> None:
+        with NeuronGraphRAG(config=lexical_config()) as engine:
+            engine.add_document(
+                "docker-subject",
+                "Docker does not use root privileges in this deployment",
+            )
+            trace = engine.search(
+                "deployment without Docker", limit=1, now=1.0
+            )
+        self.assertFalse(trace.hits)
+        self.assertEqual(
+            trace.diagnostics["exclusion_intent"]["excluded_node_ids"],
+            ["docker-subject"],
+        )
+
+    def test_candidate_side_negation_scenarios(self) -> None:
+        for case in CANDIDATE_NEGATION_CASES["scenario_cases"]:
+            with self.subTest(case=case["id"]):
+                with NeuronGraphRAG(config=lexical_config()) as engine:
+                    for document in case["documents"]:
+                        engine.add_document(
+                            document["node_id"], document["text"]
+                        )
+                    trace = engine.search(
+                        case["query"],
+                        limit=len(case["documents"]),
+                        now=1.0,
+                    )
+                decisions = {
+                    row["node_id"]: row
+                    for row in trace.diagnostics["exclusion_intent"][
+                        "decisions"
+                    ]
+                }
+                self.assertCountEqual(
+                    [
+                        node_id
+                        for node_id, decision in decisions.items()
+                        if decision["accepted"]
+                    ],
+                    case["expected_accepted_node_ids"],
+                )
+                self.assertCountEqual(
+                    [
+                        node_id
+                        for node_id, decision in decisions.items()
+                        if not decision["accepted"]
+                    ],
+                    case["expected_excluded_node_ids"],
+                )
+                for node_id in case["expected_accepted_node_ids"]:
+                    if "no-mention" not in node_id:
+                        self.assertTrue(decisions[node_id]["negated_mentions"])
+                mixed_id = next(
+                    node_id
+                    for node_id in case["expected_excluded_node_ids"]
+                    if node_id.endswith("-mixed")
+                )
+                self.assertTrue(decisions[mixed_id]["negated_mentions"])
+                self.assertTrue(decisions[mixed_id]["matched_exclusions"])
+
     def test_frozen_search_cases(self) -> None:
         for case in CASES["search_cases"]:
             with self.subTest(case=case["id"]):

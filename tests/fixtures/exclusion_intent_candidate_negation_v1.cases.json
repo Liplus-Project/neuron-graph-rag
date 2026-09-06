@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "frozen_before_fix": true,
+  "scenario_cases": [
+    {
+      "id": "english-docker-negation",
+      "query": "deployment without Docker",
+      "documents": [
+        {
+          "node_id": "docker-safe-postposed",
+          "text": "deployment where Docker is not used"
+        },
+        {
+          "node_id": "docker-safe-free",
+          "text": "Docker-free deployment"
+        },
+        {
+          "node_id": "docker-safe-no-mention",
+          "text": "deployment uses Podman runtime"
+        },
+        {
+          "node_id": "docker-unsafe-positive",
+          "text": "deployment uses Docker runtime"
+        },
+        {
+          "node_id": "docker-unsafe-mixed",
+          "text": "deployment where Docker is not used in tests but Docker powers production"
+        }
+      ],
+      "expected_accepted_node_ids": [
+        "docker-safe-postposed",
+        "docker-safe-free",
+        "docker-safe-no-mention"
+      ],
+      "expected_excluded_node_ids": [
+        "docker-unsafe-positive",
+        "docker-unsafe-mixed"
+      ]
+    },
+    {
+      "id": "english-legacy-token-negation",
+      "query": "authentication without legacy tokens",
+      "documents": [
+        {
+          "node_id": "legacy-safe-postposed",
+          "text": "authentication where legacy tokens are not accepted"
+        },
+        {
+          "node_id": "legacy-safe-no-mention",
+          "text": "authentication uses signed sessions"
+        },
+        {
+          "node_id": "legacy-unsafe-positive",
+          "text": "authentication accepts legacy tokens"
+        },
+        {
+          "node_id": "legacy-unsafe-passive-positive",
+          "text": "legacy tokens are accepted for authentication"
+        },
+        {
+          "node_id": "legacy-unsafe-mixed",
+          "text": "legacy tokens are not accepted by the new endpoint, but legacy tokens remain enabled for compatibility"
+        }
+      ],
+      "expected_accepted_node_ids": [
+        "legacy-safe-postposed",
+        "legacy-safe-no-mention"
+      ],
+      "expected_excluded_node_ids": [
+        "legacy-unsafe-positive",
+        "legacy-unsafe-passive-positive",
+        "legacy-unsafe-mixed"
+      ]
+    },
+    {
+      "id": "japanese-cookie-negation",
+      "query": "認証設定、Cookieを除外",
+      "documents": [
+        {
+          "node_id": "cookie-safe-passive",
+          "text": "認証設定でCookieは利用されていない"
+        },
+        {
+          "node_id": "cookie-safe-no-mention",
+          "text": "認証設定でtokenを利用する"
+        },
+        {
+          "node_id": "cookie-unsafe-positive",
+          "text": "認証設定でCookieを利用する"
+        },
+        {
+          "node_id": "cookie-unsafe-passive-positive",
+          "text": "認証設定ではCookieが利用されている"
+        },
+        {
+          "node_id": "cookie-unsafe-mixed",
+          "text": "認証設定でCookieは利用されていないが、互換処理はCookieを利用する"
+        }
+      ],
+      "expected_accepted_node_ids": [
+        "cookie-safe-passive",
+        "cookie-safe-no-mention"
+      ],
+      "expected_excluded_node_ids": [
+        "cookie-unsafe-positive",
+        "cookie-unsafe-passive-positive",
+        "cookie-unsafe-mixed"
+      ]
+    }
+  ]
+}
