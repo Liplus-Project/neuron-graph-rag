@@ -59,6 +59,7 @@ class SearchHit:
     final_fusion_strategy: str = "linear"
     graph_normalization: str = "max"
     precision_control: dict[str, Any] | None = None
+    exclusion_intent: dict[str, Any] | None = None
 
     def explain(self) -> dict[str, Any]:
         explanation = {
@@ -113,6 +114,8 @@ class SearchHit:
         }
         if self.precision_control is not None:
             explanation["precision_control"] = dict(self.precision_control)
+        if self.exclusion_intent is not None:
+            explanation["exclusion_intent"] = dict(self.exclusion_intent)
         return explanation
 
 

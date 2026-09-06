@@ -1,4 +1,5 @@
 from .engine import EngineConfig, NeuronGraphRAG
+from .exclusion_intent import RetrievalIntent, decompose_exclusion_intent
 from .feedback import FeedbackLedger
 from .judgments import JudgmentContractError, JudgmentGraph
 from .models import (
@@ -51,6 +52,7 @@ __all__ = [
     "PrecisionControl",
     "RelationTypeContractError",
     "RelationTypeRegistry",
+    "RetrievalIntent",
     "ReversedContribution",
     "SearchChannelHit",
     "SearchChannelTrace",
@@ -61,4 +63,5 @@ __all__ = [
     "SourceUseEventReceipt",
     "SourceUseReceipt",
     "TypedEdge",
+    "decompose_exclusion_intent",
 ]
