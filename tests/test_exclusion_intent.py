@@ -84,6 +84,21 @@ class ExclusionIntentParsingTest(unittest.TestCase):
 
 
 class ExclusionIntentSearchTest(unittest.TestCase):
+    def test_subject_negation_does_not_negate_exclusion_mention(self) -> None:
+        with NeuronGraphRAG(config=lexical_config()) as engine:
+            engine.add_document(
+                "docker-subject",
+                "Docker does not use root privileges in this deployment",
+            )
+            trace = engine.search(
+                "deployment without Docker", limit=1, now=1.0
+            )
+        self.assertFalse(trace.hits)
+        self.assertEqual(
+            trace.diagnostics["exclusion_intent"]["excluded_node_ids"],
+            ["docker-subject"],
+        )
+
     def test_candidate_side_negation_scenarios(self) -> None:
         for case in CANDIDATE_NEGATION_CASES["scenario_cases"]:
             with self.subTest(case=case["id"]):

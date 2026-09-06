@@ -41,9 +41,7 @@ _NEGATED_ENGLISH_SUFFIX = re.compile(
     r"-free\b|"
     r"(?:is|are|was|were)\s+not\s+"
     r"(?:used|accepted|enabled|supported|allowed|included|returned|"
-    r"selected|required|present)\b|"
-    r"(?:do|does|did)\s+not\s+"
-    r"(?:use|run|accept|enable|support|allow|include|return|select|require)\b"
+    r"selected|required|present)\b"
     r"))"
 )
 _NEGATED_JAPANESE_SUFFIX = re.compile(

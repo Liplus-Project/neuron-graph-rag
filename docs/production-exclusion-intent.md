@@ -16,7 +16,7 @@ positive query を sparse / dense retrieval と graph propagation に渡し、�
 
 判定入力は query から分解した exclusion clause と candidate node の text だけである。まず Unicode-aware な語境界で正規化した phrase を比較する。phrase が表層一致しない場合は、指示語の `the`、操作語の `returning`、種別語の `file` / `document` を除いた token / identifier 集合が候補にすべて存在する時だけ一致とする。数詞 `three` / `ten` と数字 `3` / `10`、複数形は決定的に正規化する。これにより `returning the three-credit recovery file` は `Boundary recovery credit 3`、`the ten-credit ceiling document` は `Boundary recovery credit 10` と一致する一方、`rust` で `trust` は除外しない。
 
-candidate 側の否定は対象 mention に接する固定構文だけを認める。英語の前置 `without Rust`、`no Rust`、`does not use Rust`、後置・受動否定 `Docker is not used`、`legacy tokens are not accepted`、suffix の `Docker-free` を対象にする。後置否定は `is / are / was / were + not` と固定分詞、または `do / does / did + not` と固定動詞が mention 直後にある場合だけとする。日本語は mention 直後の助詞に続く `使わない` / `使用しない` / `利用しない`、`使われていない` / `使用されていない` / `利用されていない` 等の固定形を対象にする。離れた否定語は判定に使わない。同じ exclusion clause に否定された mention と否定されていない mention が混在する場合、後者を `matched_exclusions` に保持して候補を除外し、前者も `negated_mentions` に保持する。gold、expected、forbidden、case ID、評価 label は入力にしない。
+candidate 側の否定は対象 mention に接する固定構文だけを認める。英語の前置 `without Rust`、`no Rust`、`does not use Rust`、後置・受動否定 `Docker is not used`、`legacy tokens are not accepted`、suffix の `Docker-free` を対象にする。後置否定は `is / are / was / were + not` と固定分詞が mention 直後にある場合だけとする。mention が主語となる `Docker does not use root privileges` は Docker 自体の不使用を意味しないため、否定された mention として扱わず候補を除外する。日本語は mention 直後の助詞に続く `使わない` / `使用しない` / `利用しない`、`使われていない` / `使用されていない` / `利用されていない` 等の固定形を対象にする。離れた否定語は判定に使わない。同じ exclusion clause に否定された mention と否定されていない mention が混在する場合、後者を `matched_exclusions` に保持して候補を除外し、前者も `negated_mentions` に保持する。gold、expected、forbidden、case ID、評価 label は入力にしない。
 
 ## Explanation and compatibility
 
