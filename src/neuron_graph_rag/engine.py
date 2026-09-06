@@ -9,6 +9,10 @@ from datetime import datetime
 from pathlib import Path
 
 from .dynamics import DynamicsSettings, propagate
+from .exclusion_intent import (
+    apply_exclusion_intent,
+    decompose_exclusion_intent,
+)
 from .judgments import JudgmentGraph
 from .models import (
     DocumentNode,
@@ -210,10 +214,12 @@ class NeuronGraphRAG:
         if not nodes:
             raise ValueError("Cannot search an empty corpus")
         timestamp = self._timestamp(now)
+        intent = decompose_exclusion_intent(query)
+        retrieval_query = intent.positive_query
 
-        sparse_raw = self.sparse_retriever.score(query, nodes)
+        sparse_raw = self.sparse_retriever.score(retrieval_query, nodes)
         dense_raw = (
-            self.dense_retriever.score(query, nodes)
+            self.dense_retriever.score(retrieval_query, nodes)
             if self.config.use_dense_retrieval
             else {node.node_id: 0.0 for node in nodes}
         )
@@ -237,7 +243,7 @@ class NeuronGraphRAG:
         ]
         if self.config.use_graph_propagation:
             propagation = propagate(
-                query=query,
+                query=retrieval_query,
                 seed_ids=seed_ids,
                 entry=entry,
                 nodes={node.node_id: node for node in nodes},
@@ -322,13 +328,13 @@ class NeuronGraphRAG:
             ))
         hits.sort(key=lambda hit: (-hit.final_score, hit.node.node_id))
         if self.config.precision_control is None:
-            selected_hits = tuple(hits[:limit])
+            eligible_hits = tuple(hits)
         else:
             annotated_hits, accepted_hits = apply_precision_control(
                 hits, self.config.precision_control
             )
             hits = list(annotated_hits)
-            selected_hits = tuple(accepted_hits[:limit])
+            eligible_hits = accepted_hits
             propagation_diagnostics["precision_control"] = {
                 "candidate_id": self.config.precision_control.candidate_id,
                 "accepted_node_ids": [hit.node.node_id for hit in accepted_hits],
@@ -336,6 +342,28 @@ class NeuronGraphRAG:
                     hit.explain()["precision_control"] for hit in annotated_hits
                 ],
             }
+        if intent.exclusion_clauses:
+            annotated_candidates, accepted_candidates = apply_exclusion_intent(
+                eligible_hits, intent
+            )
+            selected_hits = tuple(accepted_candidates[:limit])
+            propagation_diagnostics["exclusion_intent"] = {
+                "positive_query": intent.positive_query,
+                "exclusion_clauses": list(intent.exclusion_clauses),
+                "accepted_node_ids": [
+                    hit.node.node_id for hit in accepted_candidates
+                ],
+                "excluded_node_ids": [
+                    hit.node.node_id
+                    for hit in annotated_candidates
+                    if not hit.exclusion_intent["accepted"]
+                ],
+                "decisions": [
+                    dict(hit.exclusion_intent) for hit in annotated_candidates
+                ],
+            }
+        else:
+            selected_hits = tuple(eligible_hits[:limit])
         trace_id = uuid.uuid4().hex
         self.store.create_retrieval(
             trace_id,

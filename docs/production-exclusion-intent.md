@@ -14,7 +14,7 @@
 
 positive query を sparse / dense retrieval と graph propagation に渡し、従来どおり全 node の final rank を確定する。precision control が有効な場合はその accepted 候補列を受け取る。その後、全候補へ exclusion decision を適用し、通過列へ最後に `limit` を適用する。これにより、上位候補が除外されても安全な下位候補で枠を補充できる。
 
-判定入力は query から分解した exclusion clause と candidate node の text だけである。比較は Unicode-aware な語境界と正規化した phrase を使い、`rust` で `trust` を除外しない。candidate 内のその出現自体が `without Rust`、`Rust を使わない` のように明示的に否定されている場合は一致と扱わない。一つでも否定されていない出現があれば除外する。gold、expected、forbidden、case ID、評価 label は入力にしない。
+判定入力は query から分解した exclusion clause と candidate node の text だけである。まず Unicode-aware な語境界で正規化した phrase を比較する。phrase が表層一致しない場合は、指示語の `the`、操作語の `returning`、種別語の `file` / `document` を除いた token / identifier 集合が候補にすべて存在する時だけ一致とする。数詞 `three` / `ten` と数字 `3` / `10`、複数形は決定的に正規化する。これにより `returning the three-credit recovery file` は `Boundary recovery credit 3`、`the ten-credit ceiling document` は `Boundary recovery credit 10` と一致する一方、`rust` で `trust` は除外しない。candidate 内のその出現自体が `without Rust`、`Rust を使わない` のように明示的に否定されている場合は一致と扱わない。一つでも否定されていない出現があれば除外する。gold、expected、forbidden、case ID、評価 label は入力にしない。
 
 ## Explanation and compatibility
 
@@ -24,4 +24,4 @@ exclusion clause が0個なら parser は original query をそのまま positiv
 
 ## Verification boundary
 
-`tests/fixtures/exclusion_intent_v1.cases.json` は実装前に固定した parser / retrieval case である。英語・日本語、複数除外、除外なし・除外だけ、marker の語内出現、引用・曖昧な否定、文書側の否定、limit 補充、graph / precision control 後の除外を回帰する。fixture の成功は、小規模で決定的な corpus 上の契約確認に限定し、github-rag-mcp との統合性能や一般的な自然言語理解を支持しない。
+`tests/fixtures/exclusion_intent_v1.cases.json` は実装前に固定した parser / retrieval case である。英語・日本語、複数除外、除外なし・除外だけ、marker の語内出現、引用・曖昧な否定、文書側の否定、limit 補充、graph / precision control 後の除外を回帰する。加えて、既存 source-grounded v3 で観測された2つの development negative query と現行 corpus / gold を read-only に読む bug regression で、表現差のある禁止文書が最終 hit から外れ、diagnostics に判定が残ることを検証する。gold は test assertion にだけ使い、production 判定に渡さない。既存 v3 query、corpus、gold、manifest、evidence bytes は変更しない。fixture の成功は、小規模で決定的な corpus 上の契約確認に限定し、github-rag-mcp との統合性能や一般的な自然言語理解を支持しない。
