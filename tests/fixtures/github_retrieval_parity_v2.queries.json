@@ -1,0 +1,100 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v2",
+  "request_defaults": {
+    "repo": "Liplus-Project/liplus-language",
+    "type": "doc",
+    "top_k": 10,
+    "fusion": "rrf",
+    "rerank": true,
+    "graph_expand": true,
+    "graph_hops": 2
+  },
+  "ngr_engine_config": {
+    "sparse_weight": 0.55,
+    "dense_weight": 0.45,
+    "entry_weight": 0.55,
+    "graph_weight": 0.45,
+    "seed_count": 3,
+    "max_hops": 2,
+    "hop_decay": 0.7,
+    "activation_half_life_seconds": 3600.0,
+    "feedback_learning_rate": 0.2,
+    "sibling_feedback_normalization": 0.0,
+    "maximum_edge_weight": 2.0,
+    "maximum_activation": 10.0,
+    "max_paths_per_node": 4,
+    "max_propagation_expansions": 10000,
+    "activation_strategy": "current_positive_additive",
+    "activation_budget": 1.0,
+    "inhibition_ratio": 0.0,
+    "inhibition_top_k": 0,
+    "query_transmission_floor": 0.4,
+    "query_transmission_power": 1.0,
+    "recurrent_steps": 3,
+    "recurrent_decay": 0.5,
+    "convergence_tolerance": 1e-09,
+    "max_active_paths_per_node": 4,
+    "use_dense_retrieval": true,
+    "use_graph_propagation": true,
+    "graph_normalization": "max",
+    "final_fusion_strategy": "linear",
+    "rrf_k": 60,
+    "precision_control": null
+  },
+  "stages": {
+    "development": [
+      {
+        "case_id": "v2-dev-direct-source-format",
+        "cohort": "direct_lexical",
+        "query": "description field Invoke when slash-separated trigger clauses lowercase kebab-case semantic tags"
+      },
+      {
+        "case_id": "v2-dev-semantic-dialogue-driven",
+        "cohort": "semantic_paraphrase",
+        "query": "会話から要求を固め、構造と実際の挙動まで一つの開発方法として扱う考え方"
+      },
+      {
+        "case_id": "v2-dev-relation-sheepdog",
+        "cohort": "relation_linked",
+        "query": "Which page expands the wiki overview about moving harness constraints into the agent?"
+      },
+      {
+        "case_id": "v2-dev-negative-language-config",
+        "cohort": "negative_control",
+        "query": "Where are LI_PLUS_BASE_LANGUAGE and LI_PLUS_PROJECT_LANGUAGE configured, excluding the update walkthrough?"
+      },
+      {
+        "case_id": "v2-dev-overexclusion-operations",
+        "cohort": "over_exclusion_control",
+        "query": "Which operational specification describes self-review ownership and worktree stash isolation?"
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "v2-holdout-direct-hop-instrument",
+        "cohort": "direct_lexical",
+        "query": "twelve scenarios hop count zero-path inspection counting rule"
+      },
+      {
+        "case_id": "v2-holdout-semantic-role-evaluation",
+        "cohort": "semantic_paraphrase",
+        "query": "人間をclientとarchitect、AIを実装者として分け、実機の振る舞いを評価面にする設計"
+      },
+      {
+        "case_id": "v2-holdout-relation-language-definition",
+        "cohort": "relation_linked",
+        "query": "Where is the behavior-first document's related definition of Li+ as a language developed?"
+      },
+      {
+        "case_id": "v2-holdout-negative-hook-trust",
+        "cohort": "negative_control",
+        "query": "Where is Codex GUI hook trust setup documented, excluding the adapter architecture specification?"
+      },
+      {
+        "case_id": "v2-holdout-overexclusion-source-check",
+        "cohort": "over_exclusion_control",
+        "query": "Which model-layer specification defines source checking when external input is not trusted unconditionally?"
+      }
+    ]
+  }
+}
