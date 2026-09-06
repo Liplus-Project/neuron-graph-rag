@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "frozen_before_implementation": true,
+  "parser_cases": [
+    {
+      "id": "english-multiple",
+      "query": "OAuth setup without legacy tokens and excluding browser cookies",
+      "positive_query": "OAuth setup",
+      "exclusion_clauses": [
+        "legacy tokens",
+        "browser cookies"
+      ]
+    },
+    {
+      "id": "japanese-multiple",
+      "query": "認証設定、レガシートークンを除外、ブラウザCookieを除外",
+      "positive_query": "認証設定",
+      "exclusion_clauses": [
+        "レガシートークン",
+        "ブラウザCookie"
+      ]
+    },
+    {
+      "id": "no-exclusion-marker-substring",
+      "query": "notebook migration notes",
+      "positive_query": "notebook migration notes",
+      "exclusion_clauses": []
+    },
+    {
+      "id": "quoted-negation",
+      "query": "Find documentation for \"not supported\" responses",
+      "positive_query": "Find documentation for \"not supported\" responses",
+      "exclusion_clauses": []
+    },
+    {
+      "id": "ambiguous-negation",
+      "query": "The feature is not necessarily disabled",
+      "positive_query": "The feature is not necessarily disabled",
+      "exclusion_clauses": []
+    },
+    {
+      "id": "exclusion-only",
+      "query": "without legacy tokens",
+      "error": "an exclusion-only query has no positive retrieval intent"
+    }
+  ],
+  "search_cases": [
+    {
+      "id": "english-limit-backfill",
+      "query": "deployment without Docker",
+      "limit": 2,
+      "documents": [
+        {
+          "node_id": "a-docker",
+          "text": "deployment Docker containers"
+        },
+        {
+          "node_id": "b-podman",
+          "text": "deployment Podman containers"
+        },
+        {
+          "node_id": "c-release",
+          "text": "deployment release process"
+        }
+      ],
+      "expected_returned_node_ids": [
+        "b-podman",
+        "c-release"
+      ],
+      "expected_excluded_node_ids": [
+        "a-docker"
+      ]
+    },
+    {
+      "id": "japanese-exclusion",
+      "query": "認証設定、Cookieを除外",
+      "limit": 2,
+      "documents": [
+        {
+          "node_id": "a-cookie",
+          "text": "認証設定でCookieを使用する"
+        },
+        {
+          "node_id": "b-token",
+          "text": "認証設定でtokenを使用する"
+        }
+      ],
+      "expected_returned_node_ids": [
+        "b-token"
+      ],
+      "expected_excluded_node_ids": [
+        "a-cookie"
+      ]
+    },
+    {
+      "id": "document-negates-exclusion",
+      "query": "editor without Rust",
+      "limit": 2,
+      "documents": [
+        {
+          "node_id": "a-safe",
+          "text": "editor built without Rust dependencies"
+        },
+        {
+          "node_id": "b-rust",
+          "text": "editor embeds Rust tooling"
+        },
+        {
+          "node_id": "c-trust",
+          "text": "editor trust policy"
+        }
+      ],
+      "expected_returned_node_ids": [
+        "a-safe",
+        "c-trust"
+      ],
+      "expected_excluded_node_ids": [
+        "b-rust"
+      ]
+    }
+  ]
+}
