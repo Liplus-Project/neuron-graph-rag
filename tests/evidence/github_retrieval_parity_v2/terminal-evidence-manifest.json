@@ -1,0 +1,306 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v2",
+  "protocol_commit": "3b43a36c12fe6141944fafc007ae1d25e6b8279c",
+  "issue": 218,
+  "phase": "pre-claim-capture-validation-failed",
+  "recorded_at": "2026-09-07T02:13:47.143Z",
+  "evidence": {
+    "rejected_capture_path": "tests/evidence/github_retrieval_parity_v2/development.capture.rejected.json",
+    "rejected_capture_sha256": "ff4efab8118aea2bf7a7af9f0fb03a0421700e8e1843704a79e621bb5bb91a90",
+    "raw_search_response_count": 5,
+    "stored_content_fetch_response_count": 5,
+    "registered_query_execution_count": 5,
+    "retry_count": 0,
+    "all_keyword_results_preserved": true,
+    "all_stored_content_results_preserved": true,
+    "in_surface_result_count": 11,
+    "in_surface_stored_content_identity_match_count": 11
+  },
+  "validation": {
+    "command": "python tools/run_github_retrieval_parity_v2.py --register-capture development --input tests/evidence/github_retrieval_parity_v2/development.capture.rejected.json --protocol-commit 3b43a36c12fe6141944fafc007ae1d25e6b8279c",
+    "exit_code": 1,
+    "error_type": "ValueError",
+    "error_message": "raw search result identity mismatch",
+    "validator_bypassed": false,
+    "rejected_before_exclusive_registration": true
+  },
+  "cases": [
+    {
+      "case_id": "v2-dev-direct-source-format",
+      "keyword_result_count": 10,
+      "stored_content_result_count": 10,
+      "stored_content_not_found_count": 0,
+      "graph_result_count": 0,
+      "expected_source_path": "docs/K.-Source-File-Format.md",
+      "expected_source_keyword_rank": 1,
+      "out_of_surface_results": [
+        {
+          "keyword_rank": 2,
+          "vector_id": "d:PJOgG67IXg7Gh1MzCOymUIJkYDGca3oKm9p9f9qj1DU",
+          "doc_path": "docs/K.-Router-Mechanism-Design.md"
+        },
+        {
+          "keyword_rank": 3,
+          "vector_id": "d:fl1WRJE33ED9PppndADXpG4wTBFyniy-vIA8JvPHFzY",
+          "doc_path": "skills/evolution-judgment-learning/SKILL.md"
+        },
+        {
+          "keyword_rank": 4,
+          "vector_id": "d:JDLhRvxHrFeP6gL89wOrzJq3pFe8C8BCozyIVGoDZFQ",
+          "doc_path": "skills/evolution-parallel-subagent-eval/SKILL.md"
+        },
+        {
+          "keyword_rank": 5,
+          "vector_id": "d:gNvX6I9jbnD9PImcWGlJWegi0An0wItfahwgMjVnCfE",
+          "doc_path": "skills/model-agentic-search/SKILL.md"
+        },
+        {
+          "keyword_rank": 6,
+          "vector_id": "d:q11CbsZuwBXwY1pPd3B3ZT90F1uES-Od0-Y1d3N26TQ",
+          "doc_path": "skills/evolution-self-eval/SKILL.md"
+        },
+        {
+          "keyword_rank": 7,
+          "vector_id": "d:d-b6VARq77TuFNyczHxZAkjWo-rpYd3k9-4AIUcjS7A",
+          "doc_path": "skills/operations-on-branch/SKILL.md"
+        },
+        {
+          "keyword_rank": 8,
+          "vector_id": "d:DwAmOBXDK4O9vyC-1tOITTHkLlbp3nqCptEA7uMLR50",
+          "doc_path": "skills/operations-on-commit/SKILL.md"
+        },
+        {
+          "keyword_rank": 9,
+          "vector_id": "d:rsUxTW4E5FUAdrQKlZftkZWMzguX5FyfUoksRvNvBWM",
+          "doc_path": "skills/evolution-parallel-agent-eval/SKILL.md"
+        },
+        {
+          "keyword_rank": 10,
+          "vector_id": "d:Hasoyh0jYg1ZYej5YUAN1ZSpcE6Lc5UoT4WGCC6Zl7E",
+          "doc_path": "skills/model-trigger-check-gate-actions/SKILL.md"
+        }
+      ]
+    },
+    {
+      "case_id": "v2-dev-semantic-dialogue-driven",
+      "keyword_result_count": 10,
+      "stored_content_result_count": 10,
+      "stored_content_not_found_count": 0,
+      "graph_result_count": 0,
+      "expected_source_path": "docs/DiDD.md",
+      "expected_source_keyword_rank": 1,
+      "out_of_surface_results": [
+        {
+          "keyword_rank": 3,
+          "vector_id": "d:o8Ai-7xFeFkwPymXB6UGTe0tc53u38NztWIoUlCpgds",
+          "doc_path": "rules/model/foundational-invariant.md"
+        },
+        {
+          "keyword_rank": 4,
+          "vector_id": "d:l6IplUYjgz5SahCWXZMjL4SovbV_-eV6DKz-t4PgxSQ",
+          "doc_path": "rules/model/language-definition.md"
+        },
+        {
+          "keyword_rank": 7,
+          "vector_id": "d:BYv_Rw6dr0QItIJvrAoexREyiMu3JLnn2vu3_-oAK3k",
+          "doc_path": "rules/task/task.md"
+        },
+        {
+          "keyword_rank": 8,
+          "vector_id": "d:-ZT8yhbXBodOZy-mlPTT2CyDMCIN8KmAidhSv0nNCb0",
+          "doc_path": "skills/model-requirement-deepening/SKILL.md"
+        },
+        {
+          "keyword_rank": 9,
+          "vector_id": "d:ysP4sChWHbRehjVWQHULoqlXY4EKcV1i14lyfNmAa0Q",
+          "doc_path": "skills/model-loop-safety/SKILL.md"
+        },
+        {
+          "keyword_rank": 10,
+          "vector_id": "d:IKODS2wtQMJx3ABPnNJEoKo_nGpdGsLTFekAACw7Bto",
+          "doc_path": "adapter/claude/agents/dialogue-evaluator.md"
+        }
+      ]
+    },
+    {
+      "case_id": "v2-dev-relation-sheepdog",
+      "keyword_result_count": 10,
+      "stored_content_result_count": 10,
+      "stored_content_not_found_count": 0,
+      "graph_result_count": 0,
+      "expected_source_path": "docs/G.-Sheepdog-Engineering.md",
+      "expected_source_keyword_rank": null,
+      "out_of_surface_results": [
+        {
+          "keyword_rank": 1,
+          "vector_id": "d:mixobe4HqtjNAlfYEXGbA6f7HL6AHuewHFn6FFwDxHU",
+          "doc_path": "adapter/codex/AGENTS.md"
+        },
+        {
+          "keyword_rank": 2,
+          "vector_id": "d:ZR7ciqBjWI3cpkDCUWSxVSVvx9gGOLxv_zBdXmPyM70",
+          "doc_path": "adapter/claude/CLAUDE.md"
+        },
+        {
+          "keyword_rank": 3,
+          "vector_id": "d:BEMvJe7BLwMSwEPuiUKzU__so9IvL9RDxqwF1HxgAOI",
+          "doc_path": "rules/evolution/initiator-autonomy.md"
+        },
+        {
+          "keyword_rank": 4,
+          "vector_id": "d:2mV7FS12s0rwmFRoOQVXrTBr_RGl--rs7J-52ItYCD8",
+          "doc_path": "README.md"
+        },
+        {
+          "keyword_rank": 5,
+          "vector_id": "d:ikFYlwEwWOywCukEVdJmt96ZpuysU7qaSZccrZc8flo",
+          "doc_path": "skills/task-subagent-spawn/SKILL.md"
+        },
+        {
+          "keyword_rank": 6,
+          "vector_id": "d:dWf9yoslrcW5Pe7R8U063sx0tUvUzuag7ublD0_J1Fs",
+          "doc_path": "skills/operations-on-issue-format/SKILL.md"
+        },
+        {
+          "keyword_rank": 7,
+          "vector_id": "d:AjKMggNUH-8_XuThcnN065fjfApUUOe4za7wW7EetCw",
+          "doc_path": "adapter/codex/hooks-config.md"
+        },
+        {
+          "keyword_rank": 8,
+          "vector_id": "d:l6IplUYjgz5SahCWXZMjL4SovbV_-eV6DKz-t4PgxSQ",
+          "doc_path": "rules/model/language-definition.md"
+        },
+        {
+          "keyword_rank": 9,
+          "vector_id": "d:9maaJkgpjo33D8igwSkNAkfGARF-ZjThAMu0GHgjPtA",
+          "doc_path": "rules/operations/operations.md"
+        },
+        {
+          "keyword_rank": 10,
+          "vector_id": "d:bUo8niHL0SJGBQfsEEAIJdYJTsiI-RdyjRoTNm6qIAg",
+          "doc_path": "skills/operations-handoff-continuity/SKILL.md"
+        }
+      ]
+    },
+    {
+      "case_id": "v2-dev-negative-language-config",
+      "keyword_result_count": 10,
+      "stored_content_result_count": 10,
+      "stored_content_not_found_count": 0,
+      "graph_result_count": 0,
+      "expected_source_path": "docs/B.-Configuration.md",
+      "expected_source_keyword_rank": 5,
+      "out_of_surface_results": [
+        {
+          "keyword_rank": 1,
+          "vector_id": "d:7TbhrwUB9umIBSQuZHJENv0h772kH3OFhZEoVXWaH44",
+          "doc_path": "Li+config.md"
+        },
+        {
+          "keyword_rank": 3,
+          "vector_id": "d:s7bnU_dcZSaSjRn6_B8iWiyoLtFzXGzRo0lgxWsY6lE",
+          "doc_path": "rules/model/language-surface.md"
+        },
+        {
+          "keyword_rank": 7,
+          "vector_id": "d:2mV7FS12s0rwmFRoOQVXrTBr_RGl--rs7J-52ItYCD8",
+          "doc_path": "README.md"
+        },
+        {
+          "keyword_rank": 9,
+          "vector_id": "d:ZR7ciqBjWI3cpkDCUWSxVSVvx9gGOLxv_zBdXmPyM70",
+          "doc_path": "adapter/claude/CLAUDE.md"
+        },
+        {
+          "keyword_rank": 10,
+          "vector_id": "d:m5kjMNQvwmDZnlVlpKHfOSx19Q97n9w3MObKqmMusG0",
+          "doc_path": "Li+update.md"
+        }
+      ]
+    },
+    {
+      "case_id": "v2-dev-overexclusion-operations",
+      "keyword_result_count": 10,
+      "stored_content_result_count": 10,
+      "stored_content_not_found_count": 0,
+      "graph_result_count": 0,
+      "expected_source_path": "docs/4.-Operations.md",
+      "expected_source_keyword_rank": 5,
+      "out_of_surface_results": [
+        {
+          "keyword_rank": 1,
+          "vector_id": "d:BYv_Rw6dr0QItIJvrAoexREyiMu3JLnn2vu3_-oAK3k",
+          "doc_path": "rules/task/task.md"
+        },
+        {
+          "keyword_rank": 2,
+          "vector_id": "d:9maaJkgpjo33D8igwSkNAkfGARF-ZjThAMu0GHgjPtA",
+          "doc_path": "rules/operations/operations.md"
+        },
+        {
+          "keyword_rank": 3,
+          "vector_id": "d:A8Z9muxoJf5yI9ndXgBFxsrjP12TWIsHHMecOintYXY",
+          "doc_path": "rules/operations/release-version-rule.md"
+        },
+        {
+          "keyword_rank": 4,
+          "vector_id": "d:doz7_CeFtsI2ublnYZUKK-vzR3MQpJz9Lbp5Ck7ui-Y",
+          "doc_path": "skills/task-pr-review-judgment/SKILL.md"
+        },
+        {
+          "keyword_rank": 6,
+          "vector_id": "d:JM4OYmste81X93U6kOAV3TqxFvl8TQpalCnvbnwaeCc",
+          "doc_path": "rules/evolution/autonomy-block-shape.md"
+        },
+        {
+          "keyword_rank": 7,
+          "vector_id": "d:BEMvJe7BLwMSwEPuiUKzU__so9IvL9RDxqwF1HxgAOI",
+          "doc_path": "rules/evolution/initiator-autonomy.md"
+        },
+        {
+          "keyword_rank": 8,
+          "vector_id": "d:TAFusvGvjxYhSiPu8HN6y5rqhUgwL-m2Ji4giyOKSds",
+          "doc_path": "skills/model-master-interaction-actions/SKILL.md"
+        },
+        {
+          "keyword_rank": 9,
+          "vector_id": "d:HTW3MKoGU8-ghn7Wkas6oeSgZV_e4U8BtlPBCWE1wqI",
+          "doc_path": "skills/operations-on-release/SKILL.md"
+        },
+        {
+          "keyword_rank": 10,
+          "vector_id": "d:q11CbsZuwBXwY1pPd3B3ZT90F1uES-Od0-Y1d3N26TQ",
+          "doc_path": "skills/evolution-self-eval/SKILL.md"
+        }
+      ]
+    }
+  ],
+  "registry": {
+    "development_capture_count": 0,
+    "development_claim_count": 0,
+    "development_result_count": 0,
+    "holdout_capture_count": 0,
+    "holdout_claim_count": 0,
+    "holdout_result_count": 0
+  },
+  "stage_closure": {
+    "development_status": "closed-pre-claim-validation-failure",
+    "ngr_replay_count": 0,
+    "performance": "not assessed",
+    "hard_gates_evaluated": false,
+    "holdout_status": "closed",
+    "holdout_reason": "development did not produce a registered all-hard-gates-pass result",
+    "same_protocol_retry_allowed": false
+  },
+  "safety": {
+    "query_or_protocol_changed_after_observation": false,
+    "result_rows_filtered_or_truncated": false,
+    "registered_path_written_directly": false,
+    "production_mutation": false,
+    "feedback_connected": false,
+    "shared_database_path": "~/.ngrdb/knowledge.db",
+    "shared_database_open_count": 0,
+    "shared_database_hash_probe_status": "unavailable-file-locked-by-another-process"
+  }
+}
