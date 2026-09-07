@@ -1,0 +1,175 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v2",
+  "issue": 216,
+  "phase": "result-free-freeze-v2",
+  "source": {
+    "repository": "Liplus-Project/liplus-language",
+    "commit": "7a2d1a3a9e6fb821c836333900a9f1d145bd1832",
+    "path_glob": "docs/*.md",
+    "document_count": 20,
+    "access": "public-read-only-github-snapshot-adapter",
+    "generated_by": "tools/acquire_github_snapshot.py",
+    "paths": [
+      "docs/1.-Model.md",
+      "docs/2.-Evolution.md",
+      "docs/3.-Task.md",
+      "docs/4.-Operations.md",
+      "docs/5.-Notifications.md",
+      "docs/6.-Adapter.md",
+      "docs/A.-Concept.md",
+      "docs/B.-Configuration.md",
+      "docs/C.-Update.md",
+      "docs/D.-Installation.md",
+      "docs/Decision-Structure.md",
+      "docs/DiDD.md",
+      "docs/E.-Li+language.md",
+      "docs/F.-Behavior-First.md",
+      "docs/G.-Sheepdog-Engineering.md",
+      "docs/H.-Roles-and-Evaluation.md",
+      "docs/Home.md",
+      "docs/K.-Source-File-Format.md",
+      "docs/L.-Hop-Count-Instrument.md",
+      "docs/_Footer.md"
+    ]
+  },
+  "relationships": [
+    {
+      "source_id": "github:Liplus-Project/liplus-language:docs/Home.md",
+      "target_id": "github:Liplus-Project/liplus-language:docs/G.-Sheepdog-Engineering.md",
+      "edge_type": "links_to",
+      "evidence_token": "G.-Sheepdog-Engineering"
+    },
+    {
+      "source_id": "github:Liplus-Project/liplus-language:docs/F.-Behavior-First.md",
+      "target_id": "github:Liplus-Project/liplus-language:docs/E.-Li+language.md",
+      "edge_type": "links_to",
+      "evidence_token": "docs/E.-Li+language.md"
+    }
+  ],
+  "lifecycle_contract": {
+    "registry_policy": "append-only-exclusive-create",
+    "stage_order": ["development", "conditional-holdout"],
+    "failure_policy": "preserve-and-refuse-retry",
+    "holdout_open_condition": "development-all-hard-gates-pass",
+    "freeze_identity_scope": "protocol-artifacts-and-production-runtime",
+    "observation_identity_scope": "registered-capture-claim-result"
+  },
+  "predecessors": [
+    {
+      "name": "retrieval-parity-v1",
+      "boundary": "reference-only; source, query, gold, capture, rank, and result are not v2 inputs",
+      "identity_sha256": {
+        "tests/fixtures/github_retrieval_parity_v1.manifest.json": "d0463c4108e1f7f9cf02873ba02232f1d37d2d65453bec256ced46be4fef35e6",
+        "tests/fixtures/github_retrieval_parity_v1.queries.json": "8b3162b5203431e2d8e3fcf48bea82dad961b42a7c1acf43f9b532f3a10a12d9",
+        "tests/fixtures/github_retrieval_parity_v1.gold.json": "358a5f035896f6972258caa63885ef59530144f141b76732d7f170f3605383ba"
+      },
+      "observation_sha256": {
+        "tests/fixtures/github_retrieval_parity_v1.observation-audit.json": "5cd40b20c0aabf6b3a327587ad04a3c6dc3853170d0d290d579ba1565383d14b",
+        "tests/evidence/github_retrieval_parity_v1/github_retrieval_parity_v1.development.capture.json": "2102c2364a1980d1998758d33c740d3e9ddf47bf7bae4537a816ef1829e7cd26",
+        "tests/evidence/github_retrieval_parity_v1/github_retrieval_parity_v1.development.claim.json": "ddaf7a95c43dfc11dcf1b356e9b36eb590f78e2e5f59eb371b1775bcc160591f",
+        "tests/evidence/github_retrieval_parity_v1/github_retrieval_parity_v1.development.observed.json": "52e19b243b9d827e21a4eac0ae1a579963dbc1010a75e3cf99b665244d6b3381"
+      },
+      "case_ids": [
+        "dev-direct-stored-content",
+        "dev-semantic-missed-delivery",
+        "dev-relation-memory-philosophy",
+        "dev-negative-vector-id-durability",
+        "holdout-direct-proxy-state",
+        "holdout-semantic-visible-memory",
+        "holdout-relation-installation-guide",
+        "holdout-negative-published-version"
+      ]
+    },
+    {
+      "name": "source-grounded-relation-v3",
+      "boundary": "reference-only; query, gold, packet, rank, and result are not v2 inputs",
+      "identity_sha256": {
+        "tests/fixtures/github_source_grounded_relation_v3.manifest.json": "198a1debbe32c7f8a34ca477e7e6cbdd0b231e94f551f3b231964a6ef215247a",
+        "tests/fixtures/github_source_grounded_relation_v2.queries.json": "bc7ad05c847e111bf613b24adc7c6c50b4871e78585cb5ea8eef5cb889f3e1ac",
+        "tests/fixtures/github_source_grounded_relation_v2.gold.json": "de5880705894ea60b57073ce733b93c1abb227c89d7535ee1b58644b7703cc14"
+      },
+      "observation_sha256": {
+        "tests/evidence/github_source_grounded_relation_v3/development.claim.json": "a3ef2ab33c1222908df09460be62ae7b005a492447e853ed1228cbbe4ab9470a",
+        "tests/evidence/github_source_grounded_relation_v3/development.observed.json": "1e916033c48c0ba87649611b76c2a58d32312f86ac77e78d96301de3c629c0e1",
+        "tests/evidence/github_source_grounded_relation_v3/raw/development/original-full-query-ngr-default.primary.json": "31a4c71c1f6b119bbf404be85469d90b7f1e854440f2b42d7ccbd43347e8c125",
+        "tests/evidence/github_source_grounded_relation_v3/raw/development/original-full-query-ngr-default.replay.json": "9f90e786e71d6b1da9ac23b5c7b0bb88e07c512d7b3338a33132d21e2f074edb",
+        "tests/evidence/github_source_grounded_relation_v3/raw/development/source-grounded-relation-seed.primary.json": "07dffefebd7d9fbb0b20c9e54358cb1d766ab580f85c3a267553db51d457bea3",
+        "tests/evidence/github_source_grounded_relation_v3/raw/development/source-grounded-relation-seed.replay.json": "8d1ced19d1fbb0c9a0753ec4e2a8c2ef66c53c8ead95119efcd307061f4cc4c5"
+      },
+      "case_ids": [
+        "v25-dev-direct-boundary-zero",
+        "v25-dev-direct-boundary-one",
+        "v25-dev-semantic-boundary-three",
+        "v25-dev-semantic-boundary-ten",
+        "v25-dev-relation-boundary-zero",
+        "v25-dev-relation-boundary-one",
+        "v25-dev-negative-boundary-three",
+        "v25-dev-negative-boundary-ten",
+        "v25-holdout-direct-signal-zero",
+        "v25-holdout-direct-signal-one",
+        "v25-holdout-semantic-signal-three",
+        "v25-holdout-semantic-signal-ten",
+        "v25-holdout-relation-signal-zero",
+        "v25-holdout-relation-signal-one",
+        "v25-holdout-negative-signal-three",
+        "v25-holdout-negative-signal-ten"
+      ]
+    }
+  ],
+  "protocol_artifacts": {
+    "corpus": "tests/fixtures/github_retrieval_parity_v2.corpus.json",
+    "queries": "tests/fixtures/github_retrieval_parity_v2.queries.json",
+    "gold": "tests/fixtures/github_retrieval_parity_v2.gold.json",
+    "gate": "tests/fixtures/github_retrieval_parity_v2.gate.json",
+    "capture_schema": "tests/fixtures/github_retrieval_parity_v2.capture-schema.json",
+    "claim_schema": "tests/fixtures/github_retrieval_parity_v2.claim-schema.json",
+    "result_schema": "tests/fixtures/github_retrieval_parity_v2.result-schema.json",
+    "audit": "tests/fixtures/github_retrieval_parity_v2.result-free-audit.json"
+  },
+  "outputs": {
+    "development": {
+      "capture": "tests/evidence/github_retrieval_parity_v2/development.capture.json",
+      "claim": "tests/evidence/github_retrieval_parity_v2/development.claim.json",
+      "result": "tests/evidence/github_retrieval_parity_v2/development.observed.json"
+    },
+    "holdout": {
+      "capture": "tests/evidence/github_retrieval_parity_v2/holdout.capture.json",
+      "claim": "tests/evidence/github_retrieval_parity_v2/holdout.claim.json",
+      "result": "tests/evidence/github_retrieval_parity_v2/holdout.observed.json"
+    }
+  },
+  "whole_module_probe": {
+    "test_module": "tests.test_github_retrieval_parity_v2",
+    "result_free_phase": "result-free",
+    "synthetic_post_observation_phases": ["development-closed", "holdout-eligible"],
+    "registered_query_execution_count": 0,
+    "shared_database_open_count": 0
+  },
+  "runtime_sha256": {
+    "src/neuron_graph_rag/dynamics.py": "4e0b562dfcf9e9094dd91c45afc9b6a3b7c7fc963ad48ca0a1285a50251b0c10",
+    "src/neuron_graph_rag/engine.py": "7d84f4c411859c84749abc82a67b8c1d0e3dbfe9673e9069604a474284304f1b",
+    "src/neuron_graph_rag/exclusion_intent.py": "16820569acd4c37539d528abebe148ecad6c28d0844f35a730ac41558780e2e3",
+    "src/neuron_graph_rag/github_source.py": "1732a7fccc828e81b3068c20af70f2b4bc19a49951db7f9536b33fcd72d57c04",
+    "src/neuron_graph_rag/judgments.py": "cfc21058f63fcd665e8fa233cdcd01a8dfe44f4241e867886155eddcc4fac3f7",
+    "src/neuron_graph_rag/models.py": "b300537e22db8608751ef617a8b64b494a9de215e998460bfe9657b78e493a31",
+    "src/neuron_graph_rag/ontology.py": "6eca6e33f2f13c258632b2b670412872b35d8f1e0908a4b89788e7275f990048",
+    "src/neuron_graph_rag/precision_control.py": "77c3b1063848928fff8b5b88de277f4815433dfc64a45b4607a1b8559ef9715f",
+    "src/neuron_graph_rag/retrieval.py": "98db701617e133c4b5ca150b45eedcea1eb38650fe256fe947f1d01ca33d36b3",
+    "src/neuron_graph_rag/storage.py": "3aaf1fb2283ac97486fc9cab34a44676650aec5b6e1ccb8e3100132efc8459d0"
+  },
+  "artifact_sha256": {
+    "docs/github-retrieval-parity-v2.md": "e0e58aa9bf5d34ebdffbd7f66c9065a4a4355da00a196bc4dfe34a83f119481b",
+    "src/neuron_graph_rag/github_retrieval_parity_v2.py": "941afc1cfa3edcfa17d2518247f2b02dcd38d7dd4d379536d13fdaecc4610556",
+    "tools/acquire_github_snapshot.py": "b0e7bc5d4b7b3e31da15dcfdb602dfde27cedaef818997246804d100bea73e8c",
+    "tools/run_github_retrieval_parity_v2.py": "65a01b207bc0093eba0e473ba0beb4c71bf9498c510db7568894244822f70008",
+    "tests/test_github_retrieval_parity_v2.py": "ffa7abbe142e77a4d2057d864a50b45c3828acac0e6f78b9296d064922801cc5",
+    "tests/fixtures/github_retrieval_parity_v2.corpus.json": "7485d2f535feb94185c745063b7de359e58c44070c7f29098f86d2278db47d0d",
+    "tests/fixtures/github_retrieval_parity_v2.queries.json": "84cbd0a68a76ff57ff43c06fbbcab260d7b0a2eb311896110c8a7be9be0f8bf7",
+    "tests/fixtures/github_retrieval_parity_v2.gold.json": "eb8c8e4001156d71ec9f32fe360dfef9fb0fa675310b8ac0d126b2ebb7a3f23f",
+    "tests/fixtures/github_retrieval_parity_v2.gate.json": "85aadd123d9d1578d90dfa7bb43f9bc5a7916192eacd095c6e34303ced8eec0c",
+    "tests/fixtures/github_retrieval_parity_v2.capture-schema.json": "d65ab6971627d3cd7bdaf9422dd230755eda851e0b9a83e3fc8062ff5eee3f3b",
+    "tests/fixtures/github_retrieval_parity_v2.claim-schema.json": "663f023021fe7a7d413c0f9e2d16dceba7ba3fa0c0dc2cad4948886eaaf62891",
+    "tests/fixtures/github_retrieval_parity_v2.result-schema.json": "0dce02547a74b0464604a7774f163f7ad898fa4b73fe44a10e1a3a583dfea2c6",
+    "tests/fixtures/github_retrieval_parity_v2.result-free-audit.json": "0af9c8455cbd0ead752a3eb8b6b8b7d0e45fd8612e46f6f3d2392013118423c2"
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v2",
+  "stages": {
+    "development": [
+      {
+        "case_id": "v2-dev-direct-source-format",
+        "cohort": "direct_lexical",
+        "expected_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/K.-Source-File-Format.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v2-dev-semantic-dialogue-driven",
+        "cohort": "semantic_paraphrase",
+        "expected_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/DiDD.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v2-dev-relation-sheepdog",
+        "cohort": "relation_linked",
+        "expected_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/G.-Sheepdog-Engineering.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": [],
+        "relation_seed_source_id": "github:Liplus-Project/liplus-language:docs/Home.md"
+      },
+      {
+        "case_id": "v2-dev-negative-language-config",
+        "cohort": "negative_control",
+        "expected_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/B.-Configuration.md"
+        ],
+        "forbidden_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/5.-Notifications.md"
+        ],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v2-dev-overexclusion-operations",
+        "cohort": "over_exclusion_control",
+        "expected_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/4.-Operations.md"
+        ],
+        "forbidden_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/5.-Notifications.md"
+        ],
+        "protected_safe_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/4.-Operations.md"
+        ]
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "v2-holdout-direct-hop-instrument",
+        "cohort": "direct_lexical",
+        "expected_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/L.-Hop-Count-Instrument.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v2-holdout-semantic-role-evaluation",
+        "cohort": "semantic_paraphrase",
+        "expected_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/H.-Roles-and-Evaluation.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v2-holdout-relation-language-definition",
+        "cohort": "relation_linked",
+        "expected_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/E.-Li+language.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": [],
+        "relation_seed_source_id": "github:Liplus-Project/liplus-language:docs/F.-Behavior-First.md"
+      },
+      {
+        "case_id": "v2-holdout-negative-hook-trust",
+        "cohort": "negative_control",
+        "expected_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/D.-Installation.md"
+        ],
+        "forbidden_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/6.-Adapter.md"
+        ],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v2-holdout-overexclusion-source-check",
+        "cohort": "over_exclusion_control",
+        "expected_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/C.-Update.md"
+        ],
+        "forbidden_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/6.-Adapter.md"
+        ],
+        "protected_safe_source_ids": [
+          "github:Liplus-Project/liplus-language:docs/C.-Update.md"
+        ]
+      }
+    ]
+  }
+}

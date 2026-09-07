@@ -1,0 +1,11 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v2",
+  "fields": [
+    "protocol_id",
+    "protocol_commit",
+    "stage",
+    "capture_sha256",
+    "one_time_claim"
+  ],
+  "registration_policy": "exclusive-create-no-overwrite-no-retry"
+}
