@@ -61,12 +61,12 @@
       {
         "case_id": "v2-dev-negative-language-config",
         "cohort": "negative_control",
-        "query": "Where are LI_PLUS_BASE_LANGUAGE and LI_PLUS_PROJECT_LANGUAGE configured, excluding the update walkthrough?"
+        "query": "Where are LI_PLUS_BASE_LANGUAGE and LI_PLUS_PROJECT_LANGUAGE configured, excluding notifications"
       },
       {
         "case_id": "v2-dev-overexclusion-operations",
         "cohort": "over_exclusion_control",
-        "query": "Which operational specification describes self-review ownership and worktree stash isolation?"
+        "query": "Which operations specification defines PR and release procedures, excluding change"
       }
     ],
     "holdout": [
@@ -93,7 +93,7 @@
       {
         "case_id": "v2-holdout-overexclusion-source-check",
         "cohort": "over_exclusion_control",
-        "query": "Which model-layer specification defines source checking when external input is not trusted unconditionally?"
+        "query": "Which update procedure verifies adapter sentinel and language contract, excluding export"
       }
     ]
   }

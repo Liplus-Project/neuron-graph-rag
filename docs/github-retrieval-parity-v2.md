@@ -23,11 +23,20 @@ developmentとholdoutはそれぞれ次の5 cohortを固定順で一件ずつ持
 2. `semantic_paraphrase`
 3. `relation_linked`
 4. `negative_control`（positive intent + explicit exclusion）
-5. `over_exclusion_control`（候補本文の後置・受動否定、`-free`相当を安全なsourceとして保護）
+5. `over_exclusion_control`（明示的な除外句をproduction decompositionへ通し、候補本文の局所否定を安全なsourceとして保護）
 
 両splitのcase ID、query、expected / forbidden / protected-safe / relation-seed source identityの和集合はdisjointである。parity v1とrelation v3のcase IDとも重複しない。goldとcohort labelは取得後の評価だけに使い、production searchへの入力はqueryと共通requestだけである。
 
+candidate-side negationのsource premiseは次の組で固定する。
+
+- development: `excluding change`を除外句として分解する。`docs/4.-Operations.md`は`change`を`do not change`という局所否定形だけで含むprotected-safe source、`docs/5.-Notifications.md`は非否定の`changes requested`を含むunsafe comparison sourceである。
+- holdout: `excluding export`を除外句として分解する。`docs/C.-Update.md`は`export は不要`という局所否定形で含むprotected-safe source、`docs/6.-Adapter.md`は非否定の`export PATH`を含むunsafe comparison sourceである。
+
+protocol validationは登録queryを検索せず、productionの`decompose_exclusion_intent()`と`apply_exclusion_intent()`だけでこのpremiseを検証する。除外句が空、protected-safe候補が局所否定として保持されない、またはunsafe候補が非否定mentionとして除外されない場合はfreezeをfail closedにする。
+
 共通requestは`repo=Liplus-Project/liplus-language`、`type=doc`、`top_k=10`、`fusion=rrf`、`rerank=true`、`graph_expand=true`、`graph_hops=2`である。NGRは同じ固定repository / document type surface、query、候補幅、graph hop条件をfresh temporary DBへ適用し、fixtureに保存した現行`EngineConfig()` defaultだけを使う。local NGRとremote serviceのdeployment差はlatency品質差として扱わない。
+
+manifestはprotocol artifactとは別に、production searchへ影響する`engine.py`、`retrieval.py`、`exclusion_intent.py`、index adapter、graph / dynamics / storage / model依存を`runtime_sha256`で閉包固定する。lifecycleの`freeze_identity_scope` = `protocol-artifacts-and-production-runtime`は、`artifact_sha256`と`runtime_sha256`の結合をsemantic freeze identityとする。freeze mergeから観測までにこのclosureの1 byteでも変われば、artifact検証とmerge-commit検証は実行前に失敗する。`tools/test_suites.py`はnormal / all分類を維持するが検索・測定結果へ影響しない可変inventoryなので、semantic identityのhash対象には含めない。
 
 ## Metric
 
@@ -58,7 +67,7 @@ development / holdoutはそれぞれ`capture → claim → result`の登録path�
 
 - capture: frozen merge commit、stage、全caseの共通request、raw `search`、keyword result全件のraw stored-contentを保存する。stored-contentは`content_source=index`、`content_max_chars=8000`、`not_found=[]`、固定path + source本文prefixとの一致を要求する。範囲外repository / type / pathは黙って除外せずfail closedにする。
 - claim: protocol / merge commit / stage / capture SHA-256 / `one_time_claim=true`を固定する。claim作成後の再実行は、failureやpartial failureを含め拒否する。
-- result: raw capture全体、manifest hash registry、case / cohort metric、deterministic replay、resource、全hard gateを保持する。execution failureもimmutable failure resultとして残す。
+- result: raw capture全体、protocol artifactとproduction runtime closureを合わせたmanifest hash registry、case / cohort metric、deterministic replay、resource、全hard gateを保持する。execution failureもimmutable failure resultとして残す。
 
 holdout capture登録はdevelopment resultが全hard gateを通るまで拒否する。development failureまたはhard gate failure後はholdoutを開かない。
 

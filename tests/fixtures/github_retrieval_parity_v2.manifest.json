@@ -51,7 +51,7 @@
     "stage_order": ["development", "conditional-holdout"],
     "failure_policy": "preserve-and-refuse-retry",
     "holdout_open_condition": "development-all-hard-gates-pass",
-    "freeze_identity_scope": "protocol-artifacts-only",
+    "freeze_identity_scope": "protocol-artifacts-and-production-runtime",
     "observation_identity_scope": "registered-capture-claim-result"
   },
   "predecessors": [
@@ -145,16 +145,27 @@
     "registered_query_execution_count": 0,
     "shared_database_open_count": 0
   },
+  "runtime_sha256": {
+    "src/neuron_graph_rag/dynamics.py": "4e0b562dfcf9e9094dd91c45afc9b6a3b7c7fc963ad48ca0a1285a50251b0c10",
+    "src/neuron_graph_rag/engine.py": "7d84f4c411859c84749abc82a67b8c1d0e3dbfe9673e9069604a474284304f1b",
+    "src/neuron_graph_rag/exclusion_intent.py": "16820569acd4c37539d528abebe148ecad6c28d0844f35a730ac41558780e2e3",
+    "src/neuron_graph_rag/github_source.py": "1732a7fccc828e81b3068c20af70f2b4bc19a49951db7f9536b33fcd72d57c04",
+    "src/neuron_graph_rag/judgments.py": "cfc21058f63fcd665e8fa233cdcd01a8dfe44f4241e867886155eddcc4fac3f7",
+    "src/neuron_graph_rag/models.py": "b300537e22db8608751ef617a8b64b494a9de215e998460bfe9657b78e493a31",
+    "src/neuron_graph_rag/ontology.py": "6eca6e33f2f13c258632b2b670412872b35d8f1e0908a4b89788e7275f990048",
+    "src/neuron_graph_rag/precision_control.py": "77c3b1063848928fff8b5b88de277f4815433dfc64a45b4607a1b8559ef9715f",
+    "src/neuron_graph_rag/retrieval.py": "98db701617e133c4b5ca150b45eedcea1eb38650fe256fe947f1d01ca33d36b3",
+    "src/neuron_graph_rag/storage.py": "3aaf1fb2283ac97486fc9cab34a44676650aec5b6e1ccb8e3100132efc8459d0"
+  },
   "artifact_sha256": {
-    "docs/github-retrieval-parity-v2.md": "1f79f8c954bec35653f791a77938ce0d636fdb77d2016e22b0a5836708421bbc",
-    "src/neuron_graph_rag/github_retrieval_parity_v2.py": "a1508d475e6a6aad45c34cec32114c70db48aac910400e9779b1c79c951177ac",
+    "docs/github-retrieval-parity-v2.md": "e0e58aa9bf5d34ebdffbd7f66c9065a4a4355da00a196bc4dfe34a83f119481b",
+    "src/neuron_graph_rag/github_retrieval_parity_v2.py": "941afc1cfa3edcfa17d2518247f2b02dcd38d7dd4d379536d13fdaecc4610556",
     "tools/acquire_github_snapshot.py": "b0e7bc5d4b7b3e31da15dcfdb602dfde27cedaef818997246804d100bea73e8c",
     "tools/run_github_retrieval_parity_v2.py": "65a01b207bc0093eba0e473ba0beb4c71bf9498c510db7568894244822f70008",
-    "tools/test_suites.py": "db53ad43c016d0560b4f827a34377425dc5ba5af48209163c2a69a689af8a951",
-    "tests/test_github_retrieval_parity_v2.py": "2e58d4992d400b2325d25e94476574c689736deab374c3eaa7e6883a75884dbf",
+    "tests/test_github_retrieval_parity_v2.py": "ffa7abbe142e77a4d2057d864a50b45c3828acac0e6f78b9296d064922801cc5",
     "tests/fixtures/github_retrieval_parity_v2.corpus.json": "7485d2f535feb94185c745063b7de359e58c44070c7f29098f86d2278db47d0d",
-    "tests/fixtures/github_retrieval_parity_v2.queries.json": "675d99cb2c71f978e7abbf6ee6fbfd632ca370fda3e92633d5ef6906a28e365f",
-    "tests/fixtures/github_retrieval_parity_v2.gold.json": "0990b8f2f81fde57b55768b0d1c677f217829ffa9c0b519699c0fc2a781b5f1a",
+    "tests/fixtures/github_retrieval_parity_v2.queries.json": "84cbd0a68a76ff57ff43c06fbbcab260d7b0a2eb311896110c8a7be9be0f8bf7",
+    "tests/fixtures/github_retrieval_parity_v2.gold.json": "eb8c8e4001156d71ec9f32fe360dfef9fb0fa675310b8ac0d126b2ebb7a3f23f",
     "tests/fixtures/github_retrieval_parity_v2.gate.json": "85aadd123d9d1578d90dfa7bb43f9bc5a7916192eacd095c6e34303ced8eec0c",
     "tests/fixtures/github_retrieval_parity_v2.capture-schema.json": "d65ab6971627d3cd7bdaf9422dd230755eda851e0b9a83e3fc8062ff5eee3f3b",
     "tests/fixtures/github_retrieval_parity_v2.claim-schema.json": "663f023021fe7a7d413c0f9e2d16dceba7ba3fa0c0dc2cad4948886eaaf62891",

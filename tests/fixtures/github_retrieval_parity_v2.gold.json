@@ -37,7 +37,7 @@
           "github:Liplus-Project/liplus-language:docs/B.-Configuration.md"
         ],
         "forbidden_source_ids": [
-          "github:Liplus-Project/liplus-language:docs/C.-Update.md"
+          "github:Liplus-Project/liplus-language:docs/5.-Notifications.md"
         ],
         "protected_safe_source_ids": []
       },
@@ -99,13 +99,13 @@
         "case_id": "v2-holdout-overexclusion-source-check",
         "cohort": "over_exclusion_control",
         "expected_source_ids": [
-          "github:Liplus-Project/liplus-language:docs/1.-Model.md"
+          "github:Liplus-Project/liplus-language:docs/C.-Update.md"
         ],
         "forbidden_source_ids": [
-          "github:Liplus-Project/liplus-language:docs/2.-Evolution.md"
+          "github:Liplus-Project/liplus-language:docs/6.-Adapter.md"
         ],
         "protected_safe_source_ids": [
-          "github:Liplus-Project/liplus-language:docs/1.-Model.md"
+          "github:Liplus-Project/liplus-language:docs/C.-Update.md"
         ]
       }
     ]

@@ -193,7 +193,7 @@ class GitHubRetrievalParityV2Tests(unittest.TestCase):
             "status": "passed" if all_pass else "failed",
             "failure_code": None if all_pass else "hard-gate-failed",
             "capture_sha256": hashlib.sha256(capture_path.read_bytes()).hexdigest(),
-            "protocol_hashes": dict(protocol["manifest"]["artifact_sha256"]),
+            "protocol_hashes": parity._frozen_hashes(protocol["manifest"]),
             "source": {
                 "repository": corpus.repository,
                 "commit": corpus.commit,
@@ -266,8 +266,54 @@ class GitHubRetrievalParityV2Tests(unittest.TestCase):
         }
         self.assertTrue(case_ids.isdisjoint(predecessor_ids))
 
+        for stage in parity.STAGES:
+            queries = {
+                row["case_id"]: row for row in protocol["queries"]["stages"][stage]
+            }
+            gold = {row["case_id"]: row for row in protocol["gold"]["stages"][stage]}
+            case = next(
+                row
+                for row in queries.values()
+                if row["cohort"] == "over_exclusion_control"
+            )
+            intent = parity.decompose_exclusion_intent(case["query"])
+            self.assertTrue(intent.exclusion_clauses)
+            for source_id in gold[case["case_id"]]["protected_safe_source_ids"]:
+                decision = parity._candidate_exclusion_decision(
+                    source_id,
+                    intent,
+                    protocol["corpus"],
+                    {
+                        document.path: document
+                        for document in protocol["corpus"].documents
+                    },
+                )
+                self.assertTrue(decision["accepted"])
+                self.assertCountEqual(
+                    decision["negated_mentions"], intent.exclusion_clauses
+                )
+            for source_id in gold[case["case_id"]]["forbidden_source_ids"]:
+                decision = parity._candidate_exclusion_decision(
+                    source_id,
+                    intent,
+                    protocol["corpus"],
+                    {
+                        document.path: document
+                        for document in protocol["corpus"].documents
+                    },
+                )
+                self.assertFalse(decision["accepted"])
+                self.assertTrue(decision["matched_exclusions"])
+
     def test_frozen_predecessor_and_v2_artifact_hashes_match(self) -> None:
         protocol = parity.load_protocol()
+        self.assertEqual(
+            protocol["manifest"]["lifecycle_contract"]["freeze_identity_scope"],
+            "protocol-artifacts-and-production-runtime",
+        )
+        self.assertEqual(
+            tuple(protocol["manifest"]["runtime_sha256"]), parity.RUNTIME_PATHS
+        )
         for predecessor in protocol["manifest"]["predecessors"]:
             for registry in ("identity_sha256", "observation_sha256"):
                 for relative, expected in predecessor[registry].items():
@@ -277,6 +323,16 @@ class GitHubRetrievalParityV2Tests(unittest.TestCase):
                         relative,
                     )
         parity.verify_frozen_artifacts(protocol)
+
+        with self._protocol_root() as directory:
+            root = Path(directory)
+            runtime = root / parity.RUNTIME_PATHS[0]
+            runtime.write_text(
+                runtime.read_text(encoding="utf-8") + "\n# drift\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "frozen artifact hash mismatch"):
+                parity.load_protocol(root)
 
     def test_whole_module_lifecycle_accepts_closed_and_eligible_states(self) -> None:
         with self._protocol_root() as directory:
@@ -383,6 +439,30 @@ class GitHubRetrievalParityV2Tests(unittest.TestCase):
             protocol["gold"]["stages"]["development"][0]["expected_source_ids"]
         )
         with self.assertRaisesRegex(ValueError, "identities must be disjoint"):
+            parity.validate_protocol(tampered)
+
+        tampered = copy.deepcopy(protocol)
+        over_query = next(
+            row
+            for row in tampered["queries"]["stages"]["development"]
+            if row["cohort"] == "over_exclusion_control"
+        )
+        over_query["query"] = "operations specification for PR and release procedures"
+        with self.assertRaisesRegex(ValueError, "explicit exclusion clause"):
+            parity.validate_protocol(tampered)
+
+        tampered = copy.deepcopy(protocol)
+        over_gold = next(
+            row
+            for row in tampered["gold"]["stages"]["development"]
+            if row["cohort"] == "over_exclusion_control"
+        )
+        over_gold["expected_source_ids"], over_gold["forbidden_source_ids"] = (
+            over_gold["forbidden_source_ids"],
+            over_gold["expected_source_ids"],
+        )
+        over_gold["protected_safe_source_ids"] = list(over_gold["expected_source_ids"])
+        with self.assertRaisesRegex(ValueError, "candidate-side-negation premise"):
             parity.validate_protocol(tampered)
 
     def test_runner_audit_executes_no_registered_query(self) -> None:

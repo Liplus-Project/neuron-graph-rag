@@ -17,7 +17,13 @@ from tempfile import TemporaryDirectory
 from typing import Any
 
 from .engine import EngineConfig, NeuronGraphRAG
-from .github_source import GitHubSnapshot, index_github_snapshot
+from .exclusion_intent import (
+    RetrievalIntent,
+    apply_exclusion_intent,
+    decompose_exclusion_intent,
+)
+from .github_source import GitHubDocument, GitHubSnapshot, index_github_snapshot
+from .models import DocumentNode, SearchHit
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = ROOT / "tests" / "fixtures"
@@ -79,6 +85,18 @@ RESULT_FIELDS = (
     "all_hard_gates_pass",
     "raw_github_rag_mcp_capture",
     "interpretation_ja",
+)
+RUNTIME_PATHS = (
+    "src/neuron_graph_rag/dynamics.py",
+    "src/neuron_graph_rag/engine.py",
+    "src/neuron_graph_rag/exclusion_intent.py",
+    "src/neuron_graph_rag/github_source.py",
+    "src/neuron_graph_rag/judgments.py",
+    "src/neuron_graph_rag/models.py",
+    "src/neuron_graph_rag/ontology.py",
+    "src/neuron_graph_rag/precision_control.py",
+    "src/neuron_graph_rag/retrieval.py",
+    "src/neuron_graph_rag/storage.py",
 )
 
 MANIFEST_PATH = FIXTURES / f"{STEM}.manifest.json"
@@ -187,7 +205,7 @@ def validate_protocol(protocol: Mapping[str, Any]) -> None:
         "stage_order": ["development", "conditional-holdout"],
         "failure_policy": "preserve-and-refuse-retry",
         "holdout_open_condition": "development-all-hard-gates-pass",
-        "freeze_identity_scope": "protocol-artifacts-only",
+        "freeze_identity_scope": "protocol-artifacts-and-production-runtime",
         "observation_identity_scope": "registered-capture-claim-result",
     }:
         raise ValueError("lifecycle contract mismatch")
@@ -322,6 +340,35 @@ def validate_protocol(protocol: Mapping[str, Any]) -> None:
                 raise ValueError(
                     "over-exclusion control requires protected expected sources"
                 )
+            if cohort == "over_exclusion_control":
+                intent = decompose_exclusion_intent(_required_string(case, "query"))
+                if not intent.exclusion_clauses:
+                    raise ValueError(
+                        "over-exclusion control requires an explicit exclusion clause"
+                    )
+                for source_id in protected:
+                    decision = _candidate_exclusion_decision(
+                        source_id, intent, corpus, documents
+                    )
+                    if (
+                        decision.get("accepted") is not True
+                        or set(decision.get("negated_mentions", ()))
+                        != set(intent.exclusion_clauses)
+                        or decision.get("matched_exclusions") != []
+                    ):
+                        raise ValueError(
+                            "protected-safe source lacks the frozen candidate-side-negation premise"
+                        )
+                for source_id in forbidden:
+                    decision = _candidate_exclusion_decision(
+                        source_id, intent, corpus, documents
+                    )
+                    if decision.get("accepted") is not False or not decision.get(
+                        "matched_exclusions"
+                    ):
+                        raise ValueError(
+                            "unsafe comparison source lacks a non-negated exclusion mention"
+                        )
             if cohort == "relation_linked":
                 seed = _required_string(row, "relation_seed_source_id")
                 stage_sources.add(seed)
@@ -365,10 +412,13 @@ def validate_protocol(protocol: Mapping[str, Any]) -> None:
             predecessor_hashes.add(str(expected_hash))
     if all_case_ids & predecessor_cases:
         raise ValueError("v2 query identity overlaps a predecessor")
-    new_paths = set(_mapping(manifest, "artifact_sha256")) | _registry_paths(manifest)
+    runtime_hashes = _mapping(manifest, "runtime_sha256")
+    if tuple(runtime_hashes) != RUNTIME_PATHS:
+        raise ValueError("production search runtime registry mismatch")
+    new_paths = set(_frozen_hashes(manifest)) | _registry_paths(manifest)
     if new_paths & predecessor_paths:
         raise ValueError("v2 artifact registry overlaps a predecessor")
-    if set(_mapping(manifest, "artifact_sha256").values()) & predecessor_hashes:
+    if set(_frozen_hashes(manifest).values()) & predecessor_hashes:
         raise ValueError("v2 artifact bytes reuse a predecessor artifact")
 
     gate_ids = tuple(
@@ -405,7 +455,7 @@ def verify_frozen_artifacts(
 ) -> None:
     root = Path(protocol["root"])
     manifest = _mapping(protocol, "manifest")
-    artifacts = _mapping(manifest, "artifact_sha256")
+    artifacts = _frozen_hashes(manifest)
     if not artifacts:
         raise ValueError("frozen artifact hash registry must not be empty")
     for relative, expected in artifacts.items():
@@ -497,7 +547,7 @@ def verify_protocol_commit(protocol_commit: str, protocol: Mapping[str, Any]) ->
     ):
         raise ValueError("running manifest drifted from the frozen merge commit")
     manifest = _mapping(protocol, "manifest")
-    for relative, expected in _mapping(manifest, "artifact_sha256").items():
+    for relative, expected in _frozen_hashes(manifest).items():
         committed = hashlib.sha256(
             _git_bytes(root, f"{protocol_commit}:{relative}")
         ).hexdigest()
@@ -578,7 +628,7 @@ def _verify_registered_result(stage: str, protocol: Mapping[str, Any]) -> None:
         or result.get("capture_sha256") != capture_sha256
     ):
         raise ValueError("result does not match the stage claim")
-    manifest_hashes = dict(_mapping(_mapping(protocol, "manifest"), "artifact_sha256"))
+    manifest_hashes = _frozen_hashes(_mapping(protocol, "manifest"))
     if result.get("protocol_hashes") != manifest_hashes:
         raise ValueError("result protocol hashes do not match the manifest")
     capture = read_json(capture_path)
@@ -714,9 +764,7 @@ def _execute_stage(
         "status": "passed" if all_pass else "failed",
         "failure_code": None if all_pass else "hard-gate-failed",
         "capture_sha256": capture_sha256,
-        "protocol_hashes": dict(
-            _mapping(_mapping(protocol, "manifest"), "artifact_sha256")
-        ),
+        "protocol_hashes": _frozen_hashes(_mapping(protocol, "manifest")),
         "source": {
             "repository": corpus.repository,
             "commit": corpus.commit,
@@ -760,9 +808,7 @@ def _failure_payload(
         "status": "failed",
         "failure_code": "execution-failed",
         "capture_sha256": capture_sha256,
-        "protocol_hashes": dict(
-            _mapping(_mapping(protocol, "manifest"), "artifact_sha256")
-        ),
+        "protocol_hashes": _frozen_hashes(_mapping(protocol, "manifest")),
         "source": {"repository": corpus.repository, "commit": corpus.commit},
         "request_contract": dict(
             _mapping(_mapping(protocol, "queries"), "request_defaults")
@@ -1267,7 +1313,7 @@ def protocol_file_inventory(root: Path = ROOT) -> tuple[str, ...]:
     manifest = read_json(root / MANIFEST_PATH.relative_to(ROOT))
     paths = {
         MANIFEST_PATH.relative_to(ROOT).as_posix(),
-        *map(str, _mapping(manifest, "artifact_sha256")),
+        *map(str, _frozen_hashes(manifest)),
     }
     for predecessor in manifest.get("predecessors", []):
         paths.update(map(str, _mapping(predecessor, "identity_sha256")))
@@ -1387,6 +1433,46 @@ def _registry_paths(manifest: Mapping[str, Any]) -> set[str]:
         for stage_outputs in _mapping(manifest, "outputs").values()
         for kind in ("capture", "claim", "result")
     }
+
+
+def _frozen_hashes(manifest: Mapping[str, Any]) -> dict[str, Any]:
+    artifacts = dict(_mapping(manifest, "artifact_sha256"))
+    runtime = dict(_mapping(manifest, "runtime_sha256"))
+    overlap = set(artifacts) & set(runtime)
+    if overlap:
+        raise ValueError(f"artifact and runtime hash registries overlap: {overlap}")
+    return {**artifacts, **runtime}
+
+
+def _candidate_exclusion_decision(
+    source_id: str,
+    intent: RetrievalIntent,
+    corpus: GitHubSnapshot,
+    documents: Mapping[str, GitHubDocument],
+) -> Mapping[str, Any]:
+    path = _path_from_source_id(corpus.repository, source_id)
+    document = documents[path]
+    hit = SearchHit(
+        node=DocumentNode(
+            source_id,
+            _indexed_content(path, document.content),
+            {
+                "repository": corpus.repository,
+                "path": path,
+                "commit": corpus.commit,
+            },
+        ),
+        sparse_score=0.0,
+        dense_score=0.0,
+        entry_score=0.0,
+        graph_activation=0.0,
+        final_score=0.0,
+    )
+    annotated, _ = apply_exclusion_intent((hit,), intent)
+    decision = annotated[0].exclusion_intent
+    if not isinstance(decision, Mapping):
+        raise TypeError("candidate exclusion decision is absent")
+    return decision
 
 
 def _stage_path(protocol: Mapping[str, Any], stage: str, kind: str) -> Path:
