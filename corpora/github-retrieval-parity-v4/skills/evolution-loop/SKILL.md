@@ -1,0 +1,30 @@
+---
+name: evolution-loop
+description: Invoke when any evolution loop stage is about to run (observe, evaluate, distill, reflect, improve, re-observe). Provides the stage definitions, the current and target execution mode of the loop, and the stage-by-stage responsibility split between AI and human.
+layer: L2-evolution
+---
+
+<evolution-loop>
+
+# Evolution Loop
+
+Loop stages:
+  observe    = memory entries + docs (spec, decision structure, issue history)
+  evaluate   = self-evaluation two-axis scoring, pattern detection
+  distill    = extract spec-class signal from repeated patterns
+  reflect    = update Li+ source (default target = L3 and later; L1 via gating)
+  improve    = behavior shifts with the updated spec
+  re-observe = next cycle starts from new memory/docs state
+
+Execution mode:
+  current    = partial automation; some stages still handed to human.
+  target     = AI-sole execution of the full loop, with human as approver for release only. L1 gate = the observation threshold at issue formation (`skills/evolution-l1-update-gating/SKILL.md`); at the merge gate L1 runs brake 1 like any other self-evolution PR.
+
+Stage responsibility:
+  observe/evaluate = AI autonomous. No human prompt needed.
+  distill          = AI autonomous. Externalize to issue when a pattern crosses the memo-level threshold.
+  reflect          = AI drafts (PR). Merge gate is execution-mode dependent per rules/operations/main-agent-procedures.md Merge Execution (rules/operations/execution-mode.md governs the gate matrix).
+  improve          = AI executes under the updated spec.
+  re-observe       = AI autonomous.
+
+</evolution-loop>

@@ -1,0 +1,172 @@
+## 概要
+
+**Li+config.md** は、Li+のユーザー設定ファイルです。ワークスペース直下に配置し、ユーザーが直接編集します。
+
+アダプター / 設定の同期手続きは **Li+update.md** に分離されており、本ファイルは設定値の保持のみを担います。同期フローの詳細は [C. Update](C.-Update) を参照します。
+
+このページは **設定リファレンス** です。Quickstart は [D. Installation](D.-Installation) を参照します。
+
+---
+
+## 設定項目
+
+### GH_TOKEN
+
+GitHub Personal Access Token。Li+リポジトリへのアクセスと、作業リポジトリの操作に使用します。
+
+### USER_REPOn
+
+作業対象のリポジトリを URL 形式（例: `https://github.com/myname/myrepo`）で指定します。複数の作業リポジトリがある場合は `USER_REPO1`、`USER_REPO2`、`USER_REPO3`、… と任意の数だけ番号を付けて並列に指定できます（上限なし）。
+
+- `LI_PLUS_REPO` と同じ値を指定した場合：ローカル clone で `git checkout main` を実行
+- 別リポジトリを指定した場合：そのリポジトリをワークスペースへ clone
+
+受容する host 形式:
+
+| 形式 | 例 | 動作 |
+|---|---|---|
+| HTTPS URL | `https://github.com/owner/repo` | primary。gh CLI integration 完全対応 |
+| HTTP URL | `http://...` | accept（自前 git server 等。security tradeoff は user 責任）。gh CLI 不可 |
+| git+ssh | `git@github.com:owner/repo.git` | accept。内部で HTTPS 形式に normalize して gh CLI 利用 |
+| local path | `/path/to/repo` または `~/repo` | accept。clone skip + path 直接認識（gh CLI 不可） |
+| `file://` | `file:///path/to/repo` | accept。git clone 可（gh CLI 不可） |
+
+gh CLI integration が必要な機能（issue / PR / release / webhook intake）は `github.com` / `gitlab.com` 等の既知 host を URL 形式で指定する必要があります。それ以外は git-only mode で warn が出ます。
+
+### LI_PLUS_REPO
+
+Li+ 本体リポジトリを URL 形式で指定します。デフォルト値は `https://github.com/Liplus-Project/liplus-language` です。
+
+Li+ファイル（`rules/**/*.md`、`skills/**/SKILL.md`、Li+update.md 等）の取得先として使用されます。フォークや組織内プライベートコピーを使う場合はここを変更します。受容する host 形式は `USER_REPOn` と同じです。
+
+### LI_PLUS_MODE
+
+Li+リポジトリからLi+ファイルを取得する方法を指定します。
+
+| 値 | 動作 |
+|----|------|
+| `api` | GitHub APIで直接Li+ファイルを取得（軽量。trigger-based re-readなどの継続機能は保証しない） |
+| `clone` | リポジトリをローカルにclone/checkoutして取得（継続利用推奨） |
+
+### LI_PLUS_CHANNEL
+
+取得するLi+のバージョンチャンネルを指定します。
+
+| 値 | 動作 |
+|----|------|
+| `latest` | Latestリリースのタグを使用（安定版のみ） |
+| `release` | Pre-release含む最新リリースのタグを使用 |
+| `tag` | GitHub Release 未作成の tag も含む最新 git tag を使用（`git ls-remote --tags --sort=-creatordate` で解決、clone mode 第一対応） |
+
+包含関係: `tag` ⊇ `release` ⊇ `latest`。
+
+値は**大小文字を区別**します。`Latest` はどの分岐にも一致せず、対象タグが解決されないため `LI_PLUS_UPDATE_STATUS=needed` へ倒れます。既知の 3 値以外が書かれている場合、hook はセッション開始時にキー名と実際の値を含む 1 行を出します（挙動そのものは既定へ倒れたまま変わりません）。
+
+`tag` は CD や手動で tag を切っただけで GitHub Release を未作成の段階の挙動を workspace で検証したい場合に使います。api mode 向け拡張は現時点では対象外です。
+
+`LI_PLUS_MODE=clone` の場合、AI は起動時に現在 checkout 中のタグと、この設定から解決した対象タグを比較します。
+差分があれば、対象タグへ更新するか現行タグのまま続行するかを人間に確認してから進みます。
+
+### USER_REPOn_EXE_MODE / LI_PLUS_REPO_EXE_MODE
+
+各リポジトリごとに AI の自律度を切り替えます。`USER_REPO1` の自律度は `USER_REPO1_EXE_MODE`、`LI_PLUS_REPO` の自律度は `LI_PLUS_REPO_EXE_MODE` のように、リポジトリ key 名へ `_EXE_MODE` を付けて指定します。未設定の場合、セッション開始時に AI が対話で設定します（手入力不要）。
+
+| 値 | 動作 |
+|----|------|
+| `trigger` | 人間主導。人間がトリガーを引いたらAIがPRレビューまで一直線に実行する（issue作成・クローズはAI）|
+| `semi_auto` | 半自動。着手タイミングはAIが決める。AIが毎PRでセルフレビューを行い、patchはAIが直接マージ、minor / major は人間確認のうえAIがマージする |
+| `auto` | AI自律。issue選択・着手・PRレビューをAIが行う |
+
+リリースはどのモードでも人間の確認が必要です。
+
+### 言語設定の適用範囲
+
+`LI_PLUS_BASE_LANGUAGE` と `LI_PLUS_PROJECT_LANGUAGE` は、いずれも配布先workspace専用です。対話言語・成果物言語のどちらについても、liplus-language リポジトリ内部の運用ルールは変更しません。
+
+### LI_PLUS_BASE_LANGUAGE
+
+配布先workspaceで、人間との対話に使う**基本言語**です。未設定の場合、セッション開始時にAIが対話で設定します（手入力不要）。
+
+| 値 | 動作 |
+|----|------|
+| 未設定 | セッション開始時にAIが現在の対話を基準に聞き、Li+config.mdへ書き戻す |
+| `ja` / `en` / `fr` など | そのworkspaceで人間へ返す既定言語として使う。issue/discussion/PRコメントのような会話返信もこちらが既定 |
+
+注意:
+
+- ここで決めるのは配布先workspaceの対話言語です
+
+### LI_PLUS_PROJECT_LANGUAGE
+
+配布先workspaceで、成果物（issue / PR / commit body、保存する要求仕様など）に使う**プロジェクト言語**です。未設定の場合、セッション開始時にAIが対話で設定します（手入力不要）。
+
+| 値 | 動作 |
+|----|------|
+| 未設定 | セッション開始時にAIが聞き、Li+config.mdへ書き戻す |
+| `ja` / `en` / `fr` など | そのworkspaceの durable artifact の既定言語として使う |
+
+注意:
+
+- 人間が現在の返答や特定の成果物に別言語を明示した場合、その指示が優先されます
+- 指示のスコープが終わった後は、この値が既定値として再び使われます
+
+### LI_PLUS_WEBHOOK_DELIVERY
+
+webhook 通知がセッションへ届く方法を指定します。`mcp__github-webhook-mcp` を MCP channel として常時接続している環境では `channel` に設定することで、毎ターンのポーリングリマインダーをスキップできます。`mcp_hook` を選ぶと、Claude Code の `type: "mcp_tool"` UserPromptSubmit hook で MCP ツールを直接呼び出すため、`tool_use` / `tool_result` の往復が不要になります。
+
+| 値 | 動作 |
+|----|------|
+| 未設定 / `poll` | 毎ターン開始時に on-user-prompt hook が呼び出し指示を出力し、AI 自身に MCP ツールを呼ばせる（既定、後方互換） |
+| `channel` | MCP channel がリアルタイムにイベントを配信するため、hook の呼び出し指示をスキップする |
+| `mcp_hook` | UserPromptSubmit の `type: "mcp_tool"` hook が `mcp__github-webhook-mcp__get_pending_status` を直接呼び出し、結果を prompt context に注入する。hook の呼び出し指示はスキップされる（`github-webhook-mcp >= v0.11.3` が前提） |
+
+注意:
+
+- 値は**大小文字を区別**します。`Mcp_Hook` は `mcp_hook` として扱われず、既定の `poll` へ倒れます。既知の 3 値以外が書かれている場合、hook は毎ターンの先頭でキー名と実際の値を含む 1 行を出します（挙動そのものは既定へ倒れたまま変わりません）
+- 値を切り替えても webhook 通知の前景判定ルールは変わりません。transport（呼び出し主体）が変わるだけです
+- したがってスキップされるのは**呼び出し指示だけ**です。取り扱い指示（前景報告フィルタと `mark_processed` の re-arm）は全モードで毎ターン出力されます。これを代替するものはどのモードにも無く、発火時刻がターン境界である以上、hook 以外に担える面が無いためです（#1798）
+- この設定は on-user-prompt hook が実行時に Li+config.md から読み取ります。bootstrap での追加アクションは不要です
+- `mcp_tool` の hook entry は `adapter/claude/hooks-settings.md` の default テンプレートに含まれており、bootstrap によって `.claude/settings.json` に自動配置されます。**手動追加は不要**になりました（旧仕様では opt-in に手動編集が必要でした）
+- 配信が実際に AI 文脈へ届く前提条件:
+  - `mcp__github-webhook-mcp` が MCP サーバーとして接続済みであること（CLI なら `~/.claude.json` / `.mcp.json` / `claude mcp add`、Desktop なら `claude_desktop_config.json`）
+  - `github-webhook-mcp >= v0.11.3` であること（`get_pending_status` の戻り値を Claude Code UserPromptSubmit hook decision JSON shape にラップする bridge 側の対応が必要。それ以前のバージョンでは hook 戻り値が AI 文脈に注入されない）
+- MCP サーバー未接続の場合、Claude Code の `mcp_tool` resolver が毎ターン `not connected` テキストを context に出します。挙動上の害はありませんが、webhook 通知を使わないユーザーは設定ノイズとして見えます
+
+### settings.json と settings.local.json の所有境界 (build-2026-04-25 以降)
+
+- `.claude/settings.json` = **Li+ 所有**。bootstrap が `adapter/claude/hooks-settings.md` の literal を render し、内容差分があれば上書きします（compare-and-overwrite。同一なら sensitive-file プロンプトも出ません）
+- `.claude/settings.local.json` = **ユーザー所有**。Li+ は一切触りません。`permissions` / `env` / `theme` / 独自 hook / 追加 MCP entry はここに置きます。Claude Code が runtime で両ファイルを merge します
+- **既存 workspace の移行注意**: 既に `.claude/settings.json` に user-added キー（permissions / env / theme / 独自 hook / 追加 mcp_tool entry）を入れている環境は、本仕様適用前に `settings.local.json` へ移してください。compare-and-overwrite が差分を検出すると Li+ template で上書きされ、user-added キーが失われます
+
+### LI_PLUS_WEBHOOK_STATE_DIR
+
+`mcp__github-webhook-mcp` が利用できない時に、前景スレッドが lightweight webhook 通知を読むための**任意設定**です。
+
+| 値 | 動作 |
+|----|------|
+| 未設定 | ローカル fallback を強制しない。bundled helper は既定候補を見つけた時だけ使う |
+| 絶対パス | そのディレクトリを webhook state dir として使う |
+| ワークスペース相対パス | `workspace_root` から解決して webhook state dir として使う |
+
+想定ディレクトリは `github-webhook-mcp` の状態保存先で、`events.json`、`trigger-events/`、`codex-runs/` を含みます。
+
+注意:
+
+- local fallback helper は `LI_PLUS_MODE=clone` で `liplus-language/` clone が手元にある場合にだけ使えます
+- shared instruction へ機械固有の絶対パスを直接書いてはいけません。必要なパスはこの設定値へ寄せます
+
+---
+
+## 更新同期フロー
+
+アダプター / 設定の更新同期手続きの詳細は [C. Update](C.-Update) を参照します。
+
+---
+
+## 注意事項
+
+- `GH_TOKEN` はチャットに出力されません
+- gh CLI をどう呼ぶかはホストによって変わります。Linux ホストでは hook が `~/.local/bin/gh` へ自動インストールしますが、このディレクトリがセッションを跨いで PATH に載っている保証は無いため、フルパス（`~/.local/bin/gh`）で実行します。macOS（`brew install gh`）と Windows の Git-Bash / MSYS2 / Cygwin（`winget install --id GitHub.cli`）は自動インストールの対象外で、導入済みを前提条件として扱うため、PATH 上の `gh` をそのまま呼びます。ホスト分岐の正本は [6. Adapter](6.-Adapter) の on-session-start.sh 節（`━━━ gh install ━━━` マーカー）です
+- `LI_PLUS_MODE=clone` の場合、初回セッションはcloneのため時間がかかります。2回目以降はfetch & checkoutのみです
+- `LI_PLUS_MODE=clone` の場合、既存 clone が対象タグとずれていれば、AI は起動時に人間へ更新可否を確認します
+- `LI_PLUS_WEBHOOK_STATE_DIR` を使う場合、`LI_PLUS_MODE=clone` を推奨します。`api` モードでは bundled helper の利用を前提にできません

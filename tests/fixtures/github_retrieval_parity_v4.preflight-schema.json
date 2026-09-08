@@ -1,0 +1,29 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v4",
+  "top_level_fields": [
+    "protocol_id",
+    "protocol_commit",
+    "stage",
+    "captured_at",
+    "service",
+    "tool",
+    "request",
+    "documents"
+  ],
+  "document_fields": [
+    "repo",
+    "type",
+    "doc_path",
+    "stored_content_prefix",
+    "source_content_sha256"
+  ],
+  "request_contract": {
+    "repo": "Liplus-Project/neuron-graph-rag",
+    "type": "doc",
+    "path_prefix": "corpora/github-retrieval-parity-v4/",
+    "query_omitted": true,
+    "content_source": "index",
+    "content_max_chars": 8000
+  },
+  "registration_policy": "exclusive-create-before-any-registered-query"
+}

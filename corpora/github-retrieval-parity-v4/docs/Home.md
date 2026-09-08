@@ -1,0 +1,75 @@
+# Li+ Wiki
+
+Li+ 自体はここで閉じた定義に固定しない。
+この公開面では、`Li+ language` を **最高級プログラム言語**、`Li+ program` を **AIエージェント上でその言語を走らせる実行系**、`Li+AI` を **対話型コンパイラ** として扱います。
+
+Li+は、要求仕様書、優先順位、行動規則、再適用条件をレイヤーとして固定し、AIがどう判断し、どう実行し、どこで止まり、どう自己修正するかを定義します。
+
+Li+は新しい構文を定義しません。**プロンプトより一段上の層で、接続済みAIエージェントをどう統治して動かすか** を定義します。
+
+Li+ v1.0.0 の成立条件は到達済みとみなし、現在の本番はその一般化です。
+
+---
+
+## 要求仕様書（1–6）
+
+各レイヤーの要求と仕様を一体として定義する。
+
+| ページ | 内容 |
+|--------|------|
+| [1. Model](1.-Model) | モデルレイヤー仕様書 |
+| [2. Evolution](2.-Evolution) | 進化レイヤー仕様書 |
+| [3. Task](3.-Task) | タスクレイヤー仕様書 |
+| [4. Operations](4.-Operations) | オペレーションレイヤー仕様書 |
+| [5. Notifications](5.-Notifications) | 通知レイヤー仕様書 |
+| [6. Adapter](6.-Adapter) | アダプターレイヤー仕様書 |
+
+---
+
+## 参考文書（A–D）
+
+構想・設定・導入手順などの参照資料。
+
+| ページ | 内容 |
+|--------|------|
+| [A. Concept](A.-Concept) | Li+の概要と navigation、Lin/Lay コメント、最低動作環境 |
+| [B. Configuration](B.-Configuration) | 設定リファレンス |
+| [C. Update](C.-Update) | アダプター / 設定の更新同期手続き |
+| [D. Installation](D.-Installation) | Quickstartセットアップ手順 |
+
+---
+
+## 設計思想（DiDD ＋ E–H）
+
+Li+ プログラムの設計思想。三軸（対話駆動 / 構造駆動 / 現実駆動）を束ねる総称が **DiDD（対話駆動開発）**、各軸を軸別に蒸留した独立 docs が E–H。
+
+| ページ | 担う軸 |
+|--------|--------|
+| [DiDD（対話駆動開発）](DiDD) | 三駆動を束ねる総称（対話駆動 / 構造駆動 / 現実駆動）、看板コピーと命名 |
+| [E. Li+language](E.-Li+language) | Li+ language の定義と三位一体（要求仕様 = code、対話型コンパイラ、外部記憶） |
+| [F. Behavior-First](F.-Behavior-First) | 動いている挙動が正しさ（foundational invariant、CI = 現実判定装置、Ceiling-by-design） |
+| [G. Sheepdog-Engineering](G.-Sheepdog-Engineering) | 装具を頭の中に置く（ハーネス → アジリティ → シープドッグ、pal / Lilayer、Character_Instance） |
+| [H. Roles-and-Evaluation](H.-Roles-and-Evaluation) | 役割分離と評価軸（human / AI / Lin / Lay の役割、AI 実機の振る舞いが評価面） |
+
+---
+
+## ソース形式・計測（K–L）
+
+Li+ source ファイル (`rules/*.md` / `skills/*/SKILL.md`) の構造仕様と、常時ロード分に対する計測面。
+
+| ページ | 内容 |
+|--------|------|
+| [K. Source-File-Format](K.-Source-File-Format) | semantic tag wrap 形式 (Option Y, H1+H2, lowercase kebab-case) の規約と運用 |
+| [L. Hop-Count-Instrument](L.-Hop-Count-Instrument) | 跳躍数計測の固定面（12シナリオ集合・計数規則・baseline・経路ゼロ検査） |
+
+---
+
+## 判断構造（抜粋）
+
+セッションをまたぐ判断知を蓄積する Decision Structure。設計上の分岐で選んだ理由、検証で確定した前提、外部システム依存などを kebab-case トピック名で記録する（順序 prefix なし）。判断ノード（state 形エントリ）と supersede / depend / conflict edge による意味グラフであり、時間順 append-only の履歴ではない。全エントリの index は [Decision Structure](Decision-Structure) を参照。
+
+| ページ | 内容 |
+|--------|------|
+| [Decision Structure](Decision-Structure) | 判断構造レイヤー Decision Structure の運用ルール |
+| [Layer Reorg Rationale](layer-reorg-rationale) | L1–L6 層再編の設計意図と L5/L6 位置付け |
+| [GitHub App User-to-server Token Expiration](github-app-user-to-server-token-expiration) | GitHub App User-to-server token expiration の判断構造 |
