@@ -1,0 +1,19 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v4",
+  "phase": "result-free-freeze-v4",
+  "development_preflight_count": 0,
+  "development_query_execution_count": 0,
+  "holdout_preflight_count": 0,
+  "holdout_query_execution_count": 0,
+  "development_capture_count": 0,
+  "development_claim_count": 0,
+  "development_result_count": 0,
+  "holdout_capture_count": 0,
+  "holdout_claim_count": 0,
+  "holdout_result_count": 0,
+  "v3_query_text_derivation_count": 10,
+  "predecessor_query_gold_capture_result_reuse_count": 0,
+  "shared_database_open_count": 0,
+  "feedback_or_outcome_connected": false,
+  "performance": "not assessed"
+}

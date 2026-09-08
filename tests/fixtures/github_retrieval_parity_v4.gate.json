@@ -1,0 +1,56 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v4",
+  "comparison": {
+    "mrr": "reciprocal rank of the first expected source, averaged per cohort",
+    "ndcg_at_k": "binary relevance nDCG over every expected source at frozen top_k",
+    "recall_at_k": "fraction of expected sources present at frozen top_k",
+    "forbidden_hit": "any forbidden source present at frozen top_k",
+    "protected_safe_retained": "every protected-safe source remains present at frozen top_k",
+    "relation_path_completeness": "fraction of expected relation targets reached with a graph path",
+    "non_regression": "NGR must be greater than or equal to github-rag-mcp on each frozen metric"
+  },
+  "strict_improvement_policy": "not required; ceiling cases pass only by metric equality or improvement under the non-regression gates",
+  "gates": [
+    {
+      "gate_id": "protocol-integrity",
+      "hard": true
+    },
+    {
+      "gate_id": "source-provenance-integrity",
+      "hard": true
+    },
+    {
+      "gate_id": "deterministic-replay",
+      "hard": true
+    },
+    {
+      "gate_id": "direct-safety",
+      "hard": true
+    },
+    {
+      "gate_id": "negative-safety",
+      "hard": true
+    },
+    {
+      "gate_id": "over-exclusion-safety",
+      "hard": true
+    },
+    {
+      "gate_id": "cohort-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "expected-source-completeness",
+      "hard": true
+    },
+    {
+      "gate_id": "relation-path-completeness-non-regression",
+      "hard": true
+    },
+    {
+      "gate_id": "source-path-explanation-integrity",
+      "hard": true
+    }
+  ],
+  "latency_resource_policy": "record-only-not-a-hard-gate"
+}
