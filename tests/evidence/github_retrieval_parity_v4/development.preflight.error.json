@@ -1,0 +1,1614 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v4",
+  "protocol_commit": "63f52592b518ec72785216a79d2a72f24d97494f",
+  "stage": "development",
+  "recorded_at": "2026-09-09T13:31:56.441Z",
+  "status": "preflight-registration-failed",
+  "terminal": true,
+  "failure": {
+    "phase": "register-preflight-import",
+    "attempt_count": 1,
+    "retry_count": 0,
+    "same_protocol_retry_allowed": false,
+    "command": "python tools/run_github_retrieval_parity_v4.py --register-preflight development --input <exclusive-temporary-input> --protocol-commit 63f52592b518ec72785216a79d2a72f24d97494f",
+    "exception_type": "ModuleNotFoundError",
+    "exception_message": "No module named 'neuron_graph_rag'",
+    "cause": "The one-time registration helper did not set PYTHONPATH=src before invoking the frozen runner.",
+    "registered_preflight_created": false
+  },
+  "execution_counts": {
+    "registered_preflight_count": 0,
+    "registered_query_execution_count": 0,
+    "registered_capture_count": 0,
+    "registered_claim_count": 0,
+    "registered_result_count": 0,
+    "holdout_query_execution_count": 0,
+    "shared_database_open_count": 0
+  },
+  "queryless_scan": {
+    "service": "github-rag-mcp",
+    "tool": "search",
+    "request_pages": [
+      {
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "path_prefix": "corpora/github-retrieval-parity-v4/",
+        "query_omitted": true,
+        "top_k": 50,
+        "sort": "updated_desc",
+        "since": "2026-09-01T00:00:00Z",
+        "until": null
+      },
+      {
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "path_prefix": "corpora/github-retrieval-parity-v4/",
+        "query_omitted": true,
+        "top_k": 50,
+        "sort": "updated_desc",
+        "since": "2026-09-01T00:00:00Z",
+        "until": "2026-09-08T21:02:38.503Z"
+      }
+    ],
+    "responses": [
+      {
+        "mode": "scan",
+        "sort": "updated_desc",
+        "since": "2026-09-01T00:00:00Z",
+        "until": null,
+        "truncated": true,
+        "count": 50,
+        "documents": [
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/task-subagent-state-labels/SKILL.md",
+            "updated_at": "2026-09-09T02:02:36.400Z",
+            "created_at": "2026-09-09T02:02:36.400Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/task-subagent-spawn/SKILL.md",
+            "updated_at": "2026-09-09T02:02:34.697Z",
+            "created_at": "2026-09-09T02:02:34.697Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/task-subagent-prompt/SKILL.md",
+            "updated_at": "2026-09-09T02:02:33.001Z",
+            "created_at": "2026-09-09T02:02:33.001Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/task-subagent-delegation/SKILL.md",
+            "updated_at": "2026-09-09T02:02:26.863Z",
+            "created_at": "2026-09-09T02:02:26.863Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/task-pr-review-judgment/SKILL.md",
+            "updated_at": "2026-09-09T01:02:44.442Z",
+            "created_at": "2026-09-09T01:02:44.442Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-wiki-sync/SKILL.md",
+            "updated_at": "2026-09-09T01:02:42.779Z",
+            "created_at": "2026-09-09T01:02:42.779Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-sub-issue/SKILL.md",
+            "updated_at": "2026-09-09T01:02:39.984Z",
+            "created_at": "2026-09-09T01:02:39.984Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-release/SKILL.md",
+            "updated_at": "2026-09-09T01:02:38.412Z",
+            "created_at": "2026-09-09T01:02:38.412Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-release-state/SKILL.md",
+            "updated_at": "2026-09-09T01:02:36.773Z",
+            "created_at": "2026-09-09T01:02:36.773Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-pr-review/SKILL.md",
+            "updated_at": "2026-09-09T01:02:35.196Z",
+            "created_at": "2026-09-09T01:02:35.196Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-pr-creation/SKILL.md",
+            "updated_at": "2026-09-09T01:02:33.659Z",
+            "created_at": "2026-09-09T01:02:33.659Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-issue-format/SKILL.md",
+            "updated_at": "2026-09-09T01:02:31.921Z",
+            "created_at": "2026-09-09T01:02:31.921Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-docs-ownership/SKILL.md",
+            "updated_at": "2026-09-09T01:02:30.291Z",
+            "created_at": "2026-09-09T01:02:30.291Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-commit/SKILL.md",
+            "updated_at": "2026-09-09T01:02:27.815Z",
+            "created_at": "2026-09-09T01:02:27.815Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-ci/SKILL.md",
+            "updated_at": "2026-09-09T00:03:17.812Z",
+            "created_at": "2026-09-09T00:03:17.812Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-branch/SKILL.md",
+            "updated_at": "2026-09-09T00:03:13.052Z",
+            "created_at": "2026-09-09T00:03:13.052Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-handoff-continuity/SKILL.md",
+            "updated_at": "2026-09-09T00:03:11.469Z",
+            "created_at": "2026-09-09T00:03:11.469Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-foreground-webhook-intake/SKILL.md",
+            "updated_at": "2026-09-09T00:03:09.877Z",
+            "created_at": "2026-09-09T00:03:09.877Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-trigger-check-gate-actions/SKILL.md",
+            "updated_at": "2026-09-09T00:03:08.064Z",
+            "created_at": "2026-09-09T00:03:08.064Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-source-check/SKILL.md",
+            "updated_at": "2026-09-09T00:03:06.449Z",
+            "created_at": "2026-09-09T00:03:06.449Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-review-output-partition/SKILL.md",
+            "updated_at": "2026-09-09T00:03:04.850Z",
+            "created_at": "2026-09-09T00:03:04.850Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-requirement-deepening/SKILL.md",
+            "updated_at": "2026-09-09T00:03:02.972Z",
+            "created_at": "2026-09-09T00:03:02.972Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-projection-discipline/SKILL.md",
+            "updated_at": "2026-09-09T00:03:01.186Z",
+            "created_at": "2026-09-09T00:03:01.186Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-pair-review/SKILL.md",
+            "updated_at": "2026-09-09T00:02:26.912Z",
+            "created_at": "2026-09-09T00:02:26.912Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-loop-safety/SKILL.md",
+            "updated_at": "2026-09-08T23:02:45.320Z",
+            "created_at": "2026-09-08T23:02:45.320Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-human-interaction/SKILL.md",
+            "updated_at": "2026-09-08T23:02:43.261Z",
+            "created_at": "2026-09-08T23:02:43.261Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-frame-check/SKILL.md",
+            "updated_at": "2026-09-08T23:02:41.609Z",
+            "created_at": "2026-09-08T23:02:41.609Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-ambiguity-handling/SKILL.md",
+            "updated_at": "2026-09-08T23:02:38.257Z",
+            "created_at": "2026-09-08T23:02:38.257Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-agentic-search/SKILL.md",
+            "updated_at": "2026-09-08T23:02:36.410Z",
+            "created_at": "2026-09-08T23:02:36.410Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/model-accepted-tradeoff/SKILL.md",
+            "updated_at": "2026-09-08T23:02:33.610Z",
+            "created_at": "2026-09-08T23:02:33.610Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-self-eval/SKILL.md",
+            "updated_at": "2026-09-08T23:02:31.910Z",
+            "created_at": "2026-09-08T23:02:31.910Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-rule-effect-measurement/SKILL.md",
+            "updated_at": "2026-09-08T23:02:30.226Z",
+            "created_at": "2026-09-08T23:02:30.226Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-persistence-tiering/SKILL.md",
+            "updated_at": "2026-09-08T23:02:27.852Z",
+            "created_at": "2026-09-08T23:02:27.852Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-parallel-agent-eval/SKILL.md",
+            "updated_at": "2026-09-08T23:02:25.424Z",
+            "created_at": "2026-09-08T23:02:25.424Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-loop/SKILL.md",
+            "updated_at": "2026-09-08T22:02:44.720Z",
+            "created_at": "2026-09-08T22:02:44.720Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-l1-update-gating/SKILL.md",
+            "updated_at": "2026-09-08T22:02:43.038Z",
+            "created_at": "2026-09-08T22:02:43.038Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-judgment-learning/SKILL.md",
+            "updated_at": "2026-09-08T22:02:41.355Z",
+            "created_at": "2026-09-08T22:02:41.355Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-impression-literal-detection/SKILL.md",
+            "updated_at": "2026-09-08T22:02:39.727Z",
+            "created_at": "2026-09-08T22:02:39.727Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-full-run/SKILL.md",
+            "updated_at": "2026-09-08T22:02:37.504Z",
+            "created_at": "2026-09-08T22:02:37.504Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-decision-structure-write/SKILL.md",
+            "updated_at": "2026-09-08T22:02:35.835Z",
+            "created_at": "2026-09-08T22:02:35.835Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/task/task.md",
+            "updated_at": "2026-09-08T22:02:33.260Z",
+            "created_at": "2026-09-08T22:02:33.260Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/operations/release-version-rule.md",
+            "updated_at": "2026-09-08T22:02:31.198Z",
+            "created_at": "2026-09-08T22:02:31.198Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/operations/operations.md",
+            "updated_at": "2026-09-08T22:02:29.382Z",
+            "created_at": "2026-09-08T22:02:29.382Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/operations/main-agent-procedures.md",
+            "updated_at": "2026-09-08T22:02:26.633Z",
+            "created_at": "2026-09-08T22:02:26.633Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/operations/execution-mode.md",
+            "updated_at": "2026-09-08T21:02:48.871Z",
+            "created_at": "2026-09-08T21:02:48.871Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/trigger-check-gate.md",
+            "updated_at": "2026-09-08T21:02:46.637Z",
+            "created_at": "2026-09-08T21:02:46.637Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/subtractive-structural-beauty.md",
+            "updated_at": "2026-09-08T21:02:43.565Z",
+            "created_at": "2026-09-08T21:02:43.565Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/rule-policy.md",
+            "updated_at": "2026-09-08T21:02:41.934Z",
+            "created_at": "2026-09-08T21:02:41.934Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/role-separation.md",
+            "updated_at": "2026-09-08T21:02:40.419Z",
+            "created_at": "2026-09-08T21:02:40.419Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/liplus-coding-rule.md",
+            "updated_at": "2026-09-08T21:02:38.503Z",
+            "created_at": "2026-09-08T21:02:38.503Z"
+          }
+        ]
+      },
+      {
+        "mode": "scan",
+        "sort": "updated_desc",
+        "since": "2026-09-01T00:00:00Z",
+        "until": "2026-09-08T21:02:38.503Z",
+        "truncated": false,
+        "count": 43,
+        "documents": [
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/layer-definition.md",
+            "updated_at": "2026-09-08T21:02:36.508Z",
+            "created_at": "2026-09-08T21:02:36.508Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/language-definition.md",
+            "updated_at": "2026-09-08T21:02:34.938Z",
+            "created_at": "2026-09-08T21:02:34.938Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/foundational-invariant.md",
+            "updated_at": "2026-09-08T21:02:33.222Z",
+            "created_at": "2026-09-08T21:02:33.222Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/dialogue.md",
+            "updated_at": "2026-09-08T21:02:27.889Z",
+            "created_at": "2026-09-08T21:02:27.889Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/character_Instance.md",
+            "updated_at": "2026-09-08T20:02:45.455Z",
+            "created_at": "2026-09-08T20:02:45.455Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/character.md",
+            "updated_at": "2026-09-08T20:02:43.769Z",
+            "created_at": "2026-09-08T20:02:43.769Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/boundary.md",
+            "updated_at": "2026-09-08T20:02:42.064Z",
+            "created_at": "2026-09-08T20:02:42.064Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/axis-separation.md",
+            "updated_at": "2026-09-08T20:02:40.032Z",
+            "created_at": "2026-09-08T20:02:40.032Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/model/absolute.md",
+            "updated_at": "2026-09-08T20:02:38.188Z",
+            "created_at": "2026-09-08T20:02:38.188Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/promotion-judgment.md",
+            "updated_at": "2026-09-08T20:02:36.569Z",
+            "created_at": "2026-09-08T20:02:36.569Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/memory-entry-format.md",
+            "updated_at": "2026-09-08T20:02:34.549Z",
+            "created_at": "2026-09-08T20:02:34.549Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/initiator-autonomy.md",
+            "updated_at": "2026-09-08T20:02:32.865Z",
+            "created_at": "2026-09-08T20:02:32.865Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/evolution.md",
+            "updated_at": "2026-09-08T20:02:31.110Z",
+            "created_at": "2026-09-08T20:02:31.110Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/cold-start-synthesis.md",
+            "updated_at": "2026-09-08T20:02:28.731Z",
+            "created_at": "2026-09-08T20:02:28.731Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/autonomy-block-shape.md",
+            "updated_at": "2026-09-08T19:03:36.511Z",
+            "created_at": "2026-09-08T19:03:36.511Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/_Footer.md",
+            "updated_at": "2026-09-08T19:03:34.284Z",
+            "created_at": "2026-09-08T19:03:34.284Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/L.-Hop-Count-Instrument.md",
+            "updated_at": "2026-09-08T19:03:32.556Z",
+            "created_at": "2026-09-08T19:03:32.556Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/K.-Source-File-Format.md",
+            "updated_at": "2026-09-08T19:03:30.230Z",
+            "created_at": "2026-09-08T19:03:30.230Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/Home.md",
+            "updated_at": "2026-09-08T19:03:28.132Z",
+            "created_at": "2026-09-08T19:03:28.132Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/H.-Roles-and-Evaluation.md",
+            "updated_at": "2026-09-08T19:03:25.793Z",
+            "created_at": "2026-09-08T19:03:25.793Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/G.-Sheepdog-Engineering.md",
+            "updated_at": "2026-09-08T19:03:24.097Z",
+            "created_at": "2026-09-08T19:03:24.097Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/F.-Behavior-First.md",
+            "updated_at": "2026-09-08T19:03:22.015Z",
+            "created_at": "2026-09-08T19:03:22.015Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/E.-Li+language.md",
+            "updated_at": "2026-09-08T19:03:20.324Z",
+            "created_at": "2026-09-08T19:03:20.324Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/DiDD.md",
+            "updated_at": "2026-09-08T19:03:17.968Z",
+            "created_at": "2026-09-08T19:03:17.968Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/Decision-Structure.md",
+            "updated_at": "2026-09-08T18:03:02.924Z",
+            "created_at": "2026-09-08T18:03:02.924Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/D.-Installation.md",
+            "updated_at": "2026-09-08T18:03:01.210Z",
+            "created_at": "2026-09-08T18:03:01.210Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/C.-Update.md",
+            "updated_at": "2026-09-08T18:02:59.167Z",
+            "created_at": "2026-09-08T18:02:59.167Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/B.-Configuration.md",
+            "updated_at": "2026-09-08T18:02:57.146Z",
+            "created_at": "2026-09-08T18:02:57.146Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/A.-Concept.md",
+            "updated_at": "2026-09-08T18:02:55.149Z",
+            "created_at": "2026-09-08T18:02:55.149Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/6.-Adapter.md",
+            "updated_at": "2026-09-08T18:02:53.527Z",
+            "created_at": "2026-09-08T18:02:53.527Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/5.-Notifications.md",
+            "updated_at": "2026-09-08T18:02:50.984Z",
+            "created_at": "2026-09-08T18:02:50.984Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/4.-Operations.md",
+            "updated_at": "2026-09-08T18:02:49.278Z",
+            "created_at": "2026-09-08T18:02:49.278Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/3.-Task.md",
+            "updated_at": "2026-09-08T18:02:46.893Z",
+            "created_at": "2026-09-08T18:02:46.893Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/2.-Evolution.md",
+            "updated_at": "2026-09-08T17:03:13.562Z",
+            "created_at": "2026-09-08T17:03:13.562Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/docs/1.-Model.md",
+            "updated_at": "2026-09-08T17:03:11.429Z",
+            "created_at": "2026-09-08T17:03:11.429Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/adapter/codex/hooks-config.md",
+            "updated_at": "2026-09-08T17:03:09.305Z",
+            "created_at": "2026-09-08T17:03:09.305Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+            "updated_at": "2026-09-08T17:03:07.222Z",
+            "created_at": "2026-09-08T17:03:07.222Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/adapter/claude/hooks-settings.md",
+            "updated_at": "2026-09-08T17:03:05.161Z",
+            "created_at": "2026-09-08T17:03:05.161Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/adapter/claude/agents/dialogue-evaluator.md",
+            "updated_at": "2026-09-08T17:03:03.103Z",
+            "created_at": "2026-09-08T17:03:03.103Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/adapter/claude/CLAUDE.md",
+            "updated_at": "2026-09-08T17:03:01.302Z",
+            "created_at": "2026-09-08T17:03:01.302Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/README.md",
+            "updated_at": "2026-09-08T17:02:59.209Z",
+            "created_at": "2026-09-08T17:02:59.209Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/Li+update.md",
+            "updated_at": "2026-09-08T17:02:57.256Z",
+            "created_at": "2026-09-08T17:02:57.256Z"
+          },
+          {
+            "repo": "Liplus-Project/neuron-graph-rag",
+            "type": "doc",
+            "doc_path": "corpora/github-retrieval-parity-v4/Li+config.md",
+            "updated_at": "2026-09-08T17:02:55.297Z",
+            "created_at": "2026-09-08T17:02:55.297Z"
+          }
+        ]
+      }
+    ],
+    "exact_path_count": 93,
+    "unique_path_count": 93,
+    "duplicate_count": 0,
+    "missing_count": 0,
+    "out_of_prefix_count": 0
+  },
+  "stored_content_fetch": {
+    "service": "github-rag-mcp",
+    "tool": "search",
+    "mode": "fetch",
+    "vector_id_derivation": {
+      "release": "v0.11.0",
+      "release_commit": "1a826baad05e8c657ea14e53e8c8bf0bac5efdf6",
+      "function": "docVectorId",
+      "scheme": "d:base64url(sha256(repo + NUL + path))"
+    },
+    "request_counts": [
+      50,
+      43
+    ],
+    "responses": [
+      {
+        "mode": "fetch",
+        "content_source": "index",
+        "content_max_chars": 8000,
+        "not_found": [],
+        "document_count": 50
+      },
+      {
+        "mode": "fetch",
+        "content_source": "index",
+        "content_max_chars": 8000,
+        "not_found": [],
+        "document_count": 43
+      }
+    ],
+    "documents": [
+      {
+        "vector_id": "d:gC5XqTGkQewMB8Cxq_-rVxQiQL0JfkKJu7rfzxRa0tk",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/Li+config.md",
+        "content_chars": 1224,
+        "content_truncated": false,
+        "stored_content_sha256": "b352399ba362d6f046a0f7b6be5c2d0bc625cc508c17a652b70a4ab7bdadf533"
+      },
+      {
+        "vector_id": "d:g8_jJDMLtkr-XBhwPjAJa62WdO_YpnzIv7aAZwMWZPY",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/Li+update.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "ba0c116edf58b2c05e6283dbb8038868c46923725c0936690aad6a30cc03f8bf"
+      },
+      {
+        "vector_id": "d:lY-KmLAWHDfre_Qkgseim1hvbvAeuaXNdIX5zjCAA7k",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/README.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "dcb2935babe2a7af6d5d1da286f4c466819fe30bfe4f06ba07bbc55c2e985149"
+      },
+      {
+        "vector_id": "d:fj5a5mkIhkYfLm9wdL1kjnEDcxsW1xEgxLEfVopFJm8",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/adapter/claude/CLAUDE.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "3e85280db4ed6688a55fa22dbed90fa71b65fd95013ab1be0d177b76ea25ea88"
+      },
+      {
+        "vector_id": "d:fKOqKT57mdgQMTnKQmot6zXHcjLes3uNyt27C235CmM",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/adapter/claude/agents/dialogue-evaluator.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "bbb4ca6efe8a52e47a47a220830589fdf55f778efab3f1cdfd85144041e6effe"
+      },
+      {
+        "vector_id": "d:22sRNCiRMRa2KxNhXEqPgYTQXDmFER7i5nrScuFMExQ",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/adapter/claude/hooks-settings.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "81305d37eecfe3de9dc54146d147a6d352eda2864c91c1f7f2e722f77383210d"
+      },
+      {
+        "vector_id": "d:vQzTrougR0AZRTiFnCD3SVSICaHP3t7YH36XeQM9h5U",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "5c9b9456ba25f96eca2232bf415a31319fb7197754baea10e12e8d4189d8939c"
+      },
+      {
+        "vector_id": "d:RKsoTyQYgLptPITztsMCaZY0aAB7F4a1_8k00dyabYU",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/adapter/codex/hooks-config.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "bd8c1f7e927738c81eebfb729f560bc805722ccc7dd5440a9674d5f4af7d2302"
+      },
+      {
+        "vector_id": "d:lW4r5OyTCkiTobDeSbeehz-OM7c4Mf2XT0vcpoO8r58",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/1.-Model.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "793854c8c09d5c1e167d370ab30b7496837c6fde18961772e7bc9dbb67a31cb8"
+      },
+      {
+        "vector_id": "d:dvqgazzsgOhbAzUmwK2Im_1GQjS15lsFMzsF5QQG2mw",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/2.-Evolution.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "8a13b77b3a546714d8823a12a11f408109784825ce327e2b1f79d0be6aac6a4c"
+      },
+      {
+        "vector_id": "d:TUmNRUaW-sXcl6cbLt1Ut9US8kLz6tt5JWdlLBXFFX8",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/3.-Task.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "e93f26bb19d21c3c971864ac8773a2efbec77a71b61b34cb72b1d61f9476b722"
+      },
+      {
+        "vector_id": "d:WPAu112eC-9R1kvWCIRgA0zeyt2hd914sqtZgQ9z0gg",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/4.-Operations.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "da4a7644ca6e58a1b9b4776c8bb90c743efaf5d66ac202c18101f46e15d1491d"
+      },
+      {
+        "vector_id": "d:rKMzQqbnseXL-izduu_l5ACzVJrKU3flHc60CnozTgU",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/5.-Notifications.md",
+        "content_chars": 3975,
+        "content_truncated": false,
+        "stored_content_sha256": "ed11810ec55b4aa217ca5c10fa1bbf01d747e60313c2b00b9ba0e5fc027364f9"
+      },
+      {
+        "vector_id": "d:UROkE9ZFPkzCLyFYFAKAU0J3R2O3kl5GPftX08TwKMs",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/6.-Adapter.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "69403d23335025c0f00fb428c2ade3c10efcde062fbb3ec75b48e61deaff8812"
+      },
+      {
+        "vector_id": "d:dEnHUhJ2a5qJQV89n943RqxdB2jcm5Azf9vGFAeE6J0",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/A.-Concept.md",
+        "content_chars": 3638,
+        "content_truncated": false,
+        "stored_content_sha256": "59bbdf472a1b2ce6d29066b5dd4bdd43dad1880b3ba90788f45a9beb7d65d04d"
+      },
+      {
+        "vector_id": "d:sKm6xAmzdjtAD-2bT8wo5Jf89uhbU4-nuraRhoubRnk",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/B.-Configuration.md",
+        "content_chars": 7562,
+        "content_truncated": false,
+        "stored_content_sha256": "8d5af48727365512b2590fe4fa10fec62fd930b6898e5272079694b1e93ebbd9"
+      },
+      {
+        "vector_id": "d:92YSdcSXH2jAqJJLivScYFrrSSJGVKedluYs4dZwrmw",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/C.-Update.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "e62115c39913ce3503ade3312b62de17cfad2a25de84e69cad87f546f46e6f93"
+      },
+      {
+        "vector_id": "d:wuWlHMPkf5jbcgOazdf3Fw486JzjjowSORxJ_nNOVJM",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/D.-Installation.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "9da3117df6d21c726cb4e9ace8f384e0748b69a7bf3a63383405e8abf69d4936"
+      },
+      {
+        "vector_id": "d:SuiDdT_iw3DXMj0ln-9nlBHnGU4BuQZFSLgytifCBL0",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/Decision-Structure.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "d4c54a1902c52d839bc6d89c1c55adb51da04da1ec1a123779000e36d1bbf54e"
+      },
+      {
+        "vector_id": "d:MI4pGr7RtgIC9sSVvJ-1Em-pUBp8_gYWShAkgoCFcD8",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/DiDD.md",
+        "content_chars": 2219,
+        "content_truncated": false,
+        "stored_content_sha256": "3a7a340fbc2e5d00c5bb9ec2dd5eb0b25a97c6d43c2a4614aad710e927cb3bf2"
+      },
+      {
+        "vector_id": "d:GSZrhqYP85yN6b2OSHSmzUEZaJDHLxAE76gCahfisWU",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/E.-Li+language.md",
+        "content_chars": 5518,
+        "content_truncated": false,
+        "stored_content_sha256": "3828b2846135fc86056a11136fc7784410f6a3ab030456af03752acc94ee91dc"
+      },
+      {
+        "vector_id": "d:mkrI9yWNzQgRNJXLXb4ZWWah4Oistal5luZN7qiFrjE",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/F.-Behavior-First.md",
+        "content_chars": 7010,
+        "content_truncated": false,
+        "stored_content_sha256": "3e8883beb15921b4480d4445a6c5898cb380a1187aaef16ba870bf5ae75efddf"
+      },
+      {
+        "vector_id": "d:E49eucudnj01suSAkgdnjO9sC_uxprTnra1Dw7ACkUE",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/G.-Sheepdog-Engineering.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "5ec7802eaff919efbf98b7e4b816d4b1ed3663f0e37464b53f3c7bc4ea3f35e0"
+      },
+      {
+        "vector_id": "d:kMVPujR7XnG_25GjiqE-yHzbLQkCwJTGIBxrrWm3vU4",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/H.-Roles-and-Evaluation.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "5c88233f23bcada98d22db94ad1691d5e06c657153858df3c71467d67e01e6b6"
+      },
+      {
+        "vector_id": "d:IQep0feA_HwnZ3DLZ9KrG0jyNm17eDg72j3zRL4s1cI",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/Home.md",
+        "content_chars": 2645,
+        "content_truncated": false,
+        "stored_content_sha256": "67f6b6aa14ec452b527930212cca034c34fbc337c33ef4e2d42720fc7858fc4c"
+      },
+      {
+        "vector_id": "d:ojCCGyqkA4MpgHE9ehMOP1h0RKOuXL7PWoR7w5dhe94",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/K.-Source-File-Format.md",
+        "content_chars": 5686,
+        "content_truncated": false,
+        "stored_content_sha256": "b34063fbea942eb0858a6417c3c2434a11307f97a9e6bf4fcbb9b9e893666af9"
+      },
+      {
+        "vector_id": "d:59jKvok988eUK4LFR5ICHBG65Y19s1tkWwymE_5FQIg",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/L.-Hop-Count-Instrument.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "dc455b5e593e687c7fcedfdadd8cab77e1eef08a61615c7ff3bdd146222bd830"
+      },
+      {
+        "vector_id": "d:EIIyUfpWE7Urh__dgT3IWpeSVozn4uclSfObTPU1bcc",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/docs/_Footer.md",
+        "content_chars": 1029,
+        "content_truncated": false,
+        "stored_content_sha256": "d12623558699acd5b3bafd5bfadd8787a052a7d49ac1924402cc60b34ff6a0cf"
+      },
+      {
+        "vector_id": "d:QJUAfF1iGDLqAxzOYs8W_IJE1lFfyaa1e10GK4f3G38",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/autonomy-block-shape.md",
+        "content_chars": 2570,
+        "content_truncated": false,
+        "stored_content_sha256": "daa62ac092039995ae423142876ae718433b09637c028ceb1586f9be9444d2a1"
+      },
+      {
+        "vector_id": "d:KpibGxUuhZvUNnKVF5T_P-5p8DPv-iFz-BbFNTQQlNI",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/cold-start-synthesis.md",
+        "content_chars": 5858,
+        "content_truncated": false,
+        "stored_content_sha256": "4986422afd9aa3e04edfa679df1c924eeabad42e02bb8e561161e508d760fa01"
+      },
+      {
+        "vector_id": "d:BZ93z6xX63DrZ3DZVHHQDwZjPKcOYY2SbPMSzzashGs",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/evolution.md",
+        "content_chars": 4202,
+        "content_truncated": false,
+        "stored_content_sha256": "6860a3e8200700def6c28d20ab12def389aa62717c6f69af5b105faa3b269efb"
+      },
+      {
+        "vector_id": "d:7rqQdZcmR7hYKBsr9Mb-ZA8CxsdWOxNVz1ng9zQayy0",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/initiator-autonomy.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "88771f73f07a65650a6809b2581167dd05c52ba00b9393529fc68b893af370cf"
+      },
+      {
+        "vector_id": "d:7a8CnkNQ8hly4oO7xtID8ncuY_19O5It5UqQ186V0bU",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/memory-entry-format.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "e0fb4b4b09960fb75be8ed72998724520cdf8a694d21fc398e0e8b841f0c8588"
+      },
+      {
+        "vector_id": "d:Z3ccifpdiQxl1j4eFyx0GPv-u_caGcoSoLcBTCYB6Z0",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/evolution/promotion-judgment.md",
+        "content_chars": 4601,
+        "content_truncated": false,
+        "stored_content_sha256": "0c9708d85a585a910e1a35542bd89e0f1d1ca03da64b02d21196a5b017d73247"
+      },
+      {
+        "vector_id": "d:FL2AUT91hIg95tDN8uiPWus7C4Duy65yBk0vExHoxaw",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/absolute.md",
+        "content_chars": 961,
+        "content_truncated": false,
+        "stored_content_sha256": "d6d99503576b6fe8411237e8a482d348a33a716a4385c055badbe4c7d3b7a503"
+      },
+      {
+        "vector_id": "d:p3VTJhA9N3BQ2IfzSjRCvU4lifdfJlpzE2jVnFOjM70",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/axis-separation.md",
+        "content_chars": 1295,
+        "content_truncated": false,
+        "stored_content_sha256": "70784bf2c1d933de4f0a4f95d1977fa34739d5ca41f466d6a3a3b10b4625d7f1"
+      },
+      {
+        "vector_id": "d:hRShZX40jiI_nm_Mj_e6Bxfxj3AAE1TM1m_ZI4fnyYk",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/boundary.md",
+        "content_chars": 387,
+        "content_truncated": false,
+        "stored_content_sha256": "4699b459168634a65f3174b5d843e1b758bdb47db3ad0fc27680649aea39ed68"
+      },
+      {
+        "vector_id": "d:p408Vagv4fqnl-dWn-DbRYzFzeoMnNJmPILOGBUMSb4",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/character.md",
+        "content_chars": 4405,
+        "content_truncated": false,
+        "stored_content_sha256": "4e9b3e12019f5b391f1af89df041f5b7119b43c92ad52c9f21bf44b96d123052"
+      },
+      {
+        "vector_id": "d:1wcB2lbQ4T3VxdpPAScDuq0nzJkp2Af3HdRaTCVDTp4",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/character_Instance.md",
+        "content_chars": 459,
+        "content_truncated": false,
+        "stored_content_sha256": "e341f74c38382478c0e74b2851152528e79c42e1d7d834976b06a3e1519afb73"
+      },
+      {
+        "vector_id": "d:djJqRKqAYfcLako9vXB75kAdOkG8S_dIY7IFXdiQF6Q",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/dialogue.md",
+        "content_chars": 833,
+        "content_truncated": false,
+        "stored_content_sha256": "289a2cdcd28d57a4a0a5376619a72649b028b9ff3346d601c663ee2bb831c5d1"
+      },
+      {
+        "vector_id": "d:cKw8uqK2LoXeYCPVQefthSH4ueo65v6mvLcVPYfpCSY",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/foundational-invariant.md",
+        "content_chars": 1024,
+        "content_truncated": false,
+        "stored_content_sha256": "ea7ee5d13e0788c6bbedf1005c60328261d7aef181ff57175b69f7e159122e0e"
+      },
+      {
+        "vector_id": "d:5nlD7G4C3hNCfHQ38PDQXai9q14jlS61rnWgMTvHlxo",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/language-definition.md",
+        "content_chars": 1968,
+        "content_truncated": false,
+        "stored_content_sha256": "f79c0546a7958e11f16b46ac9559420652c241ce2703d47db73d4d08277b7bae"
+      },
+      {
+        "vector_id": "d:BTUYS2klhhrtoVbr25eRwaWpo-5z-hwPMsVb4BDddTA",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/layer-definition.md",
+        "content_chars": 1304,
+        "content_truncated": false,
+        "stored_content_sha256": "9926ae21a8d44e2cc76aab6b2dca2bea6c873f54c6acf7d7636e64d4b5823832"
+      },
+      {
+        "vector_id": "d:hmWAlaOZpymT_MkKMHzfwxZye0-kbzFcJrg_IZJSf5Y",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/liplus-coding-rule.md",
+        "content_chars": 3786,
+        "content_truncated": false,
+        "stored_content_sha256": "e3cba1ef546f9f64f0f1386768a8c993a2781ba55b06874fb15742727feecb4a"
+      },
+      {
+        "vector_id": "d:ToG6eHkpOJncCk-6KbJSsRrdRGkQGaPO4oZtUIIa8hk",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/role-separation.md",
+        "content_chars": 603,
+        "content_truncated": false,
+        "stored_content_sha256": "8d8c9f2d5b79cae66a810d93b1389e1b64e372f7ad1728cc63cbcc4d48c3ad2f"
+      },
+      {
+        "vector_id": "d:qgTi9UVcjerpYFp7Cccyc_ObDJuqzzIxkVPgoCv6J3s",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/rule-policy.md",
+        "content_chars": 1216,
+        "content_truncated": false,
+        "stored_content_sha256": "ea77c0aff288b5fa66335a9d55ae4484b5692e5ae802de73e725db96c3f4e75a"
+      },
+      {
+        "vector_id": "d:0s_3vnR2Zg5pyqaB8vmy2Dqkdie8wxX1Z9QwyDHEhoU",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/subtractive-structural-beauty.md",
+        "content_chars": 3642,
+        "content_truncated": false,
+        "stored_content_sha256": "34c65bbf8d4a79ab9bf3f9c17ef5b4b2621102c469a34439c8d5e1446008fe6e"
+      },
+      {
+        "vector_id": "d:d684OZ9y1XKYfsiJv87REritKbF79m89sw32VyhuJRM",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/model/trigger-check-gate.md",
+        "content_chars": 3126,
+        "content_truncated": false,
+        "stored_content_sha256": "81b46d600ef8fb65c24faf6668eb038217069f5cafb793b08cd290ab17ead5b7"
+      },
+      {
+        "vector_id": "d:cTRTiUtzi5DqZeUWd3hPS6sodMgND9fbCCInZaMkVzk",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/operations/execution-mode.md",
+        "content_chars": 5619,
+        "content_truncated": false,
+        "stored_content_sha256": "1c2e986aaee23a79f22e408fc0e71dfc5b71eb01cbf408bd817d6060d4fbeddc"
+      },
+      {
+        "vector_id": "d:kk7oAcX3vGbl6Z_HgWvTK8mIoLIemGjWL4sdaBn127M",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/operations/main-agent-procedures.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "3c9e552e4f12e31442a80628dfaa2174853f98865f5e6d745f853e1fcfc0aaa9"
+      },
+      {
+        "vector_id": "d:qZdTnVE0_z6wyITY-TPEPJJzTVG96LnJAmsq0AUrcz4",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/operations/operations.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "0a9b1e5900001e148999d02e1d26131762e5fa095c0489e22575c70247f944e0"
+      },
+      {
+        "vector_id": "d:HAY3Qrb8PX8_rqxV01Cq-BlN1GK5D-GOjPKHnuyv6NE",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/operations/release-version-rule.md",
+        "content_chars": 1562,
+        "content_truncated": false,
+        "stored_content_sha256": "adf1f9f6f000f640acff0ec3cb655ff88608b1487e5989aecd1f98178c407de1"
+      },
+      {
+        "vector_id": "d:V5Of88uAnHWpRLxiCncuPIdfGbugRiZUnNqfTSXTKCU",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/rules/task/task.md",
+        "content_chars": 7013,
+        "content_truncated": false,
+        "stored_content_sha256": "5137a366172e6602a867ab58cdd5053fca78af26e2f55ef9487ba377465d8f30"
+      },
+      {
+        "vector_id": "d:4chMkWdudr6cor3yjamduHusBpzT17lBx3LzYxplOZc",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-decision-structure-write/SKILL.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "94bd9cb83c84261998262c53e3c49841d48d771944d438d8d236cd0307080882"
+      },
+      {
+        "vector_id": "d:TbC_C6h2EOME5bxiymwQLkHUr2WG1Hmh6YNvFB_LGcU",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-full-run/SKILL.md",
+        "content_chars": 3636,
+        "content_truncated": false,
+        "stored_content_sha256": "f20ed533150ae79d2d586629aa80c03a43ad5b73886da5737dd25cc9928d11d2"
+      },
+      {
+        "vector_id": "d:56RJpNLWndEfoR5WrhNzmigk4Nf2hdLM1VY7x3eSTiQ",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-impression-literal-detection/SKILL.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "eb09ca376be762a9cf95821e66eba1d71f2e644a0b1edd156a69f2eddd00c91a"
+      },
+      {
+        "vector_id": "d:0chwyh57Nmzh8AyWMToPRsN6qhUcA3Opk6myOAkK0Oo",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-judgment-learning/SKILL.md",
+        "content_chars": 1153,
+        "content_truncated": false,
+        "stored_content_sha256": "440aafcbd458e9696764d8bdcb6daba4d3614094217e1d70f799f80c1723b7f4"
+      },
+      {
+        "vector_id": "d:MCMx9w39GuVGwy20nhr9LwajDxp-bu4pDXnKW69ugig",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-l1-update-gating/SKILL.md",
+        "content_chars": 3348,
+        "content_truncated": false,
+        "stored_content_sha256": "89054d70ca09b2011a16b3f5af737f7ffc3087845edb4e3ed969ffc8caccb0b9"
+      },
+      {
+        "vector_id": "d:-dMdqIYAOT8ie54F0OMmeMme5WWbVyvV_eg4fwiTVWg",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-loop/SKILL.md",
+        "content_chars": 1695,
+        "content_truncated": false,
+        "stored_content_sha256": "3ea0678ce3305f912fb34956922578c1244721c587b383789a076d7c1d24ac27"
+      },
+      {
+        "vector_id": "d:1H0BFWoHAlKWy8LM_iXE6pgDhYyvveProidJhfK0dsw",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-parallel-agent-eval/SKILL.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "e3da95c4ac0ee37b9af88a422d0a9ee55a65f5e93520343c8118194753b56b1f"
+      },
+      {
+        "vector_id": "d:FQKfDeSqXGvFDte5IeL13b9coPw4zyKZDZpWwXv8tjM",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-persistence-tiering/SKILL.md",
+        "content_chars": 3136,
+        "content_truncated": false,
+        "stored_content_sha256": "1bb63b71c1a0b716d9c4161c9b027406fee04e93b3ea1702527db21c170f9fcc"
+      },
+      {
+        "vector_id": "d:QMM3m1w6hpVnuhxZu1tShD9BTU6cOQ4q8X0SZelYlUI",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-rule-effect-measurement/SKILL.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "5306ad5945c33a707308ffa7f1dcb1ad2b1d06ddbaf8035b391e117e7ab7b8a0"
+      },
+      {
+        "vector_id": "d:it8i6HSoz7QBnQc9_-5fYFXMIMy7cz2l6-VvWWkWC2s",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/evolution-self-eval/SKILL.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "09c19b36b84856599e46948b69f7b5a527fc46116fd762b9f346a520f6b0f25e"
+      },
+      {
+        "vector_id": "d:6ORTCCyVriGo1nY294wRoaxEMFKhpiiu346Cwn1Faek",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-accepted-tradeoff/SKILL.md",
+        "content_chars": 2630,
+        "content_truncated": false,
+        "stored_content_sha256": "47284b4dbe3589240478cfcaf9e1cfe44e2fcd19a4779749a4d139fcd97896a8"
+      },
+      {
+        "vector_id": "d:vajawtVCOrWuq2BcXIhgS4nc7q3uf7YjgIu_GHWFJnU",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-agentic-search/SKILL.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "09870c834e18eba34cea3ac8d4c469da7074c85b13e226f30cb49b0e56831e51"
+      },
+      {
+        "vector_id": "d:8T4XBV3xDrh5BTvWNh3XFCyXGYw9_ObkglA1w8mCuOw",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-ambiguity-handling/SKILL.md",
+        "content_chars": 3787,
+        "content_truncated": false,
+        "stored_content_sha256": "8212ef51ace1ec5b65fd9d0f690eac226e2671ee165b04e636411575346db8f6"
+      },
+      {
+        "vector_id": "d:_zJSRbpBSTuHq8hL9h8LZR9z45M1zaSgqHU-DdcxA1w",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-frame-check/SKILL.md",
+        "content_chars": 3330,
+        "content_truncated": false,
+        "stored_content_sha256": "f3ac9a455ef68d9087a8168d96878c515cbd336ab13d15aad0a0e2ef23691ad1"
+      },
+      {
+        "vector_id": "d:cSve7UUc_fvwXQI-Cx-R4yoHoB_G3Mvp_NmqFsVMDyc",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-human-interaction/SKILL.md",
+        "content_chars": 5499,
+        "content_truncated": false,
+        "stored_content_sha256": "7788d559383e8e2f1157b68cca46ea187b28899f5ecffb1bb1477e2cb0954100"
+      },
+      {
+        "vector_id": "d:RuxgLFMDfI4DQMpx3adyLwHXnJyALGEIeTbJIsgNx5o",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-loop-safety/SKILL.md",
+        "content_chars": 3429,
+        "content_truncated": false,
+        "stored_content_sha256": "2295455283016045e5ce6713c8e52abea6fad8baf02aec0779219f5f36d115d7"
+      },
+      {
+        "vector_id": "d:yRI5sxfe-IRM_h20HyDIVp4RLBtTpE-obIB7cKEWtQ4",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-pair-review/SKILL.md",
+        "content_chars": 925,
+        "content_truncated": false,
+        "stored_content_sha256": "10e0d6d6acd96988ffe7cf5fb09b70b3b8399104359c97fdd3470a27114bd04f"
+      },
+      {
+        "vector_id": "d:40U4_LF1wntQQrWJjjFfDBR7aclNB8KLEo9dvh1CR80",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-projection-discipline/SKILL.md",
+        "content_chars": 2622,
+        "content_truncated": false,
+        "stored_content_sha256": "5779eb62c23bdee1e73b0959991eef81841ed1edc5304573150acb0cc85c60aa"
+      },
+      {
+        "vector_id": "d:gKKkYcTF5RzlrK-9XimSbQHQc6Mn5J_0dJt3oY5F-bo",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-requirement-deepening/SKILL.md",
+        "content_chars": 1243,
+        "content_truncated": false,
+        "stored_content_sha256": "f852a3cb1e8ac00f3f2f9956f8fac6b6f2d45d28e1f82573e05428762d90970c"
+      },
+      {
+        "vector_id": "d:7xCoQ3f7ZtdvNNVKunX4_wKkPb1JsDb6n2w3fgtptTQ",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-review-output-partition/SKILL.md",
+        "content_chars": 653,
+        "content_truncated": false,
+        "stored_content_sha256": "010adc42e3475c1a75113fd8d72ba1dd0c73fe2fafac2f3ad41e88021f5c3467"
+      },
+      {
+        "vector_id": "d:uEQG7grwTp0k19b08i9-2PEtRZ8EITGeWFAKtH0AG7A",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-source-check/SKILL.md",
+        "content_chars": 6362,
+        "content_truncated": false,
+        "stored_content_sha256": "e15aa77aa7187b7f85305b31fc4bc3fb1dc8b448b66d946658dcf88c6ef1a279"
+      },
+      {
+        "vector_id": "d:GJX8C3rqv1QXwUZcthX3Plky2au_xp_ZWwcwSmpyDSo",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/model-trigger-check-gate-actions/SKILL.md",
+        "content_chars": 4901,
+        "content_truncated": false,
+        "stored_content_sha256": "9f18e107d547a76d44537bdc36f3f14f2e63f89949168a5f27e0093d18d2e35a"
+      },
+      {
+        "vector_id": "d:p_-MbiG4x96f7UoMtD7hSG4PBwXgRy8DkOwleDi5m9k",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-foreground-webhook-intake/SKILL.md",
+        "content_chars": 1590,
+        "content_truncated": false,
+        "stored_content_sha256": "8cd12c49ac7efed5b27d8489d5e0926e03344d18ae192cc3621d43cd7f8f50cb"
+      },
+      {
+        "vector_id": "d:ZBYh18eGMz54BlnAXVGOcmHY7ciytCnq5ebSPKhewTE",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-handoff-continuity/SKILL.md",
+        "content_chars": 1415,
+        "content_truncated": false,
+        "stored_content_sha256": "cf4cda18abfe391193554f06bee324ffd644a67b9e343a2fa938d9f5f597b459"
+      },
+      {
+        "vector_id": "d:l4trntqgBk5qBnaP2odIeA0n4SkfLk8664eq197qKT8",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-branch/SKILL.md",
+        "content_chars": 1978,
+        "content_truncated": false,
+        "stored_content_sha256": "48db9c3c4a41bd1895cf7214350fabe19841c19dd6d5189014e7c1ae5f5cb9d6"
+      },
+      {
+        "vector_id": "d:wjNCKoeCi4pXT-VHGw56u0xUnTpYu8n19E42FEwH_AE",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-ci/SKILL.md",
+        "content_chars": 1428,
+        "content_truncated": false,
+        "stored_content_sha256": "bbdad6836f1e314027ddfc357da9aff4d952a34156bc1e63ef802c5197462ccd"
+      },
+      {
+        "vector_id": "d:yxD__cEfaWmoJgJraZMEZsdRBGJPIix4GGOUxdb1FIg",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-commit/SKILL.md",
+        "content_chars": 732,
+        "content_truncated": false,
+        "stored_content_sha256": "ef27e1edee4c0f60639f2c15caa80bfb6ed7e89bbfc8932e62f3d2c30b959a10"
+      },
+      {
+        "vector_id": "d:2OYyobXBbvVyiy5Q7ygI0bhg8OrvkwxiWXeS3gc8fmc",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-docs-ownership/SKILL.md",
+        "content_chars": 2769,
+        "content_truncated": false,
+        "stored_content_sha256": "022151db868273dc818d73cb17e3cecb3f8100c33db3cbed52b110dc19bc8461"
+      },
+      {
+        "vector_id": "d:FzWx4T57AKRNnq5q_8tUtpBL3-g8izby0FbTfRG16Rc",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-issue-format/SKILL.md",
+        "content_chars": 1536,
+        "content_truncated": false,
+        "stored_content_sha256": "5a05771a33348869934b0e4e08260617046ebc3bac90d588a026fb0b208e4a36"
+      },
+      {
+        "vector_id": "d:tNunof3j3Z-NuCD0M2ZvZRKENFKsgqrl2GYwaDqBkhw",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-pr-creation/SKILL.md",
+        "content_chars": 3015,
+        "content_truncated": false,
+        "stored_content_sha256": "434ce845f49a243e6c709225e868cc0a8e268b150a73034898e5fb0d7fee28f8"
+      },
+      {
+        "vector_id": "d:z_a4mqqc9DoeHhiyBI3XLdj5Z2ahgYBWuiDzlB2d5_E",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-pr-review/SKILL.md",
+        "content_chars": 3226,
+        "content_truncated": false,
+        "stored_content_sha256": "2c71073ba3e095609950724ca8716c6e5b05c13ab008671839789eef678345a6"
+      },
+      {
+        "vector_id": "d:3tvz4tAd602a6sLpwd8LCKPK--DkhXH5MxRqKu-z51w",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-release-state/SKILL.md",
+        "content_chars": 3778,
+        "content_truncated": false,
+        "stored_content_sha256": "16b89d47e075416042506a9a82056b66e99da9014939838c8fb8185e858ce550"
+      },
+      {
+        "vector_id": "d:_HDtmfS_hG1qMn35jtGth0S1tgxUxYq_x6ztF6mubD0",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-release/SKILL.md",
+        "content_chars": 4256,
+        "content_truncated": false,
+        "stored_content_sha256": "8bb2e9e46621082b098d652ff6f1e50505e1154c6dd7f4a39de1c5aca1993a37"
+      },
+      {
+        "vector_id": "d:E5pWNr8hRgrpuSjDI8M4Lsd5aiCrqIsOv1yCK32btt8",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-sub-issue/SKILL.md",
+        "content_chars": 2203,
+        "content_truncated": false,
+        "stored_content_sha256": "939346b4958cc7606a2f2fa72697494aa1b83d91e4873a2854512851ba0ff925"
+      },
+      {
+        "vector_id": "d:inlKsoFSOQJlbh0s5MKFjg_rORPjsb0qH-Li2qLushc",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/operations-on-wiki-sync/SKILL.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "637bb4afdd5c704308bcb5744a9d0eca6b0f6a5f0e80c840f4ead0a9512981c2"
+      },
+      {
+        "vector_id": "d:4LJwlcsanTnIhm-YN7ySykK5boxkbLhrtjZcbMEtmJ8",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/task-pr-review-judgment/SKILL.md",
+        "content_chars": 2862,
+        "content_truncated": false,
+        "stored_content_sha256": "8f356d8dea00df928b68a96a38ca96b7dfee046f2908ea48c883d920a4c55af0"
+      },
+      {
+        "vector_id": "d:6VGNyIKuySjdO6JHJAUE_XUhqXg8P1SRgq0cuQpyiMU",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/task-subagent-delegation/SKILL.md",
+        "content_chars": 7722,
+        "content_truncated": false,
+        "stored_content_sha256": "801ae08f2d1d1f9360e177d0317c43444b95d62c2cb966ad0d8301c5631f4f97"
+      },
+      {
+        "vector_id": "d:HVhWLn1b2Ls7vrI4ykWX92tgR11cugp8UtGNZeceLZ0",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/task-subagent-prompt/SKILL.md",
+        "content_chars": 8000,
+        "content_truncated": true,
+        "stored_content_sha256": "efa6a5ef94de5d949994f4e7e90fe87f98b2791788101126ae0cb8fdc8a27687"
+      },
+      {
+        "vector_id": "d:hwek4NWyxuh-MU3GbidLo1h8viW8YLAte_ijz9UdXaE",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/task-subagent-spawn/SKILL.md",
+        "content_chars": 3705,
+        "content_truncated": false,
+        "stored_content_sha256": "fcbdead42d02f64d8077c91cdb710b1717deb20f0e0829214ab97e8d1d8dbe29"
+      },
+      {
+        "vector_id": "d:BSSZp4ZNqMACkBLEsGH93yewtYobveKiqkTTcMAXwAs",
+        "repo": "Liplus-Project/neuron-graph-rag",
+        "type": "doc",
+        "doc_path": "corpora/github-retrieval-parity-v4/skills/task-subagent-state-labels/SKILL.md",
+        "content_chars": 7106,
+        "content_truncated": false,
+        "stored_content_sha256": "594befb740c0029632e681279fc46362406bf249893db53126b8ffcc65be86e2"
+      }
+    ],
+    "matched_frozen_content_count": 93,
+    "mismatch_count": 0
+  },
+  "public_source_read": {
+    "service": "GitHub GraphQL API",
+    "request": "repository object(expression: main:<path>) Blob oid and text for all 93 frozen paths",
+    "remote_main": "63f52592b518ec72785216a79d2a72f24d97494f",
+    "document_count": 93,
+    "blob_sha_match_count": 93,
+    "source_content_sha256_match_count": 93,
+    "mismatch_count": 0
+  },
+  "conclusion_ja": "queryless照合は93件すべて凍結corpusと一致したが、preflight登録runnerの初回実行がimport時点で失敗した。no-retry境界により同一v4の登録を再実行せず、development queryを送らずに終了する。性能は未評価である。"
+}
