@@ -18,7 +18,7 @@ python tools/run_tests.py all
 
 `-v` は各テスト名を表示する。`--list` は import/実行せず分類検証と選択モジュール一覧のみを表示する。実行時の最終 JSON は選択数、実行数、skip、失敗、エラーと import を含む経過秒数を示す。件数は AST のメソッド数ではなく unittest がロードした件数。
 
-`all` は従来の `python -m unittest discover -s tests -v` と同じ discover を使う。手動全件監査にはさらに CI と同じ `python tools/probe_source_grounded_relation_observation_v3.py --root .` と `python -m neuron_graph_rag eval` を実行する。現行 CI が PR ごとにこの全件経路を実行し続ける。
+`all` は従来の `python -m unittest discover -s tests -v` と同じfull discoverを使う。v5 retrieval parity観測後は、alphabetical-firstの専用routerが元v5 test moduleの正規import名だけを対象に、元loaderで11件を確認してからfreeze commitのtemporary checkoutへroutingする。通常のfull discoveryと選択runnerはいずれもこのrouterを先に読み、元11件の全件成功を必須にする。その他のmoduleは元loaderへ無変更で委譲し、現rootでは観測専用testを実行する。他のproduct / shared / historical testはdiscover結果から除外しない。手動全件監査にはさらに CI と同じ `python tools/probe_source_grounded_relation_observation_v3.py --root .` と `python -m neuron_graph_rag eval` を実行する。現行 CI が PR ごとにこの全件経路を実行し続ける。
 
 ## 分類と変更時の選択
 
