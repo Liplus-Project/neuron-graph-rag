@@ -14,6 +14,7 @@ test_sibling_relation_feedback test_soft_start_feedback
     "shared": {
         "reason": "製品engine、共通選択・監査・実験runtime契約を含むため、混在モジュールを丸ごと通常実行に残す。",
         "modules": """
+test_000_github_retrieval_parity_v5_routing
 test_anchored_hybrid test_baseline_aware_soft_start_snapshot_evaluation
 test_blind_selection test_canonical_gate_evaluation test_channels
 test_corpus_integrity test_d1_fixture test_dynamics_experiment
@@ -24,6 +25,7 @@ test_fresh_native_feedback_evaluation test_fusion_calibration
 test_github_retrieval_parity test_github_retrieval_parity_observation
 test_github_retrieval_parity_v2 test_github_retrieval_parity_v3
 test_github_retrieval_parity_v4 test_github_retrieval_parity_v5
+test_github_retrieval_parity_v5_observation
 test_intent_aware_observation_engine test_local_competition
 test_longitudinal_controlled_corpus_v3 test_node_first_selection
 test_outcome_feedback_deactivation_evaluation test_precision_control
