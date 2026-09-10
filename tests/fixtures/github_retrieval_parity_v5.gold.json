@@ -1,0 +1,113 @@
+{
+  "protocol_id": "github-rag-vs-ngr-retrieval-parity-v5",
+  "stages": {
+    "development": [
+      {
+        "case_id": "v5path-dev-direct-persistence-tier",
+        "cohort": "direct_lexical",
+        "expected_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-persistence-tiering/SKILL.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v5path-dev-semantic-axis-separation",
+        "cohort": "semantic_paraphrase",
+        "expected_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/axis-separation.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v5path-dev-relation-search-gate",
+        "cohort": "relation_linked",
+        "expected_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-agentic-search/SKILL.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": [],
+        "relation_seed_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-source-check/SKILL.md"
+      },
+      {
+        "case_id": "v5path-dev-negative-character-instance",
+        "cohort": "negative_control",
+        "expected_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/character_Instance.md"
+        ],
+        "forbidden_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/character.md"
+        ],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v5path-dev-overexclusion-author-boundary",
+        "cohort": "over_exclusion_control",
+        "expected_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-delegation/SKILL.md"
+        ],
+        "forbidden_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-rule-effect-measurement/SKILL.md"
+        ],
+        "protected_safe_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-delegation/SKILL.md"
+        ]
+      }
+    ],
+    "holdout": [
+      {
+        "case_id": "v5path-holdout-direct-autonomy-shape",
+        "cohort": "direct_lexical",
+        "expected_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/autonomy-block-shape.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v5path-holdout-semantic-deepening",
+        "cohort": "semantic_paraphrase",
+        "expected_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-requirement-deepening/SKILL.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v5path-holdout-relation-ci-loop",
+        "cohort": "relation_linked",
+        "expected_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-on-ci/SKILL.md"
+        ],
+        "forbidden_source_ids": [],
+        "protected_safe_source_ids": [],
+        "relation_seed_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-on-pr-creation/SKILL.md"
+      },
+      {
+        "case_id": "v5path-holdout-negative-codex-hooks",
+        "cohort": "negative_control",
+        "expected_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/hooks-config.md"
+        ],
+        "forbidden_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/hooks-settings.md"
+        ],
+        "protected_safe_source_ids": []
+      },
+      {
+        "case_id": "v5path-holdout-overexclusion-rule-policy",
+        "cohort": "over_exclusion_control",
+        "expected_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/rule-policy.md"
+        ],
+        "forbidden_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-frame-check/SKILL.md"
+        ],
+        "protected_safe_source_ids": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/rule-policy.md"
+        ]
+      }
+    ]
+  }
+}
