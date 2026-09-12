@@ -25,7 +25,7 @@ CLAIM_PATH = EVIDENCE / f"{STEM}.development.claim.json"
 RESULT_PATH = EVIDENCE / f"{STEM}.development.observed.json"
 TRANSPORT_PATH = EVIDENCE / "transport-manifest.json"
 AUDIT_PATH = ROOT / "tests" / "fixtures" / f"{STEM}.observation-audit.json"
-OBSERVATION_DOC = ROOT / "docs" / "github-retrieval-parity-observation-v1.md"
+OBSERVATION_DOC = ROOT / "docs" / "experiments" / "github-retrieval-parity-observation-v1.md"
 PROTOCOL_COMMIT = "b3cc03a15b81f0e395ae564387a46fe57d320f31"
 
 

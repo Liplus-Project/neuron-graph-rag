@@ -1,0 +1,1273 @@
+{
+  "existing_files": 83,
+  "moved": 8,
+  "retained": 75,
+  "direct_hash_registered": 67,
+  "documents": [
+    {
+      "original": "docs/Decision-Structure.md",
+      "current": "docs/Decision-Structure.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/baseline_aware_soft_start_snapshot_v2.manifest.json#/artifact_sha256/docs/Decision-Structure.md",
+        "tests/fixtures/canonical_evidence_gate_v1.manifest.json#/artifacts/docs/Decision-Structure.md",
+        "tests/fixtures/outcome_feedback_deactivation_v1.manifest.json#/artifact_sha256/docs/Decision-Structure.md",
+        "tests/fixtures/soft_start_snapshot_v1.manifest.json#/artifact_sha256/docs/Decision-Structure.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/baseline_aware_soft_start_snapshot_v2.manifest.json",
+        "tests/fixtures/canonical_evidence_gate_v1.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v2.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v3.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json",
+        "tests/fixtures/outcome_feedback_deactivation_v1.manifest.json",
+        "tests/fixtures/soft_start_snapshot_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+        "docs/canonical-evidence-gate-evaluation.md",
+        "docs/canonical-sqlite-judgment-graph.md",
+        "docs/confirmed-outcome-feedback-reinforcement.md",
+        "docs/decision-wiki-pilot-migration.md",
+        "docs/evidence-gated-local-feedback-reinforcement.md",
+        "docs/outcome-driven-feedback-deactivation.md",
+        "docs/requirements.md",
+        "docs/soft-start-snapshot-evaluation.md"
+      ]
+    },
+    {
+      "original": "docs/Home.md",
+      "current": "docs/Home.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json#/predecessor_immutable_sha256/docs/Home.md",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json#/predecessor_immutable_sha256/docs/Home.md",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json#/predecessor_immutable_sha256/docs/Home.md",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json#/predecessor_immutable_sha256/docs/Home.md",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/predecessor_immutable_sha256/docs/Home.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/predecessor_immutable_sha256/docs/Home.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/predecessor_immutable_sha256/docs/Home.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/predecessor_immutable_sha256/docs/Home.md",
+        "tests/fixtures/github_retrieval_parity_v1.manifest.json#/artifact_sha256/docs/Home.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v1.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v2.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v3.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/github-rag-mcp-replacement-compatibility.md",
+        "docs/github-retrieval-parity-v2.md"
+      ]
+    },
+    {
+      "original": "docs/_Footer.md",
+      "current": "docs/_Footer.md",
+      "retained": true,
+      "hash_registries": [],
+      "manifest_references": [
+        "tests/fixtures/github_retrieval_parity_v1.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v2.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v3.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/anchored-bm25-graph-hybrid-experiment.md",
+      "current": "docs/anchored-bm25-graph-hybrid-experiment.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/anchored-bm25-graph-hybrid-experiment.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/anchored-fusion-calibration-experiment.md",
+      "current": "docs/anchored-fusion-calibration-experiment.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/anchored-fusion-calibration-experiment.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+      "current": "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/baseline_aware_soft_start_snapshot_v2.manifest.json#/artifact_sha256/docs/baseline-aware-soft-start-snapshot-evaluation.md",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/baseline-aware-soft-start-snapshot-evaluation.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/baseline_aware_soft_start_snapshot_v2.manifest.json",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/outcome-driven-feedback-deactivation.md",
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/blind-llm-channel-selection-experiment.md",
+      "current": "docs/blind-llm-channel-selection-experiment.md",
+      "retained": true,
+      "hash_registries": [],
+      "manifest_references": [
+        "tests/fixtures/d1_liplus_channels_node_first_experiment.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/canonical-evidence-gate-evaluation.md",
+      "current": "docs/canonical-evidence-gate-evaluation.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/canonical_evidence_gate_v1.manifest.json#/artifacts/docs/canonical-evidence-gate-evaluation.md",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/canonical-evidence-gate-evaluation.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/canonical_evidence_gate_v1.manifest.json",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/mcp-feedback-stabilization-settings.md"
+      ]
+    },
+    {
+      "original": "docs/canonical-sqlite-judgment-graph.md",
+      "current": "docs/canonical-sqlite-judgment-graph.md",
+      "retained": true,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": [
+        "docs/Decision-Structure.md",
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/confirmed-outcome-feedback-reinforcement.md",
+      "current": "docs/confirmed-outcome-feedback-reinforcement.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/confirmed-outcome-feedback-reinforcement.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+        "docs/optional-mcp-interface.md",
+        "docs/outcome-driven-feedback-deactivation.md",
+        "docs/requirements.md",
+        "docs/soft-start-snapshot-evaluation.md"
+      ]
+    },
+    {
+      "original": "docs/cross-encoder-precision-claim-root-normalization-v15.md",
+      "current": "docs/cross-encoder-precision-claim-root-normalization-v15.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v16.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-claim-root-normalization-v15.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v16.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-freeze-v1.md",
+      "current": "docs/cross-encoder-precision-freeze-v1.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json#/artifact_sha256/docs/cross-encoder-precision-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json#/v1_immutable_sha256/docs/cross-encoder-precision-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json#/v1_immutable_sha256/docs/cross-encoder-precision-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json#/v1_immutable_sha256/docs/cross-encoder-precision-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/v1_immutable_sha256/docs/cross-encoder-precision-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/v1_immutable_sha256/docs/cross-encoder-precision-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/v1_immutable_sha256/docs/cross-encoder-precision-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/v1_immutable_sha256/docs/cross-encoder-precision-freeze-v1.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-freeze-v10.md",
+      "current": "docs/cross-encoder-precision-freeze-v10.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v10_observation.manifest.json#/cache_freeze_immutable_sha256/docs/cross-encoder-precision-freeze-v10.md",
+        "tests/fixtures/github_cross_encoder_precision_v11.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-freeze-v10.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v10_observation.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v11.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-freeze-v2.md",
+      "current": "docs/cross-encoder-precision-freeze-v2.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json#/artifact_sha256/docs/cross-encoder-precision-freeze-v2.md",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json#/v2_immutable_sha256/docs/cross-encoder-precision-freeze-v2.md",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json#/v2_immutable_sha256/docs/cross-encoder-precision-freeze-v2.md",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/v2_immutable_sha256/docs/cross-encoder-precision-freeze-v2.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/v2_immutable_sha256/docs/cross-encoder-precision-freeze-v2.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/v2_immutable_sha256/docs/cross-encoder-precision-freeze-v2.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/v2_immutable_sha256/docs/cross-encoder-precision-freeze-v2.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-freeze-v3.md",
+      "current": "docs/cross-encoder-precision-freeze-v3.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json#/artifact_sha256/docs/cross-encoder-precision-freeze-v3.md",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json#/v3_immutable_sha256/docs/cross-encoder-precision-freeze-v3.md",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/v3_immutable_sha256/docs/cross-encoder-precision-freeze-v3.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/v3_immutable_sha256/docs/cross-encoder-precision-freeze-v3.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/v3_immutable_sha256/docs/cross-encoder-precision-freeze-v3.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/v3_immutable_sha256/docs/cross-encoder-precision-freeze-v3.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-freeze-v4.md",
+      "current": "docs/cross-encoder-precision-freeze-v4.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json#/artifact_sha256/docs/cross-encoder-precision-freeze-v4.md",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/v4_immutable_sha256/docs/cross-encoder-precision-freeze-v4.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/v4_immutable_sha256/docs/cross-encoder-precision-freeze-v4.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/v4_immutable_sha256/docs/cross-encoder-precision-freeze-v4.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/v4_immutable_sha256/docs/cross-encoder-precision-freeze-v4.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-freeze-v5.md",
+      "current": "docs/cross-encoder-precision-freeze-v5.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/artifact_sha256/docs/cross-encoder-precision-freeze-v5.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/v5_immutable_sha256/docs/cross-encoder-precision-freeze-v5.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/v5_immutable_sha256/docs/cross-encoder-precision-freeze-v5.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/v5_immutable_sha256/docs/cross-encoder-precision-freeze-v5.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-freeze-v6.md",
+      "current": "docs/cross-encoder-precision-freeze-v6.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/artifact_sha256/docs/cross-encoder-precision-freeze-v6.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/v6_immutable_sha256/docs/cross-encoder-precision-freeze-v6.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/v6_immutable_sha256/docs/cross-encoder-precision-freeze-v6.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-freeze-v7.md",
+      "current": "docs/cross-encoder-precision-freeze-v7.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/artifact_sha256/docs/cross-encoder-precision-freeze-v7.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/v7_immutable_sha256/docs/cross-encoder-precision-freeze-v7.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-freeze-v8.md",
+      "current": "docs/cross-encoder-precision-freeze-v8.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/artifact_sha256/docs/cross-encoder-precision-freeze-v8.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-freeze-v9.md",
+      "current": "docs/cross-encoder-precision-freeze-v9.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v10.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-freeze-v9.md",
+        "tests/fixtures/github_cross_encoder_precision_v9_observation.manifest.json#/path_freeze_immutable_sha256/docs/cross-encoder-precision-freeze-v9.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v10.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v9_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-frozen-source-v11.md",
+      "current": "docs/cross-encoder-precision-frozen-source-v11.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v12_observation.manifest.json#/v11_immutable_sha256/docs/cross-encoder-precision-frozen-source-v11.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v12_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-git-free-identity-v13.md",
+      "current": "docs/cross-encoder-precision-git-free-identity-v13.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v14_observation.manifest.json#/v13_immutable_sha256/docs/cross-encoder-precision-git-free-identity-v13.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v14_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v1.md",
+      "current": "docs/experiments/cross-encoder-precision-observation-v1.md",
+      "retained": false,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v10.md",
+      "current": "docs/cross-encoder-precision-observation-v10.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v11.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v10.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v11.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v12.md",
+      "current": "docs/cross-encoder-precision-observation-v12.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v13.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v12.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v13.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v14.md",
+      "current": "docs/cross-encoder-precision-observation-v14.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v15.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v14.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v15.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v17.md",
+      "current": "docs/cross-encoder-precision-observation-v17.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v18_observation.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v17.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v18_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v18.md",
+      "current": "docs/cross-encoder-precision-observation-v18.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v19_observation.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v18.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v19_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v19.md",
+      "current": "docs/cross-encoder-precision-observation-v19.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v20.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v19.md",
+        "tests/fixtures/github_cross_encoder_precision_v21_observation.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v19.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v20.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v21_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v2.md",
+      "current": "docs/experiments/cross-encoder-precision-observation-v2.md",
+      "retained": false,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v20.md",
+      "current": "docs/cross-encoder-precision-observation-v20.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v20.manifest.json#/protocol_artifact_sha256/docs/cross-encoder-precision-observation-v20.md",
+        "tests/fixtures/github_cross_encoder_precision_v21_observation.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v20.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v20.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v21_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v21-results.md",
+      "current": "docs/cross-encoder-precision-observation-v21-results.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v23_real_observation.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v21-results.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v23_real_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v21.md",
+      "current": "docs/cross-encoder-precision-observation-v21.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v21_observation.manifest.json#/v21_protocol_artifact_sha256/docs/cross-encoder-precision-observation-v21.md",
+        "tests/fixtures/github_cross_encoder_precision_v23_real_observation.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v21.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v21_observation.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v23_real_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v23-real-tasks-results.md",
+      "current": "docs/experiments/cross-encoder-precision-observation-v23-real-tasks-results.md",
+      "retained": false,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v23-real-tasks.md",
+      "current": "docs/cross-encoder-precision-observation-v23-real-tasks.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v23_real_observation.manifest.json#/v23_protocol_artifact_sha256/docs/cross-encoder-precision-observation-v23-real-tasks.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v23_real_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v3.md",
+      "current": "docs/cross-encoder-precision-observation-v3.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json#/v3_immutable_sha256/docs/cross-encoder-precision-observation-v3.md",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/v3_immutable_sha256/docs/cross-encoder-precision-observation-v3.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/v3_immutable_sha256/docs/cross-encoder-precision-observation-v3.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/v3_immutable_sha256/docs/cross-encoder-precision-observation-v3.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/v3_immutable_sha256/docs/cross-encoder-precision-observation-v3.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v5.md",
+      "current": "docs/cross-encoder-precision-observation-v5.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/v5_immutable_sha256/docs/cross-encoder-precision-observation-v5.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/v5_immutable_sha256/docs/cross-encoder-precision-observation-v5.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/v5_immutable_sha256/docs/cross-encoder-precision-observation-v5.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v8.md",
+      "current": "docs/cross-encoder-precision-observation-v8.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v9.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v8.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v9.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-observation-v9.md",
+      "current": "docs/cross-encoder-precision-observation-v9.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v10.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-observation-v9.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v10.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/cross-encoder-precision-source-root-propagation-v16.md",
+      "current": "docs/cross-encoder-precision-source-root-propagation-v16.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v17_observation.manifest.json#/predecessor_immutable_sha256/docs/cross-encoder-precision-source-root-propagation-v16.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v17_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/d1-corpus-fixture.md",
+      "current": "docs/d1-corpus-fixture.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/d1-corpus-fixture.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/Home.md",
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/decision-wiki-pilot-manifest.json",
+      "current": "docs/decision-wiki-pilot-manifest.json",
+      "retained": true,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": [
+        "docs/decision-wiki-pilot-migration.md"
+      ]
+    },
+    {
+      "original": "docs/decision-wiki-pilot-migration.md",
+      "current": "docs/decision-wiki-pilot-migration.md",
+      "retained": true,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/engine-backed-feedback-trajectory-experiment.md",
+      "current": "docs/engine-backed-feedback-trajectory-experiment.md",
+      "retained": true,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/evidence-gated-local-feedback-reinforcement.md",
+      "current": "docs/evidence-gated-local-feedback-reinforcement.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/evidence-gated-local-feedback-reinforcement.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/Home.md",
+        "docs/canonical-evidence-gate-evaluation.md",
+        "docs/confirmed-outcome-feedback-reinforcement.md",
+        "docs/mcp-feedback-stabilization-settings.md"
+      ]
+    },
+    {
+      "original": "docs/feedback-adaptation-experiment.md",
+      "current": "docs/feedback-adaptation-experiment.md",
+      "retained": true,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/feedback-adaptation-reproduction-experiment.md",
+      "current": "docs/feedback-adaptation-reproduction-experiment.md",
+      "retained": true,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/feedback-policy-comparison-evaluation.md",
+      "current": "docs/feedback-policy-comparison-evaluation.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/feedback_policy_comparison_v1.manifest.json#/artifact_sha256/docs/feedback-policy-comparison-evaluation.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/feedback_policy_comparison_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/feedback-rank-elasticity.md",
+      "current": "docs/feedback-rank-elasticity.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/feedback-rank-elasticity.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/Home.md",
+        "docs/evidence-gated-local-feedback-reinforcement.md"
+      ]
+    },
+    {
+      "original": "docs/github-rag-mcp-replacement-compatibility.md",
+      "current": "docs/github-rag-mcp-replacement-compatibility.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json#/predecessor_immutable_sha256/docs/github-rag-mcp-replacement-compatibility.md",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json#/predecessor_immutable_sha256/docs/github-rag-mcp-replacement-compatibility.md",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json#/predecessor_immutable_sha256/docs/github-rag-mcp-replacement-compatibility.md",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json#/predecessor_immutable_sha256/docs/github-rag-mcp-replacement-compatibility.md",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/predecessor_immutable_sha256/docs/github-rag-mcp-replacement-compatibility.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/predecessor_immutable_sha256/docs/github-rag-mcp-replacement-compatibility.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/predecessor_immutable_sha256/docs/github-rag-mcp-replacement-compatibility.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/predecessor_immutable_sha256/docs/github-rag-mcp-replacement-compatibility.md",
+        "tests/fixtures/github_retrieval_parity_v1.manifest.json#/artifact_sha256/docs/github-rag-mcp-replacement-compatibility.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/github-retrieval-parity-benchmark.md",
+      "current": "docs/github-retrieval-parity-benchmark.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json#/predecessor_immutable_sha256/docs/github-retrieval-parity-benchmark.md",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json#/predecessor_immutable_sha256/docs/github-retrieval-parity-benchmark.md",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json#/predecessor_immutable_sha256/docs/github-retrieval-parity-benchmark.md",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json#/predecessor_immutable_sha256/docs/github-retrieval-parity-benchmark.md",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/predecessor_immutable_sha256/docs/github-retrieval-parity-benchmark.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/predecessor_immutable_sha256/docs/github-retrieval-parity-benchmark.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/predecessor_immutable_sha256/docs/github-retrieval-parity-benchmark.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/predecessor_immutable_sha256/docs/github-retrieval-parity-benchmark.md",
+        "tests/fixtures/github_retrieval_parity_v1.manifest.json#/artifact_sha256/docs/github-retrieval-parity-benchmark.md",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/github-retrieval-parity-benchmark.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v1.manifest.json",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/Home.md",
+        "docs/github-rag-mcp-replacement-compatibility.md",
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/github-retrieval-parity-observation-v1.md",
+      "current": "docs/experiments/github-retrieval-parity-observation-v1.md",
+      "retained": false,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/github-retrieval-parity-v2-development-observation.md",
+      "current": "docs/github-retrieval-parity-v2-development-observation.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_retrieval_parity_v3.manifest.json#/predecessors/1/observation_sha256/docs/github-retrieval-parity-v2-development-observation.md",
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json#/predecessors/1/observation_sha256/docs/github-retrieval-parity-v2-development-observation.md",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json#/predecessors/0/observation_sha256/docs/github-retrieval-parity-v2-development-observation.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_retrieval_parity_v3.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/github-retrieval-parity-v2.md",
+      "current": "docs/github-retrieval-parity-v2.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_retrieval_parity_v2.manifest.json#/artifact_sha256/docs/github-retrieval-parity-v2.md",
+        "tests/fixtures/github_retrieval_parity_v3.manifest.json#/predecessors/1/identity_sha256/docs/github-retrieval-parity-v2.md",
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json#/predecessors/1/identity_sha256/docs/github-retrieval-parity-v2.md",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json#/predecessors/0/identity_sha256/docs/github-retrieval-parity-v2.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_retrieval_parity_v2.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v3.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/github-retrieval-parity-v3.md",
+      "current": "docs/github-retrieval-parity-v3.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_retrieval_parity_v3.manifest.json#/artifact_sha256/docs/github-retrieval-parity-v3.md",
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json#/predecessors/3/identity_sha256/docs/github-retrieval-parity-v3.md",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json#/predecessors/0/identity_sha256/docs/github-retrieval-parity-v3.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_retrieval_parity_v3.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/github-retrieval-parity-v4.md",
+      "current": "docs/github-retrieval-parity-v4.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json#/artifact_sha256/docs/github-retrieval-parity-v4.md",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json#/predecessors/0/identity_sha256/docs/github-retrieval-parity-v4.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_retrieval_parity_v4.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/github-retrieval-parity-v5-development-observation.md",
+      "current": "docs/experiments/github-retrieval-parity-v5-development-observation.md",
+      "retained": false,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/github-retrieval-parity-v5.md",
+      "current": "docs/github-retrieval-parity-v5.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json#/artifact_sha256/docs/github-retrieval-parity-v5.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_retrieval_parity_v5.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/historical-source-verification.md",
+      "current": "docs/historical-source-verification.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/historical-source-verification.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+        "docs/requirements.md",
+        "docs/soft-start-snapshot-evaluation.md"
+      ]
+    },
+    {
+      "original": "docs/independent-retrieval-channels-experiment.md",
+      "current": "docs/independent-retrieval-channels-experiment.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/independent-retrieval-channels-experiment.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/d1_liplus_channels_node_first_experiment.manifest.json",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/intent-aware-observation-engine.md",
+      "current": "docs/intent-aware-observation-engine.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v23_real_observation.manifest.json#/v23_protocol_artifact_sha256/docs/intent-aware-observation-engine.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v23_real_observation.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/mcp-feedback-stabilization-settings.md",
+      "current": "docs/mcp-feedback-stabilization-settings.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/mcp-feedback-stabilization-settings.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/optional-mcp-interface.md"
+      ]
+    },
+    {
+      "original": "docs/neural-dynamics-experiment.md",
+      "current": "docs/neural-dynamics-experiment.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/neural-dynamics-experiment.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/neural-dynamics-local-competition-experiment.md",
+      "current": "docs/neural-dynamics-local-competition-experiment.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/neural-dynamics-local-competition-experiment.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/node-first-blind-selection-experiment.md",
+      "current": "docs/node-first-blind-selection-experiment.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/node-first-blind-selection-experiment.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/Home.md",
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/optional-mcp-interface.md",
+      "current": "docs/optional-mcp-interface.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/optional-mcp-interface.md",
+        "tests/fixtures/outcome_feedback_deactivation_v1.manifest.json#/artifact_sha256/docs/optional-mcp-interface.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/baseline_aware_soft_start_snapshot_v2.manifest.json",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json",
+        "tests/fixtures/outcome_feedback_deactivation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/Home.md",
+        "docs/confirmed-outcome-feedback-reinforcement.md",
+        "docs/evidence-gated-local-feedback-reinforcement.md",
+        "docs/mcp-feedback-stabilization-settings.md",
+        "docs/outcome-driven-feedback-deactivation.md",
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/outcome-driven-feedback-deactivation.md",
+      "current": "docs/outcome-driven-feedback-deactivation.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/outcome-driven-feedback-deactivation.md",
+        "tests/fixtures/outcome_feedback_deactivation_v1.manifest.json#/artifact_sha256/docs/outcome-driven-feedback-deactivation.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json",
+        "tests/fixtures/outcome_feedback_deactivation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/optional-mcp-interface.md",
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/precision-control-freeze-v1.md",
+      "current": "docs/precision-control-freeze-v1.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json#/predecessor_immutable_sha256/docs/precision-control-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json#/predecessor_immutable_sha256/docs/precision-control-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json#/predecessor_immutable_sha256/docs/precision-control-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json#/predecessor_immutable_sha256/docs/precision-control-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/predecessor_immutable_sha256/docs/precision-control-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/predecessor_immutable_sha256/docs/precision-control-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/predecessor_immutable_sha256/docs/precision-control-freeze-v1.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/predecessor_immutable_sha256/docs/precision-control-freeze-v1.md",
+        "tests/fixtures/github_precision_control_v1.manifest.json#/artifact_sha256/docs/precision-control-freeze-v1.md",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/precision-control-freeze-v1.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json",
+        "tests/fixtures/github_precision_control_v1.manifest.json",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/precision-control-observation-v1.md",
+      "current": "docs/experiments/precision-control-observation-v1.md",
+      "retained": false,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/production-exclusion-intent.md",
+      "current": "docs/specifications/production-exclusion-intent.md",
+      "retained": false,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/real-corpus-benchmark.md",
+      "current": "docs/real-corpus-benchmark.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/real-corpus-benchmark.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/Home.md",
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/real-task-feedback-shadow-protocol-v2.md",
+      "current": "docs/real-task-feedback-shadow-protocol-v2.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/real_task_shadow_v2.manifest.json#/artifact_sha256/docs/real-task-feedback-shadow-protocol-v2.md",
+        "tests/fixtures/real_task_shadow_v3.manifest.json#/legacy_artifact_sha256/docs/real-task-feedback-shadow-protocol-v2.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/real_task_shadow_v2.manifest.json",
+        "tests/fixtures/real_task_shadow_v3.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/real-task-feedback-shadow-protocol-v3.md",
+      "current": "docs/real-task-feedback-shadow-protocol-v3.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/real_task_shadow_v3.manifest.json#/artifact_sha256/docs/real-task-feedback-shadow-protocol-v3.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/real_task_shadow_v3.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/real-task-feedback-shadow-protocol.md",
+      "current": "docs/real-task-feedback-shadow-protocol.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/real_task_shadow_v1.manifest.json#/artifact_sha256/docs/real-task-feedback-shadow-protocol.md",
+        "tests/fixtures/real_task_shadow_v3.manifest.json#/legacy_artifact_sha256/docs/real-task-feedback-shadow-protocol.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/real_task_shadow_v1.manifest.json",
+        "tests/fixtures/real_task_shadow_v3.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/requirements.md",
+      "current": "docs/requirements.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/baseline_aware_soft_start_snapshot_v2.manifest.json#/artifact_sha256/docs/requirements.md",
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json#/predecessor_immutable_sha256/docs/requirements.md",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json#/predecessor_immutable_sha256/docs/requirements.md",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json#/predecessor_immutable_sha256/docs/requirements.md",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json#/predecessor_immutable_sha256/docs/requirements.md",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json#/predecessor_immutable_sha256/docs/requirements.md",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json#/predecessor_immutable_sha256/docs/requirements.md",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json#/predecessor_immutable_sha256/docs/requirements.md",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json#/predecessor_immutable_sha256/docs/requirements.md",
+        "tests/fixtures/github_retrieval_parity_v1.manifest.json#/artifact_sha256/docs/requirements.md",
+        "tests/fixtures/outcome_feedback_deactivation_v1.manifest.json#/artifact_sha256/docs/requirements.md",
+        "tests/fixtures/sibling_normalization_controlled_v1.manifest.json#/registered_artifacts/docs/requirements.md",
+        "tests/fixtures/soft_start_snapshot_v1.manifest.json#/artifact_sha256/docs/requirements.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/baseline_aware_soft_start_snapshot_v2.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v1.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v2.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v3.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v4.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v5.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v6.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v7.manifest.json",
+        "tests/fixtures/github_cross_encoder_precision_v8.manifest.json",
+        "tests/fixtures/github_retrieval_parity_v1.manifest.json",
+        "tests/fixtures/outcome_feedback_deactivation_v1.manifest.json",
+        "tests/fixtures/sibling_normalization_controlled_v1.manifest.json",
+        "tests/fixtures/soft_start_snapshot_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/Decision-Structure.md",
+        "docs/Home.md",
+        "docs/_Footer.md",
+        "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+        "docs/cross-encoder-precision-claim-root-normalization-v15.md",
+        "docs/cross-encoder-precision-frozen-source-v11.md",
+        "docs/cross-encoder-precision-git-free-identity-v13.md",
+        "docs/cross-encoder-precision-source-root-propagation-v16.md",
+        "docs/outcome-driven-feedback-deactivation.md",
+        "docs/soft-start-snapshot-evaluation.md"
+      ]
+    },
+    {
+      "original": "docs/sibling-normalization-controlled-evaluation.md",
+      "current": "docs/sibling-normalization-controlled-evaluation.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/sibling_normalization_controlled_v1.manifest.json#/registered_artifacts/docs/sibling-normalization-controlled-evaluation.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/baseline_aware_soft_start_snapshot_v2.manifest.json",
+        "tests/fixtures/sibling_normalization_controlled_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/requirements.md",
+        "docs/sibling-relation-feedback-normalization.md"
+      ]
+    },
+    {
+      "original": "docs/sibling-relation-feedback-normalization.md",
+      "current": "docs/sibling-relation-feedback-normalization.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/source/content_sha256/docs/sibling-relation-feedback-normalization.md",
+        "tests/fixtures/sibling_normalization_controlled_v1.manifest.json#/registered_artifacts/docs/sibling-relation-feedback-normalization.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/baseline_aware_soft_start_snapshot_v2.manifest.json",
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json",
+        "tests/fixtures/sibling_normalization_controlled_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/evidence-gated-local-feedback-reinforcement.md",
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/soft-start-snapshot-evaluation.md",
+      "current": "docs/soft-start-snapshot-evaluation.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/soft_start_snapshot_v1.manifest.json#/artifact_sha256/docs/soft-start-snapshot-evaluation.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/soft_start_snapshot_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": [
+        "docs/baseline-aware-soft-start-snapshot-evaluation.md",
+        "docs/outcome-driven-feedback-deactivation.md",
+        "docs/requirements.md"
+      ]
+    },
+    {
+      "original": "docs/source-grounded-relation-seed-retrieval-experiment.md",
+      "current": "docs/source-grounded-relation-seed-retrieval-experiment.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json#/artifact_sha256/docs/source-grounded-relation-seed-retrieval-experiment.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v1.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/source-grounded-relation-seed-retrieval-v2.md",
+      "current": "docs/source-grounded-relation-seed-retrieval-v2.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v2.manifest.json#/artifact_sha256/docs/source-grounded-relation-seed-retrieval-v2.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v2.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/source-grounded-relation-seed-retrieval-v3.md",
+      "current": "docs/source-grounded-relation-seed-retrieval-v3.md",
+      "retained": true,
+      "hash_registries": [
+        "tests/fixtures/github_source_grounded_relation_v3.manifest.json#/artifact_sha256/docs/source-grounded-relation-seed-retrieval-v3.md"
+      ],
+      "manifest_references": [
+        "tests/fixtures/github_source_grounded_relation_v3.manifest.json"
+      ],
+      "referenced_by_retained_docs": []
+    },
+    {
+      "original": "docs/test-suites.md",
+      "current": "docs/guides/test-suites.md",
+      "retained": false,
+      "hash_registries": [],
+      "manifest_references": [],
+      "referenced_by_retained_docs": []
+    }
+  ]
+}

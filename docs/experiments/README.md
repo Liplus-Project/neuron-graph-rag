@@ -1,0 +1,73 @@
+# 実験・観測
+
+[文書索引](../README.md)
+
+- [anchored-bm25-graph-hybrid-experiment.md](../anchored-bm25-graph-hybrid-experiment.md) — 元パス維持
+- [anchored-fusion-calibration-experiment.md](../anchored-fusion-calibration-experiment.md) — 元パス維持
+- [baseline-aware-soft-start-snapshot-evaluation.md](../baseline-aware-soft-start-snapshot-evaluation.md) — 元パス維持
+- [blind-llm-channel-selection-experiment.md](../blind-llm-channel-selection-experiment.md) — 元パス維持
+- [canonical-evidence-gate-evaluation.md](../canonical-evidence-gate-evaluation.md) — 元パス維持
+- [confirmed-outcome-feedback-reinforcement.md](../confirmed-outcome-feedback-reinforcement.md) — 元パス維持
+- [cross-encoder-precision-claim-root-normalization-v15.md](../cross-encoder-precision-claim-root-normalization-v15.md) — 元パス維持
+- [cross-encoder-precision-freeze-v1.md](../cross-encoder-precision-freeze-v1.md) — 元パス維持
+- [cross-encoder-precision-freeze-v10.md](../cross-encoder-precision-freeze-v10.md) — 元パス維持
+- [cross-encoder-precision-freeze-v2.md](../cross-encoder-precision-freeze-v2.md) — 元パス維持
+- [cross-encoder-precision-freeze-v3.md](../cross-encoder-precision-freeze-v3.md) — 元パス維持
+- [cross-encoder-precision-freeze-v4.md](../cross-encoder-precision-freeze-v4.md) — 元パス維持
+- [cross-encoder-precision-freeze-v5.md](../cross-encoder-precision-freeze-v5.md) — 元パス維持
+- [cross-encoder-precision-freeze-v6.md](../cross-encoder-precision-freeze-v6.md) — 元パス維持
+- [cross-encoder-precision-freeze-v7.md](../cross-encoder-precision-freeze-v7.md) — 元パス維持
+- [cross-encoder-precision-freeze-v8.md](../cross-encoder-precision-freeze-v8.md) — 元パス維持
+- [cross-encoder-precision-freeze-v9.md](../cross-encoder-precision-freeze-v9.md) — 元パス維持
+- [cross-encoder-precision-frozen-source-v11.md](../cross-encoder-precision-frozen-source-v11.md) — 元パス維持
+- [cross-encoder-precision-git-free-identity-v13.md](../cross-encoder-precision-git-free-identity-v13.md) — 元パス維持
+- [cross-encoder-precision-observation-v1.md](cross-encoder-precision-observation-v1.md)
+- [cross-encoder-precision-observation-v10.md](../cross-encoder-precision-observation-v10.md) — 元パス維持
+- [cross-encoder-precision-observation-v12.md](../cross-encoder-precision-observation-v12.md) — 元パス維持
+- [cross-encoder-precision-observation-v14.md](../cross-encoder-precision-observation-v14.md) — 元パス維持
+- [cross-encoder-precision-observation-v17.md](../cross-encoder-precision-observation-v17.md) — 元パス維持
+- [cross-encoder-precision-observation-v18.md](../cross-encoder-precision-observation-v18.md) — 元パス維持
+- [cross-encoder-precision-observation-v19.md](../cross-encoder-precision-observation-v19.md) — 元パス維持
+- [cross-encoder-precision-observation-v2.md](cross-encoder-precision-observation-v2.md)
+- [cross-encoder-precision-observation-v20.md](../cross-encoder-precision-observation-v20.md) — 元パス維持
+- [cross-encoder-precision-observation-v21-results.md](../cross-encoder-precision-observation-v21-results.md) — 元パス維持
+- [cross-encoder-precision-observation-v21.md](../cross-encoder-precision-observation-v21.md) — 元パス維持
+- [cross-encoder-precision-observation-v23-real-tasks-results.md](cross-encoder-precision-observation-v23-real-tasks-results.md)
+- [cross-encoder-precision-observation-v23-real-tasks.md](../cross-encoder-precision-observation-v23-real-tasks.md) — 元パス維持
+- [cross-encoder-precision-observation-v3.md](../cross-encoder-precision-observation-v3.md) — 元パス維持
+- [cross-encoder-precision-observation-v5.md](../cross-encoder-precision-observation-v5.md) — 元パス維持
+- [cross-encoder-precision-observation-v8.md](../cross-encoder-precision-observation-v8.md) — 元パス維持
+- [cross-encoder-precision-observation-v9.md](../cross-encoder-precision-observation-v9.md) — 元パス維持
+- [cross-encoder-precision-source-root-propagation-v16.md](../cross-encoder-precision-source-root-propagation-v16.md) — 元パス維持
+- [d1-corpus-fixture.md](../d1-corpus-fixture.md) — 元パス維持
+- [engine-backed-feedback-trajectory-experiment.md](../engine-backed-feedback-trajectory-experiment.md) — 元パス維持
+- [evidence-gated-local-feedback-reinforcement.md](../evidence-gated-local-feedback-reinforcement.md) — 元パス維持
+- [feedback-adaptation-experiment.md](../feedback-adaptation-experiment.md) — 元パス維持
+- [feedback-adaptation-reproduction-experiment.md](../feedback-adaptation-reproduction-experiment.md) — 元パス維持
+- [feedback-policy-comparison-evaluation.md](../feedback-policy-comparison-evaluation.md) — 元パス維持
+- [feedback-rank-elasticity.md](../feedback-rank-elasticity.md) — 元パス維持
+- [github-retrieval-parity-benchmark.md](../github-retrieval-parity-benchmark.md) — 元パス維持
+- [github-retrieval-parity-observation-v1.md](github-retrieval-parity-observation-v1.md)
+- [github-retrieval-parity-v2-development-observation.md](../github-retrieval-parity-v2-development-observation.md) — 元パス維持
+- [github-retrieval-parity-v2.md](../github-retrieval-parity-v2.md) — 元パス維持
+- [github-retrieval-parity-v3.md](../github-retrieval-parity-v3.md) — 元パス維持
+- [github-retrieval-parity-v4.md](../github-retrieval-parity-v4.md) — 元パス維持
+- [github-retrieval-parity-v5-development-observation.md](github-retrieval-parity-v5-development-observation.md)
+- [github-retrieval-parity-v5.md](../github-retrieval-parity-v5.md) — 元パス維持
+- [independent-retrieval-channels-experiment.md](../independent-retrieval-channels-experiment.md) — 元パス維持
+- [neural-dynamics-experiment.md](../neural-dynamics-experiment.md) — 元パス維持
+- [neural-dynamics-local-competition-experiment.md](../neural-dynamics-local-competition-experiment.md) — 元パス維持
+- [node-first-blind-selection-experiment.md](../node-first-blind-selection-experiment.md) — 元パス維持
+- [outcome-driven-feedback-deactivation.md](../outcome-driven-feedback-deactivation.md) — 元パス維持
+- [precision-control-freeze-v1.md](../precision-control-freeze-v1.md) — 元パス維持
+- [precision-control-observation-v1.md](precision-control-observation-v1.md)
+- [real-corpus-benchmark.md](../real-corpus-benchmark.md) — 元パス維持
+- [real-task-feedback-shadow-protocol-v2.md](../real-task-feedback-shadow-protocol-v2.md) — 元パス維持
+- [real-task-feedback-shadow-protocol-v3.md](../real-task-feedback-shadow-protocol-v3.md) — 元パス維持
+- [real-task-feedback-shadow-protocol.md](../real-task-feedback-shadow-protocol.md) — 元パス維持
+- [sibling-normalization-controlled-evaluation.md](../sibling-normalization-controlled-evaluation.md) — 元パス維持
+- [sibling-relation-feedback-normalization.md](../sibling-relation-feedback-normalization.md) — 元パス維持
+- [soft-start-snapshot-evaluation.md](../soft-start-snapshot-evaluation.md) — 元パス維持
+- [source-grounded-relation-seed-retrieval-experiment.md](../source-grounded-relation-seed-retrieval-experiment.md) — 元パス維持
+- [source-grounded-relation-seed-retrieval-v2.md](../source-grounded-relation-seed-retrieval-v2.md) — 元パス維持
+- [source-grounded-relation-seed-retrieval-v3.md](../source-grounded-relation-seed-retrieval-v3.md) — 元パス維持
