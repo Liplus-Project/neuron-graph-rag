@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NGR アーキテクチャ設計 — 常駐ランチャー構成</title>
+<style>
+:root{color-scheme:light;--ink:#172c3c;--muted:#516472;--line:#cdd9e1;--paper:#fff;--bg:#f3f6f8;--blue:#195dad;--bluebg:#edf4ff;--green:#116950;--greenbg:#eaf7f1;--amber:#815414;--amberbg:#fff6e5;--purple:#634b98;--purplebg:#f3effb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI","Yu Gothic",sans-serif;line-height:1.75}main{max-width:1120px;margin:auto;padding:40px 26px 72px}a{color:var(--blue)}header{padding:20px 0 30px;border-bottom:2px solid var(--ink)}.eyebrow{font-size:12px;letter-spacing:.15em;color:var(--muted);font-weight:700}h1{font-size:clamp(27px,4vw,42px);line-height:1.35;margin:12px 0 18px}h2{font-size:25px;margin:0 0 20px;line-height:1.5}h3{font-size:18px;margin:0 0 8px}p{margin:8px 0 14px}.lead{font-size:18px;max-width:850px}.meta,.small{font-size:13px;color:var(--muted)}nav{display:flex;flex-wrap:wrap;gap:8px 20px;margin:22px 0 0}nav a{font-size:14px;text-decoration:none}section{scroll-margin-top:20px;margin-top:44px}.num{color:var(--muted);font-size:14px;margin-right:10px}.badge{display:inline-block;font-size:12px;padding:2px 9px;border-radius:5px;font-weight:700;vertical-align:middle;background:var(--bluebg);color:var(--blue)}.proposal{background:var(--amberbg);color:var(--amber)}.future{background:var(--purplebg);color:var(--purple)}.rejected{background:#f1f1f1;color:#565656}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px;min-width:0}.box p:last-child{margin-bottom:0}.cloud{border-top:4px solid var(--blue)}.shared{border-top:4px solid var(--green)}.private{border-top:4px solid var(--purple)}.label{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--muted);margin-bottom:8px}.diagram{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px}.node{border:1px solid var(--line);padding:15px;border-radius:8px;background:var(--bg);text-align:center}.node strong{display:block;font-size:17px}.node span{display:block;font-size:13px;color:var(--muted)}.arrow{text-align:center;color:var(--muted);padding:8px;font-size:14px}.split{display:grid;grid-template-columns:1fr 1fr;gap:20px}.zone{border:1px solid var(--line);padding:18px;border-radius:10px;min-width:0}.zone.cloudzone{background:var(--bluebg)}.zone.localzone{background:var(--greenbg)}.zone h3{font-size:16px;margin-bottom:16px}.core{background:var(--paper);border:2px solid var(--green)}.boundary{margin:20px 0;background:var(--amberbg);padding:12px 16px;border-left:4px solid var(--amber)}.flow{list-style:none;margin:0;padding:0;counter-reset:flow;display:grid;gap:12px}.flow li{counter-increment:flow;display:grid;grid-template-columns:40px 1fr;gap:12px;padding:18px;background:var(--paper);border:1px solid var(--line);border-radius:10px}.flow li::before{content:counter(flow);display:grid;place-items:center;width:34px;height:34px;background:var(--ink);color:white;border-radius:50%;font-weight:700}.flow strong{display:block}.flow p{margin:3px 0 0}.example{background:var(--purplebg);border-left:4px solid var(--purple);padding:18px;margin-top:18px}.example-path{font-size:17px;font-weight:600;line-height:2}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}ul{padding-left:21px;margin:8px 0}li{margin:6px 0}code{font-size:.9em;background:#e9eef1;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;background:var(--paper);font-size:14px}th,td{text-align:left;vertical-align:top;padding:14px;border-bottom:1px solid var(--line)}th{background:#e8eef2}td:first-child{font-weight:600;min-width:135px}.note{color:var(--muted);font-size:14px}details{border:1px solid var(--line);border-radius:8px;padding:14px 18px;background:var(--paper);margin:12px 0}summary{cursor:pointer;font-weight:650}summary:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:4px}footer{margin-top:40px;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:13px}.pillrow{display:flex;gap:10px;flex-wrap:wrap}.pipeline{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;padding:18px;background:var(--paper);border:1px solid var(--line);border-radius:10px}.pipeline .node{flex:1;min-width:150px}.pipeline .connector{color:var(--muted)}.off{border:1px dashed var(--purple);padding:14px;margin-top:14px;background:var(--purplebg);border-radius:8px}.key{font-weight:700;color:var(--green)}@media(max-width:760px){main{padding:22px 16px 50px}.grid,.split,.two{grid-template-columns:1fr}.diagram{padding:14px}.zone{padding:14px}h2{font-size:22px}.pipeline{flex-direction:column;align-items:stretch}.pipeline .connector{text-align:center;transform:rotate(90deg)}td,th{padding:10px}.lead{font-size:16px}}@media print{body{background:white}main{max-width:none;padding:0}nav{display:none}section{margin-top:26px}.box,.zone,.flow li,.example{break-inside:avoid}details{break-inside:avoid}a{color:inherit}h2,h3{break-after:avoid}}
+</style>
+</head>
+<body><main>
+<header>
+<div class="eyebrow">NGR / ARCHITECTURE WORKING DRAFT</div>
+<h1>知識を探す。<br>経験を呼び起こす。</h1>
+<p class="lead">クラウドのGitHub検索と、手元の判断履歴・活性化グラフを、一つのNGRから使う。<br><strong>保存と処理は分散したまま、利用者の入口は一つにする。</strong></p>
+<div class="pillrow"><span class="badge">方針：Windows常駐ランチャー</span><span class="badge">方針：Python継続</span><span class="badge proposal">設計段階・実装完了図ではない</span></div>
+<p class="meta">対話整理：2026年9月12日版 ／ 実装作業は停止したまま ／ 「方針」は設計上の選択であり、出荷済み機能を意味しません。</p>
+<nav aria-label="ページ内目次"><a href="#overview">① 全体像</a><a href="#data">② 保存領域</a><a href="#retrieval">③ 検索と活性化</a><a href="#desktop">④ 常駐アプリ</a><a href="#install">⑤ 導入・配布</a><a href="#decisions">⑥ 決定と未決定</a></nav>
+</header>
+
+<section id="overview"><h2><span class="num">01</span>全体像：クラウドは収集、NGRは活用</h2>
+<div class="diagram" role="group" aria-label="GitHubとCloudflareのオンライン領域を、PCのNGRが検索。PC内には共有SQLiteと将来の個人SQLiteを分離して置く構成案。">
+<div class="split">
+<div class="zone cloudzone"><h3>クラウド領域 <span class="badge">既存方式を維持</span></h3>
+<div class="node"><strong>GitHub</strong><span>Issue・PR・変更履歴・Wiki・文書</span></div>
+<div class="arrow">↓ 更新を収集</div>
+<div class="node"><strong>github-rag / Cloudflare Workers</strong><span>TypeScript ／ 同期・文書のベクトル化</span></div>
+<div class="arrow">↓ 保存・索引化</div>
+<div class="node"><strong>クラウドストレージと検索</strong><span>D1・Vectorize等 ／ キーワード＋学習済みベクトル<br>リランキング・既存の簡易リンク探索</span></div>
+<p class="small">PC停止中もクラウド側で更新できる。重い文書ベクトル化をPCの通常作業から切り離す。</p>
+</div>
+<div class="zone localzone"><h3>Windowsユーザー領域 <span class="badge">常駐ランチャー方針</span></h3>
+<div class="node"><strong>複数のAIエージェント</strong><span>一つの共通MCP窓口から利用</span></div>
+<div class="arrow">↕ 検索・追加探索・利用結果の報告</div>
+<div class="node core"><strong>NGRコア / Python</strong><span>探索先の選択・情報の活性化<br>関係を伴う根拠セット・利用履歴の管理</span></div>
+<div class="arrow">↕ アクセス可能なローカル情報</div>
+<div class="node"><strong>共有SQLite</strong><span>共通知識・判断履歴・関係<br>現在の保存ディレクトリ：<code>C:\Users\smile\.ngrdb</code></span></div>
+<div class="off"><strong>将来：個人／ワークスペースSQLite</strong><br><span class="small">個人メモリ・作業文脈。共有DBとは分離。</span></div>
+</div>
+</div>
+<div class="boundary"><strong>領域をまたぐ接続：</strong> NGR → 許可された検索要求 → クラウド検索 → 候補・根拠をNGRへ。<br><strong>採らない構成：</strong> クラウドの全文書・全ベクトルをローカルへ同期する仕組み。</div>
+<p class="note">共通MCP、クラウド接続アダプター、領域をまたぐ活性化は設計対象。既存github-ragの全コードをNGRへ移植するか、API経由で再利用するかは未決定。</p>
+</div>
+</section>
+
+<section id="data"><h2><span class="num">02</span>保存は3領域。全部を一つのDBに混ぜない</h2>
+<div class="grid">
+<article class="box cloud"><div class="label">ONLINE</div><h3>オンライン情報</h3><p>GitHubの出来事と文書。収集・更新・検索索引をクラウドが担当。</p><p><strong>更新主体：</strong>クラウド側の取り込み処理</p><p class="small">オンライン＝公開情報とは限らない。非公開リポジトリの権限も維持する。</p></article>
+<article class="box shared"><div class="label">SHARED LOCAL</div><h3>共有知識・判断履歴</h3><p>同じPCのAIが利用する共通知識、判断の理由、関係、利用履歴。</p><p><strong>管理主体：</strong>NGR本体</p><p class="small">ユーザーフォルダ配下の共有は、まず同じOSユーザーのAI間。全Windowsユーザーへの共有ではない。</p></article>
+<article class="box private"><div class="label">PERSONAL / FUTURE</div><h3>個人・作業メモリ</h3><p>個人情報や作業固有の文脈。ユーザー単位／ワークスペース単位のSQLiteを候補にする。</p><p><strong>管理単位：</strong>個人・ワークスペース</p><p class="small">保存場所だけで権限を保証しない。誰が読めるか、外部送信できるかは別途設計。</p></article>
+</div>
+<details><summary>NASへ広げる場合は？</summary><p>共有領域を「NAS上のNGRサービス＋NAS内のローカルSQLite」へ移す案。各PCがネットワーク共有ファイルを直接開く方式は採らない方向。クライアントはサービスへ接続する。</p><p>個人DBまでNASへ移す必要はない。対応CPU、認証、バックアップ、同時書き込みの制御は将来設計する。</p></details>
+<details><summary>クラウドとローカルの関係はどう持つ？</summary><p>オンライン文書の識別子や版への参照を、ローカル判断の関係として保持する案。本文・全ベクトルの一括複製は不要。ただし識別子の安定性、削除・権限変更、古い参照の扱いは未決定。</p></details>
+</section>
+
+<section id="retrieval"><h2><span class="num">03</span>3つのランキングではなく、判断に使える根拠を返す</h2>
+<ol class="flow">
+<li><div><strong>問いと条件を受け取る</strong><p>何を知りたいか、対象、除外条件、使える領域を確認。検索回数や返却量にも予算を設ける。</p></div></li>
+<li><div><strong>入口となる情報を探す</strong><p>GitHub知識ならクラウドのキーワード＋意味検索。過去の判断が主題ならローカルから始める。常に全経路を動かすとは限らない。</p></div></li>
+<li><div><strong>NGRが関係を活性化する</strong><p>前提・依存・反証・失敗経験などへ探索を広げる。単なる類似度とは別に「今、確かめる価値のある情報」を選ぶ。活性化の計算規則は未決定。</p></div></li>
+<li><div><strong>小さな根拠セットへまとめる</strong><p>重複を除き、短い抜粋・出典・関係・詳細取得IDを返す。直接の答えだけでなく、重要な反証や条件も残す。件数ではなく合計トークン量も制御する。</p></div></li>
+<li><div><strong>足りない部分だけ追加探索する</strong><p>エージェントが不足・矛盾・古さを検討し、必要な本文や関係だけを追加取得する。十分な根拠が得られた時点、または予算上限で停止する。</p></div></li>
+<li><div><strong>実際に使った結果を分けて記録する</strong><p>取得・選択・検証・使用・結果を混同しない。利用結果を後の活性化へどう反映するか、個人と共有のどちらへ残すかを設計する。</p></div></li>
+</ol>
+<div class="example"><div class="label">グラフの価値が出る例 — 動作実績ではなく設計例</div><div class="example-path">実装案A → 前提Bに依存 → Bは変更済み<br>実装案A → 過去の失敗 → 原因Cは今回も存在</div><p>「Aの関連記事を増やす」だけではなく、Aの採用を見直し、BやCを確認する問いにつなげる。</p><strong>活性化が強い ≠ 正しい。確認する価値が高い、という手掛かり。</strong></div>
+<p class="note">ローカル判断・個人メモリの学習済みベクトル検索は未決定。クラウドへ接続するだけで、これらが自動的に意味検索できるわけではない。</p>
+</section>
+
+<section id="desktop"><h2><span class="num">04</span>Windowsでは、普通に使える常駐ランチャー</h2>
+<div class="two">
+<article class="box"><span class="badge">採用方向</span><h3>ユーザーから見えるもの</h3><ul><li>NGRの起動アイコン</li><li>初回セットアップと設定画面</li><li>トレイの状態表示・設定・終了</li><li>同じ窓口から更新・バックアップを管理</li></ul><p><strong>画面を閉じる：</strong>本体は継続<br><strong>NGRを終了する：</strong>本体を安全に停止</p></article>
+<article class="box"><span class="badge">採用方向</span><h3>裏側で動くもの</h3><ul><li>ユーザー単位のバックグラウンド本体</li><li>共有DBを管理する窓口は一つ</li><li>複数AIのMCP接続を受け付ける</li><li>Windowsサービスとしての登録は初期構成に含めない</li></ul><p class="small">初回利用時の起動を想定。AI側からの起動方法、二重起動防止、ログイン時起動の選択肢は詳細設計する。</p></article>
+</div>
+<p class="note">「一つの本体」は、同じOSユーザー・共有DBに対する運用方針。ランチャーとコアを別プロセスにするか、画面をどの技術で作るかはまだ決めていない。ブラウザ専用UIは初期方針に含めない。</p>
+</section>
+
+<section id="install"><h2><span class="num">05</span>Pythonで作り、利用者には環境構築を求めない</h2>
+<div class="pipeline" aria-label="PythonソースからGitHub Actions、PyInstaller、配布物へ進むビルド工程案">
+<div class="node"><strong>Pythonソース</strong><span>NGRコア・ランチャー</span></div><span class="connector" aria-hidden="true">→</span><div class="node"><strong>GitHub Actions</strong><span>対象OSでビルド・テスト</span></div><span class="connector" aria-hidden="true">→</span><div class="node"><strong>PyInstaller</strong><span>Python・依存を同梱</span></div><span class="connector" aria-hidden="true">→</span><div class="node"><strong>配布パッケージ</strong><span>インストーラー形式は未決定</span></div>
+</div>
+<p class="note">PyInstallerは主にパッケージ化。高速化のためのネイティブコンパイルではない。配布物そのもので起動・SQLite・MCP接続を検証する。GitHub Actionsでのビルドと、公開リリースの承認は別工程。</p>
+<div class="two">
+<article class="box"><h3>利用者の初回導入</h3><ol><li>NGRをインストールし、DBを準備</li><li>既存github-ragへ接続、または自分のCloudflareへ新規配置</li><li>必要に応じてGitHub Appと対象リポジトリを承認</li><li>AIのMCP接続を設定し、接続テスト</li></ol><p class="small">既存環境の利用者にクラウドの作り直しを要求しない。管理者権限をAIへ渡す前提にしない。</p></article>
+<article class="box"><h3>初期設定を軽くする候補</h3><ul><li>Deploy to Cloudflareボタンによる配置</li><li>GitHub App Manifestによる登録支援</li><li>コールバックURL等の手入力削減</li><li>対応AIごとの接続設定支援</li></ul><p class="small">いずれも統合セットアップへの組み込みは未実装。利用者の承認・料金条件・新規リポジトリ作成の有無を導入画面で示す。</p></article>
+</div>
+<details><summary>無料配布と署名・更新</summary><p>アプリを有料化する予定はない。有料コード署名の契約を前提にしない。試作と一般公開を分け、OSS向け無償署名の利用条件を後で確認する。</p><p>署名なしの配布物は環境によって警告・実行制限があり得る。利用者に保護機能の解除を求める設計にはしない。署名・インストーラー・更新の真正性確認・失敗時の復旧・DB移行前のバックアップは未決定。</p></details>
+</section>
+
+<section id="decisions"><h2><span class="num">06</span>どこまで決めたか</h2>
+<div class="tablewrap"><table><thead><tr><th scope="col">区分</th><th scope="col">内容</th></tr></thead><tbody>
+<tr><td><span class="badge">方針決定</span></td><td>Pythonを継続。Actions＋PyInstallerで実行環境を同梱。Windowsはユーザー単位の常駐ランチャーを入口にする。</td></tr>
+<tr><td><span class="badge">基本方向</span></td><td>クラウドのgithub-rag方式を維持。共通知識・判断履歴は共有SQLite。個人／作業メモリは別領域。利用窓口を統合する。</td></tr>
+<tr><td><span class="badge proposal">設計対象</span></td><td>ノードと関係の定義、活性化・抑制・減衰、反証の扱い、利用結果の反映、取得予算と停止条件。</td></tr>
+<tr><td><span class="badge proposal">設計対象</span></td><td>クラウド接続契約、参照IDと版、MCPの操作体系、権限と外部送信、ローカル意味検索、同時書き込みの制御。</td></tr>
+<tr><td><span class="badge proposal">詳細未決定</span></td><td>GUI技術、プロセス分離、MCP通信方式、自動起動、インストーラー、署名、更新、DB移行と復旧。</td></tr>
+<tr><td><span class="badge future">将来候補</span></td><td>NAS／Linuxサーバー上のNGRサービス、個人メモリ連携。一般利用者にサーバー所有を要求しない。</td></tr>
+<tr><td><span class="badge rejected">今回不採用</span></td><td>クラウドの全文書・全ベクトルをローカルへ差分同期する構成。現時点では同期実装の負担が大きい。</td></tr>
+<tr><td><span class="badge rejected">初期対象外</span></td><td>全面的なTypeScript移植、Windowsサービス必須化、ブラウザ専用UI、ローカル大型モデルの必須化。</td></tr>
+</tbody></table></div>
+<p class="key">次の設計の中心：グラフが「検索候補の追加」を越えて、判断に必要な情報をどう活性化するか。</p>
+<p class="note">この資料は対話で合意した方向と候補を整理したもの。検索性能、統合後の効果、配布互換性を保証するものではない。既存の実験記録・共有DB・NGRソースは変更していない。</p>
+</section>
+<footer><strong>参考資料</strong><br>
+<a href="https://pyinstaller.org/en/stable/">PyInstaller：実行環境を同梱した配布</a> ／ <a href="https://docs.github.com/en/actions/reference/runners/github-hosted-runners">GitHub Actions：OS別ランナー</a> ／ <a href="https://developers.cloudflare.com/workers/platform/deploy-buttons/">Deploy to Cloudflare</a> ／ <a href="https://docs.github.com/en/apps/sharing-github-apps/registering-a-github-app-from-a-manifest">GitHub App Manifest</a> ／ <a href="https://www.sqlite.org/useovernet.html">SQLiteのネットワーク利用</a><br>
+外部ライブラリ・フォント・スクリプト不要。ファイルをブラウザで開いて閲覧でき、印刷にも対応。</footer>
+</main></body></html>
