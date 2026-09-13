@@ -1,0 +1,450 @@
+{
+  "purpose": "known v5 development exploratory diagnostic; not unseen/confirmatory evaluation",
+  "model": "intfloat/multilingual-e5-small",
+  "model_files_sha256": {
+    "models--intfloat--multilingual-e5-small\\files_metadata.json": "31b204fe00ad44610cf97f4a8c848ea0e9b81b0c6e3cddfad606e36232183005",
+    "models--intfloat--multilingual-e5-small\\snapshots\\614241f622f53c4eeff9890bdc4f31cfecc418b3\\config.json": "69137736cab8b8903a07fe8afaafdda25aac55415a12a55d1bffa9f581abf959",
+    "models--intfloat--multilingual-e5-small\\snapshots\\614241f622f53c4eeff9890bdc4f31cfecc418b3\\onnx\\model.onnx": "ca456c06b3a9505ddfd9131408916dd79290368331e7d76bb621f1cba6bc8665",
+    "models--intfloat--multilingual-e5-small\\snapshots\\614241f622f53c4eeff9890bdc4f31cfecc418b3\\special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+    "models--intfloat--multilingual-e5-small\\snapshots\\614241f622f53c4eeff9890bdc4f31cfecc418b3\\tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+    "models--intfloat--multilingual-e5-small\\snapshots\\614241f622f53c4eeff9890bdc4f31cfecc418b3\\tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b",
+    "models--intfloat--multilingual-e5-small\\trees\\614241f622f53c4eeff9890bdc4f31cfecc418b3.json": "f5862c913b10490c9000b30aeabd7bde8db724d040b2d0e433ab4cf5edcb5111"
+  },
+  "providers": [
+    "CPUExecutionProvider"
+  ],
+  "threads": 4,
+  "versions": {
+    "fastembed": "0.8.0",
+    "onnxruntime": "1.30.0",
+    "tokenizers": "0.23.2",
+    "numpy": "2.5.3"
+  },
+  "python": "3.12.14",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "corpus_documents": 93,
+  "development_source_sha256": "9fdb094f246dcd2293481c46635cedd068fc0790c986a20163519e7933632e7c",
+  "seconds": {
+    "model_load_and_first_query": 1.7355010000173934,
+    "initial_index_and_query": 66.31389819999458
+  },
+  "cases": [
+    {
+      "case_id": "v5path-dev-direct-persistence-tier",
+      "cohort": "direct_lexical",
+      "query": "persistent ambiguous workspace memory docs tier escalation write-time trigger",
+      "baseline": {
+        "expected_ranks": [
+          1
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-persistence-tiering/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/memory-entry-format.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/CLAUDE.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-agentic-search/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/evolution.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/promotion-judgment.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/agents/dialogue-evaluator.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/operations/operations.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-decision-structure-write/SKILL.md"
+        ]
+      },
+      "semantic": {
+        "expected_ranks": [
+          1
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-persistence-tiering/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-decision-structure-write/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/memory-entry-format.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/CLAUDE.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/operations/main-agent-procedures.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/promotion-judgment.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/Li+update.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-prompt/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/trigger-check-gate.md"
+        ]
+      },
+      "semantic_hybrid": {
+        "expected_ranks": [
+          1
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-persistence-tiering/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/memory-entry-format.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/CLAUDE.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-agentic-search/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-decision-structure-write/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/operations/operations.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/L.-Hop-Count-Instrument.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/agents/dialogue-evaluator.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/evolution.md"
+        ]
+      },
+      "seconds": {
+        "baseline": 1.073847800027579,
+        "semantic": 0.0394345999811776,
+        "hybrid": 0.0860110999783501
+      }
+    },
+    {
+      "case_id": "v5path-dev-semantic-axis-separation",
+      "cohort": "semantic_paraphrase",
+      "query": "異なる判断軸の矛盾を優先順位で潰さず境界へ戻して解く原則",
+      "baseline": {
+        "expected_ranks": [
+          null
+        ],
+        "recall_at_10": 0.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/Li+config.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/DiDD.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/E.-Li+language.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/C.-Update.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/B.-Configuration.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/A.-Concept.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/CLAUDE.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/6.-Adapter.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-spawn/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md"
+        ]
+      },
+      "semantic": {
+        "expected_ranks": [
+          62
+        ],
+        "recall_at_10": 0.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/Decision-Structure.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/1.-Model.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/2.-Evolution.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/L.-Hop-Count-Instrument.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/4.-Operations.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/G.-Sheepdog-Engineering.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/6.-Adapter.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/F.-Behavior-First.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/K.-Source-File-Format.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/E.-Li+language.md"
+        ]
+      },
+      "semantic_hybrid": {
+        "expected_ranks": [
+          null
+        ],
+        "recall_at_10": 0.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/Decision-Structure.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/1.-Model.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/2.-Evolution.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/L.-Hop-Count-Instrument.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/4.-Operations.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/G.-Sheepdog-Engineering.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/6.-Adapter.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/F.-Behavior-First.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/K.-Source-File-Format.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/E.-Li+language.md"
+        ]
+      },
+      "seconds": {
+        "baseline": 1.0370079999556765,
+        "semantic": 0.04073479998623952,
+        "hybrid": 0.08595829998375848
+      }
+    },
+    {
+      "case_id": "v5path-dev-relation-search-gate",
+      "cohort": "relation_linked",
+      "query": "Which linked skill expands the source-check search-side calibration and retrieval protocol?",
+      "baseline": {
+        "expected_ranks": [
+          1
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-agentic-search/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-source-check/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-trigger-check-gate-actions/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/operations/main-agent-procedures.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/trigger-check-gate.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/CLAUDE.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-frame-check/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/1.-Model.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-ambiguity-handling/SKILL.md"
+        ]
+      },
+      "semantic": {
+        "expected_ranks": [
+          1
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-agentic-search/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-source-check/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-frame-check/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-trigger-check-gate-actions/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-impression-literal-detection/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/trigger-check-gate.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-parallel-agent-eval/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-decision-structure-write/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/Li+update.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-prompt/SKILL.md"
+        ]
+      },
+      "semantic_hybrid": {
+        "expected_ranks": [
+          1
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-agentic-search/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-source-check/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-trigger-check-gate-actions/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/operations/main-agent-procedures.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/trigger-check-gate.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-frame-check/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/1.-Model.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-on-branch/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-decision-structure-write/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-on-wiki-sync/SKILL.md"
+        ]
+      },
+      "seconds": {
+        "baseline": 1.043167199997697,
+        "semantic": 0.03876149997813627,
+        "hybrid": 0.08670709998114035
+      }
+    },
+    {
+      "case_id": "v5path-dev-negative-character-instance",
+      "cohort": "negative_control",
+      "query": "Where are Lin and Lay named with seating metaphors and tone, excluding general character rules",
+      "baseline": {
+        "expected_ranks": [
+          2
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/agents/dialogue-evaluator.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/character_Instance.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/README.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-impression-literal-detection/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/H.-Roles-and-Evaluation.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-on-wiki-sync/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/initiator-autonomy.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-rule-effect-measurement/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-self-eval/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/G.-Sheepdog-Engineering.md"
+        ]
+      },
+      "semantic": {
+        "expected_ranks": [
+          2
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/character.md"
+        ],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/agents/dialogue-evaluator.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/character_Instance.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/README.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/absolute.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/character.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/liplus-coding-rule.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/G.-Sheepdog-Engineering.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-parallel-agent-eval/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/operations/main-agent-procedures.md"
+        ]
+      },
+      "semantic_hybrid": {
+        "expected_ranks": [
+          2
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/agents/dialogue-evaluator.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/character_Instance.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/README.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-projection-discipline/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/G.-Sheepdog-Engineering.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/H.-Roles-and-Evaluation.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/A.-Concept.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/Home.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-impression-literal-detection/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/operations/operations.md"
+        ]
+      },
+      "seconds": {
+        "baseline": 1.148580800043419,
+        "semantic": 0.03939910000190139,
+        "hybrid": 0.17174309998517856
+      }
+    },
+    {
+      "case_id": "v5path-dev-overexclusion-author-boundary",
+      "cohort": "over_exclusion_control",
+      "query": "Which delegation contract separates author and parent phases, excluding self-review record",
+      "baseline": {
+        "expected_ranks": [
+          1
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-delegation/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/CLAUDE.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/Li+update.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-human-interaction/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-spawn/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-on-pr-review/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-handoff-continuity/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/model-agentic-search/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-state-labels/SKILL.md"
+        ]
+      },
+      "semantic": {
+        "expected_ranks": [
+          2
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-on-pr-review/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-delegation/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-prompt/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/operations/main-agent-procedures.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-state-labels/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/evolution-parallel-agent-eval/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-pr-review-judgment/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/initiator-autonomy.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-spawn/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md"
+        ]
+      },
+      "semantic_hybrid": {
+        "expected_ranks": [
+          1
+        ],
+        "recall_at_10": 1.0,
+        "forbidden_top10": [],
+        "top10": [
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-delegation/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/CLAUDE.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/Li+update.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-spawn/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/task-subagent-state-labels/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-on-pr-review/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/liplus-coding-rule.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-handoff-continuity/SKILL.md",
+          "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/skills/operations-on-branch/SKILL.md"
+        ]
+      },
+      "seconds": {
+        "baseline": 1.1996018000063486,
+        "semantic": 0.03883740003220737,
+        "hybrid": 0.20978070003911853
+      }
+    }
+  ],
+  "independent_probes": [
+    {
+      "name": "ja_en",
+      "query": "買った品物の代金を返してもらえる期限は？",
+      "expected": "refund",
+      "rank": 1,
+      "seconds": 0.02298420004080981,
+      "scores": {
+        "refund": 0.7910603468339548,
+        "delivery": 0.7455297359111155,
+        "password": 0.722349391117215,
+        "backup": 0.7343883587675678
+      }
+    },
+    {
+      "name": "es_en",
+      "query": "¿Cuánto tarda en llegar mi paquete?",
+      "expected": "delivery",
+      "rank": 1,
+      "seconds": 0.004094899981282651,
+      "scores": {
+        "refund": 0.7660563014500072,
+        "delivery": 0.8127252863184968,
+        "password": 0.7308140308269625,
+        "backup": 0.7360242449933019
+      }
+    },
+    {
+      "name": "en_paraphrase",
+      "query": "I forgot my login secret. How can I sign in again?",
+      "expected": "password",
+      "rank": 1,
+      "seconds": 0.0048124000313691795,
+      "scores": {
+        "refund": 0.7693217323022336,
+        "delivery": 0.7663281522738427,
+        "password": 0.8750142202642833,
+        "backup": 0.7891007411722055
+      }
+    },
+    {
+      "name": "long_tail",
+      "rank": 1,
+      "chunks": 12,
+      "seconds": 0.3528673000400886,
+      "scores": {
+        "refund": 0.668969136590052,
+        "delivery": 0.6809587216022405,
+        "password": 0.6911573060856769,
+        "backup": 0.6814742452608057,
+        "long": 0.7774623725543292
+      }
+    },
+    {
+      "name": "update_same_id",
+      "before": 0.8735754018652757,
+      "after": 0.7176040573908921,
+      "new_cache_misses": 1
+    },
+    {
+      "name": "negation",
+      "query": "Find encrypted offline backups, not unencrypted cloud backups",
+      "dense_scores": {
+        "allowed": 0.86469041274331,
+        "forbidden": 0.8600689038455009
+      },
+      "dense_ranking": [
+        "allowed",
+        "forbidden"
+      ],
+      "hybrid_ranking": [
+        "allowed",
+        "forbidden"
+      ]
+    }
+  ],
+  "cache": {
+    "hits": 951,
+    "misses": 101
+  }
+}

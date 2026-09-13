@@ -2,6 +2,8 @@
 
 [文書索引](../README.md)
 
+- [multilingual-e5-small CPU実測](semantic-retrieval-cpu.md)
+
 - [anchored-bm25-graph-hybrid-experiment.md](../anchored-bm25-graph-hybrid-experiment.md) — 元パス維持
 - [anchored-fusion-calibration-experiment.md](../anchored-fusion-calibration-experiment.md) — 元パス維持
 - [baseline-aware-soft-start-snapshot-evaluation.md](../baseline-aware-soft-start-snapshot-evaluation.md) — 元パス維持
