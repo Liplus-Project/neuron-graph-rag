@@ -1,7 +1,7 @@
 {
   "existing_files": 83,
-  "moved": 8,
-  "retained": 75,
+  "moved": 7,
+  "retained": 76,
   "direct_hash_registered": 67,
   "documents": [
     {
@@ -1059,11 +1059,22 @@
     },
     {
       "original": "docs/precision-control-observation-v1.md",
-      "current": "docs/experiments/precision-control-observation-v1.md",
-      "retained": false,
+      "current": "docs/precision-control-observation-v1.md",
+      "retained": true,
       "hash_registries": [],
       "manifest_references": [],
-      "referenced_by_retained_docs": []
+      "referenced_by_retained_docs": [],
+      "retention_reason": "Frozen corpus document paths are read and byte-verified by the v13, v15 and v16 git-free verifiers.",
+      "corpus_references": [
+        "tests/fixtures/github_cross_encoder_precision_v1.corpus.json#/documents/15/path",
+        "tests/fixtures/github_cross_encoder_precision_v2.corpus.json#/documents/15/path",
+        "tests/fixtures/github_cross_encoder_precision_v3.corpus.json#/documents/15/path",
+        "tests/fixtures/github_cross_encoder_precision_v4.corpus.json#/documents/15/path",
+        "tests/fixtures/github_cross_encoder_precision_v5.corpus.json#/documents/15/path",
+        "tests/fixtures/github_cross_encoder_precision_v6.corpus.json#/documents/15/path",
+        "tests/fixtures/github_cross_encoder_precision_v7.corpus.json#/documents/15/path",
+        "tests/fixtures/github_cross_encoder_precision_v8.corpus.json#/documents/15/path"
+      ]
     },
     {
       "original": "docs/production-exclusion-intent.md",

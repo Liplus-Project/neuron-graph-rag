@@ -60,7 +60,7 @@
 - [node-first-blind-selection-experiment.md](../node-first-blind-selection-experiment.md) — 元パス維持
 - [outcome-driven-feedback-deactivation.md](../outcome-driven-feedback-deactivation.md) — 元パス維持
 - [precision-control-freeze-v1.md](../precision-control-freeze-v1.md) — 元パス維持
-- [precision-control-observation-v1.md](precision-control-observation-v1.md)
+- [precision-control-observation-v1.md](../precision-control-observation-v1.md) — 元パス維持（凍結corpusの実ファイル検証対象）
 - [real-corpus-benchmark.md](../real-corpus-benchmark.md) — 元パス維持
 - [real-task-feedback-shadow-protocol-v2.md](../real-task-feedback-shadow-protocol-v2.md) — 元パス維持
 - [real-task-feedback-shadow-protocol-v3.md](../real-task-feedback-shadow-protocol-v3.md) — 元パス維持
