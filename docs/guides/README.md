@@ -2,6 +2,8 @@
 
 [文書索引](../README.md)
 
+- [CPU多言語意味検索](semantic-retrieval.md)
+
 - [github-rag-mcp-replacement-compatibility.md](../github-rag-mcp-replacement-compatibility.md) — 元パス維持
 - [historical-source-verification.md](../historical-source-verification.md) — 元パス維持
 - [mcp-feedback-stabilization-settings.md](../mcp-feedback-stabilization-settings.md) — 元パス維持
