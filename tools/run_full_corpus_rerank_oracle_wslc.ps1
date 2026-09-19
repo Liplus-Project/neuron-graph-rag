@@ -69,22 +69,25 @@ if ($Action -eq "preflight") {
         throw "fresh runtime volume already exists: $volume"
     }
     Invoke-Checked -Command @("wslc", "volume", "create", $volume)
+    $prepareScript = @(
+        "set -eu; "
+        "test ! -e '${containerSource}'; test ! -e '${containerCache}'; "
+        "mkdir '${containerSource}' '${containerCache}'; "
+        "cp -a /input/source/. '${containerSource}/'; "
+        "rm -rf '${containerSource}/.git' '${containerSource}/.venv' "
+        "'${containerSource}/.ruff_cache' '${containerSource}/dist'; "
+        "cp -a /input/model-cache/. '${containerCache}/'; "
+        "test -f '${containerSource}/src/neuron_graph_rag/full_corpus_rerank_oracle.py'; "
+        "test -d '${containerCache}/models--BAAI--bge-reranker-base'; "
+        "test -d '${containerCache}/models--BAAI--bge-reranker-v2-m3'"
+    ) -join ""
     $prepare = @(
         "wslc", "run", "--rm", "--network", "none",
         "--volume", "${volume}:${containerRoot}",
         "--volume", "${root}:/input/source:ro",
         "--volume", "${modelCache}:/input/model-cache:ro",
         "--entrypoint", "/bin/sh", $image, "-c",
-        "set -eu; " +
-        "test ! -e '${containerSource}'; test ! -e '${containerCache}'; " +
-        "mkdir '${containerSource}' '${containerCache}'; " +
-        "cp -a /input/source/. '${containerSource}/'; " +
-        "rm -rf '${containerSource}/.git' '${containerSource}/.venv' " +
-        "'${containerSource}/.ruff_cache' '${containerSource}/dist'; " +
-        "cp -a /input/model-cache/. '${containerCache}/'; " +
-        "test -f '${containerSource}/src/neuron_graph_rag/full_corpus_rerank_oracle.py'; " +
-        "test -d '${containerCache}/models--BAAI--bge-reranker-base'; " +
-        "test -d '${containerCache}/models--BAAI--bge-reranker-v2-m3'"
+        $prepareScript
     )
     Invoke-Checked -Command $prepare
     $arguments = Base-Container-Arguments
@@ -116,20 +119,23 @@ Invoke-Checked -Command (@("wslc") + $arguments + @(
     "--source-commit", $sourceCommit
 ))
 
+$exportScript = @(
+    "set -eu; "
+    "test -f '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v1/development.claim.json'; "
+    "test -f '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v1/development.observed.json'; "
+    "test ! -e '/output/tests/evidence/full_corpus_rerank_oracle_v1/development.claim.json'; "
+    "test ! -e '/output/tests/evidence/full_corpus_rerank_oracle_v1/development.observed.json'; "
+    "mkdir -p '/output/tests/evidence/full_corpus_rerank_oracle_v1'; "
+    "cp '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v1/development.claim.json' "
+    "'/output/tests/evidence/full_corpus_rerank_oracle_v1/development.claim.json'; "
+    "cp '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v1/development.observed.json' "
+    "'/output/tests/evidence/full_corpus_rerank_oracle_v1/development.observed.json'"
+) -join ""
 $export = @(
     "wslc", "run", "--rm", "--network", "none",
     "--volume", "${volume}:${containerRoot}:ro",
     "--volume", "${root}:/output",
     "--entrypoint", "/bin/sh", $image, "-c",
-    "set -eu; " +
-    "test -f '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v1/development.claim.json'; " +
-    "test -f '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v1/development.observed.json'; " +
-    "test ! -e '/output/tests/evidence/full_corpus_rerank_oracle_v1/development.claim.json'; " +
-    "test ! -e '/output/tests/evidence/full_corpus_rerank_oracle_v1/development.observed.json'; " +
-    "mkdir -p '/output/tests/evidence/full_corpus_rerank_oracle_v1'; " +
-    "cp '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v1/development.claim.json' " +
-    "'/output/tests/evidence/full_corpus_rerank_oracle_v1/development.claim.json'; " +
-    "cp '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v1/development.observed.json' " +
-    "'/output/tests/evidence/full_corpus_rerank_oracle_v1/development.observed.json'"
+    $exportScript
 )
 Invoke-Checked -Command $export
