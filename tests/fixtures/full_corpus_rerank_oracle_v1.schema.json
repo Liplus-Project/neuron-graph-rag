@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Liplus-Project/neuron-graph-rag/schemas/full-corpus-rerank-oracle-v1.json",
+  "title": "Full-corpus rerank oracle v1 result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "purpose",
+    "source_commit",
+    "case_id",
+    "query",
+    "expected_source_id",
+    "corpus_document_count",
+    "rerank_cutoff",
+    "classification_policy",
+    "classification",
+    "environment",
+    "inputs_sha256",
+    "source_module_sha256",
+    "models",
+    "payload_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "protocol_id": {"const": "github-retrieval-parity-v5-full-corpus-rerank-oracle-v1"},
+    "purpose": {"type": "string", "minLength": 1},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "case_id": {"const": "v5path-dev-semantic-axis-separation"},
+    "query": {"type": "string", "minLength": 1},
+    "expected_source_id": {"type": "string", "minLength": 1},
+    "corpus_document_count": {"const": 93},
+    "rerank_cutoff": {"const": 20},
+    "classification_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["all_models_at_or_above_cutoff", "all_models_below_cutoff", "mixed"],
+      "properties": {
+        "all_models_at_or_above_cutoff": {"const": "candidate_generation_bottleneck"},
+        "all_models_below_cutoff": {"const": "semantic_discrimination_bottleneck"},
+        "mixed": {"const": "undetermined"}
+      }
+    },
+    "classification": {
+      "enum": [
+        "candidate_generation_bottleneck",
+        "semantic_discrimination_bottleneck",
+        "undetermined"
+      ]
+    },
+    "environment": {"$ref": "#/$defs/environment"},
+    "inputs_sha256": {
+      "type": "object",
+      "minProperties": 6,
+      "additionalProperties": {"$ref": "#/$defs/sha256"}
+    },
+    "source_module_sha256": {"$ref": "#/$defs/sha256"},
+    "models": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/model"}
+    },
+    "payload_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "os",
+        "architecture",
+        "python",
+        "cpu_threads",
+        "network",
+        "fresh_runtime",
+        "shared_database_open_count",
+        "runtime_seconds"
+      ],
+      "properties": {
+        "os": {"const": "linux"},
+        "architecture": {"const": "x86_64"},
+        "python": {"type": "string", "minLength": 1},
+        "cpu_threads": {"const": 4},
+        "network": {"const": "disabled"},
+        "fresh_runtime": {"const": true},
+        "shared_database_open_count": {"const": 0},
+        "runtime_seconds": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_seconds",
+        "peak_rss_bytes",
+        "pair_count",
+        "document_count",
+        "chunk_count"
+      ],
+      "properties": {
+        "runtime_seconds": {"type": "number", "exclusiveMinimum": 0},
+        "peak_rss_bytes": {"type": "integer", "minimum": 1},
+        "pair_count": {"type": "integer", "minimum": 93},
+        "document_count": {"const": 93},
+        "chunk_count": {"type": "integer", "minimum": 93}
+      }
+    },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "path",
+        "character_count",
+        "chunk_count",
+        "best_chunk_score",
+        "rank",
+        "winning_chunk_index",
+        "winning_chunk_start_codepoint",
+        "winning_chunk_end_codepoint",
+        "winning_chunk_sha256"
+      ],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "character_count": {"type": "integer", "minimum": 1},
+        "chunk_count": {"type": "integer", "minimum": 1},
+        "best_chunk_score": {"type": "number"},
+        "rank": {"type": "integer", "minimum": 1, "maximum": 93},
+        "winning_chunk_index": {"type": "integer", "minimum": 0},
+        "winning_chunk_start_codepoint": {"type": "integer", "minimum": 0},
+        "winning_chunk_end_codepoint": {"type": "integer", "minimum": 1},
+        "winning_chunk_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "model_id",
+        "revision",
+        "model_files_sha256",
+        "dependencies",
+        "metrics",
+        "ranking_sha256",
+        "documents",
+        "expected_source_rank",
+        "expected_source_within_cutoff"
+      ],
+      "properties": {
+        "kind": {"enum": ["base", "v2-m3"]},
+        "model_id": {"type": "string", "minLength": 1},
+        "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "model_files_sha256": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {"$ref": "#/$defs/sha256"}
+        },
+        "dependencies": {
+          "type": "object",
+          "minProperties": 5,
+          "additionalProperties": {"type": "string", "minLength": 1}
+        },
+        "metrics": {"$ref": "#/$defs/metrics"},
+        "ranking_sha256": {"$ref": "#/$defs/sha256"},
+        "documents": {
+          "type": "array",
+          "minItems": 93,
+          "maxItems": 93,
+          "items": {"$ref": "#/$defs/document"}
+        },
+        "expected_source_rank": {"type": "integer", "minimum": 1, "maximum": 93},
+        "expected_source_within_cutoff": {"type": "boolean"}
+      }
+    }
+  }
+}
