@@ -17,4 +17,13 @@ manifestとschemaは `tests/fixtures/full_corpus_rerank_oracle_v1.*.json`、runn
 
 ## 観測結果
 
-未観測。result-free audit と synthetic probe を通した後、source commitを固定してpreflightとone-shot developmentを実行する。
+source commit `d9cbf02f44d69fef7ab5a759de5221d37d5d90f5` を固定し、fresh WSLC volumeでpreflightを通した後にone-shot developmentを実行した。preflightはnetwork無効、93文書、両modelのrevision / file hashを検証し、登録query実行0回、synthetic forward 2回だった。
+
+| model | 正解rank | cutoff 20以内 | runtime | peak RSS | 文書 / chunk |
+| --- | ---: | --- | ---: | ---: | ---: |
+| `BAAI/bge-reranker-base` | 64 | いいえ | 174.80秒 | 1,976,418,304 bytes | 93 / 2,065 |
+| `BAAI/bge-reranker-v2-m3` | 45 | いいえ | 577.96秒 | 3,110,289,408 bytes | 93 / 2,065 |
+
+両modelとも正解が固定cutoff 20の外だったため、契約どおり `semantic_discrimination_bottleneck` と分類する。この1件ではcandidate generationを除いてもreranker単独で正解を実用候補範囲へ上げられず、既存rank-62の主因をsemantic discrimination側に帰属する探索的証拠となった。これは既知development 1件の診断であり、他query、holdout、production品質へ一般化しない。
+
+append-only evidenceは `tests/evidence/full_corpus_rerank_oracle_v1/` にあり、result payload SHA-256は `45588ea2bd7542eefafa1fa98233343320fb1fc359b6d055e265b1456670787a` である。auditは両model各93文書のsource ID、文字数、chunk数、best chunk、score、rank、runtime、peak RSS、dependency / model revision、input / model / output hashを再検証し、holdout、GitHub RAG、共有DBへのアクセスが0だったことを確認する。
