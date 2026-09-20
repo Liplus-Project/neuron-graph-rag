@@ -1,0 +1,52 @@
+{
+  "corpus_document_count": 93,
+  "gold_present": false,
+  "holdout_bearing_input_file_count": 0,
+  "models": [
+    {
+      "kind": "base",
+      "model_files_sha256": {
+        "config.json": "289adf7ada1eb6b4afa7589a48a032d45a076cf2e46dcdb3b4cabc33be14f708",
+        "model.safetensors": "ced967c45fd1902eb92716c9ceeca7c95a936770ea9db611f5a841b926e33fbd",
+        "sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+        "special_tokens_map.json": "d5469a60db23249c7f8945013d78df30b44b6bf686c6bb4740f4223f77b1b535",
+        "tokenizer.json": "9eb652ac4e40cc093272bbbe0f55d521cf67570060227109b5cdc20945a4489e",
+        "tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b"
+      },
+      "model_id": "BAAI/bge-reranker-base",
+      "revision": "2cfc18c9415c912f9d8155881c133215df768a70"
+    },
+    {
+      "kind": "v2-m3",
+      "model_files_sha256": {
+        "config.json": "13dcd6c31d9fec9d1d8e158702072f62d7fa7d312a64b9fe057bec9a08cfe41a",
+        "model.safetensors": "d9e3e081faff1eefb84019509b2f5558fd74c1a05a2c7db22f74174fcedb5286",
+        "sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+        "special_tokens_map.json": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835",
+        "tokenizer.json": "69564b696052886ed0ac63fa393e928384e0f8caada38c1f4864a9bfbf379c15",
+        "tokenizer_config.json": "7e4c1cc848840aeccdd763458c18dd525eb0f795c992e00ebe9c28554e7db2d4"
+      },
+      "model_id": "BAAI/bge-reranker-v2-m3",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    }
+  ],
+  "network": "disabled-by-container",
+  "protocol_id": "github-retrieval-parity-v5-full-corpus-rerank-oracle-v2",
+  "query_sha256": "b9831a1692eb11e1108aac235394c042bad38174535e4d4f467a43bf7f7a9924",
+  "registered_query_execution_count": 0,
+  "registered_source_sha256": {
+    "src/neuron_graph_rag/__init__.py": "5fc4c8900b0993b6b599c8beefb3c2b3f45b18cd14c25af2dd725fa7ba12f79f",
+    "src/neuron_graph_rag/cross_encoder_precision_v2_evaluation.py": "75a7cb3ab16c203fdfd6b3e0d2ca654e91916013cfdfec8c16c836cc571c325a",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle.py": "d4e4c1df3568ac8be45fbd0b5001a336d5c8d6a9e108ca3bd028c6fe77746bf8",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle_v2.py": "ad64dbbf4c118045c8684edf3e3670bed160727e387c847a8c09cb01aaaedfbc",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.manifest.json": "331f25d5bfa7c0caf0355f3124558ee721a40ab0a9e6c235272800cc0aa4c689",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json": "c7bc3c49310737d6cad024e14ee1388417b46ee2f38b90f6b1c3793737295f23",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.schema.json": "ac46bf2417bde0f78292d6f33722af19b339048639a874084ff01ed2326b33ba",
+    "tests/fixtures/github_cross_encoder_precision_v8.models.json": "f8517c050b9ac2e10b1fa73fd4fc34c2a39f03830f5a29cf36847410a602a2b5",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f"
+  },
+  "shared_database_open_count": 0,
+  "source_commit": "3ca2a3c53fe9911ce64f38a50b2ff0338be7bf74",
+  "status": "preflight_valid",
+  "synthetic_forward_inference_count": 2
+}

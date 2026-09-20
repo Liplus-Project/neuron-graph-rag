@@ -79,14 +79,32 @@ class FullCorpusRerankOracleV2Tests(unittest.TestCase):
         self.assertEqual(schema["properties"]["corpus_document_count"]["const"], 93)
         self.assertEqual(schema["$defs"]["model"]["properties"]["documents"]["minItems"], 93)
 
-    def test_probe_and_result_free_audit_execute_no_registered_query(self) -> None:
+    def test_probe_executes_no_registered_query_and_audit_validates_observation(self) -> None:
         probe = oracle.probe(oracle.ROOT)
         self.assertEqual(probe["registered_query_execution_count"], 0)
         self.assertEqual(probe["model_forward_inference_count"], 0)
         audit = oracle.audit(oracle.ROOT)
-        self.assertEqual(audit["status"], "result_free")
+        self.assertEqual(audit["status"], "observed_valid")
         self.assertEqual(audit["holdout_bearing_input_file_count"], 0)
         self.assertFalse(audit["worker_gold_present"])
+        self.assertEqual(audit["ranks"], {"base": 64, "v2-m3": 45})
+        self.assertEqual(audit["classification"], "semantic_discrimination_bottleneck")
+
+    def test_append_only_v2_evidence_hashes_are_frozen(self) -> None:
+        expected = {
+            Path("tests/evidence/full_corpus_rerank_oracle_v2/development.preflight.json"): "405663d2e3388e079a76043d1e8370983982f8bff565801a898d7f340f79e9e1",
+            oracle.CLAIM: "416ff3e48305df1f1619a71c6c665fecbf07b18cc6bce8e72295688033b0ed17",
+            oracle.RESULT: "52f2289de5a2da675fd4f980c9752bda387101c2601184fbd01fdd59642dccd4",
+        }
+        for relative, digest in expected.items():
+            self.assertEqual(
+                hashlib.sha256((oracle.ROOT / relative).read_bytes()).hexdigest(), digest
+            )
+        claim = json.loads((oracle.ROOT / oracle.CLAIM).read_text(encoding="utf-8"))
+        self.assertEqual(
+            claim["preflight_attestation_sha256"],
+            expected[Path("tests/evidence/full_corpus_rerank_oracle_v2/development.preflight.json")],
+        )
 
     def test_v1_owned_files_are_byte_for_byte_unchanged(self) -> None:
         expected = {

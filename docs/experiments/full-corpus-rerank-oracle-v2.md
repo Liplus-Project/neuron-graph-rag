@@ -27,4 +27,13 @@ CIは `audit`、`probe`、unit testだけを実行し、model downloadまたは�
 
 ## 観測結果
 
-結果はまだ登録されていない。result-free protocolをcommit/pushした後にpreflightを通し、一度だけ登録実行する。
+source commit `3ca2a3c53fe9911ce64f38a50b2ff0338be7bf74` に対し、preflight後のsingle one-shotを実行した。preflightはgold不在、holdout-bearing input 0件、登録query 0回、93文書、network disabled、共有DB 0件、両modelのrevision/file hash一致、synthetic forward 2回を記録した。
+
+観測結果は次のとおりである。
+
+| model | expected source rank | cutoff内 | runtime | peak RSS |
+| --- | ---: | --- | ---: | ---: |
+| `BAAI/bge-reranker-base` | 64 | いいえ | 182.877秒 | 2,008,219,648 bytes |
+| `BAAI/bge-reranker-v2-m3` | 45 | いいえ | 602.301秒 | 3,133,009,920 bytes |
+
+両modelともrank 20圏外だったため、固定classification policyによる有効な分類は `semantic_discrimination_bottleneck` である。これは既知development 1件に対する探索的診断であり、未見性能またはproduction統合の根拠ではない。result payload SHA-256は `1a7493a81e999df2047c8595a09748823c87ae2c04405de9f99f126beac55932`、preflight attestation file SHA-256は `405663d2e3388e079a76043d1e8370983982f8bff565801a898d7f340f79e9e1`、claim file SHA-256は `416ff3e48305df1f1619a71c6c665fecbf07b18cc6bce8e72295688033b0ed17`、result file SHA-256は `52f2289de5a2da675fd4f980c9752bda387101c2601184fbd01fdd59642dccd4` である。

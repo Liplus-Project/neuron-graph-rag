@@ -196,11 +196,22 @@ finally {
         "--volume", "${volume}:${containerRoot}:ro", "--volume", "${root}:/output",
         "--entrypoint", "/bin/sh", $image, "-c",
         "set -eu; mkdir -p '/output/tests/evidence/full_corpus_rerank_oracle_v2'; " +
-        "for name in development.claim.json development.observed.json development.error.json; do " +
-        "if test -f '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v2/'`$name; then " +
-        "test ! -e '/output/tests/evidence/full_corpus_rerank_oracle_v2/'`$name; " +
-        "cp '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v2/'`$name " +
-        "'/output/tests/evidence/full_corpus_rerank_oracle_v2/'`$name; fi; done"
+        "if test -f '${containerRun}/preflight.attestation.json'; then " +
+        "test ! -e '/output/tests/evidence/full_corpus_rerank_oracle_v2/development.preflight.json'; " +
+        "cp '${containerRun}/preflight.attestation.json' " +
+        "'/output/tests/evidence/full_corpus_rerank_oracle_v2/development.preflight.json'; fi; " +
+        "if test -f '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v2/development.claim.json'; then " +
+        "test ! -e '/output/tests/evidence/full_corpus_rerank_oracle_v2/development.claim.json'; " +
+        "cp '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v2/development.claim.json' " +
+        "'/output/tests/evidence/full_corpus_rerank_oracle_v2/development.claim.json'; fi; " +
+        "if test -f '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v2/development.observed.json'; then " +
+        "test ! -e '/output/tests/evidence/full_corpus_rerank_oracle_v2/development.observed.json'; " +
+        "cp '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v2/development.observed.json' " +
+        "'/output/tests/evidence/full_corpus_rerank_oracle_v2/development.observed.json'; fi; " +
+        "if test -f '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v2/development.error.json'; then " +
+        "test ! -e '/output/tests/evidence/full_corpus_rerank_oracle_v2/development.error.json'; " +
+        "cp '${containerSource}/tests/evidence/full_corpus_rerank_oracle_v2/development.error.json' " +
+        "'/output/tests/evidence/full_corpus_rerank_oracle_v2/development.error.json'; fi"
     )
     Invoke-Checked -Command $export
 }
