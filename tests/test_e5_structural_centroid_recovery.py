@@ -155,6 +155,53 @@ class E5StructuralCentroidRecoveryTests(unittest.TestCase):
             manifest["claim_registered_files"],
         )
 
+    def test_v2_recovered_result_is_hash_locked_and_auditable(self) -> None:
+        claim_path = recovery_v2.ROOT / recovery_v2.CLAIM
+        result_path = recovery_v2.ROOT / recovery_v2.RESULT
+        self.assertEqual(
+            hashlib.sha256(claim_path.read_bytes()).hexdigest(),
+            "050797311e5edf52db0eba6f272eac32845c89f77b0268b643a4e7624e0b6aee",
+        )
+        self.assertEqual(
+            hashlib.sha256(result_path.read_bytes()).hexdigest(),
+            "0afbe83f9e494b036faaa110e9296e48183df075069dda6f400df5995c1c5b24",
+        )
+        result = json.loads(result_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            result["status"], "recovered_from_complete_gold_blind_worker_packet"
+        )
+        self.assertEqual(result["derivation"], "completed_gold_blind_worker_packet")
+        self.assertEqual(result["registered_query_execution_count"], 0)
+        self.assertEqual(result["model_forward_inference_count"], 0)
+        self.assertEqual(result["retry_count"], 0)
+        self.assertEqual(
+            {row["arm_id"]: row["expected_source_rank"] for row in result["arms"]},
+            {
+                "body_max": 78,
+                "structural_max": 42,
+                "body_centroid": 68,
+                "structural_centroid": 39,
+            },
+        )
+        self.assertFalse(result["primary_success"])
+        self.assertEqual(
+            result["directional_evidence_arms"],
+            ["structural_max", "body_centroid", "structural_centroid"],
+        )
+        self.assertEqual(
+            result["length_bias_attenuation"], {"body": False, "structural": False}
+        )
+        self.assertEqual(
+            result["truncation"]["passages_exceeding_512_before_truncation"],
+            {"body": 0, "structural": 0},
+        )
+        audit = recovery_v2.audit(recovery_v2.ROOT)
+        self.assertEqual(
+            audit["status"], "recovered_from_complete_gold_blind_worker_packet"
+        )
+        self.assertEqual(audit["registered_query_execution_count"], 0)
+        self.assertEqual(audit["model_forward_inference_count"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

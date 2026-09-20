@@ -21,3 +21,14 @@ armは `body_max`、`structural_max`、`body_centroid`、`structural_centroid`�
 別protocol `github-retrieval-parity-v5-e5-structural-centroid-finalizer-recovery-v1` をgold mount前に固定した。recovery claimは、v1 evidenceのexact hash、93文書・各表現2065 passage、384次元query/centroid、body/structural間のchunk identity、4 armの固定式・tie-break・ranking hash・Spearmanをdevelopment goldなしで再検証する。完全性を証明できた場合だけ、既存development-only goldを追加し、登録query実行0回・model forward 0回で順位を導出する。これは完了済みgold-blind worker packetからの派生結果であり、v1成功またはretryではない。
 
 recovery-v1 claimはpacket完全性を証明したが、manifestへdevelopment-only gold SHA-256を64桁ではなく58桁で転記していたため、finalizerはgold hash gateでrank計算前にfail closedした。claimとerrorを保存し、recovery-v1は再試行しない。別IDのrecovery-v2では、このhashだけを実ファイルの64桁 `689028b2a6f827bc915f6d9151c1b6b95164b4dbd59715bb930d573c33c846cf` へ修正し、packet検証、4 arm、式、criteria、cutoff、query 0回、model forward 0回を不変に固定した。
+
+recovery-v2 claimはdevelopment goldなしでpacket完全性を再証明し、その後のdeterministic finalizerは完了した。これは新しいquery/model推論ではなく、完了済みgold-blind worker packetからの派生である。worker runtimeは `101.52003426600277` 秒、peak RSSは `1229111296` bytesだった。
+
+| arm | expected rank | Spearman(chunk count, document score) | cutoff 20 |
+|---|---:|---:|---|
+| `body_max` | 78 | 0.5673424621223959 | 未達 |
+| `structural_max` | 42 | 0.4791736702875985 | 未達 |
+| `body_centroid` | 68 | 0.7438443586611451 | 未達 |
+| `structural_centroid` | 39 | 0.6145600057038945 | 未達 |
+
+primary successは未達。`structural_max`、`body_centroid`、`structural_centroid` は同じpacketの `body_max` 78位よりstrictに改善し、directional evidenceを満たした。centroidの絶対Spearmanはbody/structuralの双方でmaxより高く、length-bias attenuationは両方とも未達だった。pre-truncation 512 token超過はbody `0/2065`、structural `0/2065`、bodyが512以下かつstructuralが512超過となったpairは0で、structural表現によるtruncation増加はなかった。
