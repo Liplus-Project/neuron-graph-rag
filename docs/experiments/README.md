@@ -4,6 +4,7 @@
 
 - [multilingual-e5-small CPU実測](semantic-retrieval-cpu.md)
 - [v5 semantic rank-62 full-corpus rerank oracle](full-corpus-rerank-oracle-v1.md)
+- [v5 full-corpus rerank oracle v2 (holdout-absent protocol)](full-corpus-rerank-oracle-v2.md)
 
 - [anchored-bm25-graph-hybrid-experiment.md](../anchored-bm25-graph-hybrid-experiment.md) — 元パス維持
 - [anchored-fusion-calibration-experiment.md](../anchored-fusion-calibration-experiment.md) — 元パス維持
