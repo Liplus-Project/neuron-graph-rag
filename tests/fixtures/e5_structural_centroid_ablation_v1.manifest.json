@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "protocol_id": "github-retrieval-parity-v5-e5-structural-centroid-ablation-v1",
+  "status": "frozen_pre_registered_execution",
+  "registered_query_execution_count": 0,
+  "artifact_sha256": {
+    "src/neuron_graph_rag/cross_encoder_precision_v2_evaluation.py": "75a7cb3ab16c203fdfd6b3e0d2ca654e91916013cfdfec8c16c836cc571c325a",
+    "src/neuron_graph_rag/e5_structural_centroid_ablation.py": "0afa4abf198c411fe0f577ad22fcdc2af3960c3ea35453a32b72443480063e7e",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle.py": "d4e4c1df3568ac8be45fbd0b5001a336d5c8d6a9e108ca3bd028c6fe77746bf8",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle_v2.py": "ad64dbbf4c118045c8684edf3e3670bed160727e387c847a8c09cb01aaaedfbc",
+    "src/neuron_graph_rag/structural_representation_length_bias_diagnostic.py": "b117e0446fcbe76890e6278dbf08bbb12d42cf4c87329d9a69e6a366bc95de86",
+    "tests/evidence/e5_structural_centroid_ablation_v1/result_free_parity.json": "a18e9dbc7eba522155d0927dbcafea0b2011c3691e3764dd95c0e526cb1f442c",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.model.json": "89e98eb7bc275a40111ca722f371f713f8b1cddac5b8598761b6b52ee025e253",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.schema.json": "ce8808bf46b73587bcd4be586ca9402b288443028d864e5dc70cc0ef28f00a35",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.package_init.py": "5fc4c8900b0993b6b599c8beefb3c2b3f45b18cd14c25af2dd725fa7ba12f79f",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json": "c7bc3c49310737d6cad024e14ee1388417b46ee2f38b90f6b1c3793737295f23",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f"
+  },
+  "worker_registered_files": [
+    "src/neuron_graph_rag/__init__.py",
+    "src/neuron_graph_rag/cross_encoder_precision_v2_evaluation.py",
+    "src/neuron_graph_rag/e5_structural_centroid_ablation.py",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle.py",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle_v2.py",
+    "src/neuron_graph_rag/structural_representation_length_bias_diagnostic.py",
+    "tests/evidence/e5_structural_centroid_ablation_v1/result_free_parity.json",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.manifest.json",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.model.json",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.schema.json",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.package_init.py",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json"
+  ],
+  "forbidden_registered_paths": [
+    "ngr.sqlite3",
+    "tests/evidence/full_corpus_rerank_oracle_v1",
+    "tests/evidence/full_corpus_rerank_oracle_v2",
+    "tests/evidence/structural_representation_length_bias_ablation_v1",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.gold.json",
+    "tests/fixtures/github_retrieval_parity_v5.gold.json",
+    "tests/fixtures/github_retrieval_parity_v5.queries.json"
+  ],
+  "purpose": "既知development 1件について、pinned multilingual-e5-smallの構造表現とdocument centroid集約を2x2 factorialで探索的に比較する。holdoutまたはproduction性能へ一般化しない。",
+  "fixed_inputs": {
+    "query": "tests/fixtures/full_corpus_rerank_oracle_v2.query.json",
+    "gold": "tests/fixtures/full_corpus_rerank_oracle_v2.gold.json",
+    "corpus": "tests/fixtures/github_retrieval_parity_v4.corpus.json",
+    "document_count": 93
+  },
+  "model": {
+    "model_id": "intfloat/multilingual-e5-small",
+    "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "runtime": "ONNX Runtime CPUExecutionProvider",
+    "query_prefix": "query: ",
+    "passage_prefix": "passage: ",
+    "pooling": "attention-mask mean pooling of last_hidden_state then L2 normalization",
+    "max_length": 512,
+    "truncation": "truncate tokens at the passage tail only after recording pre-truncation token length"
+  },
+  "parity_gate": {
+    "reference": "existing #230 FastEmbed-backed MultilingualE5 path",
+    "input_scope": "synthetic non-registered texts only",
+    "max_absolute_difference_tolerance": 0.000001,
+    "minimum_cosine_similarity": 0.999999,
+    "evidence_sha256": "a18e9dbc7eba522155d0927dbcafea0b2011c3691e3764dd95c0e526cb1f442c"
+  },
+  "projection": {"unit": "unicode-codepoint", "window": 480, "overlap": 80, "coverage": "start-to-end"},
+  "structural_representation": {
+    "implementation": "byte-identical call to #238 structural_prefix",
+    "prefix_template": "path: {repository_path}\nfilename: {filename}\ntitle: {document_title}\nheadings: {heading_chain}\n\n",
+    "prefix_cap": null,
+    "body_chunk_contract": "project body once at 480 codepoints with 80 overlap, then prepend metadata without changing body text, offsets, or hash"
+  },
+  "aggregations": {
+    "maximum": "max cosine between normalized query and normalized chunk embeddings",
+    "document_centroid": "arithmetic mean of normalized chunk embeddings, L2 normalize mean, then cosine with normalized query",
+    "zero_norm": "fail closed",
+    "tie_break": "source_id ascending"
+  },
+  "arms": [
+    {"arm_id": "body_max", "representation": "body", "aggregation": "maximum", "role": "baseline"},
+    {"arm_id": "structural_max", "representation": "structural", "aggregation": "maximum", "role": "representation main effect"},
+    {"arm_id": "body_centroid", "representation": "body", "aggregation": "document_centroid", "role": "aggregation main effect"},
+    {"arm_id": "structural_centroid", "representation": "structural", "aggregation": "document_centroid", "role": "combined interaction"}
+  ],
+  "execution": {"batch_size": 8, "cpu_threads": 4, "device": "cpu", "network": "disabled", "fresh_runtime": true, "retry_count": 0, "registered_query_count": 1, "worker_gold_mount": "absent"},
+  "ranking": {
+    "cutoff": 20,
+    "primary_success": "at least one non-baseline arm ranks the expected source at or above cutoff",
+    "directional_evidence": "a non-baseline arm strictly improves expected-source rank versus body_max in the same one-shot",
+    "length_bias_attenuation": "absolute Spearman(chunk_count, document_score) is lower for centroid than max within the same representation",
+    "no_post_result_tuning": true
+  },
+  "saved_evidence": ["query embedding and hash", "document centroid embeddings", "all chunk cosine scores", "all document scores and ranks", "Spearman correlations", "runtime and peak RSS", "dependency/input/model/output hashes", "pre-truncation token lengths"],
+  "forbidden": ["query-specific or gold-specific boost", "mixed-stage inputs", "holdout-bearing inputs", "GitHub RAG requests", "shared database access", "default retrieval or production rollout changes", "retry or replacement of failed registered one-shot"]
+}

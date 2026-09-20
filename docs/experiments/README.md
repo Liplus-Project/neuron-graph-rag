@@ -6,6 +6,7 @@
 - [v5 semantic rank-62 full-corpus rerank oracle](full-corpus-rerank-oracle-v1.md)
 - [v5 full-corpus rerank oracle v2 (holdout-absent protocol)](full-corpus-rerank-oracle-v2.md)
 - [v5 structural representation / length-bias ablation v1](structural-representation-length-bias-ablation-v1.md)
+- [multilingual-e5-small structural / centroid ablation v1](e5-structural-centroid-ablation-v1.md)
 
 - [anchored-bm25-graph-hybrid-experiment.md](../anchored-bm25-graph-hybrid-experiment.md) — 元パス維持
 - [anchored-fusion-calibration-experiment.md](../anchored-fusion-calibration-experiment.md) — 元パス維持
