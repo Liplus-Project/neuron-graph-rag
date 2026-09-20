@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Liplus-Project/neuron-graph-rag/schemas/full-corpus-rerank-oracle-v1-invalidation.json",
+  "title": "Full-corpus rerank oracle v1 invalidation evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "case_id",
+    "status",
+    "reason_code",
+    "valid_classification",
+    "reported_classification",
+    "source_commit",
+    "source_module_sha256",
+    "claim_file_sha256",
+    "result_file_sha256",
+    "result_payload_sha256",
+    "invalidation_schema_sha256",
+    "mixed_inputs",
+    "holdout_bearing_input_file_count",
+    "unique_holdout_record_count",
+    "payload_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "protocol_id": {"const": "github-retrieval-parity-v5-full-corpus-rerank-oracle-v1"},
+    "case_id": {"const": "v5path-dev-semantic-axis-separation"},
+    "status": {"const": "invalidated"},
+    "reason_code": {"const": "registered_run_read_holdout_bearing_mixed_stage_inputs"},
+    "valid_classification": {"type": "null"},
+    "reported_classification": {"const": "semantic_discrimination_bottleneck"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "source_module_sha256": {"$ref": "#/$defs/sha256"},
+    "claim_file_sha256": {"$ref": "#/$defs/sha256"},
+    "result_file_sha256": {"$ref": "#/$defs/sha256"},
+    "result_payload_sha256": {"$ref": "#/$defs/sha256"},
+    "invalidation_schema_sha256": {"$ref": "#/$defs/sha256"},
+    "mixed_inputs": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/mixed_input"}
+    },
+    "holdout_bearing_input_file_count": {"const": 2},
+    "unique_holdout_record_count": {"const": 10},
+    "payload_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "mixed_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "development_record_count",
+        "holdout_record_count"
+      ],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "development_record_count": {"const": 5},
+        "holdout_record_count": {"const": 5}
+      }
+    }
+  }
+}

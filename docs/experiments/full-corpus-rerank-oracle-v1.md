@@ -15,15 +15,23 @@
 
 manifestとschemaは `tests/fixtures/full_corpus_rerank_oracle_v1.*.json`、runnerは `neuron_graph_rag.full_corpus_rerank_oracle`、WSLC入口は `tools/run_full_corpus_rerank_oracle_wslc.ps1` である。CIは `audit`、`probe`、unit testだけを実行し、model downloadまたは登録query推論を行わない。
 
-## 観測結果
+## 無効化された観測
 
 source commit `d9cbf02f44d69fef7ab5a759de5221d37d5d90f5` を固定し、fresh WSLC volumeでpreflightを通した後にone-shot developmentを実行した。preflightはnetwork無効、93文書、両modelのrevision / file hashを検証し、登録query実行0回、synthetic forward 2回だった。
 
-| model | 正解rank | cutoff 20以内 | runtime | peak RSS | 文書 / chunk |
+実行後のreviewで、`github_retrieval_parity_v5.queries.json` と `github_retrieval_parity_v5.gold.json` はそれぞれdevelopment 5件とholdout 5件を同居させたmixed-stage fileであり、v1 loaderの `read_json()` はstage選択前にfile全体をparseしていたことが判明した。workerとfinalizeはdevelopment行だけを選んだが、登録run環境がholdout contentを物理的に読んだため、「holdoutを読まない」という固定契約に違反する。
+
+| model | 無効化された報告rank | cutoff 20以内という報告 | runtime | peak RSS | 文書 / chunk |
 | --- | ---: | --- | ---: | ---: | ---: |
 | `BAAI/bge-reranker-base` | 64 | いいえ | 174.80秒 | 1,976,418,304 bytes | 93 / 2,065 |
 | `BAAI/bge-reranker-v2-m3` | 45 | いいえ | 577.96秒 | 3,110,289,408 bytes | 93 / 2,065 |
 
-両modelとも正解が固定cutoff 20の外だったため、契約どおり `semantic_discrimination_bottleneck` と分類する。この1件ではcandidate generationを除いてもreranker単独で正解を実用候補範囲へ上げられず、既存rank-62の主因をsemantic discrimination側に帰属する探索的証拠となった。これは既知development 1件の診断であり、他query、holdout、production品質へ一般化しない。
+元resultは `semantic_discrimination_bottleneck` を報告したが、この分類は無効であり、Issue #234のbottleneck診断には使用しない。有効な分類は `null` で、v1の再実行または同じresult pathの置換も行わない。
 
-append-only evidenceは `tests/evidence/full_corpus_rerank_oracle_v1/` にあり、result payload SHA-256は `45588ea2bd7542eefafa1fa98233343320fb1fc359b6d055e265b1456670787a` である。auditは両model各93文書のsource ID、文字数、chunk数、best chunk、score、rank、runtime、peak RSS、dependency / model revision、input / model / output hashを再検証し、holdout、GitHub RAG、共有DBへのアクセスが0だったことを確認する。
+元claim/resultは失敗履歴としてbyte-for-byte保存し、`development.invalidation.json` がclaim file SHA-256 `217ad55dffcab57095840c1d69bc17af0f291fc262cd45c5500ec87589fbad08`、result file SHA-256 `ea4a64fe75b7f415c25fa26375375f07944078f34637838b66e565b6e88c23ca`、result payload SHA-256 `45588ea2bd7542eefafa1fa98233343320fb1fc359b6d055e265b1456670787a` を拘束する。auditは `observed_invalidated`、holdout-bearing input file 2、そこに含まれたunique holdout record 10、有効分類なしを返す。
+
+## 修正版v2の境界
+
+v2は登録runを始める前に、mixed-stage正本から対象development query 1件とgold 1件を専用JSONへmaterializeし、そのsource hash、抽出条件、出力hashをresult-free manifestへ固定する。登録run用bundleはallowlist copyとし、v2 runner、manifest / schema、development-only query / gold、93文書corpus、model registryだけをfresh volumeへ入れる。元のmixed-stage query / gold pathはvolume内に存在しないことをpreflightでfail closedに検証する。
+
+workerはdevelopment-only queryだけ、finalizeはdevelopment-only goldだけを開く。v2は新しいprotocol ID、schema、evidence path、fresh volumeを使い、v1 runtimeまたはv1 evidenceを入力にしない。この修正protocolがresult-free commitとしてreviewを通るまでone-shotは実行しない。

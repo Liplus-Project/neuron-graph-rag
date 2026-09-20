@@ -24,14 +24,21 @@ ROOT = Path(__file__).resolve().parents[2]
 MODULE = "neuron_graph_rag.full_corpus_rerank_oracle"
 MANIFEST = Path("tests/fixtures/full_corpus_rerank_oracle_v1.manifest.json")
 SCHEMA = Path("tests/fixtures/full_corpus_rerank_oracle_v1.schema.json")
+INVALIDATION_SCHEMA = Path(
+    "tests/fixtures/full_corpus_rerank_oracle_v1.invalidation.schema.json"
+)
 RESULT = Path("tests/evidence/full_corpus_rerank_oracle_v1/development.observed.json")
 CLAIM = Path("tests/evidence/full_corpus_rerank_oracle_v1/development.claim.json")
 ERROR = Path("tests/evidence/full_corpus_rerank_oracle_v1/development.error.json")
+INVALIDATION = Path(
+    "tests/evidence/full_corpus_rerank_oracle_v1/development.invalidation.json"
+)
 CORPUS = Path("tests/fixtures/github_retrieval_parity_v4.corpus.json")
 QUERIES = Path("tests/fixtures/github_retrieval_parity_v5.queries.json")
 GOLD = Path("tests/fixtures/github_retrieval_parity_v5.gold.json")
 MODEL_REGISTRY = Path("tests/fixtures/github_cross_encoder_precision_v8.models.json")
 CASE_ID = "v5path-dev-semantic-axis-separation"
+EXPECTED_QUERY = "異なる判断軸の矛盾を優先順位で潰さず境界へ戻して解く原則"
 EXPECTED_SOURCE_ID = (
     "github:Liplus-Project/neuron-graph-rag:"
     "corpora/github-retrieval-parity-v4/rules/model/axis-separation.md"
@@ -49,6 +56,8 @@ MODEL_DISTRIBUTIONS = (
     "safetensors",
     "psutil",
 )
+INVALIDATION_REASON = "registered_run_read_holdout_bearing_mixed_stage_inputs"
+V1_RETIRED = True
 
 
 def canonical_json_bytes(value: object) -> bytes:
@@ -71,6 +80,29 @@ def sha256_file(path: Path) -> str:
         while chunk := handle.read(1024 * 1024):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _registered_source_module_sha256(root: Path, source_commit: str) -> str:
+    if not re.fullmatch(r"[0-9a-f]{40}", source_commit):
+        raise ValueError("source commit must be a full lowercase Git SHA")
+    completed = subprocess.run(
+        [
+            "git",
+            "show",
+            f"{source_commit}:src/neuron_graph_rag/full_corpus_rerank_oracle.py",
+        ],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    )
+    return sha256_bytes(completed.stdout)
+
+
+def _reject_retired_v1_execution() -> None:
+    if V1_RETIRED:
+        raise RuntimeError(
+            "v1 is retired: its registered run read holdout-bearing mixed-stage inputs"
+        )
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -188,6 +220,7 @@ def _manifest(root: Path = ROOT) -> dict[str, Any]:
 
 
 def _target_query(root: Path = ROOT) -> str:
+    """Historical v1 loader; parsing this mixed-stage file caused invalidation."""
     queries = read_json(root / QUERIES)
     rows = queries.get("stages", {}).get("development", [])
     matches = [row for row in rows if row.get("case_id") == CASE_ID]
@@ -195,10 +228,14 @@ def _target_query(root: Path = ROOT) -> str:
         raise ValueError("target development query is missing or malformed")
     if matches[0]["cohort"] != "semantic_paraphrase":
         raise ValueError("target query cohort mismatch")
-    return str(matches[0]["query"])
+    query = str(matches[0]["query"])
+    if query != EXPECTED_QUERY:
+        raise ValueError("target development query text mismatch")
+    return query
 
 
 def _expected_source(root: Path = ROOT) -> str:
+    """Historical v1 loader; parsing this mixed-stage file caused invalidation."""
     gold = read_json(root / GOLD)
     rows = gold.get("stages", {}).get("development", [])
     matches = [row for row in rows if row.get("case_id") == CASE_ID]
@@ -388,6 +425,7 @@ def _network_is_disabled() -> bool:
 
 
 def _worker_payload(root: Path, cache: Path, kind: str) -> dict[str, Any]:
+    _reject_retired_v1_execution()
     if platform.system() != "Linux" or platform.machine() != "x86_64":
         raise RuntimeError("registered oracle worker requires Linux x86_64")
     if not _network_is_disabled():
@@ -582,8 +620,8 @@ def validate_result(payload: Mapping[str, Any], root: Path = ROOT) -> None:
         or payload["protocol_id"] != PROTOCOL_ID
         or payload["purpose"] != manifest["purpose"]
         or payload["case_id"] != CASE_ID
-        or payload["query"] != _target_query(root)
-        or payload["expected_source_id"] != _expected_source(root)
+        or payload["query"] != EXPECTED_QUERY
+        or payload["expected_source_id"] != EXPECTED_SOURCE_ID
         or payload["corpus_document_count"] != 93
         or payload["rerank_cutoff"] != RERANK_CUTOFF
         or payload["classification_policy"] != manifest["classification_policy"]
@@ -624,8 +662,9 @@ def validate_result(payload: Mapping[str, Any], root: Path = ROOT) -> None:
     }
     if payload["inputs_sha256"] != expected_inputs:
         raise ValueError("result input hash binding mismatch")
-    module_path = root / "src/neuron_graph_rag/full_corpus_rerank_oracle.py"
-    if payload["source_module_sha256"] != sha256_file(module_path):
+    if payload["source_module_sha256"] != _registered_source_module_sha256(
+        root, str(payload["source_commit"])
+    ):
         raise ValueError("result runner hash binding mismatch")
     models = payload["models"]
     if not isinstance(models, list) or [row.get("kind") for row in models] != list(
@@ -717,7 +756,85 @@ def validate_result(payload: Mapping[str, Any], root: Path = ROOT) -> None:
         raise ValueError("result payload hash mismatch")
 
 
+def _mixed_stage_input_inventory(root: Path = ROOT) -> list[dict[str, Any]]:
+    inventory = []
+    for relative in (QUERIES, GOLD):
+        payload = read_json(root / relative)
+        stages = payload.get("stages")
+        if not isinstance(stages, dict) or set(stages) != {"development", "holdout"}:
+            raise ValueError(f"mixed-stage input shape mismatch: {relative}")
+        development = stages["development"]
+        holdout = stages["holdout"]
+        if not isinstance(development, list) or not isinstance(holdout, list):
+            raise TypeError(f"mixed-stage input stages must be lists: {relative}")
+        inventory.append(
+            {
+                "path": relative.as_posix(),
+                "sha256": sha256_file(root / relative),
+                "development_record_count": len(development),
+                "holdout_record_count": len(holdout),
+            }
+        )
+    return inventory
+
+
+def validate_invalidation(payload: Mapping[str, Any], root: Path = ROOT) -> None:
+    _exact_keys(
+        payload,
+        {
+            "case_id",
+            "claim_file_sha256",
+            "holdout_bearing_input_file_count",
+            "invalidation_schema_sha256",
+            "mixed_inputs",
+            "payload_sha256",
+            "protocol_id",
+            "reason_code",
+            "reported_classification",
+            "result_file_sha256",
+            "result_payload_sha256",
+            "schema_version",
+            "source_commit",
+            "source_module_sha256",
+            "status",
+            "unique_holdout_record_count",
+            "valid_classification",
+        },
+        "invalidation evidence",
+    )
+    result = read_json(root / RESULT)
+    claim = read_json(root / CLAIM)
+    expected_inventory = _mixed_stage_input_inventory(root)
+    if (
+        payload["schema_version"] != 1
+        or payload["protocol_id"] != PROTOCOL_ID
+        or payload["case_id"] != CASE_ID
+        or payload["status"] != "invalidated"
+        or payload["reason_code"] != INVALIDATION_REASON
+        or payload["valid_classification"] is not None
+        or payload["reported_classification"] != result["classification"]
+        or payload["source_commit"] != result["source_commit"]
+        or payload["source_commit"] != claim["source_commit"]
+        or payload["source_module_sha256"] != result["source_module_sha256"]
+        or payload["claim_file_sha256"] != sha256_file(root / CLAIM)
+        or payload["result_file_sha256"] != sha256_file(root / RESULT)
+        or payload["result_payload_sha256"] != result["payload_sha256"]
+        or payload["invalidation_schema_sha256"]
+        != sha256_file(root / INVALIDATION_SCHEMA)
+        or payload["mixed_inputs"] != expected_inventory
+        or payload["holdout_bearing_input_file_count"] != len(expected_inventory)
+        or payload["unique_holdout_record_count"]
+        != sum(row["holdout_record_count"] for row in expected_inventory)
+    ):
+        raise ValueError("invalidation evidence mismatch")
+    without_hash = dict(payload)
+    claimed_hash = without_hash.pop("payload_sha256")
+    if claimed_hash != sha256_bytes(canonical_json_bytes(without_hash)):
+        raise ValueError("invalidation payload hash mismatch")
+
+
 def preflight(root: Path, cache: Path) -> dict[str, Any]:
+    _reject_retired_v1_execution()
     if platform.system() != "Linux" or platform.machine() != "x86_64":
         raise RuntimeError("registered oracle preflight requires Linux x86_64")
     if not _network_is_disabled():
@@ -766,6 +883,7 @@ def preflight(root: Path, cache: Path) -> dict[str, Any]:
 
 
 def run_once(root: Path, cache: Path, runtime_root: Path, source_commit: str) -> dict[str, Any]:
+    _reject_retired_v1_execution()
     _manifest(root)
     if not re.fullmatch(r"[0-9a-f]{40}", source_commit):
         raise ValueError("source commit must be a full lowercase Git SHA")
@@ -838,18 +956,21 @@ def run_once(root: Path, cache: Path, runtime_root: Path, source_commit: str) ->
 
 def audit(root: Path = ROOT) -> dict[str, Any]:
     _manifest(root)
-    _target_query(root)
-    _expected_source(root)
     documents = _documents(root)
     evidence = {
         "claim": (root / CLAIM).exists(),
         "result": (root / RESULT).exists(),
         "error": (root / ERROR).exists(),
+        "invalidation": (root / INVALIDATION).exists(),
     }
     if evidence["result"] and evidence["error"]:
         raise ValueError("result and error evidence cannot coexist")
     if (evidence["result"] or evidence["error"]) and not evidence["claim"]:
         raise ValueError("terminal evidence requires the append-only claim")
+    if evidence["invalidation"] and not (evidence["claim"] and evidence["result"]):
+        raise ValueError("invalidation evidence requires the preserved claim and result")
+    if evidence["result"] and not evidence["invalidation"]:
+        raise ValueError("the known-invalid v1 result requires invalidation evidence")
     claim = None
     if evidence["claim"]:
         claim = read_json(root / CLAIM)
@@ -876,11 +997,15 @@ def audit(root: Path = ROOT) -> dict[str, Any]:
             or not re.fullmatch(r"[0-9a-f]{40}", str(claim["source_commit"]))
         ):
             raise ValueError("claim identity mismatch")
+    result = None
+    invalidation = None
     if evidence["result"]:
         result = read_json(root / RESULT)
         validate_result(result, root)
         if claim is None or result["source_commit"] != claim["source_commit"]:
             raise ValueError("result source commit is not bound to the claim")
+        invalidation = read_json(root / INVALIDATION)
+        validate_invalidation(invalidation, root)
     if evidence["error"]:
         failure = read_json(root / ERROR)
         _exact_keys(
@@ -898,10 +1023,24 @@ def audit(root: Path = ROOT) -> dict[str, Any]:
             raise ValueError("error evidence identity mismatch")
     return {
         "protocol_id": PROTOCOL_ID,
-        "status": "observed_valid" if evidence["result"] else "result_free_valid",
+        "status": "observed_invalidated" if evidence["result"] else "result_free_retired",
         "corpus_document_count": len(documents),
         "case_id": CASE_ID,
-        "holdout_read_count": 0,
+        "holdout_contract_violation": evidence["result"],
+        "holdout_bearing_input_file_count": (
+            invalidation["holdout_bearing_input_file_count"]
+            if invalidation is not None
+            else 0
+        ),
+        "unique_holdout_record_count": (
+            invalidation["unique_holdout_record_count"]
+            if invalidation is not None
+            else 0
+        ),
+        "valid_classification": None,
+        "reported_invalidated_classification": (
+            result["classification"] if result is not None else None
+        ),
         "github_rag_request_count": 0,
         "shared_database_open_count": 0,
         "evidence": evidence,

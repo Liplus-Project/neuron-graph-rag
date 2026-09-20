@@ -1,0 +1,32 @@
+{
+  "case_id": "v5path-dev-semantic-axis-separation",
+  "claim_file_sha256": "217ad55dffcab57095840c1d69bc17af0f291fc262cd45c5500ec87589fbad08",
+  "holdout_bearing_input_file_count": 2,
+  "invalidation_schema_sha256": "c973f6983fb4c35a82976ab971cc0f2cc6a01af959ee32cb10a801f37f8b762c",
+  "mixed_inputs": [
+    {
+      "development_record_count": 5,
+      "holdout_record_count": 5,
+      "path": "tests/fixtures/github_retrieval_parity_v5.queries.json",
+      "sha256": "2a87aed9b87b397b2d659f5a93d6ee1edd63ab1868a42a6448c7ce267f17c8a7"
+    },
+    {
+      "development_record_count": 5,
+      "holdout_record_count": 5,
+      "path": "tests/fixtures/github_retrieval_parity_v5.gold.json",
+      "sha256": "6caf7833c6b075fe6a394e03283d6bb93c4c411a19e5333e6f55fec7f5c2801d"
+    }
+  ],
+  "payload_sha256": "639e903161e5fa7f209576e8f93859ad86ea67ab08249b87021853c9fcd7bc3c",
+  "protocol_id": "github-retrieval-parity-v5-full-corpus-rerank-oracle-v1",
+  "reason_code": "registered_run_read_holdout_bearing_mixed_stage_inputs",
+  "reported_classification": "semantic_discrimination_bottleneck",
+  "result_file_sha256": "ea4a64fe75b7f415c25fa26375375f07944078f34637838b66e565b6e88c23ca",
+  "result_payload_sha256": "45588ea2bd7542eefafa1fa98233343320fb1fc359b6d055e265b1456670787a",
+  "schema_version": 1,
+  "source_commit": "d9cbf02f44d69fef7ab5a759de5221d37d5d90f5",
+  "source_module_sha256": "42e7f8edc7cdfe41928de84171dcc6d75cd1ddec28d187e1b031850c8851b4b5",
+  "status": "invalidated",
+  "unique_holdout_record_count": 10,
+  "valid_classification": null
+}
