@@ -3,6 +3,39 @@
   "protocol_id": "github-retrieval-parity-v5-structural-length-bias-ablation-v1",
   "status": "frozen_pre_registered_execution",
   "registered_query_execution_count": 0,
+  "artifact_sha256": {
+    "src/neuron_graph_rag/cross_encoder_precision_v2_evaluation.py": "75a7cb3ab16c203fdfd6b3e0d2ca654e91916013cfdfec8c16c836cc571c325a",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle.py": "d4e4c1df3568ac8be45fbd0b5001a336d5c8d6a9e108ca3bd028c6fe77746bf8",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle_v2.py": "ad64dbbf4c118045c8684edf3e3670bed160727e387c847a8c09cb01aaaedfbc",
+    "src/neuron_graph_rag/structural_representation_length_bias_ablation.py": "ec5e1d2c9bd7cf0403cf8a715c53dccc19039a1944a7775b7b9a3f5b3776c1fa",
+    "src/neuron_graph_rag/structural_representation_length_bias_diagnostic.py": "b117e0446fcbe76890e6278dbf08bbb12d42cf4c87329d9a69e6a366bc95de86",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.package_init.py": "5fc4c8900b0993b6b599c8beefb3c2b3f45b18cd14c25af2dd725fa7ba12f79f",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json": "c7bc3c49310737d6cad024e14ee1388417b46ee2f38b90f6b1c3793737295f23",
+    "tests/fixtures/github_cross_encoder_precision_v8.models.json": "f8517c050b9ac2e10b1fa73fd4fc34c2a39f03830f5a29cf36847410a602a2b5",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f",
+    "tests/fixtures/structural_representation_length_bias_ablation_v1.schema.json": "09990dfd3d51de5cc5691d5851164293df441bba66462751d86229dd8c2fee81"
+  },
+  "worker_registered_files": [
+    "src/neuron_graph_rag/__init__.py",
+    "src/neuron_graph_rag/cross_encoder_precision_v2_evaluation.py",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle.py",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle_v2.py",
+    "src/neuron_graph_rag/structural_representation_length_bias_ablation.py",
+    "src/neuron_graph_rag/structural_representation_length_bias_diagnostic.py",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.package_init.py",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json",
+    "tests/fixtures/github_cross_encoder_precision_v8.models.json",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json",
+    "tests/fixtures/structural_representation_length_bias_ablation_v1.manifest.json",
+    "tests/fixtures/structural_representation_length_bias_ablation_v1.schema.json"
+  ],
+  "forbidden_registered_paths": [
+    "ngr.sqlite3",
+    "tests/evidence/full_corpus_rerank_oracle_v1",
+    "tests/evidence/full_corpus_rerank_oracle_v2",
+    "tests/fixtures/github_retrieval_parity_v5.gold.json",
+    "tests/fixtures/github_retrieval_parity_v5.queries.json"
+  ],
   "purpose": "既知development 1件について、構造表現とmaximum chunk集約の長文有利を2x2 factorial ablationで探索的に切り分ける。holdoutまたはproduction性能へ一般化しない。",
   "diagnostic_sha256": "183dfec6f3e319922ce97474a5b4f3b0532b5af59b67bdf5c39521931d6b4f99",
   "fixed_inputs": {

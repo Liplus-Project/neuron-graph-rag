@@ -5,6 +5,7 @@ import json
 import unittest
 
 from neuron_graph_rag import structural_representation_length_bias_diagnostic as diagnostic
+from neuron_graph_rag import structural_representation_length_bias_ablation as runner
 
 
 class StructuralRepresentationLengthBiasAblationTests(unittest.TestCase):
@@ -73,6 +74,24 @@ class StructuralRepresentationLengthBiasAblationTests(unittest.TestCase):
         structural = manifest["representations"]["structural"]
         self.assertIsNone(structural["prefix_cap"])
         self.assertIn("prefix_token_length", json.dumps(manifest["saved_evidence"]))
+
+    def test_runner_is_result_free_and_nlme_is_chunk_count_normalized(self) -> None:
+        audit = runner.audit(runner.ROOT)
+        self.assertEqual(audit["status"], "result_free_frozen")
+        self.assertEqual(audit["registered_query_execution_count"], 0)
+        self.assertAlmostEqual(runner._nlme([2.0]), 2.0)
+        self.assertAlmostEqual(runner._nlme([2.0, 2.0]), 2.0)
+        self.assertLess(runner._nlme([2.0, -10.0]), 2.0)
+
+    def test_wrapper_keeps_gold_out_of_preflight_and_workers(self) -> None:
+        wrapper = (
+            runner.ROOT
+            / "tools/run_structural_representation_length_bias_ablation_v1_wslc.ps1"
+        ).read_text(encoding="utf-8")
+        pre_worker = wrapper.split('$goldPath =', 1)[0]
+        self.assertNotIn('"gold" = @(', pre_worker)
+        self.assertIn("full_corpus_rerank_oracle_v2.gold.json:ro", wrapper)
+        self.assertIn("github-structural-length-bias-ablation-v1-runtime", wrapper)
 
     def test_v1_and_v2_owned_files_are_byte_for_byte_unchanged(self) -> None:
         expected = {
