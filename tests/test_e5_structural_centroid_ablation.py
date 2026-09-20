@@ -42,12 +42,12 @@ class E5StructuralCentroidAblationTests(unittest.TestCase):
         )
         self.assertEqual(prefix, "path: docs/example.md\nfilename: example.md\ntitle: Title\nheadings: Title > Part\n\n")
 
-    def test_audit_is_result_free_before_registered_execution(self) -> None:
+    def test_audit_exposes_failed_registered_execution_evidence(self) -> None:
         audit = runner.audit(runner.ROOT)
         self.assertEqual(audit["status"], "result_free_frozen")
         self.assertEqual(audit["registered_query_execution_count"], 0)
         self.assertEqual(audit["parity_status"], "result_free_parity_valid")
-        self.assertEqual(audit["evidence"], {"claim": False, "result": False, "error": False})
+        self.assertEqual(audit["evidence"], {"claim": True, "result": False, "error": True})
 
     def test_wrapper_keeps_gold_out_of_preflight_and_worker(self) -> None:
         wrapper = (runner.ROOT / "tools/run_e5_structural_centroid_ablation_v1_wslc.ps1").read_text(encoding="utf-8")
