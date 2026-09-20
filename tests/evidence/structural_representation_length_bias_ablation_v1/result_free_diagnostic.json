@@ -1,0 +1,114 @@
+{
+  "corpus_document_count": 93,
+  "expected_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/axis-separation.md",
+  "github_rag_request_count": 0,
+  "inputs_sha256": {
+    "tests/evidence/full_corpus_rerank_oracle_v2/development.observed.json": "52f2289de5a2da675fd4f980c9752bda387101c2601184fbd01fdd59642dccd4",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f"
+  },
+  "models": [
+    {
+      "correlations": {
+        "pearson_chunk_count_vs_best_score": 0.5631225409654907,
+        "spearman_chunk_count_vs_best_score": 0.4182360021317228,
+        "spearman_chunk_count_vs_rank": -0.4182360021317228
+      },
+      "gold": {
+        "best_chunk_score": -4.941145420074463,
+        "character_count": 1228,
+        "chunk_count": 3,
+        "path": "corpora/github-retrieval-parity-v4/rules/model/axis-separation.md",
+        "rank": 64,
+        "source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/axis-separation.md",
+        "structural_fields": {
+          "document_title": "Axis Separation",
+          "filename": "axis-separation.md",
+          "heading_chain": "[missing]",
+          "repository_path": "rules/model/axis-separation.md"
+        },
+        "winning_chunk_end_codepoint": 480,
+        "winning_chunk_index": 0,
+        "winning_chunk_sha256": "e1db1334870c6dcbf16cd2bce9de6eb7a1ff5e981f4413fe2b5825f17718a6a1",
+        "winning_chunk_start_codepoint": 0,
+        "winning_chunk_text": "---\nglobs:\nalwaysApply: true\nlayer: L1-model\n---\n\n<axis-separation>\n\n# Axis Separation\n\nThree axes:\nlayer             = difference of surface / responsibility\nintra-layer order = order inside one layer\nrecovery          = repair path when a surface drifts or breaks\n\nLayer relation:\ndifferent layers are not winner-takes-all hierarchy\ndifferent layers are different surfaces over the same program\ncross-layer contradiction = structure error, not \"higher layer wins\"\n\nSee `rules/mo"
+      },
+      "kind": "base",
+      "model_id": "BAAI/bge-reranker-base",
+      "revision": "2cfc18c9415c912f9d8155881c133215df768a70",
+      "top_distractor": {
+        "best_chunk_score": 4.470765590667725,
+        "character_count": 38086,
+        "chunk_count": 96,
+        "path": "corpora/github-retrieval-parity-v4/docs/2.-Evolution.md",
+        "rank": 1,
+        "source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/2.-Evolution.md",
+        "structural_fields": {
+          "document_title": "進化レイヤー仕様書",
+          "filename": "2.-Evolution.md",
+          "heading_chain": "進化レイヤー仕様書 > 自律 > 進化ループの閉路",
+          "repository_path": "docs/2.-Evolution.md"
+        },
+        "winning_chunk_end_codepoint": 38086,
+        "winning_chunk_index": 95,
+        "winning_chunk_sha256": "85255bc7e1df253447257d972ff43fbbb822ef2f9d5ce7fe8d7d3a4c19a7b276",
+        "winning_chunk_start_codepoint": 38000,
+        "winning_chunk_text": "込むと閉路が回らなくなるため、自律可能な段階を自律的に進める姿勢を既定とする。\n\n---\n\n## 進化\n\n再構築・削除・最適化はすべて許容する。構造の一貫性のみ維持する。\n"
+      }
+    },
+    {
+      "correlations": {
+        "pearson_chunk_count_vs_best_score": 0.5148569687652564,
+        "spearman_chunk_count_vs_best_score": 0.5742361338600934,
+        "spearman_chunk_count_vs_rank": -0.5742361338600934
+      },
+      "gold": {
+        "best_chunk_score": -5.682438850402832,
+        "character_count": 1228,
+        "chunk_count": 3,
+        "path": "corpora/github-retrieval-parity-v4/rules/model/axis-separation.md",
+        "rank": 45,
+        "source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/axis-separation.md",
+        "structural_fields": {
+          "document_title": "Axis Separation",
+          "filename": "axis-separation.md",
+          "heading_chain": "[missing]",
+          "repository_path": "rules/model/axis-separation.md"
+        },
+        "winning_chunk_end_codepoint": 480,
+        "winning_chunk_index": 0,
+        "winning_chunk_sha256": "e1db1334870c6dcbf16cd2bce9de6eb7a1ff5e981f4413fe2b5825f17718a6a1",
+        "winning_chunk_start_codepoint": 0,
+        "winning_chunk_text": "---\nglobs:\nalwaysApply: true\nlayer: L1-model\n---\n\n<axis-separation>\n\n# Axis Separation\n\nThree axes:\nlayer             = difference of surface / responsibility\nintra-layer order = order inside one layer\nrecovery          = repair path when a surface drifts or breaks\n\nLayer relation:\ndifferent layers are not winner-takes-all hierarchy\ndifferent layers are different surfaces over the same program\ncross-layer contradiction = structure error, not \"higher layer wins\"\n\nSee `rules/mo"
+      },
+      "kind": "v2-m3",
+      "model_id": "BAAI/bge-reranker-v2-m3",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "top_distractor": {
+        "best_chunk_score": -1.533591866493225,
+        "character_count": 1236,
+        "chunk_count": 3,
+        "path": "corpora/github-retrieval-parity-v4/rules/model/layer-definition.md",
+        "rank": 1,
+        "source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/layer-definition.md",
+        "structural_fields": {
+          "document_title": "Layer Definition",
+          "filename": "layer-definition.md",
+          "heading_chain": "Layer Definition",
+          "repository_path": "rules/model/layer-definition.md"
+        },
+        "winning_chunk_end_codepoint": 1236,
+        "winning_chunk_index": 2,
+        "winning_chunk_sha256": "6ebe9efb302e67bb25adcb78b21031bd185cdd8e318dc88f360091c340697663",
+        "winning_chunk_start_codepoint": 800,
+        "winning_chunk_text": "ot precedence or seniority.\nUnder Lilayer Model, each layer stabilizes outward behavior and judgment weighting according to its responsibility.\n\nCross-layer rule:\nlayers differ by role and visible surface\nlater layers extend or attach; they do not redefine earlier layers\nif a later layer appears to override an earlier one:\n  treat as structural error\n  repair the boundary\n  do not reinterpret as layer hierarchy\n\n</layer-definition>\n"
+      }
+    }
+  ],
+  "payload_sha256": "637436c418de605fabea12b86f6d8b2c3c56dca8ac9b641109ff1e3fe6720c46",
+  "protocol_id": "github-retrieval-parity-v5-structural-length-bias-ablation-v1",
+  "purpose": "有効なv2 evidenceとexact corpusだけからchunk-count相関とwinning chunkの構造情報を再構成し、登録query再実行前のablation設計判断に使う。",
+  "registered_query_execution_count": 0,
+  "schema_version": 1,
+  "shared_database_open_count": 0,
+  "status": "result_free_diagnostic"
+}

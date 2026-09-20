@@ -57,6 +57,7 @@ test_cross_encoder_precision_v19_performance_observation test_cross_encoder_prec
 test_cross_encoder_precision_v21_intent_aware_observation test_cross_encoder_precision_v22_intent_aware_observation
 test_cross_encoder_precision_v23_real_task_observation
 test_full_corpus_rerank_oracle test_full_corpus_rerank_oracle_v2
+test_structural_representation_length_bias_ablation
 """.split(),
     },
 }

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Structural representation length-bias ablation v1 result",
+  "type": "object",
+  "required": ["schema_version", "protocol_id", "source_commit", "expected_source_id", "corpus_document_count", "cutoff", "primary_success", "primary_success_arms", "directional_evidence_arms", "length_bias_attenuation", "environment", "inputs_sha256", "models", "payload_sha256"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "protocol_id": {"const": "github-retrieval-parity-v5-structural-length-bias-ablation-v1"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "expected_source_id": {"type": "string"},
+    "corpus_document_count": {"const": 93},
+    "cutoff": {"const": 20},
+    "primary_success": {"type": "boolean"},
+    "primary_success_arms": {"type": "array", "items": {"type": "string"}},
+    "directional_evidence_arms": {"type": "array", "items": {"type": "string"}},
+    "length_bias_attenuation": {"type": "object"},
+    "environment": {"type": "object"},
+    "inputs_sha256": {"type": "object"},
+    "models": {"type": "array", "minItems": 2, "maxItems": 2},
+    "payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

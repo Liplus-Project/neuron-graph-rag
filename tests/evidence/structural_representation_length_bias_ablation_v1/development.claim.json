@@ -1,0 +1,10 @@
+{
+  "gold_present_in_workers": false,
+  "manifest_sha256": "8ca6479d6d51658e92c530bf56eb0d4a63bb156dcccbef485122df5616af29a4",
+  "model_worker_count": 2,
+  "preflight_attestation_sha256": "41355b6d2f17a3b046af34d079c137c3c6aca0bce392c315d88346ba4f97f01f",
+  "protocol_id": "github-retrieval-parity-v5-structural-length-bias-ablation-v1",
+  "registered_query_count": 1,
+  "retry_count": 0,
+  "source_commit": "f73373a2c8ca4bd728a7ea8fc46b14e9f6c4b020"
+}
