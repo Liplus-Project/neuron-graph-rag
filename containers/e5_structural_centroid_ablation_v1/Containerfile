@@ -1,4 +1,4 @@
-FROM python:3.11.15-slim-bookworm
+FROM python:3.12.14-slim-bookworm
 
 RUN python -m pip install --disable-pip-version-check --no-cache-dir \
     numpy==2.5.3 \
