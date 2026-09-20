@@ -8,7 +8,11 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from . import e5_structural_centroid_recovery as impl
+if __package__:
+    from . import e5_structural_centroid_recovery as impl
+else:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import e5_structural_centroid_recovery as impl
 
 PROTOCOL_ID = "github-retrieval-parity-v5-e5-structural-centroid-finalizer-recovery-v2"
 ROOT = Path(__file__).resolve().parents[2]

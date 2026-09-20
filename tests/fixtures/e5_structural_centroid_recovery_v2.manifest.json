@@ -12,7 +12,7 @@
   "retry_count": 0,
   "artifact_sha256": {
     "src/neuron_graph_rag/e5_structural_centroid_recovery.py": "8f7dccfb17244f5711a74f5b36ad7fabdc1fed720b01bae227d0c4a80f76b25f",
-    "src/neuron_graph_rag/e5_structural_centroid_recovery_v2.py": "102b4eddbbd714bbdf6f6f735520adcc9dd1aef89d02f44a57d0bdb3772fd10e",
+    "src/neuron_graph_rag/e5_structural_centroid_recovery_v2.py": "b59840c3bac6438c5563986c3b08caf078264ec965f33d125da0e219445e2386",
     "tests/fixtures/e5_structural_centroid_ablation_v1.manifest.json": "b2701a1305eb95bc73fafcb0d33e0e9ece0bf6a8c599759493e2581675b03711",
     "tests/fixtures/e5_structural_centroid_ablation_v1.model.json": "89e98eb7bc275a40111ca722f371f713f8b1cddac5b8598761b6b52ee025e253",
     "tests/fixtures/e5_structural_centroid_ablation_v1.schema.json": "ce8808bf46b73587bcd4be586ca9402b288443028d864e5dc70cc0ef28f00a35",
