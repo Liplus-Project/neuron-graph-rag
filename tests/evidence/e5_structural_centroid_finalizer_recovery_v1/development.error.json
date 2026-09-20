@@ -1,0 +1,14 @@
+{
+  "declared_development_gold_sha256": "689028b2a6f827bc9151c1b6b95164b4dbd59715bb930d573c33c846cf",
+  "error": "development-only gold hash mismatch",
+  "model_forward_inference_count": 0,
+  "observed_development_gold_sha256": "689028b2a6f827bc915f6d9151c1b6b95164b4dbd59715bb930d573c33c846cf",
+  "protocol_id": "github-retrieval-parity-v5-e5-structural-centroid-finalizer-recovery-v1",
+  "recovery_claim_sha256": "99259513822a3af9b5b759279cab2574f96bb0b6e878dd5abb66beba2704dcdc",
+  "registered_query_execution_count": 0,
+  "result_present": false,
+  "retry_count": 0,
+  "schema_version": 1,
+  "source_worker_packet_sha256": "8321809a4ff8fb11e1120d49f9159d1e900862c80e3798467323cb10e7cd6882",
+  "status": "failed_pre_rank_gold_hash_gate"
+}

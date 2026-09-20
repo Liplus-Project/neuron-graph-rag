@@ -5,6 +5,7 @@ import json
 import unittest
 
 from neuron_graph_rag import e5_structural_centroid_recovery as recovery
+from neuron_graph_rag import e5_structural_centroid_recovery_v2 as recovery_v2
 
 
 class E5StructuralCentroidRecoveryTests(unittest.TestCase):
@@ -103,6 +104,55 @@ class E5StructuralCentroidRecoveryTests(unittest.TestCase):
         )
         self.assertEqual(
             schema["properties"]["model_forward_inference_count"]["const"], 0
+        )
+
+    def test_v2_changes_only_the_failed_gold_hash_contract(self) -> None:
+        v1 = json.loads((recovery.ROOT / recovery.MANIFEST).read_text(encoding="utf-8"))
+        v2 = json.loads(
+            (recovery_v2.ROOT / recovery_v2.MANIFEST).read_text(encoding="utf-8")
+        )
+        self.assertEqual(v1["packet_completeness"], v2["packet_completeness"])
+        self.assertEqual(v1["dependencies"], v2["dependencies"])
+        self.assertEqual(v1["ranking"], v2["ranking"])
+        self.assertEqual(len(v1["development_gold_sha256"]), 58)
+        self.assertEqual(len(v2["development_gold_sha256"]), 64)
+        self.assertEqual(
+            v2["development_gold_sha256"],
+            hashlib.sha256(
+                (recovery_v2.ROOT / recovery_v2.impl.GOLD).read_bytes()
+            ).hexdigest(),
+        )
+        self.assertEqual(v2["registered_query_execution_count"], 0)
+        self.assertEqual(v2["model_forward_inference_count"], 0)
+
+    def test_v2_hash_locks_failed_v1_recovery_without_a_result(self) -> None:
+        manifest = json.loads(
+            (recovery_v2.ROOT / recovery_v2.MANIFEST).read_text(encoding="utf-8")
+        )
+        for relative, digest in manifest["recovery_v1_evidence_sha256"].items():
+            self.assertEqual(
+                hashlib.sha256((recovery_v2.ROOT / relative).read_bytes()).hexdigest(),
+                digest,
+                relative,
+            )
+        self.assertFalse(
+            (
+                recovery_v2.ROOT
+                / recovery_v2.V1_RECOVERY_EVIDENCE
+                / "development.recovered.json"
+            ).exists()
+        )
+
+    def test_v2_claim_allowlist_keeps_gold_absent(self) -> None:
+        manifest = json.loads(
+            (recovery_v2.ROOT / recovery_v2.MANIFEST).read_text(encoding="utf-8")
+        )
+        self.assertNotIn(
+            recovery_v2.impl.GOLD.as_posix(), manifest["claim_registered_files"]
+        )
+        self.assertIn(
+            "tests/evidence/e5_structural_centroid_finalizer_recovery_v1/development.error.json",
+            manifest["claim_registered_files"],
         )
 
 

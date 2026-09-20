@@ -1,0 +1,65 @@
+{
+  "gold_present": false,
+  "holdout_bearing_input_file_count": 0,
+  "model_files_sha256": {
+    "models--intfloat--multilingual-e5-small/snapshots/614241f622f53c4eeff9890bdc4f31cfecc418b3/config.json": "69137736cab8b8903a07fe8afaafdda25aac55415a12a55d1bffa9f581abf959",
+    "models--intfloat--multilingual-e5-small/snapshots/614241f622f53c4eeff9890bdc4f31cfecc418b3/onnx/model.onnx": "ca456c06b3a9505ddfd9131408916dd79290368331e7d76bb621f1cba6bc8665",
+    "models--intfloat--multilingual-e5-small/snapshots/614241f622f53c4eeff9890bdc4f31cfecc418b3/special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+    "models--intfloat--multilingual-e5-small/snapshots/614241f622f53c4eeff9890bdc4f31cfecc418b3/tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+    "models--intfloat--multilingual-e5-small/snapshots/614241f622f53c4eeff9890bdc4f31cfecc418b3/tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b"
+  },
+  "model_forward_inference_count": 0,
+  "packet_diagnostics": {
+    "body_at_or_below_512_but_structural_above_512_count": 0,
+    "document_count": 93,
+    "passage_count": {
+      "body": 2065,
+      "structural": 2065
+    },
+    "passages_exceeding_512_before_truncation": {
+      "body": 0,
+      "structural": 0
+    },
+    "ranking_sha256": {
+      "body_centroid": "55da08b20f2db36675f97dfa426c7f10f1d03e7b4a19ab4ac8b50ff35f771ed4",
+      "body_max": "0f08b8e1900602e3b6da698037da01c5b86bfba6fb2ce43ac8433b40084f5b24",
+      "structural_centroid": "a3816754c5e8fe892f2d4e2f7819de411573509b387266f047bb62b41fa4468d",
+      "structural_max": "bf193c51202e86125505407f487ce3c282ec5afaf06944bd006d4916c51035b5"
+    },
+    "spearman_chunk_count_vs_document_score": {
+      "body_centroid": 0.7438443586611451,
+      "body_max": 0.5673424621223959,
+      "structural_centroid": 0.6145600057038945,
+      "structural_max": 0.4791736702875985
+    },
+    "structural_increases_truncation": false
+  },
+  "payload_sha256": "6d79cf9e54b6d6c1a93ff78a6605ffae892c377f5391999e8e081c1da7f25344",
+  "protocol_id": "github-retrieval-parity-v5-e5-structural-centroid-finalizer-recovery-v1",
+  "registered_query_execution_count": 0,
+  "registered_source_sha256": {
+    "src/neuron_graph_rag/e5_structural_centroid_recovery.py": "8f7dccfb17244f5711a74f5b36ad7fabdc1fed720b01bae227d0c4a80f76b25f",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.claim.json": "f8cec511922afb6513a30504d4ea8c555c0010efdac0e14cd1c902d1cf7ab955",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.error.json": "6022a56cd283fdbcbb6b1d246ccea4dc8220d84db995705129d4a189f3ea6831",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.preflight.json": "7bd5802331ea10dc6f103b4b938c7c77b19b1579910ac339eb7cbd2a1ea7ff2d",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.worker.json": "8321809a4ff8fb11e1120d49f9159d1e900862c80e3798467323cb10e7cd6882",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.manifest.json": "b2701a1305eb95bc73fafcb0d33e0e9ece0bf6a8c599759493e2581675b03711",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.model.json": "89e98eb7bc275a40111ca722f371f713f8b1cddac5b8598761b6b52ee025e253",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.schema.json": "ce8808bf46b73587bcd4be586ca9402b288443028d864e5dc70cc0ef28f00a35",
+    "tests/fixtures/e5_structural_centroid_recovery_v1.manifest.json": "3f4c5cbd401480e2fe09dfe92b1f491625aba7f3c363163ec3b30068b8877466",
+    "tests/fixtures/e5_structural_centroid_recovery_v1.schema.json": "26d5a53c4a73d2e084b726efc78a68f4463b48a425bf2c8f36dce0bacdd57499",
+    "tools/run_e5_structural_centroid_recovery_v1.ps1": "e7099979f3858878e61fadb381703d36bd2a87a24731902db4f419275149dc4f"
+  },
+  "schema_version": 1,
+  "source_commit": "953ebcaa48c67f5a5350b46ced8f0a2d1071175d",
+  "source_evidence_sha256": {
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.claim.json": "f8cec511922afb6513a30504d4ea8c555c0010efdac0e14cd1c902d1cf7ab955",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.error.json": "6022a56cd283fdbcbb6b1d246ccea4dc8220d84db995705129d4a189f3ea6831",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.preflight.json": "7bd5802331ea10dc6f103b4b938c7c77b19b1579910ac339eb7cbd2a1ea7ff2d",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.worker.json": "8321809a4ff8fb11e1120d49f9159d1e900862c80e3798467323cb10e7cd6882"
+  },
+  "source_protocol_id": "github-retrieval-parity-v5-e5-structural-centroid-ablation-v1",
+  "source_protocol_status": "failed_finalizer_allowlist_contradiction",
+  "status": "worker_packet_complete_gold_absent",
+  "worker_packet_sha256": "8321809a4ff8fb11e1120d49f9159d1e900862c80e3798467323cb10e7cd6882"
+}

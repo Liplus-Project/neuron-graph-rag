@@ -19,3 +19,5 @@ armは `body_max`、`structural_max`、`body_centroid`、`structural_centroid`�
 登録one-shotのgold-blind workerは完了したが、finalizer専用allowlistがdevelopment-only goldを同時にrequiredとforbiddenにしたため、v1 protocolはfinalizerで失敗した。preflight、claim、完全なraw worker packet、errorをappend-only evidenceとして保存した。v1 resultは存在せず、この実行を成功扱いしない。one-shotは再実行しない。
 
 別protocol `github-retrieval-parity-v5-e5-structural-centroid-finalizer-recovery-v1` をgold mount前に固定した。recovery claimは、v1 evidenceのexact hash、93文書・各表現2065 passage、384次元query/centroid、body/structural間のchunk identity、4 armの固定式・tie-break・ranking hash・Spearmanをdevelopment goldなしで再検証する。完全性を証明できた場合だけ、既存development-only goldを追加し、登録query実行0回・model forward 0回で順位を導出する。これは完了済みgold-blind worker packetからの派生結果であり、v1成功またはretryではない。
+
+recovery-v1 claimはpacket完全性を証明したが、manifestへdevelopment-only gold SHA-256を64桁ではなく58桁で転記していたため、finalizerはgold hash gateでrank計算前にfail closedした。claimとerrorを保存し、recovery-v1は再試行しない。別IDのrecovery-v2では、このhashだけを実ファイルの64桁 `689028b2a6f827bc915f6d9151c1b6b95164b4dbd59715bb930d573c33c846cf` へ修正し、packet検証、4 arm、式、criteria、cutoff、query 0回、model forward 0回を不変に固定した。
