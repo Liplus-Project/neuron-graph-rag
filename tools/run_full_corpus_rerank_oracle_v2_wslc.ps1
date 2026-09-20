@@ -121,7 +121,7 @@ if ($Action -eq "preflight") {
         $inputPath = "/input/source-$($entry.Key)"
         $prepare += @("--volume", "${hostPath}:${inputPath}:ro")
         $destination = "$containerSource/$($entry.Value[1])"
-        $destinationDirectory = Split-Path -Parent $destination
+        $destinationDirectory = $destination.Substring(0, $destination.LastIndexOf('/'))
         $copyCommands += "mkdir -p '$destinationDirectory'; cp '$inputPath' '$destination'"
     }
     foreach ($row in $modelRows) {
@@ -132,7 +132,7 @@ if ($Action -eq "preflight") {
         $inputPath = "/input/model-$($row[0])"
         $prepare += @("--volume", "${hostPath}:${inputPath}:ro")
         $destination = "$containerCache/$($row[1].Replace('\', '/'))"
-        $destinationDirectory = Split-Path -Parent $destination
+        $destinationDirectory = $destination.Substring(0, $destination.LastIndexOf('/'))
         $copyCommands += "mkdir -p '$destinationDirectory'; cp -L '$inputPath' '$destination'"
     }
     $prepare += @("--entrypoint", "/bin/sh", $image, "-c", ($copyCommands -join "; "))
