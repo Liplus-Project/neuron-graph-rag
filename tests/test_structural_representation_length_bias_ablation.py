@@ -75,13 +75,101 @@ class StructuralRepresentationLengthBiasAblationTests(unittest.TestCase):
         self.assertIsNone(structural["prefix_cap"])
         self.assertIn("prefix_token_length", json.dumps(manifest["saved_evidence"]))
 
-    def test_runner_is_result_free_and_nlme_is_chunk_count_normalized(self) -> None:
+    def test_runner_audit_observes_single_registered_execution(self) -> None:
         audit = runner.audit(runner.ROOT)
-        self.assertEqual(audit["status"], "result_free_frozen")
-        self.assertEqual(audit["registered_query_execution_count"], 0)
+        self.assertEqual(audit["status"], "observed_valid")
+        self.assertEqual(audit["registered_query_execution_count"], 1)
+        self.assertEqual(
+            audit["evidence"], {"claim": True, "result": True, "error": False}
+        )
+        self.assertFalse(audit["primary_success"])
+
+    def test_nlme_is_chunk_count_normalized(self) -> None:
         self.assertAlmostEqual(runner._nlme([2.0]), 2.0)
         self.assertAlmostEqual(runner._nlme([2.0, 2.0]), 2.0)
         self.assertLess(runner._nlme([2.0, -10.0]), 2.0)
+
+    def test_append_only_evidence_hashes_are_frozen(self) -> None:
+        expected = {
+            "tests/evidence/structural_representation_length_bias_ablation_v1/development.preflight.json": "41355b6d2f17a3b046af34d079c137c3c6aca0bce392c315d88346ba4f97f01f",
+            runner.CLAIM.as_posix(): "e14743bb9ceb3eda8c8b7911678fb12da4af9fe4652e7a770ff606d59ec8d5ba",
+            runner.RESULT.as_posix(): "da37bf495c6061a0f48119b6d679a7f42daaee6b625e41446ba9d361022c70e8",
+        }
+        for relative, digest in expected.items():
+            self.assertEqual(
+                hashlib.sha256((runner.ROOT / relative).read_bytes()).hexdigest(),
+                digest,
+                relative,
+            )
+        claim = runner.read_json(runner.ROOT / runner.CLAIM)
+        self.assertEqual(claim["registered_query_count"], 1)
+        self.assertEqual(claim["retry_count"], 0)
+        self.assertFalse(claim["gold_present_in_workers"])
+        self.assertEqual(
+            claim["preflight_attestation_sha256"], expected[
+                "tests/evidence/structural_representation_length_bias_ablation_v1/development.preflight.json"
+            ]
+        )
+
+    def test_observed_ranks_criteria_correlations_and_truncation_are_frozen(self) -> None:
+        observed = runner.read_json(runner.ROOT / runner.RESULT)
+        self.assertFalse(observed["primary_success"])
+        self.assertEqual(observed["primary_success_arms"], [])
+        self.assertEqual(
+            observed["directional_evidence_arms"],
+            ["structural_max", "body_nlme", "structural_nlme"],
+        )
+        self.assertEqual(
+            observed["length_bias_attenuation"], {"body": True, "structural": True}
+        )
+        expected = {
+            "base": {
+                "ranks": [64, 41, 43, 21],
+                "correlations": [
+                    0.4182360021317228,
+                    0.38072038659710294,
+                    0.07643535922383034,
+                    -0.010463742258411795,
+                ],
+                "prefix_tokens": {"min": 27, "max": 104, "mean": 52.15108958837772},
+            },
+            "v2-m3": {
+                "ranks": [45, 39, 20, 19],
+                "correlations": [
+                    0.5742361338600934,
+                    0.5637051727006639,
+                    0.30053570644984456,
+                    0.26309477858302205,
+                ],
+                "prefix_tokens": {"min": 26, "max": 103, "mean": 51.15108958837772},
+            },
+        }
+        for model in observed["models"]:
+            frozen = expected[model["kind"]]
+            self.assertEqual(
+                [arm["expected_source_rank"] for arm in model["arms"]], frozen["ranks"]
+            )
+            for arm, correlation in zip(model["arms"], frozen["correlations"], strict=True):
+                self.assertAlmostEqual(
+                    arm["spearman_chunk_count_vs_document_score"], correlation
+                )
+            body, structural = model["representations"]
+            self.assertEqual(body["truncation"]["pair_count"], 2065)
+            self.assertEqual(body["truncation"]["pairs_exceeding_512_before_truncation"], 0)
+            self.assertEqual(
+                structural["truncation"]["pairs_exceeding_512_before_truncation"], 0
+            )
+            self.assertEqual(
+                structural["truncation"]["prefix_codepoint_length"],
+                {"min": 74, "max": 269, "mean": 144.34866828087166},
+            )
+            self.assertEqual(
+                structural["truncation"]["prefix_token_length"], frozen["prefix_tokens"]
+            )
+            self.assertFalse(model["structural_increases_truncation"])
+            self.assertEqual(
+                model["body_at_or_below_512_but_structural_above_512_count"], 0
+            )
 
     def test_wrapper_keeps_gold_out_of_preflight_and_workers(self) -> None:
         wrapper = (
