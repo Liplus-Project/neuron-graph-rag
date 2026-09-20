@@ -1,0 +1,9 @@
+{
+  "case_id": "v5path-dev-semantic-axis-separation",
+  "manifest_sha256": "c356cd5400b3e72b576e1f4aa24ec795440a40d72e81facaaad5d6e33fce2ea7",
+  "model_worker_count": 2,
+  "protocol_id": "github-retrieval-parity-v5-full-corpus-rerank-oracle-v1",
+  "registered_query_count": 1,
+  "retry_count": 0,
+  "source_commit": "d9cbf02f44d69fef7ab5a759de5221d37d5d90f5"
+}

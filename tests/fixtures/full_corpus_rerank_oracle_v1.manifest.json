@@ -1,0 +1,55 @@
+{
+  "aggregation": "maximum-raw-logit-per-document",
+  "artifact_sha256": {
+    "tests/fixtures/full_corpus_rerank_oracle_v1.schema.json": "88f663af76becc1e440f2c50a5472f3b8242e97c56c13dc3cf9f47c0768fd4f6",
+    "tests/fixtures/github_cross_encoder_precision_v8.models.json": "f8517c050b9ac2e10b1fa73fd4fc34c2a39f03830f5a29cf36847410a602a2b5",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f",
+    "tests/fixtures/github_retrieval_parity_v5.gold.json": "6caf7833c6b075fe6a394e03283d6bb93c4c411a19e5333e6f55fec7f5c2801d",
+    "tests/fixtures/github_retrieval_parity_v5.queries.json": "2a87aed9b87b397b2d659f5a93d6ee1edd63ab1868a42a6448c7ce267f17c8a7"
+  },
+  "case_id": "v5path-dev-semantic-axis-separation",
+  "classification_policy": {
+    "all_models_at_or_above_cutoff": "candidate_generation_bottleneck",
+    "all_models_below_cutoff": "semantic_discrimination_bottleneck",
+    "mixed": "undetermined"
+  },
+  "corpus_document_count": 93,
+  "models": [
+    {
+      "kind": "base",
+      "model_id": "BAAI/bge-reranker-base",
+      "revision": "2cfc18c9415c912f9d8155881c133215df768a70"
+    },
+    {
+      "kind": "v2-m3",
+      "model_id": "BAAI/bge-reranker-v2-m3",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    }
+  ],
+  "projection": {
+    "coverage": "start-to-end",
+    "overlap": 80,
+    "tokenizer_max_length": 512,
+    "unit": "unicode-codepoint",
+    "window": 480
+  },
+  "protocol_id": "github-retrieval-parity-v5-full-corpus-rerank-oracle-v1",
+  "purpose": "既知 v5 development の rank-62 症例だけを対象にした探索的 full-corpus rerank 診断。未見性能または確認的評価ではない。",
+  "rerank_cutoff": 20,
+  "runtime": {
+    "batch_size": 8,
+    "cpu_threads": 4,
+    "device": "cpu",
+    "fresh_runtime": true,
+    "network": "disabled",
+    "platform": "linux-x86_64"
+  },
+  "schema_version": 1,
+  "source_files": {
+    "corpus": "tests/fixtures/github_retrieval_parity_v4.corpus.json",
+    "gold": "tests/fixtures/github_retrieval_parity_v5.gold.json",
+    "model_registry": "tests/fixtures/github_cross_encoder_precision_v8.models.json",
+    "queries": "tests/fixtures/github_retrieval_parity_v5.queries.json",
+    "schema": "tests/fixtures/full_corpus_rerank_oracle_v1.schema.json"
+  }
+}
