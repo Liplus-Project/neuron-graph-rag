@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "protocol_id": "github-retrieval-parity-v5-full-corpus-rerank-oracle-v2",
+  "case_id": "v5path-dev-semantic-axis-separation",
+  "expected_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/axis-separation.md"
+}

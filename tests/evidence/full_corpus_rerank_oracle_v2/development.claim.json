@@ -1,0 +1,12 @@
+{
+  "case_id": "v5path-dev-semantic-axis-separation",
+  "holdout_bearing_input_file_count": 0,
+  "manifest_sha256": "331f25d5bfa7c0caf0355f3124558ee721a40ab0a9e6c235272800cc0aa4c689",
+  "model_worker_count": 2,
+  "preflight_attestation_sha256": "405663d2e3388e079a76043d1e8370983982f8bff565801a898d7f340f79e9e1",
+  "protocol_id": "github-retrieval-parity-v5-full-corpus-rerank-oracle-v2",
+  "registered_query_count": 1,
+  "retry_count": 0,
+  "source_commit": "3ca2a3c53fe9911ce64f38a50b2ff0338be7bf74",
+  "worker_gold_present": false
+}

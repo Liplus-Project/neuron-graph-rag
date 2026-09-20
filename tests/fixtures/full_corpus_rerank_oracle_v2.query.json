@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "protocol_id": "github-retrieval-parity-v5-full-corpus-rerank-oracle-v2",
+  "case_id": "v5path-dev-semantic-axis-separation",
+  "query": "異なる判断軸の矛盾を優先順位で潰さず境界へ戻して解く原則"
+}
