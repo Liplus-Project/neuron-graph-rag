@@ -19,7 +19,7 @@
     "tests/fixtures/github_retrieval_parity_v4.corpus.json": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f",
     "tests/fixtures/practical_two_stage_retrieval_v1.models.json": "a20c207d4f05052a2469b6e2bcfb1435b5369e8986b8f7c8cf6ca81aa4118c2c",
     "tests/fixtures/practical_two_stage_retrieval_v1.schema.json": "c5e28dc285fa62bbcd0a18ec10cf26815d44e9b6252014163315881669833375",
-    "tools/run_practical_two_stage_retrieval_v1_wslc.ps1": "131c45d4472047736447d0e0777ce5e2baea041ff0b3759439df09ad39fbe7cc"
+    "tools/run_practical_two_stage_retrieval_v1_wslc.ps1": "0d5d7bc2234600d5d77e0491b867a9f869464c036f52215bbd8bafe8da080173"
   },
   "worker_registered_files": [
     "src/neuron_graph_rag/__init__.py",

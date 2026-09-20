@@ -20,7 +20,6 @@ $containerCECache = "$containerRoot/ce-cache"
 $containerRun = "$containerRoot/run"
 $e5Image = "ngr-e5-structural-centroid-ablation-v1:freeze"
 $ceImage = "ngr-cross-encoder-precision-v8:freeze"
-$bundleImage = "ngr-practical-two-stage-retrieval-v1-bundle:freeze"
 $module = "neuron_graph_rag.practical_two_stage_retrieval"
 
 function Invoke-Checked {
@@ -103,10 +102,6 @@ if ($Action -eq "preflight") {
         New-Item -ItemType Directory -Force (Split-Path -Parent $to) | Out-Null
         Copy-Item -LiteralPath $from -Destination $to
     }
-    $goldTarget = Join-Path $resolvedContext "finalizer-gold\full_corpus_rerank_oracle_v2.gold.json"
-    New-Item -ItemType Directory -Force (Split-Path -Parent $goldTarget) | Out-Null
-    Copy-Item -LiteralPath (Join-Path $root "tests\fixtures\full_corpus_rerank_oracle_v2.gold.json") -Destination $goldTarget
-
     $e5Snapshot = "models--intfloat--multilingual-e5-small\snapshots\614241f622f53c4eeff9890bdc4f31cfecc418b3"
     foreach ($relative in @("config.json", "onnx\model.onnx", "special_tokens_map.json", "tokenizer.json", "tokenizer_config.json")) {
         $from = Join-Path $e5HostCache "$e5Snapshot\$relative"
@@ -124,18 +119,10 @@ if ($Action -eq "preflight") {
             Copy-Item -LiteralPath $_.FullName -Destination $to
         }
     }
-    @"
-FROM ngr-cross-encoder-precision-v8:freeze
-COPY source /bundle/source
-COPY e5-cache /bundle/e5-cache
-COPY ce-cache /bundle/ce-cache
-COPY finalizer-gold /bundle/finalizer-gold
-"@ | Set-Content -LiteralPath (Join-Path $resolvedContext "Containerfile") -Encoding ascii -NoNewline
-
-    Invoke-Checked -Command @("wslc", "build", "--tag", $bundleImage, $resolvedContext)
     Invoke-Checked -Command @("wslc", "volume", "create", $volume)
-    $prepare = "set -eu; test ! -e '${containerSource}'; mkdir -p '${containerRoot}'; cp -a /bundle/source '${containerSource}'; cp -a /bundle/e5-cache '${containerE5Cache}'; cp -a /bundle/ce-cache '${containerCECache}'"
-    Invoke-Checked -Command @("wslc", "run", "--rm", "--network", "none", "--volume", "${volume}:${containerRoot}", "--entrypoint", "/bin/sh", $bundleImage, "-c", $prepare)
+    $stream = "tar -cf - -C $resolvedContext source e5-cache ce-cache | wslc run --rm --interactive --network none --volume ${volume}:${containerRoot} --entrypoint /bin/tar $ceImage -xf - -C $containerRoot"
+    & cmd.exe /d /c $stream
+    if ($LASTEXITCODE -ne 0) { throw "could not stream the allowlisted bundle into the fresh runtime volume" }
     Invoke-Checked -Command (@("wslc") + (Base-Arguments -Image $e5Image -Memory "6G") + @("-m", $module, "preflight-e5", "--root", $containerSource, "--cache", $containerE5Cache, "--runtime-root", $containerRun, "--source-commit", $sourceCommit))
     Invoke-Checked -Command (@("wslc") + (Base-Arguments -Image $ceImage -Memory "8G") + @("-m", $module, "preflight-ce", "--root", $containerSource, "--cache", $containerCECache, "--runtime-root", $containerRun, "--source-commit", $sourceCommit))
     Invoke-Checked -Command (@("wslc") + (Base-Arguments -Image $ceImage -Memory "4G") + @("-m", $module, "preflight-bind", "--root", $containerSource, "--runtime-root", $containerRun, "--source-commit", $sourceCommit))
@@ -151,8 +138,10 @@ try {
     foreach ($kind in @("minilm", "v2-m3")) {
         Invoke-Checked -Command (@("wslc") + $ceArguments + @("-m", $module, "stage2", "--root", $containerSource, "--cache", $containerCECache, "--runtime-root", $containerRun, "--kind", $kind))
     }
-    $copyGold = "set -eu; test ! -e '${containerSource}/tests/fixtures/full_corpus_rerank_oracle_v2.gold.json'; cp /bundle/finalizer-gold/full_corpus_rerank_oracle_v2.gold.json '${containerSource}/tests/fixtures/full_corpus_rerank_oracle_v2.gold.json'"
-    Invoke-Checked -Command @("wslc", "run", "--rm", "--network", "none", "--volume", "${volume}:${containerRoot}", "--entrypoint", "/bin/sh", $bundleImage, "-c", $copyGold)
+    $goldDirectory = Join-Path $root "tests\fixtures"
+    $copyGold = "tar -cf - -C $goldDirectory full_corpus_rerank_oracle_v2.gold.json | wslc run --rm --interactive --network none --volume ${volume}:${containerSource}/tests/fixtures --entrypoint /bin/tar $ceImage -xf - -C ${containerSource}/tests/fixtures"
+    & cmd.exe /d /c $copyGold
+    if ($LASTEXITCODE -ne 0) { throw "could not stream development-only gold after worker completion" }
     Invoke-Checked -Command (@("wslc") + $ceArguments + @("-m", $module, "finalize", "--root", $containerSource, "--runtime-root", $containerRun, "--source-commit", $sourceCommit))
 }
 catch {
