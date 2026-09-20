@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "protocol_id": "github-retrieval-parity-v5-e5-structural-centroid-finalizer-recovery-v2",
+  "status": "frozen_before_gold_mount",
+  "purpose": "失敗したrecovery-v1を再試行せず、58桁に欠落していた既存development-only gold SHAを正しい64桁へ修正し、同じ完成済みgold-blind worker packetを同じ式で決定的にfinalizeする。",
+  "semantic_delta_from_recovery_v1": "development_gold_sha256を58桁の転記欠落から既存ファイルの正しい64桁SHA-256へ修正するだけ。packet検証、ranking式、criteria、cutoff、inference countは不変。",
+  "source_protocol_id": "github-retrieval-parity-v5-e5-structural-centroid-ablation-v1",
+  "source_protocol_status": "failed_finalizer_allowlist_contradiction",
+  "source_commit": "953ebcaa48c67f5a5350b46ced8f0a2d1071175d",
+  "registered_query_execution_count": 0,
+  "model_forward_inference_count": 0,
+  "retry_count": 0,
+  "artifact_sha256": {
+    "src/neuron_graph_rag/e5_structural_centroid_recovery.py": "8f7dccfb17244f5711a74f5b36ad7fabdc1fed720b01bae227d0c4a80f76b25f",
+    "src/neuron_graph_rag/e5_structural_centroid_recovery_v2.py": "b59840c3bac6438c5563986c3b08caf078264ec965f33d125da0e219445e2386",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.manifest.json": "b2701a1305eb95bc73fafcb0d33e0e9ece0bf6a8c599759493e2581675b03711",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.model.json": "89e98eb7bc275a40111ca722f371f713f8b1cddac5b8598761b6b52ee025e253",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.schema.json": "ce8808bf46b73587bcd4be586ca9402b288443028d864e5dc70cc0ef28f00a35",
+    "tests/fixtures/e5_structural_centroid_recovery_v1.manifest.json": "3f4c5cbd401480e2fe09dfe92b1f491625aba7f3c363163ec3b30068b8877466",
+    "tests/fixtures/e5_structural_centroid_recovery_v1.schema.json": "26d5a53c4a73d2e084b726efc78a68f4463b48a425bf2c8f36dce0bacdd57499",
+    "tests/fixtures/e5_structural_centroid_recovery_v2.schema.json": "04839e1f14de073c798d352a7d8ceef84f1c65fc3df7520576b53f15af791ed1",
+    "tools/run_e5_structural_centroid_recovery_v2.ps1": "6ebc770be085a0d130bbcb0fa93f99841a33c088ff5c9ef32e5c811e874e7eb4"
+  },
+  "source_evidence_sha256": {
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.preflight.json": "7bd5802331ea10dc6f103b4b938c7c77b19b1579910ac339eb7cbd2a1ea7ff2d",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.claim.json": "f8cec511922afb6513a30504d4ea8c555c0010efdac0e14cd1c902d1cf7ab955",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.worker.json": "8321809a4ff8fb11e1120d49f9159d1e900862c80e3798467323cb10e7cd6882",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.error.json": "6022a56cd283fdbcbb6b1d246ccea4dc8220d84db995705129d4a189f3ea6831"
+  },
+  "recovery_v1_evidence_sha256": {
+    "tests/evidence/e5_structural_centroid_finalizer_recovery_v1/development.claim.json": "99259513822a3af9b5b759279cab2574f96bb0b6e878dd5abb66beba2704dcdc",
+    "tests/evidence/e5_structural_centroid_finalizer_recovery_v1/development.error.json": "fa088e2feb7c4e2b0b7d5b648216eee50b24507b6faa67c42754ff6882642efd"
+  },
+  "claim_registered_files": [
+    "src/neuron_graph_rag/e5_structural_centroid_recovery.py",
+    "src/neuron_graph_rag/e5_structural_centroid_recovery_v2.py",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.claim.json",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.error.json",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.preflight.json",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.worker.json",
+    "tests/evidence/e5_structural_centroid_finalizer_recovery_v1/development.claim.json",
+    "tests/evidence/e5_structural_centroid_finalizer_recovery_v1/development.error.json",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.manifest.json",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.model.json",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.schema.json",
+    "tests/fixtures/e5_structural_centroid_recovery_v1.manifest.json",
+    "tests/fixtures/e5_structural_centroid_recovery_v1.schema.json",
+    "tests/fixtures/e5_structural_centroid_recovery_v2.manifest.json",
+    "tests/fixtures/e5_structural_centroid_recovery_v2.schema.json",
+    "tools/run_e5_structural_centroid_recovery_v2.ps1"
+  ],
+  "forbidden_registered_paths": [
+    "ngr.sqlite3",
+    "tests/evidence/e5_structural_centroid_ablation_v1/development.observed.json",
+    "tests/evidence/e5_structural_centroid_finalizer_recovery_v1/development.recovered.json",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json",
+    "tests/fixtures/github_retrieval_parity_v5.gold.json",
+    "tests/fixtures/github_retrieval_parity_v5.queries.json"
+  ],
+  "development_gold": "tests/fixtures/full_corpus_rerank_oracle_v2.gold.json",
+  "development_gold_sha256": "689028b2a6f827bc915f6d9151c1b6b95164b4dbd59715bb930d573c33c846cf",
+  "packet_completeness": {
+    "document_count_per_representation": 93,
+    "passage_count_per_representation": 2065,
+    "embedding_dimensions": 384,
+    "representations": ["body", "structural"],
+    "arms": ["body_max", "structural_max", "body_centroid", "structural_centroid"],
+    "requirements": [
+      "exact source/model/dependency/evidence hashes",
+      "finite unit-normalized query and centroid embeddings",
+      "same 93 source IDs and same body chunk identities across representations",
+      "contiguous chunk indices and internally consistent offsets/truncation summaries",
+      "all four rankings reproduced from the frozen formulas and source_id tie-break",
+      "ranking hashes and Spearman correlations reproduced",
+      "no gold-derived field in the worker packet"
+    ]
+  },
+  "dependencies": {
+    "numpy": "2.5.3",
+    "onnxruntime": "1.30.0",
+    "tokenizers": "0.23.2"
+  },
+  "ranking": {
+    "cutoff": 20,
+    "maximum": "max stored query cosine over chunks for the same representation",
+    "document_centroid": "dot product of stored normalized query embedding and stored normalized document centroid embedding",
+    "tie_break": "source_id ascending",
+    "primary_success": "at least one non-baseline arm ranks the expected source at or above cutoff",
+    "directional_evidence": "a non-baseline arm strictly improves expected-source rank versus body_max",
+    "length_bias_attenuation": "absolute Spearman(chunk_count, document_score) is lower for centroid than max within the same representation"
+  },
+  "boundary": {
+    "claim": "gold absent; verify immutable v1 evidence, failed recovery-v1 evidence, and complete worker packet only",
+    "finalizer": "mount only the exact development-only gold after a successful v2 claim",
+    "mixed_or_holdout_inputs": "absent",
+    "network": "not used",
+    "result_meaning": "derived from the completed gold-blind worker packet; not a successful ablation-v1 run, recovery-v1 retry, or query rerun"
+  }
+}
