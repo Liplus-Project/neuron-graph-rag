@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "protocol_id": "github-retrieval-parity-v5-structural-length-bias-ablation-v1",
+  "status": "frozen_pre_registered_execution",
+  "registered_query_execution_count": 0,
+  "purpose": "既知development 1件について、構造表現とmaximum chunk集約の長文有利を2x2 factorial ablationで探索的に切り分ける。holdoutまたはproduction性能へ一般化しない。",
+  "diagnostic_sha256": "183dfec6f3e319922ce97474a5b4f3b0532b5af59b67bdf5c39521931d6b4f99",
+  "fixed_inputs": {
+    "query": "tests/fixtures/full_corpus_rerank_oracle_v2.query.json",
+    "gold": "tests/fixtures/full_corpus_rerank_oracle_v2.gold.json",
+    "corpus": "tests/fixtures/github_retrieval_parity_v4.corpus.json",
+    "model_registry": "tests/fixtures/github_cross_encoder_precision_v8.models.json",
+    "document_count": 93
+  },
+  "models": [
+    {
+      "kind": "base",
+      "model_id": "BAAI/bge-reranker-base",
+      "revision": "2cfc18c9415c912f9d8155881c133215df768a70"
+    },
+    {
+      "kind": "v2-m3",
+      "model_id": "BAAI/bge-reranker-v2-m3",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    }
+  ],
+  "projection": {
+    "unit": "unicode-codepoint",
+    "window": 480,
+    "overlap": 80,
+    "coverage": "start-to-end",
+    "tokenizer_max_length": 512
+  },
+  "representations": {
+    "body": {
+      "formula": "chunk_text"
+    },
+    "structural": {
+      "formula": "prefix + chunk_text",
+      "prefix_template": "path: {repository_path}\nfilename: {filename}\ntitle: {document_title}\nheadings: {heading_chain}\n\n",
+      "field_order": ["repository_path", "filename", "document_title", "heading_chain"],
+      "separator_contract": "ASCII field name, colon, single ASCII space, value, LF; one final blank LF line",
+      "repository_path": "replace backslash with POSIX slash, then remove the exact leading corpora/github-retrieval-parity-v4/ prefix once",
+      "filename": "POSIX basename including extension",
+      "document_title": "first column-zero ^#  line outside fenced code, normalized marker remainder, else [missing]",
+      "heading_chain": "column-zero ^(#{1,6})  headings outside fenced code with line-start codepoint strictly below chunk_start; remove active levels at or below the new heading then append; normalize and join by ASCII space-greater-space; else [missing]",
+      "fenced_code": "opening is zero to three ASCII spaces followed by at least three identical backticks or tildes; closing uses the same character and at least the opening length; ignore heading-like lines while open",
+      "whitespace_normalization": "strip leading and trailing Unicode whitespace and collapse every internal Unicode whitespace run to one ASCII space",
+      "missing_value": "[missing]",
+      "prefix_cap": null,
+      "body_chunk_contract": "project body once at 480 codepoints with 80 overlap, then prepend metadata without changing body text, offsets, or hash",
+      "application": "apply identically and query-independently to every projected chunk of all 93 documents"
+    }
+  },
+  "aggregations": {
+    "maximum": {
+      "formula": "max(chunk_raw_logits)",
+      "tie_break": "source_id ascending"
+    },
+    "normalized_log_mean_exp": {
+      "temperature": 1.0,
+      "formula": "temperature * (logsumexp(chunk_raw_logits / temperature) - log(chunk_count))",
+      "rationale": "normalize the exponential score mass by chunk count so additional independent chances do not receive the unnormalized maximum benefit",
+      "tie_break": "source_id ascending"
+    }
+  },
+  "arms": [
+    {"arm_id": "body_max", "representation": "body", "aggregation": "maximum", "role": "v2 baseline"},
+    {"arm_id": "structural_max", "representation": "structural", "aggregation": "maximum", "role": "representation main effect"},
+    {"arm_id": "body_nlme", "representation": "body", "aggregation": "normalized_log_mean_exp", "role": "aggregation main effect"},
+    {"arm_id": "structural_nlme", "representation": "structural", "aggregation": "normalized_log_mean_exp", "role": "combined interaction"}
+  ],
+  "execution": {
+    "representation_scoring_passes_per_model": 2,
+    "aggregation_reuses_same_representation_chunk_logits": true,
+    "batch_size": 8,
+    "cpu_threads": 4,
+    "device": "cpu",
+    "network": "disabled",
+    "fresh_runtime": true,
+    "retry_count": 0,
+    "registered_query_count": 1,
+    "worker_gold_mount": "absent"
+  },
+  "ranking": {
+    "cutoff": 20,
+    "primary_success": "at least one non-baseline arm ranks the expected source at or above cutoff for both pinned models",
+    "directional_evidence": "the same non-baseline arm strictly improves expected-source rank versus body_max for both pinned models",
+    "length_bias_attenuation": "for each pinned model, absolute Spearman correlation between chunk_count and document_score is lower than the corresponding maximum arm using the same representation",
+    "no_post_result_tuning": true
+  },
+  "saved_evidence": {
+    "all_documents": true,
+    "all_chunk_raw_logits": true,
+    "structural_fields": true,
+    "expected_source_rank": true,
+    "top_distractors": true,
+    "chunk_count_correlations": true,
+    "runtime_and_peak_rss": true,
+    "dependency_input_model_output_hashes": true,
+    "truncation_diagnostics": {
+      "per_chunk": [
+        "body_chunk_codepoint_length",
+        "prefix_codepoint_length",
+        "prefix_token_length_without_special_tokens",
+        "query_passage_pair_token_length_before_truncation_with_special_tokens",
+        "pair_exceeds_512_before_truncation"
+      ],
+      "per_model_representation": [
+        "pair_count",
+        "pairs_exceeding_512_before_truncation",
+        "prefix_codepoint_length_min_max_mean",
+        "prefix_token_length_min_max_mean"
+      ],
+      "paired_comparison": [
+        "body_at_or_below_512_but_structural_above_512_count",
+        "structural_increases_truncation_boolean"
+      ],
+      "tokenization": "model-pinned tokenizer; prefix add_special_tokens=false; query/passage pair add_special_tokens=true and truncation=false"
+    }
+  },
+  "forbidden": [
+    "query-specific or gold-specific text, boost, weight, projection, or aggregation",
+    "mixed-stage v5 query or gold inputs",
+    "holdout-bearing inputs",
+    "GitHub RAG requests",
+    "shared database access",
+    "default retrieval or production rollout changes",
+    "retry or replacement of a failed registered one-shot"
+  ],
+  "judgment": {
+    "actor": "parent agent",
+    "status": "approved_before_registered_execution",
+    "approved_axes": [
+      "four-arm 2x2 factorial",
+      "normalized log-mean-exp temperature 1.0",
+      "cutoff 20 and primary/directional/attenuation criteria",
+      "literal auditable structural representation and tokenizer truncation diagnostics"
+    ]
+  }
+}
