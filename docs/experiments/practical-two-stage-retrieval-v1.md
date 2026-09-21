@@ -43,7 +43,9 @@ worker packetのrankはgoldと照合せず、次のSHA-256で固定しました�
 - MiniLM Stage 2: `5f23496625c31ce6be6be64b8fb9fab7ccabb6bf186eda61d5de56653fc19b8a`
 - v2-m3 Stage 2: `177e035635f75a961d1e3bf3f120140e6c773ac837cb02399cd8db6d6f036900`
 
-別protocol `github-retrieval-parity-v5-practical-two-stage-finalizer-recovery-v1` は、query 0、model forward 0、retry 0のfinalizer-only recoveryです。gold absent claimで、source evidence hash、93文書のStage 1 packet、top 50候補、両Stage 2 packet、各raw logitから再計算したNLME、tie-break、model/input hash、runtime/RSSを検証します。そのclaimが通った後だけ、既存development-only goldを正しい相対pathへ追加してrankと事前基準を決定します。回復結果はcompleted gold-blind packetsからの導出であり、source protocol成功または再試行ではありません。
+別protocol `github-retrieval-parity-v5-practical-two-stage-finalizer-recovery-v1` は、query 0、model forward 0、retry 0でgold absent claimを完了しました。しかし、manifestに固定したdevelopment gold SHA-256が58桁で、既存ファイルの64桁hashから6文字欠落していたため、rank計算前にfail closedしました。claimとerrorをappend-only evidenceとして保存し、同protocolは再試行しません。
+
+その後の `github-retrieval-parity-v5-practical-two-stage-finalizer-recovery-v2` は、packet verifier、候補50、NLME式、criteria、runtime境界、query 0、model forward 0、retry 0をv1から変えず、development gold SHA-256だけを既存ファイルの正しい64桁 `689028b2a6f827bc915f6d9151c1b6b95164b4dbd59715bb930d573c33c846cf` へ修正した別protocolです。v1 claim/errorをhash-lockし、v1 resultが存在しないことも確認します。fresh gold-absent claimが通った後だけgoldを追加します。回復結果はcompleted gold-blind packetsからの導出であり、source protocol成功、source retry、recovery-v1 retryのいずれでもありません。
 
 ## 再現入口
 
@@ -55,11 +57,11 @@ pwsh tools/run_practical_two_stage_retrieval_v1_wslc.ps1 audit
 
 `run` は既存 claim/result/error がある場合に上書きせず停止します。同じ protocol の再試行や置換は行いません。
 
-finalizer-only recoveryは次の段階を別のfresh registered rootで順に実行します。
+失敗済みrecovery-v1は再実行しません。finalizer-only recovery-v2は次の段階を別のfresh registered rootで順に実行します。
 
 ```powershell
-pwsh tools/run_practical_two_stage_retrieval_recovery_v1.ps1 -Phase prepare -RegisteredRoot <fresh-path>
-pwsh tools/run_practical_two_stage_retrieval_recovery_v1.ps1 -Phase claim -RegisteredRoot <fresh-path>
-pwsh tools/run_practical_two_stage_retrieval_recovery_v1.ps1 -Phase finalize -RegisteredRoot <fresh-path>
-pwsh tools/run_practical_two_stage_retrieval_recovery_v1.ps1 -Phase export -RegisteredRoot <fresh-path>
+pwsh tools/run_practical_two_stage_retrieval_recovery_v2.ps1 -Phase prepare -RegisteredRoot <fresh-path>
+pwsh tools/run_practical_two_stage_retrieval_recovery_v2.ps1 -Phase claim -RegisteredRoot <fresh-path>
+pwsh tools/run_practical_two_stage_retrieval_recovery_v2.ps1 -Phase finalize -RegisteredRoot <fresh-path>
+pwsh tools/run_practical_two_stage_retrieval_recovery_v2.ps1 -Phase export -RegisteredRoot <fresh-path>
 ```

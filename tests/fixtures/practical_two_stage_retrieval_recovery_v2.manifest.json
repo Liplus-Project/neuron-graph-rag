@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "protocol_id": "github-retrieval-parity-v5-practical-two-stage-finalizer-recovery-v2",
+  "status": "frozen_before_gold_mount",
+  "purpose": "失敗したrecovery-v1を再試行せずappend-only証跡として固定し、欠落していた6文字を含む既存development-only goldの正しい64桁SHA-256だけを修正して、同じ完了済みgold-blind worker packetsから固定rank/runtime criteriaを導出する。",
+  "source_protocol_id": "github-retrieval-parity-v5-practical-two-stage-retrieval-v1",
+  "source_protocol_status": "failed_finalizer_gold_stream_path",
+  "source_commit": "adc9a193d8ff505c5bb6379cf5914761b274a17c",
+  "registered_query_execution_count": 0,
+  "model_forward_inference_count": 0,
+  "retry_count": 0,
+  "artifact_sha256": {
+    "src/neuron_graph_rag/practical_two_stage_retrieval.py": "e5635376019e3e64e00d6a61512359d58e43f3e0ed7ef6b57e8f891dce1ce405",
+    "tests/evidence/practical_two_stage_retrieval_v1/result_free_minilm_parity.json": "69448b2be0a5fb08b621e261d93d1610039663f6d19b1d8eae17eed65eadd3b0",
+    "tests/fixtures/practical_two_stage_retrieval_v1.manifest.json": "a4bd0b18b2042f843b981e4879239a5191156efc6658a2dff851dfe522a7552f",
+    "tests/fixtures/practical_two_stage_retrieval_v1.models.json": "a20c207d4f05052a2469b6e2bcfb1435b5369e8986b8f7c8cf6ca81aa4118c2c",
+    "tests/fixtures/practical_two_stage_retrieval_v1.schema.json": "c5e28dc285fa62bbcd0a18ec10cf26815d44e9b6252014163315881669833375",
+    "src/neuron_graph_rag/practical_two_stage_retrieval_recovery_v2.py": "deaf5bb4c39b5e55ea04875a6b878111329f1770f91cbfe0a888d2d7b90a65ba",
+    "tests/fixtures/practical_two_stage_retrieval_recovery_v2.schema.json": "a8530d80caa1feb2f075721dac5b56fc05a88d20869255df8f0f9428b1a8612e",
+    "tools/run_practical_two_stage_retrieval_recovery_v2.ps1": "38f8feffa72b479753b5ca7f2a8c4c2de71dece53d84f5522fec7ef773197b80"
+  },
+  "source_evidence_sha256": {
+    "tests/evidence/practical_two_stage_retrieval_v1/development.preflight.json": "b761916f91fb424f7f4d1a8401318da1ff175837b9cc57135fd2cb4add72f708",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.claim.json": "f00c7c3ac35754dff601586a308a12599f97f05a15f636b958b6df1e6f54e088",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage1.worker.json": "7a932a6fb6dccbbd2d2a42b7f970ff0595c9c3b4fd9e9191874875a05f76c2ac",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.minilm.worker.json": "5f23496625c31ce6be6be64b8fb9fab7ccabb6bf186eda61d5de56653fc19b8a",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.v2-m3.worker.json": "177e035635f75a961d1e3bf3f120140e6c773ac837cb02399cd8db6d6f036900",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.error.json": "5b815e840e71499a8e6bbfdb3d44f2928aaf7791db4ae5db9869e1a859c58a3f",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.claim.json": "8c444cd91c848744c3b9d00853ce92b2ba25d0842686cb98f8d37cb0f6d60d46",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.error.json": "296e3ecb755329247bc55bf8b96a764143b03a9205085bf1d98e8f6fcb70c510"
+  },
+  "claim_registered_files": [
+    "src/neuron_graph_rag/practical_two_stage_retrieval.py",
+    "src/neuron_graph_rag/practical_two_stage_retrieval_recovery_v2.py",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.claim.json",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.error.json",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.preflight.json",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage1.worker.json",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.minilm.worker.json",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.v2-m3.worker.json",
+    "tests/evidence/practical_two_stage_retrieval_v1/result_free_minilm_parity.json",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.claim.json",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.error.json",
+    "tests/fixtures/practical_two_stage_retrieval_v1.manifest.json",
+    "tests/fixtures/practical_two_stage_retrieval_v1.models.json",
+    "tests/fixtures/practical_two_stage_retrieval_v1.schema.json",
+    "tests/fixtures/practical_two_stage_retrieval_recovery_v2.manifest.json",
+    "tests/fixtures/practical_two_stage_retrieval_recovery_v2.schema.json",
+    "tools/run_practical_two_stage_retrieval_recovery_v2.ps1"
+  ],
+  "forbidden_registered_paths": [
+    "ngr.sqlite3",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.observed.json",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json",
+    "tests/fixtures/github_retrieval_parity_v5.gold.json",
+    "tests/fixtures/github_retrieval_parity_v5.queries.json",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.recovered.json",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v2/development.recovered.json"
+  ],
+  "development_gold": "tests/fixtures/full_corpus_rerank_oracle_v2.gold.json",
+  "development_gold_sha256": "689028b2a6f827bc915f6d9151c1b6b95164b4dbd59715bb930d573c33c846cf",
+  "packet_completeness": {
+    "stage_1": [
+      "exact 93 unique source IDs and ranking rows",
+      "all structural chunk identities and finite query cosine values",
+      "unit-normalized document centroid embeddings",
+      "ranking score order, source_id tie-break, ranking hash, and exact top-50 candidate IDs",
+      "pinned E5 identity and every required model file hash"
+    ],
+    "stage_2_per_model": [
+      "exact same 50 candidate source IDs bound to the immutable Stage 1 packet hash",
+      "all structural chunks and finite raw logits",
+      "recomputed normalized log-mean-exp temperature 1 ranking and source_id tie-break",
+      "ranking hash, pinned model identity, and every required model file hash"
+    ],
+    "common": [
+      "positive worker runtime and peak RSS",
+      "no gold-derived field in any worker packet",
+      "source preflight, claim, source commit, manifest, failure cause, input hashes, and append-only packet hashes"
+    ]
+  },
+  "ranking": {
+    "candidate_k": 50,
+    "cutoff": 20,
+    "stage_2_aggregation": "max_score + log(sum(exp(score - max_score)) / chunk_count)",
+    "temperature": 1.0,
+    "tie_break": "source_id ascending",
+    "primary_success": "both Stage 2 rerankers place expected source at rank 20 or better",
+    "practical_success": "shared Stage 1 runtime plus each model Stage 2 runtime is at most 600 seconds",
+    "practical_target_seconds_per_pipeline": 600.0
+  },
+  "runtime_measurement_boundary": {
+    "source": "tests/fixtures/practical_two_stage_retrieval_v1.manifest.json runtime.measurement_boundary",
+    "recovery_behavior": "reuse immutable measured worker seconds; perform no query or model forward"
+  },
+  "boundary": {
+    "claim": "gold absent; verify immutable failed-source evidence, failed recovery-v1 claim/error, and all three complete worker packets only",
+    "finalizer": "add only exact existing development-only gold with the corrected 64-digit SHA-256 after successful v2 claim",
+    "query_and_corpus": "absent from recovery registered root",
+    "mixed_or_holdout_inputs": "absent",
+    "network": "not used",
+    "result_meaning": "derived from completed gold-blind worker packets; not a successful source run, source retry, or recovery-v1 retry"
+  }
+}

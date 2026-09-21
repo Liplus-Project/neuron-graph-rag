@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Liplus-Project/neuron-graph-rag/schemas/practical-two-stage-retrieval-recovery-v2.json",
+  "title": "Practical two-stage retrieval finalizer recovery v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "status",
+    "source_protocol_id",
+    "source_protocol_status",
+    "derivation",
+    "source_commit",
+    "registered_query_execution_count",
+    "model_forward_inference_count",
+    "retry_count",
+    "expected_source_id",
+    "corpus_document_count",
+    "candidate_k",
+    "stage1_expected_source_rank",
+    "stage1_candidate_inclusion",
+    "cutoff",
+    "primary_success",
+    "practical_success",
+    "practical_target_seconds_per_pipeline",
+    "runtime_measurement_boundary",
+    "stage1_runtime_seconds",
+    "stage1_peak_rss_bytes",
+    "stage2_models",
+    "inputs_sha256",
+    "source_evidence_sha256",
+    "recovery_claim_sha256",
+    "environment",
+    "payload_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "protocol_id": {"const": "github-retrieval-parity-v5-practical-two-stage-finalizer-recovery-v2"},
+    "status": {"const": "recovered_from_complete_gold_blind_worker_packets"},
+    "source_protocol_status": {"const": "failed_finalizer_gold_stream_path"},
+    "registered_query_execution_count": {"const": 0},
+    "model_forward_inference_count": {"const": 0},
+    "retry_count": {"const": 0},
+    "corpus_document_count": {"const": 93},
+    "candidate_k": {"const": 50},
+    "stage1_candidate_inclusion": {"const": true},
+    "cutoff": {"const": 20},
+    "primary_success": {"type": "boolean"},
+    "practical_success": {"type": "boolean"},
+    "practical_target_seconds_per_pipeline": {"const": 600.0},
+    "stage2_models": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["kind", "expected_source_rank", "expected_source_within_cutoff", "stage2_runtime_seconds", "pipeline_runtime_seconds", "practical_target_met", "peak_rss_bytes", "ranking_sha256", "top_distractor"]
+      }
+    },
+    "payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
