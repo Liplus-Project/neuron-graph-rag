@@ -8,6 +8,7 @@
 - [v5 structural representation / length-bias ablation v1](structural-representation-length-bias-ablation-v1.md)
 - [multilingual-e5-small structural / centroid ablation v1](e5-structural-centroid-ablation-v1.md)
 - [v5 practical two-stage retrieval v1](practical-two-stage-retrieval-v1.md)
+- [v2-m3 chunk shortlist ablation v1](v2-m3-chunk-shortlist-ablation-v1.md)
 
 - [anchored-bm25-graph-hybrid-experiment.md](../anchored-bm25-graph-hybrid-experiment.md) — 元パス維持
 - [anchored-fusion-calibration-experiment.md](../anchored-fusion-calibration-experiment.md) — 元パス維持
