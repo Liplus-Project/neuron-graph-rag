@@ -1,0 +1,11 @@
+{
+  "candidate_k": 50,
+  "gold_present_in_workers": false,
+  "manifest_sha256": "a4bd0b18b2042f843b981e4879239a5191156efc6658a2dff851dfe522a7552f",
+  "preflight_attestation_sha256": "b761916f91fb424f7f4d1a8401318da1ff175837b9cc57135fd2cb4add72f708",
+  "protocol_id": "github-retrieval-parity-v5-practical-two-stage-retrieval-v1",
+  "registered_pipeline_count": 1,
+  "retry_count": 0,
+  "source_commit": "adc9a193d8ff505c5bb6379cf5914761b274a17c",
+  "stage_2_worker_count": 2
+}

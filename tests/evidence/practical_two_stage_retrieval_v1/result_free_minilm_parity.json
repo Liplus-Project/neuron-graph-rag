@@ -1,0 +1,46 @@
+{
+  "absolute_differences": [
+    0.0,
+    0.0
+  ],
+  "direct_logits": [
+    -5.283553123474121,
+    7.422019958496094
+  ],
+  "loader_boundary": "direct AutoTokenizer/AutoModelForSequenceClassification versus Transformers text-classification pipeline loaded independently from the same offline snapshot",
+  "logit_contract": "single raw sequence-classification logit; no sigmoid or softmax",
+  "max_absolute_difference_tolerance": 1e-06,
+  "model_files_sha256": {
+    "config.json": "380e02c93f431831be65d99a4e7e5f67c133985bf2e77d9d4eba46847190bacc",
+    "model.safetensors": "821d1aa69520101d6e0737f78a042ae25b19e5cb9160701909d10434f4aeb0ae",
+    "special_tokens_map.json": "3c3507f36dff57bce437223db3b3081d1e2b52ec3e56ee55438193ecb2c94dd6",
+    "tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+    "tokenizer_config.json": "a5c2e5a7b1a29a0702cd28c08a399b5ecc110c263009d17f7e3b415f25905fd8",
+    "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+  },
+  "payload_sha256": "acb79023d69b96cd91b09a23bf99733032e0d5235c9e87b3fe9bfaeb7b5dfd80",
+  "pipeline_logits": [
+    -5.283553123474121,
+    7.422019958496094
+  ],
+  "protocol_id": "github-retrieval-parity-v5-practical-two-stage-retrieval-v1",
+  "registered_query_execution_count": 0,
+  "schema_version": 1,
+  "status": "result_free_parity_valid",
+  "synthetic_pairs": [
+    {
+      "passage": "a synthetic passage for loader parity",
+      "query": "synthetic retrieval question"
+    },
+    {
+      "passage": "ローダー比較だけに使う合成文書",
+      "query": "日本語の合成検索質問"
+    }
+  ],
+  "token_fields_equal": true,
+  "tokenization": {
+    "max_length": 512,
+    "padding": true,
+    "truncation": true
+  }
+}

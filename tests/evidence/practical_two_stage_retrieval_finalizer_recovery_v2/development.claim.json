@@ -1,0 +1,94 @@
+{
+  "gold_present": false,
+  "holdout_bearing_input_file_count": 0,
+  "model_files_sha256": {
+    "e5": {
+      "config.json": "69137736cab8b8903a07fe8afaafdda25aac55415a12a55d1bffa9f581abf959",
+      "onnx/model.onnx": "ca456c06b3a9505ddfd9131408916dd79290368331e7d76bb621f1cba6bc8665",
+      "special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+      "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+      "tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b"
+    },
+    "minilm": {
+      "config.json": "380e02c93f431831be65d99a4e7e5f67c133985bf2e77d9d4eba46847190bacc",
+      "model.safetensors": "821d1aa69520101d6e0737f78a042ae25b19e5cb9160701909d10434f4aeb0ae",
+      "special_tokens_map.json": "3c3507f36dff57bce437223db3b3081d1e2b52ec3e56ee55438193ecb2c94dd6",
+      "tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+      "tokenizer_config.json": "a5c2e5a7b1a29a0702cd28c08a399b5ecc110c263009d17f7e3b415f25905fd8",
+      "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "v2-m3": {
+      "config.json": "13dcd6c31d9fec9d1d8e158702072f62d7fa7d312a64b9fe057bec9a08cfe41a",
+      "model.safetensors": "d9e3e081faff1eefb84019509b2f5558fd74c1a05a2c7db22f74174fcedb5286",
+      "sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+      "special_tokens_map.json": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835",
+      "tokenizer.json": "69564b696052886ed0ac63fa393e928384e0f8caada38c1f4864a9bfbf379c15",
+      "tokenizer_config.json": "7e4c1cc848840aeccdd763458c18dd525eb0f795c992e00ebe9c28554e7db2d4"
+    }
+  },
+  "model_forward_inference_count": 0,
+  "payload_sha256": "2cef9747d4ebd5d6620d6ad39c99f6f0640c174006b9a441f44ec45f923dc226",
+  "protocol_id": "github-retrieval-parity-v5-practical-two-stage-finalizer-recovery-v2",
+  "registered_query_execution_count": 0,
+  "registered_source_sha256": {
+    "src/neuron_graph_rag/practical_two_stage_retrieval.py": "e5635376019e3e64e00d6a61512359d58e43f3e0ed7ef6b57e8f891dce1ce405",
+    "src/neuron_graph_rag/practical_two_stage_retrieval_recovery_v2.py": "deaf5bb4c39b5e55ea04875a6b878111329f1770f91cbfe0a888d2d7b90a65ba",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.claim.json": "8c444cd91c848744c3b9d00853ce92b2ba25d0842686cb98f8d37cb0f6d60d46",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.error.json": "296e3ecb755329247bc55bf8b96a764143b03a9205085bf1d98e8f6fcb70c510",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.claim.json": "f00c7c3ac35754dff601586a308a12599f97f05a15f636b958b6df1e6f54e088",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.error.json": "5b815e840e71499a8e6bbfdb3d44f2928aaf7791db4ae5db9869e1a859c58a3f",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.preflight.json": "b761916f91fb424f7f4d1a8401318da1ff175837b9cc57135fd2cb4add72f708",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage1.worker.json": "7a932a6fb6dccbbd2d2a42b7f970ff0595c9c3b4fd9e9191874875a05f76c2ac",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.minilm.worker.json": "5f23496625c31ce6be6be64b8fb9fab7ccabb6bf186eda61d5de56653fc19b8a",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.v2-m3.worker.json": "177e035635f75a961d1e3bf3f120140e6c773ac837cb02399cd8db6d6f036900",
+    "tests/evidence/practical_two_stage_retrieval_v1/result_free_minilm_parity.json": "69448b2be0a5fb08b621e261d93d1610039663f6d19b1d8eae17eed65eadd3b0",
+    "tests/fixtures/practical_two_stage_retrieval_recovery_v2.manifest.json": "6ec9504cd48bd971c23573ec892679e836fb191cd3446e4ed25e8f6c8472fd6f",
+    "tests/fixtures/practical_two_stage_retrieval_recovery_v2.schema.json": "a8530d80caa1feb2f075721dac5b56fc05a88d20869255df8f0f9428b1a8612e",
+    "tests/fixtures/practical_two_stage_retrieval_v1.manifest.json": "a4bd0b18b2042f843b981e4879239a5191156efc6658a2dff851dfe522a7552f",
+    "tests/fixtures/practical_two_stage_retrieval_v1.models.json": "a20c207d4f05052a2469b6e2bcfb1435b5369e8986b8f7c8cf6ca81aa4118c2c",
+    "tests/fixtures/practical_two_stage_retrieval_v1.schema.json": "c5e28dc285fa62bbcd0a18ec10cf26815d44e9b6252014163315881669833375",
+    "tools/run_practical_two_stage_retrieval_recovery_v2.ps1": "38f8feffa72b479753b5ca7f2a8c4c2de71dece53d84f5522fec7ef773197b80"
+  },
+  "retry_count": 0,
+  "schema_version": 1,
+  "source_commit": "adc9a193d8ff505c5bb6379cf5914761b274a17c",
+  "source_evidence_sha256": {
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.claim.json": "8c444cd91c848744c3b9d00853ce92b2ba25d0842686cb98f8d37cb0f6d60d46",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.error.json": "296e3ecb755329247bc55bf8b96a764143b03a9205085bf1d98e8f6fcb70c510",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.claim.json": "f00c7c3ac35754dff601586a308a12599f97f05a15f636b958b6df1e6f54e088",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.error.json": "5b815e840e71499a8e6bbfdb3d44f2928aaf7791db4ae5db9869e1a859c58a3f",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.preflight.json": "b761916f91fb424f7f4d1a8401318da1ff175837b9cc57135fd2cb4add72f708",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage1.worker.json": "7a932a6fb6dccbbd2d2a42b7f970ff0595c9c3b4fd9e9191874875a05f76c2ac",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.minilm.worker.json": "5f23496625c31ce6be6be64b8fb9fab7ccabb6bf186eda61d5de56653fc19b8a",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.v2-m3.worker.json": "177e035635f75a961d1e3bf3f120140e6c773ac837cb02399cd8db6d6f036900"
+  },
+  "source_preflight_component_sha256": {
+    "cross_encoders": "e6deb6a5370468d7ae9c8685a65ac2b5f6841721e3bce5550a94d429f681891d",
+    "e5": "814ce47f1b61988a09616ab79f1dbd94f55c1253034ee3384a489db976f5b360"
+  },
+  "source_protocol_id": "github-retrieval-parity-v5-practical-two-stage-retrieval-v1",
+  "source_protocol_status": "failed_finalizer_gold_stream_path",
+  "status": "worker_packets_complete_gold_absent",
+  "worker_packet_diagnostics": {
+    "stage1": {
+      "candidate_source_ids_sha256": "330281baee1712f6eb04d055f8b0de8be9af7e9fcab3b82644c4ce0115038390",
+      "peak_rss_bytes": 1222049792,
+      "ranking_sha256": "a3816754c5e8fe892f2d4e2f7819de411573509b387266f047bb62b41fa4468d",
+      "runtime_seconds": 62.84731440500764
+    },
+    "stage2": {
+      "minilm": {
+        "document_count": 50,
+        "peak_rss_bytes": 814063616,
+        "ranking_sha256": "2d104a9868682a6d4810067141d4cfea97af1e50326e434d9c3dfd10b01d1f68",
+        "runtime_seconds": 31.523826777003706
+      },
+      "v2-m3": {
+        "document_count": 50,
+        "peak_rss_bytes": 3121111040,
+        "ranking_sha256": "3f7fa5e8093978237ff930e9dcd0d47f7d726ffc6b408da2814ad153b03e57ed",
+        "runtime_seconds": 655.1020186120004
+      }
+    }
+  }
+}

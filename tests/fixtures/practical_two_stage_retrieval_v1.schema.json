@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Liplus-Project/neuron-graph-rag/schemas/practical-two-stage-retrieval-v1.json",
+  "title": "Practical two-stage retrieval v1 observed evidence",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "source_commit",
+    "expected_source_id",
+    "corpus_document_count",
+    "candidate_k",
+    "stage1_expected_source_rank",
+    "stage1_candidate_inclusion",
+    "cutoff",
+    "primary_success",
+    "practical_success",
+    "practical_target_seconds_per_pipeline",
+    "runtime_measurement_boundary",
+    "environment",
+    "inputs_sha256",
+    "stage1",
+    "stage2_models",
+    "payload_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "protocol_id": {"const": "github-retrieval-parity-v5-practical-two-stage-retrieval-v1"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "expected_source_id": {"type": "string"},
+    "corpus_document_count": {"const": 93},
+    "candidate_k": {"const": 50},
+    "stage1_expected_source_rank": {"type": "integer", "minimum": 1, "maximum": 93},
+    "stage1_candidate_inclusion": {"const": true},
+    "cutoff": {"const": 20},
+    "primary_success": {"type": "boolean"},
+    "practical_success": {"type": "boolean"},
+    "practical_target_seconds_per_pipeline": {"const": 600.0},
+    "runtime_measurement_boundary": {"type": "object"},
+    "environment": {
+      "type": "object",
+      "required": ["os", "architecture", "network", "fresh_runtime", "holdout_bearing_input_file_count", "shared_database_open_count"],
+      "properties": {
+        "network": {"const": "disabled"},
+        "fresh_runtime": {"const": true},
+        "holdout_bearing_input_file_count": {"const": 0},
+        "shared_database_open_count": {"const": 0}
+      }
+    },
+    "stage2_models": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["kind", "expected_source_rank", "expected_source_within_cutoff", "pipeline_runtime_seconds", "practical_target_met"]
+      }
+    },
+    "payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

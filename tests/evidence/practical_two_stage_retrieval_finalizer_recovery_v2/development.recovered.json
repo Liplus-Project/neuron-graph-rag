@@ -1,0 +1,110 @@
+{
+  "candidate_k": 50,
+  "corpus_document_count": 93,
+  "cutoff": 20,
+  "derivation": "completed_gold_blind_stage1_and_stage2_worker_packets",
+  "environment": {
+    "holdout_bearing_input_file_count": 0,
+    "mixed_v5_query_or_gold_file_count": 0,
+    "network": "not_used_by_stdlib_finalizer",
+    "shared_database_open_count": 0
+  },
+  "expected_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/axis-separation.md",
+  "inputs_sha256": {
+    "src/neuron_graph_rag/practical_two_stage_retrieval.py": "e5635376019e3e64e00d6a61512359d58e43f3e0ed7ef6b57e8f891dce1ce405",
+    "src/neuron_graph_rag/practical_two_stage_retrieval_recovery_v2.py": "deaf5bb4c39b5e55ea04875a6b878111329f1770f91cbfe0a888d2d7b90a65ba",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.claim.json": "8c444cd91c848744c3b9d00853ce92b2ba25d0842686cb98f8d37cb0f6d60d46",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.error.json": "296e3ecb755329247bc55bf8b96a764143b03a9205085bf1d98e8f6fcb70c510",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v2/development.claim.json": "034139ea73ef6d1b5c59804fcff44100cc6e33a622d4bbab79034b2cbf52d70b",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.claim.json": "f00c7c3ac35754dff601586a308a12599f97f05a15f636b958b6df1e6f54e088",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.error.json": "5b815e840e71499a8e6bbfdb3d44f2928aaf7791db4ae5db9869e1a859c58a3f",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.preflight.json": "b761916f91fb424f7f4d1a8401318da1ff175837b9cc57135fd2cb4add72f708",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage1.worker.json": "7a932a6fb6dccbbd2d2a42b7f970ff0595c9c3b4fd9e9191874875a05f76c2ac",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.minilm.worker.json": "5f23496625c31ce6be6be64b8fb9fab7ccabb6bf186eda61d5de56653fc19b8a",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.v2-m3.worker.json": "177e035635f75a961d1e3bf3f120140e6c773ac837cb02399cd8db6d6f036900",
+    "tests/evidence/practical_two_stage_retrieval_v1/result_free_minilm_parity.json": "69448b2be0a5fb08b621e261d93d1610039663f6d19b1d8eae17eed65eadd3b0",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.gold.json": "689028b2a6f827bc915f6d9151c1b6b95164b4dbd59715bb930d573c33c846cf",
+    "tests/fixtures/practical_two_stage_retrieval_recovery_v2.manifest.json": "6ec9504cd48bd971c23573ec892679e836fb191cd3446e4ed25e8f6c8472fd6f",
+    "tests/fixtures/practical_two_stage_retrieval_recovery_v2.schema.json": "a8530d80caa1feb2f075721dac5b56fc05a88d20869255df8f0f9428b1a8612e",
+    "tests/fixtures/practical_two_stage_retrieval_v1.manifest.json": "a4bd0b18b2042f843b981e4879239a5191156efc6658a2dff851dfe522a7552f",
+    "tests/fixtures/practical_two_stage_retrieval_v1.models.json": "a20c207d4f05052a2469b6e2bcfb1435b5369e8986b8f7c8cf6ca81aa4118c2c",
+    "tests/fixtures/practical_two_stage_retrieval_v1.schema.json": "c5e28dc285fa62bbcd0a18ec10cf26815d44e9b6252014163315881669833375",
+    "tools/run_practical_two_stage_retrieval_recovery_v2.ps1": "38f8feffa72b479753b5ca7f2a8c4c2de71dece53d84f5522fec7ef773197b80"
+  },
+  "model_forward_inference_count": 0,
+  "payload_sha256": "8e7e8b107b3caae5c86a46c83f0e2556934f5d5433368e7f97261c345554bf54",
+  "practical_success": false,
+  "practical_target_seconds_per_pipeline": 600.0,
+  "primary_success": false,
+  "protocol_id": "github-retrieval-parity-v5-practical-two-stage-finalizer-recovery-v2",
+  "recovery_claim_sha256": "034139ea73ef6d1b5c59804fcff44100cc6e33a622d4bbab79034b2cbf52d70b",
+  "registered_query_execution_count": 0,
+  "retry_count": 0,
+  "runtime_measurement_boundary": {
+    "excluded": [
+      "model download",
+      "cache copy",
+      "container startup",
+      "result-free preflight synthetic forwards",
+      "gold-only finalization"
+    ],
+    "pipeline_per_model": "shared stage_1 runtime plus that model's stage_2 runtime",
+    "stage_1": "E5 loader initialization, registered query embedding, all 93 structural chunk embeddings, document centroids, ranking, and top-50 selection",
+    "stage_2_per_model": "cross-encoder loader initialization, tokenization and CPU forward passes for structural chunks of exactly 50 candidates, normalized log-mean-exp aggregation, and ranking"
+  },
+  "schema_version": 1,
+  "source_commit": "adc9a193d8ff505c5bb6379cf5914761b274a17c",
+  "source_evidence_sha256": {
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.claim.json": "8c444cd91c848744c3b9d00853ce92b2ba25d0842686cb98f8d37cb0f6d60d46",
+    "tests/evidence/practical_two_stage_retrieval_finalizer_recovery_v1/development.error.json": "296e3ecb755329247bc55bf8b96a764143b03a9205085bf1d98e8f6fcb70c510",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.claim.json": "f00c7c3ac35754dff601586a308a12599f97f05a15f636b958b6df1e6f54e088",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.error.json": "5b815e840e71499a8e6bbfdb3d44f2928aaf7791db4ae5db9869e1a859c58a3f",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.preflight.json": "b761916f91fb424f7f4d1a8401318da1ff175837b9cc57135fd2cb4add72f708",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage1.worker.json": "7a932a6fb6dccbbd2d2a42b7f970ff0595c9c3b4fd9e9191874875a05f76c2ac",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.minilm.worker.json": "5f23496625c31ce6be6be64b8fb9fab7ccabb6bf186eda61d5de56653fc19b8a",
+    "tests/evidence/practical_two_stage_retrieval_v1/development.stage2.v2-m3.worker.json": "177e035635f75a961d1e3bf3f120140e6c773ac837cb02399cd8db6d6f036900"
+  },
+  "source_protocol_id": "github-retrieval-parity-v5-practical-two-stage-retrieval-v1",
+  "source_protocol_status": "failed_finalizer_gold_stream_path",
+  "stage1_candidate_inclusion": true,
+  "stage1_expected_source_rank": 39,
+  "stage1_peak_rss_bytes": 1222049792,
+  "stage1_runtime_seconds": 62.84731440500764,
+  "stage2_models": [
+    {
+      "expected_source_rank": 37,
+      "expected_source_within_cutoff": false,
+      "kind": "minilm",
+      "peak_rss_bytes": 814063616,
+      "pipeline_runtime_seconds": 94.37114118201134,
+      "practical_target_met": true,
+      "ranking_sha256": "2d104a9868682a6d4810067141d4cfea97af1e50326e434d9c3dfd10b01d1f68",
+      "stage2_runtime_seconds": 31.523826777003706,
+      "top_distractor": {
+        "chunk_count": 58,
+        "document_score": 7.19418838466582,
+        "path": "corpora/github-retrieval-parity-v4/docs/1.-Model.md",
+        "rank": 1,
+        "source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/1.-Model.md"
+      }
+    },
+    {
+      "expected_source_rank": 15,
+      "expected_source_within_cutoff": true,
+      "kind": "v2-m3",
+      "peak_rss_bytes": 3121111040,
+      "pipeline_runtime_seconds": 717.949333017008,
+      "practical_target_met": false,
+      "ranking_sha256": "3f7fa5e8093978237ff930e9dcd0d47f7d726ffc6b408da2814ad153b03e57ed",
+      "stage2_runtime_seconds": 655.1020186120004,
+      "top_distractor": {
+        "chunk_count": 58,
+        "document_score": -3.6377884763426946,
+        "path": "corpora/github-retrieval-parity-v4/docs/1.-Model.md",
+        "rank": 1,
+        "source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/1.-Model.md"
+      }
+    }
+  ],
+  "status": "recovered_from_complete_gold_blind_worker_packets"
+}

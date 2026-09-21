@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "protocol_id": "github-retrieval-parity-v5-practical-two-stage-retrieval-v1",
+  "status": "frozen_pre_registered_execution",
+  "registered_query_execution_count": 0,
+  "purpose": "#234 の既知 development 難問について、CPU の候補生成と候補限定 rerank を組み合わせた実用的な二段 retrieval が cutoff 20 を達成できるかを探索的に測定する。holdout または production 性能へ一般化しない。",
+  "artifact_sha256": {
+    "src/neuron_graph_rag/cross_encoder_precision_v2_evaluation.py": "75a7cb3ab16c203fdfd6b3e0d2ca654e91916013cfdfec8c16c836cc571c325a",
+    "src/neuron_graph_rag/e5_structural_centroid_ablation.py": "0afa4abf198c411fe0f577ad22fcdc2af3960c3ea35453a32b72443480063e7e",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle.py": "d4e4c1df3568ac8be45fbd0b5001a336d5c8d6a9e108ca3bd028c6fe77746bf8",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle_v2.py": "ad64dbbf4c118045c8684edf3e3670bed160727e387c847a8c09cb01aaaedfbc",
+    "src/neuron_graph_rag/practical_two_stage_retrieval.py": "e5635376019e3e64e00d6a61512359d58e43f3e0ed7ef6b57e8f891dce1ce405",
+    "src/neuron_graph_rag/structural_representation_length_bias_ablation.py": "ec5e1d2c9bd7cf0403cf8a715c53dccc19039a1944a7775b7b9a3f5b3776c1fa",
+    "src/neuron_graph_rag/structural_representation_length_bias_diagnostic.py": "b117e0446fcbe76890e6278dbf08bbb12d42cf4c87329d9a69e6a366bc95de86",
+    "tests/evidence/practical_two_stage_retrieval_v1/result_free_minilm_parity.json": "69448b2be0a5fb08b621e261d93d1610039663f6d19b1d8eae17eed65eadd3b0",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.model.json": "89e98eb7bc275a40111ca722f371f713f8b1cddac5b8598761b6b52ee025e253",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.package_init.py": "5fc4c8900b0993b6b599c8beefb3c2b3f45b18cd14c25af2dd725fa7ba12f79f",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json": "c7bc3c49310737d6cad024e14ee1388417b46ee2f38b90f6b1c3793737295f23",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f",
+    "tests/fixtures/practical_two_stage_retrieval_v1.models.json": "a20c207d4f05052a2469b6e2bcfb1435b5369e8986b8f7c8cf6ca81aa4118c2c",
+    "tests/fixtures/practical_two_stage_retrieval_v1.schema.json": "c5e28dc285fa62bbcd0a18ec10cf26815d44e9b6252014163315881669833375",
+    "tools/run_practical_two_stage_retrieval_v1_wslc.ps1": "256d9065d50337de483568e7ed93f7755eca4fc0ecbeb165c6056c7c19dde3ae"
+  },
+  "worker_registered_files": [
+    "src/neuron_graph_rag/__init__.py",
+    "src/neuron_graph_rag/cross_encoder_precision_v2_evaluation.py",
+    "src/neuron_graph_rag/e5_structural_centroid_ablation.py",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle.py",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle_v2.py",
+    "src/neuron_graph_rag/practical_two_stage_retrieval.py",
+    "src/neuron_graph_rag/structural_representation_length_bias_ablation.py",
+    "src/neuron_graph_rag/structural_representation_length_bias_diagnostic.py",
+    "tests/evidence/practical_two_stage_retrieval_v1/result_free_minilm_parity.json",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.model.json",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.package_init.py",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json",
+    "tests/fixtures/practical_two_stage_retrieval_v1.manifest.json",
+    "tests/fixtures/practical_two_stage_retrieval_v1.models.json",
+    "tests/fixtures/practical_two_stage_retrieval_v1.schema.json",
+    "tools/run_practical_two_stage_retrieval_v1_wslc.ps1"
+  ],
+  "forbidden_registered_paths": [
+    "ngr.sqlite3",
+    "tests/evidence/e5_structural_centroid_ablation_v1",
+    "tests/evidence/full_corpus_rerank_oracle_v1",
+    "tests/evidence/full_corpus_rerank_oracle_v2",
+    "tests/evidence/structural_representation_length_bias_ablation_v1",
+    "tests/fixtures/github_retrieval_parity_v5.gold.json",
+    "tests/fixtures/github_retrieval_parity_v5.queries.json"
+  ],
+  "fixed_inputs": {
+    "query": "tests/fixtures/full_corpus_rerank_oracle_v2.query.json",
+    "gold": "tests/fixtures/full_corpus_rerank_oracle_v2.gold.json",
+    "corpus": "tests/fixtures/github_retrieval_parity_v4.corpus.json",
+    "model_registry": "tests/fixtures/practical_two_stage_retrieval_v1.models.json",
+    "document_count": 93
+  },
+  "inherited_contract": {
+    "query": "byte-for-byte #234 v2 development-only query",
+    "body_chunks": "byte-for-byte #238/#240 projection: Unicode codepoints, window 480, overlap 80, start-to-end",
+    "structural_representation": "byte-for-byte #238 structural prefix literal applied query-independently to every chunk",
+    "tie_break": "source_id ascending"
+  },
+  "stage_1": {
+    "model_id": "intfloat/multilingual-e5-small",
+    "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "query_prefix": "query: ",
+    "passage_prefix": "passage: ",
+    "representation": "structural",
+    "aggregation": "L2-normalize the arithmetic mean of L2-normalized chunk embeddings, then query cosine",
+    "candidate_k": 50,
+    "scope": "all 93 documents"
+  },
+  "stage_2": {
+    "candidate_scope": "exact stage 1 top 50 source IDs only",
+    "representation": "structural",
+    "aggregation": {
+      "name": "normalized_log_mean_exp",
+      "temperature": 1.0,
+      "formula": "max_score + log(sum(exp(score - max_score)) / chunk_count)"
+    },
+    "models": [
+      {
+        "kind": "minilm",
+        "role": "new CPU lightweight comparison axis",
+        "model_id": "cross-encoder/ms-marco-MiniLM-L6-v2",
+        "revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a",
+        "pooling": "single raw sequence-classification logit; no sigmoid or softmax"
+      },
+      {
+        "kind": "v2-m3",
+        "role": "#238 inherited quality axis",
+        "model_id": "BAAI/bge-reranker-v2-m3",
+        "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+        "pooling": "single raw sequence-classification logit; no sigmoid or softmax"
+      }
+    ]
+  },
+  "minilm_parity_gate": {
+    "status": "passed_before_registered_execution",
+    "evidence": "tests/evidence/practical_two_stage_retrieval_v1/result_free_minilm_parity.json",
+    "evidence_sha256": "69448b2be0a5fb08b621e261d93d1610039663f6d19b1d8eae17eed65eadd3b0",
+    "max_absolute_difference_tolerance": 0.000001,
+    "token_ids_and_attention_masks": "exact",
+    "texts": "synthetic English and Japanese pairs only"
+  },
+  "execution": {
+    "device": "cpu",
+    "cpu_threads": 4,
+    "batch_size": 8,
+    "network": "disabled",
+    "fresh_runtime": true,
+    "registered_pipeline_count": 1,
+    "retry_count": 0,
+    "worker_gold_mount": "absent",
+    "holdout_bearing_input_count": 0,
+    "shared_database_open_count": 0
+  },
+  "runtime": {
+    "practical_target_seconds_per_pipeline": 600.0,
+    "measurement_boundary": {
+      "stage_1": "E5 loader initialization, registered query embedding, all 93 structural chunk embeddings, document centroids, ranking, and top-50 selection",
+      "stage_2_per_model": "cross-encoder loader initialization, tokenization and CPU forward passes for structural chunks of exactly 50 candidates, normalized log-mean-exp aggregation, and ranking",
+      "pipeline_per_model": "shared stage_1 runtime plus that model's stage_2 runtime",
+      "excluded": ["model download", "cache copy", "container startup", "result-free preflight synthetic forwards", "gold-only finalization"]
+    },
+    "saved": ["stage runtime seconds", "pipeline runtime seconds", "per-process peak RSS bytes"]
+  },
+  "ranking": {
+    "cutoff": 20,
+    "primary_success": "both stage 2 rerankers place expected source at rank 20 or better",
+    "practical_success": "each shared-stage1-plus-reranker pipeline runtime is at most 600 seconds",
+    "candidate_miss": "fail closed without a bottleneck conclusion",
+    "no_post_result_tuning": true
+  },
+  "saved_evidence": {
+    "stage_1_all_93_ranking": true,
+    "stage_1_all_structural_chunks_and_centroids": true,
+    "stage_2_all_50_rankings_and_chunk_logits": true,
+    "input_model_output_hashes": true,
+    "runtime_and_peak_rss": true,
+    "append_only_claim_result_or_error": true
+  },
+  "forbidden": [
+    "query-specific or gold-specific text, boost, weight, projection, candidate selection, or aggregation",
+    "mixed-stage v5 query or gold inputs",
+    "holdout-bearing inputs",
+    "GitHub RAG requests",
+    "shared database access",
+    "default retrieval or production rollout changes",
+    "retry or replacement of a failed registered one-shot",
+    "post-result changes to K, formulas, models, cutoff, or success criteria"
+  ]
+}
