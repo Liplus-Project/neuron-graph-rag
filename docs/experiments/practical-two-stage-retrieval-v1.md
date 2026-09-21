@@ -35,7 +35,15 @@ claim 後は Stage 1、MiniLM Stage 2、v2-m3 Stage 2 を retry 0 で一度だ�
 
 ## 観測結果
 
-登録 one-shot の完了後に、Stage 1 rank、両 Stage 2 rank、runtime、peak RSS、判定を追記します。
+source protocol の登録 one-shot は Stage 1、MiniLM Stage 2、v2-m3 Stage 2 の3 workerを完走しました。しかし、finalizer-only goldをnamed volume内のsource treeではなくvolume rootへstreamしたため、finalizer allowlistはdevelopment gold missingとしてfail closedしました。source protocolはresultを作らず、preflight、claim、3 complete worker packets、errorをappend-only evidenceとして保存しています。同protocolは再実行しません。
+
+worker packetのrankはgoldと照合せず、次のSHA-256で固定しました。
+
+- Stage 1: `7a932a6fb6dccbbd2d2a42b7f970ff0595c9c3b4fd9e9191874875a05f76c2ac`
+- MiniLM Stage 2: `5f23496625c31ce6be6be64b8fb9fab7ccabb6bf186eda61d5de56653fc19b8a`
+- v2-m3 Stage 2: `177e035635f75a961d1e3bf3f120140e6c773ac837cb02399cd8db6d6f036900`
+
+別protocol `github-retrieval-parity-v5-practical-two-stage-finalizer-recovery-v1` は、query 0、model forward 0、retry 0のfinalizer-only recoveryです。gold absent claimで、source evidence hash、93文書のStage 1 packet、top 50候補、両Stage 2 packet、各raw logitから再計算したNLME、tie-break、model/input hash、runtime/RSSを検証します。そのclaimが通った後だけ、既存development-only goldを正しい相対pathへ追加してrankと事前基準を決定します。回復結果はcompleted gold-blind packetsからの導出であり、source protocol成功または再試行ではありません。
 
 ## 再現入口
 
@@ -46,3 +54,12 @@ pwsh tools/run_practical_two_stage_retrieval_v1_wslc.ps1 audit
 ```
 
 `run` は既存 claim/result/error がある場合に上書きせず停止します。同じ protocol の再試行や置換は行いません。
+
+finalizer-only recoveryは次の段階を別のfresh registered rootで順に実行します。
+
+```powershell
+pwsh tools/run_practical_two_stage_retrieval_recovery_v1.ps1 -Phase prepare -RegisteredRoot <fresh-path>
+pwsh tools/run_practical_two_stage_retrieval_recovery_v1.ps1 -Phase claim -RegisteredRoot <fresh-path>
+pwsh tools/run_practical_two_stage_retrieval_recovery_v1.ps1 -Phase finalize -RegisteredRoot <fresh-path>
+pwsh tools/run_practical_two_stage_retrieval_recovery_v1.ps1 -Phase export -RegisteredRoot <fresh-path>
+```

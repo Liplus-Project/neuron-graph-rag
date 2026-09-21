@@ -1,0 +1,6 @@
+{
+  "error": "command failed with exit code 1: wslc run --rm --network none --cpus 4 --memory 8G --volume github-practical-two-stage-retrieval-v1-runtime:/opt/ngr-practical-two-stage-v1 --env PYTHONDONTWRITEBYTECODE=1 --env PYTHONPATH=/opt/ngr-practical-two-stage-v1/source/src --env HF_HUB_OFFLINE=1 --env TRANSFORMERS_OFFLINE=1 --env NO_PROXY=* --env OMP_NUM_THREADS=4 --env MKL_NUM_THREADS=4 --workdir /opt/ngr-practical-two-stage-v1/source --entrypoint python ngr-cross-encoder-precision-v8:freeze -m neuron_graph_rag.practical_two_stage_retrieval finalize --root /opt/ngr-practical-two-stage-v1/source --runtime-root /opt/ngr-practical-two-stage-v1/run --source-commit adc9a193d8ff505c5bb6379cf5914761b274a17c",
+  "protocol_id": "github-retrieval-parity-v5-practical-two-stage-retrieval-v1",
+  "retry_count": 0,
+  "source_commit": "adc9a193d8ff505c5bb6379cf5914761b274a17c"
+}

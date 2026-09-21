@@ -4,6 +4,7 @@ import hashlib
 import unittest
 
 from neuron_graph_rag import practical_two_stage_retrieval as runner
+from neuron_graph_rag import practical_two_stage_retrieval_recovery as recovery
 
 
 class PracticalTwoStageRetrievalTests(unittest.TestCase):
@@ -63,11 +64,48 @@ class PracticalTwoStageRetrievalTests(unittest.TestCase):
         self.assertIn('"--network", "none"', wrapper)
         self.assertIn("github-practical-two-stage-retrieval-v1-runtime", wrapper)
 
-    def test_audit_is_result_free_before_registered_execution(self) -> None:
+    def test_source_protocol_failure_evidence_is_append_only(self) -> None:
         audit = runner.audit(runner.ROOT)
         self.assertEqual(audit["status"], "result_free_frozen")
         self.assertEqual(audit["registered_pipeline_count"], 0)
-        self.assertEqual(audit["evidence"], {"claim": False, "result": False, "error": False})
+        self.assertEqual(audit["evidence"], {"claim": True, "result": False, "error": True})
+        expected = recovery._manifest(recovery.ROOT)["source_evidence_sha256"]
+        for relative, digest in expected.items():
+            self.assertEqual(hashlib.sha256((runner.ROOT / relative).read_bytes()).hexdigest(), digest)
+
+    def test_recovery_manifest_freezes_zero_inference_and_gold_absent_claim(self) -> None:
+        manifest = recovery._manifest(recovery.ROOT)
+        self.assertEqual(manifest["status"], "frozen_before_gold_mount")
+        self.assertEqual(manifest["registered_query_execution_count"], 0)
+        self.assertEqual(manifest["model_forward_inference_count"], 0)
+        self.assertEqual(manifest["retry_count"], 0)
+        self.assertNotIn(recovery.GOLD.as_posix(), manifest["claim_registered_files"])
+        self.assertEqual(manifest["ranking"]["candidate_k"], 50)
+        self.assertEqual(manifest["ranking"]["temperature"], 1.0)
+        self.assertEqual(manifest["ranking"]["practical_target_seconds_per_pipeline"], 600.0)
+
+    def test_recovery_verifies_complete_packets_without_gold(self) -> None:
+        stage1, workers, diagnostics = recovery._verify_packets(recovery.ROOT)
+        self.assertEqual(len(stage1["ranking"]), 93)
+        self.assertEqual(len(stage1["candidate_source_ids"]), 50)
+        self.assertEqual([row["kind"] for row in workers], ["minilm", "v2-m3"])
+        self.assertEqual({row["kind"]: len(row["ranking"]) for row in workers}, {"minilm": 50, "v2-m3": 50})
+        self.assertEqual(set(diagnostics["stage2"]), {"minilm", "v2-m3"})
+
+    def test_recovery_audit_is_frozen_before_gold_mount(self) -> None:
+        audit = recovery.audit(recovery.ROOT)
+        self.assertEqual(audit["status"], "recovery_frozen")
+        self.assertEqual(audit["registered_query_execution_count"], 0)
+        self.assertEqual(audit["model_forward_inference_count"], 0)
+        self.assertEqual(audit["source_protocol_status"], "failed_finalizer_gold_stream_path")
+
+    def test_recovery_wrapper_adds_gold_only_after_successful_claim(self) -> None:
+        wrapper = (recovery.ROOT / "tools/run_practical_two_stage_retrieval_recovery_v1.ps1").read_text(encoding="utf-8")
+        claim_block = wrapper.split('if ($Phase -eq "claim")', 1)[1].split('if ($Phase -eq "finalize")', 1)[0]
+        finalize_block = wrapper.split('if ($Phase -eq "finalize")', 1)[1].split('if ($Phase -eq "audit")', 1)[0]
+        self.assertNotIn("Copy-ExclusiveFile $goldRelative", claim_block)
+        self.assertIn("Copy-ExclusiveFile $goldRelative", finalize_block)
+        self.assertIn("successful recovery claim is required", finalize_block)
 
     def test_prior_238_and_240_frozen_assets_are_unchanged(self) -> None:
         expected = {
