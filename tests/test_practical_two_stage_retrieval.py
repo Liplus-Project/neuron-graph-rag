@@ -133,16 +133,42 @@ class PracticalTwoStageRetrievalTests(unittest.TestCase):
         self.assertEqual(v2["model_forward_inference_count"], 0)
         self.assertEqual(v2["retry_count"], 0)
 
-    def test_recovery_v2_verifies_same_complete_packets_without_gold(self) -> None:
+    def test_recovery_v2_verifies_same_complete_packets(self) -> None:
         stage1, workers, diagnostics = recovery_v2._verify_packets(recovery_v2.ROOT)
         self.assertEqual(len(stage1["ranking"]), 93)
         self.assertEqual(len(stage1["candidate_source_ids"]), 50)
         self.assertEqual([row["kind"] for row in workers], ["minilm", "v2-m3"])
         self.assertEqual(set(diagnostics["stage2"]), {"minilm", "v2-m3"})
         audit = recovery_v2.audit(recovery_v2.ROOT)
-        self.assertEqual(audit["status"], "recovery_frozen")
+        self.assertEqual(audit["status"], "recovered_from_complete_gold_blind_worker_packets")
         self.assertEqual(audit["registered_query_execution_count"], 0)
         self.assertEqual(audit["model_forward_inference_count"], 0)
+
+    def test_recovery_v2_result_is_hash_locked_and_matches_predeclared_criteria(self) -> None:
+        result_path = runner.ROOT / recovery_v2.RESULT
+        result = recovery_v2.read_json(result_path)
+        schema = recovery_v2.read_json(runner.ROOT / recovery_v2.SCHEMA)
+        self.assertEqual(
+            hashlib.sha256(result_path.read_bytes()).hexdigest(),
+            "7166caaac4c1c581140711231de4d373125fad5daeac72b83c199109ea75311e",
+        )
+        self.assertTrue(set(schema["required"]).issubset(result))
+        self.assertEqual(result["stage1_expected_source_rank"], 39)
+        self.assertTrue(result["stage1_candidate_inclusion"])
+        self.assertEqual(
+            {row["kind"]: row["expected_source_rank"] for row in result["stage2_models"]},
+            {"minilm": 37, "v2-m3": 15},
+        )
+        self.assertEqual(
+            {row["kind"]: row["practical_target_met"] for row in result["stage2_models"]},
+            {"minilm": True, "v2-m3": False},
+        )
+        self.assertFalse(result["primary_success"])
+        self.assertFalse(result["practical_success"])
+        self.assertEqual(result["registered_query_execution_count"], 0)
+        self.assertEqual(result["model_forward_inference_count"], 0)
+        self.assertEqual(result["retry_count"], 0)
+        self.assertEqual(result["environment"]["holdout_bearing_input_file_count"], 0)
 
     def test_recovery_v2_wrapper_adds_gold_only_after_successful_claim(self) -> None:
         wrapper = (recovery_v2.ROOT / "tools/run_practical_two_stage_retrieval_recovery_v2.ps1").read_text(encoding="utf-8")

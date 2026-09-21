@@ -47,6 +47,16 @@ worker packetのrankはgoldと照合せず、次のSHA-256で固定しました�
 
 その後の `github-retrieval-parity-v5-practical-two-stage-finalizer-recovery-v2` は、packet verifier、候補50、NLME式、criteria、runtime境界、query 0、model forward 0、retry 0をv1から変えず、development gold SHA-256だけを既存ファイルの正しい64桁 `689028b2a6f827bc915f6d9151c1b6b95164b4dbd59715bb930d573c33c846cf` へ修正した別protocolです。v1 claim/errorをhash-lockし、v1 resultが存在しないことも確認します。fresh gold-absent claimが通った後だけgoldを追加します。回復結果はcompleted gold-blind packetsからの導出であり、source protocol成功、source retry、recovery-v1 retryのいずれでもありません。
 
+recovery-v2 claimはgold absent、holdout-bearing input 0、query 0、model forward 0、retry 0でPASSしました。固定worker packetsから導出した結果は次のとおりです。
+
+| 段階 / model | 正解rank | runtime | peak RSS | cutoff / practical判定 |
+|---|---:|---:|---:|---|
+| Stage 1 E5 structural centroid | 39 | 62.847秒 | 1,222,049,792 bytes | top 50候補へ包含 |
+| MiniLM Stage 2 | 37 | Stage 2 31.524秒 / pipeline 94.371秒 | 814,063,616 bytes | cutoff失敗 / 600秒目標達成 |
+| v2-m3 Stage 2 | 15 | Stage 2 655.102秒 / pipeline 717.949秒 | 3,121,111,040 bytes | cutoff達成 / 600秒目標失敗 |
+
+両rerankerがrank 20以内というprimary criteriaは失敗し、両pipelineが600秒以内というpractical criteriaも失敗しました。MiniLMは実用時間内でもrankを改善できず、v2-m3はrankを39から15へ改善しましたが実用時間を超えました。この観測は既知development難問1件だけに対する結果です。recovered result SHA-256は `7166caaac4c1c581140711231de4d373125fad5daeac72b83c199109ea75311e` です。
+
 ## 再現入口
 
 ```powershell
