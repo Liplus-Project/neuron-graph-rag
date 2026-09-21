@@ -80,7 +80,7 @@ if ($Action -eq "preflight") {
     New-Item -ItemType Directory -Force (Join-Path $resolvedContext "source") | Out-Null
 
     $sourceMap = [ordered]@{
-        "src\neuron_graph_rag\__init__.py" = "src/neuron_graph_rag/__init__.py"
+        "tests\fixtures\full_corpus_rerank_oracle_v2.package_init.py" = "src/neuron_graph_rag/__init__.py"
         "src\neuron_graph_rag\cross_encoder_precision_v2_evaluation.py" = "src/neuron_graph_rag/cross_encoder_precision_v2_evaluation.py"
         "src\neuron_graph_rag\e5_structural_centroid_ablation.py" = "src/neuron_graph_rag/e5_structural_centroid_ablation.py"
         "src\neuron_graph_rag\full_corpus_rerank_oracle.py" = "src/neuron_graph_rag/full_corpus_rerank_oracle.py"
@@ -102,6 +102,9 @@ if ($Action -eq "preflight") {
         New-Item -ItemType Directory -Force (Split-Path -Parent $to) | Out-Null
         Copy-Item -LiteralPath $from -Destination $to
     }
+    $packageFixture = Join-Path $resolvedContext "source\tests\fixtures\full_corpus_rerank_oracle_v2.package_init.py"
+    New-Item -ItemType Directory -Force (Split-Path -Parent $packageFixture) | Out-Null
+    Copy-Item -LiteralPath (Join-Path $root "tests\fixtures\full_corpus_rerank_oracle_v2.package_init.py") -Destination $packageFixture
     $e5Snapshot = "models--intfloat--multilingual-e5-small\snapshots\614241f622f53c4eeff9890bdc4f31cfecc418b3"
     foreach ($relative in @("config.json", "onnx\model.onnx", "special_tokens_map.json", "tokenizer.json", "tokenizer_config.json")) {
         $from = Join-Path $e5HostCache "$e5Snapshot\$relative"
