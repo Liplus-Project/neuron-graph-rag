@@ -19,7 +19,7 @@
     "tests/fixtures/github_retrieval_parity_v4.corpus.json": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f",
     "tests/fixtures/practical_two_stage_retrieval_v1.models.json": "a20c207d4f05052a2469b6e2bcfb1435b5369e8986b8f7c8cf6ca81aa4118c2c",
     "tests/fixtures/practical_two_stage_retrieval_v1.schema.json": "c5e28dc285fa62bbcd0a18ec10cf26815d44e9b6252014163315881669833375",
-    "tools/run_practical_two_stage_retrieval_v1_wslc.ps1": "d5d67913190539733e987407aae29aaa6481df85fd09e77a11c7d5b1ca758f43"
+    "tools/run_practical_two_stage_retrieval_v1_wslc.ps1": "256d9065d50337de483568e7ed93f7755eca4fc0ecbeb165c6056c7c19dde3ae"
   },
   "worker_registered_files": [
     "src/neuron_graph_rag/__init__.py",
@@ -37,7 +37,8 @@
     "tests/fixtures/github_retrieval_parity_v4.corpus.json",
     "tests/fixtures/practical_two_stage_retrieval_v1.manifest.json",
     "tests/fixtures/practical_two_stage_retrieval_v1.models.json",
-    "tests/fixtures/practical_two_stage_retrieval_v1.schema.json"
+    "tests/fixtures/practical_two_stage_retrieval_v1.schema.json",
+    "tools/run_practical_two_stage_retrieval_v1_wslc.ps1"
   ],
   "forbidden_registered_paths": [
     "ngr.sqlite3",

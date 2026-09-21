@@ -95,6 +95,7 @@ if ($Action -eq "preflight") {
         "tests\fixtures\practical_two_stage_retrieval_v1.manifest.json" = "tests/fixtures/practical_two_stage_retrieval_v1.manifest.json"
         "tests\fixtures\practical_two_stage_retrieval_v1.models.json" = "tests/fixtures/practical_two_stage_retrieval_v1.models.json"
         "tests\fixtures\practical_two_stage_retrieval_v1.schema.json" = "tests/fixtures/practical_two_stage_retrieval_v1.schema.json"
+        "tools\run_practical_two_stage_retrieval_v1_wslc.ps1" = "tools/run_practical_two_stage_retrieval_v1_wslc.ps1"
     }
     foreach ($entry in $sourceMap.GetEnumerator()) {
         $from = Join-Path $root $entry.Key
