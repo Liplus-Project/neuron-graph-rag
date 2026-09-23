@@ -142,8 +142,7 @@ class CpuShortlistTests(unittest.TestCase):
     def test_engine_opt_in_does_not_replace_default_dense_retrieval(self):
         with NeuronGraphRAG() as engine:
             default_dense = engine.dense_retriever
-            with self.assertRaises(RuntimeError):
-                engine.search_cpu_shortlist("q")
+            self.assertFalse(hasattr(engine, "search_cpu_shortlist"))
             attach_cpu_shortlist_retriever(engine, self.retriever)
             engine.add_document("a", "target winner")
             engine.add_document("b", "noise")
@@ -152,6 +151,8 @@ class CpuShortlistTests(unittest.TestCase):
             self.assertEqual(trace.hits[0].node.node_id, "a")
             self.assertIs(engine.dense_retriever, default_dense)
             self.assertIsInstance(engine.dense_retriever, DenseRetriever)
+            with NeuronGraphRAG() as untouched:
+                self.assertFalse(hasattr(untouched, "search_cpu_shortlist"))
 
     def test_source_grounded_fixture_is_independent_from_v5(self):
         fixture_path = Path(__file__).parent / "fixtures" / "cpu_shortlist_source_grounded.json"

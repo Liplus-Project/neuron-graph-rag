@@ -629,6 +629,15 @@ class CpuShortlistRetriever:
 
 
 def attach_cpu_shortlist_retriever(engine: Any, retriever: CpuShortlistRetriever) -> Any:
-    """Attach only the standalone opt-in surface; default retrieval is untouched."""
+    """Attach opt-in methods to this instance, leaving frozen engine source intact."""
+
+    def update_cpu_shortlist_cache(**kwargs: Any) -> CacheUpdateReceipt:
+        return retriever.update_cache(engine.store.list_nodes(), **kwargs)
+
+    def search_cpu_shortlist(query: str, **kwargs: Any) -> CpuShortlistTrace:
+        return retriever.search(query, engine.store.list_nodes(), **kwargs)
+
     engine._cpu_shortlist_retriever = retriever
+    engine.update_cpu_shortlist_cache = update_cpu_shortlist_cache
+    engine.search_cpu_shortlist = search_cpu_shortlist
     return engine
