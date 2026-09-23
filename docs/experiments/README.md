@@ -13,6 +13,7 @@
 - [実験モデル共有保管 v1](experiment-model-storage-v1.md)
 - [CPU shortlist retrieval v1](cpu-shortlist-retrieval-v1.md)
 - [CPU shortlist retrieval v2](cpu-shortlist-retrieval-v2.md)
+- [CPU shortlist retrieval v3](cpu-shortlist-retrieval-v3.md)
 
 - [anchored-bm25-graph-hybrid-experiment.md](../anchored-bm25-graph-hybrid-experiment.md) — 元パス維持
 - [anchored-fusion-calibration-experiment.md](../anchored-fusion-calibration-experiment.md) — 元パス維持
