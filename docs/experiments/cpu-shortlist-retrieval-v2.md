@@ -12,4 +12,6 @@ Windows native、CPU 4 thread、固定した Python package 版、E5 ONNX・toke
 
 ## 観測結果
 
-result-free 固定時点では未観測。結果を生成した commit で本節を更新する。
+単一 run の正本は `tests/evidence/cpu_shortlist_benchmark_v2/observed.json`。cold index は93文書・2065 chunk で66.531秒、変更なし warm update は0.016秒、1文書変更と復元は各0.094秒だった。3問の期待 source は1位・3位・1位、warm query は47.64・45.00・43.61秒、forward pair は100・100・99。固定済みの top5 / 60秒 gate は通過した。
+
+ただし process peak RSS が全段階で0 byteとなり、メモリ計測は無効だった。v2 の `user_guide_may_be_published: true` は当時の2 gateの結果であり、#246 が求めるメモリ観測完了を意味しない。利用 guide の設定手順は引き続き公開しない。測定関数を修正し、同じ query / corpus / runtime gate に正の RSS gate を追加した [v3](cpu-shortlist-retrieval-v3.md) を結果前に固定する。

@@ -14,11 +14,12 @@ from neuron_graph_rag.cpu_shortlist_retrieval import (
     LocalPinnedE5,
     LocalPinnedV2M3,
     SearchTimeout,
+    _peak_rss_bytes,
 )
 from neuron_graph_rag.models import DocumentNode
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST = ROOT / "tests/fixtures/cpu_shortlist_benchmark_v2.json"
+MANIFEST = ROOT / "tests/fixtures/cpu_shortlist_benchmark_v3.json"
 
 
 def _read(path: Path):
@@ -87,7 +88,7 @@ def _nodes(corpus: dict) -> list[DocumentNode]:
 
 def run(args: argparse.Namespace) -> dict:
     manifest = _read(MANIFEST)
-    if manifest["protocol_id"] != "cpu-shortlist-retrieval-benchmark-v2" or manifest["status"] != "fixed_before_observation":
+    if manifest["protocol_id"] != "cpu-shortlist-retrieval-benchmark-v3" or manifest["status"] != "fixed_before_observation":
         raise RuntimeError("unexpected benchmark protocol")
     environment = _verify_environment(manifest, args)
     corpus_path = ROOT / manifest["corpus"]["path"]
@@ -132,6 +133,7 @@ def run(args: argparse.Namespace) -> dict:
                 "runtime_gate_passed": False,
                 "error": "SearchTimeout",
                 "elapsed_seconds": time.monotonic() - query_started,
+                "peak_rss_bytes": _peak_rss_bytes(),
             })
             continue
         ranks = {hit.node.node_id: rank for rank, hit in enumerate(trace.hits, 1)}
@@ -150,6 +152,14 @@ def run(args: argparse.Namespace) -> dict:
             "runtime_gate_passed": case_runtime,
             "diagnostics": trace.diagnostics,
         })
+    minimum_rss = manifest["measurement_gate"]["minimum_peak_rss_bytes"]
+    memory_gate = all(
+        receipt.peak_rss_bytes >= minimum_rss
+        for receipt in (cold, warm, update, restore)
+    ) and all(
+        (case["diagnostics"]["peak_rss_bytes"] if "diagnostics" in case else case["peak_rss_bytes"]) >= minimum_rss
+        for case in cases
+    )
     source_commit = subprocess.check_output(["git", "-C", ROOT, "rev-parse", "HEAD"], text=True).strip()
     result = {
         "schema_version": 1,
@@ -169,7 +179,8 @@ def run(args: argparse.Namespace) -> dict:
         "gates": {
             "warm_query_within_60_seconds": runtime_gate,
             "source_grounded_expected_rank_at_most_5": quality_gate,
-            "user_guide_may_be_published": runtime_gate and quality_gate,
+            "peak_rss_recorded": memory_gate,
+            "user_guide_may_be_published": runtime_gate and quality_gate and memory_gate,
         },
     }
     _write_exclusive(output, result)

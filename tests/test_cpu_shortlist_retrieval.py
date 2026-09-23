@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 import subprocess
 import sys
@@ -22,6 +23,7 @@ from neuron_graph_rag.cpu_shortlist_retrieval import (
     SearchCancelled,
     attach_cpu_shortlist_retriever,
     structural_chunks,
+    _peak_rss_bytes,
 )
 from neuron_graph_rag.engine import NeuronGraphRAG
 from neuron_graph_rag.models import DocumentNode
@@ -64,6 +66,9 @@ class FakeReranker:
 
 
 class CpuShortlistTests(unittest.TestCase):
+    def test_peak_rss_measurement_is_positive(self):
+        self.assertGreater(_peak_rss_bytes(), 0)
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.cache = Path(self.temporary.name) / "shortlist.db"

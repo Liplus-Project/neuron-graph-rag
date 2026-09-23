@@ -10,6 +10,8 @@ MANIFEST = ROOT / "tests/fixtures/cpu_shortlist_benchmark_v1.json"
 RESULT = ROOT / "tests/evidence/cpu_shortlist_benchmark_v1/observed.json"
 V2_MANIFEST = ROOT / "tests/fixtures/cpu_shortlist_benchmark_v2.json"
 V2_RESULT = ROOT / "tests/evidence/cpu_shortlist_benchmark_v2/observed.json"
+V3_MANIFEST = ROOT / "tests/fixtures/cpu_shortlist_benchmark_v3.json"
+V3_RESULT = ROOT / "tests/evidence/cpu_shortlist_benchmark_v3/observed.json"
 V1_INTERRUPTED = ROOT / "tests/evidence/cpu_shortlist_benchmark_v1/interrupted.json"
 
 
@@ -68,6 +70,26 @@ class CpuShortlistBenchmarkTests(unittest.TestCase):
                 self.assertLessEqual(case["diagnostics"]["forward_pairs"], 100)
             else:
                 self.assertEqual(case["error"], "SearchTimeout")
+
+    def test_v3_requires_positive_peak_rss(self):
+        v2 = json.loads(V2_MANIFEST.read_text(encoding="utf-8"))
+        manifest = json.loads(V3_MANIFEST.read_text(encoding="utf-8"))
+        self.assertEqual(manifest["status"], "fixed_before_observation")
+        self.assertEqual(manifest["corpus"], v2["corpus"])
+        self.assertEqual(manifest["queries"], v2["queries"])
+        self.assertEqual(manifest["runtime"], v2["runtime"])
+        self.assertEqual(manifest["models"], v2["models"])
+        self.assertEqual(manifest["measurement_gate"], {"minimum_peak_rss_bytes": 1})
+        if not V3_RESULT.exists():
+            return
+        result = json.loads(V3_RESULT.read_text(encoding="utf-8"))
+        self.assertEqual(result["protocol_id"], manifest["protocol_id"])
+        self.assertEqual(result["manifest_sha256"], hashlib.sha256(V3_MANIFEST.read_bytes()).hexdigest())
+        minimum = manifest["measurement_gate"]["minimum_peak_rss_bytes"]
+        for receipt in result["cache"].values():
+            self.assertGreaterEqual(receipt["peak_rss_bytes"], minimum)
+        for case in result["cases"]:
+            self.assertGreaterEqual(case.get("diagnostics", case).get("peak_rss_bytes"), minimum)
 
 
 if __name__ == "__main__":
