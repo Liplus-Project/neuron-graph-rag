@@ -27,6 +27,22 @@ result-free manifest/schema/model registry/runner/wrapper/docs/testsを先にcom
 
 その後、Stage 1とStage 2を単一one-shotで実行します。完全なgold-blind worker packetsが揃った後だけdevelopment-only goldを追加し、finalizerがcandidate inclusion、各arm rank、quality/practical/combined criteriaを決定します。失敗時は同protocolを再実行しません。
 
+## 登録実行結果
+
+result-free commit `6df8d836a464788ed818d8d408adecdbc3bea7a2` に対するfresh preflightは、query実行0、exact 93文書、gold absent、holdout-bearing input 0、mixed v5 query/gold 0、共有DB open 0でPASSしました。
+
+retry 0の単一one-shotで、Stage 1は正解をrank 39に置き、candidate K=50へ含めました。Stage 2はtop-8 unionの370 pairsを47 batchesで一度だけforwardしました。gold-blind worker完了後にだけdevelopment-only goldを追加し、finalizerが次のrankを確定しました。
+
+| arm | 正解rank | rank 20以内 |
+| --- | ---: | :---: |
+| m=2 | 19 | PASS |
+| m=4 | 22 | FAIL |
+| m=8 | 21 | FAIL |
+
+Stage 1 runtimeは67.055秒、Stage 2 runtimeは156.886秒、共通pipeline runtimeは223.941秒でした。m=2がquality primaryを満たし、pipelineは600秒以内だったため、quality、practical、combinedの3条件はすべてPASSです。#242のfull-chunk baseline 717.949秒に対し494.008秒短縮しました。baselineのrank 15に対して最良armはrank 19であり、今回の結論は既知development難問に限定します。
+
+preflight、claim、Stage 1 worker、Stage 2 worker、observed resultをappend-only保存しました。errorはありません。
+
 ## 再現入口
 
 ```powershell

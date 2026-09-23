@@ -67,11 +67,37 @@ class V2M3ChunkShortlistAblationV2Tests(unittest.TestCase):
         self.assertLess(run_block.index("$copyGold ="), run_block.index('"finalize"'))
         self.assertIn('"--network", "none"', wrapper)
 
-    def test_audit_is_result_free_before_registered_execution(self) -> None:
+    def test_registered_execution_is_complete_and_auditable(self) -> None:
         audit = runner.audit(runner.ROOT)
-        self.assertEqual(audit["status"], "result_free_frozen")
-        self.assertEqual(audit["registered_pipeline_count"], 0)
-        self.assertFalse(any(audit["evidence"].values()))
+        self.assertEqual(audit["status"], "observed_valid")
+        self.assertEqual(audit["registered_pipeline_count"], 1)
+        self.assertEqual(
+            audit["evidence"],
+            {"preflight": True, "claim": True, "stage1": True, "stage2": True, "result": True, "error": False},
+        )
+        self.assertTrue(audit["quality_primary_success"])
+        self.assertTrue(audit["practical_success"])
+        self.assertTrue(audit["combined_success"])
+
+    def test_observed_result_and_worker_packets_are_hash_locked(self) -> None:
+        expected = {
+            "development.claim.json": "2c0eb18d36b864b2ab64a7b953d950545b73f426ae0bc06a4fbb3e5f87a75577",
+            "development.observed.json": "44fa02d88c790c762c238732732121790606fc50f73acc6eff43abc2f50c3d4c",
+            "development.preflight.json": "f1c93c8724f0e27cb9dcdd9150d5bd7bccf1663cf61913ee37a7b163eda8cf84",
+            "development.stage1.worker.json": "5cd4779c744f3fc681a90b1b33e8df1f0fd232a617449bab9727455608bc4a82",
+            "development.stage2.worker.json": "d75e20c7f242470976e0ad755efa0b9a254a28199553a3dd3123ee85c092286c",
+        }
+        for name, digest in expected.items():
+            evidence = runner.ROOT / runner.EVIDENCE / name
+            self.assertEqual(hashlib.sha256(evidence.read_bytes()).hexdigest(), digest, name)
+
+        observed = runner.read_json(runner.ROOT / runner.RESULT)
+        self.assertEqual(observed["source_commit"], "6df8d836a464788ed818d8d408adecdbc3bea7a2")
+        self.assertEqual(observed["stage1_expected_source_rank"], 39)
+        self.assertEqual([row["expected_source_rank"] for row in observed["arms"]], [19, 22, 21])
+        self.assertEqual(observed["selected_pair_count"], 370)
+        self.assertEqual(observed["forward_batch_count"], 47)
+        self.assertAlmostEqual(observed["pipeline_runtime_seconds"], 223.94103522299997)
 
 
 if __name__ == "__main__":

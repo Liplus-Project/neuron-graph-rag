@@ -1,0 +1,16 @@
+{
+  "candidate_k": 50,
+  "gold_present_in_workers": false,
+  "manifest_sha256": "75937d46da53686145676aa9625e70528b0ebabfffcb12bd878dc6bf4f7ba4f5",
+  "preflight_attestation_sha256": "f1c93c8724f0e27cb9dcdd9150d5bd7bccf1663cf61913ee37a7b163eda8cf84",
+  "protocol_id": "github-retrieval-parity-v5-v2-m3-chunk-shortlist-ablation-v2",
+  "registered_pipeline_count": 1,
+  "retry_count": 0,
+  "shortlist_arms": [
+    2,
+    4,
+    8
+  ],
+  "source_commit": "6df8d836a464788ed818d8d408adecdbc3bea7a2",
+  "stage_2_model_forward_pass_count": 1
+}

@@ -1,0 +1,33 @@
+{
+  "component_sha256": {
+    "e5": "dc3ec948ec22e7901861c30d0894bf2712f3a15e8a9793b8d348635eafa825ee",
+    "v2-m3": "ff088251f4222a767e30e9a6d779a414a92898de31a1e26ccbef8f8ec5ff6f2a"
+  },
+  "corpus_document_count": 93,
+  "gold_present": false,
+  "holdout_bearing_input_file_count": 0,
+  "mixed_v5_query_or_gold_file_count": 0,
+  "protocol_id": "github-retrieval-parity-v5-v2-m3-chunk-shortlist-ablation-v2",
+  "registered_query_execution_count": 0,
+  "registered_source_sha256": {
+    "src/neuron_graph_rag/__init__.py": "5fc4c8900b0993b6b599c8beefb3c2b3f45b18cd14c25af2dd725fa7ba12f79f",
+    "src/neuron_graph_rag/cross_encoder_precision_v2_evaluation.py": "75a7cb3ab16c203fdfd6b3e0d2ca654e91916013cfdfec8c16c836cc571c325a",
+    "src/neuron_graph_rag/e5_structural_centroid_ablation.py": "0afa4abf198c411fe0f577ad22fcdc2af3960c3ea35453a32b72443480063e7e",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle.py": "d4e4c1df3568ac8be45fbd0b5001a336d5c8d6a9e108ca3bd028c6fe77746bf8",
+    "src/neuron_graph_rag/full_corpus_rerank_oracle_v2.py": "ad64dbbf4c118045c8684edf3e3670bed160727e387c847a8c09cb01aaaedfbc",
+    "src/neuron_graph_rag/structural_representation_length_bias_ablation.py": "ec5e1d2c9bd7cf0403cf8a715c53dccc19039a1944a7775b7b9a3f5b3776c1fa",
+    "src/neuron_graph_rag/structural_representation_length_bias_diagnostic.py": "b117e0446fcbe76890e6278dbf08bbb12d42cf4c87329d9a69e6a366bc95de86",
+    "src/neuron_graph_rag/v2_m3_chunk_shortlist_ablation_v2.py": "649a3fe1fd506e3a388fd313cf57abb3576e4c0d85b85d1724397c5372d0d430",
+    "tests/fixtures/e5_structural_centroid_ablation_v1.model.json": "89e98eb7bc275a40111ca722f371f713f8b1cddac5b8598761b6b52ee025e253",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.package_init.py": "5fc4c8900b0993b6b599c8beefb3c2b3f45b18cd14c25af2dd725fa7ba12f79f",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json": "c7bc3c49310737d6cad024e14ee1388417b46ee2f38b90f6b1c3793737295f23",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f",
+    "tests/fixtures/v2_m3_chunk_shortlist_ablation_v2.manifest.json": "75937d46da53686145676aa9625e70528b0ebabfffcb12bd878dc6bf4f7ba4f5",
+    "tests/fixtures/v2_m3_chunk_shortlist_ablation_v2.models.json": "d53f8089b25b95d9b05767693de3fafbe29d4969d1567f3c5d002fee29b418aa",
+    "tests/fixtures/v2_m3_chunk_shortlist_ablation_v2.schema.json": "c986964dbc85141ebc982946040e19c7165c8faa9753530cf35d93f176912a33",
+    "tools/run_v2_m3_chunk_shortlist_ablation_v2_wslc.ps1": "a4015a91c3e942c18d7dc7d5c8b0d368cb23f91a8b4c77bbf01e4a5427faa164"
+  },
+  "shared_database_open_count": 0,
+  "source_commit": "6df8d836a464788ed818d8d408adecdbc3bea7a2",
+  "status": "preflight_valid"
+}
