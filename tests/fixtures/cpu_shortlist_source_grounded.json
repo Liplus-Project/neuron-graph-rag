@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "source_commit": "086abd061871501db001acec3db324ad28858a8f",
+  "documents": [
+    {
+      "node_id": "guide-semantic",
+      "path": "docs/guides/semantic-retrieval.md",
+      "text": "FastEmbedを使ったCPU多言語検索。モデル取得後は質問と本文の埋め込み計算をCPUで行う。"
+    },
+    {
+      "node_id": "spec-feedback",
+      "path": "docs/confirmed-outcome-feedback-reinforcement.md",
+      "text": "confirmed outcomeだけがreinforcementを起動し、単なるretrieval impressionは学習信号にしない。"
+    },
+    {
+      "node_id": "spec-parity",
+      "path": "docs/github-retrieval-parity-benchmark.md",
+      "text": "GitHub RAGとNGRは固定したpublic Markdown document surfaceで比較する。"
+    }
+  ],
+  "queries": [
+    {
+      "query": "取得済みモデルの埋め込みはどこで計算するか",
+      "expected_source_id": "guide-semantic"
+    },
+    {
+      "query": "検索の印象だけで強化してよいか",
+      "expected_source_id": "spec-feedback"
+    },
+    {
+      "query": "GitHub側と比較する文書面は何か",
+      "expected_source_id": "spec-parity"
+    }
+  ]
+}

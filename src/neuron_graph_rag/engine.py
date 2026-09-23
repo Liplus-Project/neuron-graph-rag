@@ -152,6 +152,7 @@ class NeuronGraphRAG:
             use_dense_retrieval=self.config.use_dense_retrieval,
         )
         self.relation_types = self.judgments.relation_types
+        self._cpu_shortlist_retriever = None
 
     def close(self) -> None:
         self.store.close()
@@ -198,6 +199,22 @@ class NeuronGraphRAG:
         edge = TypedEdge(source_id, target_id, edge_type, weight, factuality)
         self.store.upsert_edge(edge)
         return edge
+
+    def update_cpu_shortlist_cache(self, **kwargs):
+        """Update the explicitly attached CPU shortlist cache."""
+        if self._cpu_shortlist_retriever is None:
+            raise RuntimeError("CPU shortlist retriever is not attached")
+        return self._cpu_shortlist_retriever.update_cache(
+            self.store.list_nodes(), **kwargs
+        )
+
+    def search_cpu_shortlist(self, query: str, **kwargs):
+        """Run the standalone opt-in ranking without changing default search."""
+        if self._cpu_shortlist_retriever is None:
+            raise RuntimeError("CPU shortlist retriever is not attached")
+        return self._cpu_shortlist_retriever.search(
+            query, self.store.list_nodes(), **kwargs
+        )
 
     def search(
         self,

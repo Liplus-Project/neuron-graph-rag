@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "protocol_id": "cpu-shortlist-retrieval-benchmark-v1",
+  "status": "fixed_before_observation",
+  "corpus": {
+    "path": "tests/fixtures/github_retrieval_parity_v4.corpus.json",
+    "sha256": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f",
+    "document_count": 93
+  },
+  "runtime": {
+    "cpu_threads": 4,
+    "warm_query_target_seconds": 60.0,
+    "candidate_k": 50,
+    "chunks_per_document": 2,
+    "max_forward_pairs": 100
+  },
+  "quality_gate": {
+    "maximum_expected_rank": 5
+  },
+  "queries": [
+    {
+      "case_id": "sheepdog-three-axes",
+      "query": "Li+で装具の位置、修正者、ループ起動者の三軸すべてがAI側に渡った段階は何と呼ばれるか",
+      "expected_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/G.-Sheepdog-Engineering.md"
+    },
+    {
+      "case_id": "codex-hook-trust",
+      "query": "Codexでhookを初回実行するため、GUIのどこでtrustを設定するか",
+      "expected_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/hooks-config.md"
+    },
+    {
+      "case_id": "source-wrap-levels",
+      "query": "Li+ source fileのsemantic tagでwrap対象になるMarkdown見出しレベルはどれか",
+      "expected_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/K.-Source-File-Format.md"
+    }
+  ],
+  "excluded_inputs": [
+    "tests/fixtures/github_retrieval_parity_v5.development.gold.json",
+    "tests/fixtures/github_retrieval_parity_v5.holdout.gold.json"
+  ]
+}
