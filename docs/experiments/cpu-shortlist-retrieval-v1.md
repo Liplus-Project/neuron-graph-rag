@@ -10,4 +10,4 @@ model は固定 revision の local snapshotを明示指定し、runnerは output
 
 ## 観測結果
 
-result-free 固定時点では未観測。結果を生成した commit で本節を更新する。
+cache に93文書・2065 chunk が残ったが、`observed.json` は作成されず、停止理由も不明。`tests/evidence/cpu_shortlist_benchmark_v1/interrupted.json` に artifact の状態を保存した。品質・待ち時間は未評価とし、v1 は再実行しない。後続の測定条件は [v2](cpu-shortlist-retrieval-v2.md) に固定した。

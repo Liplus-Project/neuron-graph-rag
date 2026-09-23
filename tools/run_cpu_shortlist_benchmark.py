@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.metadata
 import json
 import os
 import subprocess
@@ -12,11 +13,12 @@ from neuron_graph_rag.cpu_shortlist_retrieval import (
     CpuShortlistRetriever,
     LocalPinnedE5,
     LocalPinnedV2M3,
+    SearchTimeout,
 )
 from neuron_graph_rag.models import DocumentNode
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST = ROOT / "tests/fixtures/cpu_shortlist_benchmark_v1.json"
+MANIFEST = ROOT / "tests/fixtures/cpu_shortlist_benchmark_v2.json"
 
 
 def _read(path: Path):
@@ -25,6 +27,37 @@ def _read(path: Path):
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _verify_environment(manifest: dict, args: argparse.Namespace) -> dict:
+    if os.name != "nt" or manifest["runtime"]["platform"] != "windows-native":
+        raise RuntimeError("v2 requires native Windows")
+    packages = {
+        name: importlib.metadata.version(name)
+        for name in manifest["runtime"]["packages"]
+    }
+    if packages != manifest["runtime"]["packages"]:
+        raise RuntimeError(f"fixed package versions changed: {packages!r}")
+    e5 = Path(args.e5_snapshot)
+    reranker = Path(args.reranker_snapshot)
+    models = manifest["models"]
+    if e5.name != models["e5"]["revision"] or reranker.name != models["v2_m3"]["revision"]:
+        raise RuntimeError("model snapshot revision path changed")
+    digests = {
+        "e5_onnx_model": _sha256(e5 / "onnx" / "model.onnx"),
+        "e5_tokenizer": _sha256(e5 / "tokenizer.json"),
+        "v2_m3_weights": _sha256(reranker / "model.safetensors"),
+        "v2_m3_tokenizer": _sha256(reranker / "tokenizer.json"),
+    }
+    expected = {
+        "e5_onnx_model": models["e5"]["onnx_model_sha256"],
+        "e5_tokenizer": models["e5"]["tokenizer_sha256"],
+        "v2_m3_weights": models["v2_m3"]["weights_sha256"],
+        "v2_m3_tokenizer": models["v2_m3"]["tokenizer_sha256"],
+    }
+    if digests != expected:
+        raise RuntimeError("fixed model artifacts changed")
+    return {"packages": packages, "model_sha256": digests}
 
 
 def _write_exclusive(path: Path, value: object) -> None:
@@ -54,6 +87,9 @@ def _nodes(corpus: dict) -> list[DocumentNode]:
 
 def run(args: argparse.Namespace) -> dict:
     manifest = _read(MANIFEST)
+    if manifest["protocol_id"] != "cpu-shortlist-retrieval-benchmark-v2" or manifest["status"] != "fixed_before_observation":
+        raise RuntimeError("unexpected benchmark protocol")
+    environment = _verify_environment(manifest, args)
     corpus_path = ROOT / manifest["corpus"]["path"]
     if _sha256(corpus_path) != manifest["corpus"]["sha256"]:
         raise ValueError("fixed benchmark corpus changed")
@@ -80,7 +116,24 @@ def run(args: argparse.Namespace) -> dict:
     runtime_gate = True
     quality_gate = True
     for case in manifest["queries"]:
-        trace = retriever.search(case["query"], nodes, limit=len(nodes), timeout_seconds=60.0)
+        query_started = time.monotonic()
+        try:
+            trace = retriever.search(case["query"], nodes, limit=len(nodes), timeout_seconds=60.0)
+        except SearchTimeout:
+            runtime_gate = False
+            quality_gate = False
+            cases.append({
+                "case_id": case["case_id"],
+                "query": case["query"],
+                "expected_source_id": case["expected_source_id"],
+                "expected_rank": None,
+                "top_source_ids": [],
+                "quality_gate_passed": False,
+                "runtime_gate_passed": False,
+                "error": "SearchTimeout",
+                "elapsed_seconds": time.monotonic() - query_started,
+            })
+            continue
         ranks = {hit.node.node_id: rank for rank, hit in enumerate(trace.hits, 1)}
         expected_rank = ranks.get(case["expected_source_id"])
         case_quality = expected_rank is not None and expected_rank <= manifest["quality_gate"]["maximum_expected_rank"]
@@ -105,7 +158,7 @@ def run(args: argparse.Namespace) -> dict:
         "source_commit": source_commit,
         "manifest_sha256": _sha256(MANIFEST),
         "corpus_sha256": _sha256(corpus_path),
-        "environment": {"cpu_threads": 4, "platform": os.name},
+        "environment": {"cpu_threads": 4, "platform": os.name, **environment},
         "cache": {
             "cold": cold.__dict__ if hasattr(cold, "__dict__") else {name: getattr(cold, name) for name in cold.__slots__},
             "warm": warm.__dict__ if hasattr(warm, "__dict__") else {name: getattr(warm, name) for name in warm.__slots__},
