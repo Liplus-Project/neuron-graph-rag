@@ -12,4 +12,4 @@ Windows の process handle を明示的な pointer として渡すよう peak RS
 
 process peak RSS は cold index 後に2,297,868,288 byte、検索終了までに最大約2.93 GiBで、正の値として記録できた。peak はプロセス開始からの最大値であり、各段階の増分ではない。RSS gate も通過した。これは固定した93文書と3問での opt-in 試作結果であり、未見 corpus 全般の品質や既定検索への採用を示すものではない。
 
-ユーザーから一時停止の指示があったため、利用 guide の設定手順公開と PR 統合は次回へ残す。
+この固定条件の品質・runtime・RSS gateが通過したため、[利用 guide](../guides/cpu-shortlist-retrieval.md)に明示的なopt-in手順を掲載する。観測済みartifactは変更しない。
