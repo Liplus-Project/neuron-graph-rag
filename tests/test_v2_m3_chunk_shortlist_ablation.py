@@ -76,12 +76,30 @@ class V2M3ChunkShortlistAblationTests(unittest.TestCase):
         self.assertIn("-C ${containerSource}/tests/fixtures", wrapper)
         self.assertIn('"--network", "none"', wrapper)
 
-    def test_audit_is_result_free_before_registered_execution(self) -> None:
+    def test_failed_v1_evidence_is_append_only_and_has_no_worker_or_result(self) -> None:
         audit = runner.audit(runner.ROOT)
         self.assertEqual(audit["status"], "result_free_frozen")
         self.assertEqual(audit["registered_pipeline_count"], 0)
         self.assertEqual(audit["holdout_bearing_input_file_count"], 0)
-        self.assertFalse(any(audit["evidence"].values()))
+        self.assertEqual(
+            audit["evidence"],
+            {
+                "preflight": True,
+                "claim": True,
+                "stage1": False,
+                "stage2": False,
+                "result": False,
+                "error": True,
+            },
+        )
+        expected = {
+            "development.preflight.json": "ab3d6f6beb4f80887e4c340200a51e51efcc267fe19d0968b3b3e314f7b62cc2",
+            "development.claim.json": "e608fe1e09eebbe8b6976065eda84242792f866c51a3e7ac1cb90cea46085ad8",
+            "development.error.json": "f07dcd15afa7ad0b7a658373f2097ac95c40a5a483a2a2115088331f52b0e18e",
+        }
+        for name, digest in expected.items():
+            evidence = runner.ROOT / runner.EVIDENCE / name
+            self.assertEqual(hashlib.sha256(evidence.read_bytes()).hexdigest(), digest, name)
 
     def test_242_frozen_protocol_and_result_are_unchanged(self) -> None:
         expected = {
