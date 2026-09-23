@@ -17,6 +17,8 @@ from pathlib import Path
 
 BACKUP_SUFFIX = ".ngr-dedup-backup"
 SCHEMA_VERSION = 1
+VENV_BINARY_SUFFIXES = {".dll", ".lib", ".pyd"}
+VENV_MINIMUM_BYTES = 1024 * 1024
 
 
 def _sha256(path: Path) -> str:
@@ -58,6 +60,9 @@ def _read_plan(path: Path) -> tuple[dict, Path, Path]:
     if store.is_symlink():
         raise ValueError("store root must not be a symlink")
     sources = [_path(root, relative) for relative in plan["source_roots"]]
+    mode = plan.get("selection_mode", "model-snapshots")
+    if mode not in {"model-snapshots", "venv-binaries"}:
+        raise ValueError("unsupported selection mode")
     if any(store == source or store.is_relative_to(source) for source in sources):
         raise ValueError("shared store overlaps a source root")
     for row in plan["files"]:
@@ -65,8 +70,18 @@ def _read_plan(path: Path) -> tuple[dict, Path, Path]:
         _path(root, row["store_path"])
         if len(row["sha256"]) != 64 or row["size"] < 0:
             raise ValueError("invalid file identity in plan")
-        if "snapshots" not in source.parts or not any(source.is_relative_to(parent) for parent in sources):
+        parents = [parent for parent in sources if source.is_relative_to(parent)]
+        if not parents:
             raise ValueError(f"planned source is outside snapshot roots: {source}")
+        if mode == "model-snapshots" and "snapshots" not in source.parts:
+            raise ValueError(f"planned source is outside snapshot roots: {source}")
+        if mode == "venv-binaries":
+            selected = any(
+                source.relative_to(parent).parts[:2] == ("Lib", "site-packages")
+                for parent in parents
+            )
+            if not selected or source.suffix.lower() not in VENV_BINARY_SUFFIXES or row["size"] < VENV_MINIMUM_BYTES:
+                raise ValueError(f"planned source is not a large venv binary: {source}")
         expected_store = Path(plan["store_root"]) / "sha256" / row["sha256"][:2] / row["sha256"]
         if Path(row["store_path"]) != expected_store:
             raise ValueError(f"store path does not match digest: {row['store_path']}")
@@ -81,7 +96,12 @@ def _write_exclusive(path: Path, payload: dict) -> None:
         stream.write(data)
 
 
-def make_plan(workspace: Path, store: Path, sources: list[Path], output: Path) -> dict:
+def make_plan(
+    workspace: Path, store: Path, sources: list[Path], output: Path,
+    *, selection_mode: str = "model-snapshots",
+) -> dict:
+    if selection_mode not in {"model-snapshots", "venv-binaries"}:
+        raise ValueError("unsupported selection mode")
     root = workspace.resolve(strict=True)
     store_relative = _within(root, store)
     if store.exists():
@@ -103,7 +123,16 @@ def make_plan(workspace: Path, store: Path, sources: list[Path], output: Path) -
                     raise ValueError(f"source contains a linked directory: {item}")
                 skipped_reparse_points.append(item.relative_to(root).as_posix())
                 continue
-            if not stat.S_ISREG(metadata.st_mode) or "snapshots" not in item.relative_to(base).parts:
+            if not stat.S_ISREG(metadata.st_mode):
+                continue
+            relative_parts = item.relative_to(base).parts
+            if selection_mode == "model-snapshots" and "snapshots" not in relative_parts:
+                continue
+            if selection_mode == "venv-binaries" and (
+                relative_parts[:2] != ("Lib", "site-packages")
+                or item.suffix.lower() not in VENV_BINARY_SUFFIXES
+                or metadata.st_size < VENV_MINIMUM_BYTES
+            ):
                 continue
             relative = _within(root, item).as_posix()
             size = item.stat().st_size
@@ -123,6 +152,7 @@ def make_plan(workspace: Path, store: Path, sources: list[Path], output: Path) -
     unique_bytes = sum(size for _, size in unique)
     plan = {
         "schema_version": SCHEMA_VERSION,
+        "selection_mode": selection_mode,
         "workspace_root": str(root),
         "store_root": store_relative.as_posix(),
         "source_roots": sorted(set(source_roots)),
@@ -273,6 +303,7 @@ def main() -> None:
     planner.add_argument("--store", type=Path, required=True)
     planner.add_argument("--source", type=Path, action="append", required=True)
     planner.add_argument("--output", type=Path, required=True)
+    planner.add_argument("--mode", choices=("model-snapshots", "venv-binaries"), default="model-snapshots")
     for name in ("apply", "verify", "rollback", "finalize"):
         command = subcommands.add_parser(name)
         command.add_argument("--plan", type=Path, required=True)
@@ -280,7 +311,7 @@ def main() -> None:
             command.add_argument("--receipt", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "plan":
-        plan = make_plan(args.workspace, args.store, args.source, args.output)
+        plan = make_plan(args.workspace, args.store, args.source, args.output, selection_mode=args.mode)
         result = {
             "plan": str(args.output),
             "file_count": plan["file_count"],

@@ -1,6 +1,6 @@
 # 実験モデルの共有保管
 
-`tools/deduplicate_experiment_models.py` は、外部実験 workspace のモデル snapshot を内容アドレス付き store へ結び、既存の snapshot path を保ったまま同一 D: volume 上の実体だけを共有する。凍結済み evidence、fixture、実験コード、観測結果は変更しない。Python venv と Docker / WSLC volume はこのツールの対象外である。
+`tools/deduplicate_experiment_models.py` は、外部実験 workspace のモデル snapshot を内容アドレス付き store へ結び、既存の snapshot path を保ったまま同一 D: volume 上の実体だけを共有する。`--mode venv-binaries` は凍結済みvenvの `Lib/site-packages` 内にある1 MiB以上の `.lib` / `.dll` / `.pyd` だけを別の共有storeへ結ぶ。凍結済み evidence、fixture、実験コード、観測結果、Python metadataと設定ファイルは変更しない。Docker / WSLC volume はこのツールの対象外である。
 
 ## 手順
 
@@ -21,4 +21,6 @@ python tools/deduplicate_experiment_models.py finalize --plan D:\path\to\Codex\w
 
 既存の one-shot スクリプトは frozen source として残し、今後の実験では同じ content hash の共有 snapshot を検証してから読み取り専用で渡す。Docker / WSLC への read-only mount が利用できるかは、将来の実験 protocol で個別に検証する。新しい build context へ再コピーする既存スクリプトを再実行すれば、その新しい context には再び物理コピーが生じる。
 
-ハッシュはモデル内容の一致を示す。完全な再現には、source commit、query / corpus / gate、依存 package の exact set、CPU / runtime 条件、offline 実行記録も残す必要がある。venv は同じ復旧契約を確認するまで削除しない。
+ハッシュはモデル内容の一致を示す。完全な再現には、source commit、query / corpus / gate、依存 package の exact set、CPU / runtime 条件、offline 実行記録も残す必要がある。venv全体は削除しない。大きな共有binaryはread-onlyになるため、後から依存パッケージを変更するときは新しいvenvを作る。
+
+venvの共有化では、先に `tools/inventory_experiment_runtime.py --output <新規path>` を各venvのPythonから実行し、installed distributionと `*.dist-info` の両一覧を保存する。`plan --mode venv-binaries` に3つのvenv rootと新しい `runtime-store` を渡し、上記と同じ apply → verify → finalize → verify を行う。終了後に各venvから再度inventoryを作り、変更前後のdistributionとmetadata hashを比較し、importと合成入力を試す。

@@ -10,4 +10,8 @@
 
 ## 適用結果
 
-結果前の時点では未適用。外部receiptと適用後の検査結果をここに追記する。
+モデル共有化はplan SHA-256 `fe50407cbe2d1e152f9873d33b7e5614797a12c822b1db2d6c81b64c1ca6c43d` に従い、47個の別実体を退避付きでhardlinkへ置換した。68対象ファイルの全hashと同一file identityを検証後、47退避ファイルを除いた。receipt SHA-256 は `9a2769bb491e75589b934c36f255d813f9c4b67e2c1c0fb071029e2d682ee02c`。D: 空き容量は493,406,867,456 byteから504,138,637,312 byteへ増え、差分は10,731,769,856 byte（9.995 GiB）だった。再度の全68件検証は通過し、退避ファイルは0件。E5とv2-m3は#246の既存パス・既存venvから登録queryを使わない合成入力で読み込めた。
+
+venvは3環境に対して、変更前に `importlib.metadata` のexact installed-distribution inventoryと `*.dist-info` directory一覧を外部workspaceへ保存した。v1/v3はそれぞれ29/29件、#246が使用するv2は35/35件だった。`workspace/maintenance/247-venv-plan.json`（SHA-256 `e30763aa0a0a4846407614b1aab0194c59be78f90f53ebeab48173386ec6adbc`）は `Lib/site-packages` 内の1 MiB以上の `.lib` / `.dll` / `.pyd` だけ62ファイル・内容21種類を選び、最大回収見込み2,220,954,600 byteとした。Python code、metadata、設定ファイル、その他のvenvファイルは対象外にする。
+
+venvの共有化は上記planの固定時点では未適用。適用後に各環境のinstalled-distribution inventory、import、合成入力、全binary hashを照合する。

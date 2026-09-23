@@ -83,6 +83,29 @@ class ExperimentModelDedupTests(unittest.TestCase):
             apply(self.plan_path)
         self.assertFalse(self.store.exists())
 
+    def test_venv_mode_only_selects_large_site_package_binaries(self):
+        workspace = self.workspace / "runtime"
+        sources = [workspace / "one" / "venv", workspace / "two" / "venv"]
+        for source in sources:
+            binary = source / "Lib" / "site-packages" / "torch" / "lib" / "shared.dll"
+            binary.parent.mkdir(parents=True, exist_ok=True)
+            binary.write_bytes(b"x" * (1024 * 1024))
+            (binary.parent / "mutable.py").write_text("value = 1\n", encoding="utf-8")
+            (binary.parent / "small.pyd").write_bytes(b"small")
+        store = workspace / "runtime-store"
+        plan_path = workspace / "runtime-plan.json"
+        receipt_path = workspace / "runtime-receipt.json"
+        plan = make_plan(workspace, store, sources, plan_path, selection_mode="venv-binaries")
+        self.assertEqual(plan["file_count"], 2)
+        self.assertEqual(plan["unique_content_count"], 1)
+        apply(plan_path)
+        finalize(plan_path, receipt_path)
+        self.assertTrue(os.path.samefile(
+            sources[0] / "Lib" / "site-packages" / "torch" / "lib" / "shared.dll",
+            sources[1] / "Lib" / "site-packages" / "torch" / "lib" / "shared.dll",
+        ))
+        self.assertEqual(verify(plan_path)["backups_retained"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()
