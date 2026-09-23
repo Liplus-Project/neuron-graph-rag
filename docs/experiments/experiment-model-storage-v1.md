@@ -14,4 +14,8 @@
 
 venvは3環境に対して、変更前に `importlib.metadata` のexact installed-distribution inventoryと `*.dist-info` directory一覧を外部workspaceへ保存した。v1/v3はそれぞれ29/29件、#246が使用するv2は35/35件だった。`workspace/maintenance/247-venv-plan.json`（SHA-256 `e30763aa0a0a4846407614b1aab0194c59be78f90f53ebeab48173386ec6adbc`）は `Lib/site-packages` 内の1 MiB以上の `.lib` / `.dll` / `.pyd` だけ62ファイル・内容21種類を選び、最大回収見込み2,220,954,600 byteとした。Python code、metadata、設定ファイル、その他のvenvファイルは対象外にする。
 
-venvの共有化は上記planの固定時点では未適用。適用後に各環境のinstalled-distribution inventory、import、合成入力、全binary hashを照合する。
+venvの共有化はplanの通り41個の別実体を退避付きでhardlinkへ置換した。62対象ファイルの全hashと同一file identityを検証後、41退避ファイルを除いた。receipt SHA-256 は `3fa1304d160d379b672654aa0ea9a6ba9f6340b7da23f41a0d8266fb95ccb26c`。D: 空き容量は504,138,571,776 byteから506,358,996,992 byteへ増え、差分は2,220,425,216 byte（2.068 GiB）だった。再度の全62件検証は通過し、退避ファイルは0件。
+
+3環境とも変更前後のinstalled-distribution inventory JSONがbyte単位で一致した（v1 `75a3e47933c20246a2c61c9fcc79649e884dbb6040757ce10d075791a7a06901`、v2 `a5442031aeac82abf4b4a487e81a9e2f0098a00fe8359bc26d0ef5643272a591`、v3 `054b11dff27bbca8b996406b4984ed0e8adde49e5f763b7169fc2f8976d904da`）。各venvで `torch 2.4.1+cpu`、`transformers 4.44.2`、`tokenizers 0.19.1` をimportできた。#246 の既存パス・venvによる合成入力probeも共有化後に再実行し、E5次元384、v2-m3 logit `-1.4248462915420532` で変更前と一致した。
+
+2段階の実測回収合計は12,952,195,072 byte（12.063 GiB）。`workspace/experiments` の各パスを足した論理サイズはhardlink化後もほぼ17.59 GiBと表示されるが、同一実体の重複計上を除いた使用量とD:の空き容量は改善した。venv全体と凍結証拠は保持した。共有ファイルはread-onlyなので、将来のパッケージ更新は新しいvenvで行う。既存の凍結スクリプトはbundleへモデルを再コピーするため、今後の新規実験では共有storeのread-only mountを別途設計・検証する必要がある。Docker/WSLC volume内の容量は今回の対象外。

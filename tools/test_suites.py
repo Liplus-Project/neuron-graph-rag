@@ -34,7 +34,7 @@ test_real_task_shadow test_real_task_shadow_v2 test_real_task_shadow_v3
 test_sibling_normalization_evaluation test_soft_start_snapshot_evaluation
 test_source_grounded_relation_observation test_source_grounded_relation_observation_v2
 test_source_grounded_relation_observation_v3 test_source_grounded_relation_observation_v3_probe
-test_suite_selection
+test_deduplicate_experiment_models test_suite_selection
 """.split(),
     },
     "historical": {
