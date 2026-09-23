@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "protocol_id": "cpu-shortlist-retrieval-benchmark-v1",
+  "source_commit": "29cfd4807449a93ca4479ceaa91f03471c7c7ee0",
+  "status": "interrupted_without_result",
+  "observation_checked_at_utc": "2026-09-23T13:47:18Z",
+  "cache_artifact": {
+    "path": "workspace/experiments/cpu-shortlist-246-run-v1/cache.db",
+    "size_bytes": 8974336,
+    "created_at_utc": "2026-09-23T09:32:15.9875080Z",
+    "modified_at_utc": "2026-09-23T09:33:21.5833004Z",
+    "sha256": "4644d605d37cdb5397647220426aa1472bb0c1112313a151425a80365cf9dde9",
+    "document_rows": 93,
+    "chunk_rows": 2065
+  },
+  "result_artifact": "absent",
+  "termination_cause": "unknown",
+  "quality_and_runtime": "not_assessed"
+}
