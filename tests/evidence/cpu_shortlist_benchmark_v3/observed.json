@@ -1,0 +1,185 @@
+{
+  "cache": {
+    "cold": {
+      "added": 93,
+      "cache_fingerprint": "d168d7a473ed5bede19f882c297ce64076405326c7fbd84979e5ee045557daa4",
+      "chunk_count": 2065,
+      "e5_seconds": 63.547000000000025,
+      "peak_rss_bytes": 2297868288,
+      "removed": 0,
+      "total_seconds": 63.64099999999996,
+      "unchanged": 0,
+      "updated": 0
+    },
+    "one_document_update": {
+      "added": 0,
+      "cache_fingerprint": "e63423592c06cda6c17f9bfe887ac76107a45b2f946db00844b4629a402a4ec5",
+      "chunk_count": 2065,
+      "e5_seconds": 0.09399999999993724,
+      "peak_rss_bytes": 2297868288,
+      "removed": 0,
+      "total_seconds": 0.09399999999993724,
+      "unchanged": 92,
+      "updated": 1
+    },
+    "restore": {
+      "added": 0,
+      "cache_fingerprint": "d168d7a473ed5bede19f882c297ce64076405326c7fbd84979e5ee045557daa4",
+      "chunk_count": 2065,
+      "e5_seconds": 0.09400000000005093,
+      "peak_rss_bytes": 2297868288,
+      "removed": 0,
+      "total_seconds": 0.09400000000005093,
+      "unchanged": 92,
+      "updated": 1
+    },
+    "warm": {
+      "added": 0,
+      "cache_fingerprint": "d168d7a473ed5bede19f882c297ce64076405326c7fbd84979e5ee045557daa4",
+      "chunk_count": 2065,
+      "e5_seconds": 0.0,
+      "peak_rss_bytes": 2297868288,
+      "removed": 0,
+      "total_seconds": 0.0,
+      "unchanged": 93,
+      "updated": 0
+    }
+  },
+  "cases": [
+    {
+      "case_id": "sheepdog-three-axes",
+      "diagnostics": {
+        "cache_fingerprint": "d168d7a473ed5bede19f882c297ce64076405326c7fbd84979e5ee045557daa4",
+        "candidate_k": 50,
+        "chunks_per_document": 2,
+        "e5_model": {
+          "id": "intfloat/multilingual-e5-small",
+          "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+        },
+        "e5_query_seconds": 0.0,
+        "e5_stage1_seconds": 0.0,
+        "forward_pairs": 100,
+        "nlme_tau": 1.0,
+        "peak_rss_bytes": 3125555200,
+        "reranker_model": {
+          "id": "BAAI/bge-reranker-v2-m3",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+        },
+        "total_seconds": 43.34299999999996,
+        "v2_m3_seconds": 43.31200000000001
+      },
+      "expected_rank": 1,
+      "expected_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/G.-Sheepdog-Engineering.md",
+      "quality_gate_passed": true,
+      "query": "Li+で装具の位置、修正者、ループ起動者の三軸すべてがAI側に渡った段階は何と呼ばれるか",
+      "runtime_gate_passed": true,
+      "top_source_ids": [
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/G.-Sheepdog-Engineering.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/claude/CLAUDE.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/README.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/A.-Concept.md"
+      ]
+    },
+    {
+      "case_id": "codex-hook-trust",
+      "diagnostics": {
+        "cache_fingerprint": "d168d7a473ed5bede19f882c297ce64076405326c7fbd84979e5ee045557daa4",
+        "candidate_k": 50,
+        "chunks_per_document": 2,
+        "e5_model": {
+          "id": "intfloat/multilingual-e5-small",
+          "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+        },
+        "e5_query_seconds": 0.03200000000003911,
+        "e5_stage1_seconds": 0.0,
+        "forward_pairs": 100,
+        "nlme_tau": 1.0,
+        "peak_rss_bytes": 3136110592,
+        "reranker_model": {
+          "id": "BAAI/bge-reranker-v2-m3",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+        },
+        "total_seconds": 38.766000000000076,
+        "v2_m3_seconds": 38.70300000000009
+      },
+      "expected_rank": 3,
+      "expected_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/hooks-config.md",
+      "quality_gate_passed": true,
+      "query": "Codexでhookを初回実行するため、GUIのどこでtrustを設定するか",
+      "runtime_gate_passed": true,
+      "top_source_ids": [
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/D.-Installation.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/C.-Update.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/hooks-config.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/adapter/codex/AGENTS.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/Li+update.md"
+      ]
+    },
+    {
+      "case_id": "source-wrap-levels",
+      "diagnostics": {
+        "cache_fingerprint": "d168d7a473ed5bede19f882c297ce64076405326c7fbd84979e5ee045557daa4",
+        "candidate_k": 50,
+        "chunks_per_document": 2,
+        "e5_model": {
+          "id": "intfloat/multilingual-e5-small",
+          "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+        },
+        "e5_query_seconds": 0.0,
+        "e5_stage1_seconds": 0.0,
+        "forward_pairs": 99,
+        "nlme_tau": 1.0,
+        "peak_rss_bytes": 3145400320,
+        "reranker_model": {
+          "id": "BAAI/bge-reranker-v2-m3",
+          "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+        },
+        "total_seconds": 40.40599999999995,
+        "v2_m3_seconds": 40.35900000000004
+      },
+      "expected_rank": 1,
+      "expected_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/K.-Source-File-Format.md",
+      "quality_gate_passed": true,
+      "query": "Li+ source fileのsemantic tagでwrap対象になるMarkdown見出しレベルはどれか",
+      "runtime_gate_passed": true,
+      "top_source_ids": [
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/K.-Source-File-Format.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/liplus-coding-rule.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/Home.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/Li+update.md",
+        "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/evolution/evolution.md"
+      ]
+    }
+  ],
+  "corpus_sha256": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f",
+  "environment": {
+    "cpu_threads": 4,
+    "model_sha256": {
+      "e5_onnx_model": "ca456c06b3a9505ddfd9131408916dd79290368331e7d76bb621f1cba6bc8665",
+      "e5_tokenizer": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+      "v2_m3_tokenizer": "69564b696052886ed0ac63fa393e928384e0f8caada38c1f4864a9bfbf379c15",
+      "v2_m3_weights": "d9e3e081faff1eefb84019509b2f5558fd74c1a05a2c7db22f74174fcedb5286"
+    },
+    "packages": {
+      "huggingface_hub": "0.36.2",
+      "numpy": "2.4.6",
+      "onnxruntime": "1.23.2",
+      "tokenizers": "0.19.1",
+      "torch": "2.4.1",
+      "transformers": "4.44.2"
+    },
+    "platform": "nt"
+  },
+  "gates": {
+    "peak_rss_recorded": true,
+    "source_grounded_expected_rank_at_most_5": true,
+    "user_guide_may_be_published": true,
+    "warm_query_within_60_seconds": true
+  },
+  "manifest_sha256": "e1daba0047485dbe0236b7718e3578c41158cdf6426bc0c8315703e70235bd16",
+  "protocol_id": "cpu-shortlist-retrieval-benchmark-v3",
+  "schema_version": 1,
+  "source_commit": "5e9f953fe4690aa10c504183fb0cf2f46837a159",
+  "status": "observed"
+}
