@@ -1,0 +1,111 @@
+{
+  "arms": [
+    {
+      "expected_source_rank": 19,
+      "expected_source_within_cutoff": true,
+      "m": 2,
+      "ranking_sha256": "9c281ceabe8b2447a24d02e470096e72359653b048a7e38beb28d5bf1363f715",
+      "top_distractor": {
+        "available_chunk_count": 61,
+        "document_score": -3.6396692720707287,
+        "path": "corpora/github-retrieval-parity-v4/docs/C.-Update.md",
+        "rank": 1,
+        "selected_chunk_count": 2,
+        "source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/C.-Update.md"
+      }
+    },
+    {
+      "expected_source_rank": 22,
+      "expected_source_within_cutoff": false,
+      "m": 4,
+      "ranking_sha256": "3b3db137ccb8e5de34058f3f05e591c6dae060940d9c02aec0431e30fa7e8fbb",
+      "top_distractor": {
+        "available_chunk_count": 58,
+        "document_score": -1.534246417068083,
+        "path": "corpora/github-retrieval-parity-v4/docs/1.-Model.md",
+        "rank": 1,
+        "selected_chunk_count": 4,
+        "source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/1.-Model.md"
+      }
+    },
+    {
+      "expected_source_rank": 21,
+      "expected_source_within_cutoff": false,
+      "m": 8,
+      "ranking_sha256": "ccb875a47430d40d979b67df71f613dfca82b76df954fafa65a44f6c921a9ade",
+      "top_distractor": {
+        "available_chunk_count": 58,
+        "document_score": -2.0057635897843307,
+        "path": "corpora/github-retrieval-parity-v4/docs/1.-Model.md",
+        "rank": 1,
+        "selected_chunk_count": 8,
+        "source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/docs/1.-Model.md"
+      }
+    }
+  ],
+  "candidate_k": 50,
+  "combined_success": true,
+  "corpus_document_count": 93,
+  "cutoff": 20,
+  "environment": {
+    "architecture": "x86_64",
+    "fresh_runtime": true,
+    "holdout_bearing_input_file_count": 0,
+    "mixed_v5_query_or_gold_file_count": 0,
+    "network": "disabled",
+    "os": "linux",
+    "shared_database_open_count": 0
+  },
+  "expected_source_id": "github:Liplus-Project/neuron-graph-rag:corpora/github-retrieval-parity-v4/rules/model/axis-separation.md",
+  "forward_batch_count": 47,
+  "full_chunk_baseline": {
+    "expected_source_rank": 15,
+    "pipeline_runtime_seconds": 717.949333017008,
+    "source": "#242"
+  },
+  "inputs_sha256": {
+    "tests/fixtures/full_corpus_rerank_oracle_v2.gold.json": "689028b2a6f827bc915f6d9151c1b6b95164b4dbd59715bb930d573c33c846cf",
+    "tests/fixtures/full_corpus_rerank_oracle_v2.query.json": "c7bc3c49310737d6cad024e14ee1388417b46ee2f38b90f6b1c3793737295f23",
+    "tests/fixtures/github_retrieval_parity_v4.corpus.json": "0699010fe33887e613559ab28388a370cf0006396f9d17855a9b9b1ee9f00e8f",
+    "tests/fixtures/v2_m3_chunk_shortlist_ablation_v2.manifest.json": "75937d46da53686145676aa9625e70528b0ebabfffcb12bd878dc6bf4f7ba4f5",
+    "tests/fixtures/v2_m3_chunk_shortlist_ablation_v2.models.json": "d53f8089b25b95d9b05767693de3fafbe29d4969d1567f3c5d002fee29b418aa",
+    "tests/fixtures/v2_m3_chunk_shortlist_ablation_v2.schema.json": "c986964dbc85141ebc982946040e19c7165c8faa9753530cf35d93f176912a33"
+  },
+  "payload_sha256": "aac7b51447efcc6736b97c7dbd32936a7237fae960196b144976546c89e2bdca",
+  "pipeline_runtime_seconds": 223.94103522299997,
+  "practical_success": true,
+  "practical_target_seconds": 600.0,
+  "protocol_id": "github-retrieval-parity-v5-v2-m3-chunk-shortlist-ablation-v2",
+  "quality_primary_success": true,
+  "runtime_measurement_boundary": {
+    "excluded": [
+      "model download",
+      "cache copy",
+      "container startup",
+      "result-free preflight synthetic forwards",
+      "gold-only finalization",
+      "host export and audit"
+    ],
+    "pipeline": "stage_1 runtime plus shared stage_2 runtime",
+    "stage_1": "E5 loader initialization, registered query embedding, all 93 structural chunk embeddings, document centroids, ranking, and top-50 selection",
+    "stage_2": "v2-m3 loader initialization, top-8 selection for 50 candidates, at most 400 pair tokenizations and CPU forwards, three prefix-NLME aggregations, and three rankings"
+  },
+  "schema_version": 1,
+  "selected_pair_count": 370,
+  "shortlist_arms": [
+    2,
+    4,
+    8
+  ],
+  "source_commit": "6df8d836a464788ed818d8d408adecdbc3bea7a2",
+  "stage1_candidate_inclusion": true,
+  "stage1_expected_source_rank": 39,
+  "stage1_peak_rss_bytes": 1221976064,
+  "stage1_runtime_seconds": 67.055309938,
+  "stage2_peak_rss_bytes": 2541248512,
+  "stage2_runtime_seconds": 156.88572528499998,
+  "worker_packets_sha256": {
+    "tests/evidence/v2_m3_chunk_shortlist_ablation_v2/development.stage1.worker.json": "5cd4779c744f3fc681a90b1b33e8df1f0fd232a617449bab9727455608bc4a82",
+    "tests/evidence/v2_m3_chunk_shortlist_ablation_v2/development.stage2.worker.json": "d75e20c7f242470976e0ad755efa0b9a254a28199553a3dd3123ee85c092286c"
+  }
+}

@@ -60,6 +60,7 @@ test_full_corpus_rerank_oracle test_full_corpus_rerank_oracle_v2
 test_e5_structural_centroid_ablation test_e5_structural_centroid_recovery
 test_practical_two_stage_retrieval
 test_structural_representation_length_bias_ablation
+test_v2_m3_chunk_shortlist_ablation test_v2_m3_chunk_shortlist_ablation_v2
 """.split(),
     },
 }

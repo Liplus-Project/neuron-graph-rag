@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Liplus-Project/neuron-graph-rag/schemas/v2-m3-chunk-shortlist-ablation-v1.json",
+  "title": "v2-m3 chunk shortlist ablation v1 observed evidence",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "source_commit",
+    "expected_source_id",
+    "corpus_document_count",
+    "candidate_k",
+    "stage1_expected_source_rank",
+    "stage1_candidate_inclusion",
+    "shortlist_arms",
+    "cutoff",
+    "quality_primary_success",
+    "practical_success",
+    "combined_success",
+    "practical_target_seconds",
+    "stage1_runtime_seconds",
+    "stage2_runtime_seconds",
+    "pipeline_runtime_seconds",
+    "stage1_peak_rss_bytes",
+    "stage2_peak_rss_bytes",
+    "selected_pair_count",
+    "forward_batch_count",
+    "arms",
+    "full_chunk_baseline",
+    "runtime_measurement_boundary",
+    "environment",
+    "inputs_sha256",
+    "worker_packets_sha256",
+    "payload_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "protocol_id": {"const": "github-retrieval-parity-v5-v2-m3-chunk-shortlist-ablation-v1"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "corpus_document_count": {"const": 93},
+    "candidate_k": {"const": 50},
+    "stage1_expected_source_rank": {"type": "integer", "minimum": 1, "maximum": 93},
+    "stage1_candidate_inclusion": {"const": true},
+    "shortlist_arms": {"const": [2, 4, 8]},
+    "cutoff": {"const": 20},
+    "quality_primary_success": {"type": "boolean"},
+    "practical_success": {"type": "boolean"},
+    "combined_success": {"type": "boolean"},
+    "practical_target_seconds": {"const": 600.0},
+    "selected_pair_count": {"type": "integer", "minimum": 50, "maximum": 400},
+    "arms": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["m", "expected_source_rank", "expected_source_within_cutoff", "ranking_sha256", "top_distractor"]
+      }
+    },
+    "full_chunk_baseline": {
+      "type": "object",
+      "properties": {
+        "expected_source_rank": {"const": 15},
+        "pipeline_runtime_seconds": {"const": 717.949333017008}
+      }
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "network": {"const": "disabled"},
+        "fresh_runtime": {"const": true},
+        "holdout_bearing_input_file_count": {"const": 0},
+        "mixed_v5_query_or_gold_file_count": {"const": 0},
+        "shared_database_open_count": {"const": 0}
+      }
+    },
+    "payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

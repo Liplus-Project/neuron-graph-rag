@@ -1,0 +1,6 @@
+{
+  "error": "command failed with exit code 1: wslc run --rm --network none --cpus 4 --memory 6G --volume github-v2-m3-chunk-shortlist-ablation-v1-runtime:/opt/ngr-v2-m3-chunk-shortlist-v1 --env PYTHONDONTWRITEBYTECODE=1 --env PYTHONPATH=/opt/ngr-v2-m3-chunk-shortlist-v1/source/src --env HF_HUB_OFFLINE=1 --env TRANSFORMERS_OFFLINE=1 --env NO_PROXY=* --env OMP_NUM_THREADS=4 --env MKL_NUM_THREADS=4 --workdir /opt/ngr-v2-m3-chunk-shortlist-v1/source --entrypoint python ngr-e5-structural-centroid-ablation-v1:freeze -m neuron_graph_rag.v2_m3_chunk_shortlist_ablation stage1 --root /opt/ngr-v2-m3-chunk-shortlist-v1/source --cache /opt/ngr-v2-m3-chunk-shortlist-v1/e5-cache --runtime-root /opt/ngr-v2-m3-chunk-shortlist-v1/run",
+  "protocol_id": "github-retrieval-parity-v5-v2-m3-chunk-shortlist-ablation-v1",
+  "retry_count": 0,
+  "source_commit": "6b8b71cc6c7ad0dc61818e5384f6cde35cfd5dff"
+}
