@@ -16,10 +16,19 @@ uv pip install --python .cpu-shortlist-env/Scripts/python.exe -e . "numpy==2.4.6
 モデルは自動取得しない。既にあるsnapshotを共有してもよい。取得が必要な場合だけ、次の**明示操作**を一度実行し、表示された `e5` と `v2-m3` のsnapshot pathを控える。モデルのコピーを実験フォルダごとに作る必要はない。
 
 ```powershell
-.cpu-shortlist-env/Scripts/python.exe -c "from neuron_graph_rag.cpu_shortlist_retrieval import download_cpu_shortlist_models; print(download_cpu_shortlist_models('models/cpu-shortlist'))"
+.cpu-shortlist-env/Scripts/python.exe -c "import sys; from neuron_graph_rag.cpu_shortlist_retrieval import download_cpu_shortlist_models; print(download_cpu_shortlist_models(sys.argv[1]))" "$env:LOCALAPPDATA\NeuronGraphRAG\models"
 ```
 
-`LocalPinnedE5` は指定されたsnapshotの `onnx/model.onnx` と `tokenizer.json`、`LocalPinnedV2M3` は `model.safetensors`、`config.json`、`tokenizer.json` を読む。実測と同じモデル内容を確かめる場合は[固定manifest](../../tests/fixtures/cpu_shortlist_benchmark_v3.json)にある4ファイルのSHA-256と照合する。モデル取得も推論もAPIを明示的に呼ぶまで始まらない。
+`LocalPinnedE5` は指定されたsnapshotの `onnx/model.onnx` と `tokenizer.json`、`LocalPinnedV2M3` は `model.safetensors`、`config.json`、`tokenizer.json` を読む。**実測と同じモデルとして使う前に**、次の4ファイルのSHA-256を[固定manifest](../../tests/fixtures/cpu_shortlist_benchmark_v3.json)と照合する。API自体はローカルファイルの内容ハッシュを検査しないため、異なるsnapshotを指定しても自動検出されない。モデル取得も推論もAPIを明示的に呼ぶまで始まらない。
+
+```powershell
+$e5 = '表示されたE5のsnapshot path'
+$v2m3 = '表示されたv2-m3のsnapshot path'
+Get-FileHash -Algorithm SHA256 (Join-Path $e5 'onnx/model.onnx')
+Get-FileHash -Algorithm SHA256 (Join-Path $e5 'tokenizer.json')
+Get-FileHash -Algorithm SHA256 (Join-Path $v2m3 'model.safetensors')
+Get-FileHash -Algorithm SHA256 (Join-Path $v2m3 'tokenizer.json')
+```
 
 ## 検索する
 
