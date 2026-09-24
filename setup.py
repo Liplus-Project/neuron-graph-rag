@@ -14,6 +14,7 @@ RUNTIME_MODULES = frozenset(
         "cli",
         "config_provenance",
         "cpu_shortlist_retrieval",
+        "cuda_shortlist_retrieval",
         "d1_fixture",
         "database_home",
         "dynamics",
