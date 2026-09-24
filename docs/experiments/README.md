@@ -15,6 +15,7 @@
 - [CPU shortlist retrieval v2](cpu-shortlist-retrieval-v2.md)
 - [CPU shortlist retrieval v3](cpu-shortlist-retrieval-v3.md)
 - [RTX 3080 v2-m3 CPU/CUDA 探索的観測 v1](gpu-v2-m3-probe-v1.md)
+- [CUDA shortlist 公開 API の実機確認 v1](cuda-shortlist-retrieval-v1.md)
 
 - [anchored-bm25-graph-hybrid-experiment.md](../anchored-bm25-graph-hybrid-experiment.md) — 元パス維持
 - [anchored-fusion-calibration-experiment.md](../anchored-fusion-calibration-experiment.md) — 元パス維持

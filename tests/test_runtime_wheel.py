@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME_MODULES = {
     "__init__", "__main__", "benchmark", "cli", "config_provenance",
-    "cpu_shortlist_retrieval", "d1_fixture", "database_home", "dynamics",
+    "cpu_shortlist_retrieval", "cuda_shortlist_retrieval", "d1_fixture", "database_home", "dynamics",
     "engine", "evaluation", "evidence_feedback", "exclusion_intent",
     "feedback", "judgments", "models", "ontology", "precision_control",
     "retrieval", "sample", "semantic_retrieval", "storage",
@@ -37,6 +37,10 @@ class RuntimeWheelTest(unittest.TestCase):
             wheel, = wheels.glob("neuron_graph_rag-*.whl")
             with zipfile.ZipFile(wheel) as archive:
                 paths = set(archive.namelist())
+                metadata_path = next(path for path in paths if path.endswith(".dist-info/METADATA"))
+                metadata = archive.read(metadata_path).decode("utf-8")
+            self.assertNotIn("Requires-Dist: torch", metadata)
+            self.assertNotIn("Requires-Dist: transformers", metadata)
             modules = {
                 Path(path).stem for path in paths
                 if path.startswith("neuron_graph_rag/") and path.endswith(".py")
@@ -62,7 +66,11 @@ class RuntimeWheelTest(unittest.TestCase):
             location = run("-c", "import neuron_graph_rag; print(neuron_graph_rag.__file__)").strip()
             self.assertTrue(Path(location).is_relative_to(installed), location)
             run("-c", "from neuron_graph_rag.semantic_retrieval import attach_semantic_retriever; "
-                "from neuron_graph_rag.cpu_shortlist_retrieval import attach_cpu_shortlist_retriever")
+                "from neuron_graph_rag.cpu_shortlist_retrieval import attach_cpu_shortlist_retriever; "
+                "from neuron_graph_rag.cuda_shortlist_retrieval import attach_cuda_shortlist_retriever")
+            run("-c", "import sys; from neuron_graph_rag.cuda_shortlist_retrieval import LocalPinnedCudaV2M3; "
+                "assert 'torch' not in sys.modules and 'transformers' not in sys.modules; "
+                "assert LocalPinnedCudaV2M3('missing')._runtime is None")
             run("-c", "import importlib.util; assert importlib.util.find_spec("
                 "'neuron_graph_rag.real_task_shadow_v3') is None")
             demo = json.loads(run("-m", "neuron_graph_rag", "demo"))
