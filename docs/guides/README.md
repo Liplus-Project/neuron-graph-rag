@@ -5,6 +5,7 @@
 - [CPU多言語意味検索](semantic-retrieval.md)
 - [実験モデルの共有保管](experiment-model-storage.md)
 - [CPU shortlist検索](cpu-shortlist-retrieval.md)
+- [通常 wheel と checkout 実験コードの境界](runtime-wheel-boundary.md)
 
 - [github-rag-mcp-replacement-compatibility.md](../github-rag-mcp-replacement-compatibility.md) — 元パス維持
 - [historical-source-verification.md](../historical-source-verification.md) — 元パス維持
