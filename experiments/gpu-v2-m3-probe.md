@@ -23,10 +23,11 @@ snapshot_download("BAAI/bge-reranker-v2-m3", revision="953dc6f6f85a1b2dbfca4c34a
 
 ```powershell
 $probe = 'D:\Users\hal\Codex\workspace\experiments\ngr-gpu-probe-2026-09-24'
-py -3.11 -m venv "$probe\venv"
+& .\.venv\Scripts\python.exe -m venv "$probe\venv"
 & "$probe\venv\Scripts\python.exe" -m pip install 'torch==2.4.1+cu121' --index-url https://download.pytorch.org/whl/cu121
 & "$probe\venv\Scripts\python.exe" -m pip install 'transformers==4.44.2' 'tokenizers==0.19.1' 'huggingface_hub==0.36.2' 'onnxruntime==1.23.2' 'numpy==2.4.6' safetensors
-Copy-Item 'D:\Users\hal\Codex\workspace\experiments\cpu-shortlist-246-run-v3\cache.db' "$probe\cache-copy.db" # 既存 cache がある場合のみ
+$v3Cache = 'D:\Users\hal\Codex\workspace\experiments\cpu-shortlist-246-run-v3\cache.db'
+if (Test-Path -LiteralPath $v3Cache) { Copy-Item -LiteralPath $v3Cache -Destination "$probe\cache-copy.db" }
 $env:PYTHONPATH = 'src'
 $env:PYTHONDONTWRITEBYTECODE = '1'
 & "$probe\venv\Scripts\python.exe" experiments\gpu_v2_m3_probe.py `
