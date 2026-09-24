@@ -10,6 +10,7 @@ test_github_rag_compatibility test_judgments test_mcp_adapter
 test_outcome_feedback_deactivation test_outcome_feedback_deactivation_interleaving
 test_sibling_relation_feedback test_soft_start_feedback test_semantic_retrieval
 test_cpu_shortlist_retrieval test_cpu_shortlist_benchmark
+test_runtime_wheel
 """.split(),
     },
     "shared": {

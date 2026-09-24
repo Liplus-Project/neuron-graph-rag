@@ -4,6 +4,7 @@
 
 - [任意の多言語意味検索](semantic-retrieval.md)
 - [任意のCPU shortlist検索](cpu-shortlist-retrieval.md)
+- [通常 wheel の配布境界](runtime-wheel.md)
 
 - [production-exclusion-intent.md](production-exclusion-intent.md)
 - [requirements.md](../requirements.md) — 元パス維持
