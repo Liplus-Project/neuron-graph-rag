@@ -27,4 +27,4 @@
 
 2026-09-24 の `src` 内 `.py` source 比較では、変更前は107 module / 2,866,424 bytes、変更後の通常 wheel 対象は25 module / 408,817 bytes。82 module / 2,457,607 bytes（source bytes の約85.7%）を除外する。これは source file の合計であり、圧縮後 wheel サイズや実行時メモリ量ではない。
 
-`tests/test_runtime_wheel.py` は隔離ディレクトリで通常 wheel をビルド・インストールし、file list、wheel からの import、CLI `demo` / `eval` / `benchmark`、opt-in API を検証する。MCP SDK のある環境では、同じ wheel の MCP tool 一覧、検索、source-use feedback、outcome も検証する。checkout の既存 test suite は実験 module の legacy import path を継続して検証する。
+`tests/test_runtime_wheel.py` は隔離ディレクトリで通常 wheel をビルド・インストールし、file list、wheel からの import、CLI `demo` / `eval` / `benchmark`、opt-in API を検証する。MCP SDK のある環境では、同じ wheel の MCP tool 一覧、検索、source-use feedback、outcome、judgment の書込・検索も検証する。checkout の既存 test suite は実験 module の legacy import path を継続して検証する。

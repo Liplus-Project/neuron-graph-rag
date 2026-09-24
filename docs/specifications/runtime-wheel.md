@@ -15,7 +15,7 @@
 ## 受入検証
 
 - 隔離した通常 wheel の file list に実験専用 module がなく、公開 API と opt-in API、CLI の既存3コマンドが動く。
-- optional MCP の導入環境では、同じ wheel で tool 一覧、検索、source-use feedback、outcome が動く。
+- optional MCP の導入環境では、同じ wheel で tool 一覧、検索、source-use feedback、outcome、judgment の書込・検索が動く。
 - checkout の core / 実験 test と CI が通る。配布前後の module 数と source bytes の差を記録する。
 
 配布 module の理由、除外範囲、実測値、利用手順は[通常 wheel と checkout 実験コードの境界](../guides/runtime-wheel-boundary.md)を参照する。

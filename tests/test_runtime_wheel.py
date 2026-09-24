@@ -109,6 +109,18 @@ async def check():
               'idempotency_key': 'wheel-outcome', 'trace_id': trace_id,
               'node_ids': ['source'], 'outcome': 'confirmed', 'summary': 'confirmed'}))
         assert not result.is_error
+        result = await adapter.call_tool(None, types.CallToolRequestParams(
+            name='write_judgment', arguments={'contract_version': CONTRACT_VERSION,
+              'action': 'add', 'judgment_id': 'wheel-judgment',
+              'statement': 'Use the domain API', 'rationale': 'Wheel API smoke test',
+              'provenance': {'source': 'test'}}))
+        assert not result.is_error and result.structured_content['judgment']['revision'] == 1
+        result = await adapter.call_tool(None, types.CallToolRequestParams(
+            name='search_judgments', arguments={'contract_version': CONTRACT_VERSION,
+              'query': 'domain API'}))
+        assert not result.is_error
+        assert 'wheel-judgment' in {
+            item['judgment_id'] for item in result.structured_content['judgments']}
     finally:
         adapter.close()
 
