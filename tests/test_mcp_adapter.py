@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import importlib.util
+import asyncio
 import json
+import socket
 import subprocess
 import sys
 import tempfile
@@ -13,6 +15,8 @@ MCP_AVAILABLE = importlib.util.find_spec("mcp") is not None
 if MCP_AVAILABLE:
     from mcp import ClientSession, StdioServerParameters, types
     from mcp.client.stdio import stdio_client
+    from mcp.client.streamable_http import streamable_http_client
+    import httpx2
 
     from neuron_graph_rag_mcp.server import (
         CONFIRMED_OUTCOME_DESCRIPTION,
@@ -27,6 +31,7 @@ if MCP_AVAILABLE:
         FeedbackMCPAdapter,
         _build_parser,
     )
+    from neuron_graph_rag_mcp.http_server import create_http_app
 
 from neuron_graph_rag import NeuronGraphRAG
 from neuron_graph_rag.evidence_feedback import EngineConfig
@@ -975,6 +980,116 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
             parser.parse_args(["--database", "custom.sqlite"]).database,
             "custom.sqlite",
         )
+
+
+@unittest.skipUnless(MCP_AVAILABLE, "optional MCP SDK is not installed")
+class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
+    async def test_two_clients_share_one_database_and_reject_foreign_host_origin(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database = Path(directory) / "shared.sqlite"
+            with NeuronGraphRAG(database) as engine:
+                engine.add_document("decision", "cache invalidation decision")
+                engine.add_document("implementation", "implementation detail")
+                engine.add_edge("decision", "implementation", "implemented_by", weight=0.7)
+            with socket.socket() as listener:
+                listener.bind(("127.0.0.1", 0))
+                port = listener.getsockname()[1]
+            process = await asyncio.create_subprocess_exec(
+                sys.executable, "-m", "neuron_graph_rag_mcp.http_server",
+                "--database", str(database), "--port", str(port),
+                stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+            )
+            url = f"http://127.0.0.1:{port}/mcp/"
+            try:
+                await asyncio.wait_for(process.stdout.readline(), 15)
+                for attempt in range(40):
+                    try:
+                        reader, writer = await asyncio.open_connection("127.0.0.1", port)
+                        writer.close()
+                        await writer.wait_closed()
+                        break
+                    except OSError:
+                        await asyncio.sleep(0.1)
+                else:
+                    self.fail("HTTP server did not listen")
+                async with streamable_http_client(url) as (read1, write1):
+                    async with ClientSession(read1, write1) as client1:
+                        await client1.initialize()
+                        listed = await client1.list_tools()
+                        self.assertIn("search_cuda_shortlist", [tool.name for tool in listed.tools])
+                        search = await client1.call_tool("search", {"contract_version": CONTRACT_VERSION,
+                                                                     "query": "cache invalidation"})
+                        self.assertFalse(search.is_error)
+                        trace_id = search.structured_content["trace_id"]
+                        async with streamable_http_client(url) as (read2, write2):
+                            async with ClientSession(read2, write2) as client2:
+                                await client2.initialize()
+                                source_use = await client2.call_tool("record_source_use", {
+                                    "contract_version": CONTRACT_VERSION,
+                                    "idempotency_key": "http-two-clients",
+                                    "trace_id": trace_id,
+                                    "events": [
+                                        {"node_id": "decision", "stage": "selected"},
+                                        {"node_id": "decision", "stage": "validated"},
+                                        {"node_id": "decision", "stage": "used"},
+                                    ],
+                                })
+                                self.assertFalse(source_use.is_error)
+                                self.assertEqual(source_use.structured_content["newly_used_node_ids"], ["decision"])
+                                unconfigured = await client2.call_tool("search_cuda_shortlist", {
+                                    "contract_version": CONTRACT_VERSION, "query": "cache invalidation",
+                                })
+                                self.assertTrue(unconfigured.is_error)
+                                self.assertIn("cuda_unavailable", unconfigured.content[0].text)
+                async with httpx2.AsyncClient() as client:
+                    response = await client.post(url, headers={"Host": "evil.example", "Content-Type": "application/json"}, json={})
+                    self.assertEqual(response.status_code, 421)
+                    response = await client.post(url, headers={"Origin": "http://evil.example", "Content-Type": "application/json"}, json={})
+                    self.assertEqual(response.status_code, 403)
+            finally:
+                process.terminate()
+                await asyncio.wait_for(process.communicate(), 15)
+            with NeuronGraphRAG(database) as engine:
+                self.assertGreater(engine.store.count_feedback(), 0)
+
+    async def test_cuda_tool_uses_one_retriever_and_keeps_default_search(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database = Path(directory) / "gpu.sqlite"
+            with NeuronGraphRAG(database) as engine:
+                engine.add_document("decision", "cache invalidation decision")
+
+            class FakeRetriever:
+                calls = 0
+                closed = False
+
+                def search(self, query, nodes, **kwargs):
+                    from neuron_graph_rag.cpu_shortlist_retrieval import CpuShortlistHit, CpuShortlistTrace
+                    self.calls += 1
+                    return CpuShortlistTrace(query, (CpuShortlistHit(nodes[0], 1.0, 1, 0.9, ()),),
+                                             {"cuda_device": "fake", "model_loads": 1})
+
+                def close(self):
+                    self.closed = True
+
+            retriever = FakeRetriever()
+            app = create_http_app(database, cuda_retriever=retriever)
+            adapter = app.state.ngr_adapter
+            try:
+                params = types.CallToolRequestParams(name="search_cuda_shortlist", arguments={
+                    "contract_version": CONTRACT_VERSION, "query": "cache invalidation",
+                })
+                first, second = await asyncio.gather(adapter.call_tool(None, params), adapter.call_tool(None, params))
+                self.assertFalse(first.is_error)
+                self.assertEqual(first.structured_content, second.structured_content)
+                self.assertEqual(retriever.calls, 2)
+                default = await adapter.call_tool(None, types.CallToolRequestParams(name="search", arguments={
+                    "contract_version": CONTRACT_VERSION, "query": "cache invalidation",
+                }))
+                self.assertFalse(default.is_error)
+                self.assertIn("trace_id", default.structured_content)
+            finally:
+                adapter.close()
+            self.assertTrue(retriever.closed)
 
 
 if __name__ == "__main__":
