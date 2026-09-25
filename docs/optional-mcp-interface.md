@@ -7,7 +7,7 @@
 この契約は次を意味しない。
 
 - MCP SDK が NGR core の必須依存である
-- 認証方式や remote deployment が決定済みである
+- remote deployment の認証方式や公開 endpoint が決定済みである
 - delayed outcome が既定 policy で現在の edge weight を自動的に減算または巻き戻す
 
 `src/neuron_graph_rag_mcp/` の optional adapter がこの契約を local stdio と共有ローカル HTTP で実装する。`pip install -e '.[mcp]'` で追加依存を導入し、stdio は `neuron-graph-rag-mcp`、HTTP は `neuron-graph-rag-mcp --http` で起動する。NGR core は引き続き Python 標準ライブラリだけで動作する。

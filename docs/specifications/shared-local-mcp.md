@@ -1,6 +1,10 @@
 # 共有ローカル MCP サービス
 
-Issue #257 の実装契約。`neuron-graph-rag-mcp --http` は、同一 OS ユーザーの端末で一つの NGR プロセスを起動し、固定ループバック URL `http://127.0.0.1:8765/mcp/` で Streamable HTTP を公開する。ポートは明示変更できるが bind 先は `127.0.0.1` に固定する。MCP SDK の Host / Origin 検査はそのポートの `127.0.0.1` だけを許可する。
+Issue #257 の実装契約。`neuron-graph-rag-mcp --http` は、利用者端末で一つの NGR プロセスを起動し、固定ループバック URL `http://127.0.0.1:8765/mcp/` で Streamable HTTP を公開する。ポートは明示変更できるが bind 先は `127.0.0.1` に固定する。MCP SDK の Host / Origin 検査はそのポートの `127.0.0.1` だけを許可する。
+
+HTTP 起動には専用環境変数 `NGR_MCP_HTTP_BEARER_TOKEN` に 32 文字以上の非公開 base64url token を要求し、未設定・不正な値なら DB を開く前に起動を拒否する。すべての `/mcp/` HTTP 要求は MCP session manager より前に `Authorization: Bearer <token>` の一致を検査し、欠落・不一致・重複した認証 header は `401` を返す。token は URL、ログ、起動メッセージに出さない。認証済み要求にも Host / Origin 制限を適用する。stdio 入口に token 要件は追加しない。
+
+同一 OS ユーザーのクライアントが秘密を共有する運用を想定するが、HTTP は OS アカウント自体を照合しない。端末内の別ユーザーやプロセスでも token を入手すれば書き込み tool を呼べるため、token の配布・保管・更新は利用者が管理する。ループバック bind だけを同一ユーザーの認証とみなさない。
 
 HTTP 接続ごとに MCP session を作るが、server、`FeedbackMCPAdapter`、NGR engine、SQLite connection はプロセス内で一つを共有する。同期的な DB と CUDA 操作は一つのイベントループ上で逐次実行する。プロセスを止めると session manager を終了し、CUDA retriever と DB を閉じる。複数 worker・別スレッドで同一 connection を共有する運用はサポートしない。
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import asyncio
 import json
+import os
 import socket
 import subprocess
 import sys
@@ -31,7 +32,7 @@ if MCP_AVAILABLE:
         FeedbackMCPAdapter,
         _build_parser,
     )
-    from neuron_graph_rag_mcp.http_server import create_http_app
+    from neuron_graph_rag_mcp.http_server import TOKEN_ENV, create_http_app
 
 from neuron_graph_rag import NeuronGraphRAG
 from neuron_graph_rag.evidence_feedback import EngineConfig
@@ -984,6 +985,8 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
 
 @unittest.skipUnless(MCP_AVAILABLE, "optional MCP SDK is not installed")
 class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
+    TOKEN = "shared_local_mcp_test_token_0123456789abcdef"
+
     async def test_two_clients_share_one_database_and_reject_foreign_host_origin(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             database = Path(directory) / "shared.sqlite"
@@ -998,6 +1001,7 @@ class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
                 sys.executable, "-m", "neuron_graph_rag_mcp", "--http",
                 "--database", str(database), "--port", str(port),
                 stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+                env={**os.environ, TOKEN_ENV: self.TOKEN},
             )
             url = f"http://127.0.0.1:{port}/mcp/"
             try:
@@ -1012,45 +1016,80 @@ class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
                         await asyncio.sleep(0.1)
                 else:
                     self.fail("HTTP server did not listen")
-                async with streamable_http_client(url) as (read1, write1):
-                    async with ClientSession(read1, write1) as client1:
-                        await client1.initialize()
-                        listed = await client1.list_tools()
-                        self.assertIn("search_cuda_shortlist", [tool.name for tool in listed.tools])
-                        search = await client1.call_tool("search", {"contract_version": CONTRACT_VERSION,
-                                                                     "query": "cache invalidation"})
-                        self.assertFalse(search.is_error)
-                        trace_id = search.structured_content["trace_id"]
-                        async with streamable_http_client(url) as (read2, write2):
-                            async with ClientSession(read2, write2) as client2:
-                                await client2.initialize()
-                                source_use = await client2.call_tool("record_source_use", {
-                                    "contract_version": CONTRACT_VERSION,
-                                    "idempotency_key": "http-two-clients",
-                                    "trace_id": trace_id,
-                                    "events": [
-                                        {"node_id": "decision", "stage": "selected"},
-                                        {"node_id": "decision", "stage": "validated"},
-                                        {"node_id": "decision", "stage": "used"},
-                                    ],
-                                })
-                                self.assertFalse(source_use.is_error)
-                                self.assertEqual(source_use.structured_content["newly_used_node_ids"], ["decision"])
-                                unconfigured = await client2.call_tool("search_cuda_shortlist", {
-                                    "contract_version": CONTRACT_VERSION, "query": "cache invalidation",
-                                })
-                                self.assertTrue(unconfigured.is_error)
-                                self.assertIn("cuda_unavailable", unconfigured.content[0].text)
+                async with httpx2.AsyncClient(headers={"Authorization": f"Bearer {self.TOKEN}"}) as http1:
+                    async with streamable_http_client(url, http_client=http1) as (read1, write1):
+                        await self._exercise_clients(url, read1, write1)
                 async with httpx2.AsyncClient() as client:
-                    response = await client.post(url, headers={"Host": "evil.example", "Content-Type": "application/json"}, json={})
+                    response = await client.post(url, json={})
+                    self.assertEqual(response.status_code, 401)
+                    self.assertEqual(response.headers.get("WWW-Authenticate"), "Bearer")
+                    response = await client.post(url, headers={"Authorization": "Bearer wrong"}, json={})
+                    self.assertEqual(response.status_code, 401)
+                    response = await client.post(url, headers=[
+                        ("Authorization", f"Bearer {self.TOKEN}"),
+                        ("Authorization", "Bearer wrong"),
+                    ], json={})
+                    self.assertEqual(response.status_code, 401)
+                    authorized = {"Authorization": f"Bearer {self.TOKEN}"}
+                    response = await client.post(url, headers={**authorized, "Host": "evil.example"}, json={})
                     self.assertEqual(response.status_code, 421)
-                    response = await client.post(url, headers={"Origin": "http://evil.example", "Content-Type": "application/json"}, json={})
+                    response = await client.post(url, headers={**authorized, "Origin": "http://evil.example"}, json={})
                     self.assertEqual(response.status_code, 403)
             finally:
                 process.terminate()
                 await asyncio.wait_for(process.communicate(), 15)
             with NeuronGraphRAG(database) as engine:
                 self.assertGreater(engine.store.count_feedback(), 0)
+
+    async def _exercise_clients(self, url, read1, write1) -> None:
+        async with ClientSession(read1, write1) as client1:
+            await client1.initialize()
+            listed = await client1.list_tools()
+            self.assertIn("search_cuda_shortlist", [tool.name for tool in listed.tools])
+            search = await client1.call_tool("search", {
+                "contract_version": CONTRACT_VERSION, "query": "cache invalidation",
+            })
+            self.assertFalse(search.is_error)
+            trace_id = search.structured_content["trace_id"]
+            async with httpx2.AsyncClient(headers={"Authorization": f"Bearer {self.TOKEN}"}) as http2:
+                async with streamable_http_client(url, http_client=http2) as (read2, write2):
+                    async with ClientSession(read2, write2) as client2:
+                        await client2.initialize()
+                        source_use = await client2.call_tool("record_source_use", {
+                            "contract_version": CONTRACT_VERSION,
+                            "idempotency_key": "http-two-clients",
+                            "trace_id": trace_id,
+                            "events": [
+                                {"node_id": "decision", "stage": "selected"},
+                                {"node_id": "decision", "stage": "validated"},
+                                {"node_id": "decision", "stage": "used"},
+                            ],
+                        })
+                        self.assertFalse(source_use.is_error)
+                        self.assertEqual(source_use.structured_content["newly_used_node_ids"], ["decision"])
+                        unconfigured = await client2.call_tool("search_cuda_shortlist", {
+                            "contract_version": CONTRACT_VERSION, "query": "cache invalidation",
+                        })
+                        self.assertTrue(unconfigured.is_error)
+                        self.assertIn("cuda_unavailable", unconfigured.content[0].text)
+
+    def test_http_requires_token_before_opening_db_and_stdio_stays_available(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database = Path(directory) / "missing-token.sqlite"
+            environment = {key: value for key, value in os.environ.items() if key != TOKEN_ENV}
+            result = subprocess.run(
+                [sys.executable, "-m", "neuron_graph_rag_mcp", "--http", "--database", str(database)],
+                env=environment, capture_output=True, text=True, timeout=10, check=False,
+            )
+            self.assertEqual(result.returncode, 2)
+            self.assertIn(TOKEN_ENV, result.stderr)
+            self.assertFalse(database.exists())
+            stdio = subprocess.run(
+                [sys.executable, "-m", "neuron_graph_rag_mcp", "--help"],
+                env=environment, capture_output=True, text=True, timeout=10, check=False,
+            )
+            self.assertEqual(stdio.returncode, 0)
+            self.assertIn("--database", stdio.stdout)
 
     async def test_cuda_tool_uses_one_retriever_and_keeps_default_search(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -1072,7 +1111,7 @@ class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
                     self.closed = True
 
             retriever = FakeRetriever()
-            app = create_http_app(database, cuda_retriever=retriever)
+            app = create_http_app(database, cuda_retriever=retriever, bearer_token=self.TOKEN)
             adapter = app.state.ngr_adapter
             try:
                 params = types.CallToolRequestParams(name="search_cuda_shortlist", arguments={

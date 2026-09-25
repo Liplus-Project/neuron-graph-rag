@@ -70,9 +70,9 @@
 <section id="desktop"><h2><span class="num">04</span>共有ローカル MCP を先に使う</h2>
 <div class="two">
 <article class="box"><span class="badge future">後続案</span><h3>Windows アプリで見せるもの</h3><ul><li>NGRの起動アイコン</li><li>初回セットアップと設定画面</li><li>トレイの状態表示・設定・終了</li><li>同じ窓口から更新・バックアップを管理</li></ul><p class="small">この画面とトレイは未実装。先にコマンドから起動・停止する共有 MCP を提供する。</p></article>
-<article class="box"><span class="badge">先行実装</span><h3>共有ローカル MCP</h3><ul><li><code>neuron-graph-rag-mcp --http</code> で起動する単一 NGR プロセスと共有 DB</li><li>127.0.0.1 の固定 MCP URL で複数 AI を受け付ける</li><li>明示設定した CUDA 検索は同じモデルを再利用する</li><li>コマンドを停止すると DB とモデル資源を閉じる</li></ul><p class="small">自動起動、二重起動防止、ログイン時起動、画面とトレイは後続の設計対象。</p></article>
+<article class="box"><span class="badge">先行実装</span><h3>共有ローカル MCP</h3><ul><li><code>neuron-graph-rag-mcp --http</code> で起動する単一 NGR プロセスと共有 DB</li><li>127.0.0.1 の固定 MCP URL と必須 bearer token で複数 AI を受け付ける</li><li>明示設定した CUDA 検索は同じモデルを再利用する</li><li>コマンドを停止すると DB とモデル資源を閉じる</li></ul><p class="small">token を持つ端末内プロセスが接続できる。OS ユーザーの身元は検査しない。自動起動、画面とトレイは後続の設計対象。</p></article>
 </div>
-<p class="note">現在実装した範囲は同じ OS ユーザーのローカル端末。ランチャーとコアの将来の分離、画面技術、ブラウザ UI は後続判断とする。</p>
+<p class="note">現在実装した範囲は端末内の共有ローカル MCP。接続には秘密 token が必要で、OS ユーザーの身元確認は行わない。ランチャーとコアの将来の分離、画面技術、ブラウザ UI は後続判断とする。</p>
 </section>
 
 <section id="install"><h2><span class="num">05</span>後続案：Python を配布パッケージにする</h2>
@@ -93,7 +93,7 @@
 <tr><td><span class="badge">基本方向</span></td><td>クラウドのgithub-rag方式を維持。共通知識・判断履歴は共有SQLite。個人／作業メモリは別領域。利用窓口を統合する。</td></tr>
 <tr><td><span class="badge proposal">設計対象</span></td><td>ノードと関係の定義、活性化・抑制・減衰、反証の扱い、利用結果の反映、取得予算と停止条件。</td></tr>
 <tr><td><span class="badge proposal">設計対象</span></td><td>クラウド接続契約、参照IDと版、追加MCP操作体系、権限と外部送信、ローカル意味検索。ローカルHTTPのDB操作は単一イベントループで逐次実行する。</td></tr>
-<tr><td><span class="badge">一部実装済み</span></td><td>ローカル MCP は 127.0.0.1 の Streamable HTTP と単一 DB 操作列。CUDA は明示選択。GUI技術、自動起動、remote通信、インストーラー、署名、更新、DB移行と復旧は未決定。</td></tr>
+<tr><td><span class="badge">一部実装済み</span></td><td>ローカル MCP は 127.0.0.1 の Streamable HTTP、必須 bearer token と単一 DB 操作列。CUDA は明示選択。GUI技術、自動起動、remote通信、インストーラー、署名、更新、DB移行と復旧は未決定。</td></tr>
 <tr><td><span class="badge future">将来候補</span></td><td>NAS／Linuxサーバー上のNGRサービス、個人メモリ連携。一般利用者にサーバー所有を要求しない。</td></tr>
 <tr><td><span class="badge rejected">今回不採用</span></td><td>クラウドの全文書・全ベクトルをローカルへ差分同期する構成。現時点では同期実装の負担が大きい。</td></tr>
 <tr><td><span class="badge rejected">初期対象外</span></td><td>全面的なTypeScript移植、Windowsサービス必須化、ブラウザ専用UI、ローカル大型モデルの必須化。</td></tr>
