@@ -2,7 +2,7 @@
 
 ## 1. Status and purpose
 
-この文書は、MCP 対応 AI が Neuron Graph RAG（NGR）を検索し、実際に利用した source と後から判明した結果を返すための、既存 tool 契約を定義する。local stdio に加え、共有ローカル Streamable HTTP 入口も実装済みである。HTTP の追加 tool と運用境界は[共有ローカル MCP 仕様](specifications/shared-local-mcp.md)を参照する。
+この文書は、MCP 対応 AI が Neuron Graph RAG（NGR）を検索し、実際に利用した source と後から判明した結果を返すための、既存 tool 契約を定義する。直接 local stdio に加え、共有ローカル Streamable HTTP と接続時起動 stdio の入口も実装済みである。追加 tool と運用境界は[共有ローカル MCP 仕様](specifications/shared-local-mcp.md)を参照する。
 
 この契約は次を意味しない。
 

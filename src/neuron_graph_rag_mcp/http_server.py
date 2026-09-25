@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import asyncio
 import os
 import secrets
 from collections.abc import AsyncIterator
@@ -14,8 +15,8 @@ import uvicorn
 from mcp.server.streamable_http_manager import StreamableHTTPSessionManager
 from mcp.server.transport_security import TransportSecuritySettings
 from starlette.applications import Starlette
-from starlette.responses import Response
-from starlette.routing import Mount
+from starlette.responses import JSONResponse, Response
+from starlette.routing import Mount, Route
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 from neuron_graph_rag.cpu_shortlist_retrieval import LocalPinnedE5
@@ -54,7 +55,8 @@ class BearerTokenGate:
 
 
 def create_http_app(database: str | Path, *, port: int = DEFAULT_PORT,
-                    cuda_retriever: Any = None, bearer_token: str) -> Starlette:
+                    cuda_retriever: Any = None, bearer_token: str,
+                    service_config: dict[str, Any] | None = None) -> Starlette:
     """Create one process-owned adapter and one session manager for all clients."""
     if not 1 <= port <= 65535:
         raise ValueError("port must be from 1 through 65535")
@@ -78,9 +80,38 @@ def create_http_app(database: str | Path, *, port: int = DEFAULT_PORT,
         finally:
             adapter.close()
 
-    app = Starlette(routes=[Mount("/mcp", app=BearerTokenGate(manager.handle_request, bearer_token))],
+    def authorized(request: Any) -> bool:
+        credentials = request.headers.getlist("authorization")
+        expected = f"Bearer {bearer_token}"
+        return len(credentials) == 1 and secrets.compare_digest(credentials[0], expected)
+
+    async def identity(request: Any) -> Response:
+        if not authorized(request):
+            return Response(status_code=401, headers={"WWW-Authenticate": "Bearer"})
+        return JSONResponse({
+            "service": "neuron-graph-rag-shared-local-mcp/v1",
+            "database": str(Path(database).expanduser().resolve()),
+            "config": service_config or {},
+            "pid": os.getpid(),
+        })
+
+    async def stop(request: Any) -> Response:
+        if not authorized(request):
+            return Response(status_code=401, headers={"WWW-Authenticate": "Bearer"})
+        shutdown = request.app.state.shutdown
+        if shutdown is None:
+            return Response(status_code=503)
+        asyncio.get_running_loop().call_later(0.2, shutdown)
+        return JSONResponse({"stopping": True})
+
+    app = Starlette(routes=[
+        Route("/_ngr/identity", identity, methods=["GET"]),
+        Route("/_ngr/stop", stop, methods=["POST"]),
+        Mount("/mcp", app=BearerTokenGate(manager.handle_request, bearer_token)),
+    ],
                     lifespan=lifespan)
     app.state.ngr_adapter = adapter
+    app.state.shutdown = None
     return app
 
 
@@ -121,10 +152,22 @@ def main(argv: list[str] | None = None) -> None:
         database = prepare_database(resolve_database(args.database, environ=os.environ))
     except ValueError as error:
         parser.error(str(error))
+    service_config = {}
+    if all(paths):
+        service_config = {
+            "cuda_cache": str(Path(args.cuda_cache).expanduser().resolve()),
+            "cuda_e5_snapshot": str(Path(args.cuda_e5_snapshot).expanduser().resolve()),
+            "cuda_v2_m3_snapshot": str(Path(args.cuda_v2_m3_snapshot).expanduser().resolve()),
+            "cuda_device": args.cuda_device,
+        }
     app = create_http_app(database, port=args.port, cuda_retriever=retriever,
-                          bearer_token=bearer_token)
+                          bearer_token=bearer_token, service_config=service_config)
     print(f"NGR MCP: http://127.0.0.1:{args.port}/mcp/", flush=True)
-    uvicorn.run(app, host="127.0.0.1", port=args.port, workers=1)
+    server = uvicorn.Server(uvicorn.Config(
+        app, host="127.0.0.1", port=args.port, workers=1, timeout_graceful_shutdown=5,
+    ))
+    app.state.shutdown = lambda: setattr(server, "should_exit", True)
+    server.run()
 
 
 if __name__ == "__main__":

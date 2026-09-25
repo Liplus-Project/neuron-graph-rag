@@ -1536,6 +1536,16 @@ def _build_parser() -> argparse.ArgumentParser:
 
 
 def main() -> None:
+    if "--stop" in sys.argv[1:]:
+        from .shared_proxy import stop_main
+
+        stop_main([argument for argument in sys.argv[1:] if argument != "--stop"])
+        return
+    if "--shared" in sys.argv[1:]:
+        from .shared_proxy import main as shared_main
+
+        shared_main([argument for argument in sys.argv[1:] if argument != "--shared"])
+        return
     if "--http" in sys.argv[1:]:
         from .http_server import main as http_main
 

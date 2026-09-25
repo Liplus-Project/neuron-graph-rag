@@ -1,6 +1,36 @@
-# 共有ローカル MCP を起動する
+# 接続時に共有ローカル MCP を起動する
 
-## 準備と起動
+## Codex と Claude Code に登録する
+
+Python 環境に `pip install '.[mcp]'` を入れる。以下は PowerShell の例。token は同じ Windows ユーザーのユーザー環境変数に保存し、コマンド引数や MCP 設定本文には書かない。token 値は画面に表示しない。
+
+```powershell
+$token = (& python -c 'import secrets; print(secrets.token_urlsafe(32))').Trim()
+[Environment]::SetEnvironmentVariable('NGR_MCP_HTTP_BEARER_TOKEN', $token, 'User')
+$env:NGR_MCP_HTTP_BEARER_TOKEN = $token
+Remove-Variable token
+```
+
+次の `C:\path\to\python.exe` は、NGR の MCP extra を導入した Python の絶対 path に置き換える。両クライアントに同じ Python、DB、port、token を使用する。既存の MCP 設定は自動で変更しない。登録済みの同名サーバーがある場合は、設定を確認してから利用者が更新する。
+
+```powershell
+codex mcp add ngr-shared -- C:\path\to\python.exe -m neuron_graph_rag_mcp --shared
+claude mcp add --transport stdio ngr-shared -- C:\path\to\python.exe -m neuron_graph_rag_mcp --shared
+```
+
+登録コマンドの構文は [Codex の MCP 設定](https://developers.openai.com/codex/mcp/) と [Claude Code の MCP 設定](https://code.claude.com/docs/en/mcp) に従う。
+
+ユーザー環境変数を設定する前から Codex App または Claude Code が起動していた場合は、そのアプリを再起動してから接続する。最初の stdio 接続が `127.0.0.1:8765` に共有 HTTP サービスを起動し、後続の接続は同じ NGR 本体、DB、CUDA retriever を使う。接続元のクライアントが終了してもサービスは稼働し続ける。ログアウト／OS 終了、または以下の明示停止まで稼働する。
+
+```powershell
+C:\path\to\python.exe -m neuron_graph_rag_mcp --stop
+```
+
+停止中に接続していたクライアントは再接続が必要になる。停止後の次の MCP 接続は新しい共有サービスを起動する。別 DB を `--database` で登録した場合、停止時も同じ `--database` を指定する。別 port を `--port` で登録した場合も同じ値を指定する。token の変更時はサービスを停止し、両クライアントを再起動する。起動や停止に失敗した場合の診断ログは `~/.ngrdb/shared-local-mcp-<port>.log` にある。token はログに書かない。
+
+CUDA を使う場合は、両クライアントの `--shared` の後に同じ `--cuda-cache`、`--cuda-e5-snapshot`、`--cuda-v2-m3-snapshot` を指定する。モデル path の準備と tool の使い方は下記を参照。CUDA は明示指定した時だけ共有サービス内で読み込む。設定を変える場合は先に共有サービスを停止する。
+
+## 手動 HTTP サービスと従来 stdio
 
 Python 環境に `pip install '.[mcp]'` を入れる。HTTP 用の秘密 token を生成して同じ OS ユーザーの環境変数に保存し、サービスを起動する。以下は PowerShell の例で、token 値を画面に表示しない。
 
