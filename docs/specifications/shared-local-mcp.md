@@ -1,6 +1,6 @@
 # 共有ローカル MCP サービス
 
-Issue #257 の実装契約。`neuron-graph-rag-mcp-http` は、同一 OS ユーザーの端末で一つの NGR プロセスを起動し、固定ループバック URL `http://127.0.0.1:8765/mcp/` で Streamable HTTP を公開する。ポートは明示変更できるが bind 先は `127.0.0.1` に固定する。MCP SDK の Host / Origin 検査はそのポートの `127.0.0.1` だけを許可する。
+Issue #257 の実装契約。`neuron-graph-rag-mcp --http` は、同一 OS ユーザーの端末で一つの NGR プロセスを起動し、固定ループバック URL `http://127.0.0.1:8765/mcp/` で Streamable HTTP を公開する。ポートは明示変更できるが bind 先は `127.0.0.1` に固定する。MCP SDK の Host / Origin 検査はそのポートの `127.0.0.1` だけを許可する。
 
 HTTP 接続ごとに MCP session を作るが、server、`FeedbackMCPAdapter`、NGR engine、SQLite connection はプロセス内で一つを共有する。同期的な DB と CUDA 操作は一つのイベントループ上で逐次実行する。プロセスを止めると session manager を終了し、CUDA retriever と DB を閉じる。複数 worker・別スレッドで同一 connection を共有する運用はサポートしない。
 

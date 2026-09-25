@@ -5,7 +5,7 @@
 Python 環境に `pip install '.[mcp]'` を入れ、端末を一つ開いて次を実行する。
 
 ```powershell
-neuron-graph-rag-mcp-http --database "$HOME/.ngrdb/knowledge.db"
+neuron-graph-rag-mcp --http --database "$HOME/.ngrdb/knowledge.db"
 ```
 
 既定の接続先は `http://127.0.0.1:8765/mcp/`。別ポートを使う場合は `--port 8766` を指定し、クライアントの URL も一致させる。端末で Ctrl+C を押して停止する。DB path を省略したときは `NGR_DATABASE`、次に `~/.ngrdb/knowledge.db` を使う。二つの AI クライアントは同じ URL に個別接続する。例:
@@ -21,7 +21,7 @@ codex mcp add ngr-local --url http://127.0.0.1:8765/mcp/
 [CUDA API ガイド](cuda-shortlist-retrieval.md)に従い、固定 revision の E5 ONNX と v2-m3 モデルをローカルに配置する。CUDA 対応 PyTorch、`numpy`、`onnxruntime`、`tokenizers`、`transformers` は別途導入する。通常 wheel / MCP extra は CUDA やモデル weight を同梱しない。
 
 ```powershell
-neuron-graph-rag-mcp-http `
+neuron-graph-rag-mcp --http `
   --database "$HOME/.ngrdb/knowledge.db" `
   --cuda-cache "$HOME/.ngrdb/shortlist.db" `
   --cuda-e5-snapshot "C:\models\e5\614241f622f53c4eeff9890bdc4f31cfecc418b3" `

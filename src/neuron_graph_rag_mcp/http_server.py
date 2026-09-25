@@ -53,7 +53,7 @@ def create_http_app(database: str | Path, *, port: int = DEFAULT_PORT,
     return app
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Run the shared local NGR MCP service")
     parser.add_argument("--database", help="SQLite path (default: NGR_DATABASE or ~/.ngrdb/knowledge.db)")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
@@ -61,7 +61,7 @@ def main() -> None:
     parser.add_argument("--cuda-e5-snapshot", help="Pinned local E5 ONNX snapshot directory")
     parser.add_argument("--cuda-v2-m3-snapshot", help="Pinned local v2-m3 snapshot directory")
     parser.add_argument("--cuda-device", type=int, default=0)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if not 1 <= args.port <= 65535:
         parser.error("--port must be from 1 through 65535")
     if args.cuda_device < 0:

@@ -50,7 +50,7 @@ class RuntimeWheelTest(unittest.TestCase):
             self.assertEqual(modules, RUNTIME_MODULES)
             self.assertTrue({"neuron_graph_rag_mcp/__init__.py", "neuron_graph_rag_mcp/server.py",
                              "neuron_graph_rag_mcp/__main__.py", "neuron_graph_rag_mcp/http_server.py"} <= paths)
-            self.assertIn("neuron-graph-rag-mcp-http", entry_points)
+            self.assertIn("neuron-graph-rag-mcp = neuron_graph_rag_mcp.server:main", entry_points)
             self.assertNotIn("neuron_graph_rag/cross_encoder_precision_v8_evaluation.py", paths)
             self.assertNotIn("neuron_graph_rag/real_task_shadow_v3.py", paths)
             subprocess.run(
@@ -90,6 +90,7 @@ class RuntimeWheelTest(unittest.TestCase):
                 self._check_optional_mcp(run)
                 run("-c", "from neuron_graph_rag_mcp.http_server import create_http_app; "
                     "assert callable(create_http_app)")
+                self.assertIn("--cuda-cache", run("-m", "neuron_graph_rag_mcp", "--http", "--help"))
 
     def _check_optional_mcp(self, run) -> None:
         script = """

@@ -995,7 +995,7 @@ class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
                 listener.bind(("127.0.0.1", 0))
                 port = listener.getsockname()[1]
             process = await asyncio.create_subprocess_exec(
-                sys.executable, "-m", "neuron_graph_rag_mcp.http_server",
+                sys.executable, "-m", "neuron_graph_rag_mcp", "--http",
                 "--database", str(database), "--port", str(port),
                 stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
             )

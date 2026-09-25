@@ -7,6 +7,7 @@ import math
 import os
 import re
 import sqlite3
+import sys
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any
@@ -1535,6 +1536,11 @@ def _build_parser() -> argparse.ArgumentParser:
 
 
 def main() -> None:
+    if "--http" in sys.argv[1:]:
+        from .http_server import main as http_main
+
+        http_main([argument for argument in sys.argv[1:] if argument != "--http"])
+        return
     parser = _build_parser()
     arguments = parser.parse_args()
     if (
