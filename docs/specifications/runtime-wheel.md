@@ -6,7 +6,7 @@
 
 ## 要件
 
-1. 通常 wheel は公開 package API、CLI の `demo` / `eval` / `benchmark`、optional MCP adapter、利用ガイドで直接案内する opt-in 検索 API と、その実行に必要な module を含む。
+1. 通常 wheel は公開 package API、CLI の `demo` / `eval` / `benchmark`、optional MCP adapter と共有ローカル HTTP コマンド、利用ガイドで直接案内する opt-in 検索 API と、その実行に必要な module を含む。MCP SDK 自体は `mcp` extra に限る。
 2. 実験専用 module は通常 wheel から除外する。checkout の legacy import path、frozen manifest、fixture、観測証拠、one-shot runner は維持する。
 3. 配布対象は module 名の印象ではなく、公開 import root、CLI、MCP、文書化された API、動的 import の監査で決める。新しい runtime module の追加は配布リストと隔離 wheel 検証を同じ変更で更新する。
 4. 新規実験専用コードは repository 直下の `experiments/` に置く。既存の凍結済み実験 source file は移動しない。

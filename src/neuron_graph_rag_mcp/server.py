@@ -7,6 +7,8 @@ import math
 import os
 import re
 import sqlite3
+import sys
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -260,6 +262,22 @@ RELATION_TYPE_REGISTRY_WRITE_INPUT = _object(
         "provenance", "expected_revision",
     ],
 )
+
+CUDA_CACHE_INPUT = _object({"contract_version": {"type": "string", "const": CONTRACT_VERSION}}, ["contract_version"])
+CUDA_SEARCH_INPUT = _object({
+    "contract_version": {"type": "string", "const": CONTRACT_VERSION},
+    "query": {"type": "string", "minLength": 1, "maxLength": 8192},
+    "limit": {"type": "integer", "minimum": 1, "maximum": 100, "default": 5},
+    "timeout_seconds": {"type": "number", "exclusiveMinimum": 0, "default": 60},
+}, ["contract_version", "query"])
+CUDA_CACHE_OUTPUT = _object({
+    "contract_version": {"type": "string"}, "receipt": {"type": "object"},
+}, ["contract_version", "receipt"])
+CUDA_SEARCH_OUTPUT = _object({
+    "contract_version": {"type": "string"}, "query": {"type": "string"},
+    "hits": {"type": "array", "items": {"type": "object"}},
+    "diagnostics": {"type": "object"},
+}, ["contract_version", "query", "hits", "diagnostics"])
 
 _STEP_OUTPUT = _object(
     {
@@ -637,6 +655,21 @@ def _annotations(
     )
 
 
+CUDA_TOOLS = (
+    types.Tool(name="update_cuda_shortlist_cache", description=(
+        "Explicitly synchronize the local E5 shortlist cache with the current NGR corpus. "
+        "Requires locally configured pinned models and CUDA; never downloads models."
+    ), input_schema=CUDA_CACHE_INPUT, output_schema=CUDA_CACHE_OUTPUT,
+        annotations=_annotations(idempotent=True)),
+    types.Tool(name="search_cuda_shortlist", description=(
+        "Explicitly search the current NGR corpus with the pinned E5 shortlist and CUDA "
+        "v2-m3 reranker. This does not create an NGR feedback trace or reinforce graph "
+        "weights. Use search for the normal feedback workflow."
+    ), input_schema=CUDA_SEARCH_INPUT, output_schema=CUDA_SEARCH_OUTPUT,
+        annotations=_annotations(idempotent=True, read_only=True)),
+)
+
+
 TOOLS = (
     types.Tool(
         name="search",
@@ -759,10 +792,12 @@ def _tools(
 
 class FeedbackMCPAdapter:
     def __init__(
-        self, database: str | Path, *, config: EngineConfig | None = None
+        self, database: str | Path, *, config: EngineConfig | None = None,
+        cuda_retriever: Any = None, expose_cuda: bool = False,
     ) -> None:
         self.engine = NeuronGraphRAG(database, config=config)
         self.feedback = FeedbackLedger(self.engine)
+        self.cuda_retriever = cuda_retriever
         self.tools = _tools(
             confirmed_outcome_reinforcement=(
                 self.engine.config.confirmed_outcome_reinforcement
@@ -773,10 +808,14 @@ class FeedbackMCPAdapter:
             outcome_driven_feedback_deactivation=(
                 self.engine.config.outcome_driven_feedback_deactivation
             ),
-        )
+        ) + (CUDA_TOOLS if expose_cuda else ())
 
     def close(self) -> None:
-        self.engine.close()
+        try:
+            if self.cuda_retriever is not None:
+                self.cuda_retriever.close()
+        finally:
+            self.engine.close()
 
     async def list_tools(self, *_: object) -> types.ListToolsResult:
         return types.ListToolsResult(tools=list(self.tools), result_type="complete")
@@ -787,7 +826,11 @@ class FeedbackMCPAdapter:
         arguments = params.arguments or {}
         try:
             self._require_object(arguments)
-            if params.name == "search":
+            if params.name == "update_cuda_shortlist_cache":
+                output = self._update_cuda_cache(arguments)
+            elif params.name == "search_cuda_shortlist":
+                output = self._search_cuda(arguments)
+            elif params.name == "search":
                 output = self._search(arguments)
             elif params.name == "record_source_use":
                 output = self._record_source_use(arguments)
@@ -812,8 +855,46 @@ class FeedbackMCPAdapter:
             return self._error("invalid_argument", self._safe_validation_message(error), False)
         except sqlite3.Error:
             return self._error("core_unavailable", "local NGR database is unavailable", True)
+        except (ImportError, FileNotFoundError, RuntimeError) as error:
+            if params.name in {"update_cuda_shortlist_cache", "search_cuda_shortlist"}:
+                return self._error("cuda_unavailable", self._safe_validation_message(error), False)
+            return self._error("internal_error", "tool execution failed", False)
         except Exception:  # noqa: BLE001 - the MCP boundary must not leak internals
             return self._error("internal_error", "tool execution failed", False)
+
+    def _require_cuda(self) -> Any:
+        if self.cuda_retriever is None:
+            raise RuntimeError("CUDA shortlist is not configured for this server")
+        return self.cuda_retriever
+
+    def _update_cuda_cache(self, data: dict[str, Any]) -> dict[str, Any]:
+        self._keys(data, {"contract_version"}, {"contract_version"})
+        self._version(data)
+        retriever = self._require_cuda()
+        return {"contract_version": CONTRACT_VERSION,
+                "receipt": asdict(retriever.update_cache(self.engine.store.list_nodes()))}
+
+    def _search_cuda(self, data: dict[str, Any]) -> dict[str, Any]:
+        self._keys(data, {"contract_version", "query", "limit", "timeout_seconds"},
+                   {"contract_version", "query"})
+        self._version(data)
+        query = self._trimmed_string(data["query"], "query", 8192)
+        limit = data.get("limit", 5)
+        timeout = data.get("timeout_seconds", 60)
+        if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 100:
+            raise ValueError("limit must be an integer from 1 through 100")
+        if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
+            raise ValueError("timeout_seconds must be a positive finite number")
+        trace = self._require_cuda().search(query, self.engine.store.list_nodes(),
+                                            limit=limit, timeout_seconds=timeout)
+        return {"contract_version": CONTRACT_VERSION, "query": trace.query,
+                "hits": [{"node_id": hit.node.node_id, "rank": rank,
+                          "text": hit.node.text, "metadata": hit.node.metadata,
+                          "score": hit.score, "stage1_rank": hit.stage1_rank,
+                          "stage1_score": hit.stage1_score,
+                          "selected_chunks": [asdict(chunk) for chunk in hit.selected_chunks]}
+                         for rank, hit in enumerate(trace.hits, 1)],
+                "diagnostics": trace.diagnostics}
 
     def _search(self, data: dict[str, Any]) -> dict[str, Any]:
         self._keys(data, {"contract_version", "query", "limit"}, {"contract_version", "query"})
@@ -1335,9 +1416,11 @@ class FeedbackMCPAdapter:
 
 
 def create_server(
-    database: str | Path, *, config: EngineConfig | None = None
+    database: str | Path, *, config: EngineConfig | None = None,
+    cuda_retriever: Any = None, expose_cuda: bool = False,
 ) -> tuple[Server[Any], FeedbackMCPAdapter]:
-    adapter = FeedbackMCPAdapter(database, config=config)
+    adapter = FeedbackMCPAdapter(database, config=config, cuda_retriever=cuda_retriever,
+                                 expose_cuda=expose_cuda)
     server: Server[Any] = Server(
         "neuron-graph-rag",
         version="0.1.0",
@@ -1453,6 +1536,11 @@ def _build_parser() -> argparse.ArgumentParser:
 
 
 def main() -> None:
+    if "--http" in sys.argv[1:]:
+        from .http_server import main as http_main
+
+        http_main([argument for argument in sys.argv[1:] if argument != "--http"])
+        return
     parser = _build_parser()
     arguments = parser.parse_args()
     if (

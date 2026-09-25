@@ -2,19 +2,19 @@
 
 ## 1. Status and purpose
 
-この文書は、MCP 対応 AI が Neuron Graph RAG（NGR）を検索し、実際に利用した source と後から判明した結果を返すための、実装済み local stdio interface の契約を定義する。
+この文書は、MCP 対応 AI が Neuron Graph RAG（NGR）を検索し、実際に利用した source と後から判明した結果を返すための、既存 tool 契約を定義する。local stdio に加え、共有ローカル Streamable HTTP 入口も実装済みである。HTTP の追加 tool と運用境界は[共有ローカル MCP 仕様](specifications/shared-local-mcp.md)を参照する。
 
 この契約は次を意味しない。
 
 - MCP SDK が NGR core の必須依存である
-- 認証方式、transport、公開 endpoint、remote deployment が決定済みである
+- remote deployment の認証方式や公開 endpoint が決定済みである
 - delayed outcome が既定 policy で現在の edge weight を自動的に減算または巻き戻す
 
-`src/neuron_graph_rag_mcp/` の optional adapter がこの契約を local stdio transport で実装する。`pip install -e '.[mcp]'` で追加依存を導入し、`neuron-graph-rag-mcp` で起動する。NGR core は引き続き Python 標準ライブラリだけで動作する。
+`src/neuron_graph_rag_mcp/` の optional adapter がこの契約を local stdio と共有ローカル HTTP で実装する。`pip install -e '.[mcp]'` で追加依存を導入し、stdio は `neuron-graph-rag-mcp`、HTTP は `neuron-graph-rag-mcp --http` で起動する。NGR core は引き続き Python 標準ライブラリだけで動作する。
 
 ### Shared database home
 
-stdio CLI の database path 解決順は、明示 `--database`、`NGR_DATABASE`、`~/.ngrdb/knowledge.db` とする。`--database` と環境変数は `~` を user home へ展開する。最後の既定値を使うときだけ adapter が `~/.ngrdb` を作成する。明示 path を渡す既存起動は同じ path を使い、core library の `:memory:` 既定は変更しない。
+stdio / HTTP CLI の database path 解決順は、明示 `--database`、`NGR_DATABASE`、`~/.ngrdb/knowledge.db` とする。`--database` と環境変数は `~` を user home へ展開する。最後の既定値を使うときだけ adapter が `~/.ngrdb` を作成する。明示 path を渡す既存起動は同じ path を使い、core library の `:memory:` 既定は変更しない。
 
 file-backed SQLite connection は `journal_mode=WAL` と `busy_timeout=5000` milliseconds を適用し、foreign key、schema initialization、transaction commit、failure rollback の既存保証を維持する。保証する共有範囲は同一端末・同一ユーザーの local filesystem だけであり、network drive、cloud sync、remote deployment、分散 write は含めない。`:memory:` connection と read-only snapshot acquisition はこの connection policy の対象外である。
 
@@ -75,7 +75,7 @@ neuron-graph-rag-mcp \
 
 ## 2. Protocol envelope
 
-tool 名は `search`、`record_source_use`、`record_outcome`、`write_judgment`、`search_judgments`、`get_judgment`、`traverse_judgments`、`read_relation_type_registry`、`write_relation_type_registry` とする。すべての input と成功 output は JSON Schema で宣言し、未知 field を受け付けない。
+既存共通 tool 名は `search`、`record_source_use`、`record_outcome`、`write_judgment`、`search_judgments`、`get_judgment`、`traverse_judgments`、`read_relation_type_registry`、`write_relation_type_registry` とする。HTTP では CUDA 用の追加 tool がある。すべての input と成功 output は JSON Schema で宣言し、未知 field を受け付けない。
 
 成功時は MCP envelope の `resultType` を `complete` とし、機械処理用の `structuredContent` と、その同じ JSON を直列化した `TextContent` を返す。これは [MCP 2026-07-28 tools specification](https://modelcontextprotocol.io/specification/2026-07-28/server/tools) の tool result、structured content、後方互換性の指針に合わせる。
 
