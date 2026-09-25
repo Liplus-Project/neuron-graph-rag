@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import importlib.util
 import asyncio
+import http.server
 import json
 import os
 import socket
 import subprocess
 import sys
 import tempfile
+import threading
+import time
 import unittest
 from pathlib import Path
 
@@ -33,6 +36,7 @@ if MCP_AVAILABLE:
         _build_parser,
     )
     from neuron_graph_rag_mcp.http_server import TOKEN_ENV, create_http_app
+    from neuron_graph_rag_mcp.shared_proxy import _probe
 
 from neuron_graph_rag import NeuronGraphRAG
 from neuron_graph_rag.evidence_feedback import EngineConfig
@@ -1129,6 +1133,135 @@ class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
             finally:
                 adapter.close()
             self.assertTrue(retriever.closed)
+
+
+@unittest.skipUnless(MCP_AVAILABLE, "optional MCP SDK is not installed")
+class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
+    TOKEN = "shared_proxy_test_token_0123456789abcdef"
+
+    async def test_two_stdio_clients_start_one_service_and_survive_first_exit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database = Path(directory) / "shared.sqlite"
+            with NeuronGraphRAG(database) as engine:
+                engine.add_document("one", "shared service document")
+            with socket.socket() as listener:
+                listener.bind(("127.0.0.1", 0))
+                port = listener.getsockname()[1]
+            environment = {**os.environ, TOKEN_ENV: self.TOKEN}
+            parameters = StdioServerParameters(
+                command=sys.executable,
+                args=["-m", "neuron_graph_rag_mcp", "--shared", "--database", str(database),
+                      "--port", str(port)],
+                env=environment,
+            )
+            pid = None
+            def identity_pid() -> int:
+                import http.client
+                for attempt in range(10):
+                    connection = http.client.HTTPConnection("127.0.0.1", port, timeout=2)
+                    try:
+                        connection.request("GET", "/_ngr/identity", headers={"Authorization": f"Bearer {self.TOKEN}"})
+                        return json.loads(connection.getresponse().read())["pid"]
+                    except OSError:
+                        if attempt == 9:
+                            raise
+                        time.sleep(0.1)
+                    finally:
+                        connection.close()
+                raise AssertionError("service identity unavailable")
+
+            def stop_service() -> subprocess.CompletedProcess[str]:
+                return subprocess.run(
+                    [sys.executable, "-m", "neuron_graph_rag_mcp", "--stop",
+                     "--database", str(database), "--port", str(port)],
+                    env=environment, capture_output=True, text=True, timeout=30, check=False,
+                )
+
+            try:
+                async def connect_first():
+                    async with stdio_client(parameters) as (reader, writer):
+                        async with ClientSession(reader, writer) as client:
+                            await client.initialize()
+                            listed = await client.list_tools()
+                            self.assertIn("search_cuda_shortlist", [tool.name for tool in listed.tools])
+                            found = await client.call_tool("search", {
+                                "contract_version": CONTRACT_VERSION, "query": "shared service",
+                            })
+                            self.assertFalse(found.is_error)
+                            return found.structured_content["trace_id"], identity_pid()
+
+                async def connect_second():
+                    async with stdio_client(parameters) as (reader, writer):
+                        async with ClientSession(reader, writer) as client:
+                            await client.initialize()
+                            await asyncio.sleep(0.4)
+                            found = await client.call_tool("search", {
+                                "contract_version": CONTRACT_VERSION, "query": "shared service",
+                            })
+                            self.assertFalse(found.is_error)
+                            return found.structured_content["trace_id"], identity_pid()
+
+                (first, first_pid), (second, second_pid) = await asyncio.wait_for(
+                    asyncio.gather(connect_first(), connect_second()), 30,
+                )
+                self.assertNotEqual(first, second)
+                self.assertEqual(first_pid, second_pid)
+                self.assertTrue(_probe(port, self.TOKEN, database.resolve(), {}))
+                with self.assertRaisesRegex(RuntimeError, "rejected the shared MCP token"):
+                    _probe(port, "wrong_token_0123456789abcdef0123456789", database.resolve(), {})
+                with self.assertRaisesRegex(RuntimeError, "different NGR database"):
+                    _probe(port, self.TOKEN, (database.parent / "other.sqlite").resolve(), {})
+                pid = identity_pid()
+                # A fresh client can also join after both original transports close.
+                await asyncio.wait_for(connect_first(), 15)
+                self.assertEqual(identity_pid(), pid)
+                stopped = stop_service()
+                self.assertEqual(stopped.returncode, 0, stopped.stderr)
+                first_pid = pid
+                pid = None
+                _, pid = await asyncio.wait_for(connect_first(), 15)
+                self.assertNotEqual(pid, first_pid)
+            finally:
+                stop_service()
+
+    def test_missing_token_and_foreign_port_fail_before_database_open(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database = Path(directory) / "untouched.sqlite"
+            no_token = {key: value for key, value in os.environ.items() if key != TOKEN_ENV}
+            missing = subprocess.run(
+                [sys.executable, "-m", "neuron_graph_rag_mcp", "--shared",
+                 "--database", str(database)],
+                env=no_token, capture_output=True, text=True, timeout=10, check=False,
+            )
+            self.assertEqual(missing.returncode, 2)
+            self.assertIn(TOKEN_ENV, missing.stderr)
+            self.assertFalse(database.exists())
+
+            class ForeignHandler(http.server.BaseHTTPRequestHandler):
+                def do_GET(self):
+                    self.send_response(404)
+                    self.end_headers()
+
+                def log_message(self, *_args):
+                    pass
+
+            foreign = http.server.HTTPServer(("127.0.0.1", 0), ForeignHandler)
+            thread = threading.Thread(target=foreign.serve_forever, daemon=True)
+            thread.start()
+            try:
+                occupied = subprocess.run(
+                    [sys.executable, "-m", "neuron_graph_rag_mcp", "--shared",
+                     "--database", str(database), "--port", str(foreign.server_port)],
+                    env={**os.environ, TOKEN_ENV: self.TOKEN},
+                    capture_output=True, text=True, timeout=10, check=False,
+                )
+                self.assertEqual(occupied.returncode, 2)
+                self.assertIn("incompatible service", occupied.stderr)
+                self.assertFalse(database.exists())
+            finally:
+                foreign.shutdown()
+                foreign.server_close()
+                thread.join(timeout=5)
 
 
 if __name__ == "__main__":

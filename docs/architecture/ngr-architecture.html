@@ -70,7 +70,7 @@
 <section id="desktop"><h2><span class="num">04</span>共有ローカル MCP を先に使う</h2>
 <div class="two">
 <article class="box"><span class="badge future">後続案</span><h3>Windows アプリで見せるもの</h3><ul><li>NGRの起動アイコン</li><li>初回セットアップと設定画面</li><li>トレイの状態表示・設定・終了</li><li>同じ窓口から更新・バックアップを管理</li></ul><p class="small">この画面とトレイは未実装。先にコマンドから起動・停止する共有 MCP を提供する。</p></article>
-<article class="box"><span class="badge">先行実装</span><h3>共有ローカル MCP</h3><ul><li><code>neuron-graph-rag-mcp --http</code> で起動する単一 NGR プロセスと共有 DB</li><li>127.0.0.1 の固定 MCP URL と必須 bearer token で複数 AI を受け付ける</li><li>明示設定した CUDA 検索は同じモデルを再利用する</li><li>コマンドを停止すると DB とモデル資源を閉じる</li></ul><p class="small">token を持つ端末内プロセスが接続できる。OS ユーザーの身元は検査しない。自動起動、画面とトレイは後続の設計対象。</p></article>
+<article class="box"><span class="badge">先行実装</span><h3>共有ローカル MCP</h3><ul><li>Codex と Claude Code の stdio 接続から単一 NGR プロセスと共有 DB を必要時に起動する</li><li>127.0.0.1 の固定 MCP URL と必須 bearer token で複数 AI を受け付ける</li><li>明示設定した CUDA 検索は同じモデルを再利用する</li><li><code>neuron-graph-rag-mcp --stop</code> で DB とモデル資源を閉じ、次の接続で再起動する</li></ul><p class="small">token を持つ端末内プロセスが接続できる。OS ユーザーの身元は検査しない。画面とトレイは後続の設計対象。</p></article>
 </div>
 <p class="note">現在実装した範囲は端末内の共有ローカル MCP。接続には秘密 token が必要で、OS ユーザーの身元確認は行わない。ランチャーとコアの将来の分離、画面技術、ブラウザ UI は後続判断とする。</p>
 </section>
@@ -89,7 +89,7 @@
 
 <section id="decisions"><h2><span class="num">06</span>どこまで決めたか</h2>
 <div class="tablewrap"><table><thead><tr><th scope="col">区分</th><th scope="col">内容</th></tr></thead><tbody>
-<tr><td><span class="badge">実装順序</span></td><td>Python の共有ローカル MCP をコマンド起動で先に提供。Windows の画面・トレイ付きアプリと Actions＋PyInstaller の配布案は後続に置く。</td></tr>
+<tr><td><span class="badge">実装順序</span></td><td>Python の共有ローカル MCP を接続時に起動し、明示コマンドで停止する。Windows の画面・トレイ付きアプリと Actions＋PyInstaller の配布案は後続に置く。</td></tr>
 <tr><td><span class="badge">基本方向</span></td><td>クラウドのgithub-rag方式を維持。共通知識・判断履歴は共有SQLite。個人／作業メモリは別領域。利用窓口を統合する。</td></tr>
 <tr><td><span class="badge proposal">設計対象</span></td><td>ノードと関係の定義、活性化・抑制・減衰、反証の扱い、利用結果の反映、取得予算と停止条件。</td></tr>
 <tr><td><span class="badge proposal">設計対象</span></td><td>クラウド接続契約、参照IDと版、追加MCP操作体系、権限と外部送信、ローカル意味検索。ローカルHTTPのDB操作は単一イベントループで逐次実行する。</td></tr>

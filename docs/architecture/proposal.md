@@ -2,7 +2,7 @@
 
 [設計索引](README.md) / [文書索引](../README.md)
 
-[アーキテクチャHTML](ngr-architecture.html)は、Python の共有ローカル MCP を先行し、Windows アプリと GitHub Actions / PyInstaller による配布を後続案として示す設計のひな型です。現在使える HTTP 入口と未実装の全体構成を区別しています。
+[アーキテクチャHTML](ngr-architecture.html)は、Python の共有ローカル MCP を先行し、Windows アプリと GitHub Actions / PyInstaller による配布を後続案として示す設計のひな型です。現在使える接続時起動と手動 HTTP 入口、未実装の全体構成を区別しています。
 
 GitHubのファイル画面ではHTMLをそのままWebページとして閲覧できません。リンク先のファイルをダウンロードして、ローカルのブラウザで開いてください。この追加ではGitHub Pages等への公開は行っていません。
 
