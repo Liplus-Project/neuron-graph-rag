@@ -1224,6 +1224,9 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                 )
                 self.assertNotEqual(first, second)
                 self.assertEqual(first_pid, second_pid)
+                if os.name == "nt":
+                    tray_marker = Path.home() / ".ngrdb" / f"shared-local-mcp-{port}.tray.json"
+                    tray_pid = json.loads(tray_marker.read_text(encoding="utf-8"))["pid"]
                 await asyncio.sleep(1)
                 self.assertTrue(_probe(port, self.TOKEN, database.resolve(), {}))
                 with self.assertRaisesRegex(RuntimeError, "rejected the shared MCP token"):
@@ -1235,6 +1238,8 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                 # A fresh client can also join after both original transports close.
                 await asyncio.wait_for(connect_first(), 15)
                 self.assertEqual(identity_pid(), pid)
+                if os.name == "nt":
+                    self.assertEqual(tray_pid, json.loads(tray_marker.read_text(encoding="utf-8"))["pid"])
                 stopped = stop_service()
                 self.assertEqual(stopped.returncode, 0, stopped.stderr)
                 first_pid = pid
@@ -1243,6 +1248,72 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                 self.assertNotEqual(pid, first_pid)
             finally:
                 stop_service()
+                if os.name == "nt":
+                    import ctypes
+                    hwnd = ctypes.windll.user32.FindWindowW(f"NGRSharedMCPTray{port}", None)
+                    if hwnd:
+                        ctypes.windll.user32.PostMessageW(hwnd, 0x0010, 0, 0)
+
+    @unittest.skipUnless(os.name == "nt", "Windows notification area")
+    async def test_tray_stop_latches_until_resume(self) -> None:
+        from argparse import Namespace
+        from neuron_graph_rag_mcp.shared_proxy import (
+            _ensure_service, _paused_path, _state_dir, _wait_process_exit,
+        )
+        from neuron_graph_rag_mcp.tray_controller import _exit, _pause, _resume
+
+        with tempfile.TemporaryDirectory() as directory:
+            database = (Path(directory) / "tray.sqlite").resolve()
+            with socket.socket() as listener:
+                listener.bind(("127.0.0.1", 0))
+                port = listener.getsockname()[1]
+            args = Namespace(port=port, cuda_cache=None, cuda_e5_snapshot=None,
+                             cuda_v2_m3_snapshot=None, cuda_device=0)
+            marker = _state_dir() / f"shared-local-mcp-{port}.tray.json"
+            previous = os.environ.get(TOKEN_ENV)
+            os.environ[TOKEN_ENV] = self.TOKEN
+            tray_pid = None
+            try:
+                _ensure_service(args, self.TOKEN, database, {})
+                tray_pid = json.loads(marker.read_text(encoding="utf-8"))["pid"]
+                first_pid = _probe(port, self.TOKEN, database, {})
+                _ensure_service(args, self.TOKEN, database, {})
+                self.assertEqual(tray_pid, json.loads(marker.read_text(encoding="utf-8"))["pid"])
+                _pause(args, self.TOKEN, database)
+                self.assertTrue(_paused_path(port).exists())
+                self.assertIsNone(_probe(port, self.TOKEN, database, {}))
+                # A killed controller must be replaced without clearing pause.
+                os.kill(tray_pid, 15)
+                self.assertTrue(_wait_process_exit(tray_pid, 5))
+                paused = subprocess.run(
+                    [sys.executable, "-m", "neuron_graph_rag_mcp", "--shared",
+                     "--database", str(database), "--port", str(port)],
+                    env={**os.environ, TOKEN_ENV: self.TOKEN},
+                    capture_output=True, text=True, timeout=30, check=False,
+                )
+                self.assertEqual(paused.returncode, 2)
+                self.assertIn("paused in the Windows tray", paused.stderr)
+                replacement_pid = json.loads(marker.read_text(encoding="utf-8"))["pid"]
+                self.assertNotEqual(tray_pid, replacement_pid)
+                tray_pid = replacement_pid
+                self.assertIsNone(_probe(port, self.TOKEN, database, {}))
+                _resume(args, self.TOKEN, database, {})
+                self.assertFalse(_paused_path(port).exists())
+                self.assertNotEqual(first_pid, _probe(port, self.TOKEN, database, {}))
+            finally:
+                try:
+                    _exit(args, self.TOKEN, database)
+                except (RuntimeError, OSError):
+                    pass
+                if tray_pid is not None:
+                    import ctypes
+                    hwnd = ctypes.windll.user32.FindWindowW(f"NGRSharedMCPTray{port}", None)
+                    if hwnd:
+                        ctypes.windll.user32.PostMessageW(hwnd, 0x0010, 0, 0)
+                if previous is None:
+                    os.environ.pop(TOKEN_ENV, None)
+                else:
+                    os.environ[TOKEN_ENV] = previous
 
     def test_missing_token_and_foreign_port_fail_before_database_open(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -49,7 +49,9 @@ class RuntimeWheelTest(unittest.TestCase):
             }
             self.assertEqual(modules, RUNTIME_MODULES)
             self.assertTrue({"neuron_graph_rag_mcp/__init__.py", "neuron_graph_rag_mcp/server.py",
-                             "neuron_graph_rag_mcp/__main__.py", "neuron_graph_rag_mcp/http_server.py"} <= paths)
+                             "neuron_graph_rag_mcp/__main__.py", "neuron_graph_rag_mcp/http_server.py",
+                             "neuron_graph_rag_mcp/shared_proxy.py",
+                             "neuron_graph_rag_mcp/tray_controller.py"} <= paths)
             self.assertIn("neuron-graph-rag-mcp = neuron_graph_rag_mcp.server:main", entry_points)
             self.assertNotIn("neuron_graph_rag/cross_encoder_precision_v8_evaluation.py", paths)
             self.assertNotIn("neuron_graph_rag/real_task_shadow_v3.py", paths)
@@ -62,8 +64,9 @@ class RuntimeWheelTest(unittest.TestCase):
             def run(*args: str) -> str:
                 result = subprocess.run(
                     [sys.executable, *args], cwd=temporary, env=environment,
-                    check=True, capture_output=True, text=True,
+                    check=False, capture_output=True, text=True,
                 )
+                self.assertEqual(result.returncode, 0, result.stderr)
                 return result.stdout
 
             location = run("-c", "import neuron_graph_rag; print(neuron_graph_rag.__file__)").strip()
