@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import errno
+import hashlib
 import http.client
 import json
 import os
@@ -30,6 +31,7 @@ from .http_server import DEFAULT_PORT, TOKEN_ENV, _validate_bearer_token
 
 SERVICE_MARKER = "neuron-graph-rag-shared-local-mcp/v1"
 START_TIMEOUT = 20.0
+TRAY_CONFIG_ENV = "_NGR_MCP_TRAY_CONFIG"
 
 
 @contextmanager
@@ -139,6 +141,37 @@ def _wait_process_exit(pid: int, timeout: float) -> bool:
     return False
 
 
+def _launch_windows_detached(command: list[str], environment: dict[str, str],
+                             *, kind: str) -> None:
+    # WMI starts outside a client's kill-on-close Job Object. Keep credentials
+    # in the inherited environment, never in the WMI command line.
+    script = (
+        "$startup=([wmiclass]'Win32_ProcessStartup').CreateInstance();"
+        "$startup.EnvironmentVariables=@(Get-ChildItem Env: | "
+        "ForEach-Object { $_.Name + '=' + $_.Value });"
+        "$startup.ShowWindow=0;"
+        "$result=Invoke-WmiMethod -Class Win32_Process -Name Create "
+        "-ArgumentList @($env:_NGR_MCP_SERVICE_COMMAND,"
+        "$env:_NGR_MCP_SERVICE_CWD,$startup) -ErrorAction Stop;"
+        "Write-Output ($result.ReturnValue.ToString() + ':' + $result.ProcessId)"
+    )
+    environment["_NGR_MCP_SERVICE_COMMAND"] = subprocess.list2cmdline(command)
+    environment["_NGR_MCP_SERVICE_CWD"] = os.getcwd()
+    result = subprocess.run(
+        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
+        env=environment, stdin=subprocess.DEVNULL, capture_output=True,
+        text=True, timeout=START_TIMEOUT, check=False,
+    )
+    if result.returncode:
+        raise RuntimeError(f"Windows WMI {kind} launch failed with PowerShell code {result.returncode}")
+    try:
+        code = int(result.stdout.strip().splitlines()[-1].split(":", 1)[0])
+    except (ValueError, IndexError) as error:
+        raise RuntimeError(f"Windows WMI {kind} launch returned no status") from error
+    if code != 0:
+        raise RuntimeError(f"Windows WMI {kind} launch failed with code {code}")
+
+
 def _start_service(args: argparse.Namespace, database: Path,
                    log_path: Path) -> subprocess.Popen[bytes] | None:
     command = [
@@ -152,39 +185,9 @@ def _start_service(args: argparse.Namespace, database: Path,
     if args.cuda_device != 0:
         command.extend(("--cuda-device", str(args.cuda_device)))
     if os.name == "nt":
-        # An MCP stdio client can put this proxy in a kill-on-close Job Object.
-        # A normal child stays in that Job even with DETACHED_PROCESS and
-        # CREATE_BREAKAWAY_FROM_JOB. WMI creates the service outside that Job.
-        # Windows PowerShell is part of Windows; avoid a pywin32 dependency.
-        # The bearer token is inherited in the environment, never interpolated
-        # into a process command line or diagnostic output.
-        script = (
-            "$startup=([wmiclass]'Win32_ProcessStartup').CreateInstance();"
-            "$startup.EnvironmentVariables=@(Get-ChildItem Env: | "
-            "ForEach-Object { $_.Name + '=' + $_.Value });"
-            "$startup.ShowWindow=0;"
-            "$result=Invoke-WmiMethod -Class Win32_Process -Name Create "
-            "-ArgumentList @($env:_NGR_MCP_SERVICE_COMMAND,"
-            "$env:_NGR_MCP_SERVICE_CWD,$startup) -ErrorAction Stop;"
-            "Write-Output ($result.ReturnValue.ToString() + ':' + $result.ProcessId)"
-        )
         environment = dict(os.environ)
         environment["_NGR_MCP_SERVICE_LOG"] = str(log_path)
-        environment["_NGR_MCP_SERVICE_COMMAND"] = subprocess.list2cmdline(command)
-        environment["_NGR_MCP_SERVICE_CWD"] = os.getcwd()
-        result = subprocess.run(
-            ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
-            env=environment, stdin=subprocess.DEVNULL, capture_output=True,
-            text=True, timeout=START_TIMEOUT, check=False,
-        )
-        if result.returncode:
-            raise RuntimeError(f"Windows WMI service launch failed with PowerShell code {result.returncode}")
-        try:
-            code = int(result.stdout.strip().splitlines()[-1].split(":", 1)[0])
-        except (ValueError, IndexError) as error:
-            raise RuntimeError("Windows WMI service launch returned no status") from error
-        if code != 0:
-            raise RuntimeError(f"Windows WMI service launch failed with code {code}")
+        _launch_windows_detached(command, environment, kind="service")
         return None
     with log_path.open("ab") as log:
         return subprocess.Popen(
@@ -193,13 +196,67 @@ def _start_service(args: argparse.Namespace, database: Path,
         )
 
 
+def _state_dir() -> Path:
+    return Path.home() / ".ngrdb"
+
+
+def _paused_path(port: int) -> Path:
+    return _state_dir() / f"shared-local-mcp-{port}.paused"
+
+
+def _tray_fingerprint(args: argparse.Namespace, token: str, database: Path,
+                      config: dict[str, Any]) -> str:
+    value = json.dumps([args.port, str(database), config, token], sort_keys=True)
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _ensure_tray(args: argparse.Namespace, token: str, database: Path,
+                 config: dict[str, Any]) -> None:
+    if os.name != "nt":
+        return
+    marker = _state_dir() / f"shared-local-mcp-{args.port}.tray.json"
+    fingerprint = _tray_fingerprint(args, token, database, config)
+    try:
+        record = json.loads(marker.read_text(encoding="utf-8"))
+        pid = record["pid"]
+        if isinstance(pid, int) and pid > 0 and not _wait_process_exit(pid, 0):
+            if record.get("fingerprint") != fingerprint:
+                raise RuntimeError("tray controller has a different NGR configuration")
+            return
+    except (FileNotFoundError, ValueError, KeyError, TypeError, OSError):
+        pass
+    payload = {"port": args.port, "database": str(database), "config": config,
+               "fingerprint": fingerprint}
+    environment = dict(os.environ)
+    environment[TRAY_CONFIG_ENV] = json.dumps(payload)
+    _launch_windows_detached(
+        [sys.executable, "-m", "neuron_graph_rag_mcp.tray_controller"],
+        environment, kind="tray controller",
+    )
+    deadline = time.monotonic() + START_TIMEOUT
+    while time.monotonic() < deadline:
+        try:
+            record = json.loads(marker.read_text(encoding="utf-8"))
+            if record.get("fingerprint") == fingerprint and not _wait_process_exit(record["pid"], 0):
+                return
+        except (FileNotFoundError, ValueError, KeyError, TypeError, OSError):
+            pass
+        time.sleep(0.1)
+    raise RuntimeError("tray controller did not become ready")
+
+
 def _ensure_service(args: argparse.Namespace, token: str, database: Path,
-                    config: dict[str, Any]) -> None:
-    state_dir = Path.home() / ".ngrdb"
+                    config: dict[str, Any], *, start_tray: bool = True) -> None:
+    state_dir = _state_dir()
     lock_path = state_dir / f"shared-local-mcp-{args.port}.lock"
     log_path = state_dir / f"shared-local-mcp-{args.port}.log"
     with _startup_lock(lock_path):
-        if _probe(args.port, token, database, config):
+        existing = _probe(args.port, token, database, config)
+        if start_tray:
+            _ensure_tray(args, token, database, config)
+        if _paused_path(args.port).exists():
+            raise RuntimeError("shared MCP is paused in the Windows tray; choose Resume there")
+        if existing:
             return
         process = _start_service(args, database, log_path)
         deadline = time.monotonic() + START_TIMEOUT
@@ -291,23 +348,27 @@ def stop_main(argv: list[str] | None = None) -> None:
         if not 1 <= args.port <= 65535:
             raise ValueError("--port must be from 1 through 65535")
         database = resolve_database(args.database, environ=os.environ).path.expanduser().resolve()
-        with _startup_lock(Path.home() / ".ngrdb" / f"shared-local-mcp-{args.port}.lock"):
-            pid = _probe(args.port, token, database, None)
-            if pid is None:
-                raise RuntimeError("shared MCP service is not running")
-            connection = http.client.HTTPConnection("127.0.0.1", args.port, timeout=5)
-            try:
-                connection.request("POST", "/_ngr/stop", headers={"Authorization": f"Bearer {token}"})
-                response = connection.getresponse()
-                response.read()
-                if response.status != 200:
-                    raise RuntimeError(f"stop request failed (HTTP {response.status})")
-            finally:
-                connection.close()
-            if not _wait_process_exit(pid, START_TIMEOUT):
-                raise RuntimeError("shared MCP service did not stop within 20 seconds")
+        with _startup_lock(_state_dir() / f"shared-local-mcp-{args.port}.lock"):
+            _stop_service(args.port, token, database)
     except (ValueError, RuntimeError, OSError) as error:
         parser.exit(2, f"NGR shared MCP: {error}\n")
+
+
+def _stop_service(port: int, token: str, database: Path) -> None:
+    pid = _probe(port, token, database, None)
+    if pid is None:
+        raise RuntimeError("shared MCP service is not running")
+    connection = http.client.HTTPConnection("127.0.0.1", port, timeout=5)
+    try:
+        connection.request("POST", "/_ngr/stop", headers={"Authorization": f"Bearer {token}"})
+        response = connection.getresponse()
+        response.read()
+        if response.status != 200:
+            raise RuntimeError(f"stop request failed (HTTP {response.status})")
+    finally:
+        connection.close()
+    if not _wait_process_exit(pid, START_TIMEOUT):
+        raise RuntimeError("shared MCP service did not stop within 20 seconds")
 
 
 if __name__ == "__main__":

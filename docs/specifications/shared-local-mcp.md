@@ -1,5 +1,13 @@
 # 共有ローカル MCP サービス
 
+## Windows トレイ制御（Issue #263）
+
+Windows の `--shared` は最初の接続時に、同じ OS ユーザーの通知領域へポート単位で一つのコントローラーを起動する。複数の stdio クライアントは一つのコントローラーと共有 HTTP 本体を使う。コントローラーも WMI 経由で MCP クライアントの Job Object の外に起動し、クライアント切断で消えない。ログイン時自動起動、Windows Service、管理者権限、追加の GUI 依存は要求しない。トレイは Windows の通常の対話型ユーザーセッションでのみ表示する。非 Windows 環境と直接 stdio・手動 `--http` は従来のままである。
+
+トレイは稼働中・停止中・利用不能を示し、停止、再開、終了を提供する。停止はポート単位の停止状態をユーザー領域に記録してから認証済み HTTP 停止を送り、共有本体のプロセス終了まで待つ。これにより adapter、SQLite connection、CUDA retriever を閉じ、GPU memory を保持する本体プロセスを残さない。停止中の `--shared` は再起動せず、トレイでの再開を求める診断エラーを返す。接続済みクライアントのセッションは停止時に切れるので再接続が必要である。再開は停止状態を解除して共有本体を起動する。失敗した再開は停止状態へ戻す。終了は本体を止めてコントローラーを閉じ、停止状態を解除する。終了後の新たな接続では一組を再起動できる。
+
+停止状態はコントローラーの異常終了後も残り、次の `--shared` 接続はコントローラーを再起動して停止状態を守る。コントローラーは port・絶対 DB path・CUDA 設定・token の fingerprint を照合し、異なる設定の二重起動を拒否する。token とモデル path はトレイ表示やログに出さない。`--stop` は従来どおり一回の明示停止で、トレイの停止状態は設定しない。
+
 ## 接続時起動（Issue #259）
 
 `neuron-graph-rag-mcp --shared` は stdio MCP の入口であり、接続開始時に認証済みのローカル HTTP サービスを確認する。サービスが停止中なら一つのクライアントが起動し、同時接続の後続クライアントは同じプロセスに接続する。プロセス間の起動ロックは port 単位で、lock file に token を保存しない。認証済み identity は NGR のサービス種別、絶対 DB path、CUDA 設定と PID を返す。不一致、認証失敗、他サービスによる port 占有は中継を開始せず診断可能なエラーにする。
@@ -24,4 +32,4 @@ HTTP 接続ごとに MCP session を作るが、server、`FeedbackMCPAdapter`、
 
 CUDA の三つの path は cache、固定 E5 snapshot、固定 v2-m3 snapshot を一緒に指定する。モデルの自動取得と CPU fallback はしない。CUDA が未設定なら GPU tool は `cuda_unavailable` を返し、利用不能・モデル欠落・実行時失敗も明示的に失敗する。E5 cache は corpus に対して明示的に更新し、古い cache での検索は失敗する。一つの retriever がモデルを保持し、連続する tool 呼び出しで再利用する。
 
-通常 wheel の必須依存は増やさない。HTTP は既存の `mcp` extra に含まれる SDK、Starlette、Uvicorn を使う。ONNX E5、transformers、CUDA 対応 PyTorch、モデル weight は別途利用者が用意する。外部ネットワーク公開、認証付き remote 配置、GUI、トレイ、インストーラー、複数 worker は対象外。
+通常 wheel の必須依存は増やさない。HTTP は既存の `mcp` extra に含まれる SDK、Starlette、Uvicorn を使う。ONNX E5、transformers、CUDA 対応 PyTorch、モデル weight は別途利用者が用意する。外部ネットワーク公開、認証付き remote 配置、インストーラー、複数 worker は対象外。

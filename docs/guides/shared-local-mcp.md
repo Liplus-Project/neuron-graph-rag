@@ -24,11 +24,13 @@ claude mcp add --transport stdio ngr-shared -- C:\path\to\python.exe -m neuron_g
 
 Windows での接続時起動には、OS 標準の Windows PowerShell と WMI が使用できる環境が必要。クライアントが stdio プロキシを強制終了しても共有サービスを残すために使う。起動できない場合は Windows PowerShell と WMI の利用可否を確認する。
 
+Windows では初回接続で NGR のトレイアイコンも一つ起動する。通知領域のアイコンをクリックすると、`Running`（稼働中）、`Stopped`（停止中）、`Unavailable`（本体に接続不可）が表示される。`Stop and release GPU` は共有本体を終了して DB と CUDA retriever を閉じる。停止中の MCP 再接続は「トレイで Resume を選ぶ」というエラーで失敗し、本体は起動しない。`Resume` を選ぶと本体を再起動するので、停止前から接続していた AI は接続し直す。`Exit` は本体とトレイを終了し、次の MCP 接続時には自動起動できる状態に戻す。ログイン時の自動起動、Windows Service 登録、管理者権限は不要。
+
 ```powershell
 C:\path\to\python.exe -m neuron_graph_rag_mcp --stop
 ```
 
-停止中に接続していたクライアントは再接続が必要になる。停止後の次の MCP 接続は新しい共有サービスを起動する。別 DB を `--database` で登録した場合、停止時も同じ `--database` を指定する。別 port を `--port` で登録した場合も同じ値を指定する。token の変更時はサービスを停止し、両クライアントを再起動する。サービスの診断ログは `~/.ngrdb/shared-local-mcp-<port>.log` にある。Windows PowerShell または WMI による起動前の失敗は MCP クライアントにエラーとして表示される。token はログに書かない。
+CLI の `--stop` は従来どおり一回だけ本体を停止し、次の MCP 接続は新しい本体を起動する。再接続でも停止状態を維持したい場合はトレイの停止操作を使う。別 DB を `--database` で登録した場合、CLI 停止時も同じ `--database` を指定する。別 port を `--port` で登録した場合も同じ値を指定する。token や DB・CUDA 設定を変更する前にトレイの `Exit` を選び、両クライアントを再起動する。サービスの診断ログは `~/.ngrdb/shared-local-mcp-<port>.log` にある。Windows PowerShell または WMI による起動前の失敗は MCP クライアントにエラーとして表示される。token とモデル path はトレイ表示やログに書かない。
 
 CUDA を使う場合は、両クライアントの `--shared` の後に同じ `--cuda-cache`、`--cuda-e5-snapshot`、`--cuda-v2-m3-snapshot` を指定する。モデル path の準備と tool の使い方は下記を参照。CUDA は明示指定した時だけ共有サービス内で読み込む。設定を変える場合は先に共有サービスを停止する。
 
@@ -66,4 +68,4 @@ neuron-graph-rag-mcp --http `
 
 モデル path は例であり、利用者が実際に配置した絶対 path を渡す。最初に MCP tool `update_cuda_shortlist_cache` を呼び、corpus の更新後も呼び直す。続いて `search_cuda_shortlist` に `contract_version: "ngr.mcp.feedback/v1"` と `query` を渡す。モデルは最初の検索時に読み込み、プロセス終了まで同じ retriever で再利用する。未設定、CUDA 不可、モデル欠落、古い cache は検索失敗として返る。通常の `search` は CUDA を使わず従来の feedback trace を返す。
 
-現段階では token を共有する同一ユーザーのローカル利用を想定する。HTTP は OS ユーザーの身元を検査しないため、token を知る端末内の別プロセスも書き込み tool を使える。token が漏れたら新しい値を生成し、サービスとクライアントを再起動する。他端末への公開、remote deployment、GUI / トレイ、インストーラーは提供しない。CUDA 検索中は同期処理が HTTP の他の tool 呼び出しを待たせる。モデルの VRAM と E5 cache のディスク容量が別途必要になる。
+現段階では token を共有する同一ユーザーのローカル利用を想定する。HTTP は OS ユーザーの身元を検査しないため、token を知る端末内の別プロセスも書き込み tool を使える。token が漏れたら新しい値を生成し、サービスとクライアントを再起動する。他端末への公開、remote deployment、インストーラーは提供しない。CUDA 検索中は同期処理が HTTP の他の tool 呼び出しを待たせる。モデルの VRAM と E5 cache のディスク容量が別途必要になる。
