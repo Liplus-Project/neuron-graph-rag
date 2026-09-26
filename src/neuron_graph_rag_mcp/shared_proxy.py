@@ -139,7 +139,8 @@ def _wait_process_exit(pid: int, timeout: float) -> bool:
     return False
 
 
-def _start_service(args: argparse.Namespace, database: Path, log_path: Path) -> subprocess.Popen[bytes]:
+def _start_service(args: argparse.Namespace, database: Path,
+                   log_path: Path) -> subprocess.Popen[bytes] | None:
     command = [
         sys.executable, "-m", "neuron_graph_rag_mcp", "--http",
         "--database", str(database), "--port", str(args.port),
@@ -150,18 +151,46 @@ def _start_service(args: argparse.Namespace, database: Path, log_path: Path) -> 
             command.extend(("--" + name.replace("_", "-"), str(Path(value).expanduser().resolve())))
     if args.cuda_device != 0:
         command.extend(("--cuda-device", str(args.cuda_device)))
-    kwargs: dict[str, Any] = {"stdin": subprocess.DEVNULL, "stdout": subprocess.DEVNULL,
-                              "close_fds": True}
     if os.name == "nt":
-        kwargs["creationflags"] = (
-            subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
-            | subprocess.CREATE_BREAKAWAY_FROM_JOB
+        # An MCP stdio client can put this proxy in a kill-on-close Job Object.
+        # A normal child stays in that Job even with DETACHED_PROCESS and
+        # CREATE_BREAKAWAY_FROM_JOB. WMI creates the service outside that Job.
+        # Windows PowerShell is part of Windows; avoid a pywin32 dependency.
+        # The bearer token is inherited in the environment, never interpolated
+        # into a process command line or diagnostic output.
+        script = (
+            "$startup=([wmiclass]'Win32_ProcessStartup').CreateInstance();"
+            "$startup.EnvironmentVariables=@(Get-ChildItem Env: | "
+            "ForEach-Object { $_.Name + '=' + $_.Value });"
+            "$startup.ShowWindow=0;"
+            "$result=Invoke-WmiMethod -Class Win32_Process -Name Create "
+            "-ArgumentList @($env:_NGR_MCP_SERVICE_COMMAND,"
+            "$env:_NGR_MCP_SERVICE_CWD,$startup) -ErrorAction Stop;"
+            "Write-Output ($result.ReturnValue.ToString() + ':' + $result.ProcessId)"
         )
-    else:
-        kwargs["start_new_session"] = True
+        environment = dict(os.environ)
+        environment["_NGR_MCP_SERVICE_LOG"] = str(log_path)
+        environment["_NGR_MCP_SERVICE_COMMAND"] = subprocess.list2cmdline(command)
+        environment["_NGR_MCP_SERVICE_CWD"] = os.getcwd()
+        result = subprocess.run(
+            ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
+            env=environment, stdin=subprocess.DEVNULL, capture_output=True,
+            text=True, timeout=START_TIMEOUT, check=False,
+        )
+        if result.returncode:
+            raise RuntimeError(f"Windows WMI service launch failed with PowerShell code {result.returncode}")
+        try:
+            code = int(result.stdout.strip().splitlines()[-1].split(":", 1)[0])
+        except (ValueError, IndexError) as error:
+            raise RuntimeError("Windows WMI service launch returned no status") from error
+        if code != 0:
+            raise RuntimeError(f"Windows WMI service launch failed with code {code}")
+        return None
     with log_path.open("ab") as log:
-        kwargs["stderr"] = log
-        return subprocess.Popen(command, **kwargs)
+        return subprocess.Popen(
+            command, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+            stderr=log, close_fds=True, start_new_session=True,
+        )
 
 
 def _ensure_service(args: argparse.Namespace, token: str, database: Path,
@@ -175,7 +204,7 @@ def _ensure_service(args: argparse.Namespace, token: str, database: Path,
         process = _start_service(args, database, log_path)
         deadline = time.monotonic() + START_TIMEOUT
         while time.monotonic() < deadline:
-            if process.poll() is not None:
+            if process is not None and process.poll() is not None:
                 raise RuntimeError(
                     f"shared MCP service exited with code {process.returncode}; see {log_path}"
                 )

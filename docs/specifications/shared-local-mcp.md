@@ -6,6 +6,8 @@
 
 stdio 入口は HTTP に tool 一覧と tool 呼び出しを中継し、既存 tool の公開内容と戻り値を変えない。接続ごとに stdio プロキシと HTTP MCP session は作るが、HTTP サービスの `FeedbackMCPAdapter`、SQLite connection と opt-in CUDA retriever は一つのまま。stdio プロキシの終了は共有サービスを停止しない。共有サービスの寿命は明示的な `--stop` または OS ログアウト／終了までである。`--stop` は token と DB path の一致を確認した後にサービスへ認証済み停止要求を送り、プロセス終了まで待つ。停止後、次の `--shared` 接続は再起動する。
 
+Windows では MCP クライアントが stdio プロキシを終了時に子プロセスごと強制終了する Job Object に入れる場合がある。共有サービスは Windows 標準の PowerShell と WMI から、その Job Object の外に起動する。追加の Python 依存は要求しない。サービスの起動時に token をコマンド引数へ展開せず、環境変数として引き渡す。
+
 token 未設定・不正値ならサービス起動前に拒否する。token は環境変数 `NGR_MCP_HTTP_BEARER_TOKEN` のみから渡し、設定本文、起動引数、ログには書かない。手動 `--http` と従来の token 不要 stdio は継続する。`--shared` の CUDA path 一式は opt-in で、稼働中のサービスと不一致なら接続を拒否する。
 
 ## 手動 HTTP（Issue #257）
