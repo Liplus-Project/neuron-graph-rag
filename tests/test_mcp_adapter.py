@@ -1177,6 +1177,20 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                     env=environment, capture_output=True, text=True, timeout=30, check=False,
                 )
 
+            def assert_independent_process(service_pid: int) -> None:
+                if os.name != "nt":
+                    return
+                import win32job
+                from mcp.os.win32 import utilities
+
+                jobs = list(utilities._process_jobs.values())
+                self.assertTrue(jobs, "MCP client did not register a Windows Job Object")
+                for job in jobs:
+                    members = win32job.QueryInformationJobObject(
+                        job, win32job.JobObjectBasicProcessIdList,
+                    )
+                    self.assertNotIn(service_pid, members, "shared service inherited a client Job Object")
+
             try:
                 async def connect_first():
                     async with stdio_client(parameters) as (reader, writer):
@@ -1188,7 +1202,9 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                                 "contract_version": CONTRACT_VERSION, "query": "shared service",
                             })
                             self.assertFalse(found.is_error)
-                            return found.structured_content["trace_id"], identity_pid()
+                            service_pid = identity_pid()
+                            assert_independent_process(service_pid)
+                            return found.structured_content["trace_id"], service_pid
 
                 async def connect_second():
                     async with stdio_client(parameters) as (reader, writer):
@@ -1199,19 +1215,23 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                                 "contract_version": CONTRACT_VERSION, "query": "shared service",
                             })
                             self.assertFalse(found.is_error)
-                            return found.structured_content["trace_id"], identity_pid()
+                            service_pid = identity_pid()
+                            assert_independent_process(service_pid)
+                            return found.structured_content["trace_id"], service_pid
 
                 (first, first_pid), (second, second_pid) = await asyncio.wait_for(
                     asyncio.gather(connect_first(), connect_second()), 30,
                 )
                 self.assertNotEqual(first, second)
                 self.assertEqual(first_pid, second_pid)
+                await asyncio.sleep(1)
                 self.assertTrue(_probe(port, self.TOKEN, database.resolve(), {}))
                 with self.assertRaisesRegex(RuntimeError, "rejected the shared MCP token"):
                     _probe(port, "wrong_token_0123456789abcdef0123456789", database.resolve(), {})
                 with self.assertRaisesRegex(RuntimeError, "different NGR database"):
                     _probe(port, self.TOKEN, (database.parent / "other.sqlite").resolve(), {})
                 pid = identity_pid()
+                self.assertEqual(pid, first_pid)
                 # A fresh client can also join after both original transports close.
                 await asyncio.wait_for(connect_first(), 15)
                 self.assertEqual(identity_pid(), pid)

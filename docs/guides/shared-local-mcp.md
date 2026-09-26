@@ -22,11 +22,13 @@ claude mcp add --transport stdio ngr-shared -- C:\path\to\python.exe -m neuron_g
 
 ユーザー環境変数を設定する前から Codex App または Claude Code が起動していた場合は、そのアプリを再起動してから接続する。最初の stdio 接続が `127.0.0.1:8765` に共有 HTTP サービスを起動し、後続の接続は同じ NGR 本体、DB、CUDA retriever を使う。接続元のクライアントが終了してもサービスは稼働し続ける。ログアウト／OS 終了、または以下の明示停止まで稼働する。
 
+Windows での接続時起動には、OS 標準の Windows PowerShell と WMI が使用できる環境が必要。クライアントが stdio プロキシを強制終了しても共有サービスを残すために使う。起動できない場合は Windows PowerShell と WMI の利用可否を確認する。
+
 ```powershell
 C:\path\to\python.exe -m neuron_graph_rag_mcp --stop
 ```
 
-停止中に接続していたクライアントは再接続が必要になる。停止後の次の MCP 接続は新しい共有サービスを起動する。別 DB を `--database` で登録した場合、停止時も同じ `--database` を指定する。別 port を `--port` で登録した場合も同じ値を指定する。token の変更時はサービスを停止し、両クライアントを再起動する。起動や停止に失敗した場合の診断ログは `~/.ngrdb/shared-local-mcp-<port>.log` にある。token はログに書かない。
+停止中に接続していたクライアントは再接続が必要になる。停止後の次の MCP 接続は新しい共有サービスを起動する。別 DB を `--database` で登録した場合、停止時も同じ `--database` を指定する。別 port を `--port` で登録した場合も同じ値を指定する。token の変更時はサービスを停止し、両クライアントを再起動する。サービスの診断ログは `~/.ngrdb/shared-local-mcp-<port>.log` にある。Windows PowerShell または WMI による起動前の失敗は MCP クライアントにエラーとして表示される。token はログに書かない。
 
 CUDA を使う場合は、両クライアントの `--shared` の後に同じ `--cuda-cache`、`--cuda-e5-snapshot`、`--cuda-v2-m3-snapshot` を指定する。モデル path の準備と tool の使い方は下記を参照。CUDA は明示指定した時だけ共有サービス内で読み込む。設定を変える場合は先に共有サービスを停止する。
 
