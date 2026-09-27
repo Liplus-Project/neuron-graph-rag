@@ -118,6 +118,16 @@ class VerifiedUpdatesTests(unittest.TestCase):
                     download_candidate(candidate, path, cancelled)
             self.assertEqual(list(path.iterdir()), [])
 
+    def test_existing_installer_is_never_replaced(self):
+        candidate = candidate_from_release(release(), self.build)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)
+            existing = path / FILENAME
+            existing.write_bytes(b"keep existing file")
+            with self.assertRaises(UpdateError):
+                download_candidate(candidate, path)
+            self.assertEqual(existing.read_bytes(), b"keep existing file")
+
 
 if __name__ == "__main__":
     unittest.main()

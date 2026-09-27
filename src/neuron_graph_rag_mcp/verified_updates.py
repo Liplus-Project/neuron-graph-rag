@@ -192,7 +192,9 @@ def download_candidate(candidate: UpdateCandidate, directory: Path,
             raise DownloadCancelled("download cancelled")
         if count != candidate.size or digest.hexdigest() != candidate.digest:
             raise UpdateError("installer size or SHA-256 verification failed")
-        os.replace(temp_path, destination)
+        # A hard link publishes the verified bytes atomically and fails if a
+        # second tray has already published this filename.
+        os.link(temp_path, destination)
         return destination
     except (OSError, ValueError, urllib.error.HTTPError) as error:
         raise UpdateError("installer download failed") from error
