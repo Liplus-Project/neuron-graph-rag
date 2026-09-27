@@ -19,8 +19,11 @@ if ($Flavor -eq 'cuda') {
 python -m pip install --disable-pip-version-check --no-deps "$root"
 if ($LASTEXITCODE) { throw 'NGR installation failed' }
 
-$arguments = @('--noconfirm','--clean','--onedir','--name','NGR','--distpath',$bundleRoot,'--workpath',(Join-Path $bundleRoot 'work'),'--specpath',$bundleRoot,'--copy-metadata','neuron-graph-rag','--collect-all','neuron_graph_rag_mcp','--collect-submodules','neuron_graph_rag','--collect-all','mcp','--collect-all','httpx2','--collect-all','uvicorn','--collect-all','starlette')
-if ($Flavor -eq 'cuda') { $arguments += @('--collect-all','torch','--collect-all','transformers','--collect-all','safetensors') }
+$arguments = @('--noconfirm','--clean','--onedir','--name','NGR','--distpath',$bundleRoot,'--workpath',(Join-Path $bundleRoot 'work'),'--specpath',$bundleRoot,'--copy-metadata','neuron-graph-rag','--collect-submodules','neuron_graph_rag')
+# MCP's optional CLI imports typer and exits when that unrelated extra is absent.
+# The application imports the MCP client/server modules statically; collecting
+# every mcp.* module would include its unrelated CLI and fail the build.
+if ($Flavor -eq 'cuda') { $arguments += @('--hidden-import','transformers.models.xlm_roberta.modeling_xlm_roberta','--hidden-import','transformers.models.xlm_roberta.tokenization_xlm_roberta_fast','--hidden-import','safetensors.torch','--collect-data','transformers') }
 $arguments += (Join-Path $root 'packaging\windows\entry.py')
 python -m PyInstaller @arguments
 if ($LASTEXITCODE) { throw 'PyInstaller build failed' }

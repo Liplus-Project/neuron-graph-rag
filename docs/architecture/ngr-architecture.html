@@ -70,7 +70,7 @@
 <section id="desktop"><h2><span class="num">04</span>共有ローカル MCP を先に使う</h2>
 <div class="two">
 <article class="box"><span class="badge">Windows 版</span><h3>現在使えるもの</h3><ul><li>ユーザー領域へのセットアップ</li><li>Codex / Claude Code の選択式 MCP 登録</li><li>トレイの状態表示・停止・再開・終了</li></ul><p class="small">統合 GUI からクラウド設定、更新、バックアップを管理する画面は後続案。</p></article>
-<article class="box"><span class="badge">先行実装</span><h3>共有ローカル MCP</h3><ul><li>Codex と Claude Code の stdio 接続から単一 NGR プロセスと共有 DB を必要時に起動する</li><li>127.0.0.1 の固定 MCP URL と必須 bearer token で複数 AI を受け付ける</li><li>明示設定した CUDA 検索は同じモデルを再利用する</li><li><code>neuron-graph-rag-mcp --stop</code> で DB とモデル資源を閉じ、次の接続で再起動する</li></ul><p class="small">token を持つ端末内プロセスが接続できる。OS ユーザーの身元は検査しない。画面とトレイは後続の設計対象。</p></article>
+<article class="box"><span class="badge">先行実装</span><h3>共有ローカル MCP</h3><ul><li>Codex と Claude Code の stdio 接続から単一 NGR プロセスと共有 DB を必要時に起動する</li><li>127.0.0.1 の固定 MCP URL と必須 bearer token で複数 AI を受け付ける</li><li>明示設定した CUDA 検索は同じモデルを再利用する</li><li><code>neuron-graph-rag-mcp --stop</code> で DB とモデル資源を閉じ、次の接続で再起動する</li></ul><p class="small">token を持つ端末内プロセスが接続できる。OS ユーザーの身元は検査しない。Windows トレイ操作は実装済みで、統合設定画面は後続案。</p></article>
 </div>
 <p class="note">現在実装した範囲は端末内の共有ローカル MCP。接続には秘密 token が必要で、OS ユーザーの身元確認は行わない。ランチャーとコアの将来の分離、画面技術、ブラウザ UI は後続判断とする。</p>
 </section>

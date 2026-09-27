@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import os
-import re
 import secrets
 import shutil
 import subprocess
@@ -22,12 +21,14 @@ def _config_path(client: str) -> Path:
     return Path.home() / ".claude.json"
 
 
-def _show_existing(value: str) -> None:
-    # A legacy registration can contain a literal secret. Never echo its value.
-    for line in value.splitlines():
-        line = re.sub(r'(?i)(token|secret|password|key)(["\s:=]+)([^\s,}]+)',
-                      r'\1\2<redacted>', line)
-        print(line)
+def _show_existing(client: str, config: Path) -> None:
+    # Client output is untrusted free text and may contain secrets in arbitrary
+    # arguments. Never echo any of its bytes.
+    print(f"Existing MCP entry: client={client}, name={SERVER_NAME}.")
+    print(f"Configuration file: {config}")
+    if config.is_file() and input("Open the existing configuration in your editor? [y/N] ").lower() == "y":
+        os.startfile(config)
+        input("Inspect it locally, then press Enter to continue.")
 
 
 def _backup(path: Path) -> Path | None:
@@ -68,9 +69,7 @@ def _register(client: str) -> None:
                             text=True, capture_output=True, check=False)
     config = _config_path(client)
     if result.returncode == 0:
-        print(f"{client}: {SERVER_NAME} already exists. Current entry (secrets redacted):")
-        _show_existing(result.stdout)
-        print(f"Configuration: {config}")
+        _show_existing(client, config)
         if input("Back up the existing configuration? [y/N] ").lower() == "y":
             backup = _backup(config)
             print(f"Backup: {backup}" if backup else "Configuration file was not found.")
@@ -100,7 +99,7 @@ def main() -> None:
     if os.name != "nt" or not getattr(sys, "frozen", False):
         raise SystemExit("Client setup is available in the installed Windows package")
     print("NGR MCP client setup. No client settings change without an explicit choice.")
-    print("Existing same-name entries are shown with secrets redacted and are never replaced.")
+    print("Existing same-name entries can be inspected locally and are never replaced.")
     selected = [name for name in ("codex", "claude")
                 if input(f"Configure {name}? [y/N] ").lower() == "y"]
     if not selected:

@@ -20,7 +20,7 @@ CPU 版は `mcp`, `httpx2`, `uvicorn`, `starlette`, `numpy`, `onnxruntime`, `tok
 
 ## 状態と登録
 
-DB、token、cache、モデルはインストール先でなくユーザー領域または利用者指定 path に置く。更新とアンインストールはそれらを削除しない。設定用コマンド `NGR.exe --configure-clients` は利用者が Codex / Claude Code を個別に選択した場合だけ MCP 登録を行う。同名 `ngr-shared` が既にあれば内容を秘密値を伏せて示し、自動上書きしない。新規登録前には既存設定ファイルを timestamp 付きで退避する。新規 token はユーザー環境変数 `NGR_MCP_HTTP_BEARER_TOKEN` に保存し、コマンド引数や MCP 設定には書かない。既存アプリは環境変数を読み直すため再起動する。
+DB、token、cache、モデルはインストール先でなくユーザー領域または利用者指定 path に置く。更新とアンインストールはそれらを削除しない。設定用コマンド `NGR.exe --configure-clients` は利用者が Codex / Claude Code を個別に選択した場合だけ MCP 登録を行う。同名 `ngr-shared` が既にあれば安全な要約と設定ファイル path を示し、利用者がエディターで内容を確認できるようにする。CLI の任意の既存設定出力はコンソールやログに転記せず、自動上書きしない。新規登録前には既存設定ファイルを timestamp 付きで退避する。新規 token はユーザー環境変数 `NGR_MCP_HTTP_BEARER_TOKEN` に保存し、コマンド引数や MCP 設定には書かない。既存アプリは環境変数を読み直すため再起動する。
 
 ## CI 受け入れ
 

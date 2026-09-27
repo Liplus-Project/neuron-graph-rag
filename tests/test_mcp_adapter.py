@@ -1139,6 +1139,41 @@ class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
 class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
     TOKEN = "shared_proxy_test_token_0123456789abcdef"
 
+    def test_existing_registration_never_echoes_client_output(self) -> None:
+        from contextlib import redirect_stdout
+        from io import StringIO
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp import windows_registration
+
+        arbitrary_secret = "private value\nwith an unknown field name"
+        display = StringIO()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "config.toml"
+            with (patch.object(windows_registration.shutil, "which", return_value="codex.exe"),
+                  patch.object(windows_registration, "_config_path", return_value=path),
+                  patch.object(windows_registration.subprocess, "run",
+                               return_value=subprocess.CompletedProcess([], 0, arbitrary_secret, "")),
+                  patch("builtins.input", return_value="n"), redirect_stdout(display)):
+                windows_registration._register("codex")
+        self.assertNotIn(arbitrary_secret, display.getvalue())
+        self.assertNotIn("unknown field name", display.getvalue())
+        self.assertIn("existing", display.getvalue().lower())
+
+    def test_frozen_children_use_the_same_executable(self) -> None:
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp.shared_proxy import _entry_command
+
+        with patch.object(sys, "frozen", True, create=True):
+            self.assertEqual(_entry_command("--http", "--port", "8765"),
+                             [sys.executable, "--http", "--port", "8765"])
+            self.assertEqual(_entry_command("--tray-controller"),
+                             [sys.executable, "--tray-controller"])
+        with patch.object(sys, "frozen", False, create=True):
+            self.assertEqual(_entry_command("--http"),
+                             [sys.executable, "-m", "neuron_graph_rag_mcp", "--http"])
+            self.assertEqual(_entry_command("--tray-controller"),
+                             [sys.executable, "-m", "neuron_graph_rag_mcp.tray_controller"])
+
     @unittest.skipUnless(os.name == "nt", "Windows notification area")
     def test_tray_startup_failure_writes_redacted_diagnostic(self) -> None:
         from neuron_graph_rag_mcp.shared_proxy import TRAY_CONFIG_ENV, TRAY_LOG_ENV
