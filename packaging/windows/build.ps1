@@ -51,5 +51,7 @@ if ($LASTEXITCODE) { throw 'Inno Setup compile failed' }
 $fileName = "NGR-$version-windows-x64-$Flavor-setup.exe"
 $setupFile = Join-Path $outputRoot $fileName
 $digest = (Get-FileHash $setupFile -Algorithm SHA256).Hash.ToLowerInvariant()
+$setupBytes = (Get-Item $setupFile).Length
+Write-Output "SETUP_SIZE_BYTES=$setupBytes"
 "$digest *$fileName" | Set-Content -Path "$setupFile.sha256" -Encoding ascii
-@{ schema = 'ngr.windows-package/v1'; version = $version; flavor = $Flavor; setup_file = $fileName; sha256 = $digest; size = (Get-Item $setupFile).Length; bundle_size_bytes = $bundleBytes } | ConvertTo-Json | Set-Content -Path (Join-Path $outputRoot 'package-manifest.json') -Encoding utf8
+@{ schema = 'ngr.windows-package/v1'; version = $version; flavor = $Flavor; setup_file = $fileName; sha256 = $digest; size = $setupBytes; bundle_size_bytes = $bundleBytes } | ConvertTo-Json | Set-Content -Path (Join-Path $outputRoot 'package-manifest.json') -Encoding utf8
