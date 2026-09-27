@@ -34,6 +34,15 @@ START_TIMEOUT = 20.0
 TRAY_CONFIG_ENV = "_NGR_MCP_TRAY_CONFIG"
 
 
+def _entry_command(*arguments: str) -> list[str]:
+    """Use the same executable for child roles in a frozen onedir build."""
+    if getattr(sys, "frozen", False):
+        return [sys.executable, *arguments]
+    if arguments and arguments[0] == "--tray-controller":
+        return [sys.executable, "-m", "neuron_graph_rag_mcp.tray_controller", *arguments[1:]]
+    return [sys.executable, "-m", "neuron_graph_rag_mcp", *arguments]
+
+
 @contextmanager
 def _startup_lock(path: Path) -> Iterator[None]:
     path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
@@ -174,10 +183,7 @@ def _launch_windows_detached(command: list[str], environment: dict[str, str],
 
 def _start_service(args: argparse.Namespace, database: Path,
                    log_path: Path) -> subprocess.Popen[bytes] | None:
-    command = [
-        sys.executable, "-m", "neuron_graph_rag_mcp", "--http",
-        "--database", str(database), "--port", str(args.port),
-    ]
+    command = _entry_command("--http", "--database", str(database), "--port", str(args.port))
     for name in ("cuda_cache", "cuda_e5_snapshot", "cuda_v2_m3_snapshot"):
         value = getattr(args, name)
         if value:
@@ -230,7 +236,7 @@ def _ensure_tray(args: argparse.Namespace, token: str, database: Path,
     environment = dict(os.environ)
     environment[TRAY_CONFIG_ENV] = json.dumps(payload)
     _launch_windows_detached(
-        [sys.executable, "-m", "neuron_graph_rag_mcp.tray_controller"],
+        _entry_command("--tray-controller"),
         environment, kind="tray controller",
     )
     deadline = time.monotonic() + START_TIMEOUT

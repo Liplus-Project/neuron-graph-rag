@@ -1,0 +1,43 @@
+name: Windows package
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Windows package (${{ matrix.flavor }})
+    runs-on: windows-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        flavor: [cpu, cuda]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - name: Build frozen package and per-user installer
+        shell: pwsh
+        run: ./packaging/windows/build.ps1 -Flavor '${{ matrix.flavor }}'
+      - name: Smoke test clean installed package
+        shell: pwsh
+        run: |
+          $manifest = Get-Content package-output/package-manifest.json | ConvertFrom-Json
+          python tests/windows_package_smoke.py (Join-Path package-output $manifest.setup_file) $manifest.version
+      - name: Check output digest
+        shell: pwsh
+        run: |
+          $manifest = Get-Content package-output/package-manifest.json | ConvertFrom-Json
+          $actual = (Get-FileHash (Join-Path package-output $manifest.setup_file) -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $manifest.sha256) { throw 'Manifest hash mismatch' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ngr-windows-${{ matrix.flavor }}
+          path: package-output/*
+          if-no-files-found: error

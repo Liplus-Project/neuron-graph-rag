@@ -1,5 +1,7 @@
 # 接続時に共有ローカル MCP を起動する
 
+Windows セットアップ EXE から導入する場合は [Windows 版の導入・更新・削除](windows-installation.md)を参照する。このページの `pip install` と `python -m` は通常 wheel 向け。
+
 ## Codex と Claude Code に登録する
 
 Python 環境に `pip install '.[mcp]'` を入れる。以下は PowerShell の例。token は同じ Windows ユーザーのユーザー環境変数に保存し、コマンド引数や MCP 設定本文には書かない。token 値は画面に表示しない。
@@ -68,4 +70,4 @@ neuron-graph-rag-mcp --http `
 
 モデル path は例であり、利用者が実際に配置した絶対 path を渡す。最初に MCP tool `update_cuda_shortlist_cache` を呼び、corpus の更新後も呼び直す。続いて `search_cuda_shortlist` に `contract_version: "ngr.mcp.feedback/v1"` と `query` を渡す。モデルは最初の検索時に読み込み、プロセス終了まで同じ retriever で再利用する。未設定、CUDA 不可、モデル欠落、古い cache は検索失敗として返る。通常の `search` は CUDA を使わず従来の feedback trace を返す。
 
-現段階では token を共有する同一ユーザーのローカル利用を想定する。HTTP は OS ユーザーの身元を検査しないため、token を知る端末内の別プロセスも書き込み tool を使える。token が漏れたら新しい値を生成し、サービスとクライアントを再起動する。他端末への公開、remote deployment、インストーラーは提供しない。CUDA 検索中は同期処理が HTTP の他の tool 呼び出しを待たせる。モデルの VRAM と E5 cache のディスク容量が別途必要になる。
+現段階では token を共有する同一ユーザーのローカル利用を想定する。HTTP は OS ユーザーの身元を検査しないため、token を知る端末内の別プロセスも書き込み tool を使える。token が漏れたら新しい値を生成し、サービスとクライアントを再起動する。他端末への公開と remote deployment は提供しない。Windows インストーラーは [別ガイド](windows-installation.md)を参照する。CUDA 検索中は同期処理が HTTP の他の tool 呼び出しを待たせる。モデルの VRAM と E5 cache のディスク容量が別途必要になる。
