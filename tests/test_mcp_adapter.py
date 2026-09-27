@@ -1152,12 +1152,69 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
             with (patch.object(windows_registration.shutil, "which", return_value="codex.exe"),
                   patch.object(windows_registration, "_config_path", return_value=path),
                   patch.object(windows_registration.subprocess, "run",
-                               return_value=subprocess.CompletedProcess([], 0, arbitrary_secret, "")),
+                               return_value=subprocess.CompletedProcess([], 0, arbitrary_secret, "")) as run,
                   patch("builtins.input", return_value="n"), redirect_stdout(display)):
                 windows_registration._register("codex")
+            self.assertEqual(run.call_count, 1)
+            self.assertEqual(run.call_args.args[0], ["codex.exe", "mcp", "get", "ngr-shared"])
         self.assertNotIn(arbitrary_secret, display.getvalue())
         self.assertNotIn("unknown field name", display.getvalue())
         self.assertIn("existing", display.getvalue().lower())
+
+    def test_new_registration_backs_up_before_cli_write_without_token_argument(self) -> None:
+        from contextlib import redirect_stdout
+        from io import StringIO
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp import windows_registration
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "config.toml"
+            original = b"old config with private value\n"
+            path.write_bytes(original)
+            calls: list[list[str]] = []
+
+            def fake_run(command: list[str], **_kwargs: object) -> subprocess.CompletedProcess[str]:
+                calls.append(command)
+                if command[2] == "get":
+                    return subprocess.CompletedProcess(command, 1, "", "No MCP server named ngr-shared")
+                backups = list(path.parent.glob("config.toml.ngr-backup-*"))
+                self.assertEqual(len(backups), 1)
+                self.assertEqual(backups[0].read_bytes(), original)
+                return subprocess.CompletedProcess(command, 0, "", "")
+
+            output = StringIO()
+            with (patch.object(windows_registration.shutil, "which", return_value="codex.exe"),
+                  patch.object(windows_registration, "_config_path", return_value=path),
+                  patch.object(windows_registration.subprocess, "run", side_effect=fake_run),
+                  patch("builtins.input", return_value="y"), redirect_stdout(output)):
+                windows_registration._register("codex")
+            self.assertEqual(path.read_bytes(), original)
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(calls[1][-2:], [sys.executable, "--shared"])
+            self.assertNotIn(self.TOKEN, repr(calls) + output.getvalue())
+
+    def test_registration_token_is_only_written_to_user_environment(self) -> None:
+        from contextlib import redirect_stdout
+        from io import StringIO
+        from types import SimpleNamespace
+        from unittest.mock import MagicMock, patch
+        from neuron_graph_rag_mcp import windows_registration
+
+        key = MagicMock()
+        key.__enter__.return_value = object()
+        fake_registry = SimpleNamespace(HKEY_CURRENT_USER=1, KEY_READ=1, KEY_SET_VALUE=2,
+                                        REG_SZ=1, CreateKeyEx=MagicMock(return_value=key),
+                                        QueryValueEx=MagicMock(side_effect=FileNotFoundError),
+                                        SetValueEx=MagicMock())
+        output = StringIO()
+        with (patch.dict(sys.modules, {"winreg": fake_registry}),
+              patch.object(windows_registration.secrets, "token_urlsafe", return_value=self.TOKEN),
+              patch.dict(os.environ, {TOKEN_ENV: ""}), redirect_stdout(output)):
+            windows_registration._ensure_token()
+            self.assertEqual(os.environ[TOKEN_ENV], self.TOKEN)
+        fake_registry.SetValueEx.assert_called_once()
+        self.assertEqual(fake_registry.SetValueEx.call_args.args[-2:], (1, self.TOKEN))
+        self.assertNotIn(self.TOKEN, output.getvalue())
 
     def test_frozen_children_use_the_same_executable(self) -> None:
         from unittest.mock import patch

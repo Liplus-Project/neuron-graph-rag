@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 from pathlib import Path
 
 
@@ -54,16 +55,21 @@ def main() -> None:
         package_env["USERPROFILE"] = str(data)
         package_env["NGR_MCP_HTTP_BEARER_TOKEN"] = token
         package_env["NGR_DATABASE"] = str(database)
+        install_started = time.monotonic()
         setup_result = subprocess.run([str(setup), "/VERYSILENT", "/SUPPRESSMSGBOXES",
                                        "/NORESTART", f"/DIR={install}"],
                                       capture_output=True, text=True, timeout=180)
         if setup_result.returncode:
             raise AssertionError(f"Setup failed: {setup_result.returncode}")
+        print(f"INSTALL_SECONDS={time.monotonic() - install_started:.2f}", flush=True)
+        installed_bytes = sum(path.stat().st_size for path in install.rglob("*") if path.is_file())
+        print(f"INSTALLED_SIZE_BYTES={installed_bytes}", flush=True)
         exe = install / "NGR.exe"
         try:
             version_result = subprocess.run([str(exe), "--version"], env=package_env,
                                             capture_output=True, text=True, timeout=30)
             assert version_result.returncode == 0 and version_result.stdout.strip() == version
+            start_started = time.monotonic()
             proxy = subprocess.Popen([str(exe), "--shared", "--port", str(port)],
                                      env=package_env, stdin=subprocess.PIPE,
                                      stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -80,6 +86,7 @@ def main() -> None:
                 proxy.stdin.flush()
                 response = json.loads(responses.get(timeout=90))
                 assert response["id"] == 1 and "result" in response, response
+                print(f"SHARED_START_SECONDS={time.monotonic() - start_started:.2f}", flush=True)
                 proxy.stdin.write(json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"}) + "\n")
                 proxy.stdin.write(json.dumps({"jsonrpc": "2.0", "id": 2, "method": "tools/list"}) + "\n")
                 proxy.stdin.flush()
@@ -89,14 +96,18 @@ def main() -> None:
                 assert identity["database"] == str(database.resolve())
                 tray = data / ".ngrdb" / f"shared-local-mcp-{port}.tray.json"
                 assert tray.is_file(), "tray process did not register"
+                stop_started = time.monotonic()
                 _run(exe, package_env, "--tray-action", "stop", "--port", str(port))
+                print(f"TRAY_STOP_SECONDS={time.monotonic() - stop_started:.2f}", flush=True)
                 try:
                     _request(port, token)
                 except (OSError, AssertionError):
                     pass
                 else:
                     raise AssertionError("tray stop left the service running")
+                resume_started = time.monotonic()
                 _run(exe, package_env, "--tray-action", "resume", "--port", str(port))
+                print(f"TRAY_RESUME_SECONDS={time.monotonic() - resume_started:.2f}", flush=True)
                 assert _request(port, token)["service"] == "neuron-graph-rag-shared-local-mcp/v1"
                 _run(exe, package_env, "--tray-action", "exit", "--port", str(port))
             finally:

@@ -30,6 +30,8 @@ if ($LASTEXITCODE) { throw 'PyInstaller build failed' }
 & "$bundleRoot\NGR\NGR.exe" --version
 if ($LASTEXITCODE) { throw 'Frozen executable version probe failed' }
 @{ schema = 'ngr.windows-package/v1'; version = $version; flavor = $Flavor } | ConvertTo-Json | Set-Content -Path (Join-Path $bundleRoot 'NGR\package-manifest.json') -Encoding utf8
+$bundleBytes = (Get-ChildItem -LiteralPath (Join-Path $bundleRoot 'NGR') -File -Recurse | Measure-Object -Property Length -Sum).Sum
+Write-Output "BUNDLE_SIZE_BYTES=$bundleBytes"
 
 $innoVersion = '6.7.3'
 $innoUrl = "https://github.com/jrsoftware/issrc/releases/download/is-6_7_3/innosetup-$innoVersion.exe"
@@ -48,8 +50,11 @@ if (Test-Path $innoDir) {
 }
 $compiler = $compilerCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 if (-not $compiler) { throw "Inno Setup compiler not found after installing $innoVersion" }
-$compilerVersion = (Get-Item -LiteralPath $compiler).VersionInfo.ProductVersion
-if ($compilerVersion -notmatch '(^|\D)6\.7\.3(\D|$)') { throw "Unexpected Inno Setup compiler version: $compilerVersion" }
+$compilerVersion = (& $compiler --version 2>&1 | Out-String).Trim()
+if ($compilerVersion -notmatch '(^|\D)6\.7\.3(\D|$)') {
+  $compilerVersion = (& $compiler '/?' 2>&1 | Out-String).Trim()
+}
+if ($compilerVersion -notmatch '(^|\D)6\.7\.3(\D|$)') { throw 'Unexpected Inno Setup compiler version' }
 & $compiler "/DAppVersion=$version" "/DFlavor=$Flavor" "/DBundleDir=$bundleRoot\NGR" "/DOutputRoot=$outputRoot" (Join-Path $root 'packaging\windows\installer.iss')
 if ($LASTEXITCODE) { throw 'Inno Setup compile failed' }
 
@@ -57,4 +62,4 @@ $fileName = "NGR-$version-windows-x64-$Flavor-setup.exe"
 $setupFile = Join-Path $outputRoot $fileName
 $digest = (Get-FileHash $setupFile -Algorithm SHA256).Hash.ToLowerInvariant()
 "$digest *$fileName" | Set-Content -Path "$setupFile.sha256" -Encoding ascii
-@{ schema = 'ngr.windows-package/v1'; version = $version; flavor = $Flavor; setup_file = $fileName; sha256 = $digest; size = (Get-Item $setupFile).Length } | ConvertTo-Json | Set-Content -Path (Join-Path $outputRoot 'package-manifest.json') -Encoding utf8
+@{ schema = 'ngr.windows-package/v1'; version = $version; flavor = $Flavor; setup_file = $fileName; sha256 = $digest; size = (Get-Item $setupFile).Length; bundle_size_bytes = $bundleBytes } | ConvertTo-Json | Set-Content -Path (Join-Path $outputRoot 'package-manifest.json') -Encoding utf8
