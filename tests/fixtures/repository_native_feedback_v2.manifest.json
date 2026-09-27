@@ -1,0 +1,7 @@
+{
+  "protocol_version": "repository-native-feedback-v2",
+  "description": "固定された repository-native controlled corpus v2 の事前検証契約。結果を含まない。",
+  "corpus_directory": "corpora/repository-native-controlled-v2",
+  "source_commit": "c4aa1a80fc7cd5ae1c613718deecda173440452b",
+  "source_sha256": "5f5825b9b4badc0dd1d0660daf9a3764c644aeed8206da51ddcbff0a7469b852"
+}
