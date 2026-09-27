@@ -38,26 +38,13 @@ $innoUrl = "https://github.com/jrsoftware/issrc/releases/download/is-6_7_3/innos
 $innoHash = '9c73c3bae7ed48d44112a0f48e66742c00090bdb5bef71d9d3c056c66e97b732'
 $innoInstaller = Join-Path $env:RUNNER_TEMP 'innosetup-6.7.3.exe'
 $innoDir = Join-Path $env:RUNNER_TEMP 'inno-setup-6.7.3'
+if (Test-Path -LiteralPath $innoDir) { throw "Inno Setup target is not clean: $innoDir" }
 Invoke-WebRequest -Uri $innoUrl -OutFile $innoInstaller
 if ((Get-FileHash $innoInstaller -Algorithm SHA256).Hash.ToLowerInvariant() -ne $innoHash) { throw 'Inno Setup download hash mismatch' }
 $innoProcess = Start-Process -FilePath $innoInstaller -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',"/DIR=$innoDir") -Wait -PassThru -WindowStyle Hidden
 if ($innoProcess.ExitCode) { throw "Inno Setup installation failed with code $($innoProcess.ExitCode)" }
-$compilerCandidates = @((Join-Path $innoDir 'ISCC.exe'),
-                        (Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'),
-                        (Join-Path $env:ProgramFiles 'Inno Setup 6\ISCC.exe'))
-if (Test-Path $innoDir) {
-  $compilerCandidates += @(Get-ChildItem -LiteralPath $innoDir -Filter ISCC.exe -Recurse -File | Select-Object -ExpandProperty FullName)
-}
-$compiler = $compilerCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
-if (-not $compiler) { throw "Inno Setup compiler not found after installing $innoVersion" }
-Write-Output "INNO_COMPILER_PATH=$compiler"
-$compilerVersion = (& $compiler --version 2>&1 | Out-String).Trim()
-Write-Output "INNO_COMPILER_VERSION=$compilerVersion"
-if ($compilerVersion -notmatch '(^|\D)6\.7\.3(\D|$)') {
-  $compilerVersion = (& $compiler '/?' 2>&1 | Out-String).Trim()
-  Write-Output "INNO_COMPILER_HELP=$compilerVersion"
-}
-if ($compilerVersion -notmatch '(^|\D)6\.7\.3(\D|$)') { throw 'Unexpected Inno Setup compiler version' }
+$compiler = Join-Path $innoDir 'ISCC.exe'
+if (-not (Test-Path -LiteralPath $compiler -PathType Leaf)) { throw "Verified Inno Setup compiler not found: $compiler" }
 & $compiler "/DAppVersion=$version" "/DFlavor=$Flavor" "/DBundleDir=$bundleRoot\NGR" "/DOutputRoot=$outputRoot" (Join-Path $root 'packaging\windows\installer.iss')
 if ($LASTEXITCODE) { throw 'Inno Setup compile failed' }
 
