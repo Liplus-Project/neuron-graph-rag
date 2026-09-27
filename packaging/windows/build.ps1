@@ -40,7 +40,17 @@ Invoke-WebRequest -Uri $innoUrl -OutFile $innoInstaller
 if ((Get-FileHash $innoInstaller -Algorithm SHA256).Hash.ToLowerInvariant() -ne $innoHash) { throw 'Inno Setup download hash mismatch' }
 & $innoInstaller /VERYSILENT /SUPPRESSMSGBOXES /NORESTART "/DIR=$innoDir"
 if ($LASTEXITCODE) { throw 'Inno Setup installation failed' }
-& "$innoDir\ISCC.exe" "/DAppVersion=$version" "/DFlavor=$Flavor" "/DBundleDir=$bundleRoot\NGR" "/DOutputRoot=$outputRoot" (Join-Path $root 'packaging\windows\installer.iss')
+$compilerCandidates = @((Join-Path $innoDir 'ISCC.exe'),
+                        (Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'),
+                        (Join-Path $env:ProgramFiles 'Inno Setup 6\ISCC.exe'))
+if (Test-Path $innoDir) {
+  $compilerCandidates += @(Get-ChildItem -LiteralPath $innoDir -Filter ISCC.exe -Recurse -File | Select-Object -ExpandProperty FullName)
+}
+$compiler = $compilerCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+if (-not $compiler) { throw "Inno Setup compiler not found after installing $innoVersion" }
+$compilerVersion = (Get-Item -LiteralPath $compiler).VersionInfo.ProductVersion
+if ($compilerVersion -notmatch '(^|\D)6\.7\.3(\D|$)') { throw "Unexpected Inno Setup compiler version: $compilerVersion" }
+& $compiler "/DAppVersion=$version" "/DFlavor=$Flavor" "/DBundleDir=$bundleRoot\NGR" "/DOutputRoot=$outputRoot" (Join-Path $root 'packaging\windows\installer.iss')
 if ($LASTEXITCODE) { throw 'Inno Setup compile failed' }
 
 $fileName = "NGR-$version-windows-x64-$Flavor-setup.exe"
