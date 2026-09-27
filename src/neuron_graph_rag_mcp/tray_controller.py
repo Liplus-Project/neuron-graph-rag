@@ -122,7 +122,7 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
     WM_LBUTTONUP = 0x0202
     WM_CONTEXTMENU = 0x007B
     NIM_ADD, NIM_MODIFY, NIM_DELETE = 0, 1, 2
-    NIF_MESSAGE, NIF_ICON, NIF_TIP = 1, 2, 4
+    NIF_MESSAGE, NIF_ICON, NIF_TIP, NIF_INFO = 1, 2, 4, 16
     MF_STRING, MF_GRAYED, MF_CHECKED = 0, 1, 8
     TPM_RETURNCMD, TPM_RIGHTBUTTON = 0x100, 2
     state = {"text": "Starting", "exit": False}
@@ -134,7 +134,7 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
     updates: dict[str, Any] = {
         "enabled": checks_enabled, "candidate": None, "busy": False,
         "cancel": None, "last_check": 0.0, "message": "Not checked",
-        "notice": None,
+        "notice": None, "balloon": None,
     }
     try:
         build = installed_build()
@@ -163,6 +163,14 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
             state["text"] = current
             icon.szTip = f"NGR shared MCP - {current}"
             shell32.Shell_NotifyIconW(NIM_MODIFY, ctypes.byref(icon))
+        if updates["balloon"]:
+            icon.uFlags |= NIF_INFO
+            icon.szInfoTitle = "NGR update available"
+            icon.szInfo = updates["balloon"]
+            icon.dwInfoFlags = 1
+            shell32.Shell_NotifyIconW(NIM_MODIFY, ctypes.byref(icon))
+            icon.uFlags &= ~NIF_INFO
+            updates["balloon"] = None
 
     def check_updates(manual: bool = False) -> None:
         if updates["busy"]:
@@ -174,6 +182,9 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
         def work() -> None:
             try:
                 candidate = check_for_update(build)
+                if candidate is not None and candidate != updates["candidate"]:
+                    updates["balloon"] = (f"Version {candidate.version} is available. "
+                                          "Open the NGR tray to review it.")
                 updates["candidate"] = candidate
                 updates["message"] = (f"Version {candidate.version} available" if candidate
                                       else "No compatible update")
