@@ -109,11 +109,18 @@ class VerifiedUpdatesTests(unittest.TestCase):
     def test_cancel_removes_partial_file(self):
         candidate = candidate_from_release(release(), self.build)
         cancelled = threading.Event()
-        cancelled.set()
+
+        class CancelAfterFirstRead(FakeResponse):
+            def read(self, size=-1):
+                data = super().read(size)
+                if data:
+                    cancelled.set()
+                return data
+
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)
             with patch("neuron_graph_rag_mcp.verified_updates.urllib.request.urlopen",
-                       return_value=FakeResponse(PAYLOAD)):
+                       return_value=CancelAfterFirstRead(PAYLOAD)):
                 with self.assertRaises(DownloadCancelled):
                     download_candidate(candidate, path, cancelled)
             self.assertEqual(list(path.iterdir()), [])
