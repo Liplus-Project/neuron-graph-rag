@@ -23,7 +23,12 @@ $arguments = @('--noconfirm','--clean','--onedir','--name','NGR','--distpath',$b
 # MCP's optional CLI imports typer and exits when that unrelated extra is absent.
 # The application imports the MCP client/server modules statically; collecting
 # every mcp.* module would include its unrelated CLI and fail the build.
-if ($Flavor -eq 'cuda') { $arguments += @('--hidden-import','transformers.models.xlm_roberta.modeling_xlm_roberta','--hidden-import','transformers.models.xlm_roberta.tokenization_xlm_roberta_fast','--hidden-import','safetensors.torch','--collect-data','transformers') }
+if ($Flavor -eq 'cuda') {
+  # AutoTokenizer's lazy mapping imports model packages at runtime, including
+  # models unrelated to the selected XLM-RoBERTa snapshot. Collect the whole
+  # model namespace so a missing dynamic import cannot move to the next model.
+  $arguments += @('--collect-submodules','transformers.models','--hidden-import','safetensors.torch','--collect-data','transformers')
+}
 $arguments += (Join-Path $root 'packaging\windows\entry.py')
 python -m PyInstaller @arguments
 if ($LASTEXITCODE) { throw 'PyInstaller build failed' }
