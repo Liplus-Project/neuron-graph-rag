@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        flavor: [cpu, cuda]
+        flavor: [cpu]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
