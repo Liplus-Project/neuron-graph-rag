@@ -10,6 +10,8 @@ import argparse
 import ctypes
 import json
 import os
+import threading
+import time
 import traceback
 from datetime import datetime, timezone
 from pathlib import Path
@@ -20,6 +22,8 @@ from .shared_proxy import (
     _state_dir, _stop_service,
 )
 from .http_server import TOKEN_ENV, _validate_bearer_token
+from .verified_updates import (DownloadCancelled, UpdateError, check_for_update,
+                               download_candidate, installed_build)
 from neuron_graph_rag.database_home import resolve_database
 
 
@@ -121,10 +125,24 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
     WM_LBUTTONUP = 0x0202
     WM_CONTEXTMENU = 0x007B
     NIM_ADD, NIM_MODIFY, NIM_DELETE = 0, 1, 2
-    NIF_MESSAGE, NIF_ICON, NIF_TIP = 1, 2, 4
-    MF_STRING, MF_GRAYED = 0, 1
+    NIF_MESSAGE, NIF_ICON, NIF_TIP, NIF_INFO = 1, 2, 4, 16
+    MF_STRING, MF_GRAYED, MF_CHECKED = 0, 1, 8
     TPM_RETURNCMD, TPM_RIGHTBUTTON = 0x100, 2
     state = {"text": "Starting", "exit": False}
+    update_settings = _state_dir() / "update-settings.json"
+    try:
+        checks_enabled = json.loads(update_settings.read_text(encoding="utf-8")).get("enabled") is not False
+    except (OSError, ValueError, AttributeError):
+        checks_enabled = True
+    updates: dict[str, Any] = {
+        "enabled": checks_enabled, "candidate": None, "busy": False,
+        "cancel": None, "last_check": 0.0, "message": "Not checked",
+        "notice": None, "balloon": None,
+    }
+    try:
+        build = installed_build()
+    except UpdateError:
+        build = None
     icon = NOTIFYICONDATAW()
     icon.cbSize = ctypes.sizeof(icon)
     icon.uID = 1
@@ -148,6 +166,73 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
             state["text"] = current
             icon.szTip = f"NGR shared MCP - {current}"
             shell32.Shell_NotifyIconW(NIM_MODIFY, ctypes.byref(icon))
+        if updates["balloon"]:
+            icon.uFlags |= NIF_INFO
+            icon.szInfoTitle = "NGR update available"
+            icon.szInfo = updates["balloon"]
+            icon.dwInfoFlags = 1
+            shell32.Shell_NotifyIconW(NIM_MODIFY, ctypes.byref(icon))
+            icon.uFlags &= ~NIF_INFO
+            updates["balloon"] = None
+
+    def check_updates(manual: bool = False) -> None:
+        if updates["busy"]:
+            return
+        updates["busy"] = True
+        updates["last_check"] = time.monotonic()
+        updates["message"] = "Checking..."
+
+        def work() -> None:
+            try:
+                candidate = check_for_update(build)
+                if candidate is not None and candidate != updates["candidate"]:
+                    updates["balloon"] = (f"Version {candidate.version} is available. "
+                                          "Open the NGR tray to review it.")
+                updates["candidate"] = candidate
+                updates["message"] = (f"Version {candidate.version} available" if candidate
+                                      else "No compatible update")
+            except UpdateError as error:
+                updates["candidate"] = None
+                updates["message"] = "Check unavailable"
+                if manual:
+                    updates["notice"] = str(error)
+            finally:
+                updates["busy"] = False
+
+        threading.Thread(target=work, name="ngr-update-check", daemon=True).start()
+
+    def download_update(hwnd: int) -> None:
+        candidate = updates["candidate"]
+        if updates["busy"] or candidate is None:
+            return
+        answer = user32.MessageBoxW(
+            hwnd, f"Download {candidate.filename}?\n\nThis installer is unsigned. NGR will verify its "
+            "size and SHA-256, but will not run it automatically.",
+            "NGR update", 0x24)  # MB_YESNO | MB_ICONQUESTION
+        if answer != 6:
+            return
+        cancel = threading.Event()
+        updates["busy"] = True
+        updates["cancel"] = cancel
+        updates["message"] = "Downloading (select Cancel to stop)"
+
+        def work() -> None:
+            try:
+                path = download_candidate(candidate, _state_dir() / "updates", cancel)
+                updates["message"] = "Verified download ready"
+                updates["notice"] = (f"Verified installer saved to:\n{path}\n\n"
+                                     f"Review the release before running this unsigned installer:\n"
+                                     f"{candidate.release_url}")
+            except DownloadCancelled:
+                updates["message"] = "Download cancelled"
+            except UpdateError as error:
+                updates["message"] = "Download failed"
+                updates["notice"] = str(error)
+            finally:
+                updates["cancel"] = None
+                updates["busy"] = False
+
+        threading.Thread(target=work, name="ngr-update-download", daemon=True).start()
 
     def menu(hwnd: int) -> None:
         refresh()
@@ -157,6 +242,21 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
                            1, "Stop and release GPU")
         user32.AppendMenuW(handle, MF_STRING | (0 if state["text"] == "Stopped" else MF_GRAYED),
                            2, "Resume")
+        version_text = build.version if build is not None else "unknown"
+        flavor_text = build.flavor if build is not None else None
+        user32.AppendMenuW(handle, MF_STRING | MF_GRAYED, 0,
+                           f"Version: {version_text} ({flavor_text or 'source'})")
+        user32.AppendMenuW(handle, MF_STRING | MF_GRAYED, 0, updates["message"])
+        user32.AppendMenuW(handle, MF_STRING | (MF_GRAYED if updates["busy"] else 0),
+                           4, "Check for updates")
+        user32.AppendMenuW(handle, MF_STRING | (0 if updates["enabled"] else MF_CHECKED),
+                           5, "Disable automatic update checks")
+        user32.AppendMenuW(handle, MF_STRING | (0 if updates["candidate"] and not updates["busy"] else MF_GRAYED),
+                           6, "Download verified installer")
+        user32.AppendMenuW(handle, MF_STRING | (0 if updates["busy"] and updates["cancel"] else MF_GRAYED),
+                           7, "Cancel download")
+        user32.AppendMenuW(handle, MF_STRING | (0 if updates["candidate"] else MF_GRAYED),
+                           8, "Open release page")
         user32.AppendMenuW(handle, MF_STRING, 3, "Exit")
         point = POINT()
         user32.GetCursorPos(ctypes.byref(point))
@@ -170,9 +270,27 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
             elif choice == 2:
                 _resume(args, token, database, config)
             elif choice == 3:
+                if updates["cancel"] is not None:
+                    updates["cancel"].set()
                 _exit(args, token, database)
                 state["exit"] = True
                 user32.DestroyWindow(hwnd)
+            elif choice == 4:
+                check_updates(manual=True)
+            elif choice == 5:
+                updates["enabled"] = not updates["enabled"]
+                update_settings.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+                temp = update_settings.with_suffix(".tmp")
+                temp.write_text(json.dumps({"enabled": updates["enabled"]}), encoding="utf-8")
+                os.replace(temp, update_settings)
+            elif choice == 6:
+                download_update(hwnd)
+            elif choice == 7 and updates["cancel"] is not None:
+                updates["cancel"].set()
+            elif choice == 8 and updates["candidate"] is not None:
+                import webbrowser
+
+                webbrowser.open(updates["candidate"].release_url)
         except (RuntimeError, OSError):
             user32.MessageBoxW(hwnd, "The operation failed. Check the NGR diagnostic log.",
                                "NGR shared MCP", 0x10)
@@ -185,6 +303,14 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
             return 0
         if message == WM_TIMER:
             refresh()
+            if (updates["enabled"] and not updates["busy"] and build is not None
+                    and build.flavor is not None
+                    and time.monotonic() - updates["last_check"] >= 24 * 60 * 60):
+                check_updates()
+            if updates["notice"]:
+                notice = updates["notice"]
+                updates["notice"] = None
+                user32.MessageBoxW(hwnd, notice, "NGR update", 0x40)
             return 0
         if message == WM_DESTROY:
             shell32.Shell_NotifyIconW(NIM_DELETE, ctypes.byref(icon))

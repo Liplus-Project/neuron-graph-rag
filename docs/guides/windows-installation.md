@@ -18,7 +18,7 @@ CUDA 検索は [CUDA ガイド](cuda-shortlist-retrieval.md)に従い、固定 r
 
 ## 更新
 
-配布 EXE と `.sha256` を検証し、共有本体とトレイを **Exit** で終了してから新しいセットアップを同じユーザーで実行する。インストール先のプログラムを入れ替える。DB、token、cache、別置きモデルは更新対象に含まれない。`NGR.exe --version` または同じディレクトリの `package-manifest.json` で導入版を確認できる。MCP 登録 path を変えた場合は **Configure MCP clients** で現状を確認して自分で更新する。自動更新は別 issue の範囲。
+トレイから公開済みの互換版を確認し、size と SHA-256 を検証して取得できる。操作は[検証付き更新のガイド](windows-verified-updates.md)を参照する。手動取得した場合も配布 EXE と `.sha256` を検証する。共有本体とトレイを **Exit** で終了してから新しいセットアップを同じユーザーで実行する。インストール先のプログラムを入れ替える。DB、token、cache、別置きモデルは更新対象に含まれない。`NGR.exe --version` または同じディレクトリの `package-manifest.json` で導入版を確認できる。MCP 登録 path を変えた場合は **Configure MCP clients** で現状を確認して自分で更新する。署名検証付きの自動適用は別 issue の範囲。
 
 ## アンインストール
 
