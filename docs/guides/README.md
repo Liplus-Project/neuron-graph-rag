@@ -7,6 +7,8 @@
 - [CPU shortlist検索](cpu-shortlist-retrieval.md)
 - [CUDA shortlist検索](cuda-shortlist-retrieval.md)
 - [共有ローカル MCP の接続時起動と停止](shared-local-mcp.md)
+- [Windows 版の導入・更新・削除](windows-installation.md)
+- [Windows 版の検証付き更新](windows-verified-updates.md)
 - [通常 wheel と checkout 実験コードの境界](runtime-wheel-boundary.md)
 
 - [github-rag-mcp-replacement-compatibility.md](../github-rag-mcp-replacement-compatibility.md) — 元パス維持

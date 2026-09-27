@@ -24,6 +24,7 @@ from .shared_proxy import (
 from .http_server import TOKEN_ENV, _validate_bearer_token
 from .verified_updates import (DownloadCancelled, UpdateError, check_for_update,
                                download_candidate, installed_build)
+from neuron_graph_rag.database_home import resolve_database
 
 
 def _pause(args: argparse.Namespace, token: str, database: Path) -> None:
@@ -390,6 +391,51 @@ def _main() -> None:
                 marker.unlink(missing_ok=True)
         except (FileNotFoundError, ValueError, OSError):
             pass
+
+
+def action_main(argv: list[str] | None = None) -> None:
+    """CLI equivalent of tray actions, also used by unattended package smoke tests."""
+    if os.name != "nt":
+        raise SystemExit("NGR tray actions require Windows")
+    parser = argparse.ArgumentParser(description="Control the shared NGR tray service")
+    parser.add_argument("action", choices=("stop", "resume", "exit"))
+    parser.add_argument("--database")
+    parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--cuda-cache")
+    parser.add_argument("--cuda-e5-snapshot")
+    parser.add_argument("--cuda-v2-m3-snapshot")
+    parser.add_argument("--cuda-device", type=int, default=0)
+    args = parser.parse_args(argv)
+    token = os.environ.get(TOKEN_ENV, "")
+    try:
+        _validate_bearer_token(token)
+        database = resolve_database(args.database, environ=os.environ).path.expanduser().resolve()
+        paths = (args.cuda_cache, args.cuda_e5_snapshot, args.cuda_v2_m3_snapshot)
+        if any(paths) and not all(paths):
+            raise ValueError("CUDA requires all three --cuda path options")
+        config = {}
+        if all(paths):
+            config = {name: str(Path(getattr(args, name)).expanduser().resolve())
+                      for name in ("cuda_cache", "cuda_e5_snapshot", "cuda_v2_m3_snapshot")}
+            config["cuda_device"] = args.cuda_device
+        if args.action == "stop":
+            _pause(args, token, database)
+        elif args.action == "resume":
+            _resume(args, token, database, config)
+        else:
+            _exit(args, token, database)
+            from ctypes import wintypes
+
+            user32 = ctypes.windll.user32
+            user32.FindWindowW.argtypes = (wintypes.LPCWSTR, wintypes.LPCWSTR)
+            user32.FindWindowW.restype = wintypes.HWND
+            user32.PostMessageW.argtypes = (wintypes.HWND, wintypes.UINT,
+                                            wintypes.WPARAM, wintypes.LPARAM)
+            window = user32.FindWindowW(f"NGRSharedMCPTray{args.port}", None)
+            if window:
+                user32.PostMessageW(window, 0x0010, 0, 0)  # WM_CLOSE
+    except (ValueError, RuntimeError, OSError) as error:
+        parser.exit(2, f"NGR tray action: {error}\n")
 
 
 if __name__ == "__main__":
