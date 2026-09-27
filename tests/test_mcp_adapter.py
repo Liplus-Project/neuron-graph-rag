@@ -1139,6 +1139,41 @@ class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
 class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
     TOKEN = "shared_proxy_test_token_0123456789abcdef"
 
+    @unittest.skipUnless(os.name == "nt", "Windows notification area")
+    def test_tray_startup_failure_writes_redacted_diagnostic(self) -> None:
+        from neuron_graph_rag_mcp.shared_proxy import TRAY_CONFIG_ENV, TRAY_LOG_ENV
+
+        with tempfile.TemporaryDirectory() as directory:
+            log_path = Path(directory) / "tray.log"
+            environment = {**os.environ, TOKEN_ENV: self.TOKEN,
+                           TRAY_CONFIG_ENV: '{"cuda_e5_snapshot":"C:\\private\\model",',
+                           TRAY_LOG_ENV: str(log_path)}
+            failed = subprocess.run(
+                [sys.executable, "-m", "neuron_graph_rag_mcp.tray_controller"],
+                env=environment, capture_output=True, text=True, timeout=10, check=False,
+            )
+            self.assertEqual(failed.returncode, 1)
+            log = log_path.read_text(encoding="utf-8")
+            self.assertIn("JSONDecodeError at tray_controller.py:", log)
+            self.assertNotIn(self.TOKEN, log + failed.stderr)
+            self.assertNotIn("private", log + failed.stderr)
+
+    @unittest.skipUnless(os.name == "nt", "Windows notification area")
+    def test_tray_child_exit_reports_log_without_waiting_for_timeout(self) -> None:
+        from argparse import Namespace
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp import shared_proxy
+
+        with tempfile.TemporaryDirectory() as directory:
+            args = Namespace(port=54713)
+            with (patch.object(shared_proxy, "_state_dir", return_value=Path(directory)),
+                  patch.object(shared_proxy, "_launch_windows_detached", return_value=12345),
+                  patch.object(shared_proxy, "_wait_process_exit", return_value=True)):
+                started = time.monotonic()
+                with self.assertRaisesRegex(RuntimeError, r"exited before readiness; see .*\.tray\.log"):
+                    shared_proxy._ensure_tray(args, self.TOKEN, Path(directory) / "test.db", {})
+                self.assertLess(time.monotonic() - started, 1)
+
     async def test_two_stdio_clients_start_one_service_and_survive_first_exit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             database = Path(directory) / "shared.sqlite"

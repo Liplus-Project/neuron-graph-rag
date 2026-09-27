@@ -10,11 +10,13 @@ import argparse
 import ctypes
 import json
 import os
+import traceback
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from .shared_proxy import (
-    TRAY_CONFIG_ENV, _ensure_service, _paused_path, _probe, _startup_lock,
+    TRAY_CONFIG_ENV, TRAY_LOG_ENV, _ensure_service, _paused_path, _probe, _startup_lock,
     _state_dir, _stop_service,
 )
 from .http_server import TOKEN_ENV, _validate_bearer_token
@@ -65,7 +67,7 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
         _fields_ = [("style", wintypes.UINT), ("lpfnWndProc", WNDPROC),
                     ("cbClsExtra", ctypes.c_int), ("cbWndExtra", ctypes.c_int),
                     ("hInstance", wintypes.HINSTANCE), ("hIcon", wintypes.HICON),
-                    ("hCursor", wintypes.HCURSOR), ("hbrBackground", wintypes.HBRUSH),
+                    ("hCursor", wintypes.HANDLE), ("hbrBackground", wintypes.HBRUSH),
                     ("lpszMenuName", wintypes.LPCWSTR), ("lpszClassName", wintypes.LPCWSTR)]
 
     class NOTIFYICONDATAW(ctypes.Structure):
@@ -217,6 +219,27 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
 
 
 def main() -> None:
+    log_path = os.environ.pop(TRAY_LOG_ENV, None)
+    try:
+        _main()
+    except Exception as error:
+        if log_path:
+            frames = traceback.extract_tb(error.__traceback__)
+            last = next((frame for frame in reversed(frames)
+                         if Path(frame.filename).name == "tray_controller.py"), frames[-1])
+            location = f"{Path(last.filename).name}:{last.lineno}"
+            code = getattr(error, "winerror", None) or getattr(error, "errno", None)
+            suffix = f" (OS code {code})" if isinstance(code, int) else ""
+            try:
+                with Path(log_path).open("a", encoding="utf-8") as log:
+                    log.write(f"{datetime.now(timezone.utc).isoformat()} tray startup failed: "
+                              f"{type(error).__name__} at {location}{suffix}\n")
+            except OSError:
+                pass
+        raise SystemExit(1) from None
+
+
+def _main() -> None:
     if os.name != "nt":
         raise SystemExit("NGR tray controller requires Windows")
     raw = os.environ.pop(TRAY_CONFIG_ENV, None)

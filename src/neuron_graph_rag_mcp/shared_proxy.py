@@ -32,6 +32,7 @@ from .http_server import DEFAULT_PORT, TOKEN_ENV, _validate_bearer_token
 SERVICE_MARKER = "neuron-graph-rag-shared-local-mcp/v1"
 START_TIMEOUT = 20.0
 TRAY_CONFIG_ENV = "_NGR_MCP_TRAY_CONFIG"
+TRAY_LOG_ENV = "_NGR_MCP_TRAY_LOG"
 
 
 def _entry_command(*arguments: str) -> list[str]:
@@ -151,7 +152,7 @@ def _wait_process_exit(pid: int, timeout: float) -> bool:
 
 
 def _launch_windows_detached(command: list[str], environment: dict[str, str],
-                             *, kind: str) -> None:
+                             *, kind: str) -> int:
     # WMI starts outside a client's kill-on-close Job Object. Keep credentials
     # in the inherited environment, never in the WMI command line.
     script = (
@@ -174,11 +175,15 @@ def _launch_windows_detached(command: list[str], environment: dict[str, str],
     if result.returncode:
         raise RuntimeError(f"Windows WMI {kind} launch failed with PowerShell code {result.returncode}")
     try:
-        code = int(result.stdout.strip().splitlines()[-1].split(":", 1)[0])
+        code_text, pid_text = result.stdout.strip().splitlines()[-1].split(":", 1)
+        code, pid = int(code_text), int(pid_text)
     except (ValueError, IndexError) as error:
         raise RuntimeError(f"Windows WMI {kind} launch returned no status") from error
     if code != 0:
         raise RuntimeError(f"Windows WMI {kind} launch failed with code {code}")
+    if pid <= 0:
+        raise RuntimeError(f"Windows WMI {kind} launch returned an invalid process ID")
+    return pid
 
 
 def _start_service(args: argparse.Namespace, database: Path,
@@ -233,9 +238,11 @@ def _ensure_tray(args: argparse.Namespace, token: str, database: Path,
         pass
     payload = {"port": args.port, "database": str(database), "config": config,
                "fingerprint": fingerprint}
+    log_path = _state_dir() / f"shared-local-mcp-{args.port}.tray.log"
     environment = dict(os.environ)
     environment[TRAY_CONFIG_ENV] = json.dumps(payload)
-    _launch_windows_detached(
+    environment[TRAY_LOG_ENV] = str(log_path)
+    launched_pid = _launch_windows_detached(
         _entry_command("--tray-controller"),
         environment, kind="tray controller",
     )
@@ -247,8 +254,10 @@ def _ensure_tray(args: argparse.Namespace, token: str, database: Path,
                 return
         except (FileNotFoundError, ValueError, KeyError, TypeError, OSError):
             pass
+        if _wait_process_exit(launched_pid, 0):
+            raise RuntimeError(f"tray controller exited before readiness; see {log_path}")
         time.sleep(0.1)
-    raise RuntimeError("tray controller did not become ready")
+    raise RuntimeError(f"tray controller did not become ready; see {log_path}")
 
 
 def _ensure_service(args: argparse.Namespace, token: str, database: Path,

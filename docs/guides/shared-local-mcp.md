@@ -32,7 +32,7 @@ Windows では初回接続で NGR のトレイアイコンも一つ起動する�
 C:\path\to\python.exe -m neuron_graph_rag_mcp --stop
 ```
 
-CLI の `--stop` は従来どおり一回だけ本体を停止し、次の MCP 接続は新しい本体を起動する。再接続でも停止状態を維持したい場合はトレイの停止操作を使う。別 DB を `--database` で登録した場合、CLI 停止時も同じ `--database` を指定する。別 port を `--port` で登録した場合も同じ値を指定する。token や DB・CUDA 設定を変更する前にトレイの `Exit` を選び、両クライアントを再起動する。サービスの診断ログは `~/.ngrdb/shared-local-mcp-<port>.log` にある。Windows PowerShell または WMI による起動前の失敗は MCP クライアントにエラーとして表示される。token とモデル path はトレイ表示やログに書かない。
+CLI の `--stop` は従来どおり一回だけ本体を停止し、次の MCP 接続は新しい本体を起動する。再接続でも停止状態を維持したい場合はトレイの停止操作を使う。別 DB を `--database` で登録した場合、CLI 停止時も同じ `--database` を指定する。別 port を `--port` で登録した場合も同じ値を指定する。token や DB・CUDA 設定を変更する前にトレイの `Exit` を選び、両クライアントを再起動する。サービスの診断ログは `~/.ngrdb/shared-local-mcp-<port>.log` にある。トレイの起動失敗時は `~/.ngrdb/shared-local-mcp-<port>.tray.log` に例外の種類とソース位置を記録し、MCP クライアントのエラーにそのログの場所を示す。Windows PowerShell または WMI による起動前の失敗も MCP クライアントにエラーとして表示される。token とモデル path はトレイ表示やログに書かない。
 
 CUDA を使う場合は、両クライアントの `--shared` の後に同じ `--cuda-cache`、`--cuda-e5-snapshot`、`--cuda-v2-m3-snapshot` を指定する。モデル path の準備と tool の使い方は下記を参照。CUDA は明示指定した時だけ共有サービス内で読み込む。設定を変える場合は先に共有サービスを停止する。
 
