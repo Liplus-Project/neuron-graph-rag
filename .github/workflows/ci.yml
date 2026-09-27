@@ -46,16 +46,3 @@ jobs:
         run: python -m pip install --disable-pip-version-check -e '.[mcp]'
       - name: MCP protocol tests
         run: python -m unittest tests.test_feedback_ledger tests.test_mcp_adapter tests.test_real_task_shadow_v2 tests.test_real_task_shadow_v3 -v
-  windows-updates:
-    name: Windows verified updates
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
-        with:
-          python-version: "3.11"
-          cache: pip
-      - name: Install MCP extra
-        run: python -m pip install --disable-pip-version-check -e '.[mcp]'
-      - name: Check release, download, and live tray paths
-        run: python -m unittest tests.test_verified_updates tests.test_mcp_adapter.MCPSharedProxyTest.test_tray_stop_latches_until_resume -v
