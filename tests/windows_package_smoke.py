@@ -15,6 +15,24 @@ import time
 from pathlib import Path
 
 
+def _assert_cuda_model_modules(exe: Path) -> None:
+    """Check the installed executable against the pinned Transformers source tree."""
+    from PyInstaller.archive.readers import pkg_archive_contents
+    import transformers.models
+
+    models_root = Path(transformers.models.__file__).resolve().parent
+    expected = set()
+    for source in models_root.rglob("*.py"):
+        parts = source.relative_to(models_root).with_suffix("").parts
+        if parts[-1] == "__init__":
+            parts = parts[:-1]
+        expected.add(".".join(("transformers", "models", *parts)))
+    bundled = set(pkg_archive_contents(str(exe)))
+    missing = sorted(expected - bundled)
+    assert not missing, f"CUDA package omits {len(missing)} Transformers model modules: {missing[:12]}"
+    print(f"CUDA_MODEL_MODULES={len(expected)}", flush=True)
+
+
 def _request(port: int, token: str) -> dict:
     connection = http.client.HTTPConnection("127.0.0.1", port, timeout=2)
     try:
@@ -69,6 +87,9 @@ def main() -> None:
             version_result = subprocess.run([str(exe), "--version"], env=package_env,
                                             capture_output=True, text=True, timeout=30)
             assert version_result.returncode == 0 and version_result.stdout.strip() == version
+            manifest = json.loads((install / "package-manifest.json").read_text(encoding="utf-8-sig"))
+            if manifest["flavor"] == "cuda":
+                _assert_cuda_model_modules(exe)
             start_started = time.monotonic()
             proxy = subprocess.Popen([str(exe), "--shared", "--port", str(port)],
                                      env=package_env, stdin=subprocess.PIPE,

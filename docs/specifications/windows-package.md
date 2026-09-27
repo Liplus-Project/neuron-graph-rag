@@ -16,6 +16,8 @@ GitHub Actions Windows runner が PyInstaller onedir をビルドし、Inno Setu
 
 CPU 版は `mcp`, `httpx2`, `uvicorn`, `starlette`, `numpy`, `onnxruntime`, `tokenizers` を含み、PyTorch と CUDA 実行依存を含めない。CUDA 版はこれに CUDA 対応 PyTorch、`transformers`, `safetensors` を追加する。固定 revision の E5 ONNX と v2-m3 model snapshot はサイズとライセンス確認のため両版とも含めず、利用者が明示的に別途配置する。CUDA 版でもモデル path の指定がない通常検索は CPU の既定経路に従う。
 
+CUDA 版では Transformers の遅延読み込みがモデル種別の一覧からモジュールを動的に import するため、PyInstaller に `transformers.models` の全サブモジュールを収集させる。インストール済み EXE の archive に、ビルド環境の固定 Transformers 版にあるモデルモジュールがすべて含まれることを package smoke で照合する。これは GPU のない CI で確認できる配布内容の検査であり、実際の v2-m3 推論は GPU 実機で別途確認する。
+
 ビルド依存の version と取得元は [`packaging/windows/build.ps1`](../../packaging/windows/build.ps1) に固定する。Python package は PyPI、CUDA PyTorch は PyTorch の `cu128` wheel index、Inno Setup 6.7.3 は開発元の GitHub release から取得して SHA-256 を照合する。ユーザー配布の EXE にはコード署名を施していない。出力 digest は破損・取り違えの検査用で、発行元認証にはならない。
 
 ## 状態と登録
@@ -24,4 +26,4 @@ DB、token、cache、モデルはインストール先でなくユーザー領�
 
 ## CI 受け入れ
 
-PR と main の両方で CPU / CUDA を別 job でビルドし、インストールした `NGR.exe` に Python のない PATH を渡して version、初回 stdio MCP 接続、共有 identity、tool 一覧、トレイ状態、停止・再開、アンインストール後の DB 残存を検査する。GPU を持たない runner では CUDA wheel の同梱と起動入口まで確認し、実機 NVIDIA GPU の推論成功は検証範囲に含まれない。
+PR と main の両方で CPU / CUDA を別 job でビルドし、インストールした `NGR.exe` に Python のない PATH を渡して version、初回 stdio MCP 接続、共有 identity、tool 一覧、トレイ状態、停止・再開、アンインストール後の DB 残存を検査する。CUDA 版では固定 Transformers 版のモデルモジュール一覧と EXE の収録内容も照合する。GPU を持たない runner では CUDA wheel の同梱と起動入口・モジュール収録まで確認し、実機 NVIDIA GPU の推論成功は検証範囲に含まれない。
