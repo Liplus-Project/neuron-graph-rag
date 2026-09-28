@@ -38,7 +38,7 @@ def _assert_licenses(install: Path, flavor: str) -> None:
     assert all(item["version"] and item["documents"] for item in distributions.values())
     documents = {item["path"]: item for item in manifest["documents"]}
     assert {"NGR-LICENSE.txt", "NGR-NOTICE.txt", "Python-LICENSE.txt",
-            "InnoSetup-LICENSE.txt"} <= documents.keys()
+            "InnoSetup-LICENSE.txt", "Microsoft-VC-Runtime-LICENSE.txt"} <= documents.keys()
     assert any("ONNXRuntime-ThirdPartyNotices.txt" in path for path in documents)
     assert any("Tokenizers-Rust-ThirdPartyNotices.txt" in path for path in documents)
     if flavor == "cuda":

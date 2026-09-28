@@ -38,6 +38,7 @@ PINNED_DOCUMENT_SHA256 = {
     "PyTorch-NOTICE.txt": "c2cc7bf0caec7652c2b460a8a470bea1677f241e4ab8e431df34cf17f5a9fec0",
     "Tokenizers-LICENSE.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
     "Tokenizers-Rust-ThirdPartyNotices.txt": "460b52a6e44ac669b3a4de7b5d7a7aa35847b37e0d9ff7cd04a5b732d5026d71",
+    "Microsoft-VC-Runtime-LICENSE.txt": "a0d066f34af2b1d5c6694902de40cd6fd31b9d471a5594bb22bb58f2e5382dd3",
 }
 
 
@@ -108,6 +109,10 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
     inno_license = repository / "packaging" / "windows" / "licenses" / "InnoSetup-LICENSE.txt"
     _copy_document(inno_license, licenses / "InnoSetup-LICENSE.txt", "InnoSetup-LICENSE.txt", documents,
                    "https://github.com/jrsoftware/issrc/blob/is-6_7_3/license.txt")
+    microsoft_terms = repository / "packaging" / "windows" / "licenses" / "Microsoft-VC-Runtime-LICENSE.txt"
+    _copy_document(microsoft_terms, licenses / "Microsoft-VC-Runtime-LICENSE.txt",
+                   "Microsoft-VC-Runtime-LICENSE.txt", documents,
+                   "https://visualstudio.microsoft.com/license-terms/vs2022-cruntime/")
 
     installed = list(metadata.distributions())
     owners: dict[str, set[str]] = {}
@@ -200,7 +205,10 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
         "Neuron Graph RAG - licenses and notices\n\n"
         "NGR-LICENSE.txt and NGR-NOTICE.txt cover the application. Python-LICENSE.txt\n"
         "includes the terms for the bundled Windows Python distribution and its Microsoft\n"
-        "Distributable Code. InnoSetup-LICENSE.txt covers the setup program.\n\n"
+        "Distributable Code. InnoSetup-LICENSE.txt covers the setup program.\n"
+        "Microsoft-VC-Runtime-LICENSE.txt reproduces Microsoft's published runtime\n"
+        "terms for native DLLs. Their presence here does not establish redistribution\n"
+        "rights.\n\n"
         "third-party/ holds the license and notice texts from each bundled Python\n"
         "distribution. manifest.json lists the exact names, versions, files and SHA-256\n"
         "digests detected from the PyInstaller Analysis and installed wheel RECORDs.\n\n"

@@ -1,14 +1,18 @@
 # Upstream notice sources
 
-The named upstream texts are copied verbatim from tagged repositories. The
-Rust notices aggregate is generated from the tagged tokenizers Python binding's
-Cargo.lock and checksum-verified crates.io archives. The build adds these texts
-to the license texts found in installed wheels; it does not replace wheel
-metadata or claim a source graph proves binary-level linking.
+The named upstream texts are copied from tagged repositories, with Inno Setup
+line endings normalized to LF. The Microsoft runtime terms are extracted as
+text from Microsoft's linked DOCX. The Rust notices aggregate is generated from
+the tagged tokenizers Python binding's Cargo.lock and checksum-verified crates.io
+archives. The build adds these texts to the license texts found in installed
+wheels; it does not replace wheel metadata or claim a source graph proves
+binary-level linking. These texts do not establish the distributor's right to
+redistribute Microsoft DLLs.
 
 | File | Source | SHA-256 |
 | --- | --- | --- |
 | `InnoSetup-LICENSE.txt` | https://github.com/jrsoftware/issrc/blob/is-6_7_3/license.txt | `3df23505b7ec00dc007a1e1e9ba32ee3895e7ce90043bcd1ac1b9b47155921a7` (LF-normalized; upstream CRLF: `2e5346868c2a18434489824e11d65c3031620f792fefc415d05f19cd441abf5c`) |
+| `Microsoft-VC-Runtime-LICENSE.txt` | https://visualstudio.microsoft.com/license-terms/vs2022-cruntime/ (text extracted from linked DOCX, source SHA-256 `f1e3d56ceb2ad68aae0711b910375009e651ac5530fa0760f0dea6e81e54fae1`) | `a0d066f34af2b1d5c6694902de40cd6fd31b9d471a5594bb22bb58f2e5382dd3` |
 | `ONNXRuntime-ThirdPartyNotices.txt` | https://github.com/microsoft/onnxruntime/blob/v1.30.0/ThirdPartyNotices.txt | `143764b952fdb1a7c69ce653bfba74a7744d6a8a573bfb73e235fba356c83de3` |
 | `PyTorch-NOTICE.txt` | https://github.com/pytorch/pytorch/blob/v2.9.1/NOTICE | `c2cc7bf0caec7652c2b460a8a470bea1677f241e4ab8e431df34cf17f5a9fec0` |
 | `Tokenizers-LICENSE.txt` | https://github.com/huggingface/tokenizers/blob/v0.22.1/LICENSE | `c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4` |
