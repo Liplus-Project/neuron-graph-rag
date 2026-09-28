@@ -27,6 +27,7 @@ from mcp.server.stdio import stdio_server
 from neuron_graph_rag.database_home import resolve_database
 
 from .http_server import DEFAULT_PORT, TOKEN_ENV, _validate_bearer_token
+from .package_version import application_version
 
 
 SERVICE_MARKER = "neuron-graph-rag-shared-local-mcp/v1"
@@ -301,14 +302,14 @@ async def _run_proxy(port: int, token: str) -> None:
                     return await remote.call_tool(params.name, params.arguments)
 
                 server: Server[Any] = Server(
-                    "neuron-graph-rag", version="0.2.0",
+                    "neuron-graph-rag", version=application_version(),
                     on_list_tools=list_tools, on_call_tool=call_tool,
                 )
                 async with stdio_server() as (read_stream, write_stream):
                     await server.run(
                         read_stream, write_stream,
                         InitializationOptions(
-                            server_name="neuron-graph-rag", server_version="0.2.0",
+                            server_name="neuron-graph-rag", server_version=application_version(),
                             capabilities=server.get_capabilities(
                                 notification_options=NotificationOptions(), experimental_capabilities={}
                             ),

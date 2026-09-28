@@ -4,6 +4,13 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      publish_artifacts:
+        description: Upload the reviewed CPU and CUDA installers
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -11,6 +18,7 @@ permissions:
 jobs:
   package:
     name: Windows package (${{ matrix.flavor }})
+    if: github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main'
     # The bundled DLLs and published runtime terms are from Visual Studio 2022.
     runs-on: windows-2022
     timeout-minutes: 120
@@ -62,11 +70,29 @@ jobs:
           $manifest = Get-Content package-output/package-manifest.json | ConvertFrom-Json
           $actual = (Get-FileHash (Join-Path package-output $manifest.setup_file) -Algorithm SHA256).Hash.ToLowerInvariant()
           if ($actual -ne $manifest.sha256) { throw 'Manifest hash mismatch' }
-      # Keep public CI artifacts closed until publisher rights and end-user
-      # agreement terms have been reviewed for this Community source.
+      # A reviewed main-only manual run can preserve this run's installers.
+      # Routine PR and push CI only build and smoke test them.
       - uses: actions/upload-artifact@v4
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NGR_VC_REDIST_DISTRIBUTION_APPROVED == 'true'
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.publish_artifacts == true
         with:
           name: ngr-windows-${{ matrix.flavor }}
           path: package-output/*
           if-no-files-found: error
+
+  verify_artifacts:
+    name: Verify published Windows artifacts
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.publish_artifacts == true
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ngr-windows-*
+          path: package-artifacts
+          merge-multiple: false
+      - name: Verify matching version and SHA-256 for both installers
+        run: python packaging/windows/verify_artifacts.py package-artifacts packaging/windows/release-version.txt

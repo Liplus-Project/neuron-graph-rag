@@ -8,7 +8,7 @@ Windows x64 の利用者が checkout と開発用 Python を用意せず、共�
 
 - `NGR-<version>-windows-x64-cpu-setup.exe` と `NGR-<version>-windows-x64-cuda-setup.exe`。`version` は `packaging/windows/release-version.txt` から読み取り、隔離した配布用 source の package metadata に反映する。ハッシュ登録済みの原本 `pyproject.toml` は変更しない。各 EXE に `*.exe.sha256` を添える。ハッシュ行は SHA-256 とファイル名を記す。
 - 配布出力 `package-manifest.json` は `schema: ngr.windows-package/v1`, `version`, `flavor`, `setup_file`, `sha256`, `size`（bytes）、`bundle_size_bytes`（onedir の総 bytes）を持つ。配布許諾のゲートを通過した場合だけ CI artifact として upload する。インストール先の `NGR.exe` と同じディレクトリには `schema`, `version`, `flavor` を持つ manifest を置く。セットアップ自身の digest をセットアップ内 manifest に含める循環はしない。
-- `NGR.exe --version` は実行形式に含めた配布 metadata の version を表示する。公開 GitHub Release への asset 添付と Latest の変更はこの workflow の範囲外。
+- `NGR.exe --version` と MCP 初期化時の server version は、実行形式に含めた配布 metadata の version を表示する。公開 GitHub Release への asset 添付と Latest の変更はこの workflow の範囲外。
 
 ## ビルドと実行境界
 
@@ -42,4 +42,4 @@ Claude Code の project 設定と、移行時に削除する旧 user scope 設�
 
 PR と main の両方で CPU / CUDA を別 job でビルドし、インストールした `NGR.exe` に Python のない PATH を渡して version、初回 stdio MCP 接続、共有 identity、tool 一覧、トレイ状態、停止・再開、アンインストール後の DB 残存を検査する。CUDA 版では固定 Transformers 版のモデルモジュール一覧と EXE の収録内容も照合する。GPU を持たない runner では CUDA wheel の同梱と起動入口・モジュール収録まで確認し、実機 NVIDIA GPU の推論成功は検証範囲に含まれない。
 
-同じ smoke test は、インストール先の全ライセンス文書の存在・ハッシュ・非空本文、NumPy OpenBLAS DLL と wheel RECORD 由来の digest、Community の VC\Redist 由来の 4 DLL の実 digest、主要 runtime 配布物の掲載、CPU/CUDA の区別、モデル weight の非同梱を検査する。CPU shortlist と CUDA shortlist の既存 unit test も NumPy 1.26.4 を導入した環境で実行する。GitHub の Windows runner 自体には VC runtime があるため、CI の起動成功だけで runtime 未導入の Windows 上での起動は証明できない。同梱 4 DLL の出自・digest と最終バンドルは監査するが、完全に runtime のない Windows 実機での導入検証はこの CI の範囲外である。配布者の Community ライセンスと利用者契約の十分性が確認され、repository 変数 `NGR_VC_REDIST_DISTRIBUTION_APPROVED=true` を明示設定した後の `main` への push に限り、CI はセットアップを Actions artifact に upload する。PR からは upload しない。既定では EXE をビルド・テストするだけで upload しない。
+同じ smoke test は、インストール先の全ライセンス文書の存在・ハッシュ・非空本文、NumPy OpenBLAS DLL と wheel RECORD 由来の digest、Community の VC\Redist 由来の 4 DLL の実 digest、主要 runtime 配布物の掲載、CPU/CUDA の区別、モデル weight の非同梱を検査する。CPU shortlist と CUDA shortlist の既存 unit test も NumPy 1.26.4 を導入した環境で実行する。GitHub の Windows runner 自体には VC runtime があるため、CI の起動成功だけで runtime 未導入の Windows 上での起動は証明できない。同梱 4 DLL の出自・digest と最終バンドルは監査するが、完全に runtime のない Windows 実機での導入検証はこの CI の範囲外である。通常の PR と `main` push は EXE をビルド・テストするだけで Actions artifact に upload しない。公開を承認された版は、`main` の `workflow_dispatch` を `publish_artifacts=true` として明示実行した場合に限り、CPU/CUDA の各成功 job が Actions artifact を upload する。入力の既定値は `false` とし、他の ref での手動実行は package job 自体を行わない。続く検証 job は同一 run の両 artifact を取得し、`release-version.txt`、両 manifest、EXE の実 SHA-256・size、`.sha256` を照合する。両 job と検証 job が成功した run の成果物だけを公開 GitHub Release への asset 添付候補とする。asset 添付は別の確認手順で行う。
