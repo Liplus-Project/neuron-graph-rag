@@ -10,6 +10,8 @@
 
 セットアップを起動すると、既定では現在ユーザーの `%LOCALAPPDATA%\Programs\Neuron Graph RAG` に onedir が入る。初回接続時に共有 MCP とトレイが起動する。Windows PowerShell 5.1 と WMI を子プロセス起動に使うため、Windows の標準機能として有効にしておく。Service とログイン時自動起動は追加されない。
 
+NGR と同梱ランタイムのライセンス・NOTICE は、スタートメニューの **Licenses and notices**、またはインストール先の `licenses/README.txt` から確認できる。`licenses/manifest.json` に各文書の SHA-256 と同梱配布物の version を記す。E5 / v2-m3 モデルの weight は CPU/CUDA のどちらにも含まれない。
+
 セットアップ完了画面、またはスタートメニューの **Configure MCP clients** から `NGR.exe --configure-clients` を実行する。Codex と Claude Code をそれぞれ選び、表示された `ngr-shared` のコマンドと設定先を確認して登録を承認する。Claude Code ではフォルダー選択画面から対象プロジェクトのルートを明示的に選ぶ。そのルートの `.mcp.json` に project scope で登録され、別プロジェクトの `.mcp.json` には登録されない。別プロジェクトでも使うには、そのプロジェクトを選んで再実行する。Claude Code は初回利用時に project MCP の承認を求める場合がある。既存の同名登録が選択先にあれば安全な要約と設定ファイル path を示し、利用者がエディターで内容を開いて確認できる。設定ファイルが不正な JSON の場合も登録を止める。CLI の任意出力や設定本文は転記せず、上書きせずに止まる。設定ファイルの退避を選べる。新規登録時は設定ファイルを自動退避し、既存の他サーバーを保持する。既存名を変える場合は利用者自身が内容と退避を確認してからクライアントの管理機能で削除し、登録コマンドを再実行する。
 
 以前の user scope `ngr-shared` がホームの `.claude.json` にあっても、自動削除しない。project 登録が成功した後に、他プロジェクトでも引き続き使える状態を残すか、ホーム設定を退避して user 登録を削除するか選べる。削除すると個別登録していない他プロジェクトでは NGR が使えなくなる。複数プロジェクトに登録しても、各 stdio proxy は同じ共有 NGR 本体へ接続する。`.mcp.json` の command は `${NGR_MCP_EXE}` を参照し、登録時にユーザー環境変数 `NGR_MCP_EXE` に導入済み EXE の path を設定する。`.mcp.json` を他のマシンへ共有する場合は、そのマシンにも NGR を導入し、そのマシン側で同じ環境変数を設定する。token 値は設定に含まれない。

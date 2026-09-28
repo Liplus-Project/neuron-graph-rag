@@ -8,7 +8,7 @@ $bundleRoot = Join-Path $root 'package-build'
 New-Item -ItemType Directory -Force $outputRoot, $bundleRoot | Out-Null
 $packageSource = Join-Path $bundleRoot 'release-source'
 New-Item -ItemType Directory -Force $packageSource | Out-Null
-Copy-Item -LiteralPath (Join-Path $root 'pyproject.toml'), (Join-Path $root 'README.md') -Destination $packageSource
+Copy-Item -LiteralPath (Join-Path $root 'pyproject.toml'), (Join-Path $root 'README.md'), (Join-Path $root 'LICENSE'), (Join-Path $root 'NOTICE') -Destination $packageSource
 $releaseSrc = Join-Path $packageSource 'src'
 New-Item -ItemType Directory -Force $releaseSrc | Out-Null
 Copy-Item -LiteralPath (Join-Path $root 'src/neuron_graph_rag'), (Join-Path $root 'src/neuron_graph_rag_mcp') -Destination $releaseSrc -Recurse
@@ -29,6 +29,10 @@ if ($Flavor -eq 'cuda') {
 }
 python -m pip install --disable-pip-version-check --no-deps "$packageSource"
 if ($LASTEXITCODE) { throw 'NGR installation failed' }
+# Prefer the CPython distribution's VCRUNTIME DLLs over unrelated PATH entries.
+$pythonHome = python -c 'import sys; print(sys.base_prefix)'
+if ($LASTEXITCODE) { throw 'Python runtime lookup failed' }
+$env:PATH = "$pythonHome;$env:PATH"
 
 $arguments = @('--noconfirm','--clean','--onedir','--name','NGR','--distpath',$bundleRoot,'--workpath',(Join-Path $bundleRoot 'work'),'--specpath',$bundleRoot,'--copy-metadata','neuron-graph-rag','--collect-submodules','neuron_graph_rag')
 # MCP's optional CLI imports typer and exits when that unrelated extra is absent.
@@ -45,6 +49,8 @@ python -m PyInstaller @arguments
 if ($LASTEXITCODE) { throw 'PyInstaller build failed' }
 & "$bundleRoot\NGR\NGR.exe" --version
 if ($LASTEXITCODE) { throw 'Frozen executable version probe failed' }
+python (Join-Path $root 'packaging\windows\collect_notices.py') --analysis (Join-Path $bundleRoot 'work\NGR\Analysis-00.toc') --bundle (Join-Path $bundleRoot 'NGR') --repository $root --flavor $Flavor
+if ($LASTEXITCODE) { throw 'Bundled license collection failed' }
 @{ schema = 'ngr.windows-package/v1'; version = $version; flavor = $Flavor } | ConvertTo-Json | Set-Content -Path (Join-Path $bundleRoot 'NGR\package-manifest.json') -Encoding utf8
 $bundleBytes = (Get-ChildItem -LiteralPath (Join-Path $bundleRoot 'NGR') -File -Recurse | Measure-Object -Property Length -Sum).Sum
 Write-Output "BUNDLE_SIZE_BYTES=$bundleBytes"

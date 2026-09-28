@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import http.client
+import hashlib
 import json
 import os
 import queue
@@ -13,6 +14,43 @@ import tempfile
 import threading
 import time
 from pathlib import Path
+
+
+def _assert_licenses(install: Path, flavor: str) -> None:
+    licenses = install / "licenses"
+    readme = (licenses / "README.txt").read_text(encoding="utf-8")
+    assert "model weights are not included" in readme, readme
+    manifest = json.loads((licenses / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["schema"] == "ngr.windows-licenses/v1"
+    assert manifest["flavor"] == flavor and manifest["models_bundled"] is False
+    assert any(name.lower().startswith("vcruntime") for name in manifest["python_runtime_files"])
+    distributions = {item["name"]: item for item in manifest["distributions"]}
+    required = {"pyinstaller", "mcp", "httpx2", "uvicorn", "starlette", "numpy",
+                "onnxruntime", "tokenizers"}
+    if flavor == "cuda":
+        required.update(("torch", "transformers", "safetensors"))
+    else:
+        assert "torch" not in distributions and "transformers" not in distributions
+    assert required <= distributions.keys(), sorted(required - distributions.keys())
+    assert all(item["version"] and item["documents"] for item in distributions.values())
+    documents = {item["path"]: item for item in manifest["documents"]}
+    assert {"NGR-LICENSE.txt", "NGR-NOTICE.txt", "Python-LICENSE.txt",
+            "InnoSetup-LICENSE.txt"} <= documents.keys()
+    assert any("ONNXRuntime-ThirdPartyNotices.txt" in path for path in documents)
+    assert any("Tokenizers-Rust-ThirdPartyNotices.txt" in path for path in documents)
+    if flavor == "cuda":
+        assert any("PyTorch-NOTICE.txt" in path for path in documents)
+    for name, record in documents.items():
+        path = licenses / name
+        assert path.resolve().is_relative_to(licenses.resolve()), name
+        content = path.read_bytes()
+        assert content.strip() and b"\x00" not in content, name
+        assert hashlib.sha256(content).hexdigest() == record["sha256"], name
+    actual = {path.relative_to(licenses).as_posix() for path in licenses.rglob("*") if path.is_file()}
+    assert actual == set(documents) | {"manifest.json", "README.txt"}, sorted(actual ^ (set(documents) | {"manifest.json", "README.txt"}))
+    assert not any(path.name.lower() in {"model.onnx", "model.safetensors", "pytorch_model.bin"}
+                   for path in install.rglob("*") if path.is_file())
+    print(f"LICENSE_DISTRIBUTIONS={len(distributions)} LICENSE_DOCUMENTS={len(documents)}", flush=True)
 
 
 def _assert_cuda_model_modules(exe: Path) -> None:
@@ -90,6 +128,7 @@ def main() -> None:
                                             capture_output=True, text=True, timeout=30)
             assert version_result.returncode == 0 and version_result.stdout.strip() == version
             manifest = json.loads((install / "package-manifest.json").read_text(encoding="utf-8-sig"))
+            _assert_licenses(install, manifest["flavor"])
             if manifest["flavor"] == "cuda":
                 _assert_cuda_model_modules(exe)
             start_started = time.monotonic()

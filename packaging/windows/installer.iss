@@ -30,12 +30,14 @@ UninstallDisplayIcon={app}\NGR.exe
 CloseApplications=yes
 RestartApplications=no
 DisableProgramGroupPage=yes
+LicenseFile={#BundleDir}\licenses\NGR-LICENSE.txt
 
 [Files]
 Source: "{#BundleDir}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion
 
 [Icons]
 Name: "{group}\Configure MCP clients"; Filename: "{app}\NGR.exe"; Parameters: "--configure-clients"
+Name: "{group}\Licenses and notices"; Filename: "{app}\licenses\README.txt"
 Name: "{group}\Uninstall Neuron Graph RAG"; Filename: "{uninstallexe}"
 
 [Run]
