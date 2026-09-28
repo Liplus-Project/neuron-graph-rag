@@ -11,7 +11,8 @@ permissions:
 jobs:
   package:
     name: Windows package (${{ matrix.flavor }})
-    runs-on: windows-latest
+    # The bundled DLLs and published runtime terms are from Visual Studio 2022.
+    runs-on: windows-2022
     timeout-minutes: 120
     strategy:
       fail-fast: false
@@ -22,6 +23,24 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
+      - name: Install Visual Studio Community 2022 VC redistributables
+        shell: pwsh
+        run: |
+          $bootstrapper = Join-Path $env:RUNNER_TEMP 'vs_community_2022.exe'
+          Invoke-WebRequest 'https://aka.ms/vs/17/release/vs_community.exe' -OutFile $bootstrapper
+          $signature = Get-AuthenticodeSignature -LiteralPath $bootstrapper
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Microsoft Corporation') {
+            throw 'Visual Studio Community bootstrapper signature is not valid Microsoft code'
+          }
+          $installRoot = Join-Path ${env:ProgramFiles} 'Microsoft Visual Studio\2022\Community'
+          $arguments = @('--installPath', "`"$installRoot`"", '--add', 'Microsoft.VisualStudio.Component.VC.Redist.14.Latest',
+                         '--add', 'Microsoft.VisualStudio.Component.VC.Tools.x86.x64', '--quiet', '--wait', '--norestart')
+          $process = Start-Process -FilePath $bootstrapper -ArgumentList $arguments -PassThru -Wait -WindowStyle Hidden
+          if ($process.ExitCode) { throw "Visual Studio Community installation failed: $($process.ExitCode)" }
+          $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+          $found = & $vswhere -latest -products Microsoft.VisualStudio.Product.Community -property installationPath
+          if ($LASTEXITCODE -or $found -ne $installRoot) { throw 'Visual Studio Community installation was not registered at the expected path' }
+          "NGR_VC_REDIST_INSTALLATION=$installRoot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - name: Build frozen package and per-user installer
         shell: pwsh
         run: ./packaging/windows/build.ps1 -Flavor '${{ matrix.flavor }}'
@@ -43,7 +62,10 @@ jobs:
           $manifest = Get-Content package-output/package-manifest.json | ConvertFrom-Json
           $actual = (Get-FileHash (Join-Path package-output $manifest.setup_file) -Algorithm SHA256).Hash.ToLowerInvariant()
           if ($actual -ne $manifest.sha256) { throw 'Manifest hash mismatch' }
+      # Keep public CI artifacts closed until publisher rights and end-user
+      # agreement terms have been reviewed for this Community source.
       - uses: actions/upload-artifact@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NGR_VC_REDIST_DISTRIBUTION_APPROVED == 'true'
         with:
           name: ngr-windows-${{ matrix.flavor }}
           path: package-output/*

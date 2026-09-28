@@ -15,6 +15,7 @@ import importlib.metadata as metadata
 import json
 import os
 import re
+import struct
 import sys
 from pathlib import Path
 
@@ -43,6 +44,7 @@ PINNED_DOCUMENT_SHA256 = {
 }
 NUMPY_WINDOWS_VERSION = "1.26.4"
 MSVC_RUNTIME_PREFIXES = ("msvcp", "vcruntime", "concrt", "vcomp", "ucrtbase", "api-ms-win-crt-")
+VC_RUNTIME_NAMES = {"msvcp140.dll", "msvcp140_1.dll", "vcruntime140.dll", "vcruntime140_1.dll"}
 
 
 def canonical(name: str) -> str:
@@ -96,9 +98,60 @@ def _copy_document(source: Path, target: Path, manifest_path: str, documents: li
     documents.append({"path": manifest_path, "sha256": digest, "origin": origin})
 
 
+def audit_vc_runtime(bundle: Path, provenance_file: Path) -> dict:
+    provenance = json.loads(provenance_file.read_text(encoding="utf-8-sig"))
+    if provenance.get("schema") != "ngr.vc-redist-source/v1":
+        raise RuntimeError("VC runtime provenance schema mismatch")
+    installation = Path(provenance["installation"]).resolve(strict=True)
+    redist = Path(provenance["redist_directory"]).resolve(strict=True)
+    relative = redist.relative_to(installation).parts
+    if (len(relative) != 6 or tuple(part.lower() for part in relative[:3]) != ("vc", "redist", "msvc")
+            or relative[4].lower() != "x64" or relative[5].lower() != "microsoft.vc143.crt"
+            or not re.fullmatch(r"14\.\d+\.\d+", relative[3])
+            or any("preview" in part.lower() or "debug_nonredist" in part.lower()
+                   for part in redist.parts)):
+        raise RuntimeError(f"VC runtime source is not a release x64 VC\\Redist CRT: {redist}")
+    release = "2022"
+    if release not in installation.parts or "Microsoft Visual Studio" not in installation.parts:
+        raise RuntimeError(f"VC runtime source is not the expected Visual Studio {release} installation")
+    edition_terms = {"Community": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-community/"}
+    edition = provenance["edition"]
+    if installation.name != edition or provenance["edition_terms"] != edition_terms.get(edition):
+        raise RuntimeError("VC runtime Visual Studio edition or license URL mismatch")
+    records = provenance["files"]
+    if len(records) != len(VC_RUNTIME_NAMES) or {record["name"].lower() for record in records} != VC_RUNTIME_NAMES:
+        raise RuntimeError("VC runtime source must contain exactly the four approved DLLs")
+    audited = []
+    for record in records:
+        name = record["name"].lower()
+        source = Path(record["source"]).resolve(strict=True)
+        if source.parent != redist or source.name.lower() != name:
+            raise RuntimeError(f"VC runtime source path mismatch: {source}")
+        target = bundle / "_internal" / name
+        data = source.read_bytes()
+        pe_offset = struct.unpack_from("<I", data, 0x3c)[0]
+        if data[pe_offset:pe_offset + 4] != b"PE\0\0" or struct.unpack_from("<H", data, pe_offset + 4)[0] != 0x8664:
+            raise RuntimeError(f"VC runtime is not an x64 PE image: {source}")
+        digest = hashlib.sha256(data).hexdigest()
+        if digest != record["sha256"] or not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != digest:
+            raise RuntimeError(f"VC runtime source/bundle SHA-256 mismatch: {name}")
+        if not record.get("file_version"):
+            raise RuntimeError(f"VC runtime file version missing: {name}")
+        audited.append({"path": target.relative_to(bundle).as_posix(), "sha256": digest,
+                        "source": str(source), "file_version": record["file_version"]})
+    actual = {path.relative_to(bundle).as_posix().lower() for path in bundle.rglob("*.dll")
+              if path.name.lower().startswith(MSVC_RUNTIME_PREFIXES)}
+    if actual != {entry["path"] for entry in audited}:
+        raise RuntimeError(f"Unexpected or missing Visual C++ runtime DLLs in bundle: {sorted(actual)}")
+    return {"visual_studio_release": release, "visual_studio_edition": edition,
+            "edition_terms": edition_terms[edition], "redist_directory": str(redist),
+            "redist_list": f"https://learn.microsoft.com/en-us/visualstudio/releases/{release}/redistribution",
+            "files": sorted(audited, key=lambda entry: entry["path"])}
+
+
 def audit_native_binaries(bundle: Path, sources: set[str],
                           numpy_dist: metadata.Distribution, documents: list[dict]) -> list[dict]:
-    """Match NumPy's DLL to wheel RECORD and reject bundled VC runtimes."""
+    """Match NumPy's DLL to wheel RECORD."""
     if numpy_dist.version != NUMPY_WINDOWS_VERSION:
         raise RuntimeError(f"Windows NumPy must be {NUMPY_WINDOWS_VERSION}: {numpy_dist.version}")
     numpy_dlls = [entry for entry in numpy_dist.files or ()
@@ -139,15 +192,14 @@ def audit_native_binaries(bundle: Path, sources: set[str],
             native_binaries.append({"path": relative, "sha256": digest,
                                     "source_distribution": f"numpy=={numpy_dist.version}",
                                     "source_record": str(entry), "license_documents": [license_path]})
-        if name.startswith(MSVC_RUNTIME_PREFIXES):
-            raise RuntimeError(f"Microsoft C++ runtime DLL remains in bundle: {binary}")
     if len(bundled_numpy) != 1:
         raise RuntimeError(f"Expected one NumPy OpenBLAS DLL in bundle: {bundled_numpy}")
     return sorted(native_binaries, key=lambda item: item["path"])
 
 
-def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
+def collect(toc: Path, bundle: Path, repository: Path, flavor: str, vc_source_manifest: Path) -> dict:
     sources = analysis_sources(toc)
+    vc_runtime = audit_vc_runtime(bundle, vc_source_manifest)
     licenses = bundle / "licenses"
     if licenses.exists():
         raise RuntimeError(f"License output is not clean: {licenses}")
@@ -166,6 +218,21 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
     _copy_document(microsoft_terms, licenses / "Microsoft-VC-Runtime-LICENSE.txt",
                    "Microsoft-VC-Runtime-LICENSE.txt", documents,
                    "https://visualstudio.microsoft.com/license-terms/vs2022-cruntime/")
+    setup_terms = (
+        "Neuron Graph RAG installer terms\n\n"
+        "This installer includes four Microsoft Visual C++ runtime DLLs.\n"
+        "As an end user, you must accept the NGR license and the Microsoft Visual\n"
+        "C++ runtime terms reproduced below to install this package.\n"
+        "A silent install requires /ACCEPTVCRUNTIME=yes to record this acceptance.\n\n"
+        "===== NGR LICENSE =====\n"
+        + (licenses / "NGR-LICENSE.txt").read_text(encoding="utf-8")
+        + "\n===== MICROSOFT VISUAL C++ RUNTIME TERMS =====\n"
+        + (licenses / "Microsoft-VC-Runtime-LICENSE.txt").read_text(encoding="utf-8")
+    )
+    setup_path = licenses / "Setup-LICENSE.txt"
+    setup_path.write_text(setup_terms, encoding="utf-8")
+    documents.append({"path": setup_path.name, "sha256": hashlib.sha256(setup_path.read_bytes()).hexdigest(),
+                      "origin": "NGR and Microsoft runtime license terms for installer acceptance"})
 
     installed = list(metadata.distributions())
     owners: dict[str, set[str]] = {}
@@ -183,15 +250,11 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
                      and path not in owners)
     if unowned:
         raise RuntimeError("Bundled site-packages files lack installed RECORD ownership: " + repr(unowned[:20]))
-    system32 = path_key(Path(os.environ["SystemRoot"]) / "System32") + os.sep
-    excluded_names = {"msvcp140.dll", "msvcp140_1.dll"}
-    excluded = sorted(path for path in sources if path.startswith(system32)
-                      and Path(path).name.lower() in excluded_names)
-    for source in excluded:
-        if (bundle / "_internal" / Path(source).name).exists():
-            raise RuntimeError(f"System32 Visual C++ DLL remains in bundle: {source}")
+    # Analysis may have collected a CPython, System32 or wheel copy of one of
+    # these names. Only the final, replaced bytes from VC\Redist are accepted.
+    replaced = {path for path in sources if Path(path).name.lower() in VC_RUNTIME_NAMES}
     allowed_roots = (path_key(python_root) + os.sep, path_key(repository) + os.sep)
-    foreign = sorted(path for path in sources if path not in owners and path not in excluded
+    foreign = sorted(path for path in sources if path not in owners and path not in replaced
                      and not any(path.startswith(root) for root in allowed_roots))
     if foreign:
         raise RuntimeError("Bundled source files have no NGR, CPython or wheel ownership: "
@@ -242,17 +305,12 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
                               "documents": sorted(dist_documents)})
 
     runtime_sources = [Path(path).name for path in sources if path.startswith(path_key(python_root) + os.sep)]
-    vcruntime = [path for path in sources if Path(path).name.lower().startswith("vcruntime")]
-    if not vcruntime or any(not path.startswith(path_key(python_root) + os.sep) for path in vcruntime):
-        raise RuntimeError("PyInstaller VCRUNTIME source DLLs must come from CPython: "
-                           + repr(vcruntime))
     native_binaries = audit_native_binaries(bundle, sources, by_name["numpy"], documents)
     manifest = {"schema": "ngr.windows-licenses/v1", "flavor": flavor,
                 "python_version": sys.version.split()[0],
                 "python_runtime_files": sorted(name for name in runtime_sources
                                                if name.lower().startswith("python3")),
-                "excluded_python_runtime": sorted(Path(path).name.lower() for path in vcruntime),
-                "excluded_system_runtime": sorted(Path(path).name.lower() for path in excluded),
+                "vc_runtime": vc_runtime,
                 "distributions": distributions, "documents": sorted(documents, key=lambda item: item["path"]),
                 "native_binaries": native_binaries,
                 "models_bundled": False}
@@ -262,10 +320,16 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
         "NGR-LICENSE.txt and NGR-NOTICE.txt cover the application. Python-LICENSE.txt\n"
         "includes the terms for the bundled Windows Python distribution and its Microsoft\n"
         "Distributable Code. InnoSetup-LICENSE.txt covers the setup program.\n"
-        "Microsoft-VC-Runtime-LICENSE.txt reproduces Microsoft's published runtime\n"
-        "terms for reference. Standalone Microsoft C++ runtime DLLs are excluded\n"
-        "from this installer; the separately installed system redistributable is\n"
-        "required. The bundled CPython binaries still carry their own terms.\n\n"
+        "Four unmodified x64 Microsoft C++ runtime DLLs are bundled from a\n"
+        "Visual Studio VC\\Redist installation. vc_runtime in manifest.json\n"
+        "records their exact source, file versions and SHA-256 digests.\n"
+        "Microsoft-VC-Runtime-LICENSE.txt is Microsoft's runtime terms. The\n"
+        "installer presents them to end users in Setup-LICENSE.txt. Publisher\n"
+        "redistribution rights come separately from its Visual Studio license;\n"
+        f"source edition terms: {vc_runtime['edition_terms']}\n"
+        f"REDIST list: {vc_runtime['redist_list']}\n"
+        "This bundle does not prove publisher rights. The bundled CPython binaries\n"
+        "also carry their own terms.\n\n"
         "third-party/ holds the license and notice texts from each bundled Python\n"
         "distribution. manifest.json lists the exact names, versions, files and SHA-256\n"
         "digests detected from the PyInstaller Analysis and installed wheel RECORDs.\n"
@@ -286,8 +350,9 @@ def main() -> None:
     parser.add_argument("--bundle", type=Path, required=True)
     parser.add_argument("--repository", type=Path, required=True)
     parser.add_argument("--flavor", choices=("cpu", "cuda"), required=True)
+    parser.add_argument("--vc-source-manifest", type=Path, required=True)
     args = parser.parse_args()
-    result = collect(args.analysis, args.bundle, args.repository, args.flavor)
+    result = collect(args.analysis, args.bundle, args.repository, args.flavor, args.vc_source_manifest)
     print(f"LICENSE_DISTRIBUTIONS={len(result['distributions'])}")
     print(f"LICENSE_DOCUMENTS={len(result['documents'])}")
 

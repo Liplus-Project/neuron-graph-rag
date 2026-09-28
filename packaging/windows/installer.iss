@@ -31,7 +31,7 @@ UninstallDisplayIcon={app}\NGR.exe
 CloseApplications=yes
 RestartApplications=no
 DisableProgramGroupPage=yes
-LicenseFile={#BundleDir}\licenses\NGR-LICENSE.txt
+LicenseFile={#BundleDir}\licenses\Setup-LICENSE.txt
 
 [Files]
 Source: "{#BundleDir}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion
@@ -47,10 +47,10 @@ Filename: "{app}\NGR.exe"; Parameters: "--configure-clients"; Description: "Conf
 [Code]
 function InitializeSetup(): Boolean;
 begin
-  Result := FileExists(ExpandConstant('{sys}\msvcp140.dll')) and
-            FileExists(ExpandConstant('{sys}\msvcp140_1.dll')) and
-            FileExists(ExpandConstant('{sys}\vcruntime140.dll')) and
-            FileExists(ExpandConstant('{sys}\vcruntime140_1.dll'));
-  if not Result then
-    MsgBox('Neuron Graph RAG requires the Microsoft Visual C++ 2015-2022 Redistributable (x64). Install it from https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist and run this setup again.', mbError, MB_OK);
+  Result := True;
+  if WizardSilent and (CompareText(ExpandConstant('{param:ACCEPTVCRUNTIME|}'), 'yes') <> 0) then
+  begin
+    Log('Silent installation refused: /ACCEPTVCRUNTIME=yes is required.');
+    Result := False;
+  end;
 end;

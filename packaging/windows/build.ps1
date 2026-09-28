@@ -50,15 +50,53 @@ if ($Flavor -eq 'cuda') {
 $arguments += (Join-Path $root 'packaging\windows\entry.py')
 python -m PyInstaller @arguments
 if ($LASTEXITCODE) { throw 'PyInstaller build failed' }
-# The x64 Visual C++ runtime is an installer prerequisite, not redistributed
-# from System32 or the CPython build environment.
-foreach ($dllName in @('msvcp140.dll','msvcp140_1.dll','vcruntime140.dll','vcruntime140_1.dll')) {
-  $dll = Join-Path $bundleRoot "NGR\_internal\$dllName"
-  if (Test-Path -LiteralPath $dll) { Remove-Item -LiteralPath $dll }
+# Replace any PyInstaller-collected copies with unmodified x64 files from a
+# licensed Visual Studio installation's VC\Redist tree. Fail closed when that
+# source is unavailable or ambiguous; System32 and wheel copies are not sources.
+$vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+if (-not (Test-Path -LiteralPath $vswhere -PathType Leaf)) { throw 'Visual Studio locator not found' }
+$expectedInstallation = $env:NGR_VC_REDIST_INSTALLATION
+if (-not $expectedInstallation) { throw 'NGR_VC_REDIST_INSTALLATION must identify the verified Community installation' }
+$installations = @(& $vswhere -all -products Microsoft.VisualStudio.Product.Community -property installationPath)
+if ($LASTEXITCODE) { throw 'Visual Studio installation lookup failed' }
+$runtimeNames = @('msvcp140.dll','msvcp140_1.dll','vcruntime140.dll','vcruntime140_1.dll')
+$candidates = @()
+foreach ($installation in $installations) {
+  if (-not $installation -or $installation -ne $expectedInstallation -or $installation -match '(?i)preview' -or $installation -notmatch '[\\/]2022[\\/]') { continue }
+  $edition = Split-Path -Leaf $installation
+  if ($edition -ne 'Community') { continue }
+  $redistRoot = Join-Path $installation 'VC\Redist\MSVC'
+  if (-not (Test-Path -LiteralPath $redistRoot -PathType Container)) { continue }
+  foreach ($versionDir in (Get-ChildItem -LiteralPath $redistRoot -Directory)) {
+    if ($versionDir.Name -notmatch '^14\.\d+\.\d+$') { continue }
+    $crt = Join-Path $versionDir.FullName 'x64\Microsoft.VC143.CRT'
+    if ($runtimeNames | Where-Object { -not (Test-Path -LiteralPath (Join-Path $crt $_) -PathType Leaf) }) { continue }
+    $candidates += [pscustomobject]@{ Installation = $installation; Edition = $edition; Crt = $crt; Version = [version]$versionDir.Name }
+  }
 }
+if (-not $candidates) { throw 'No complete release x64 Visual Studio VC\Redist CRT found' }
+$selected = $candidates | Sort-Object Version -Descending | Select-Object -First 1
+$runtimeFiles = @()
+foreach ($dllName in $runtimeNames) {
+  $source = Join-Path $selected.Crt $dllName
+  $data = [System.IO.File]::ReadAllBytes($source)
+  $peOffset = [BitConverter]::ToInt32($data, 0x3c)
+  if ($data.Length -lt ($peOffset + 6) -or [BitConverter]::ToUInt32($data, $peOffset) -ne 0x4550 -or [BitConverter]::ToUInt16($data, $peOffset + 4) -ne 0x8664) {
+    throw "VC runtime is not x64 PE: $source"
+  }
+  $destination = Join-Path $bundleRoot "NGR\_internal\$dllName"
+  Copy-Item -LiteralPath $source -Destination $destination -Force
+  $sourceHash = (Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()
+  if ((Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant() -ne $sourceHash) { throw "VC runtime copy changed: $dllName" }
+  $runtimeFiles += @{ name = $dllName; source = $source; sha256 = $sourceHash; file_version = (Get-Item -LiteralPath $source).VersionInfo.FileVersion }
+}
+$runtimeProvenance = Join-Path $bundleRoot 'vc-runtime-source.json'
+$editionTerms = 'https://visualstudio.microsoft.com/license-terms/vs2022-ga-community/'
+@{ schema = 'ngr.vc-redist-source/v1'; installation = $selected.Installation; edition = $selected.Edition; edition_terms = $editionTerms; redist_directory = $selected.Crt; files = $runtimeFiles } |
+  ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $runtimeProvenance -Encoding utf8
 & "$bundleRoot\NGR\NGR.exe" --version
 if ($LASTEXITCODE) { throw 'Frozen executable version probe failed' }
-python (Join-Path $root 'packaging\windows\collect_notices.py') --analysis (Join-Path $bundleRoot 'work\NGR\Analysis-00.toc') --bundle (Join-Path $bundleRoot 'NGR') --repository $root --flavor $Flavor
+python (Join-Path $root 'packaging\windows\collect_notices.py') --analysis (Join-Path $bundleRoot 'work\NGR\Analysis-00.toc') --bundle (Join-Path $bundleRoot 'NGR') --repository $root --flavor $Flavor --vc-source-manifest $runtimeProvenance
 if ($LASTEXITCODE) { throw 'Bundled license collection failed' }
 @{ schema = 'ngr.windows-package/v1'; version = $version; flavor = $Flavor } | ConvertTo-Json | Set-Content -Path (Join-Path $bundleRoot 'NGR\package-manifest.json') -Encoding utf8
 $bundleBytes = (Get-ChildItem -LiteralPath (Join-Path $bundleRoot 'NGR') -File -Recurse | Measure-Object -Property Length -Sum).Sum

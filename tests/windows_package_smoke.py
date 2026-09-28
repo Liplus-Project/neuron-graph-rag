@@ -25,12 +25,22 @@ def _assert_licenses(install: Path, flavor: str) -> None:
     assert manifest["flavor"] == flavor and manifest["models_bundled"] is False
     assert any(name.lower().startswith("python3") for name in manifest["python_runtime_files"])
     runtime_prefixes = ("msvcp", "vcruntime", "concrt", "vcomp", "ucrtbase", "api-ms-win-crt-")
-    actual_runtime = {path.relative_to(install).as_posix(): path for path in install.rglob("*.dll")
+    actual_runtime = {path.relative_to(install).as_posix().lower(): path for path in install.rglob("*.dll")
                       if path.name.lower().startswith(runtime_prefixes)}
-    assert not actual_runtime, actual_runtime
-    assert set(manifest["excluded_system_runtime"]) <= {"msvcp140.dll", "msvcp140_1.dll"}
-    assert set(manifest["excluded_python_runtime"]) <= {"vcruntime140.dll", "vcruntime140_1.dll"}
-    assert manifest["excluded_python_runtime"]
+    vc = manifest["vc_runtime"]
+    assert vc["visual_studio_release"] == "2022"
+    edition = vc["visual_studio_edition"]
+    assert edition == "Community"
+    assert vc["edition_terms"].startswith("https://visualstudio.microsoft.com/license-terms/vs2022-ga-")
+    assert vc["redist_list"] == f"https://learn.microsoft.com/en-us/visualstudio/releases/{vc['visual_studio_release']}/redistribution"
+    expected_runtime = {f"_internal/{name}" for name in
+                        ("msvcp140.dll", "msvcp140_1.dll", "vcruntime140.dll", "vcruntime140_1.dll")}
+    recorded_runtime = {item["path"]: item for item in vc["files"]}
+    assert set(actual_runtime) == set(recorded_runtime) == expected_runtime, (
+        sorted(actual_runtime), sorted(recorded_runtime), sorted(expected_runtime))
+    for path, item in recorded_runtime.items():
+        assert item["file_version"] and "VC\\Redist\\MSVC\\" in item["source"]
+        assert hashlib.sha256(actual_runtime[path].read_bytes()).hexdigest() == item["sha256"]
     distributions = {item["name"]: item for item in manifest["distributions"]}
     required = {"pyinstaller", "mcp", "httpx2", "uvicorn", "starlette", "numpy",
                 "onnxruntime", "tokenizers"}
@@ -43,7 +53,11 @@ def _assert_licenses(install: Path, flavor: str) -> None:
     assert all(item["version"] and item["documents"] for item in distributions.values())
     documents = {item["path"]: item for item in manifest["documents"]}
     assert {"NGR-LICENSE.txt", "NGR-NOTICE.txt", "Python-LICENSE.txt",
-            "InnoSetup-LICENSE.txt", "Microsoft-VC-Runtime-LICENSE.txt"} <= documents.keys()
+            "InnoSetup-LICENSE.txt", "Microsoft-VC-Runtime-LICENSE.txt", "Setup-LICENSE.txt"} <= documents.keys()
+    setup_terms = (licenses / "Setup-LICENSE.txt").read_text(encoding="utf-8")
+    assert "MICROSOFT VISUAL C++ RUNTIME TERMS" in setup_terms and "NGR LICENSE" in setup_terms
+    assert "This installer includes four Microsoft Visual C++ runtime DLLs" in setup_terms
+    assert vc["edition_terms"] in readme and vc["redist_list"] in readme
     assert any("ONNXRuntime-ThirdPartyNotices.txt" in path for path in documents)
     assert any("Tokenizers-Rust-ThirdPartyNotices.txt" in path for path in documents)
     if flavor == "cuda":
@@ -138,8 +152,12 @@ def main() -> None:
         package_env["USERPROFILE"] = str(data)
         package_env["NGR_MCP_HTTP_BEARER_TOKEN"] = token
         package_env["NGR_DATABASE"] = str(database)
+        rejected = subprocess.run([str(setup), "/VERYSILENT", "/SUPPRESSMSGBOXES",
+                                   "/NORESTART", f"/DIR={install}"],
+                                  capture_output=True, text=True, timeout=30)
+        assert rejected.returncode != 0 and not install.exists(), "silent setup bypassed terms acceptance"
         install_started = time.monotonic()
-        setup_result = subprocess.run([str(setup), "/VERYSILENT", "/SUPPRESSMSGBOXES",
+        setup_result = subprocess.run([str(setup), "/VERYSILENT", "/ACCEPTVCRUNTIME=yes", "/SUPPRESSMSGBOXES",
                                        "/NORESTART", f"/DIR={install}"],
                                       capture_output=True, text=True, timeout=180)
         if setup_result.returncode:
@@ -203,7 +221,7 @@ def main() -> None:
                 proxy.communicate(timeout=10)
             assert database.is_file(), "database not created"
             (data / "model-sentinel").write_text("keep", encoding="utf-8")
-            update_result = subprocess.run([str(setup), "/VERYSILENT", "/SUPPRESSMSGBOXES",
+            update_result = subprocess.run([str(setup), "/VERYSILENT", "/ACCEPTVCRUNTIME=yes", "/SUPPRESSMSGBOXES",
                                             "/NORESTART", f"/DIR={install}"],
                                            capture_output=True, text=True, timeout=180)
             assert update_result.returncode == 0, f"Update failed: {update_result.returncode}"
