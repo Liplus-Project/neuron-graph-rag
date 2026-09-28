@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import json
+import hashlib
 import secrets
 import shutil
 import subprocess
@@ -33,15 +34,24 @@ def _show_existing(client: str, config: Path) -> None:
         input("Inspect it locally, then press Enter to continue.")
 
 
-def _backup(path: Path) -> Path | None:
+def _backup(path: Path, backup_dir: Path | None = None) -> Path | None:
     if not path.is_file():
         return None
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    target = path.with_name(f"{path.name}.ngr-backup-{stamp}")
+    if backup_dir is not None:
+        backup_dir.mkdir(parents=True, exist_ok=True)
+    target = (backup_dir / f"{path.name}.ngr-backup-{stamp}" if backup_dir is not None
+              else path.with_name(f"{path.name}.ngr-backup-{stamp}"))
     if target.exists():
         raise FileExistsError(target)
     shutil.copy2(path, target)
     return target
+
+
+def _project_backup_dir(project: Path) -> Path:
+    base = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local"))
+    project_id = hashlib.sha256(str(project).encode("utf-8")).hexdigest()[:16]
+    return base / "Neuron Graph RAG" / "mcp-backups" / project_id
 
 
 def _select_claude_project() -> Path | None:
@@ -103,7 +113,7 @@ def _register_claude() -> None:
     if SERVER_NAME in servers:
         _show_existing("claude", config)
         if input("Back up the existing project configuration? [y/N] ").lower() == "y":
-            print(f"Backup: {_backup(config)}")
+            print(f"Backup: {_backup(config, _project_backup_dir(project))}")
         print("Existing project entry was preserved. Review its backup before changing it yourself.")
         return
     user_config = _config_path("claude")
@@ -115,7 +125,7 @@ def _register_claude() -> None:
     if input("Register in this Claude Code project? [y/N] ").lower() != "y":
         return
     _ensure_executable_env()
-    backup = _backup(config)
+    backup = _backup(config, _project_backup_dir(project))
     if backup:
         print(f"Backup: {backup}")
     command = [executable, "mcp", "add", "--scope", "project", "--transport", "stdio",

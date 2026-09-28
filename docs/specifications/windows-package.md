@@ -24,6 +24,8 @@ CUDA 版では Transformers の遅延読み込みがモデル種別の一覧か�
 
 DB、token、cache、モデルはインストール先でなくユーザー領域または利用者指定 path に置く。更新とアンインストールはそれらを削除しない。設定用コマンド `NGR.exe --configure-clients` は利用者が Codex / Claude Code を個別に選択した場合だけ MCP 登録を行う。Claude Code は利用者がフォルダー選択画面で指定した既存プロジェクトのルートに限り、`claude mcp add --scope project` により `.mcp.json` を更新する。別プロジェクトには自動登録しない。同名 `ngr-shared` が選択先にあれば安全な要約と設定ファイル path を示し、利用者がエディターで内容を確認できるようにする。選択先の JSON が不正なら変更を止める。CLI の任意出力や設定本文はコンソールやログに転記せず、自動上書きしない。新規登録前には既存設定ファイルを timestamp 付きで退避し、他のサーバーを保持する。既存 user scope 登録は project 登録成功後も維持し、利用者が他プロジェクトへの影響を確認して選んだ場合だけホーム設定を退避して削除する。複数プロジェクトに個別登録でき、登録内容は `${NGR_MCP_EXE} --shared` を参照する。ユーザー環境変数 `NGR_MCP_EXE` はこのマシンに導入した EXE の絶対 path とし、インストール先を各プロジェクトの設定に複製せず、一つの共有本体に接続する。新規 token はユーザー環境変数 `NGR_MCP_HTTP_BEARER_TOKEN` に保存し、コマンド引数や MCP 設定には書かない。既存アプリは環境変数を読み直すため再起動する。
 
+Claude Code の project 設定のバックアップは、選択したプロジェクトの外にあるユーザー専用の `%LOCALAPPDATA%\Neuron Graph RAG\mcp-backups\` 以下へ保存する。プロジェクトの Git 管理対象に設定本文の退避コピーを作らない。
+
 ## CI 受け入れ
 
 PR と main の両方で CPU / CUDA を別 job でビルドし、インストールした `NGR.exe` に Python のない PATH を渡して version、初回 stdio MCP 接続、共有 identity、tool 一覧、トレイ状態、停止・再開、アンインストール後の DB 残存を検査する。CUDA 版では固定 Transformers 版のモデルモジュール一覧と EXE の収録内容も照合する。GPU を持たない runner では CUDA wheel の同梱と起動入口・モジュール収録まで確認し、実機 NVIDIA GPU の推論成功は検証範囲に含まれない。

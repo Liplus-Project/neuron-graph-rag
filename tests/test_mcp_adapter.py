@@ -1232,12 +1232,14 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
             config.write_text(original, encoding="utf-8")
             user = root / ".claude.json"
             user.write_text('{"mcpServers":{"ngr-shared":{"command":"old"}}}', encoding="utf-8")
+            backup_root = root / "localappdata"
             calls = []
 
             def fake_run(command, **kwargs):
                 calls.append((command, kwargs))
                 self.assertEqual(kwargs["cwd"], selected)
-                self.assertEqual(len(list(selected.glob(".mcp.json.ngr-backup-*"))), 1)
+                self.assertEqual(len(list(backup_root.rglob(".mcp.json.ngr-backup-*"))), 1)
+                self.assertEqual(list(selected.glob(".mcp.json.ngr-backup-*")), [])
                 config.write_text('{"mcpServers":{"other":{"command":"private"},"ngr-shared":{"command":"NGR.exe","args":["--shared"]}}}', encoding="utf-8")
                 return subprocess.CompletedProcess(command, 0, "secret CLI output", "")
 
@@ -1247,13 +1249,14 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                   patch.object(registration, "_config_path", return_value=user),
                   patch.object(registration, "_ensure_executable_env"),
                   patch.object(registration.subprocess, "run", side_effect=fake_run),
+                  patch.dict(os.environ, {"LOCALAPPDATA": str(backup_root)}),
                   patch("builtins.input", side_effect=["y", "n"]), redirect_stdout(output)):
                 registration._register("claude")
             self.assertEqual(len(calls), 1)
             self.assertEqual(calls[0][0][2:6], ["add", "--scope", "project", "--transport"])
             self.assertEqual(calls[0][0][-2:], ["${NGR_MCP_EXE}", "--shared"])
             self.assertEqual(json.loads(config.read_text(encoding="utf-8"))["mcpServers"]["other"], {"command": "private"})
-            self.assertEqual(list(selected.glob(".mcp.json.ngr-backup-*"))[0].read_text(encoding="utf-8"), original)
+            self.assertEqual(list(backup_root.rglob(".mcp.json.ngr-backup-*"))[0].read_text(encoding="utf-8"), original)
             self.assertFalse((other / ".mcp.json").exists())
             self.assertIn("ngr-shared", registration._mcp_servers(user))
             self.assertNotIn("secret CLI output", output.getvalue())
@@ -1313,6 +1316,7 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
             project.mkdir()
             config = project / ".mcp.json"
             user = Path(directory) / ".claude.json"
+            backup_root = Path(directory) / "localappdata"
             original = '{"mcpServers":{"ngr-shared":{"command":"old"},"other":{}}}'
             user.write_text(original, encoding="utf-8")
             calls = []
@@ -1331,6 +1335,7 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                   patch.object(registration, "_config_path", return_value=user),
                   patch.object(registration, "_ensure_executable_env"),
                   patch.object(registration.subprocess, "run", side_effect=fake_run),
+                  patch.dict(os.environ, {"LOCALAPPDATA": str(backup_root)}),
                   patch("builtins.input", side_effect=["y", "y"])):
                 registration._register("claude")
             self.assertEqual(calls[1], ["claude.exe", "mcp", "remove", "ngr-shared", "--scope", "user"])
