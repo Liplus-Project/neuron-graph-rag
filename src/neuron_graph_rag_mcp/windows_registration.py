@@ -48,12 +48,13 @@ def _select_claude_project() -> Path | None:
     """Ask for a project root, without deriving it from the installation path."""
     # The Windows package already requires Windows PowerShell; use its native
     # folder dialog instead of adding Tcl/Tk to the frozen executable.
-    script = ("Add-Type -AssemblyName System.Windows.Forms; "
+    script = ("[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false); "
+              "Add-Type -AssemblyName System.Windows.Forms; "
               "$dialog = New-Object System.Windows.Forms.FolderBrowserDialog; "
               "$dialog.Description = 'Select Claude Code project root'; "
               "if ($dialog.ShowDialog() -eq 'OK') { [Console]::Out.Write($dialog.SelectedPath) }")
     result = subprocess.run(["powershell.exe", "-NoProfile", "-STA", "-Command", script],
-                            text=True, capture_output=True, check=False)
+                            text=True, encoding="utf-8", capture_output=True, check=False)
     if result.returncode != 0:
         raise OSError("Claude Code project folder selection failed")
     selected = result.stdout.strip()
