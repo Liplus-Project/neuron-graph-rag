@@ -25,7 +25,7 @@ def _assert_licenses(install: Path, flavor: str) -> None:
     assert manifest["flavor"] == flavor and manifest["models_bundled"] is False
     assert any(name.lower().startswith("python3") for name in manifest["python_runtime_files"])
     runtime_prefixes = ("msvcp", "vcruntime", "concrt", "vcomp", "ucrtbase", "api-ms-win-crt-")
-    actual_runtime = {path.relative_to(install).as_posix(): path for path in install.rglob("*.dll")
+    actual_runtime = {path.relative_to(install).as_posix().lower(): path for path in install.rglob("*.dll")
                       if path.name.lower().startswith(runtime_prefixes)}
     vc = manifest["vc_runtime"]
     assert vc["visual_studio_release"] == "2022"
@@ -36,7 +36,8 @@ def _assert_licenses(install: Path, flavor: str) -> None:
     expected_runtime = {f"_internal/{name}" for name in
                         ("msvcp140.dll", "msvcp140_1.dll", "vcruntime140.dll", "vcruntime140_1.dll")}
     recorded_runtime = {item["path"]: item for item in vc["files"]}
-    assert set(actual_runtime) == set(recorded_runtime) == expected_runtime
+    assert set(actual_runtime) == set(recorded_runtime) == expected_runtime, (
+        sorted(actual_runtime), sorted(recorded_runtime), sorted(expected_runtime))
     for path, item in recorded_runtime.items():
         assert item["file_version"] and "VC\\Redist\\MSVC\\" in item["source"]
         assert hashlib.sha256(actual_runtime[path].read_bytes()).hexdigest() == item["sha256"]
