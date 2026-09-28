@@ -50,7 +50,7 @@ begin
   Result := True;
   if WizardSilent and (CompareText(ExpandConstant('{param:ACCEPTVCRUNTIME|}'), 'yes') <> 0) then
   begin
-    MsgBox('Silent installation requires /ACCEPTVCRUNTIME=yes to accept the NGR and Microsoft Visual C++ runtime terms in Setup-LICENSE.txt.', mbError, MB_OK);
+    Log('Silent installation refused: /ACCEPTVCRUNTIME=yes is required.');
     Result := False;
   end;
 end;
