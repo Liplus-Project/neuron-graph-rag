@@ -1326,7 +1326,8 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                 if command[2] == "add":
                     config.write_text('{"mcpServers":{"ngr-shared":{}}}', encoding="utf-8")
                 else:
-                    self.assertEqual(len(list(user.parent.glob(".claude.json.ngr-backup-*"))), 1)
+                    self.assertEqual(list(user.parent.glob(".claude.json.ngr-backup-*")), [])
+                    self.assertEqual(len(list((backup_root / "Neuron Graph RAG" / "mcp-backups" / "user").glob(".claude.json.ngr-backup-*"))), 1)
                     user.write_text('{"mcpServers":{"other":{}}}', encoding="utf-8")
                 return subprocess.CompletedProcess(command, 0, "", "")
 
@@ -1339,7 +1340,8 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                   patch("builtins.input", side_effect=["y", "y"])):
                 registration._register("claude")
             self.assertEqual(calls[1], ["claude.exe", "mcp", "remove", "ngr-shared", "--scope", "user"])
-            self.assertEqual(list(user.parent.glob(".claude.json.ngr-backup-*"))[0].read_text(encoding="utf-8"), original)
+            self.assertEqual(list((backup_root / "Neuron Graph RAG" / "mcp-backups" / "user").glob(".claude.json.ngr-backup-*"))[0].read_text(encoding="utf-8"), original)
+            self.assertTrue(user.is_file())
             self.assertEqual(registration._mcp_servers(user), {"other": {}})
 
     def test_frozen_children_use_the_same_executable(self) -> None:

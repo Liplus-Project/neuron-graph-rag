@@ -14,7 +14,7 @@
 
 以前の user scope `ngr-shared` がホームの `.claude.json` にあっても、自動削除しない。project 登録が成功した後に、他プロジェクトでも引き続き使える状態を残すか、ホーム設定を退避して user 登録を削除するか選べる。削除すると個別登録していない他プロジェクトでは NGR が使えなくなる。複数プロジェクトに登録しても、各 stdio proxy は同じ共有 NGR 本体へ接続する。`.mcp.json` の command は `${NGR_MCP_EXE}` を参照し、登録時にユーザー環境変数 `NGR_MCP_EXE` に導入済み EXE の path を設定する。`.mcp.json` を他のマシンへ共有する場合は、そのマシンにも NGR を導入し、そのマシン側で同じ環境変数を設定する。token 値は設定に含まれない。
 
-project 設定の退避は、他の MCP 設定に含まれる秘密情報が Git に入らないよう、プロジェクト外の `%LOCALAPPDATA%\Neuron Graph RAG\mcp-backups\` 以下に保存する。退避先 path は登録時に表示される。旧 user scope 設定の退避はホーム設定と同じディレクトリに置く。
+project 設定の退避は、他の MCP 設定に含まれる秘密情報が Git に入らないよう、プロジェクト外の `%LOCALAPPDATA%\Neuron Graph RAG\mcp-backups\` 以下に保存する。旧 user scope 設定も同じ退避領域の `user` ディレクトリに保存し、ホーム直下に退避ファイルを増やさない。退避先 path は登録時に表示される。
 
 初回登録時、秘密 token がなければ現在ユーザーの環境変数に生成する。token はコマンド引数、MCP 設定、診断ログに書かない。既に Codex / Claude Code が起動していれば再起動して環境変数を読み直す。MCP を使うときは `NGR.exe --shared` が stdio proxy となり、`127.0.0.1:8765` の一つの本体と DB を共有する。トレイの **Stop and release GPU** で停止、**Resume** で再開、**Exit** で終了して次回接続時の自動起動に戻す。
 
@@ -26,4 +26,4 @@ CUDA 検索は [CUDA ガイド](cuda-shortlist-retrieval.md)に従い、固定 r
 
 ## アンインストール
 
-トレイの **Exit** を選び、Windows 設定の「インストールされているアプリ」から **Neuron Graph RAG** を削除する。インストーラーが配置したプログラムが削除される。ユーザー DB (`%USERPROFILE%\.ngrdb` または指定先)、token 用ユーザー環境変数、cache、別置きモデル、Codex / Claude Code の MCP 登録は維持する。これらを消す場合はバックアップを確認した上で利用者が個別に削除する。MCP 登録を残すとクライアントが存在しない `NGR.exe` を呼ぶため、不要なら各クライアントの MCP 管理機能で `ngr-shared` を削除する。
+トレイの **Exit** を選び、Windows 設定の「インストールされているアプリ」から **Neuron Graph RAG** を削除する。インストーラーが配置したプログラムが削除される。ユーザー DB (`%USERPROFILE%\.ngrdb` または指定先)、token 用ユーザー環境変数 `NGR_MCP_HTTP_BEARER_TOKEN`、実行ファイル path 用ユーザー環境変数 `NGR_MCP_EXE`、cache、別置きモデル、Codex / Claude Code の MCP 登録は維持する。これらを消す場合はバックアップを確認した上で利用者が個別に削除する。MCP 登録を残すと Claude Code の `.mcp.json` は `${NGR_MCP_EXE}` を経由して存在しない `NGR.exe` を呼ぶため、不要なら各クライアントの MCP 管理機能で `ngr-shared` を削除する。

@@ -48,10 +48,14 @@ def _backup(path: Path, backup_dir: Path | None = None) -> Path | None:
     return target
 
 
-def _project_backup_dir(project: Path) -> Path:
+def _backup_root() -> Path:
     base = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local"))
+    return base / "Neuron Graph RAG" / "mcp-backups"
+
+
+def _project_backup_dir(project: Path) -> Path:
     project_id = hashlib.sha256(str(project).encode("utf-8")).hexdigest()[:16]
-    return base / "Neuron Graph RAG" / "mcp-backups" / project_id
+    return _backup_root() / project_id
 
 
 def _select_claude_project() -> Path | None:
@@ -139,9 +143,10 @@ def _register_claude() -> None:
     if user_entry:
         print("Removing the user-scope entry disables it in other projects without their own registration.")
         if input("Back up and remove the old user-scope entry? [y/N] ").lower() == "y":
-            user_backup = _backup(user_config)
-            if user_backup:
-                print(f"Backup: {user_backup}")
+            user_backup = _backup(user_config, _backup_root() / "user")
+            if user_backup is None:
+                raise OSError("Claude Code user configuration disappeared before backup")
+            print(f"Backup: {user_backup}")
             removed = subprocess.run([executable, "mcp", "remove", SERVER_NAME, "--scope", "user"],
                                      cwd=project, text=True, capture_output=True, check=False)
             if removed.returncode != 0 or SERVER_NAME in _mcp_servers(user_config):
