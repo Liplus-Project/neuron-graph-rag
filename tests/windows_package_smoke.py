@@ -56,6 +56,8 @@ def main() -> None:
     if os.name != "nt":
         raise SystemExit("Windows only")
     setup, version = Path(sys.argv[1]).resolve(), sys.argv[2]
+    release_version = (Path(__file__).resolve().parents[1] / "packaging" / "windows" / "release-version.txt").read_text(encoding="utf-8").strip()
+    assert version == release_version, (version, release_version)
     with tempfile.TemporaryDirectory(prefix="ngr-package-") as directory:
         root = Path(directory)
         install = root / "Installed"
@@ -107,6 +109,7 @@ def main() -> None:
                 proxy.stdin.flush()
                 response = json.loads(responses.get(timeout=90))
                 assert response["id"] == 1 and "result" in response, response
+                assert response["result"]["serverInfo"]["version"] == version, response
                 print(f"SHARED_START_SECONDS={time.monotonic() - start_started:.2f}", flush=True)
                 proxy.stdin.write(json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"}) + "\n")
                 proxy.stdin.write(json.dumps({"jsonrpc": "2.0", "id": 2, "method": "tools/list"}) + "\n")

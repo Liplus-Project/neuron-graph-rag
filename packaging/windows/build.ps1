@@ -1,11 +1,22 @@
 param([ValidateSet('cpu','cuda')][string]$Flavor)
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path "$PSScriptRoot\..\..").Path
-$version = (Select-String -Path "$root\pyproject.toml" -Pattern '^version = "([0-9]+\.[0-9]+\.[0-9]+)"$').Matches.Groups[1].Value
-if (-not $version) { throw 'Cannot read package version' }
+$version = (Get-Content -LiteralPath (Join-Path $PSScriptRoot 'release-version.txt') -Raw).Trim()
+if ($version -notmatch '^[0-9]+\.[0-9]+\.[0-9]+$') { throw 'Invalid release version' }
 $outputRoot = Join-Path $root 'package-output'
 $bundleRoot = Join-Path $root 'package-build'
 New-Item -ItemType Directory -Force $outputRoot, $bundleRoot | Out-Null
+$packageSource = Join-Path $bundleRoot 'release-source'
+New-Item -ItemType Directory -Force $packageSource | Out-Null
+Copy-Item -LiteralPath (Join-Path $root 'pyproject.toml'), (Join-Path $root 'README.md') -Destination $packageSource
+$releaseSrc = Join-Path $packageSource 'src'
+New-Item -ItemType Directory -Force $releaseSrc | Out-Null
+Copy-Item -LiteralPath (Join-Path $root 'src/neuron_graph_rag'), (Join-Path $root 'src/neuron_graph_rag_mcp') -Destination $releaseSrc -Recurse
+$releaseProject = Join-Path $packageSource 'pyproject.toml'
+$projectContent = [System.IO.File]::ReadAllText($releaseProject)
+$releaseContent = [regex]::Replace($projectContent, '(?m)^version = "[0-9]+\.[0-9]+\.[0-9]+"$', "version = `"$version`"")
+if ($releaseContent -eq $projectContent) { throw 'Release version did not replace source metadata' }
+[System.IO.File]::WriteAllText($releaseProject, $releaseContent, [System.Text.UTF8Encoding]::new($false))
 
 # Each job starts on a clean runner. PyPI packages and the CUDA wheel source are pinned.
 python -m pip install --disable-pip-version-check 'pyinstaller==6.22.3' 'mcp==2.2.0' 'httpx2==2.13.1' 'uvicorn==0.54.0' 'starlette==1.7.0' 'numpy==2.4.6' 'onnxruntime==1.30.0' 'tokenizers==0.22.1'
@@ -16,7 +27,7 @@ if ($Flavor -eq 'cuda') {
   python -m pip install --disable-pip-version-check 'transformers==4.57.6' 'safetensors==0.6.2'
   if ($LASTEXITCODE) { throw 'CUDA runtime installation failed' }
 }
-python -m pip install --disable-pip-version-check --no-deps "$root"
+python -m pip install --disable-pip-version-check --no-deps "$packageSource"
 if ($LASTEXITCODE) { throw 'NGR installation failed' }
 
 $arguments = @('--noconfirm','--clean','--onedir','--name','NGR','--distpath',$bundleRoot,'--workpath',(Join-Path $bundleRoot 'work'),'--specpath',$bundleRoot,'--copy-metadata','neuron-graph-rag','--collect-submodules','neuron_graph_rag')

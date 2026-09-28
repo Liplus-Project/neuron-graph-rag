@@ -6,7 +6,7 @@ Windows x64 の利用者が checkout と開発用 Python を用意せず、共�
 
 ## 成果物とバージョン
 
-- `NGR-<version>-windows-x64-cpu-setup.exe` と `NGR-<version>-windows-x64-cuda-setup.exe`。`version` は `pyproject.toml` の `[project].version` をビルド時に読み取る。各 EXE に `*.exe.sha256` を添える。ハッシュ行は SHA-256 とファイル名を記す。
+- `NGR-<version>-windows-x64-cpu-setup.exe` と `NGR-<version>-windows-x64-cuda-setup.exe`。`version` は `packaging/windows/release-version.txt` から読み取り、隔離した配布用 source の package metadata に反映する。ハッシュ登録済みの原本 `pyproject.toml` は変更しない。各 EXE に `*.exe.sha256` を添える。ハッシュ行は SHA-256 とファイル名を記す。
 - CI artifact の `package-manifest.json` は `schema: ngr.windows-package/v1`, `version`, `flavor`, `setup_file`, `sha256`, `size`（bytes）、`bundle_size_bytes`（onedir の総 bytes）を持つ。インストール先の `NGR.exe` と同じディレクトリには `schema`, `version`, `flavor` を持つ manifest を置く。セットアップ自身の digest をセットアップ内 manifest に含める循環はしない。
 - `NGR.exe --version` は実行形式に含めた配布 metadata の version を表示する。公開 GitHub Release への asset 添付と Latest の変更はこの workflow の範囲外。
 
