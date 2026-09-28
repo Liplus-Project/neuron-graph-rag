@@ -1216,6 +1216,134 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(fake_registry.SetValueEx.call_args.args[-2:], (1, self.TOKEN))
         self.assertNotIn(self.TOKEN, output.getvalue())
 
+    def test_claude_project_registration_preserves_other_entries_and_user_scope(self) -> None:
+        from contextlib import redirect_stdout
+        from io import StringIO
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp import windows_registration as registration
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            selected, other = root / "selected", root / "other"
+            selected.mkdir()
+            other.mkdir()
+            config = selected / ".mcp.json"
+            original = '{"mcpServers":{"other":{"command":"private"}}}'
+            config.write_text(original, encoding="utf-8")
+            user = root / ".claude.json"
+            user.write_text('{"mcpServers":{"ngr-shared":{"command":"old"}}}', encoding="utf-8")
+            backup_root = root / "localappdata"
+            calls = []
+
+            def fake_run(command, **kwargs):
+                calls.append((command, kwargs))
+                self.assertEqual(kwargs["cwd"], selected)
+                self.assertEqual(len(list(backup_root.rglob(".mcp.json.ngr-backup-*"))), 1)
+                self.assertEqual(list(selected.glob(".mcp.json.ngr-backup-*")), [])
+                config.write_text('{"mcpServers":{"other":{"command":"private"},"ngr-shared":{"command":"NGR.exe","args":["--shared"]}}}', encoding="utf-8")
+                return subprocess.CompletedProcess(command, 0, "secret CLI output", "")
+
+            output = StringIO()
+            with (patch.object(registration.shutil, "which", return_value="claude.exe"),
+                  patch.object(registration, "_select_claude_project", return_value=selected),
+                  patch.object(registration, "_config_path", return_value=user),
+                  patch.object(registration, "_ensure_executable_env"),
+                  patch.object(registration.subprocess, "run", side_effect=fake_run),
+                  patch.dict(os.environ, {"LOCALAPPDATA": str(backup_root)}),
+                  patch("builtins.input", side_effect=["y", "n"]), redirect_stdout(output)):
+                registration._register("claude")
+            self.assertEqual(len(calls), 1)
+            self.assertEqual(calls[0][0][2:6], ["add", "--scope", "project", "--transport"])
+            self.assertEqual(calls[0][0][-2:], ["${NGR_MCP_EXE}", "--shared"])
+            self.assertEqual(json.loads(config.read_text(encoding="utf-8"))["mcpServers"]["other"], {"command": "private"})
+            self.assertEqual(list(backup_root.rglob(".mcp.json.ngr-backup-*"))[0].read_text(encoding="utf-8"), original)
+            self.assertFalse((other / ".mcp.json").exists())
+            self.assertIn("ngr-shared", registration._mcp_servers(user))
+            self.assertNotIn("secret CLI output", output.getvalue())
+
+    def test_claude_existing_project_entry_is_not_replaced(self) -> None:
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp import windows_registration as registration
+
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            config = project / ".mcp.json"
+            config.write_text('{"mcpServers":{"ngr-shared":{"command":"old"}}}', encoding="utf-8")
+            with (patch.object(registration.shutil, "which", return_value="claude.exe"),
+                  patch.object(registration, "_select_claude_project", return_value=project),
+                  patch.object(registration.subprocess, "run") as run,
+                  patch("builtins.input", return_value="n")):
+                registration._register("claude")
+            run.assert_not_called()
+            self.assertEqual(registration._mcp_servers(config)["ngr-shared"], {"command": "old"})
+
+    def test_claude_invalid_project_config_stops_before_write(self) -> None:
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp import windows_registration as registration
+
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            config = project / ".mcp.json"
+            config.write_text("{invalid private configuration", encoding="utf-8")
+            with (patch.object(registration.shutil, "which", return_value="claude.exe"),
+                  patch.object(registration, "_select_claude_project", return_value=project),
+                  patch.object(registration, "_ensure_executable_env") as set_env,
+                  patch.object(registration.subprocess, "run") as run):
+                with self.assertRaisesRegex(ValueError, "valid UTF-8 JSON"):
+                    registration._register("claude")
+            set_env.assert_not_called()
+            run.assert_not_called()
+            self.assertEqual(config.read_text(encoding="utf-8"), "{invalid private configuration")
+
+    def test_claude_folder_picker_uses_existing_windows_powershell_dependency(self) -> None:
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp import windows_registration as registration
+
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.CompletedProcess([], 0, directory, "private diagnostic")
+            with patch.object(registration.subprocess, "run", return_value=result) as run:
+                self.assertEqual(registration._select_claude_project(), Path(directory).resolve())
+            self.assertEqual(run.call_args.args[0][:4],
+                             ["powershell.exe", "-NoProfile", "-STA", "-Command"])
+            self.assertTrue(run.call_args.kwargs["capture_output"])
+
+    def test_claude_user_scope_removal_requires_successful_project_registration(self) -> None:
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp import windows_registration as registration
+
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory) / "project"
+            project.mkdir()
+            config = project / ".mcp.json"
+            user = Path(directory) / ".claude.json"
+            backup_root = Path(directory) / "localappdata"
+            original = '{"mcpServers":{"ngr-shared":{"command":"old"},"other":{}}}'
+            user.write_text(original, encoding="utf-8")
+            calls = []
+
+            def fake_run(command, **kwargs):
+                calls.append(command)
+                if command[2] == "add":
+                    config.write_text('{"mcpServers":{"ngr-shared":{}}}', encoding="utf-8")
+                else:
+                    self.assertEqual(list(user.parent.glob(".claude.json.ngr-backup-*")), [])
+                    self.assertEqual(len(list((backup_root / "Neuron Graph RAG" / "mcp-backups" / "user").glob(".claude.json.ngr-backup-*"))), 1)
+                    user.write_text('{"mcpServers":{"other":{}}}', encoding="utf-8")
+                return subprocess.CompletedProcess(command, 0, "", "")
+
+            with (patch.object(registration.shutil, "which", return_value="claude.exe"),
+                  patch.object(registration, "_select_claude_project", return_value=project),
+                  patch.object(registration, "_config_path", return_value=user),
+                  patch.object(registration, "_ensure_executable_env"),
+                  patch.object(registration.subprocess, "run", side_effect=fake_run),
+                  patch.dict(os.environ, {"LOCALAPPDATA": str(backup_root)}),
+                  patch("builtins.input", side_effect=["y", "y"])):
+                registration._register("claude")
+            self.assertEqual(calls[1], ["claude.exe", "mcp", "remove", "ngr-shared", "--scope", "user"])
+            self.assertEqual(list((backup_root / "Neuron Graph RAG" / "mcp-backups" / "user").glob(".claude.json.ngr-backup-*"))[0].read_text(encoding="utf-8"), original)
+            self.assertTrue(user.is_file())
+            self.assertEqual(registration._mcp_servers(user), {"other": {}})
+
     def test_frozen_children_use_the_same_executable(self) -> None:
         from unittest.mock import patch
         from neuron_graph_rag_mcp.shared_proxy import _entry_command
