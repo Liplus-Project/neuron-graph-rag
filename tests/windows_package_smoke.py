@@ -56,7 +56,8 @@ def _assert_licenses(install: Path, flavor: str) -> None:
             "InnoSetup-LICENSE.txt", "Microsoft-VC-Runtime-LICENSE.txt", "Setup-LICENSE.txt"} <= documents.keys()
     setup_terms = (licenses / "Setup-LICENSE.txt").read_text(encoding="utf-8")
     assert "MICROSOFT VISUAL C++ RUNTIME TERMS" in setup_terms and "NGR LICENSE" in setup_terms
-    assert vc["edition_terms"] in setup_terms and f"Visual Studio 2022 {edition}" in setup_terms
+    assert "This installer includes four Microsoft Visual C++ runtime DLLs" in setup_terms
+    assert vc["edition_terms"] in readme and vc["redist_list"] in readme
     assert any("ONNXRuntime-ThirdPartyNotices.txt" in path for path in documents)
     assert any("Tokenizers-Rust-ThirdPartyNotices.txt" in path for path in documents)
     if flavor == "cuda":

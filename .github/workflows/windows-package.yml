@@ -65,7 +65,7 @@ jobs:
       # Keep public CI artifacts closed until publisher rights and end-user
       # agreement terms have been reviewed for this Community source.
       - uses: actions/upload-artifact@v4
-        if: vars.NGR_VC_REDIST_DISTRIBUTION_APPROVED == 'true'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NGR_VC_REDIST_DISTRIBUTION_APPROVED == 'true'
         with:
           name: ngr-windows-${{ matrix.flavor }}
           path: package-output/*
