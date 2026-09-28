@@ -114,11 +114,7 @@ def audit_vc_runtime(bundle: Path, provenance_file: Path) -> dict:
     release = "2022"
     if release not in installation.parts or "Microsoft Visual Studio" not in installation.parts:
         raise RuntimeError(f"VC runtime source is not the expected Visual Studio {release} installation")
-    edition_terms = {
-        "Community": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-community/",
-        "Professional": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-proenterprise/",
-        "Enterprise": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-proenterprise/",
-    }
+    edition_terms = {"Community": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-community/"}
     edition = provenance["edition"]
     if installation.name != edition or provenance["edition_terms"] != edition_terms.get(edition):
         raise RuntimeError("VC runtime Visual Studio edition or license URL mismatch")

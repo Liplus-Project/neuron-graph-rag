@@ -30,7 +30,7 @@ def _assert_licenses(install: Path, flavor: str) -> None:
     vc = manifest["vc_runtime"]
     assert vc["visual_studio_release"] == "2022"
     edition = vc["visual_studio_edition"]
-    assert edition in {"Community", "Professional", "Enterprise"}
+    assert edition == "Community"
     assert vc["edition_terms"].startswith("https://visualstudio.microsoft.com/license-terms/vs2022-ga-")
     assert vc["redist_list"] == f"https://learn.microsoft.com/en-us/visualstudio/releases/{vc['visual_studio_release']}/redistribution"
     expected_runtime = {f"_internal/{name}" for name in
