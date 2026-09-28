@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+from importlib.metadata import version as distribution_version
 import asyncio
 import http.server
 import json
@@ -735,12 +736,14 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         parameters = StdioServerParameters(
             command=sys.executable,
             args=["-m", "neuron_graph_rag_mcp", "--database", str(self.database)],
+            env={**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")},
         )
         async with (
             stdio_client(parameters) as (read_stream, write_stream),
             ClientSession(read_stream, write_stream) as session,
         ):
-            await session.initialize()
+            initialized = await session.initialize()
+            self.assertEqual(initialized.server_info.version, distribution_version("neuron-graph-rag"))
             listed = await session.list_tools()
             self.assertEqual(
                 [tool.name for tool in listed.tools],

@@ -28,6 +28,8 @@ from neuron_graph_rag.config_provenance import (
 )
 from neuron_graph_rag.evidence_feedback import EngineConfig, NeuronGraphRAG
 
+from .package_version import application_version
+
 CONTRACT_VERSION = "ngr.mcp.feedback/v1"
 
 SEARCH_DESCRIPTION = (
@@ -1423,7 +1425,7 @@ def create_server(
                                  expose_cuda=expose_cuda)
     server: Server[Any] = Server(
         "neuron-graph-rag",
-        version="0.2.0",
+        version=application_version(),
         instructions=(
             "Search local Neuron Graph RAG sources, then report ordered source-use "
             "transitions and delayed outcomes with the returned trace_id."
@@ -1445,7 +1447,7 @@ async def _run(
                 write_stream,
                 InitializationOptions(
                     server_name="neuron-graph-rag",
-                    server_version="0.2.0",
+                    server_version=application_version(),
                     capabilities=server.get_capabilities(
                         notification_options=NotificationOptions(),
                         experimental_capabilities={},
