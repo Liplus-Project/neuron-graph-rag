@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import json
 import secrets
 import shutil
 import subprocess
@@ -13,6 +14,7 @@ from pathlib import Path
 from .http_server import TOKEN_ENV, _validate_bearer_token
 
 SERVER_NAME = "ngr-shared"
+EXE_ENV = "NGR_MCP_EXE"
 
 
 def _config_path(client: str) -> Path:
@@ -42,6 +44,98 @@ def _backup(path: Path) -> Path | None:
     return target
 
 
+def _select_claude_project() -> Path | None:
+    """Ask for a project root, without deriving it from the installation path."""
+    import tkinter as tk
+    from tkinter import filedialog
+
+    root = tk.Tk()
+    root.withdraw()
+    try:
+        selected = filedialog.askdirectory(parent=root, title="Select Claude Code project root", mustexist=True)
+    finally:
+        root.destroy()
+    return Path(selected).resolve() if selected else None
+
+
+def _mcp_servers(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    if not path.is_file():
+        raise ValueError("MCP configuration path is not a file")
+    try:
+        document = json.loads(path.read_text(encoding="utf-8-sig"))
+    except (UnicodeError, json.JSONDecodeError) as error:
+        raise ValueError("MCP configuration is not valid UTF-8 JSON") from error
+    if not isinstance(document, dict):
+        raise ValueError("MCP configuration root must be an object")
+    servers = document.get("mcpServers", {})
+    if not isinstance(servers, dict):
+        raise ValueError("MCP configuration mcpServers must be an object")
+    return servers
+
+
+def _ensure_executable_env() -> None:
+    import winreg
+
+    with winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER, "Environment", 0,
+                            winreg.KEY_SET_VALUE) as key:
+        winreg.SetValueEx(key, EXE_ENV, 0, winreg.REG_SZ, sys.executable)
+    os.environ[EXE_ENV] = sys.executable
+
+
+def _register_claude() -> None:
+    executable = shutil.which("claude")
+    if not executable:
+        print("claude: CLI was not found; skipped.")
+        return
+    project = _select_claude_project()
+    if project is None:
+        print("Claude Code project selection cancelled.")
+        return
+    if not project.is_dir():
+        raise ValueError("Selected Claude Code project directory does not exist")
+    config = project / ".mcp.json"
+    servers = _mcp_servers(config)
+    if SERVER_NAME in servers:
+        _show_existing("claude", config)
+        if input("Back up the existing project configuration? [y/N] ").lower() == "y":
+            print(f"Backup: {_backup(config)}")
+        print("Existing project entry was preserved. Review its backup before changing it yourself.")
+        return
+    user_config = _config_path("claude")
+    user_entry = SERVER_NAME in _mcp_servers(user_config)
+    print(f"Proposed Claude Code project entry: name={SERVER_NAME}, command=${{{EXE_ENV}}} --shared")
+    print(f"Project configuration: {config}; token is read from {TOKEN_ENV}.")
+    if user_entry:
+        print("An existing user-scope entry also applies to other projects. It will be preserved unless you choose removal after project registration.")
+    if input("Register in this Claude Code project? [y/N] ").lower() != "y":
+        return
+    _ensure_executable_env()
+    backup = _backup(config)
+    if backup:
+        print(f"Backup: {backup}")
+    command = [executable, "mcp", "add", "--scope", "project", "--transport", "stdio",
+               SERVER_NAME, "--", f"${{{EXE_ENV}}}", "--shared"]
+    result = subprocess.run(command, cwd=project, text=True, capture_output=True, check=False)
+    if result.returncode != 0:
+        raise OSError("Claude Code project registration failed")
+    if SERVER_NAME not in _mcp_servers(config):
+        raise OSError("Claude Code did not write the selected project configuration")
+    print(f"Claude Code: registered {SERVER_NAME} in {config}.")
+    if user_entry:
+        print("Removing the user-scope entry disables it in other projects without their own registration.")
+        if input("Back up and remove the old user-scope entry? [y/N] ").lower() == "y":
+            user_backup = _backup(user_config)
+            if user_backup:
+                print(f"Backup: {user_backup}")
+            removed = subprocess.run([executable, "mcp", "remove", SERVER_NAME, "--scope", "user"],
+                                     cwd=project, text=True, capture_output=True, check=False)
+            if removed.returncode != 0 or SERVER_NAME in _mcp_servers(user_config):
+                raise OSError("Claude Code user-scope removal could not be verified")
+            print("Claude Code: old user-scope entry removed.")
+
+
 def _ensure_token() -> None:
     import winreg
 
@@ -61,6 +155,9 @@ def _ensure_token() -> None:
 
 
 def _register(client: str) -> None:
+    if client == "claude":
+        _register_claude()
+        return
     executable = shutil.which(client)
     if not executable:
         print(f"{client}: CLI was not found; skipped.")
@@ -80,10 +177,7 @@ def _register(client: str) -> None:
         print(f"{client}: could not verify whether {SERVER_NAME} exists; skipped.")
         return
     command = [executable, "mcp", "add"]
-    if client == "claude":
-        command += ["--scope", "user", "--transport", "stdio", SERVER_NAME, "--", sys.executable, "--shared"]
-    else:
-        command += [SERVER_NAME, "--", sys.executable, "--shared"]
+    command += [SERVER_NAME, "--", sys.executable, "--shared"]
     print(f"Proposed {client} entry: name={SERVER_NAME}, command={sys.executable} --shared")
     print(f"Configuration: {config}; token is read from {TOKEN_ENV}, not saved in the MCP entry.")
     if input(f"Register in {client}? [y/N] ").lower() != "y":
