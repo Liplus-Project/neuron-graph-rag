@@ -1292,6 +1292,18 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
             run.assert_not_called()
             self.assertEqual(config.read_text(encoding="utf-8"), "{invalid private configuration")
 
+    def test_claude_folder_picker_uses_existing_windows_powershell_dependency(self) -> None:
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp import windows_registration as registration
+
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.CompletedProcess([], 0, directory, "private diagnostic")
+            with patch.object(registration.subprocess, "run", return_value=result) as run:
+                self.assertEqual(registration._select_claude_project(), Path(directory).resolve())
+            self.assertEqual(run.call_args.args[0][:4],
+                             ["powershell.exe", "-NoProfile", "-STA", "-Command"])
+            self.assertTrue(run.call_args.kwargs["capture_output"])
+
     def test_claude_user_scope_removal_requires_successful_project_registration(self) -> None:
         from unittest.mock import patch
         from neuron_graph_rag_mcp import windows_registration as registration
