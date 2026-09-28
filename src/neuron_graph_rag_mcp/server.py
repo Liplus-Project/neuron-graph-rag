@@ -1423,7 +1423,7 @@ def create_server(
                                  expose_cuda=expose_cuda)
     server: Server[Any] = Server(
         "neuron-graph-rag",
-        version="0.1.0",
+        version="0.2.0",
         instructions=(
             "Search local Neuron Graph RAG sources, then report ordered source-use "
             "transitions and delayed outcomes with the returned trace_id."
@@ -1445,7 +1445,7 @@ async def _run(
                 write_stream,
                 InitializationOptions(
                     server_name="neuron-graph-rag",
-                    server_version="0.1.0",
+                    server_version="0.2.0",
                     capabilities=server.get_capabilities(
                         notification_options=NotificationOptions(),
                         experimental_capabilities={},
