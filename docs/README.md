@@ -12,7 +12,7 @@
 
 既存83ファイルのうち7ファイルを用途別フォルダへ移動し、76ファイルは元のパスとbytesを維持しています。
 
-manifest内の各hash registryに67文書が直接登録されています。残る9文書はmanifest・凍結corpusの文書参照と維持文書からの参照を保護するために元パスを維持しています。凍結本文の書換えや互換本文の複製を避けています。各カテゴリの「元パス維持」が該当します。[分類台帳](documentation-layout.json)で各文書の移動先、登録元、維持文書からの参照を確認できます。
+manifest内の各hash registryに67文書が直接登録されています。残る9文書はmanifest・凍結corpusの文書参照と維持文書からの参照を保護するために元パスを維持しています。凍結本文の書換えや互換本文の複製を避けています。各カテゴリの「元パス維持」が該当します。[分類台帳](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/documentation-layout.json)で各文書の移動先、登録元、維持文書からの参照を確認できます。
 
 fixture・manifest・観測証拠の内部パスは当時の識別子として維持します。古い実験の再実行や共有データベースへのアクセスは行いません。
 
