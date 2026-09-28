@@ -33,7 +33,7 @@ UPSTREAM_LICENSES = {
     "tokenizers": ("0.22.1", "Tokenizers-LICENSE.txt", "https://github.com/huggingface/tokenizers/blob/v0.22.1/LICENSE"),
 }
 PINNED_DOCUMENT_SHA256 = {
-    "InnoSetup-LICENSE.txt": "2e5346868c2a18434489824e11d65c3031620f792fefc415d05f19cd441abf5c",
+    "InnoSetup-LICENSE.txt": "3df23505b7ec00dc007a1e1e9ba32ee3895e7ce90043bcd1ac1b9b47155921a7",
     "ONNXRuntime-ThirdPartyNotices.txt": "143764b952fdb1a7c69ce653bfba74a7744d6a8a573bfb73e235fba356c83de3",
     "PyTorch-NOTICE.txt": "c2cc7bf0caec7652c2b460a8a470bea1677f241e4ab8e431df34cf17f5a9fec0",
     "Tokenizers-LICENSE.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
@@ -80,6 +80,8 @@ def _is_document(path: Path) -> bool:
 
 def _copy_document(source: Path, target: Path, manifest_path: str, documents: list[dict], origin: str) -> None:
     data = source.read_bytes()
+    if source.name == "InnoSetup-LICENSE.txt":
+        data = data.replace(b"\r\n", b"\n")
     if not data.strip() or b"\x00" in data:
         raise RuntimeError(f"License/NOTICE is empty or binary: {source}")
     digest = hashlib.sha256(data).hexdigest()
@@ -123,6 +125,19 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
                      and path not in owners)
     if unowned:
         raise RuntimeError("Bundled site-packages files lack installed RECORD ownership: " + repr(unowned[:20]))
+    system32 = path_key(Path(os.environ["SystemRoot"]) / "System32") + os.sep
+    excluded_names = {"msvcp140.dll", "msvcp140_1.dll"}
+    excluded = sorted(path for path in sources if path.startswith(system32)
+                      and Path(path).name.lower() in excluded_names)
+    for source in excluded:
+        if (bundle / "_internal" / Path(source).name).exists():
+            raise RuntimeError(f"System32 Visual C++ DLL remains in bundle: {source}")
+    allowed_roots = (path_key(python_root) + os.sep, path_key(repository) + os.sep)
+    foreign = sorted(path for path in sources if path not in owners and path not in excluded
+                     and not any(path.startswith(root) for root in allowed_roots))
+    if foreign:
+        raise RuntimeError("Bundled source files have no NGR, CPython or wheel ownership: "
+                           + repr(foreign[:20]))
 
     included = sorted({name for names in owners.values() for name in names} | {"pyinstaller"})
     distributions = []
@@ -177,6 +192,7 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
                 "python_version": sys.version.split()[0],
                 "python_runtime_files": sorted(name for name in runtime_sources
                                                if name.lower().startswith(("python3", "vcruntime"))),
+                "excluded_system_runtime": sorted(Path(path).name.lower() for path in excluded),
                 "distributions": distributions, "documents": sorted(documents, key=lambda item: item["path"]),
                 "models_bundled": False}
     (licenses / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

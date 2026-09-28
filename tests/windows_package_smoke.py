@@ -24,6 +24,9 @@ def _assert_licenses(install: Path, flavor: str) -> None:
     assert manifest["schema"] == "ngr.windows-licenses/v1"
     assert manifest["flavor"] == flavor and manifest["models_bundled"] is False
     assert any(name.lower().startswith("vcruntime") for name in manifest["python_runtime_files"])
+    assert not any(path.name.lower() in {"msvcp140.dll", "msvcp140_1.dll"}
+                   for path in install.rglob("*") if path.is_file())
+    assert set(manifest["excluded_system_runtime"]) <= {"msvcp140.dll", "msvcp140_1.dll"}
     distributions = {item["name"]: item for item in manifest["distributions"]}
     required = {"pyinstaller", "mcp", "httpx2", "uvicorn", "starlette", "numpy",
                 "onnxruntime", "tokenizers"}

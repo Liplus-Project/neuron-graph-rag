@@ -29,10 +29,13 @@ if ($Flavor -eq 'cuda') {
 }
 python -m pip install --disable-pip-version-check --no-deps "$packageSource"
 if ($LASTEXITCODE) { throw 'NGR installation failed' }
-# Prefer the CPython distribution's VCRUNTIME DLLs over unrelated PATH entries.
+# Keep unrelated runner tools' DLLs out of PyInstaller's dependency search.
 $pythonHome = python -c 'import sys; print(sys.base_prefix)'
 if ($LASTEXITCODE) { throw 'Python runtime lookup failed' }
-$env:PATH = "$pythonHome;$env:PATH"
+$pythonExe = python -c 'import sys; print(sys.executable)'
+if ($LASTEXITCODE) { throw 'Python executable lookup failed' }
+$pythonScripts = Split-Path -Parent $pythonExe
+$env:PATH = "$pythonScripts;$pythonHome;$env:SystemRoot\System32;$env:SystemRoot"
 
 $arguments = @('--noconfirm','--clean','--onedir','--name','NGR','--distpath',$bundleRoot,'--workpath',(Join-Path $bundleRoot 'work'),'--specpath',$bundleRoot,'--copy-metadata','neuron-graph-rag','--collect-submodules','neuron_graph_rag')
 # MCP's optional CLI imports typer and exits when that unrelated extra is absent.
@@ -47,6 +50,12 @@ if ($Flavor -eq 'cuda') {
 $arguments += (Join-Path $root 'packaging\windows\entry.py')
 python -m PyInstaller @arguments
 if ($LASTEXITCODE) { throw 'PyInstaller build failed' }
+# The x64 Visual C++ runtime is an installer prerequisite, not redistributed
+# from the runner's System32 directory.
+foreach ($dllName in @('msvcp140.dll','msvcp140_1.dll')) {
+  $dll = Join-Path $bundleRoot "NGR\_internal\$dllName"
+  if (Test-Path -LiteralPath $dll) { Remove-Item -LiteralPath $dll }
+}
 & "$bundleRoot\NGR\NGR.exe" --version
 if ($LASTEXITCODE) { throw 'Frozen executable version probe failed' }
 python (Join-Path $root 'packaging\windows\collect_notices.py') --analysis (Join-Path $bundleRoot 'work\NGR\Analysis-00.toc') --bundle (Join-Path $bundleRoot 'NGR') --repository $root --flavor $Flavor

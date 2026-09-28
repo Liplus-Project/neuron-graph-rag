@@ -8,7 +8,7 @@ metadata or claim a source graph proves binary-level linking.
 
 | File | Source | SHA-256 |
 | --- | --- | --- |
-| `InnoSetup-LICENSE.txt` | https://github.com/jrsoftware/issrc/blob/is-6_7_3/license.txt | `2e5346868c2a18434489824e11d65c3031620f792fefc415d05f19cd441abf5c` |
+| `InnoSetup-LICENSE.txt` | https://github.com/jrsoftware/issrc/blob/is-6_7_3/license.txt | `3df23505b7ec00dc007a1e1e9ba32ee3895e7ce90043bcd1ac1b9b47155921a7` (LF-normalized; upstream CRLF: `2e5346868c2a18434489824e11d65c3031620f792fefc415d05f19cd441abf5c`) |
 | `ONNXRuntime-ThirdPartyNotices.txt` | https://github.com/microsoft/onnxruntime/blob/v1.30.0/ThirdPartyNotices.txt | `143764b952fdb1a7c69ce653bfba74a7744d6a8a573bfb73e235fba356c83de3` |
 | `PyTorch-NOTICE.txt` | https://github.com/pytorch/pytorch/blob/v2.9.1/NOTICE | `c2cc7bf0caec7652c2b460a8a470bea1677f241e4ab8e431df34cf17f5a9fec0` |
 | `Tokenizers-LICENSE.txt` | https://github.com/huggingface/tokenizers/blob/v0.22.1/LICENSE | `c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4` |

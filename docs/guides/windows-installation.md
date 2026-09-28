@@ -4,7 +4,7 @@
 
 通常は `NGR-<version>-windows-x64-cpu-setup.exe` を選ぶ。NVIDIA GPU と対応 driver があり、固定モデルを自分で配置して CUDA 検索を使う場合は `...-cuda-setup.exe` を選ぶ。CUDA 版は PyTorch 等を含むため容量が大きく、GPU とモデルがない環境では CUDA 検索が使えない。通常検索と共有 MCP は CPU 版で動く。
 
-ダウンロードした EXE と同名の `.sha256` を同じ場所に置き、PowerShell で `Get-FileHash .\NGR-<version>-windows-x64-cpu-setup.exe -Algorithm SHA256` の値を比較する。これらは未署名の EXE であり、SHA-256 は配布元の身元を証明しない。公開 release asset は公開前に別途確認される。インストールに管理者権限、Python、checkout は不要。
+ダウンロードした EXE と同名の `.sha256` を同じ場所に置き、PowerShell で `Get-FileHash .\NGR-<version>-windows-x64-cpu-setup.exe -Algorithm SHA256` の値を比較する。これらは未署名の EXE であり、SHA-256 は配布元の身元を証明しない。公開 release asset は公開前に別途確認される。インストールに管理者権限、Python、checkout は不要。x64 の [Microsoft Visual C++ 2015-2022 Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist) は必要で、ない場合はセットアップが案内を表示して停止する。NGR は `System32` の Visual C++ DLL をインストーラーへコピーしない。
 
 ## 導入と MCP 登録
 
