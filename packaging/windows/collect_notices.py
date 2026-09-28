@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import base64
 import hashlib
 import importlib.metadata as metadata
 import json
@@ -40,6 +41,8 @@ PINNED_DOCUMENT_SHA256 = {
     "Tokenizers-Rust-ThirdPartyNotices.txt": "460b52a6e44ac669b3a4de7b5d7a7aa35847b37e0d9ff7cd04a5b732d5026d71",
     "Microsoft-VC-Runtime-LICENSE.txt": "a0d066f34af2b1d5c6694902de40cd6fd31b9d471a5594bb22bb58f2e5382dd3",
 }
+NUMPY_WINDOWS_VERSION = "1.26.4"
+MSVC_RUNTIME_PREFIXES = ("msvcp", "vcruntime", "concrt", "vcomp", "ucrtbase", "api-ms-win-crt-")
 
 
 def canonical(name: str) -> str:
@@ -91,6 +94,56 @@ def _copy_document(source: Path, target: Path, manifest_path: str, documents: li
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(data)
     documents.append({"path": manifest_path, "sha256": digest, "origin": origin})
+
+
+def audit_native_binaries(bundle: Path, sources: set[str],
+                          numpy_dist: metadata.Distribution, documents: list[dict]) -> list[dict]:
+    """Match NumPy's DLL to wheel RECORD and reject bundled VC runtimes."""
+    if numpy_dist.version != NUMPY_WINDOWS_VERSION:
+        raise RuntimeError(f"Windows NumPy must be {NUMPY_WINDOWS_VERSION}: {numpy_dist.version}")
+    numpy_dlls = [entry for entry in numpy_dist.files or ()
+                  if len(entry.parts) == 2 and entry.parts[0].lower() == "numpy.libs"
+                  and entry.name.lower().endswith(".dll")]
+    if len(numpy_dlls) != 1 or not numpy_dlls[0].name.lower().startswith("libopenblas"):
+        raise RuntimeError("NumPy wheel native libraries changed; review their licenses and DLL origins: "
+                           + repr([str(entry) for entry in numpy_dlls]))
+    entry = numpy_dlls[0]
+    if not entry.hash or entry.hash.mode != "sha256":
+        raise RuntimeError(f"NumPy native library lacks a SHA-256 wheel RECORD: {entry}")
+    source = Path(numpy_dist.locate_file(entry))
+    if path_key(source) not in sources:
+        raise RuntimeError(f"NumPy native library is absent from PyInstaller Analysis: {source}")
+    expected = base64.urlsafe_b64decode(entry.hash.value + "=" * (-len(entry.hash.value) % 4)).hex()
+    if hashlib.sha256(source.read_bytes()).hexdigest() != expected:
+        raise RuntimeError(f"Installed NumPy native library differs from wheel RECORD: {source}")
+    license_path = (Path("third-party") / f"numpy-{numpy_dist.version}" /
+                    f"numpy-{numpy_dist.version}.dist-info" / "LICENSE.txt").as_posix()
+    if license_path not in {item["path"] for item in documents}:
+        raise RuntimeError(f"NumPy wheel license is absent from bundle: {license_path}")
+    license_text = (bundle / "licenses" / license_path).read_text(encoding="utf-8")
+    for component in ("Name: OpenBLAS", "Name: LAPACK", "Name: GCC runtime library",
+                      "Name: libquadmath", "GCC RUNTIME LIBRARY EXCEPTION"):
+        if component not in license_text:
+            raise RuntimeError(f"NumPy wheel license omits {component}")
+
+    native_binaries = []
+    bundled_numpy = []
+    for binary in bundle.rglob("*.dll"):
+        relative = binary.relative_to(bundle).as_posix()
+        name = binary.name.lower()
+        digest = hashlib.sha256(binary.read_bytes()).hexdigest()
+        if name == entry.name.lower():
+            if digest != expected:
+                raise RuntimeError(f"Bundled NumPy native library differs from wheel RECORD: {binary}")
+            bundled_numpy.append(relative)
+            native_binaries.append({"path": relative, "sha256": digest,
+                                    "source_distribution": f"numpy=={numpy_dist.version}",
+                                    "source_record": str(entry), "license_documents": [license_path]})
+        if name.startswith(MSVC_RUNTIME_PREFIXES):
+            raise RuntimeError(f"Microsoft C++ runtime DLL remains in bundle: {binary}")
+    if len(bundled_numpy) != 1:
+        raise RuntimeError(f"Expected one NumPy OpenBLAS DLL in bundle: {bundled_numpy}")
+    return sorted(native_binaries, key=lambda item: item["path"])
 
 
 def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
@@ -191,14 +244,17 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
     runtime_sources = [Path(path).name for path in sources if path.startswith(path_key(python_root) + os.sep)]
     vcruntime = [path for path in sources if Path(path).name.lower().startswith("vcruntime")]
     if not vcruntime or any(not path.startswith(path_key(python_root) + os.sep) for path in vcruntime):
-        raise RuntimeError("Bundled VCRUNTIME DLLs must come from the licensed CPython distribution: "
+        raise RuntimeError("PyInstaller VCRUNTIME source DLLs must come from CPython: "
                            + repr(vcruntime))
+    native_binaries = audit_native_binaries(bundle, sources, by_name["numpy"], documents)
     manifest = {"schema": "ngr.windows-licenses/v1", "flavor": flavor,
                 "python_version": sys.version.split()[0],
                 "python_runtime_files": sorted(name for name in runtime_sources
-                                               if name.lower().startswith(("python3", "vcruntime"))),
+                                               if name.lower().startswith("python3")),
+                "excluded_python_runtime": sorted(Path(path).name.lower() for path in vcruntime),
                 "excluded_system_runtime": sorted(Path(path).name.lower() for path in excluded),
                 "distributions": distributions, "documents": sorted(documents, key=lambda item: item["path"]),
+                "native_binaries": native_binaries,
                 "models_bundled": False}
     (licenses / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     readme = (
@@ -207,11 +263,15 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
         "includes the terms for the bundled Windows Python distribution and its Microsoft\n"
         "Distributable Code. InnoSetup-LICENSE.txt covers the setup program.\n"
         "Microsoft-VC-Runtime-LICENSE.txt reproduces Microsoft's published runtime\n"
-        "terms for native DLLs. Their presence here does not establish redistribution\n"
-        "rights.\n\n"
+        "terms for reference. Standalone Microsoft C++ runtime DLLs are excluded\n"
+        "from this installer; the separately installed system redistributable is\n"
+        "required. The bundled CPython binaries still carry their own terms.\n\n"
         "third-party/ holds the license and notice texts from each bundled Python\n"
         "distribution. manifest.json lists the exact names, versions, files and SHA-256\n"
-        "digests detected from the PyInstaller Analysis and installed wheel RECORDs.\n\n"
+        "digests detected from the PyInstaller Analysis and installed wheel RECORDs.\n"
+        "The NumPy license includes OpenBLAS, LAPACK, GCC runtime and libquadmath\n"
+        "terms for its bundled OpenBLAS DLL. native_binaries in manifest.json\n"
+        "records the actual DLL and its matching wheel RECORD hash.\n\n"
         "The E5 and v2-m3 model weights are not included in either installer. See\n"
         "https://huggingface.co/intfloat/multilingual-e5-small and\n"
         "https://huggingface.co/BAAI/bge-reranker-v2-m3 for their separate terms.\n"

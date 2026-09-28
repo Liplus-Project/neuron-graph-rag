@@ -23,10 +23,14 @@ def _assert_licenses(install: Path, flavor: str) -> None:
     manifest = json.loads((licenses / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["schema"] == "ngr.windows-licenses/v1"
     assert manifest["flavor"] == flavor and manifest["models_bundled"] is False
-    assert any(name.lower().startswith("vcruntime") for name in manifest["python_runtime_files"])
-    assert not any(path.name.lower() in {"msvcp140.dll", "msvcp140_1.dll"}
-                   for path in install.rglob("*") if path.is_file())
+    assert any(name.lower().startswith("python3") for name in manifest["python_runtime_files"])
+    runtime_prefixes = ("msvcp", "vcruntime", "concrt", "vcomp", "ucrtbase", "api-ms-win-crt-")
+    actual_runtime = {path.relative_to(install).as_posix(): path for path in install.rglob("*.dll")
+                      if path.name.lower().startswith(runtime_prefixes)}
+    assert not actual_runtime, actual_runtime
     assert set(manifest["excluded_system_runtime"]) <= {"msvcp140.dll", "msvcp140_1.dll"}
+    assert set(manifest["excluded_python_runtime"]) <= {"vcruntime140.dll", "vcruntime140_1.dll"}
+    assert manifest["excluded_python_runtime"]
     distributions = {item["name"]: item for item in manifest["distributions"]}
     required = {"pyinstaller", "mcp", "httpx2", "uvicorn", "starlette", "numpy",
                 "onnxruntime", "tokenizers"}
@@ -35,6 +39,7 @@ def _assert_licenses(install: Path, flavor: str) -> None:
     else:
         assert "torch" not in distributions and "transformers" not in distributions
     assert required <= distributions.keys(), sorted(required - distributions.keys())
+    assert distributions["numpy"]["version"] == "1.26.4"
     assert all(item["version"] and item["documents"] for item in distributions.values())
     documents = {item["path"]: item for item in manifest["documents"]}
     assert {"NGR-LICENSE.txt", "NGR-NOTICE.txt", "Python-LICENSE.txt",
@@ -49,6 +54,23 @@ def _assert_licenses(install: Path, flavor: str) -> None:
         content = path.read_bytes()
         assert content.strip() and b"\x00" not in content, name
         assert hashlib.sha256(content).hexdigest() == record["sha256"], name
+    native = {item["path"]: item for item in manifest["native_binaries"]}
+    assert len(native) == len(manifest["native_binaries"])
+    assert all(item["source_distribution"] == "numpy==1.26.4" for item in native.values())
+    numpy_entries = [item for item in native.values() if item["source_distribution"] == "numpy==1.26.4"]
+    assert len(numpy_entries) == 1, numpy_entries
+    numpy_entry = numpy_entries[0]
+    assert numpy_entry["source_record"].startswith("numpy.libs/libopenblas")
+    assert (install / numpy_entry["path"]).is_file()
+    actual_openblas = [path for path in install.rglob("*.dll") if path.name.lower().startswith("libopenblas")]
+    assert actual_openblas == [install / numpy_entry["path"]], actual_openblas
+    for item in native.values():
+        assert hashlib.sha256((install / item["path"]).read_bytes()).hexdigest() == item["sha256"]
+        assert set(item["license_documents"]) <= documents.keys()
+    numpy_license = (licenses / numpy_entry["license_documents"][0]).read_text(encoding="utf-8")
+    for component in ("Name: OpenBLAS", "Name: LAPACK", "Name: GCC runtime library",
+                      "Name: libquadmath", "GCC RUNTIME LIBRARY EXCEPTION"):
+        assert component in numpy_license, component
     actual = {path.relative_to(licenses).as_posix() for path in licenses.rglob("*") if path.is_file()}
     assert actual == set(documents) | {"manifest.json", "README.txt"}, sorted(actual ^ (set(documents) | {"manifest.json", "README.txt"}))
     assert not any(path.name.lower() in {"model.onnx", "model.safetensors", "pytorch_model.bin"}
