@@ -62,7 +62,7 @@ $candidates = @()
 foreach ($installation in $installations) {
   if (-not $installation -or $installation -match '(?i)preview' -or $installation -notmatch '[\\/]2022[\\/]') { continue }
   $edition = Split-Path -Leaf $installation
-  if ($edition -notin @('Community','Professional','Enterprise','BuildTools')) { continue }
+  if ($edition -notin @('Community','Professional','Enterprise')) { continue }
   $redistRoot = Join-Path $installation 'VC\Redist\MSVC'
   if (-not (Test-Path -LiteralPath $redistRoot -PathType Container)) { continue }
   foreach ($versionDir in (Get-ChildItem -LiteralPath $redistRoot -Directory)) {
@@ -89,7 +89,7 @@ foreach ($dllName in $runtimeNames) {
   $runtimeFiles += @{ name = $dllName; source = $source; sha256 = $sourceHash; file_version = (Get-Item -LiteralPath $source).VersionInfo.FileVersion }
 }
 $runtimeProvenance = Join-Path $bundleRoot 'vc-runtime-source.json'
-$editionTerms = if ($selected.Edition -eq 'Community') { 'https://visualstudio.microsoft.com/license-terms/vs2022-ga-community/' } elseif ($selected.Edition -eq 'BuildTools') { 'https://visualstudio.microsoft.com/license-terms/vs2022-ga-diagnosticbuildtools/' } else { 'https://visualstudio.microsoft.com/license-terms/vs2022-ga-proenterprise/' }
+$editionTerms = if ($selected.Edition -eq 'Community') { 'https://visualstudio.microsoft.com/license-terms/vs2022-ga-community/' } else { 'https://visualstudio.microsoft.com/license-terms/vs2022-ga-proenterprise/' }
 @{ schema = 'ngr.vc-redist-source/v1'; installation = $selected.Installation; edition = $selected.Edition; edition_terms = $editionTerms; redist_directory = $selected.Crt; files = $runtimeFiles } |
   ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $runtimeProvenance -Encoding utf8
 & "$bundleRoot\NGR\NGR.exe" --version

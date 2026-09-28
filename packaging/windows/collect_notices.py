@@ -118,7 +118,6 @@ def audit_vc_runtime(bundle: Path, provenance_file: Path) -> dict:
         "Community": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-community/",
         "Professional": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-proenterprise/",
         "Enterprise": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-proenterprise/",
-        "BuildTools": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-diagnosticbuildtools/",
     }
     edition = provenance["edition"]
     if installation.name != edition or provenance["edition_terms"] != edition_terms.get(edition):
