@@ -44,8 +44,3 @@ jobs:
           $manifest = Get-Content package-output/package-manifest.json | ConvertFrom-Json
           $actual = (Get-FileHash (Join-Path package-output $manifest.setup_file) -Algorithm SHA256).Hash.ToLowerInvariant()
           if ($actual -ne $manifest.sha256) { throw 'Manifest hash mismatch' }
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ngr-windows-${{ matrix.flavor }}
-          path: package-output/*
-          if-no-files-found: error
