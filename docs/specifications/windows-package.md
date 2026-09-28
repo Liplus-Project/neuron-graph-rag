@@ -18,6 +18,14 @@ CPU 版は `mcp`, `httpx2`, `uvicorn`, `starlette`, `numpy`, `onnxruntime`, `tok
 
 CUDA 版では Transformers の遅延読み込みがモデル種別の一覧からモジュールを動的に import するため、PyInstaller に `transformers.models` の全サブモジュールを収集させる。インストール済み EXE の archive に、ビルド環境の固定 Transformers 版にあるモデルモジュールがすべて含まれることを package smoke で照合する。これは GPU のない CI で確認できる配布内容の検査であり、実際の v2-m3 推論は GPU 実機で別途確認する。
 
+## ライセンス表示
+
+インストール先の `licenses/` に NGR の `LICENSE` と `NOTICE`、ビルドに使った CPython 配布物の `LICENSE.txt`、Inno Setup のライセンス、PyInstaller が実際に収録した第三者 Python 配布物のライセンス・NOTICE 本文を置く。スタートメニューの「Licenses and notices」から一覧を開ける。Inno Setup のセットアップ画面にも NGR ライセンスを表示する。`licenses/manifest.json` は各文書の SHA-256 と、PyInstaller の Analysis TOC とインストール済み wheel の RECORD から特定した配布物名・version を記録する。TOC に現れた site-packages のファイルを配布物へ帰属できない場合、または帰属した配布物のライセンス本文を wheel または固定 tag の upstream 原文から得られない場合はビルドを失敗させる。tokenizers 0.22.1 の Windows wheel はライセンス本文を含まないため固定 tag の `LICENSE` を補い、同じ tag の Cargo.lock にある Windows 向け通常依存をたどって crates.io のチェックサム付き archive から集めた Rust ライセンス・NOTICE も加える。これは保守的な source 依存範囲で、実際にリンクされた crate の厳密な証明ではない。ONNX Runtime と PyTorch の upstream NOTICE も固定 tag の原文を wheel の文書に追加する。
+
+PyInstaller の DLL 探索 PATH は選択した Python と Windows の標準ディレクトリに限定する。`System32` 由来の `msvcp140.dll` / `msvcp140_1.dll` は配布せず、セットアップ開始時に x64 Visual C++ 2015-2022 Redistributable の存在を検査し、不足時には Microsoft の公式入手先を案内して停止する。NumPy wheel 内の hashed `msvcp140-*.dll` は NumPy のバイナリが直接参照するため同梱される。Microsoft の公開 runtime terms 本文も表示するが、配布主体がその DLL の再配布権を有するかは別途確認が必要。それ以外の TOC ファイルが NGR source、CPython 配布物、wheel RECORD のどれにも帰属しない場合はビルドを失敗させる。これにより runner に偶然置かれた別製品の DLL が配布に混入するのを防ぐ。
+
+CPython の Windows 配布物に含まれる Microsoft Distributable Code の条件は、その配布物の `LICENSE.txt` に従う。文書の同梱は配布権の法的確認に代わるものではない。モデル weight は両版に含めない。別途取得する [E5 の固定 revision](https://huggingface.co/intfloat/multilingual-e5-small/tree/614241f622f53c4eeff9890bdc4f31cfecc418b3) の model card は MIT、[v2-m3 の固定 revision](https://huggingface.co/BAAI/bge-reranker-v2-m3/tree/953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e) は Apache-2.0 と表示する。これはモデルをインストーラーで再配布しているという意味ではない。
+
 ビルド依存の version と取得元は [`packaging/windows/build.ps1`](../../packaging/windows/build.ps1) に固定する。Python package は PyPI、CUDA PyTorch は PyTorch の `cu128` wheel index、Inno Setup 6.7.3 は開発元の GitHub release から取得して SHA-256 を照合する。ユーザー配布の EXE にはコード署名を施していない。出力 digest は破損・取り違えの検査用で、発行元認証にはならない。
 
 ## 状態と登録
@@ -29,3 +37,5 @@ Claude Code の project 設定と、移行時に削除する旧 user scope 設�
 ## CI 受け入れ
 
 PR と main の両方で CPU / CUDA を別 job でビルドし、インストールした `NGR.exe` に Python のない PATH を渡して version、初回 stdio MCP 接続、共有 identity、tool 一覧、トレイ状態、停止・再開、アンインストール後の DB 残存を検査する。CUDA 版では固定 Transformers 版のモデルモジュール一覧と EXE の収録内容も照合する。GPU を持たない runner では CUDA wheel の同梱と起動入口・モジュール収録まで確認し、実機 NVIDIA GPU の推論成功は検証範囲に含まれない。
+
+同じ smoke test は、インストール先の全ライセンス文書の存在・ハッシュ・非空本文、主要 runtime 配布物の掲載、CPU/CUDA の区別、モデル weight の非同梱を検査する。
