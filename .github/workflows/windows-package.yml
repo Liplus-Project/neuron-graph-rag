@@ -11,7 +11,8 @@ permissions:
 jobs:
   package:
     name: Windows package (${{ matrix.flavor }})
-    runs-on: windows-latest
+    # The bundled DLLs and published runtime terms are from Visual Studio 2022.
+    runs-on: windows-2022
     timeout-minutes: 120
     strategy:
       fail-fast: false

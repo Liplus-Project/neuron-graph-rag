@@ -29,6 +29,9 @@ def _assert_licenses(install: Path, flavor: str) -> None:
                       if path.name.lower().startswith(runtime_prefixes)}
     vc = manifest["vc_runtime"]
     assert vc["visual_studio_release"] == "2022"
+    edition = vc["visual_studio_edition"]
+    assert edition in {"Community", "Professional", "Enterprise", "BuildTools"}
+    assert vc["edition_terms"].startswith("https://visualstudio.microsoft.com/license-terms/vs2022-ga-")
     assert vc["redist_list"] == f"https://learn.microsoft.com/en-us/visualstudio/releases/{vc['visual_studio_release']}/redistribution"
     expected_runtime = {f"_internal/{name}" for name in
                         ("msvcp140.dll", "msvcp140_1.dll", "vcruntime140.dll", "vcruntime140_1.dll")}
@@ -52,6 +55,7 @@ def _assert_licenses(install: Path, flavor: str) -> None:
             "InnoSetup-LICENSE.txt", "Microsoft-VC-Runtime-LICENSE.txt", "Setup-LICENSE.txt"} <= documents.keys()
     setup_terms = (licenses / "Setup-LICENSE.txt").read_text(encoding="utf-8")
     assert "MICROSOFT VISUAL C++ RUNTIME TERMS" in setup_terms and "NGR LICENSE" in setup_terms
+    assert vc["edition_terms"] in setup_terms and f"Visual Studio 2022 {edition}" in setup_terms
     assert any("ONNXRuntime-ThirdPartyNotices.txt" in path for path in documents)
     assert any("Tokenizers-Rust-ThirdPartyNotices.txt" in path for path in documents)
     if flavor == "cuda":

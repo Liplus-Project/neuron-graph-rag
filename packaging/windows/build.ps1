@@ -61,13 +61,15 @@ $runtimeNames = @('msvcp140.dll','msvcp140_1.dll','vcruntime140.dll','vcruntime1
 $candidates = @()
 foreach ($installation in $installations) {
   if (-not $installation -or $installation -match '(?i)preview' -or $installation -notmatch '[\\/]2022[\\/]') { continue }
+  $edition = Split-Path -Leaf $installation
+  if ($edition -notin @('Community','Professional','Enterprise','BuildTools')) { continue }
   $redistRoot = Join-Path $installation 'VC\Redist\MSVC'
   if (-not (Test-Path -LiteralPath $redistRoot -PathType Container)) { continue }
   foreach ($versionDir in (Get-ChildItem -LiteralPath $redistRoot -Directory)) {
     if ($versionDir.Name -notmatch '^14\.\d+\.\d+$') { continue }
     $crt = Join-Path $versionDir.FullName 'x64\Microsoft.VC143.CRT'
     if ($runtimeNames | Where-Object { -not (Test-Path -LiteralPath (Join-Path $crt $_) -PathType Leaf) }) { continue }
-    $candidates += [pscustomobject]@{ Installation = $installation; Crt = $crt; Version = [version]$versionDir.Name }
+    $candidates += [pscustomobject]@{ Installation = $installation; Edition = $edition; Crt = $crt; Version = [version]$versionDir.Name }
   }
 }
 if (-not $candidates) { throw 'No complete release x64 Visual Studio VC\Redist CRT found' }
@@ -87,7 +89,8 @@ foreach ($dllName in $runtimeNames) {
   $runtimeFiles += @{ name = $dllName; source = $source; sha256 = $sourceHash; file_version = (Get-Item -LiteralPath $source).VersionInfo.FileVersion }
 }
 $runtimeProvenance = Join-Path $bundleRoot 'vc-runtime-source.json'
-@{ schema = 'ngr.vc-redist-source/v1'; installation = $selected.Installation; redist_directory = $selected.Crt; files = $runtimeFiles } |
+$editionTerms = if ($selected.Edition -eq 'Community') { 'https://visualstudio.microsoft.com/license-terms/vs2022-ga-community/' } elseif ($selected.Edition -eq 'BuildTools') { 'https://visualstudio.microsoft.com/license-terms/vs2022-ga-diagnosticbuildtools/' } else { 'https://visualstudio.microsoft.com/license-terms/vs2022-ga-proenterprise/' }
+@{ schema = 'ngr.vc-redist-source/v1'; installation = $selected.Installation; edition = $selected.Edition; edition_terms = $editionTerms; redist_directory = $selected.Crt; files = $runtimeFiles } |
   ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $runtimeProvenance -Encoding utf8
 & "$bundleRoot\NGR\NGR.exe" --version
 if ($LASTEXITCODE) { throw 'Frozen executable version probe failed' }

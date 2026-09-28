@@ -114,6 +114,15 @@ def audit_vc_runtime(bundle: Path, provenance_file: Path) -> dict:
     release = "2022"
     if release not in installation.parts or "Microsoft Visual Studio" not in installation.parts:
         raise RuntimeError(f"VC runtime source is not the expected Visual Studio {release} installation")
+    edition_terms = {
+        "Community": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-community/",
+        "Professional": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-proenterprise/",
+        "Enterprise": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-proenterprise/",
+        "BuildTools": "https://visualstudio.microsoft.com/license-terms/vs2022-ga-diagnosticbuildtools/",
+    }
+    edition = provenance["edition"]
+    if installation.name != edition or provenance["edition_terms"] != edition_terms.get(edition):
+        raise RuntimeError("VC runtime Visual Studio edition or license URL mismatch")
     records = provenance["files"]
     if len(records) != len(VC_RUNTIME_NAMES) or {record["name"].lower() for record in records} != VC_RUNTIME_NAMES:
         raise RuntimeError("VC runtime source must contain exactly the four approved DLLs")
@@ -139,7 +148,8 @@ def audit_vc_runtime(bundle: Path, provenance_file: Path) -> dict:
               if path.name.lower().startswith(MSVC_RUNTIME_PREFIXES)}
     if actual != {entry["path"] for entry in audited}:
         raise RuntimeError(f"Unexpected or missing Visual C++ runtime DLLs in bundle: {sorted(actual)}")
-    return {"visual_studio_release": release, "redist_directory": str(redist),
+    return {"visual_studio_release": release, "visual_studio_edition": edition,
+            "edition_terms": edition_terms[edition], "redist_directory": str(redist),
             "redist_list": f"https://learn.microsoft.com/en-us/visualstudio/releases/{release}/redistribution",
             "files": sorted(audited, key=lambda entry: entry["path"])}
 
@@ -194,6 +204,7 @@ def audit_native_binaries(bundle: Path, sources: set[str],
 
 def collect(toc: Path, bundle: Path, repository: Path, flavor: str, vc_source_manifest: Path) -> dict:
     sources = analysis_sources(toc)
+    vc_runtime = audit_vc_runtime(bundle, vc_source_manifest)
     licenses = bundle / "licenses"
     if licenses.exists():
         raise RuntimeError(f"License output is not clean: {licenses}")
@@ -214,7 +225,9 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str, vc_source_ma
                    "https://visualstudio.microsoft.com/license-terms/vs2022-cruntime/")
     setup_terms = (
         "Neuron Graph RAG installer terms\n\n"
-        "This installer includes four Microsoft Visual C++ runtime DLLs. To install\n"
+        f"This installer includes four Microsoft Visual C++ runtime DLLs from Visual Studio 2022 {vc_runtime['visual_studio_edition']}.\n"
+        f"Source edition terms: {vc_runtime['edition_terms']}\n"
+        "To install\n"
         "Neuron Graph RAG, you must accept the NGR license and the Microsoft runtime\n"
         "terms reproduced below. The Microsoft DLLs are licensed, not sold; do not\n"
         "modify them, remove their notices, distribute them as a standalone offering,\n"
@@ -301,7 +314,6 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str, vc_source_ma
                               "documents": sorted(dist_documents)})
 
     runtime_sources = [Path(path).name for path in sources if path.startswith(path_key(python_root) + os.sep)]
-    vc_runtime = audit_vc_runtime(bundle, vc_source_manifest)
     native_binaries = audit_native_binaries(bundle, sources, by_name["numpy"], documents)
     manifest = {"schema": "ngr.windows-licenses/v1", "flavor": flavor,
                 "python_version": sys.version.split()[0],
