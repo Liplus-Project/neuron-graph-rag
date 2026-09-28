@@ -23,12 +23,14 @@ def _assert_licenses(install: Path, flavor: str) -> None:
     manifest = json.loads((licenses / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["schema"] == "ngr.windows-licenses/v1"
     assert manifest["flavor"] == flavor and manifest["models_bundled"] is False
-    assert any(name.lower().startswith("vcruntime") for name in manifest["python_runtime_files"])
+    assert any(name.lower().startswith("python3") for name in manifest["python_runtime_files"])
     runtime_prefixes = ("msvcp", "vcruntime", "concrt", "vcomp", "ucrtbase", "api-ms-win-crt-")
     actual_runtime = {path.relative_to(install).as_posix(): path for path in install.rglob("*.dll")
                       if path.name.lower().startswith(runtime_prefixes)}
-    assert all(path.name.lower().startswith("vcruntime") for path in actual_runtime.values()), actual_runtime
+    assert not actual_runtime, actual_runtime
     assert set(manifest["excluded_system_runtime"]) <= {"msvcp140.dll", "msvcp140_1.dll"}
+    assert set(manifest["excluded_python_runtime"]) <= {"vcruntime140.dll", "vcruntime140_1.dll"}
+    assert manifest["excluded_python_runtime"]
     distributions = {item["name"]: item for item in manifest["distributions"]}
     required = {"pyinstaller", "mcp", "httpx2", "uvicorn", "starlette", "numpy",
                 "onnxruntime", "tokenizers"}
@@ -54,7 +56,7 @@ def _assert_licenses(install: Path, flavor: str) -> None:
         assert hashlib.sha256(content).hexdigest() == record["sha256"], name
     native = {item["path"]: item for item in manifest["native_binaries"]}
     assert len(native) == len(manifest["native_binaries"])
-    assert {name for name in native if native[name]["source_distribution"] == "CPython"} == set(actual_runtime)
+    assert all(item["source_distribution"] == "numpy==1.26.4" for item in native.values())
     numpy_entries = [item for item in native.values() if item["source_distribution"] == "numpy==1.26.4"]
     assert len(numpy_entries) == 1, numpy_entries
     numpy_entry = numpy_entries[0]

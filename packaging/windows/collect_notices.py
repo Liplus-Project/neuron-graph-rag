@@ -96,9 +96,9 @@ def _copy_document(source: Path, target: Path, manifest_path: str, documents: li
     documents.append({"path": manifest_path, "sha256": digest, "origin": origin})
 
 
-def audit_native_binaries(bundle: Path, sources: set[str], python_root: Path,
+def audit_native_binaries(bundle: Path, sources: set[str],
                           numpy_dist: metadata.Distribution, documents: list[dict]) -> list[dict]:
-    """Match sensitive DLLs in the actual onedir to CPython or wheel RECORD."""
+    """Match NumPy's DLL to wheel RECORD and reject bundled VC runtimes."""
     if numpy_dist.version != NUMPY_WINDOWS_VERSION:
         raise RuntimeError(f"Windows NumPy must be {NUMPY_WINDOWS_VERSION}: {numpy_dist.version}")
     numpy_dlls = [entry for entry in numpy_dist.files or ()
@@ -128,7 +128,6 @@ def audit_native_binaries(bundle: Path, sources: set[str], python_root: Path,
 
     native_binaries = []
     bundled_numpy = []
-    python_prefix = path_key(python_root) + os.sep
     for binary in bundle.rglob("*.dll"):
         relative = binary.relative_to(bundle).as_posix()
         name = binary.name.lower()
@@ -141,15 +140,7 @@ def audit_native_binaries(bundle: Path, sources: set[str], python_root: Path,
                                     "source_distribution": f"numpy=={numpy_dist.version}",
                                     "source_record": str(entry), "license_documents": [license_path]})
         if name.startswith(MSVC_RUNTIME_PREFIXES):
-            if not name.startswith("vcruntime"):
-                raise RuntimeError(f"Unexpected Microsoft C++ runtime DLL in bundle: {binary}")
-            candidates = [Path(path) for path in sources if path.startswith(python_prefix)
-                          and Path(path).name.lower() == name]
-            if len(candidates) != 1 or hashlib.sha256(candidates[0].read_bytes()).hexdigest() != digest:
-                raise RuntimeError(f"Bundled VCRUNTIME DLL is not from CPython: {binary}")
-            native_binaries.append({"path": relative, "sha256": digest,
-                                    "source_distribution": "CPython", "source_record": str(candidates[0]),
-                                    "license_documents": ["Python-LICENSE.txt"]})
+            raise RuntimeError(f"Microsoft C++ runtime DLL remains in bundle: {binary}")
     if len(bundled_numpy) != 1:
         raise RuntimeError(f"Expected one NumPy OpenBLAS DLL in bundle: {bundled_numpy}")
     return sorted(native_binaries, key=lambda item: item["path"])
@@ -253,13 +244,14 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
     runtime_sources = [Path(path).name for path in sources if path.startswith(path_key(python_root) + os.sep)]
     vcruntime = [path for path in sources if Path(path).name.lower().startswith("vcruntime")]
     if not vcruntime or any(not path.startswith(path_key(python_root) + os.sep) for path in vcruntime):
-        raise RuntimeError("Bundled VCRUNTIME DLLs must come from the licensed CPython distribution: "
+        raise RuntimeError("PyInstaller VCRUNTIME source DLLs must come from CPython: "
                            + repr(vcruntime))
-    native_binaries = audit_native_binaries(bundle, sources, python_root, by_name["numpy"], documents)
+    native_binaries = audit_native_binaries(bundle, sources, by_name["numpy"], documents)
     manifest = {"schema": "ngr.windows-licenses/v1", "flavor": flavor,
                 "python_version": sys.version.split()[0],
                 "python_runtime_files": sorted(name for name in runtime_sources
-                                               if name.lower().startswith(("python3", "vcruntime"))),
+                                               if name.lower().startswith("python3")),
+                "excluded_python_runtime": sorted(Path(path).name.lower() for path in vcruntime),
                 "excluded_system_runtime": sorted(Path(path).name.lower() for path in excluded),
                 "distributions": distributions, "documents": sorted(documents, key=lambda item: item["path"]),
                 "native_binaries": native_binaries,
@@ -271,8 +263,9 @@ def collect(toc: Path, bundle: Path, repository: Path, flavor: str) -> dict:
         "includes the terms for the bundled Windows Python distribution and its Microsoft\n"
         "Distributable Code. InnoSetup-LICENSE.txt covers the setup program.\n"
         "Microsoft-VC-Runtime-LICENSE.txt reproduces Microsoft's published runtime\n"
-        "terms for native DLLs. Their presence here does not establish redistribution\n"
-        "rights.\n\n"
+        "terms for reference. Standalone Microsoft C++ runtime DLLs are excluded\n"
+        "from this installer; the separately installed system redistributable is\n"
+        "required. The bundled CPython binaries still carry their own terms.\n\n"
         "third-party/ holds the license and notice texts from each bundled Python\n"
         "distribution. manifest.json lists the exact names, versions, files and SHA-256\n"
         "digests detected from the PyInstaller Analysis and installed wheel RECORDs.\n"

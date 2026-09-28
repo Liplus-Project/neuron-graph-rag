@@ -51,8 +51,8 @@ $arguments += (Join-Path $root 'packaging\windows\entry.py')
 python -m PyInstaller @arguments
 if ($LASTEXITCODE) { throw 'PyInstaller build failed' }
 # The x64 Visual C++ runtime is an installer prerequisite, not redistributed
-# from the runner's System32 directory.
-foreach ($dllName in @('msvcp140.dll','msvcp140_1.dll')) {
+# from System32 or the CPython build environment.
+foreach ($dllName in @('msvcp140.dll','msvcp140_1.dll','vcruntime140.dll','vcruntime140_1.dll')) {
   $dll = Join-Path $bundleRoot "NGR\_internal\$dllName"
   if (Test-Path -LiteralPath $dll) { Remove-Item -LiteralPath $dll }
 }

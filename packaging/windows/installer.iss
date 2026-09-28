@@ -48,7 +48,9 @@ Filename: "{app}\NGR.exe"; Parameters: "--configure-clients"; Description: "Conf
 function InitializeSetup(): Boolean;
 begin
   Result := FileExists(ExpandConstant('{sys}\msvcp140.dll')) and
-            FileExists(ExpandConstant('{sys}\msvcp140_1.dll'));
+            FileExists(ExpandConstant('{sys}\msvcp140_1.dll')) and
+            FileExists(ExpandConstant('{sys}\vcruntime140.dll')) and
+            FileExists(ExpandConstant('{sys}\vcruntime140_1.dll'));
   if not Result then
     MsgBox('Neuron Graph RAG requires the Microsoft Visual C++ 2015-2022 Redistributable (x64). Install it from https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist and run this setup again.', mbError, MB_OK);
 end;
