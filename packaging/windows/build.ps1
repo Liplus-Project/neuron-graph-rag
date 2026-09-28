@@ -19,7 +19,7 @@ if ($releaseContent -eq $projectContent) { throw 'Release version did not replac
 [System.IO.File]::WriteAllText($releaseProject, $releaseContent, [System.Text.UTF8Encoding]::new($false))
 
 # Each job starts on a clean runner. PyPI packages and the CUDA wheel source are pinned.
-python -m pip install --disable-pip-version-check 'pyinstaller==6.22.3' 'mcp==2.2.0' 'httpx2==2.13.1' 'uvicorn==0.54.0' 'starlette==1.7.0' 'numpy==2.4.6' 'onnxruntime==1.30.0' 'tokenizers==0.22.1'
+python -m pip install --disable-pip-version-check 'pyinstaller==6.22.3' 'mcp==2.2.0' 'httpx2==2.13.1' 'uvicorn==0.54.0' 'starlette==1.7.0' 'numpy==1.26.4' 'onnxruntime==1.30.0' 'tokenizers==0.22.1'
 if ($LASTEXITCODE) { throw 'Package dependency installation failed' }
 if ($Flavor -eq 'cuda') {
   python -m pip install --disable-pip-version-check 'torch==2.9.1+cu128' --index-url 'https://download.pytorch.org/whl/cu128'

@@ -25,6 +25,13 @@ jobs:
       - name: Build frozen package and per-user installer
         shell: pwsh
         run: ./packaging/windows/build.ps1 -Flavor '${{ matrix.flavor }}'
+      - name: Check pinned NumPy and shortlist paths
+        shell: pwsh
+        run: |
+          python -c "import numpy as np; assert np.__version__ == '1.26.4'; assert np.linalg.norm(np.array([3.0, 4.0])) == 5.0"
+          if ($LASTEXITCODE) { throw 'NumPy runtime check failed' }
+          python -m unittest tests.test_cpu_shortlist_retrieval tests.test_cuda_shortlist_retrieval -v
+          if ($LASTEXITCODE) { throw 'Shortlist tests failed' }
       - name: Smoke test clean installed package
         shell: pwsh
         run: |
