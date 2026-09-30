@@ -49,3 +49,5 @@ python tools/run_tests.py all
 この単発比較では normal は all より 186.798 秒短い。選択しない歴代テスト 396 件分の局所実行時間差であり、テスト自体や CI が高速化したという意味ではない。既存 tracked ファイルの差分はなく、追加は runner・分類・検証・本書の 4 ファイルのみ。
 
 先行する Python 3.14.5 (MCP extra なし) の normal 実行は 371 件、skip 21、86.495 秒、`test_real_corpus_benchmark.test_checked_result_matches_frozen_inputs` が 1 件失敗した。これは成功値から除外し、再現条件の証拠として残す。同テストを Python 3.11 で単独実行すると成功し、上記 normal 全体も成功した。凍結期待値を変更して解消していない。
+
+Issue #290 の `test_shared_home`、`test_native_registration`、`test_shared_home_mcp` は product に分類する。任意 cwd の解決、移行の再開と非上書き、native 設定の保持、二クライアント共有と中央設定からの停止を検証する。Windows package smoke は引数なしの共通設定起動・トレイ停止・再開と新既定 DB を確認する。

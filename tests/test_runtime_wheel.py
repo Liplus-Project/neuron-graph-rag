@@ -18,8 +18,8 @@ RUNTIME_MODULES = {
     "__init__", "__main__", "benchmark", "cli", "config_provenance",
     "cpu_shortlist_retrieval", "cuda_shortlist_retrieval", "d1_fixture", "database_home", "dynamics",
     "engine", "evaluation", "evidence_feedback", "exclusion_intent",
-    "feedback", "judgments", "models", "ontology", "precision_control",
-    "retrieval", "sample", "semantic_retrieval", "storage",
+    "feedback", "judgments", "home_migration", "models", "ontology", "precision_control",
+    "retrieval", "sample", "semantic_retrieval", "storage", "user_config",
 }
 
 
@@ -74,6 +74,9 @@ class RuntimeWheelTest(unittest.TestCase):
             run("-c", "from neuron_graph_rag.semantic_retrieval import attach_semantic_retriever; "
                 "from neuron_graph_rag.cpu_shortlist_retrieval import attach_cpu_shortlist_retriever; "
                 "from neuron_graph_rag.cuda_shortlist_retrieval import attach_cuda_shortlist_retriever")
+            run("-c", "from neuron_graph_rag.user_config import resolve_shared; "
+                "from neuron_graph_rag.home_migration import migrate_home; "
+                "assert callable(resolve_shared) and callable(migrate_home)")
             run("-c", "import sys; from neuron_graph_rag.cuda_shortlist_retrieval import LocalPinnedCudaV2M3; "
                 "assert 'torch' not in sys.modules and 'transformers' not in sys.modules; "
                 "assert LocalPinnedCudaV2M3('missing')._runtime is None")
@@ -94,6 +97,9 @@ class RuntimeWheelTest(unittest.TestCase):
                 run("-c", "from neuron_graph_rag_mcp.http_server import create_http_app; "
                     "assert callable(create_http_app)")
                 self.assertIn("--cuda-cache", run("-m", "neuron_graph_rag_mcp", "--http", "--help"))
+                self.assertIn("--confirm-stopped", run("-m", "neuron_graph_rag_mcp", "--migrate-home", "--help"))
+                run("-c", "from neuron_graph_rag_mcp.native_registration import register_codex; "
+                    "assert callable(register_codex)")
 
     def _check_optional_mcp(self, run) -> None:
         script = """

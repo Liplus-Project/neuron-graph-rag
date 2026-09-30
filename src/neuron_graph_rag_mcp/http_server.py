@@ -21,7 +21,8 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 
 from neuron_graph_rag.cpu_shortlist_retrieval import LocalPinnedE5
 from neuron_graph_rag.cuda_shortlist_retrieval import CudaShortlistRetriever, LocalPinnedCudaV2M3
-from neuron_graph_rag.database_home import prepare_database, resolve_database
+from neuron_graph_rag.database_home import DatabaseResolution, prepare_database
+from neuron_graph_rag.user_config import resolve_shared
 
 from .server import create_server
 
@@ -117,16 +118,20 @@ def create_http_app(database: str | Path, *, port: int = DEFAULT_PORT,
 
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Run the shared local NGR MCP service")
-    parser.add_argument("--database", help="SQLite path (default: NGR_DATABASE or ~/.ngrdb/knowledge.db)")
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument("--database", help="SQLite path (default: central config or ~/.ngr/db/knowledge.db)")
+    parser.add_argument("--port", type=int)
     parser.add_argument("--cuda-cache", help="Existing or new local E5 shortlist cache path")
     parser.add_argument("--cuda-e5-snapshot", help="Pinned local E5 ONNX snapshot directory")
     parser.add_argument("--cuda-v2-m3-snapshot", help="Pinned local v2-m3 snapshot directory")
-    parser.add_argument("--cuda-device", type=int, default=0)
+    parser.add_argument("--cuda-device", type=int)
     args = parser.parse_args(argv)
     bearer_token = os.environ.get(TOKEN_ENV, "")
     try:
         _validate_bearer_token(bearer_token)
+        resolved = resolve_shared(args)
+        # Prepare before allocating GPU resources, preserving default-directory creation.
+        database = prepare_database(DatabaseResolution(resolved.database, resolved.database_source))
+        resolved.apply(args)
     except ValueError as error:
         parser.error(str(error))
     if not 1 <= args.port <= 65535:
@@ -148,10 +153,6 @@ def main(argv: list[str] | None = None) -> None:
             Path(args.cuda_cache).expanduser(), LocalPinnedE5(e5),
             LocalPinnedCudaV2M3(v2, device=args.cuda_device),
         )
-    try:
-        database = prepare_database(resolve_database(args.database, environ=os.environ))
-    except ValueError as error:
-        parser.error(str(error))
     service_config = {}
     if all(paths):
         service_config = {

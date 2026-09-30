@@ -1,6 +1,12 @@
 import os
 import sys
 
+if len(sys.argv) > 1 and sys.argv[1] == "--migrate-home":
+    from neuron_graph_rag.home_migration import main
+
+    main(sys.argv[2:])
+    raise SystemExit(0)
+
 if len(sys.argv) > 1 and sys.argv[1] == "--version":
     from importlib.metadata import version
 
@@ -8,7 +14,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "--version":
     raise SystemExit(0)
 
 if len(sys.argv) > 1 and sys.argv[1] == "--configure-clients":
-    from .windows_registration import main
+    from .native_registration import main
 
     main()
     raise SystemExit(0)

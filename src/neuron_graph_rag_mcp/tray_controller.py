@@ -24,7 +24,7 @@ from .shared_proxy import (
 from .http_server import TOKEN_ENV, _validate_bearer_token
 from .verified_updates import (DownloadCancelled, UpdateError, check_for_update,
                                download_candidate, installed_build)
-from neuron_graph_rag.database_home import resolve_database
+from neuron_graph_rag.user_config import resolve_shared
 
 
 def _pause(args: argparse.Namespace, token: str, database: Path) -> None:
@@ -336,6 +336,19 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
         raise OSError("could not add NGR tray icon")
     marker.write_text(json.dumps({"pid": os.getpid(),
                                   "fingerprint": fingerprint}), encoding="utf-8")
+    # Old explicit-DB integrations observe this marker. The runtime record stays
+    # in .ngr; this temporary hard-link is removed when the controller exits.
+    if getattr(args, "legacy_marker_alias", False):
+        alias = Path.home() / ".ngrdb" / marker.name
+        alias.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+        if alias.exists():
+            record = json.loads(alias.read_text(encoding="utf-8"))
+            from .shared_proxy import _wait_process_exit
+
+            if not _wait_process_exit(record["pid"], 0):
+                raise RuntimeError("Legacy tray marker is still active")
+            alias.unlink()
+        os.link(marker, alias)
     refresh()
     user32.SetTimer(hwnd, 1, 3000, None)
     message = wintypes.MSG()
@@ -378,6 +391,7 @@ def _main() -> None:
     token = os.environ.get(TOKEN_ENV, "")
     _validate_bearer_token(token)
     args = argparse.Namespace(port=port, cuda_device=config.get("cuda_device", 0),
+                              legacy_marker_alias=payload.get("legacy_marker_alias", False),
                               cuda_cache=config.get("cuda_cache"),
                               cuda_e5_snapshot=config.get("cuda_e5_snapshot"),
                               cuda_v2_m3_snapshot=config.get("cuda_v2_m3_snapshot"))
@@ -386,6 +400,13 @@ def _main() -> None:
     try:
         _run_tray(args, token, database, config, marker, payload["fingerprint"])
     finally:
+        if args.legacy_marker_alias:
+            alias = Path.home() / ".ngrdb" / marker.name
+            try:
+                if json.loads(alias.read_text(encoding="utf-8")).get("pid") == os.getpid():
+                    alias.unlink(missing_ok=True)
+            except (FileNotFoundError, ValueError, OSError):
+                pass
         try:
             if json.loads(marker.read_text(encoding="utf-8")).get("pid") == os.getpid():
                 marker.unlink(missing_ok=True)
@@ -400,16 +421,18 @@ def action_main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Control the shared NGR tray service")
     parser.add_argument("action", choices=("stop", "resume", "exit"))
     parser.add_argument("--database")
-    parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--port", type=int)
     parser.add_argument("--cuda-cache")
     parser.add_argument("--cuda-e5-snapshot")
     parser.add_argument("--cuda-v2-m3-snapshot")
-    parser.add_argument("--cuda-device", type=int, default=0)
+    parser.add_argument("--cuda-device", type=int)
     args = parser.parse_args(argv)
     token = os.environ.get(TOKEN_ENV, "")
     try:
         _validate_bearer_token(token)
-        database = resolve_database(args.database, environ=os.environ).path.expanduser().resolve()
+        resolved = resolve_shared(args)
+        resolved.apply(args)
+        database = resolved.database
         paths = (args.cuda_cache, args.cuda_e5_snapshot, args.cuda_v2_m3_snapshot)
         if any(paths) and not all(paths):
             raise ValueError("CUDA requires all three --cuda path options")
