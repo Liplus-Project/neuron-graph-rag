@@ -24,7 +24,8 @@ from mcp.server.lowlevel import NotificationOptions, Server
 from mcp.server.models import InitializationOptions
 from mcp.server.stdio import stdio_server
 
-from neuron_graph_rag.database_home import resolve_database
+from neuron_graph_rag.database_home import DatabaseResolution, prepare_database
+from neuron_graph_rag.user_config import config_path, ngr_home, require_home_available, resolve_shared
 
 from .http_server import DEFAULT_PORT, TOKEN_ENV, _validate_bearer_token
 from .package_version import application_version
@@ -209,7 +210,7 @@ def _start_service(args: argparse.Namespace, database: Path,
 
 
 def _state_dir() -> Path:
-    return Path.home() / ".ngrdb"
+    return ngr_home()
 
 
 def _paused_path(port: int) -> Path:
@@ -238,7 +239,8 @@ def _ensure_tray(args: argparse.Namespace, token: str, database: Path,
     except (FileNotFoundError, ValueError, KeyError, TypeError, OSError):
         pass
     payload = {"port": args.port, "database": str(database), "config": config,
-               "fingerprint": fingerprint}
+               "fingerprint": fingerprint,
+               "legacy_marker_alias": getattr(args, "legacy_marker_alias", False)}
     log_path = _state_dir() / f"shared-local-mcp-{args.port}.tray.log"
     environment = dict(os.environ)
     environment[TRAY_CONFIG_ENV] = json.dumps(payload)
@@ -267,6 +269,7 @@ def _ensure_service(args: argparse.Namespace, token: str, database: Path,
     lock_path = state_dir / f"shared-local-mcp-{args.port}.lock"
     log_path = state_dir / f"shared-local-mcp-{args.port}.log"
     with _startup_lock(lock_path):
+        require_home_available()
         existing = _probe(args.port, token, database, config)
         if start_tray:
             _ensure_tray(args, token, database, config)
@@ -319,16 +322,20 @@ async def _run_proxy(port: int, token: str) -> None:
 
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Connect stdio MCP to an on-demand shared NGR service")
-    parser.add_argument("--database", help="SQLite path (default: NGR_DATABASE or ~/.ngrdb/knowledge.db)")
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument("--database", help="SQLite path (default: central config or ~/.ngr/db/knowledge.db)")
+    parser.add_argument("--port", type=int)
     parser.add_argument("--cuda-cache")
     parser.add_argument("--cuda-e5-snapshot")
     parser.add_argument("--cuda-v2-m3-snapshot")
-    parser.add_argument("--cuda-device", type=int, default=0)
+    parser.add_argument("--cuda-device", type=int)
     args = parser.parse_args(argv)
     token = os.environ.get(TOKEN_ENV, "")
     try:
         _validate_bearer_token(token)
+        args.legacy_marker_alias = args.database is not None and not config_path().exists()
+        resolved = resolve_shared(args)
+        prepare_database(DatabaseResolution(resolved.database, resolved.database_source))
+        resolved.apply(args)
         if not 1 <= args.port <= 65535:
             raise ValueError("--port must be from 1 through 65535")
         if args.cuda_device < 0:
@@ -338,7 +345,7 @@ def main(argv: list[str] | None = None) -> None:
             raise ValueError("CUDA requires all three --cuda path options")
         if not any(cuda_paths) and args.cuda_device != 0:
             raise ValueError("--cuda-device requires CUDA path options")
-        database = resolve_database(args.database, environ=os.environ).path.expanduser().resolve()
+        database = resolved.database
         config: dict[str, Any] = {}
         if all(cuda_paths):
             config = {
@@ -356,14 +363,16 @@ def main(argv: list[str] | None = None) -> None:
 def stop_main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Stop the shared local NGR MCP service")
     parser.add_argument("--database", help="SQLite path used by the service")
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument("--port", type=int)
     args = parser.parse_args(argv)
     token = os.environ.get(TOKEN_ENV, "")
     try:
         _validate_bearer_token(token)
+        resolved = resolve_shared(args)
+        resolved.apply(args)
         if not 1 <= args.port <= 65535:
             raise ValueError("--port must be from 1 through 65535")
-        database = resolve_database(args.database, environ=os.environ).path.expanduser().resolve()
+        database = resolved.database
         with _startup_lock(_state_dir() / f"shared-local-mcp-{args.port}.lock"):
             _stop_service(args.port, token, database)
     except (ValueError, RuntimeError, OSError) as error:

@@ -8,6 +8,7 @@ import json
 import os
 import queue
 import secrets
+import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -140,7 +141,7 @@ def main() -> None:
         install = root / "Installed"
         data = root / "user-data"
         data.mkdir()
-        database = data / "knowledge.db"
+        database = data / ".ngr" / "db" / "knowledge.db"
         port = 28800 + secrets.randbelow(1000)
         token = secrets.token_urlsafe(32)
         package_env = dict(os.environ)
@@ -151,7 +152,12 @@ def main() -> None:
                                          os.environ["SystemRoot"]))
         package_env["USERPROFILE"] = str(data)
         package_env["NGR_MCP_HTTP_BEARER_TOKEN"] = token
-        package_env["NGR_DATABASE"] = str(database)
+        for key in tuple(package_env):
+            if key.startswith("NGR_") and key != "NGR_MCP_HTTP_BEARER_TOKEN":
+                package_env.pop(key)
+        config_dir = data / ".ngr"
+        config_dir.mkdir()
+        (config_dir / "config.json").write_text(json.dumps({"port": port}), encoding="utf-8")
         rejected = subprocess.run([str(setup), "/VERYSILENT", "/SUPPRESSMSGBOXES",
                                    "/NORESTART", f"/DIR={install}"],
                                   capture_output=True, text=True, timeout=30)
@@ -170,12 +176,29 @@ def main() -> None:
             version_result = subprocess.run([str(exe), "--version"], env=package_env,
                                             capture_output=True, text=True, timeout=30)
             assert version_result.returncode == 0 and version_result.stdout.strip() == version
+            legacy = data / ".ngrdb" / "knowledge.db"
+            legacy.parent.mkdir()
+            connection = sqlite3.connect(legacy)
+            try:
+                connection.execute("CREATE TABLE migration_smoke (value TEXT)")
+                connection.execute("INSERT INTO migration_smoke VALUES ('retained legacy data')")
+                connection.commit()
+            finally:
+                connection.close()
+            _run(exe, package_env, "--migrate-home", "--confirm-stopped")
+            assert legacy.is_file() and (data / ".ngr/backups/legacy-knowledge.db").is_file()
+            connection = sqlite3.connect(database)
+            try:
+                assert connection.execute("SELECT value FROM migration_smoke").fetchone()[0] == "retained legacy data"
+            finally:
+                connection.close()
+            _run(exe, package_env, "--migrate-home", "--confirm-stopped")
             manifest = json.loads((install / "package-manifest.json").read_text(encoding="utf-8-sig"))
             _assert_licenses(install, manifest["flavor"])
             if manifest["flavor"] == "cuda":
                 _assert_cuda_model_modules(exe)
             start_started = time.monotonic()
-            proxy = subprocess.Popen([str(exe), "--shared", "--port", str(port)],
+            proxy = subprocess.Popen([str(exe), "--shared"],
                                      env=package_env, stdin=subprocess.PIPE,
                                      stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                      text=True, encoding="utf-8")
@@ -200,10 +223,10 @@ def main() -> None:
                 assert response["id"] == 2 and response["result"]["tools"], response
                 identity = _request(port, token)
                 assert identity["database"] == str(database.resolve())
-                tray = data / ".ngrdb" / f"shared-local-mcp-{port}.tray.json"
+                tray = data / ".ngr" / f"shared-local-mcp-{port}.tray.json"
                 assert tray.is_file(), "tray process did not register"
                 stop_started = time.monotonic()
-                _run(exe, package_env, "--tray-action", "stop", "--port", str(port))
+                _run(exe, package_env, "--tray-action", "stop")
                 print(f"TRAY_STOP_SECONDS={time.monotonic() - stop_started:.2f}", flush=True)
                 try:
                     _request(port, token)
@@ -212,10 +235,10 @@ def main() -> None:
                 else:
                     raise AssertionError("tray stop left the service running")
                 resume_started = time.monotonic()
-                _run(exe, package_env, "--tray-action", "resume", "--port", str(port))
+                _run(exe, package_env, "--tray-action", "resume")
                 print(f"TRAY_RESUME_SECONDS={time.monotonic() - resume_started:.2f}", flush=True)
                 assert _request(port, token)["service"] == "neuron-graph-rag-shared-local-mcp/v1"
-                _run(exe, package_env, "--tray-action", "exit", "--port", str(port))
+                _run(exe, package_env, "--tray-action", "exit")
             finally:
                 proxy.kill()
                 proxy.communicate(timeout=10)

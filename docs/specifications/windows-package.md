@@ -34,12 +34,10 @@ CPython の Windows EXE / DLL / PYD にリンクされた Microsoft Distributabl
 
 ## 状態と登録
 
-DB、token、cache、モデルはインストール先でなくユーザー領域または利用者指定 path に置く。更新とアンインストールはそれらを削除しない。設定用コマンド `NGR.exe --configure-clients` は利用者が Codex / Claude Code を個別に選択した場合だけ MCP 登録を行う。Claude Code は利用者がフォルダー選択画面で指定した既存プロジェクトのルートに限り、`claude mcp add --scope project` により `.mcp.json` を更新する。別プロジェクトには自動登録しない。同名 `ngr-shared` が選択先にあれば安全な要約と設定ファイル path を示し、利用者がエディターで内容を確認できるようにする。選択先の JSON が不正なら変更を止める。CLI の任意出力や設定本文はコンソールやログに転記せず、自動上書きしない。新規登録前には既存設定ファイルを timestamp 付きで退避し、他のサーバーを保持する。既存 user scope 登録は project 登録成功後も維持し、利用者が他プロジェクトへの影響を確認して選んだ場合だけホーム設定を退避して削除する。複数プロジェクトに個別登録でき、登録内容は `${NGR_MCP_EXE} --shared` を参照する。ユーザー環境変数 `NGR_MCP_EXE` はこのマシンに導入した EXE の絶対 path とし、インストール先を各プロジェクトの設定に複製せず、一つの共有本体に接続する。新規 token はユーザー環境変数 `NGR_MCP_HTTP_BEARER_TOKEN` に保存し、コマンド引数や MCP 設定には書かない。既存アプリは環境変数を読み直すため再起動する。
-
-Claude Code の project 設定と、移行時に削除する旧 user scope 設定のバックアップは、ユーザー専用の `%LOCALAPPDATA%\Neuron Graph RAG\mcp-backups\` 以下へ保存する。プロジェクトの Git 管理対象やホーム直下に設定本文の退避コピーを作らない。アンインストール後も `NGR_MCP_HTTP_BEARER_TOKEN` と `NGR_MCP_EXE` のユーザー環境変数、MCP 登録、退避ファイルは残る。
+v0.3.0 の共通ホーム・設定解決・明示移行・native 登録は [共通ホーム仕様](shared-home.md) を正本とする。操作は [Windows 導入ガイド](../guides/windows-installation.md) に記す。DB、管理ファイル、更新取得物、退避をユーザーの `.ngr` に集約する。インストーラーは DB、token、モデル、native 設定を自動移行・削除しない。
 
 ## CI 受け入れ
 
-PR と main の両方で CPU / CUDA を別 job でビルドし、インストールした `NGR.exe` に Python のない PATH を渡して version、初回 stdio MCP 接続、共有 identity、tool 一覧、トレイ状態、停止・再開、アンインストール後の DB 残存を検査する。CUDA 版では固定 Transformers 版のモデルモジュール一覧と EXE の収録内容も照合する。GPU を持たない runner では CUDA wheel の同梱と起動入口・モジュール収録まで確認し、実機 NVIDIA GPU の推論成功は検証範囲に含まれない。
+PR と main の両方で CPU / CUDA を別 job でビルドし、インストールした `NGR.exe` に Python のない PATH を渡して version、中央 JSON の port・既定 `.ngr/db`、引数なしの初回 stdio MCP 接続、共有 identity、tool 一覧、トレイ状態、停止・再開、アンインストール後の DB 残存を検査する。CUDA 版では固定 Transformers 版のモデルモジュール一覧と EXE の収録内容も照合する。GPU を持たない runner では CUDA wheel の同梱と起動入口・モジュール収録まで確認し、実機 NVIDIA GPU の推論成功は検証範囲に含まれない。
 
 同じ smoke test は、インストール先の全ライセンス文書の存在・ハッシュ・非空本文、NumPy OpenBLAS DLL と wheel RECORD 由来の digest、Community の VC\Redist 由来の 4 DLL の実 digest、主要 runtime 配布物の掲載、CPU/CUDA の区別、モデル weight の非同梱を検査する。CPU shortlist と CUDA shortlist の既存 unit test も NumPy 1.26.4 を導入した環境で実行する。GitHub の Windows runner 自体には VC runtime があるため、CI の起動成功だけで runtime 未導入の Windows 上での起動は証明できない。同梱 4 DLL の出自・digest と最終バンドルは監査するが、完全に runtime のない Windows 実機での導入検証はこの CI の範囲外である。通常の PR と `main` push は EXE をビルド・テストするだけで Actions artifact に upload しない。公開を承認された版は、`main` の `workflow_dispatch` を `publish_artifacts=true` として明示実行した場合に限り、CPU/CUDA の各成功 job が Actions artifact を upload する。入力の既定値は `false` とし、他の ref での手動実行は package job 自体を行わない。続く検証 job は同一 run の両 artifact を取得し、`release-version.txt`、両 manifest、EXE の実 SHA-256・size、`.sha256` を照合する。両 job と検証 job が成功した run の成果物だけを公開 GitHub Release への asset 添付候補とする。asset 添付は別の確認手順で行う。

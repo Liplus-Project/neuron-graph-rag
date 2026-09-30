@@ -24,6 +24,7 @@ RUNTIME_MODULES = frozenset(
         "exclusion_intent",
         "feedback",
         "judgments",
+        "home_migration",
         "models",
         "ontology",
         "precision_control",
@@ -31,6 +32,7 @@ RUNTIME_MODULES = frozenset(
         "sample",
         "semantic_retrieval",
         "storage",
+        "user_config",
     }
 )
 

@@ -11,6 +11,7 @@ test_outcome_feedback_deactivation test_outcome_feedback_deactivation_interleavi
 test_sibling_relation_feedback test_soft_start_feedback test_semantic_retrieval
 test_cpu_shortlist_retrieval test_cpu_shortlist_benchmark test_cuda_shortlist_retrieval
 test_runtime_wheel test_verified_updates test_windows_package_artifacts
+test_shared_home test_native_registration test_shared_home_mcp
 """.split(),
     },
     "shared": {

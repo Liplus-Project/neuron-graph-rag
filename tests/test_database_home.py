@@ -48,7 +48,7 @@ class DatabaseHomeTest(unittest.TestCase):
         self.assertEqual(command_line.source, "command_line")
         self.assertEqual(from_environment.path, self.home / "environment.db")
         self.assertEqual(from_environment.source, "environment")
-        self.assertEqual(default.path, self.home / ".ngrdb" / "knowledge.db")
+        self.assertEqual(default.path, self.home / ".ngr" / "db" / "knowledge.db")
         self.assertEqual(default.source, "default")
         self.assertEqual(
             resolve_database_path(None, environ={"NGR_DATABASE": ""}, home=self.home),

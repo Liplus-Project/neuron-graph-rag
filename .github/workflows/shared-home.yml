@@ -1,0 +1,27 @@
+name: Shared home
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  shared-home:
+    name: Shared home (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-2022]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - name: Install optional MCP adapter
+        run: python -m pip install -e '.[mcp]'
+      - name: Central configuration, migration, native clients and shared startup
+        run: python -m unittest tests.test_shared_home tests.test_native_registration tests.test_shared_home_mcp tests.test_database_home tests.test_mcp_adapter.MCPSharedProxyTest.test_two_stdio_clients_start_one_service_and_survive_first_exit -v

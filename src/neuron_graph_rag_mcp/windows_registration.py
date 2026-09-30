@@ -53,9 +53,9 @@ def _backup_root() -> Path:
     return base / "Neuron Graph RAG" / "mcp-backups"
 
 
-def _project_backup_dir(project: Path) -> Path:
+def _project_backup_dir(project: Path, backup_root: Path | None = None) -> Path:
     project_id = hashlib.sha256(str(project).encode("utf-8")).hexdigest()[:16]
-    return _backup_root() / project_id
+    return (backup_root if backup_root is not None else _backup_root()) / project_id
 
 
 def _select_claude_project() -> Path | None:
@@ -101,7 +101,7 @@ def _ensure_executable_env() -> None:
     os.environ[EXE_ENV] = sys.executable
 
 
-def _register_claude() -> None:
+def _register_claude(*, backup_root: Path | None = None) -> None:
     executable = shutil.which("claude")
     if not executable:
         print("claude: CLI was not found; skipped.")
@@ -117,7 +117,7 @@ def _register_claude() -> None:
     if SERVER_NAME in servers:
         _show_existing("claude", config)
         if input("Back up the existing project configuration? [y/N] ").lower() == "y":
-            print(f"Backup: {_backup(config, _project_backup_dir(project))}")
+            print(f"Backup: {_backup(config, _project_backup_dir(project, backup_root))}")
         print("Existing project entry was preserved. Review its backup before changing it yourself.")
         return
     user_config = _config_path("claude")
@@ -129,7 +129,7 @@ def _register_claude() -> None:
     if input("Register in this Claude Code project? [y/N] ").lower() != "y":
         return
     _ensure_executable_env()
-    backup = _backup(config, _project_backup_dir(project))
+    backup = _backup(config, _project_backup_dir(project, backup_root))
     if backup:
         print(f"Backup: {backup}")
     command = [executable, "mcp", "add", "--scope", "project", "--transport", "stdio",
@@ -143,7 +143,7 @@ def _register_claude() -> None:
     if user_entry:
         print("Removing the user-scope entry disables it in other projects without their own registration.")
         if input("Back up and remove the old user-scope entry? [y/N] ").lower() == "y":
-            user_backup = _backup(user_config, _backup_root() / "user")
+            user_backup = _backup(user_config, (backup_root if backup_root is not None else _backup_root()) / "user")
             if user_backup is None:
                 raise OSError("Claude Code user configuration disappeared before backup")
             print(f"Backup: {user_backup}")

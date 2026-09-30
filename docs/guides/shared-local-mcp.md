@@ -2,6 +2,8 @@
 
 Windows セットアップ EXE から導入する場合は [Windows 版の導入・更新・削除](windows-installation.md)を参照する。このページの `pip install` と `python -m` は通常 wheel 向け。
 
+中央設定・旧 DB 移行・Windows 共通登録は [共通ホーム仕様](../specifications/shared-home.md) と [Windows 導入ガイド](windows-installation.md) に従う。v0.2.1 の `.ngrdb` は復旧用旧領域。
+
 ## Codex と Claude Code に登録する
 
 Python 環境に `pip install '.[mcp]'` を入れる。以下は PowerShell の例。token は同じ Windows ユーザーのユーザー環境変数に保存し、コマンド引数や MCP 設定本文には書かない。token 値は画面に表示しない。
@@ -17,8 +19,10 @@ Remove-Variable token
 
 ```powershell
 codex mcp add ngr-shared -- C:\path\to\python.exe -m neuron_graph_rag_mcp --shared
-claude mcp add --transport stdio ngr-shared -- C:\path\to\python.exe -m neuron_graph_rag_mcp --shared
+claude mcp add --scope user --transport stdio ngr-shared -- C:\path\to\python.exe -m neuron_graph_rag_mcp --shared
 ```
+
+Codex の `[mcp_servers.ngr-shared]` に `env_vars = ["NGR_MCP_HTTP_BEARER_TOKEN", "NGR_DATABASE", "NGR_PORT", "NGR_CUDA_CACHE", "NGR_CUDA_E5_SNAPSHOT", "NGR_CUDA_V2_M3_SNAPSHOT", "NGR_CUDA_DEVICE"]` を追加し、環境変数の名前だけを子プロセスへ透過する。値は書かない。
 
 登録コマンドの構文は [Codex の MCP 設定](https://developers.openai.com/codex/mcp/) と [Claude Code の MCP 設定](https://code.claude.com/docs/en/mcp) に従う。
 
@@ -32,7 +36,7 @@ Windows では初回接続で NGR のトレイアイコンも一つ起動する�
 C:\path\to\python.exe -m neuron_graph_rag_mcp --stop
 ```
 
-CLI の `--stop` は従来どおり一回だけ本体を停止し、次の MCP 接続は新しい本体を起動する。再接続でも停止状態を維持したい場合はトレイの停止操作を使う。別 DB を `--database` で登録した場合、CLI 停止時も同じ `--database` を指定する。別 port を `--port` で登録した場合も同じ値を指定する。token や DB・CUDA 設定を変更する前にトレイの `Exit` を選び、両クライアントを再起動する。サービスの診断ログは `~/.ngrdb/shared-local-mcp-<port>.log` にある。トレイの起動失敗時は `~/.ngrdb/shared-local-mcp-<port>.tray.log` に例外の種類とソース位置を記録し、MCP クライアントのエラーにそのログの場所を示す。Windows PowerShell または WMI による起動前の失敗も MCP クライアントにエラーとして表示される。token とモデル path はトレイ表示やログに書かない。
+CLI の `--stop` は従来どおり一回だけ本体を停止し、次の MCP 接続は新しい本体を起動する。再接続でも停止状態を維持したい場合はトレイの停止操作を使う。別 DB を `--database` で登録した場合、CLI 停止時も同じ `--database` を指定する。別 port を `--port` で登録した場合も同じ値を指定する。token や DB・CUDA 設定を変更する前にトレイの `Exit` を選び、両クライアントを再起動する。サービスの診断ログは `~/.ngr/shared-local-mcp-<port>.log` にある。トレイの起動失敗時は `~/.ngr/shared-local-mcp-<port>.tray.log` に例外の種類とソース位置を記録し、MCP クライアントのエラーにそのログの場所を示す。Windows PowerShell または WMI による起動前の失敗も MCP クライアントにエラーとして表示される。token とモデル path はトレイ表示やログに書かない。
 
 CUDA を使う場合は、両クライアントの `--shared` の後に同じ `--cuda-cache`、`--cuda-e5-snapshot`、`--cuda-v2-m3-snapshot` を指定する。モデル path の準備と tool の使い方は下記を参照。CUDA は明示指定した時だけ共有サービス内で読み込む。設定を変える場合は先に共有サービスを停止する。
 
@@ -45,10 +49,10 @@ $token = (& python -c 'import secrets; print(secrets.token_urlsafe(32))').Trim()
 [Environment]::SetEnvironmentVariable('NGR_MCP_HTTP_BEARER_TOKEN', $token, 'User')
 $env:NGR_MCP_HTTP_BEARER_TOKEN = $token
 Remove-Variable token
-neuron-graph-rag-mcp --http --database "$HOME/.ngrdb/knowledge.db"
+neuron-graph-rag-mcp --http --database "$HOME/.ngr/db/knowledge.db"
 ```
 
-既定の接続先は `http://127.0.0.1:8765/mcp/`。別ポートを使う場合は `--port 8766` を指定し、クライアントの URL も一致させる。端末で Ctrl+C を押して停止する。DB path を省略したときは `NGR_DATABASE`、次に `~/.ngrdb/knowledge.db` を使う。token がない場合は DB を開く前に起動を拒否する。二つの AI クライアントは同じ URL と token に個別接続する。Codex App を既に起動している場合、ユーザー環境変数を読み直すため再起動してから次を設定する。
+既定の接続先は `http://127.0.0.1:8765/mcp/`。別ポートを使う場合は `--port 8766` を指定し、クライアントの URL も一致させる。端末で Ctrl+C を押して停止する。DB path を省略したときは `NGR_DATABASE`、次に `~/.ngr/config.json` の `database`、最後に `~/.ngr/db/knowledge.db` を使う。token がない場合は DB を開く前に起動を拒否する。二つの AI クライアントは同じ URL と token に個別接続する。Codex App を既に起動している場合、ユーザー環境変数を読み直すため再起動してから次を設定する。
 
 ```powershell
 codex mcp add ngr-local --url http://127.0.0.1:8765/mcp/ --bearer-token-env-var NGR_MCP_HTTP_BEARER_TOKEN
@@ -62,8 +66,8 @@ codex mcp add ngr-local --url http://127.0.0.1:8765/mcp/ --bearer-token-env-var 
 
 ```powershell
 neuron-graph-rag-mcp --http `
-  --database "$HOME/.ngrdb/knowledge.db" `
-  --cuda-cache "$HOME/.ngrdb/shortlist.db" `
+  --database "$HOME/.ngr/db/knowledge.db" `
+  --cuda-cache "$HOME/.ngr/cache/shortlist.db" `
   --cuda-e5-snapshot "C:\models\e5\614241f622f53c4eeff9890bdc4f31cfecc418b3" `
   --cuda-v2-m3-snapshot "C:\models\v2-m3\953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
 ```

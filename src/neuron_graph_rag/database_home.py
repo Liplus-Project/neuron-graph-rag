@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 DATABASE_ENVIRONMENT_VARIABLE = "NGR_DATABASE"
-DATABASE_HOME_DIRECTORY = ".ngrdb"
+DATABASE_HOME_DIRECTORY = ".ngr"
 DATABASE_FILENAME = "knowledge.db"
 
 
@@ -31,9 +31,14 @@ def resolve_database(
     *,
     environ: Mapping[str, str] | None = None,
     home: str | Path | None = None,
+    configuration: Mapping[str, object] | None = None,
 ) -> DatabaseResolution:
     environment = os.environ if environ is None else environ
     home_path = Path.home() if home is None else Path(home)
+    from .user_config import expand_path, ngr_home, read_config, require_home_available
+
+    require_home_available(home_path)
+    document = read_config(home_path) if configuration is None else configuration
     if command_line is not None:
         value = str(command_line)
         if not value.strip():
@@ -44,8 +49,18 @@ def resolve_database(
         return DatabaseResolution(
             _expand_user_path(environment_value, home_path), "environment"
         )
+    if "database" in document:
+        return DatabaseResolution(
+            expand_path(document["database"], home_path, base=ngr_home(home_path)), "configuration"
+        )
+    legacy = home_path / ".ngrdb" / DATABASE_FILENAME
+    if legacy.exists():
+        from .home_migration import migration_completed
+
+        if not migration_completed(home_path):
+            raise ValueError("Legacy ~/.ngrdb database exists; stop all NGR clients and tray, then run --migrate-home --confirm-stopped")
     return DatabaseResolution(
-        home_path / DATABASE_HOME_DIRECTORY / DATABASE_FILENAME,
+        home_path / DATABASE_HOME_DIRECTORY / "db" / DATABASE_FILENAME,
         "default",
     )
 

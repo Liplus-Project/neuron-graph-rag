@@ -19,3 +19,5 @@
 - checkout の core / 実験 test と CI が通る。配布前後の module 数と source bytes の差を記録する。
 
 配布 module の理由、除外範囲、実測値、利用手順は[通常 wheel と checkout 実験コードの境界](../guides/runtime-wheel-boundary.md)を参照する。
+
+Issue #290 の中央設定・ホーム移行は配布 runtime として `user_config` と `home_migration` を allowlist に含める。optional MCP の `native_registration` も wheel に収録し、checkout 外の import と移行 CLI の help で検証する。
