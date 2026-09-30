@@ -188,6 +188,7 @@ def main() -> None:
                     register_json(client, path)
             else:
                 _register_claude(backup_root=ngr_home() / "backups/clients")
+        _notify_environment()
     except (OSError, ValueError, RuntimeError):
         raise SystemExit("Client setup stopped; inspect the configuration and ~/.ngr/backups. Private output is withheld.") from None
 

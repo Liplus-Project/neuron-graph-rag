@@ -25,7 +25,7 @@ class SharedHomeMCPTest(unittest.IsolatedAsyncioTestCase):
     def test_proxy_start_and_stop_resolve_the_same_central_settings(self):
         from neuron_graph_rag_mcp import shared_proxy
         with tempfile.TemporaryDirectory() as directory:
-            home = Path(directory)
+            home = Path(directory).resolve()
             database = home / ".ngr/db/knowledge.db"
             write_config({"port": 8912}, home=home)
             seen = []
@@ -48,7 +48,7 @@ class SharedHomeMCPTest(unittest.IsolatedAsyncioTestCase):
         from neuron_graph_rag_mcp.server import CONTRACT_VERSION
 
         with tempfile.TemporaryDirectory() as directory:
-            home = Path(directory)
+            home = Path(directory).resolve()
             unrelated = home / "unrelated"
             unrelated.mkdir()
             with socket.socket() as listener:
