@@ -98,6 +98,7 @@ class RuntimeWheelTest(unittest.TestCase):
             ))
             self.assertIn("cases", benchmark)
             if importlib.util.find_spec("mcp") is not None:
+                run(str(ROOT / "tests/test_tray_icon.py"))
                 self._check_optional_mcp(run)
                 run("-c", "from neuron_graph_rag_mcp.http_server import create_http_app; "
                     "assert callable(create_http_app)")
