@@ -38,6 +38,7 @@ $pythonScripts = Split-Path -Parent $pythonExe
 $env:PATH = "$pythonScripts;$pythonHome;$env:SystemRoot\System32;$env:SystemRoot"
 
 $arguments = @('--noconfirm','--clean','--onedir','--name','NGR','--distpath',$bundleRoot,'--workpath',(Join-Path $bundleRoot 'work'),'--specpath',$bundleRoot,'--copy-metadata','neuron-graph-rag','--collect-submodules','neuron_graph_rag')
+$arguments += @('--icon',(Join-Path $releaseSrc 'neuron_graph_rag_mcp\assets\ngr.ico'),'--collect-data','neuron_graph_rag_mcp')
 # MCP's optional CLI imports typer and exits when that unrelated extra is absent.
 # The application imports the MCP client/server modules statically; collecting
 # every mcp.* module would include its unrelated CLI and fail the build.

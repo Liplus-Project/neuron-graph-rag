@@ -111,6 +111,33 @@ def _assert_cuda_model_modules(exe: Path) -> None:
     print(f"CUDA_MODEL_MODULES={len(expected)}", flush=True)
 
 
+def _assert_icons(exe: Path) -> None:
+    import struct
+
+    import pefile
+
+    source = Path(__file__).resolve().parents[1] / "src/neuron_graph_rag_mcp/assets"
+    bundled = exe.parent / "_internal/neuron_graph_rag_mcp/assets"
+    for name in ("ngr.png", "ngr.ico"):
+        assert (bundled / name).read_bytes() == (source / name).read_bytes(), name
+    ico = (source / "ngr.ico").read_bytes()
+    count = struct.unpack_from("<H", ico, 4)[0]
+    expected = set()
+    for index in range(count):
+        length, offset = struct.unpack_from("<II", ico, 6 + index * 16 + 8)
+        expected.add(ico[offset:offset + length])
+    with pefile.PE(str(exe)) as pe:
+        actual = set()
+        for resource in pe.DIRECTORY_ENTRY_RESOURCE.entries:
+            if resource.id == 3:  # RT_ICON
+                for image in resource.directory.entries:
+                    for language in image.directory.entries:
+                        data = language.data.struct
+                        actual.add(pe.get_data(data.OffsetToData, data.Size))
+        assert actual == expected, "EXE icon resources differ from the supplied ICO"
+    print(f"ICON_RESOURCES={count}", flush=True)
+
+
 def _request(port: int, token: str) -> dict:
     connection = http.client.HTTPConnection("127.0.0.1", port, timeout=2)
     try:
@@ -173,6 +200,7 @@ def main() -> None:
         print(f"INSTALLED_SIZE_BYTES={installed_bytes}", flush=True)
         exe = install / "NGR.exe"
         try:
+            _assert_icons(exe)
             version_result = subprocess.run([str(exe), "--version"], env=package_env,
                                             capture_output=True, text=True, timeout=30)
             assert version_result.returncode == 0 and version_result.stdout.strip() == version

@@ -53,6 +53,11 @@ class RuntimeWheelTest(unittest.TestCase):
                              "neuron_graph_rag_mcp/shared_proxy.py",
                              "neuron_graph_rag_mcp/tray_controller.py"} <= paths)
             self.assertIn("neuron-graph-rag-mcp = neuron_graph_rag_mcp.server:main", entry_points)
+            for asset in ("ngr.png", "ngr.ico"):
+                relative = f"neuron_graph_rag_mcp/assets/{asset}"
+                self.assertIn(relative, paths)
+                with zipfile.ZipFile(wheel) as archive:
+                    self.assertEqual(archive.read(relative), (ROOT / "src" / relative).read_bytes())
             self.assertNotIn("neuron_graph_rag/cross_encoder_precision_v8_evaluation.py", paths)
             self.assertNotIn("neuron_graph_rag/real_task_shadow_v3.py", paths)
             subprocess.run(
