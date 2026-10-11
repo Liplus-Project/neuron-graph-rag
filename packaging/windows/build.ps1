@@ -8,7 +8,7 @@ $bundleRoot = Join-Path $root 'package-build'
 New-Item -ItemType Directory -Force $outputRoot, $bundleRoot | Out-Null
 $packageSource = Join-Path $bundleRoot 'release-source'
 New-Item -ItemType Directory -Force $packageSource | Out-Null
-Copy-Item -LiteralPath (Join-Path $root 'pyproject.toml'), (Join-Path $root 'README.md'), (Join-Path $root 'LICENSE'), (Join-Path $root 'NOTICE') -Destination $packageSource
+Copy-Item -LiteralPath (Join-Path $root 'pyproject.toml'), (Join-Path $root 'setup.cfg'), (Join-Path $root 'README.md'), (Join-Path $root 'LICENSE'), (Join-Path $root 'NOTICE') -Destination $packageSource
 $releaseSrc = Join-Path $packageSource 'src'
 New-Item -ItemType Directory -Force $releaseSrc | Out-Null
 Copy-Item -LiteralPath (Join-Path $root 'src/neuron_graph_rag'), (Join-Path $root 'src/neuron_graph_rag_mcp') -Destination $releaseSrc -Recurse

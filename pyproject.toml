@@ -21,6 +21,3 @@ neuron-graph-rag-mcp = "neuron_graph_rag_mcp.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.setuptools.package-data]
-neuron_graph_rag_mcp = ["assets/*.png", "assets/*.ico"]
