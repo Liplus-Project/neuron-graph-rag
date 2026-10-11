@@ -1,4 +1,5 @@
-# Neuron Graph RAG
+<img width="627" height="512" alt="ネオン輝くニューロングラフ・ロゴ" src="https://github.com/user-attachments/assets/04930bad-f493-4b55-a450-e6f57f74b962" />
+
 
 Neuron Graph RAG は、ハイブリッド検索を入口にし、型付き知識グラフへ活性を伝播し、実際に利用されて成功した経路だけを強化する、観測可能な RAG エンジンです。
 
