@@ -141,6 +141,56 @@ class IncrementalImportTests(unittest.TestCase):
         self.assertEqual(revised["provenance"]["wiki_commit"], "b" * 40)
         self.assertEqual(self._judgment("one:base")["revision"], 1)
 
+    def test_revise_with_an_edge_to_an_unwritable_target_is_blocked(self) -> None:
+        # "base" is renamed in the wiki, so "decision-base" is blocked as a possible identity change.
+        del self.wiki.rows["base"]
+        self.wiki.put("decision-base", "Base resolution", "- **depends on** none")
+        self.wiki.put("old", "Old resolution, revised", "- **depends on** " + _link("decision-base"))
+        plan = dry_run((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual(plan["operations"], [])
+        self.assertIn(
+            {"judgment_id": "one:old",
+             "reason": "relation target cannot be written in this plan, so a revise would drop its edge: one:decision-base"},
+            plan["blocked"],
+        )
+        result = write((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual(result["written"], [])
+        old = self._judgment("one:old")
+        self.assertEqual(old["revision"], 1)
+        self.assertEqual([(r["relation_type"], r["target_id"]) for r in old["relations"]], [("depends_on", "one:base")])
+
+    def test_mutual_conflict_between_new_judgments_is_written_with_a_link(self) -> None:
+        self.wiki.put("p-new", "P new", "- **conflicts with** " + _link("q-new"), state="archived")
+        self.wiki.put("q-new", "Q new", "- **conflicts with** " + _link("p-new"))
+        result = write((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual(
+            [(item["action"], item["judgment_id"], item["revision"]) for item in result["written"]],
+            [("add", "one:p-new", 1), ("add", "one:q-new", 1), ("link", "one:p-new", 2), ("archive", "one:p-new", 2)],
+        )
+        self.assertEqual(result["blocked"], [])
+        self.assertEqual(result["counts"]["skipped_edges"], 0)
+        for source, target in (("one:p-new", "one:q-new"), ("one:q-new", "one:p-new")):
+            relations = self._judgment(source)["relations"]
+            self.assertEqual([(r["relation_type"], r["target_id"]) for r in relations], [("conflicts_with", target)])
+        again = write((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual(again["written"], [])
+
+    def test_link_keeps_the_supersedes_relation_of_a_successor(self) -> None:
+        self.wiki.put("p-new", "P new", "- **supersedes** " + _link("old"), "- **informs** " + _link("q-new"))
+        self.wiki.put("q-new", "Q new", "- **depends on** " + _link("p-new"))
+        self.wiki.rows["old"] = ("superseded", "Old resolution")
+        result = write((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual(
+            [(item["action"], item["judgment_id"]) for item in result["written"]],
+            [("supersede", "one:p-new"), ("add", "one:q-new"), ("link", "one:p-new")],
+        )
+        relations = self._judgment("one:p-new")["relations"]
+        self.assertEqual(
+            sorted((r["relation_type"], r["target_id"]) for r in relations),
+            [("informs", "one:q-new"), ("supersedes", "one:old")],
+        )
+        self.assertEqual(self._judgment("one:old")["superseded_by"], "one:p-new")
+
     def test_changed_on_both_sides_is_listed_and_not_written(self) -> None:
         with NeuronGraphRAG(self.database) as engine:
             engine.judgments.update(
