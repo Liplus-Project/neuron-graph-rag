@@ -44,83 +44,93 @@ def restore(source: Path, destination: Path) -> None:
         source_connection.backup(destination_connection)
 
 
-def integrity(database: Path) -> dict[str, object]:
+def integrity(database: Path | sqlite3.Connection) -> dict[str, object]:
+    """Fail-closed integrity check of a database path or an open connection.
+
+    An open connection is checked as it is, including its uncommitted writes.
+    """
+    if isinstance(database, sqlite3.Connection):
+        return _integrity(database)
     with closing(sqlite3.connect(database)) as connection:
         connection.row_factory = sqlite3.Row
-        sqlite_status = connection.execute("PRAGMA integrity_check").fetchone()[0]
-        foreign_keys = [dict(row) for row in connection.execute("PRAGMA foreign_key_check")]
-        dangling = connection.execute(
-            """
-            SELECT source_id, target_id, relation_type FROM judgment_relations
-            WHERE source_id NOT IN (SELECT judgment_id FROM judgments)
-               OR target_id NOT IN (SELECT judgment_id FROM judgments)
-            ORDER BY source_id, target_id, relation_type
-            """
-        ).fetchall()
-        duplicate_successors = connection.execute(
-            """
-            SELECT superseded_by, COUNT(*) AS predecessor_count FROM judgments
-            WHERE superseded_by IS NOT NULL GROUP BY superseded_by HAVING COUNT(*) > 1
-            """
-        ).fetchall()
-        supersession_inconsistencies = connection.execute(
-            """
-            SELECT predecessor.judgment_id, predecessor.lifecycle,
-                   predecessor.superseded_by
-            FROM judgments AS predecessor
-            WHERE predecessor.superseded_by IS NOT NULL
-              AND (
-                predecessor.lifecycle <> 'archived'
-                OR NOT EXISTS (
-                    SELECT 1 FROM judgment_relations AS relation
-                    WHERE relation.source_id = predecessor.superseded_by
-                      AND relation.target_id = predecessor.judgment_id
-                      AND relation.relation_type = 'supersedes'
-                )
-              )
-            UNION ALL
-            SELECT relation.target_id, target.lifecycle, relation.source_id
-            FROM judgment_relations AS relation
-            JOIN judgments AS target ON target.judgment_id = relation.target_id
-            WHERE relation.relation_type = 'supersedes'
-              AND (
-                target.lifecycle <> 'archived'
-                OR target.superseded_by IS NULL
-                OR target.superseded_by <> relation.source_id
-              )
-            ORDER BY 1, 3
-            """
-        ).fetchall()
-        relation_type_registry_inconsistencies = connection.execute(
-            """
-            SELECT registry.relation_type, registry.current_revision,
-                   registry.lifecycle
-            FROM judgment_relation_types AS registry
-            LEFT JOIN judgment_relation_type_revisions AS revision
-              ON revision.relation_type = registry.relation_type
-             AND revision.revision = registry.current_revision
-            WHERE revision.relation_type IS NULL
-               OR revision.lifecycle <> registry.lifecycle
-            ORDER BY registry.relation_type
-            """
-        ).fetchall()
-        relation_binding_inconsistencies = connection.execute(
-            """
-            SELECT relation.source_id, relation.target_id,
-                   relation.relation_type, relation.relation_type_revision,
-                   relation.assertion_kind
-            FROM judgment_relations AS relation
-            LEFT JOIN judgment_relation_type_revisions AS revision
-              ON revision.relation_type = relation.relation_type
-             AND revision.revision = relation.relation_type_revision
-            WHERE relation.assertion_kind <> 'explicit'
-               OR (
-                    relation.relation_type_revision IS NOT NULL
-                    AND revision.relation_type IS NULL
-               )
-            ORDER BY relation.source_id, relation.target_id, relation.relation_type
-            """
-        ).fetchall()
+        return _integrity(connection)
+
+
+def _integrity(connection: sqlite3.Connection) -> dict[str, object]:
+    sqlite_status = connection.execute("PRAGMA integrity_check").fetchone()[0]
+    foreign_keys = [dict(row) for row in connection.execute("PRAGMA foreign_key_check")]
+    dangling = connection.execute(
+        """
+        SELECT source_id, target_id, relation_type FROM judgment_relations
+        WHERE source_id NOT IN (SELECT judgment_id FROM judgments)
+           OR target_id NOT IN (SELECT judgment_id FROM judgments)
+        ORDER BY source_id, target_id, relation_type
+        """
+    ).fetchall()
+    duplicate_successors = connection.execute(
+        """
+        SELECT superseded_by, COUNT(*) AS predecessor_count FROM judgments
+        WHERE superseded_by IS NOT NULL GROUP BY superseded_by HAVING COUNT(*) > 1
+        """
+    ).fetchall()
+    supersession_inconsistencies = connection.execute(
+        """
+        SELECT predecessor.judgment_id, predecessor.lifecycle,
+               predecessor.superseded_by
+        FROM judgments AS predecessor
+        WHERE predecessor.superseded_by IS NOT NULL
+          AND (
+            predecessor.lifecycle <> 'archived'
+            OR NOT EXISTS (
+                SELECT 1 FROM judgment_relations AS relation
+                WHERE relation.source_id = predecessor.superseded_by
+                  AND relation.target_id = predecessor.judgment_id
+                  AND relation.relation_type = 'supersedes'
+            )
+          )
+        UNION ALL
+        SELECT relation.target_id, target.lifecycle, relation.source_id
+        FROM judgment_relations AS relation
+        JOIN judgments AS target ON target.judgment_id = relation.target_id
+        WHERE relation.relation_type = 'supersedes'
+          AND (
+            target.lifecycle <> 'archived'
+            OR target.superseded_by IS NULL
+            OR target.superseded_by <> relation.source_id
+          )
+        ORDER BY 1, 3
+        """
+    ).fetchall()
+    relation_type_registry_inconsistencies = connection.execute(
+        """
+        SELECT registry.relation_type, registry.current_revision,
+               registry.lifecycle
+        FROM judgment_relation_types AS registry
+        LEFT JOIN judgment_relation_type_revisions AS revision
+          ON revision.relation_type = registry.relation_type
+         AND revision.revision = registry.current_revision
+        WHERE revision.relation_type IS NULL
+           OR revision.lifecycle <> registry.lifecycle
+        ORDER BY registry.relation_type
+        """
+    ).fetchall()
+    relation_binding_inconsistencies = connection.execute(
+        """
+        SELECT relation.source_id, relation.target_id,
+               relation.relation_type, relation.relation_type_revision,
+               relation.assertion_kind
+        FROM judgment_relations AS relation
+        LEFT JOIN judgment_relation_type_revisions AS revision
+          ON revision.relation_type = relation.relation_type
+         AND revision.revision = relation.relation_type_revision
+        WHERE relation.assertion_kind <> 'explicit'
+           OR (
+                relation.relation_type_revision IS NOT NULL
+                AND revision.relation_type IS NULL
+           )
+        ORDER BY relation.source_id, relation.target_id, relation.relation_type
+        """
+    ).fetchall()
     result = {
         "sqlite_integrity": sqlite_status,
         "foreign_key_violations": foreign_keys,

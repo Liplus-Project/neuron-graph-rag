@@ -7,3 +7,4 @@
 - [_Footer.md](../_Footer.md) — 元パス維持
 - [decision-wiki-pilot-manifest.json](../decision-wiki-pilot-manifest.json) — 元パス維持
 - [decision-wiki-pilot-migration.md](../decision-wiki-pilot-migration.md) — 元パス維持
+- [Decision Wiki 差分取り込み](../specifications/decision-wiki-incremental-import.md) — 既存 store への差分取り込み
