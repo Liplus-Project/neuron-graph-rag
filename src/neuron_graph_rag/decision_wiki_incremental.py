@@ -15,6 +15,7 @@ from dataclasses import dataclass, field
 from typing import Any, Iterable
 
 from .decision_wiki_import import (
+    LABEL_ALIASES,
     _MARKDOWN_LINK,
     _WIKILINK,
     DecisionWikiImportError,
@@ -35,6 +36,8 @@ _BOLD_LABEL = re.compile(r"^\*\*([^*]+?)\*\*\s*[:：]?[ \t]*(.*)$")
 _NONE_BODY = re.compile(r"^(none|（.*なし.*）|\(.*none.*\))", re.IGNORECASE)
 _HEAD_SEPARATOR = re.compile(r"\s+[—–]+\s*|——")
 _BACKTICK_SLUG = re.compile(r"`[a-z0-9]+(?:-[a-z0-9]+)+`")
+# Target-first form: "`target-slug` に <label> ...". The backticked slug is the target.
+_TARGET_FIRST = re.compile(r"^`([a-z0-9]+(?:-[a-z0-9]+)*)`\s*に\s*(.*)$")
 
 
 @dataclass
@@ -65,16 +68,38 @@ class WikiEntry:
         }
 
 
+def _spoken_labels(relation_types: set[str]) -> list[tuple[str, str]]:
+    """``(label, kind)`` pairs readable as a registered type, longest label first.
+
+    A label in ``LABEL_ALIASES`` is readable only while the type it maps to is registered.
+    """
+    labels = {kind.replace("_", " "): kind for kind in relation_types}
+    labels.update({alias: kind for alias, kind in LABEL_ALIASES.items() if kind in relation_types})
+    return sorted(labels.items(), key=lambda item: len(item[0]), reverse=True)
+
+
 def _label_kind(label: str, relation_types: set[str]) -> str | None:
     """Return the registered relation type a label starts with, if any."""
     folded = label.strip().casefold()
-    for kind in sorted(relation_types, key=len, reverse=True):
-        spoken = kind.replace("_", " ")
+    for spoken, kind in _spoken_labels(relation_types):
         if folded == spoken or (
             folded.startswith(spoken) and not folded[len(spoken)].isalpha()
         ):
             return kind
     return None
+
+
+def _read_label(text: str, relation_types: set[str]) -> tuple[str | None, str | None, str]:
+    """Split ``text`` at a leading edge label into ``(kind, bold label, rest)``."""
+    bold = _BOLD_LABEL.match(text)
+    if bold is not None:
+        label = bold.group(1).strip()
+        return _label_kind(label, relation_types), label, bold.group(2)
+    for spoken, kind in _spoken_labels(relation_types):
+        match = re.match(rf"^{re.escape(spoken)}(?![A-Za-z])\s*[:：]?[ \t]*(.*)$", text, re.IGNORECASE)
+        if match is not None:
+            return kind, None, match.group(1)
+    return None, None, ""
 
 
 def _targets(text: str, repository: str) -> list[tuple[str, str]]:
@@ -106,21 +131,18 @@ def parse_edges(
         if bullet is None:
             continue
         body = bullet.group(1)
-        kind: str | None = None
-        rest = ""
-        label: str | None = None
-        bold = _BOLD_LABEL.match(body)
-        if bold is not None:
-            label = bold.group(1).strip()
-            kind = _label_kind(label, relation_types)
-            rest = bold.group(2)
-        else:
-            for candidate in sorted(relation_types, key=len, reverse=True):
-                spoken = candidate.replace("_", " ")
-                match = re.match(rf"^{re.escape(spoken)}(?![A-Za-z])\s*[:：]?[ \t]*(.*)$", body, re.IGNORECASE)
-                if match is not None:
-                    kind, rest = candidate, match.group(1)
-                    break
+        first = _TARGET_FIRST.match(body)
+        if first is not None:
+            kind, label, _ = _read_label(first.group(2), relation_types)
+            if kind is not None:
+                edges.append((kind, repository, first.group(1), line.strip()))
+                continue
+            if label is not None:
+                skipped.append((line.strip(), f"unregistered relation type: {label.casefold()}"))
+            else:
+                skipped.append((line.strip(), "unparsed edge line"))
+            continue
+        kind, label, rest = _read_label(body, relation_types)
         if kind is None:
             if label is not None and _targets(body, repository):
                 skipped.append((line.strip(), f"unregistered relation type: {label.casefold()}"))

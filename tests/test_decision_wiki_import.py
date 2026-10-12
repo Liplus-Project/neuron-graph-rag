@@ -58,6 +58,29 @@ class DecisionWikiImportTests(unittest.TestCase):
             self.assertEqual(manifest["judgment_count"], 3)
             self.assertEqual(manifest["relation_count"], 2)
 
+    def test_relates_to_and_target_first_form_are_imported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            source = _source(
+                Path(directory), "Example/one",
+                "| [source](https://github.com/Example/one/wiki/source) | active | Source |\n"
+                "| [near-one](https://github.com/Example/one/wiki/near-one) | active | Near |\n"
+                "| [base-one](https://github.com/Example/one/wiki/base-one) | active | Base |\n",
+                {
+                    "source": "## Edges\n\n- **relates to** [near-one](near-one) — prose\n"
+                    "- `base-one` に **depends on** — target-first\n",
+                    "near-one": "## Edges\n\n- `source` に relates to —— plain label\n",
+                    "base-one": "## Edges\n\n- **informs** none\n",
+                },
+            )
+            payload, _ = build_payload((source,))
+            relations = {
+                item["judgment_id"]: sorted((r["relation_type"], r["target_id"]) for r in item["relations"])
+                for item in payload["judgments"]
+            }
+            self.assertEqual(relations["one:source"], [("depends_on", "one:base-one"), ("informs", "one:near-one")])
+            self.assertEqual(relations["one:near-one"], [("informs", "one:source")])
+            self.assertEqual(relations["one:base-one"], [])
+
     def test_unknown_relation_target_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             source = _source(

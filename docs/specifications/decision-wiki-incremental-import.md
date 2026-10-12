@@ -27,9 +27,11 @@
 
 ## 辺
 
-store の relation type registry で active な type だけを取り込む。それ以外のラベル（`relates to` など）、読めない行、対象が複数ある行、対象が存在しないか書かれない行は取り込まない。その行と理由を `skipped_edges` に、理由ごとの件数を `skipped_edge_reasons` に出す。
+store の relation type registry で active な type だけを取り込む。ラベル `relates to` は新しい type を足さず、registry の `informs` として取り込む（`informs` が active のときに限る）。向きは、その辺を書いたページの判断から対象へ、に固定する。それ以外のラベル（`clarifies` など）、読めない行、対象が複数ある行、対象が存在しないか書かれない行は取り込まない。その行と理由を `skipped_edges` に、理由ごとの件数を `skipped_edge_reasons` に出す。
 
 辺の対象は、ラベルの後ろで最初のダッシュ（`—`）より前に書かれたリンクから取る。そこにリンクが無ければ行全体から取る。
+
+対象が先に来る書き方（``- `X` に **depends on** — …`` や ``- `X` に relates to —— …``）も読む。行頭の backtick で囲んだ slug を同じ repository の対象とし、続く「に」の後のラベル（太字でもそうでなくてもよい）で type を決める。ラベルの読み方と向きは通常の書き方と同じで、ラベルより後ろは説明文として対象を取らない。
 
 新しい判断の `supersedes` 以外の辺で、対象がまだ書かれていないもの（お互いに `conflicts with` を書いた 2 件など）は、対象を書いた後に `link` で足す。`link` は同じ domain API の update で、取り込み記録と同じ本文と provenance の版を足し、その判断の relation を `supersedes` も含めた全体で置き換える。同じ計画で後継に置き換えられる判断へは、置き換えの前に `link` を書く。それまでに対象が書かれなかった辺は、理由とともに `skipped_edges` に出す。
 
@@ -46,3 +48,4 @@ python tools/import_decision_wikis_incremental.py `
 - 既定は dry run。読み取り専用の接続で計画を作って JSON で出力し、DB には書かない。
 - `--write` を付けたときだけ書く。書く操作が無ければ何もしない。書く操作がある場合は、SQLite の online backup API で DB と同じフォルダに `<DB名>.pre-wiki-increment-<UTC時刻>.db` を作り、その integrity を確認する。次に `BEGIN IMMEDIATE` の 1 transaction の中で計画を作り直して適用し、commit の前に `tools/judgment_graph.py integrity` と同じ検査を通す。どこかで失敗すれば全体を rollback する。
 - 書いた版は取り込み記録になるため、wiki が変わらない限り再実行しても何も書かない。
+- 差分の判定はページの hash と索引の resolution だけで行う。辺の読み方が変わっても（`relates to` の取り込みなど）、ページが変わっていない判断には版を足さず、新しく読めた辺も書かない。
