@@ -26,3 +26,5 @@ python tools/import_decision_wikis.py `
 The command refuses to overwrite any output. It builds all four outputs under temporary sibling names, imports all records in one transaction, checks SQLite and judgment supersession integrity, independently exports the database twice and compares the bytes, verifies the SQLite backup, and records source commits and counts in the manifest. Only after every validation succeeds are the database, export, backup, and manifest published as one bundle. Any build or publication failure removes every temporary and newly published output, leaving no partial set.
 
 The committed `decision-wiki-pilot-manifest.json` records the completed pilot without committing the SQLite binary, backup, export, or Wiki clones.
+
+Later Wiki changes are applied to an existing store by the [incremental import](specifications/decision-wiki-incremental-import.md), not by re-running this pilot.

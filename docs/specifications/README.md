@@ -7,6 +7,7 @@
 - [任意のCUDA shortlist検索](cuda-shortlist-retrieval.md)
 - [共有ローカル MCP サービス](shared-local-mcp.md)
 - [通常 wheel の配布境界](runtime-wheel.md)
+- [Decision Wiki 差分取り込み](decision-wiki-incremental-import.md)
 
 - [production-exclusion-intent.md](production-exclusion-intent.md)
 - [requirements.md](../requirements.md) — 元パス維持
