@@ -13,9 +13,10 @@ import os
 import threading
 import time
 import traceback
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 from .shared_proxy import (
     TRAY_CONFIG_ENV, TRAY_LOG_ENV, _ensure_service, _paused_path, _probe, _startup_lock,
@@ -25,6 +26,31 @@ from .http_server import TOKEN_ENV, _validate_bearer_token
 from .verified_updates import (DownloadCancelled, UpdateError, check_for_update,
                                download_candidate, installed_build)
 from neuron_graph_rag.user_config import resolve_shared
+
+
+@contextmanager
+def _tray_icon() -> Iterator[int]:
+    """Own a file-loaded HICON for the duration of notification-area use."""
+    from ctypes import wintypes
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    user32.LoadImageW.argtypes = [wintypes.HINSTANCE, wintypes.LPCWSTR,
+                                  wintypes.UINT, ctypes.c_int, ctypes.c_int, wintypes.UINT]
+    user32.LoadImageW.restype = wintypes.HANDLE
+    user32.GetSystemMetrics.argtypes = [ctypes.c_int]
+    user32.GetSystemMetrics.restype = ctypes.c_int
+    user32.DestroyIcon.argtypes = [wintypes.HICON]
+    user32.DestroyIcon.restype = wintypes.BOOL
+    # __file__ resolves beside collected package data in PyInstaller as well.
+    path = Path(__file__).resolve().parent / "assets" / "ngr.ico"
+    handle = user32.LoadImageW(None, str(path), 1, user32.GetSystemMetrics(49),
+                               user32.GetSystemMetrics(50), 0x10)  # IMAGE_ICON, LR_LOADFROMFILE
+    if not handle:
+        raise ctypes.WinError(ctypes.get_last_error())
+    try:
+        yield handle
+    finally:
+        user32.DestroyIcon(handle)
 
 
 def _pause(args: argparse.Namespace, token: str, database: Path) -> None:
@@ -88,8 +114,7 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
 
     kernel32.GetModuleHandleW.restype = wintypes.HMODULE
     kernel32.GetModuleHandleW.argtypes = [wintypes.LPCWSTR]
-    user32.LoadIconW.restype = wintypes.HICON
-    user32.LoadIconW.argtypes = [wintypes.HINSTANCE, wintypes.LPCWSTR]
+    user32.UnregisterClassW.argtypes = [wintypes.LPCWSTR, wintypes.HINSTANCE]
     user32.RegisterClassW.argtypes = [ctypes.POINTER(WNDCLASSW)]
     user32.CreateWindowExW.restype = wintypes.HWND
     user32.CreateWindowExW.argtypes = [wintypes.DWORD, wintypes.LPCWSTR, wintypes.LPCWSTR,
@@ -106,6 +131,8 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
     user32.SetForegroundWindow.argtypes = [wintypes.HWND]
     user32.DestroyMenu.argtypes = [wintypes.HMENU]
     user32.DestroyWindow.argtypes = [wintypes.HWND]
+    user32.IsWindow.argtypes = [wintypes.HWND]
+    user32.IsWindow.restype = wintypes.BOOL
     user32.SetTimer.argtypes = [wintypes.HWND, ctypes.c_size_t, wintypes.UINT, ctypes.c_void_p]
     user32.GetMessageW.argtypes = [ctypes.POINTER(wintypes.MSG), wintypes.HWND,
                                    wintypes.UINT, wintypes.UINT]
@@ -148,7 +175,6 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
     icon.uID = 1
     icon.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP
     icon.uCallbackMessage = WM_TRAY
-    icon.hIcon = user32.LoadIconW(None, ctypes.cast(ctypes.c_void_p(32512), wintypes.LPCWSTR))
 
     def status() -> str:
         paused = _paused_path(args.port).exists()
@@ -313,7 +339,6 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
                 user32.MessageBoxW(hwnd, notice, "NGR update", 0x40)
             return 0
         if message == WM_DESTROY:
-            shell32.Shell_NotifyIconW(NIM_DELETE, ctypes.byref(icon))
             user32.PostQuitMessage(0)
             return 0
         return user32.DefWindowProcW(hwnd, message, wparam, lparam)
@@ -324,37 +349,52 @@ def _run_tray(args: argparse.Namespace, token: str, database: Path,
     window_class.lpfnWndProc = window_proc
     window_class.hInstance = instance
     window_class.lpszClassName = class_name
-    if not user32.RegisterClassW(ctypes.byref(window_class)):
-        raise OSError("could not register NGR tray window")
-    hwnd = user32.CreateWindowExW(0, class_name, "NGR shared MCP", 0,
-                                  0, 0, 0, 0, None, None, instance, None)
-    if not hwnd:
-        raise OSError("could not create NGR tray window")
-    icon.hWnd = hwnd
-    icon.szTip = "NGR shared MCP - Starting"
-    if not shell32.Shell_NotifyIconW(NIM_ADD, ctypes.byref(icon)):
-        raise OSError("could not add NGR tray icon")
-    marker.write_text(json.dumps({"pid": os.getpid(),
-                                  "fingerprint": fingerprint}), encoding="utf-8")
-    # Old explicit-DB integrations observe this marker. The runtime record stays
-    # in .ngr; this temporary hard-link is removed when the controller exits.
-    if getattr(args, "legacy_marker_alias", False):
-        alias = Path.home() / ".ngrdb" / marker.name
-        alias.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
-        if alias.exists():
-            record = json.loads(alias.read_text(encoding="utf-8"))
-            from .shared_proxy import _wait_process_exit
+    with _tray_icon() as handle:
+        icon.hIcon = handle
+        registered = False
+        hwnd = None
+        added = False
+        try:
+            if not user32.RegisterClassW(ctypes.byref(window_class)):
+                raise OSError("could not register NGR tray window")
+            registered = True
+            hwnd = user32.CreateWindowExW(0, class_name, "NGR shared MCP", 0,
+                                          0, 0, 0, 0, None, None, instance, None)
+            if not hwnd:
+                raise OSError("could not create NGR tray window")
+            icon.hWnd = hwnd
+            icon.szTip = "NGR shared MCP - Starting"
+            if not shell32.Shell_NotifyIconW(NIM_ADD, ctypes.byref(icon)):
+                raise OSError("could not add NGR tray icon")
+            added = True
+            marker.write_text(json.dumps({"pid": os.getpid(),
+                                          "fingerprint": fingerprint}), encoding="utf-8")
+            # Old explicit-DB integrations observe this marker. The runtime record stays
+            # in .ngr; this temporary hard-link is removed when the controller exits.
+            if getattr(args, "legacy_marker_alias", False):
+                alias = Path.home() / ".ngrdb" / marker.name
+                alias.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+                if alias.exists():
+                    record = json.loads(alias.read_text(encoding="utf-8"))
+                    from .shared_proxy import _wait_process_exit
 
-            if not _wait_process_exit(record["pid"], 0):
-                raise RuntimeError("Legacy tray marker is still active")
-            alias.unlink()
-        os.link(marker, alias)
-    refresh()
-    user32.SetTimer(hwnd, 1, 3000, None)
-    message = wintypes.MSG()
-    while user32.GetMessageW(ctypes.byref(message), None, 0, 0) > 0:
-        user32.TranslateMessage(ctypes.byref(message))
-        user32.DispatchMessageW(ctypes.byref(message))
+                    if not _wait_process_exit(record["pid"], 0):
+                        raise RuntimeError("Legacy tray marker is still active")
+                    alias.unlink()
+                os.link(marker, alias)
+            refresh()
+            user32.SetTimer(hwnd, 1, 3000, None)
+            message = wintypes.MSG()
+            while user32.GetMessageW(ctypes.byref(message), None, 0, 0) > 0:
+                user32.TranslateMessage(ctypes.byref(message))
+                user32.DispatchMessageW(ctypes.byref(message))
+        finally:
+            if added:
+                shell32.Shell_NotifyIconW(NIM_DELETE, ctypes.byref(icon))
+            if hwnd and user32.IsWindow(hwnd):
+                user32.DestroyWindow(hwnd)
+            if registered:
+                user32.UnregisterClassW(class_name, instance)
 
 
 def main() -> None:

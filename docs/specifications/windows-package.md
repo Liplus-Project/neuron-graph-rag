@@ -12,6 +12,8 @@ Windows x64 の利用者が checkout と開発用 Python を用意せず、共�
 
 ## ビルドと実行境界
 
+通知領域と `NGR.exe` は、Issue #293 で指定された透過 PNG の同じ絵柄を使う。元 PNG はバイトを変更せず `neuron_graph_rag_mcp/assets/ngr.png` に保存し、Windows 用の `ngr.ico` は 16 / 20 / 24 / 32 / 40 / 48 / 64 / 128 / 256 px の透過画像を収める。両資産は wheel と PyInstaller に同梱する。PyInstaller はこの ICO を EXE アイコンにも指定する。トレイは通知領域の小アイコン寸法で ICO を読み込み、ポインター幅の HICON を保持する。共有ハンドルとして読み込まず、通知領域から削除した後に DestroyIcon で解放する。起動途中の失敗時にも解放し、読み込み失敗を既存の診断経路へ渡す。画像ライブラリを実行時依存へ追加しない。
+
 GitHub Actions の `windows-2022` runner に Visual Studio Community 2022 の署名済み bootstrapper で C++ コンポーネントを別途導入してから PyInstaller onedir をビルドし、Inno Setup が各 onedir を一つの per-user セットアップ EXE にまとめる。Enterprise のプリインストールから DLL を選ばない。Inno Setup の `PrivilegesRequired=lowest` と `{localappdata}\Programs\Neuron Graph RAG` により昇格を要求しない。セットアップの LicenseFile は NGR と Microsoft runtime の両条件を一つの画面で提示し、通常の画面操作では同意を要求する。無人セットアップは `/ACCEPTVCRUNTIME=yes` を明示しなければ開始しない。Service 登録、ログイン時自動起動、更新時のデータ削除は行わない。初回 MCP stdio 接続が共有 HTTP 本体と通知領域のコントローラーを起動する。frozen 版の子プロセスは同じ `NGR.exe` に `--http` / `--tray-controller` を渡す。
 
 CPU 版は `mcp`, `httpx2`, `uvicorn`, `starlette`, `numpy`, `onnxruntime`, `tokenizers` を含み、PyTorch と CUDA 実行依存を含めない。CUDA 版はこれに CUDA 対応 PyTorch、`transformers`, `safetensors` を追加する。固定 revision の E5 ONNX と v2-m3 model snapshot はサイズとライセンス確認のため両版とも含めず、利用者が明示的に別途配置する。CUDA 版でもモデル path の指定がない通常検索は CPU の既定経路に従う。
