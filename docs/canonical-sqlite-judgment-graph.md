@@ -10,7 +10,9 @@ NGR の新規 judgment は SQLite の `judgments`、`judgment_revisions`、`judg
 
 archive 済み judgment の再 archive と active judgment の再 restore は no-op として成功させず、fail closed にする。同一 revision の反復操作によって `updated_at` を暗黙更新しない。
 
-supersede は新しい stable identity を作り、旧判断を archive し、successor から predecessor への `supersedes` relation と predecessor の `superseded_by` を保持する。superseded judgment は restore できない。
+supersede は新しい stable identity を作り、旧判断を archive し、successor から predecessor への `supersedes` relation と predecessor の `superseded_by` を保持する。1 つの successor は `additional_predecessors`（identity → `expected_revision`）で複数の active な predecessor を同じ transaction で置き換えられる。各 predecessor の `superseded_by` はその successor 1 件で、predecessor ごとに `supersedes` relation を 1 本持つ。predecessor のどれかが active でない、既に置き換え済み、または revision が古ければ全体を失敗させる。superseded judgment は restore できない。
+
+`superseded_by` に UNIQUE 制約を持つ既存 database は、起動時に foreign key を外した 1 transaction で `judgments` を作り直して制約を外す。revision と relation はそのまま残る。
 
 archive は通常 retrieval から外す論理的忘却であり、revision、provenance、relation は監査 API から取得できる。hard delete は明示操作で、archived、revision 一致、inbound relation と successor history がない候補にだけ許可する。
 
@@ -46,6 +48,6 @@ optional MCP adapter は同名の三 tool をこの domain API へ写像し、`r
 - `import INPUT_JSON DESTINATION_DB`: 全 identity、relation type revision binding、relation target を事前検証し、一つの transaction で再構築する。旧 `ngr-judgment-graph/v1` も受け入れ、次回 export は v2 とする。
 - `backup SOURCE_DB BACKUP_DB`: SQLite backup API で transaction-consistent copy を作る。既存出力は上書きしない。
 - `restore BACKUP_DB DESTINATION_DB`: integrity check 後に新規 destination へ復元する。既存 database は上書きしない。
-- `integrity DATABASE`: SQLite integrity、foreign key、dangling relation、二重 successor、registry current revision / lifecycle、relation revision binding / explicit assertion、および `superseded_by` と archived lifecycle / successor の明示的 `supersedes` relation の双方向整合を fail closed に検査する。
+- `integrity DATABASE`: SQLite integrity、foreign key、dangling relation、registry current revision / lifecycle、relation revision binding / explicit assertion、および `superseded_by` と archived lifecycle / successor の明示的 `supersedes` relation の双方向整合を fail closed に検査する。双方向整合により、1 つの predecessor に複数の successor がある状態は拒否する。1 つの successor が複数の predecessor を持つことは許す。
 
 backup は export より多くの revision history と retrieval / feedback state を保持するため、完全復旧の正本である。export は current judgment graph の決定論的 portability surface である。

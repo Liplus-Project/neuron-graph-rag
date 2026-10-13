@@ -116,21 +116,40 @@ class IncrementalImportTests(unittest.TestCase):
         old = self._judgment("one:old")
         self.assertEqual((old["lifecycle"], old["superseded_by"]), ("archived", "one:new"))
 
-    def test_supersedes_of_inactive_or_several_predecessors_is_not_written(self) -> None:
+    def test_supersedes_of_inactive_predecessor_is_skipped(self) -> None:
         self.wiki.put("first", "First", "- **supersedes** " + _link("old"))
         self.wiki.put("second", "Second", "- **supersedes** " + _link("old"))
-        self.wiki.put("third", "Third", "- **supersedes** " + _link("base"), "- **supersedes** " + _link("first"))
         plan = dry_run((self.wiki.source("b" * 40),), self.database)
         actions = {item["judgment_id"]: item["action"] for item in plan["operations"]}
         self.assertEqual(actions["one:first"], "supersede")
         self.assertEqual(actions["one:second"], "add")
-        self.assertNotIn("one:third", actions)
         self.assertIn(
             {"judgment_id": "one:second", "line": "- **supersedes** [old](old)",
              "reason": "supersedes target is not active (superseded by one:first)"},
             plan["skipped_edges"],
         )
-        self.assertTrue(any(item["judgment_id"] == "one:third" for item in plan["blocked"]))
+
+    def test_one_successor_supersedes_several_active_predecessors(self) -> None:
+        self.wiki.put("first", "First", "- **depends on** " + _link("base"))
+        self.wiki.put("merged", "Merged", "- **supersedes** " + _link("old"), "- **supersedes** " + _link("first"))
+        self.wiki.rows["old"] = ("superseded", "Old resolution")
+        self.wiki.rows["first"] = ("superseded", "First")
+        result = write((self.wiki.source("b" * 40),), self.database)
+        supersede = [item for item in result["operations"] if item["action"] == "supersede"]
+        self.assertEqual(
+            supersede[0]["predecessors"],
+            [{"judgment_id": "one:old", "expected_revision": 1},
+             {"judgment_id": "one:first", "expected_revision": 1}],
+        )
+        self.assertEqual(result["blocked"], [])
+        for identity in ("one:old", "one:first"):
+            predecessor = self._judgment(identity)
+            self.assertEqual((predecessor["lifecycle"], predecessor["superseded_by"]), ("archived", "one:merged"))
+        merged = self._judgment("one:merged")
+        self.assertEqual(
+            sorted((r["relation_type"], r["target_id"]) for r in merged["relations"]),
+            [("supersedes", "one:first"), ("supersedes", "one:old")],
+        )
 
     def test_revise_only_while_store_still_holds_the_imported_revision(self) -> None:
         self.wiki.put("old", "Old resolution, revised", "- **depends on** " + _link("base"))

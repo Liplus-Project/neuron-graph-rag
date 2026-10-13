@@ -17,3 +17,5 @@
 ## 検証境界
 
 登録実評価、holdout、real query、model inference を再実行しない。保存済み観測の照合と synthetic テストだけを実行する。bridge の負例は temporary root で archive/登録資産/manifest/identity の改竄と欠落、routing closure、追加原テスト、対象外委譲、子プロセス失敗を検出する。全 core CI と runtime wheel の既存 allowlist を維持する。
+
+他の凍結ファイルへの同じ方式の適用（slot の一般化）は [過去評価の runtime バイト分離](historical-runtime-verification.md) に書く。
