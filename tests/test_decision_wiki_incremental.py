@@ -213,19 +213,95 @@ class IncrementalImportTests(unittest.TestCase):
         self.wiki.put(
             "fresh", "Fresh",
             "- **depends on** " + _link("base"),
-            "- **relates to** " + _link("old"),
-            "- `old-entry` に relates to —— prose form",
+            "- **clarifies** " + _link("old"),
+            "- 隣接: `old-entry` —— prose form",
         )
         plan = dry_run((self.wiki.source("b" * 40),), self.database)
-        self.assertEqual(plan["skipped_edge_reasons"], {"unparsed edge line": 1, "unregistered relation type: relates to": 1})
+        self.assertEqual(plan["skipped_edge_reasons"], {"unparsed edge line": 1, "unregistered relation type: clarifies": 1})
         self.assertIn(
-            {"judgment_id": "one:fresh", "line": "- **relates to** [old](old)", "reason": "unregistered relation type: relates to"},
+            {"judgment_id": "one:fresh", "line": "- **clarifies** [old](old)", "reason": "unregistered relation type: clarifies"},
             plan["skipped_edges"],
         )
         result = write((self.wiki.source("b" * 40),), self.database)
         relations = self._judgment("one:fresh")["relations"]
         self.assertEqual([(r["relation_type"], r["target_id"]) for r in relations], [("depends_on", "one:base")])
         self.assertEqual(result["counts"]["skipped_edges"], 2)
+
+    def test_relates_to_is_written_as_informs_from_the_writing_page(self) -> None:
+        self.wiki.put(
+            "fresh", "Fresh",
+            "- **relates to** " + _link("old") + " — prose",
+            "- `base` に **depends on** — target-first form",
+        )
+        plan = dry_run((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual(plan["skipped_edges"], [])
+        write((self.wiki.source("b" * 40),), self.database)
+        relations = self._judgment("one:fresh")["relations"]
+        self.assertEqual(
+            sorted((r["relation_type"], r["target_id"]) for r in relations),
+            [("depends_on", "one:base"), ("informs", "one:old")],
+        )
+        self.assertNotIn("informs", [r["relation_type"] for r in self._judgment("one:old")["relations"]])
+
+    def _restate(self, identity: str, relations: list[dict[str, str]], **content: object) -> None:
+        """Write a revision with the given relations; content defaults to the current one."""
+        with NeuronGraphRAG(self.database) as engine:
+            current = engine.judgments.get(identity)
+            engine.judgments.update(
+                identity, content.get("statement", current["statement"]),
+                content.get("rationale", current["rationale"]),
+                content.get("provenance", current["provenance"]),
+                expected_revision=current["revision"], relations=relations,
+            )
+
+    def test_unchanged_page_gets_the_edges_the_store_lacks(self) -> None:
+        # The store holds the imported content of "old" but not its depends_on edge, as when the
+        # edge reader learns a label after the import; it also holds an edge the wiki lacks.
+        self._restate("one:old", [{"target_id": "one:base", "relation_type": "conflicts_with"}])
+        before = self._judgment("one:old")
+        plan = dry_run((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual(plan["counts"]["unchanged"], 2)
+        self.assertEqual(
+            plan["operations"],
+            [{"action": "add_edges", "judgment_id": "one:old", "expected_revision": 2, "relations": [
+                {"target_id": "one:base", "relation_type": "conflicts_with"},
+                {"target_id": "one:base", "relation_type": "depends_on"},
+            ]}],
+        )
+        result = write((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual([(item["action"], item["revision"]) for item in result["written"]], [("add_edges", 3)])
+        after = self._judgment("one:old")
+        for key in ("statement", "rationale", "provenance"):
+            self.assertEqual(after[key], before[key])
+        self.assertEqual(
+            sorted((r["relation_type"], r["target_id"]) for r in after["relations"]),
+            [("conflicts_with", "one:base"), ("depends_on", "one:base")],
+        )
+        again = dry_run((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual(again["operations"], [])
+        self.assertEqual(again["blocked"], [])
+
+    def test_edges_after_a_store_side_change_only_while_store_relations_are_in_the_wiki(self) -> None:
+        rewrite = {"statement": "Store-side rewrite", "rationale": "Edited", "provenance": {"source": "dialogue"}}
+        self._restate("one:old", [{"target_id": "one:base", "relation_type": "conflicts_with"}], **rewrite)
+        plan = dry_run((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual(plan["operations"], [])
+        self.assertEqual(plan["store_only_changed"], ["one:old"])
+        self.assertIn(
+            {"judgment_id": "one:old", "reason": "wiki has edges the store lacks but store changed after import "
+             "and holds relations the wiki lacks"},
+            plan["blocked"],
+        )
+        self.assertEqual(write((self.wiki.source("b" * 40),), self.database)["written"], [])
+        self.assertEqual(self._judgment("one:old")["revision"], 2)
+
+        self._restate("one:old", [], **rewrite)
+        result = write((self.wiki.source("b" * 40),), self.database)
+        self.assertEqual([(item["action"], item["revision"]) for item in result["written"]], [("add_edges", 4)])
+        after = self._judgment("one:old")
+        self.assertEqual((after["statement"], after["provenance"]), ("Store-side rewrite", {"source": "dialogue"}))
+        self.assertEqual([(r["relation_type"], r["target_id"]) for r in after["relations"]], [("depends_on", "one:base")])
+        self.assertEqual(dry_run((self.wiki.source("b" * 40),), self.database)["operations"], [])
 
     def test_slug_change_of_a_stored_judgment_is_blocked(self) -> None:
         del self.wiki.rows["old"]
@@ -255,7 +331,7 @@ class EdgeParsingTests(unittest.TestCase):
     def test_unparsed_lines_are_reported_not_raised(self) -> None:
         page = _page(
             "R",
-            "- `a-entry` に **depends on** — target in backticks",
+            "- 隣接する判断として `a-entry` を参照",
             "- **depends on** [a](a), [b](b)",
             "- なし",
         )
@@ -263,6 +339,36 @@ class EdgeParsingTests(unittest.TestCase):
         self.assertEqual(edges, [])
         self.assertEqual([reason for _, reason in skipped], ["unparsed edge line", "edge line has multiple targets"])
 
+    def test_relates_to_is_read_as_informs_toward_the_target(self) -> None:
+        page = _page("R", "- **relates to** [`a-entry`](https://github.com/Example/two/wiki/a-entry) — prose")
+        edges, skipped = parse_edges(page, "Example/one", REGISTERED)
+        self.assertEqual([(kind, repository, slug) for kind, repository, slug, _ in edges], [("informs", "Example/two", "a-entry")])
+        self.assertEqual(skipped, [])
+
+    def test_relates_to_stays_unregistered_without_informs(self) -> None:
+        page = _page("R", "- **relates to** [a](a)")
+        edges, skipped = parse_edges(page, "Example/one", REGISTERED - {"informs"})
+        self.assertEqual(edges, [])
+        self.assertEqual([reason for _, reason in skipped], ["unregistered relation type: relates to"])
+
+    def test_target_first_form_is_read_like_the_label_first_form(self) -> None:
+        page = _page(
+            "R",
+            "- `a-entry` に **depends on** — target in backticks",
+            "- `b-entry` に **relates to** — bold label",
+            "- `c-entry` に relates to —— plain label, prose naming [d](d)",
+            "- `e-entry` に **clarifies** — unregistered label",
+            "- `f-entry` で扱った論点とは別の軸",
+        )
+        edges, skipped = parse_edges(page, "Example/one", REGISTERED)
+        self.assertEqual(
+            [(kind, repository, slug) for kind, repository, slug, _ in edges],
+            [("depends_on", "Example/one", "a-entry"), ("informs", "Example/one", "b-entry"), ("informs", "Example/one", "c-entry")],
+        )
+        self.assertEqual(
+            [reason for _, reason in skipped],
+            ["unregistered relation type: clarifies", "unparsed edge line"],
+        )
 
 if __name__ == "__main__":
     unittest.main()

@@ -19,10 +19,18 @@ from .storage import SQLiteStore
 _SLUG = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 _TABLE_LINK = re.compile(r"^\s*\[\s*`?([^]`]+)`?\s*\]\((https://github\.com/([^/]+/[^/]+)/wiki/([^)#]+))\)\s*$")
 _HEADING = re.compile(r"^##\s+(.+?)\s*$", re.MULTILINE)
+_LABELS = r"supersedes|depends on|conflicts with|refines|informs|relates to"
 _EDGE_LINE = re.compile(
-    r"^\s*[-*]\s+(?:\*\*(supersedes|depends on|conflicts with|refines|informs)(?:[^*]*)\*\*|(supersedes|depends on|conflicts with|refines|informs))\s*:?[ \t]*(.*?)\s*$",
+    rf"^\s*[-*]\s+(?:\*\*({_LABELS})(?:[^*]*)\*\*|({_LABELS}))\s*:?[ \t]*(.*?)\s*$",
     re.IGNORECASE,
 )
+# Target-first form, e.g. "- `target-slug` に **depends on** — ...": the backticked slug is the target.
+_TARGET_FIRST_LINE = re.compile(
+    rf"^\s*[-*]\s+`([a-z0-9]+(?:-[a-z0-9]+)*)`\s*に\s*(?:\*\*({_LABELS})\*\*|({_LABELS}))(?![A-Za-z])",
+    re.IGNORECASE,
+)
+# Wiki edge labels read as a registered relation type, directed from the writing page to the target.
+LABEL_ALIASES = {"relates to": "informs"}
 _WIKILINK = re.compile(r"\[\[([a-z0-9]+(?:-[a-z0-9]+)*)\]\]")
 _MARKDOWN_LINK = re.compile(r"\[[^]]+\]\(([^)]+)\)")
 _RELATION_TYPES = {"supersedes", "depends_on", "conflicts_with", "refines", "informs"}
@@ -108,12 +116,18 @@ def parse_relations(page: str, repository: str) -> list[tuple[str, str, str]]:
         return []
     relations: list[tuple[str, str, str]] = []
     for line in edges.splitlines():
+        first = _TARGET_FIRST_LINE.match(line)
+        if first is not None:
+            label = (first.group(2) or first.group(3)).casefold()
+            relations.append((LABEL_ALIASES.get(label, label).replace(" ", "_"), repository, first.group(1)))
+            continue
         match = _EDGE_LINE.fullmatch(line)
         if match is None:
-            if line.strip() and re.search(r"\b(supersedes|depends on|conflicts with|refines|informs)\b", line, re.I):
+            if line.strip() and re.search(rf"\b({_LABELS})\b", line, re.I):
                 raise DecisionWikiImportError(f"ambiguous edge declaration: {line}")
             continue
-        kind = (match.group(1) or match.group(2)).casefold().replace(" ", "_")
+        label = (match.group(1) or match.group(2)).casefold()
+        kind = LABEL_ALIASES.get(label, label).replace(" ", "_")
         if kind not in _RELATION_TYPES:
             raise DecisionWikiImportError(f"unsupported relation: {kind}")
         body = match.group(3)

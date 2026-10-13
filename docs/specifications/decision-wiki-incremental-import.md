@@ -20,6 +20,7 @@
 - **store にあり、wiki 側が変わった判断**（ページの hash または索引の resolution が取り込み記録と違う）→ store の現在の版が取り込み記録のままのときに限り、update で新しい版を足す。store 側で書き直されていれば書かず、`changed_on_both_sides` に出す。取り込み記録の無い判断も同じ一覧に出す。
 - 版を足す対象でも、`supersedes` の辺が store と違う、同じ計画で後継に置き換えられる、または store で inactive の場合は書かない。
 - update は store の relation を wiki の辺で置き換える。辺の対象が wiki にあってもこの計画で書かれない（blocked の判断など）ときは、その辺を落として今の relation を消さないよう、その判断に版を足さず `blocked` に出す。
+- **store にあり、wiki 側が変わっていないが、wiki の辺のうち store に無いものがある判断**（辺の読み方が後から増えた `relates to` など）→ `add_edges` で辺だけを足す。update で版を足すが、本文（statement / rationale）と provenance は store の現在の版のまま写す。書く relation は store の今の relation に足りない辺を加えた和集合で、store の relation は 1 本も落とさない。書くのは、store の現在の版が取り込み記録のままのとき、または store の relation がすべて wiki の辺に含まれるときに限る。どちらでもなければ書かず `blocked` に出す。store で inactive な判断も書かず `blocked` に出す。足りない辺のうち `supersedes` は置き換え（対象の archive）を伴わずに足せないため書かず、対象が無いか書かれない辺とともに `skipped_edges` に出す。
 - 索引から消えた取り込み済みの判断は `absent_from_index` に出す。それと page hash か resolution が一致する新しい identity は slug の変更とみなし、重複を作らないよう書かずに報告する。
 - 新しい判断で索引の state が archived / superseded、かつこの計画に後継が無いものは、add の後で archive する。それ以外の索引 state と store の lifecycle の食い違いは `lifecycle_mismatch` に出すだけで、書き込みはしない。
 
@@ -27,9 +28,11 @@
 
 ## 辺
 
-store の relation type registry で active な type だけを取り込む。それ以外のラベル（`relates to` など）、読めない行、対象が複数ある行、対象が存在しないか書かれない行は取り込まない。その行と理由を `skipped_edges` に、理由ごとの件数を `skipped_edge_reasons` に出す。
+store の relation type registry で active な type だけを取り込む。ラベル `relates to` は新しい type を足さず、registry の `informs` として取り込む（`informs` が active のときに限る）。向きは、その辺を書いたページの判断から対象へ、に固定する。それ以外のラベル（`clarifies` など）、読めない行、対象が複数ある行、対象が存在しないか書かれない行は取り込まない。その行と理由を `skipped_edges` に、理由ごとの件数を `skipped_edge_reasons` に出す。
 
 辺の対象は、ラベルの後ろで最初のダッシュ（`—`）より前に書かれたリンクから取る。そこにリンクが無ければ行全体から取る。
+
+対象が先に来る書き方（``- `X` に **depends on** — …`` や ``- `X` に relates to —— …``）も読む。行頭の backtick で囲んだ slug を同じ repository の対象とし、続く「に」の後のラベル（太字でもそうでなくてもよい）で type を決める。ラベルの読み方と向きは通常の書き方と同じで、ラベルより後ろは説明文として対象を取らない。
 
 新しい判断の `supersedes` 以外の辺で、対象がまだ書かれていないもの（お互いに `conflicts with` を書いた 2 件など）は、対象を書いた後に `link` で足す。`link` は同じ domain API の update で、取り込み記録と同じ本文と provenance の版を足し、その判断の relation を `supersedes` も含めた全体で置き換える。同じ計画で後継に置き換えられる判断へは、置き換えの前に `link` を書く。それまでに対象が書かれなかった辺は、理由とともに `skipped_edges` に出す。
 
@@ -46,3 +49,4 @@ python tools/import_decision_wikis_incremental.py `
 - 既定は dry run。読み取り専用の接続で計画を作って JSON で出力し、DB には書かない。
 - `--write` を付けたときだけ書く。書く操作が無ければ何もしない。書く操作がある場合は、SQLite の online backup API で DB と同じフォルダに `<DB名>.pre-wiki-increment-<UTC時刻>.db` を作り、その integrity を確認する。次に `BEGIN IMMEDIATE` の 1 transaction の中で計画を作り直して適用し、commit の前に `tools/judgment_graph.py integrity` と同じ検査を通す。どこかで失敗すれば全体を rollback する。
 - 書いた版は取り込み記録になるため、wiki が変わらない限り再実行しても何も書かない。
+- 本文の差分の判定はページの hash と索引の resolution だけで行う。辺の読み方が変わって（`relates to` の取り込みなど）ページの変わっていない判断に新しく読めた辺は、本文を変えずに `add_edges` で足す。足した後は store の relation が wiki の辺を含むため、再実行しても何も書かない。
