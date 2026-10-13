@@ -219,6 +219,7 @@ class _StoreJudgment:
     lifecycle: str
     superseded_by: str | None
     supersedes: set[str]
+    relations: set[tuple[str, str]] = field(default_factory=set)  # (kind, target_id)
 
 
 def _load_store(connection: sqlite3.Connection) -> tuple[dict[str, _StoreJudgment], set[str]]:
@@ -227,11 +228,13 @@ def _load_store(connection: sqlite3.Connection) -> tuple[dict[str, _StoreJudgmen
         "SELECT judgment_id, current_revision, lifecycle, superseded_by FROM judgments"
     ):
         store[judgment_id] = _StoreJudgment(judgment_id, revision, lifecycle, successor, set())
-    for source_id, target_id in connection.execute(
-        "SELECT source_id, target_id FROM judgment_relations WHERE relation_type = 'supersedes'"
+    for source_id, target_id, kind in connection.execute(
+        "SELECT source_id, target_id, relation_type FROM judgment_relations"
     ):
         if source_id in store:
-            store[source_id].supersedes.add(target_id)
+            store[source_id].relations.add((kind, target_id))
+            if kind == "supersedes":
+                store[source_id].supersedes.add(target_id)
     registered = {
         row[0]
         for row in connection.execute(
@@ -487,6 +490,49 @@ def build_plan(
             "expected_revision": revise[identity],
             "relations": [{"target_id": target, "relation_type": kind} for kind, target, _ in edges],
         })
+    # An unchanged page can still carry edges the store lacks: the edge reader learned a label
+    # (``relates to``) after the page was imported. They are added without a content change, and
+    # the relation set written is the stored one plus those edges, so no stored relation is dropped.
+    for identity in sorted((*unchanged, *store_only_changed)):
+        current = store[identity]
+        missing = [edge for edge in entries[identity].edges if (edge[0], edge[1]) not in current.relations]
+        if not missing:
+            continue
+        resolved, unresolved = resolve(identity, missing, written)
+        additions: list[tuple[str, str]] = []
+        for kind, target, line in resolved:
+            if kind == "supersedes":
+                # supersede archives its predecessor; an edge alone would leave it active.
+                unresolved.append((target, line, "supersedes edge cannot be added to a stored judgment"))
+            else:
+                additions.append((kind, target))
+        if additions:
+            parsed = {(kind, target) for kind, target, _ in entries[identity].edges}
+            lifecycle, successor, revision = state[identity]
+            if lifecycle != "active" or successor is not None:
+                blocked.append({
+                    "judgment_id": identity,
+                    "reason": "wiki has edges the store lacks but store judgment is inactive",
+                })
+                continue
+            if baselines[identity][0] != current.current_revision and not current.relations <= parsed:
+                blocked.append({
+                    "judgment_id": identity,
+                    "reason": "wiki has edges the store lacks but store changed after import "
+                    "and holds relations the wiki lacks",
+                })
+                continue
+            operations.append({
+                "action": "add_edges",
+                "judgment_id": identity,
+                "expected_revision": revision,
+                "relations": [
+                    {"target_id": target, "relation_type": kind}
+                    for kind, target in sorted(current.relations) + additions
+                ],
+            })
+            state[identity][2] += 1
+        skip(identity, unresolved)
     for identity in order:
         if identity in written and entries[identity].lifecycle == "archived" and state[identity][0] == "active":
             operations.append({"action": "archive", "judgment_id": identity, "expected_revision": state[identity][2]})
@@ -509,6 +555,7 @@ def build_plan(
             "supersede": actions["supersede"],
             "revise": actions["revise"],
             "link": actions["link"],
+            "add_edges": actions["add_edges"],
             "archive": actions["archive"],
             "unchanged": len(unchanged),
             "store_only_changed": len(store_only_changed),
@@ -547,6 +594,14 @@ def apply_plan(graph: JudgmentGraph, plan: dict[str, Any]) -> list[dict[str, Any
         action = operation["action"]
         if action == "archive":
             judgment = graph.archive(identity, expected_revision=operation["expected_revision"])
+        elif action == "add_edges":
+            # Edges only: the new revision repeats the current statement, rationale and provenance.
+            current = graph.get(identity)
+            judgment = graph.update(
+                identity, current["statement"], current["rationale"], current["provenance"],
+                expected_revision=operation["expected_revision"],
+                relations=operation["relations"],
+            )
         else:
             entry = entries[identity]
             content = (entry.statement, entry.page, entry.provenance())
