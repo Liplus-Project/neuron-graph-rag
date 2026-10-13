@@ -67,12 +67,6 @@ def _integrity(connection: sqlite3.Connection) -> dict[str, object]:
         ORDER BY source_id, target_id, relation_type
         """
     ).fetchall()
-    duplicate_successors = connection.execute(
-        """
-        SELECT superseded_by, COUNT(*) AS predecessor_count FROM judgments
-        WHERE superseded_by IS NOT NULL GROUP BY superseded_by HAVING COUNT(*) > 1
-        """
-    ).fetchall()
     supersession_inconsistencies = connection.execute(
         """
         SELECT predecessor.judgment_id, predecessor.lifecycle,
@@ -135,7 +129,6 @@ def _integrity(connection: sqlite3.Connection) -> dict[str, object]:
         "sqlite_integrity": sqlite_status,
         "foreign_key_violations": foreign_keys,
         "dangling_relations": [dict(row) for row in dangling],
-        "duplicate_successors": [dict(row) for row in duplicate_successors],
         "supersession_inconsistencies": [
             dict(row) for row in supersession_inconsistencies
         ],
@@ -150,7 +143,6 @@ def _integrity(connection: sqlite3.Connection) -> dict[str, object]:
         sqlite_status != "ok"
         or foreign_keys
         or dangling
-        or duplicate_successors
         or supersession_inconsistencies
         or relation_type_registry_inconsistencies
         or relation_binding_inconsistencies

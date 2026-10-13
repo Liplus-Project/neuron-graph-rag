@@ -1,4 +1,9 @@
-"""Run explicit historical test modules against current assets and archived README."""
+"""Run explicit historical test modules against current assets and archived slot bytes.
+
+A slot is an exact (path, SHA-256) pair registered by frozen evidence whose live file
+has since changed. Only those pairs resolve to archived original bytes; every other
+registered asset is checked against the current tree.
+"""
 
 from __future__ import annotations
 
@@ -21,6 +26,40 @@ README_SHA256 = "5a1438ea5c8eecbed015661ad1decd7451e0c07aa848efc110557334f7de363
 README_ARCHIVE = "tools/historical_readme/README.b3cc03a.md"
 REGISTRY = "tools/historical_readme/registered-assets.json"
 REGISTRY_SHA256 = "ec23e934f0dc31ca106615f5d2ff1bb3ff7bcaa5cc97eaf03bdba43a8762e0bc"
+RUNTIME_COMMIT = "b78dbcaf0167cc6975428ccce662b8228a88cfe2"
+RUNTIME_REGISTRY = "tools/historical_readme/judgment-runtime-assets.json"
+RUNTIME_REGISTRY_SHA256 = "8d2f37d5311c11fd2c4d178c824ae150a1f6ed0417b0ac6ad758a7337f32bc87"
+# Exact registered (path, sha256) pairs and the archived original bytes they resolve to.
+ARCHIVED_SLOTS = {
+    "README.md": {
+        "commit": README_COMMIT, "sha256": README_SHA256, "size": 31856,
+        "archive": README_ARCHIVE,
+    },
+    "src/neuron_graph_rag/storage.py": {
+        "commit": RUNTIME_COMMIT, "size": 106345,
+        "sha256": "3aaf1fb2283ac97486fc9cab34a44676650aec5b6e1ccb8e3100132efc8459d0",
+        "archive": "tools/historical_readme/storage.b78dbca.py.orig",
+    },
+    "src/neuron_graph_rag/judgments.py": {
+        "commit": RUNTIME_COMMIT, "size": 40847,
+        "sha256": "cfc21058f63fcd665e8fa233cdcd01a8dfe44f4241e867886155eddcc4fac3f7",
+        "archive": "tools/historical_readme/judgments.b78dbca.py.orig",
+    },
+}
+# Each group pins one registry of current assets (by the named module constant)
+# and the slots its modules resolve.
+GROUPS = {
+    "readme": {
+        "registry": REGISTRY, "registry_pin": "REGISTRY_SHA256",
+        "commit_key": "readme_commit", "commit": README_COMMIT,
+        "slots": ("README.md",),
+    },
+    "judgment-runtime": {
+        "registry": RUNTIME_REGISTRY, "registry_pin": "RUNTIME_REGISTRY_SHA256",
+        "commit_key": "archive_commit", "commit": RUNTIME_COMMIT,
+        "slots": ("src/neuron_graph_rag/judgments.py", "src/neuron_graph_rag/storage.py"),
+    },
+}
 MODULE_COUNTS = {
     "test_cross_encoder_precision": 11,
     "test_cross_encoder_precision_observation": 7,
@@ -44,6 +83,17 @@ MODULE_COUNTS = {
     "test_github_retrieval_parity": 11,
     "test_github_retrieval_parity_observation": 5,
 }
+RUNTIME_MODULE_COUNTS = {
+    "test_github_retrieval_parity_v2": 8,
+    "test_github_retrieval_parity_v3": 9,
+    "test_github_retrieval_parity_v4": 9,
+    "test_github_retrieval_parity_v5_observation": 6,
+}
+# Modules the unittest loader router hands to the bridge.
+ROUTED_MODULE_COUNTS = {**MODULE_COUNTS, **RUNTIME_MODULE_COUNTS}
+# The frozen v5 suite keeps its own loader route; that route's wrapper runs in the projection.
+V5_WRAPPED_MODULE = "test_github_retrieval_parity_v5"
+V5_WRAPPED_COUNT = 11
 RESULT_PREFIX = "HISTORICAL_README_RESULT="
 
 
@@ -64,25 +114,53 @@ def asset_path(root: Path, relative: str) -> Path:
     return target
 
 
-def readme_bytes(root: Path) -> bytes:
-    raw = asset_path(root, README_ARCHIVE).read_bytes()
-    if len(raw) != 31856 or sha256(raw) != README_SHA256:
-        raise ValueError("historical README archive identity mismatch")
+def _slot_name(slot: str) -> str:
+    return "README" if slot == "README.md" else slot
+
+
+def archived_bytes(root: Path, slot: str) -> bytes:
+    if slot not in ARCHIVED_SLOTS:
+        raise ValueError(f"unknown historical archived slot: {slot}")
+    identity = ARCHIVED_SLOTS[slot]
+    raw = asset_path(root, identity["archive"]).read_bytes()
+    if len(raw) != identity["size"] or sha256(raw) != identity["sha256"]:
+        raise ValueError(f"historical {_slot_name(slot)} archive identity mismatch")
     return raw
 
 
-def load_registry(root: Path) -> dict[str, str]:
-    raw = asset_path(root, REGISTRY).read_bytes()
-    if sha256(raw) != REGISTRY_SHA256:
+def readme_bytes(root: Path) -> bytes:
+    return archived_bytes(root, "README.md")
+
+
+def group_of(bare: str) -> str:
+    if bare in MODULE_COUNTS:
+        return "readme"
+    if bare in RUNTIME_MODULE_COUNTS or bare == V5_WRAPPED_MODULE:
+        return "judgment-runtime"
+    raise ValueError(f"unknown historical test module: {bare}")
+
+
+def _group(group: str) -> dict:
+    if group not in GROUPS:
+        raise ValueError(f"unknown historical group: {group}")
+    return GROUPS[group]
+
+
+def load_registry(root: Path, group: str = "readme") -> dict[str, str]:
+    spec = _group(group)
+    raw = asset_path(root, spec["registry"]).read_bytes()
+    if sha256(raw) != globals()[spec["registry_pin"]]:
         raise ValueError("historical registered-assets registry identity mismatch")
     value = json.loads(raw)
-    if (set(value) != {"readme_commit", "assets"}
-            or value["readme_commit"] != README_COMMIT
+    if (set(value) != {spec["commit_key"], "assets"}
+            or value[spec["commit_key"]] != spec["commit"]
             or not isinstance(value["assets"], dict)):
         raise ValueError("historical registry shape/identity mismatch")
     registry = value["assets"]
-    if registry.get("README.md") != README_SHA256:
-        raise ValueError("unknown historical README mapping")
+    for slot in spec["slots"]:
+        identity = ARCHIVED_SLOTS[slot]
+        if identity["commit"] != spec["commit"] or registry.get(slot) != identity["sha256"]:
+            raise ValueError(f"unknown historical {_slot_name(slot)} mapping")
     for relative, expected in registry.items():
         asset_path(root, relative)
         if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
@@ -90,14 +168,15 @@ def load_registry(root: Path) -> dict[str, str]:
     return registry
 
 
-def verify_current_assets(root: Path = ROOT) -> dict[str, str]:
-    archive = readme_bytes(root)
-    registry = load_registry(root)
-    # The live display slot must still exist; only its exact registered identity
+def verify_current_assets(root: Path = ROOT, group: str = "readme") -> dict[str, str]:
+    archives = {slot: archived_bytes(root, slot) for slot in _group(group)["slots"]}
+    registry = load_registry(root, group)
+    # Each live slot must still exist; only its exact registered identity
     # resolves to the independently pinned archive.
-    asset_path(root, "README.md").read_bytes()
+    for slot in archives:
+        asset_path(root, slot).read_bytes()
     for relative, expected in registry.items():
-        raw = archive if relative == "README.md" else asset_path(root, relative).read_bytes()
+        raw = archives[relative] if relative in archives else asset_path(root, relative).read_bytes()
         if sha256(raw) != expected:
             raise ValueError(f"current registered asset mismatch: {relative}")
     return registry
@@ -120,8 +199,8 @@ def child_environment(root: Path) -> dict[str, str]:
     return environment
 
 
-def materialize_root(destination: Path, root: Path = ROOT) -> None:
-    verify_current_assets(root)
+def materialize_root(destination: Path, root: Path = ROOT, group: str = "readme") -> None:
+    verify_current_assets(root, group)
     destination.mkdir(parents=True, exist_ok=True)
     if any(destination.iterdir()):
         raise ValueError("historical destination must be empty")
@@ -131,8 +210,9 @@ def materialize_root(destination: Path, root: Path = ROOT) -> None:
         target = asset_path(destination, relative)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
-    (destination / "README.md").write_bytes(readme_bytes(root))
-    verify_current_assets(destination)
+    for slot in GROUPS[group]["slots"]:
+        asset_path(destination, slot).write_bytes(archived_bytes(root, slot))
+    verify_current_assets(destination, group)
     # Independent metadata and refs: child writes cannot reach the source index
     # or refs. Alternates only supply immutable object reads, without a fetch.
     git(destination, "init", "--quiet")
@@ -149,18 +229,23 @@ def materialize_root(destination: Path, root: Path = ROOT) -> None:
     git(destination, "read-tree", "HEAD")
 
 
-def canonical_module(name: str) -> str:
+def canonical_module(name: str, *, wrapped: bool = False) -> str:
     bare = name.removeprefix("tests.")
-    if name not in (bare, "tests." + bare) or bare not in MODULE_COUNTS:
+    known = bare in ROUTED_MODULE_COUNTS or (wrapped and bare == V5_WRAPPED_MODULE)
+    if name not in (bare, "tests." + bare) or not known:
         raise ValueError(f"unknown historical test module: {name}")
     return bare
 
 
+def expected_count(bare: str) -> int:
+    return V5_WRAPPED_COUNT if bare == V5_WRAPPED_MODULE else ROUTED_MODULE_COUNTS[bare]
+
+
 def run_module(name: str, root: Path = ROOT) -> str:
-    bare = canonical_module(name)
+    bare = canonical_module(name, wrapped=True)
     with TemporaryDirectory(prefix="ngr-historical-readme-") as directory:
         projection = Path(directory)
-        materialize_root(projection, root)
+        materialize_root(projection, root, group_of(bare))
         completed = subprocess.run(
             [sys.executable, str(projection / "tools/historical_readme_bridge.py"), "--child", bare],
             cwd=projection, env=child_environment(projection), check=False,
@@ -171,29 +256,50 @@ def run_module(name: str, root: Path = ROOT) -> str:
     if completed.returncode != 0 or len(rows) != 1:
         raise AssertionError(f"historical {bare} subprocess failed\n{output}")
     report = json.loads(rows[0])
-    if report != {"module": bare, "loaded": MODULE_COUNTS[bare],
-                  "executed": MODULE_COUNTS[bare], "successful": True}:
+    if report != {"module": bare, "loaded": expected_count(bare),
+                  "executed": expected_count(bare), "successful": True}:
         raise AssertionError(f"historical {bare} original test execution mismatch\n{output}")
     return output
 
 
 def run_child(name: str) -> int:
-    bare = canonical_module(name)
-    verify_current_assets(ROOT)
-    if (ROOT / "README.md").read_bytes() != readme_bytes(ROOT):
-        raise ValueError("historical child README slot mismatch")
+    bare = canonical_module(name, wrapped=True)
+    group = group_of(bare)
+    verify_current_assets(ROOT, group)
+    for slot in GROUPS[group]["slots"]:
+        if (ROOT / slot).read_bytes() != archived_bytes(ROOT, slot):
+            raise ValueError(f"historical child {_slot_name(slot)} slot mismatch")
     sys.path[:0] = [str(ROOT / "src"), str(ROOT)]
     module = importlib.import_module("tests." + bare)
     if Path(module.__file__).resolve() != ROOT / "tests" / (bare + ".py"):
         raise ValueError("historical child test module root mismatch")
     suite = unittest.TestLoader().loadTestsFromModule(module)
     count = suite.countTestCases()
-    if count != MODULE_COUNTS[bare]:
-        raise ValueError(f"historical {bare} expected {MODULE_COUNTS[bare]} original tests, found {count}")
+    if count != expected_count(bare):
+        raise ValueError(f"historical {bare} expected {expected_count(bare)} original tests, found {count}")
+    if bare == V5_WRAPPED_MODULE:
+        return run_v5_wrapper(count)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     print(RESULT_PREFIX + json.dumps({"module": bare, "loaded": count,
         "executed": result.testsRun, "successful": result.wasSuccessful()}))
     return 0 if result.wasSuccessful() and result.testsRun == count else 1
+
+
+def run_v5_wrapper(count: int) -> int:
+    """Run the v5 route's wrapper here: verify the observation, then the frozen suite."""
+    from neuron_graph_rag import github_retrieval_parity_v5_observation as observation
+    expected = ROOT / "src/neuron_graph_rag/github_retrieval_parity_v5_observation.py"
+    if Path(observation.__file__).resolve() != expected or observation.ROOT.resolve() != ROOT:
+        raise ValueError("historical child v5 observation root mismatch")
+    observation.verify_observation()
+    output = observation.run_frozen_v5_tests()
+    print(output, end="")
+    ran = re.findall(r"^Ran (\d+) tests? in ", output, re.MULTILINE)
+    executed = int(ran[0]) if len(ran) == 1 else -1
+    successful = executed == count and re.search(r"^OK\b", output, re.MULTILINE) is not None
+    print(RESULT_PREFIX + json.dumps({"module": V5_WRAPPED_MODULE, "loaded": count,
+        "executed": executed, "successful": successful}))
+    return 0 if successful else 1
 
 
 def main() -> int:

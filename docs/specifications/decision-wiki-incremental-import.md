@@ -16,7 +16,7 @@
 
 - **store に無い判断** → add。Edges の `supersedes` の対象が active なら supersede で対象を archive する。新しい判断どうしの書く順は `supersedes` の辺だけで決め、置き換え対象を先に書く。`supersedes` が循環する新しい判断は書かない。それ以外の辺の順も、循環しない範囲で守る。
 - `supersedes` の対象が既に archive されている、または同じ計画の中で先に別の判断に置き換えられた場合、その辺は書かずに理由とともに報告する。
-- active な置き換え対象が 2 件以上ある判断は書かない。store の整合検査は 1 つの successor に predecessor を 1 件だけ認めるため。
+- active な置き換え対象が 2 件以上ある判断は、1 回の supersede ですべてを archive する。各対象の `superseded_by` はその判断になる。
 - **store にあり、wiki 側が変わった判断**（ページの hash または索引の resolution が取り込み記録と違う）→ store の現在の版が取り込み記録のままのときに限り、update で新しい版を足す。store 側で書き直されていれば書かず、`changed_on_both_sides` に出す。取り込み記録の無い判断も同じ一覧に出す。
 - 版を足す対象でも、`supersedes` の辺が store と違う、同じ計画で後継に置き換えられる、または store で inactive の場合は書かない。
 - update は store の relation を wiki の辺で置き換える。辺の対象が wiki にあってもこの計画で書かれない（blocked の判断など）ときは、その辺を落として今の relation を消さないよう、その判断に版を足さず `blocked` に出す。
@@ -47,6 +47,6 @@ python tools/import_decision_wikis_incremental.py `
 ```
 
 - 既定は dry run。読み取り専用の接続で計画を作って JSON で出力し、DB には書かない。
-- `--write` を付けたときだけ書く。書く操作が無ければ何もしない。書く操作がある場合は、SQLite の online backup API で DB と同じフォルダに `<DB名>.pre-wiki-increment-<UTC時刻>.db` を作り、その integrity を確認する。次に `BEGIN IMMEDIATE` の 1 transaction の中で計画を作り直して適用し、commit の前に `tools/judgment_graph.py integrity` と同じ検査を通す。どこかで失敗すれば全体を rollback する。
+- `--write` を付けたときだけ書く。書く操作が無ければ何もしない。書く操作がある場合は、SQLite の online backup API で DB と同じフォルダに `<DB名>.pre-wiki-increment-<UTC時刻>.db` を作り、その integrity を確認する。store を開くとき、`superseded_by` に UNIQUE 制約が残る古い schema はこの backup の後に作り直される（[Canonical SQLite judgment graph](../canonical-sqlite-judgment-graph.md)）。次に `BEGIN IMMEDIATE` の 1 transaction の中で計画を作り直して適用し、commit の前に `tools/judgment_graph.py integrity` と同じ検査を通す。どこかで失敗すれば全体を rollback する。
 - 書いた版は取り込み記録になるため、wiki が変わらない限り再実行しても何も書かない。
 - 本文の差分の判定はページの hash と索引の resolution だけで行う。辺の読み方が変わって（`relates to` の取り込みなど）ページの変わっていない判断に新しく読めた辺は、本文を変えずに `add_edges` で足す。足した後は store の relation が wiki の辺を含むため、再実行しても何も書かない。

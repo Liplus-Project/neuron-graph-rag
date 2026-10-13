@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import importlib
+from pathlib import Path
 import sys
 import unittest
 
-from neuron_graph_rag import github_retrieval_parity_v5_observation as observation
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tools import historical_readme_bridge as bridge
 
 _TARGET_MODULES = {
     "test_github_retrieval_parity_v5",
@@ -17,8 +19,9 @@ _INSTALLED_ATTRIBUTE = "_v5_freeze_route_installed"
 
 
 def _run_frozen_suite() -> None:
-    observation.verify_observation()
-    print(observation.run_frozen_v5_tests(), end="")
+    # The wrapper (observation check, then the frozen suite) runs in the bridge projection,
+    # where the runtime files the v5 manifest registers resolve to their archived bytes.
+    print(bridge.run_module(bridge.V5_WRAPPED_MODULE), end="")
 
 
 if not getattr(unittest.TestLoader, _INSTALLED_ATTRIBUTE, False):

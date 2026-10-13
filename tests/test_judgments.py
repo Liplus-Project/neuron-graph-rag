@@ -64,6 +64,146 @@ class JudgmentGraphTests(unittest.TestCase):
             with self.assertRaises(JudgmentContractError):
                 engine.judgments.restore("base", expected_revision=2)
 
+    def test_one_successor_supersedes_several_predecessors(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database = Path(directory) / "merge.sqlite"
+            with NeuronGraphRAG(database) as engine:
+                engine.judgments.add("left", "Left", "Reason", PROVENANCE)
+                engine.judgments.add("right", "Right", "Reason", PROVENANCE)
+                merged = engine.judgments.supersede(
+                    "left", "merged", "Merged", "Reason", PROVENANCE,
+                    expected_revision=1, additional_predecessors={"right": 1},
+                )
+                self.assertEqual(
+                    [(item["relation_type"], item["target_id"]) for item in merged["relations"]],
+                    [("supersedes", "left"), ("supersedes", "right")],
+                )
+                for identity in ("left", "right"):
+                    predecessor = engine.judgments.get(identity)
+                    self.assertEqual(
+                        (predecessor["lifecycle"], predecessor["superseded_by"]),
+                        ("archived", "merged"),
+                    )
+            integrity(database)
+
+    def test_shared_successor_contract_and_second_successor_stay_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database = Path(directory) / "contract.sqlite"
+            with NeuronGraphRAG(database) as engine:
+                engine.judgments.add("left", "Left", "Reason", PROVENANCE)
+                engine.judgments.add("right", "Right", "Reason", PROVENANCE)
+                before = engine.judgments.export()
+                cases = (
+                    ("duplicate predecessor", "left", "merged", {"left": 1}, ()),
+                    ("new identity", "left", "merged", {"merged": 1}, ()),
+                    ("successor already exists", "left", "right", {}, ()),
+                    ("stale expected_revision", "left", "merged", {"right": 2}, ()),
+                    ("duplicate relation", "left", "merged", {"right": 1},
+                     ({"target_id": "right", "relation_type": "supersedes"},)),
+                )
+                for message, first, successor, others, relations in cases:
+                    with self.subTest(message=message, others=others):
+                        with self.assertRaisesRegex(JudgmentContractError, message):
+                            engine.judgments.supersede(
+                                first, successor, "Merged", "Reason", PROVENANCE,
+                                expected_revision=1, relations=relations,
+                                additional_predecessors=others,
+                            )
+                        self.assertEqual(engine.judgments.export(), before)
+                engine.judgments.supersede(
+                    "left", "merged", "Merged", "Reason", PROVENANCE,
+                    expected_revision=1, additional_predecessors={"right": 1},
+                )
+                engine.judgments.add("rival", "Rival", "Reason", PROVENANCE)
+            # A second successor claiming an already superseded predecessor is still rejected.
+            with closing(sqlite3.connect(database)) as connection:
+                connection.execute("PRAGMA foreign_keys = ON")
+                connection.execute(
+                    "INSERT INTO judgment_relations(source_id, target_id, relation_type, "
+                    "relation_type_revision, assertion_kind, created_at) "
+                    "VALUES ('rival', 'left', 'supersedes', 1, 'explicit', '2026-10-13T00:00:00Z')"
+                )
+                connection.commit()
+            with self.assertRaises(RuntimeError) as raised:
+                integrity(database)
+            self.assertEqual(
+                json.loads(str(raised.exception))["supersession_inconsistencies"],
+                [{"judgment_id": "left", "lifecycle": "archived", "superseded_by": "rival"}],
+            )
+
+    def test_supersede_of_archived_predecessor_fails_atomically(self) -> None:
+        with NeuronGraphRAG() as engine:
+            engine.judgments.add("live", "Live", "Reason", PROVENANCE)
+            engine.judgments.add("shelved", "Shelved", "Reason", PROVENANCE)
+            engine.judgments.archive("shelved", expected_revision=1)
+            engine.judgments.add("taken", "Taken", "Reason", PROVENANCE)
+            engine.judgments.supersede(
+                "taken", "taker", "Taker", "Reason", PROVENANCE, expected_revision=1
+            )
+            before = engine.judgments.export()
+            for other in ("shelved", "taken"):
+                with self.subTest(other=other):
+                    with self.assertRaisesRegex(JudgmentContractError, "already inactive or superseded"):
+                        engine.judgments.supersede(
+                            "live", "merged", "Merged", "Reason", PROVENANCE,
+                            expected_revision=1, additional_predecessors={other: 1},
+                        )
+                    self.assertEqual(engine.judgments.export(), before)
+
+    def test_legacy_unique_successor_schema_is_relaxed_in_place(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database = Path(directory) / "legacy-unique.sqlite"
+            with NeuronGraphRAG(database) as engine:
+                engine.judgments.add("old", "Old", "Reason", PROVENANCE)
+                engine.judgments.supersede(
+                    "old", "new", "New", "Reason", PROVENANCE, expected_revision=1
+                )
+                engine.judgments.add("other", "Other", "Reason", PROVENANCE)
+            with closing(sqlite3.connect(database)) as connection:
+                connection.executescript(
+                    """
+                    PRAGMA foreign_keys = OFF;
+                    BEGIN;
+                    CREATE TABLE legacy (
+                        judgment_id TEXT PRIMARY KEY,
+                        current_revision INTEGER NOT NULL CHECK(current_revision >= 1),
+                        lifecycle TEXT NOT NULL CHECK(lifecycle IN ('active', 'archived')),
+                        superseded_by TEXT UNIQUE REFERENCES judgments(judgment_id),
+                        created_at TEXT NOT NULL,
+                        updated_at TEXT NOT NULL
+                    );
+                    INSERT INTO legacy SELECT * FROM judgments;
+                    DROP TABLE judgments;
+                    ALTER TABLE legacy RENAME TO judgments;
+                    COMMIT;
+                    """
+                )
+                before = {
+                    table: sorted(connection.execute(f"SELECT * FROM {table}").fetchall())
+                    for table in ("judgments", "judgment_revisions", "judgment_relations")
+                }
+            with NeuronGraphRAG(database) as engine:
+                after = {
+                    table: sorted(
+                        tuple(row)
+                        for row in engine.store.connection.execute(f"SELECT * FROM {table}")
+                    )
+                    for table in before
+                }
+                self.assertEqual(after, before)
+                self.assertNotIn(
+                    "UNIQUE",
+                    engine.store.connection.execute(
+                        "SELECT sql FROM sqlite_master WHERE name = 'judgments'"
+                    ).fetchone()[0],
+                )
+                engine.judgments.add("left", "Left", "Reason", PROVENANCE)
+                engine.judgments.supersede(
+                    "left", "merged", "Merged", "Reason", PROVENANCE,
+                    expected_revision=1, additional_predecessors={"other": 1},
+                )
+            integrity(database)
+
     def test_dangling_relation_and_stale_update_roll_back_atomically(self) -> None:
         with NeuronGraphRAG() as engine:
             engine.judgments.add("one", "One", "Reason", PROVENANCE)

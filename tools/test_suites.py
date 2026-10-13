@@ -19,7 +19,7 @@ test_shared_home test_native_registration test_shared_home_mcp
         "reason": "製品engine、共通選択・監査・実験runtime契約を含むため、混在モジュールを丸ごと通常実行に残す。",
         "modules": """
 test_000_github_retrieval_parity_v5_routing test_000_historical_readme_routing
-test_historical_readme_bridge
+test_historical_readme_bridge test_historical_runtime_bridge
 test_anchored_hybrid test_baseline_aware_soft_start_snapshot_evaluation
 test_blind_selection test_canonical_gate_evaluation test_channels
 test_corpus_integrity test_d1_fixture test_dynamics_experiment

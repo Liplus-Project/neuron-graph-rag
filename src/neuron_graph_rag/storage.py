@@ -331,7 +331,7 @@ class SQLiteStore:
                 judgment_id TEXT PRIMARY KEY,
                 current_revision INTEGER NOT NULL CHECK(current_revision >= 1),
                 lifecycle TEXT NOT NULL CHECK(lifecycle IN ('active', 'archived')),
-                superseded_by TEXT UNIQUE REFERENCES judgments(judgment_id),
+                superseded_by TEXT REFERENCES judgments(judgment_id),
                 created_at TEXT NOT NULL,
                 updated_at TEXT NOT NULL
             );
@@ -379,6 +379,7 @@ class SQLiteStore:
             );
             """
         )
+        self._allow_shared_successor()
         relation_columns = {
             row["name"]
             for row in self.connection.execute("PRAGMA table_info(judgment_relations)")
@@ -472,6 +473,68 @@ class SQLiteStore:
             self.connection.rollback()
             raise
         self.connection.commit()
+
+    def _successor_is_unique(self) -> bool:
+        for index in self.connection.execute("PRAGMA index_list(judgments)").fetchall():
+            if index["unique"] and index["origin"] == "u":
+                columns = [
+                    row["name"]
+                    for row in self.connection.execute(f'PRAGMA index_info("{index["name"]}")')
+                ]
+                if columns == ["superseded_by"]:
+                    return True
+        return False
+
+    def _allow_shared_successor(self) -> None:
+        """Drop the legacy UNIQUE on judgments.superseded_by.
+
+        One successor may supersede several predecessors. SQLite cannot drop a
+        column constraint, so the table is rebuilt with foreign keys off, which
+        keeps revisions and relations from cascading on the drop.
+        """
+        if not self._successor_is_unique():
+            return
+        self.connection.commit()
+        self.connection.execute("PRAGMA foreign_keys = OFF")
+        try:
+            self.connection.execute("BEGIN IMMEDIATE")
+            try:
+                if self._successor_is_unique():
+                    self.connection.execute(
+                        """
+                        CREATE TABLE judgments_shared_successor (
+                            judgment_id TEXT PRIMARY KEY,
+                            current_revision INTEGER NOT NULL CHECK(current_revision >= 1),
+                            lifecycle TEXT NOT NULL CHECK(lifecycle IN ('active', 'archived')),
+                            superseded_by TEXT REFERENCES judgments(judgment_id),
+                            created_at TEXT NOT NULL,
+                            updated_at TEXT NOT NULL
+                        )
+                        """
+                    )
+                    self.connection.execute(
+                        """
+                        INSERT INTO judgments_shared_successor(
+                            judgment_id, current_revision, lifecycle, superseded_by,
+                            created_at, updated_at
+                        )
+                        SELECT judgment_id, current_revision, lifecycle, superseded_by,
+                               created_at, updated_at
+                        FROM judgments
+                        """
+                    )
+                    self.connection.execute("DROP TABLE judgments")
+                    self.connection.execute(
+                        "ALTER TABLE judgments_shared_successor RENAME TO judgments"
+                    )
+                    if self.connection.execute("PRAGMA foreign_key_check").fetchone():
+                        raise RuntimeError("judgment schema migration broke a foreign key")
+                self.connection.commit()
+            except Exception:
+                self.connection.rollback()
+                raise
+        finally:
+            self.connection.execute("PRAGMA foreign_keys = ON")
 
     def upsert_node(self, node: DocumentNode) -> None:
         with self.transaction() as connection:

@@ -431,19 +431,15 @@ def build_plan(
                 detail = f"superseded by {successor}" if successor else lifecycle
                 unresolved.append((target, line, f"supersedes target is not active ({detail})"))
                 continue
-            predecessors.append(target)
-        if len(predecessors) > 1:
-            blocked.append({
-                "judgment_id": identity,
-                "reason": "supersedes more than one active judgment; the store allows one predecessor per successor: "
-                + ", ".join(predecessors),
-            })
-        else:
-            skip(identity, unresolved)
-            operation: dict[str, Any] = {"action": "add", "judgment_id": identity, "relations": relations}
-            full_relations[identity] = list(relations)
-            if predecessors:
-                target = predecessors[0]
+            if target not in predecessors:
+                predecessors.append(target)
+        skip(identity, unresolved)
+        operation: dict[str, Any] = {"action": "add", "judgment_id": identity, "relations": relations}
+        full_relations[identity] = list(relations)
+        if predecessors:
+            # One supersede archives every active predecessor; each gets this judgment as successor.
+            planned: list[dict[str, Any]] = []
+            for target in predecessors:
                 if target in deferred:
                     # The predecessor is archived by this supersede and cannot be linked afterwards.
                     link(target, "relation target written after its source was superseded")
@@ -455,17 +451,18 @@ def build_plan(
                         "reason": f"wiki changed but superseded in this plan by {identity}",
                     })
                 state[target] = ["archived", identity, revision]
-                operation = {
-                    "action": "supersede", "judgment_id": identity,
-                    "predecessor": {"judgment_id": target, "expected_revision": revision},
-                    "relations": relations,
-                }
+                planned.append({"judgment_id": target, "expected_revision": revision})
                 full_relations[identity].append({"target_id": target, "relation_type": "supersedes"})
-            operations.append(operation)
-            state[identity] = ["active", None, 1]
-            written.add(identity)
-            if later:
-                deferred[identity] = later
+            operation = {
+                "action": "supersede", "judgment_id": identity,
+                "predecessors": planned,
+                "relations": relations,
+            }
+        operations.append(operation)
+        state[identity] = ["active", None, 1]
+        written.add(identity)
+        if later:
+            deferred[identity] = later
         for source in sorted(deferred):
             if not any(target in pending for _, target, _ in deferred[source]):
                 link(source)
@@ -608,11 +605,14 @@ def apply_plan(graph: JudgmentGraph, plan: dict[str, Any]) -> list[dict[str, Any
             if action == "add":
                 judgment = graph.add(identity, *content, relations=operation["relations"])
             elif action == "supersede":
-                predecessor = operation["predecessor"]
+                first, *others = operation["predecessors"]
                 judgment = graph.supersede(
-                    predecessor["judgment_id"], identity, *content,
-                    expected_revision=predecessor["expected_revision"],
+                    first["judgment_id"], identity, *content,
+                    expected_revision=first["expected_revision"],
                     relations=operation["relations"],
+                    additional_predecessors={
+                        other["judgment_id"]: other["expected_revision"] for other in others
+                    },
                 )
             elif action in {"revise", "link"}:
                 judgment = graph.update(

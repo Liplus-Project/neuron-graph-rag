@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import re
 from datetime import UTC, datetime
-from typing import Any, Iterable
+from typing import Any, Iterable, Mapping
 
 from .models import DocumentNode, TypedEdge
 from .ontology import RelationTypeRegistry
@@ -158,26 +158,40 @@ class JudgmentGraph:
         *,
         expected_revision: int,
         relations: Iterable[dict[str, str]] = (),
+        additional_predecessors: Mapping[str, int] | None = None,
     ) -> dict[str, Any]:
-        predecessor_id = self._identity(predecessor_id)
+        """Create a successor that archives one or more active predecessors.
+
+        ``additional_predecessors`` maps further predecessor identities to their
+        expected revisions. Every predecessor gets the same ``superseded_by``.
+        """
         successor_id = self._identity(successor_id)
-        if predecessor_id == successor_id:
+        expected = {self._identity(predecessor_id): expected_revision}
+        for identity, revision in (additional_predecessors or {}).items():
+            identity = self._identity(identity)
+            if identity in expected:
+                raise JudgmentContractError("duplicate predecessor")
+            expected[identity] = revision
+        if successor_id in expected:
             raise JudgmentContractError("successor must have a new identity")
         statement = self._text(statement, "statement")
         rationale = self._text(rationale, "rationale")
         provenance = self._provenance(provenance)
         normalized = self._relations(relations, source_id=successor_id)
-        normalized = tuple(sorted((*normalized, (predecessor_id, "supersedes"))))
+        if any(kind == "supersedes" and target in expected for target, kind in normalized):
+            raise JudgmentContractError("duplicate relation")
+        normalized = tuple(sorted((*normalized, *((identity, "supersedes") for identity in expected))))
         now = self._now()
         with self.store.transaction() as connection:
-            old = self._require(connection, predecessor_id)
-            if old["lifecycle"] != "active" or old["superseded_by"] is not None:
-                raise JudgmentContractError("predecessor already inactive or superseded")
-            if old["current_revision"] != expected_revision:
-                raise JudgmentContractError("stale expected_revision")
+            for identity, revision in expected.items():
+                old = self._require(connection, identity)
+                if old["lifecycle"] != "active" or old["superseded_by"] is not None:
+                    raise JudgmentContractError("predecessor already inactive or superseded")
+                if old["current_revision"] != revision:
+                    raise JudgmentContractError("stale expected_revision")
             if connection.execute("SELECT 1 FROM judgments WHERE judgment_id = ?", (successor_id,)).fetchone():
                 raise JudgmentContractError("successor already exists")
-            self._require_targets(connection, tuple(item for item in normalized if item[0] != predecessor_id))
+            self._require_targets(connection, tuple(item for item in normalized if item[0] not in expected))
             connection.execute(
                 "INSERT INTO judgments VALUES (?, 1, 'active', NULL, ?, ?)",
                 (successor_id, now, now),
@@ -185,10 +199,11 @@ class JudgmentGraph:
             self._insert_revision(connection, successor_id, 1, statement, rationale, provenance, now)
             self._replace_relations(connection, successor_id, normalized, now)
             self._sync_retrieval(connection, successor_id, statement, rationale, provenance, normalized)
-            connection.execute(
-                "UPDATE judgments SET lifecycle = 'archived', superseded_by = ?, updated_at = ? WHERE judgment_id = ?",
-                (successor_id, now, predecessor_id),
-            )
+            for identity in expected:
+                connection.execute(
+                    "UPDATE judgments SET lifecycle = 'archived', superseded_by = ?, updated_at = ? WHERE judgment_id = ?",
+                    (successor_id, now, identity),
+                )
         return self.get(successor_id)
 
     def archive(self, judgment_id: str, *, expected_revision: int) -> dict[str, Any]:

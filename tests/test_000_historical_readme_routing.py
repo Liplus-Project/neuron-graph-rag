@@ -17,18 +17,18 @@ def routed_load_tests(self, module, *args, **kwargs):
     original = getattr(unittest.TestLoader, ORIGINAL)
     name = getattr(module, "__name__", "")
     bare = name.removeprefix("tests.")
-    if name not in (bare, "tests." + bare) or bare not in bridge.MODULE_COUNTS:
+    if name not in (bare, "tests." + bare) or bare not in bridge.ROUTED_MODULE_COUNTS:
         return original(self, module, *args, **kwargs)
     expected_path = bridge.ROOT / "tests" / (bare + ".py")
     if Path(getattr(module, "__file__", "")).resolve() != expected_path:
         raise ValueError(f"historical routing module root mismatch: {name}")
     count = original(self, module, *args, **kwargs).countTestCases()
-    if count != bridge.MODULE_COUNTS[bare]:
-        raise ValueError(f"historical {bare} expected {bridge.MODULE_COUNTS[bare]} original tests, found {count}")
+    if count != bridge.ROUTED_MODULE_COUNTS[bare]:
+        raise ValueError(f"historical {bare} expected {bridge.ROUTED_MODULE_COUNTS[bare]} original tests, found {count}")
     def run_original_module():
         print(bridge.run_module(bare), end="")
     return self.suiteClass([unittest.FunctionTestCase(run_original_module,
-                                                   description=f"historical README: {bare} ({count} original tests)")])
+                                                   description=f"historical {bridge.group_of(bare)}: {bare} ({count} original tests)")])
 
 
 if not getattr(unittest.TestLoader, INSTALLED, False):
