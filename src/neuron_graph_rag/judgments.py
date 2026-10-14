@@ -231,6 +231,9 @@ class JudgmentGraph:
             raise JudgmentContractError("predecessors are required")
         now = self._now()
         with self.store.transaction() as connection:
+            # Lock before the expected-revision reads, including standalone domain calls.
+            if not connection.in_transaction:
+                connection.execute("BEGIN IMMEDIATE")
             successor = self._require(connection, successor_id)
             if successor["current_revision"] != expected_revision:
                 raise JudgmentContractError("stale successor expected_revision")

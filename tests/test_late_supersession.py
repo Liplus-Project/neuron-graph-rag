@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 import unittest
+import sqlite3
+import tempfile
+from pathlib import Path
+from unittest import mock
 
 from neuron_graph_rag import FeedbackLedger, JudgmentContractError, NeuronGraphRAG, SourceUseEvent
 from neuron_graph_rag.decision_wiki_incremental import apply_plan, build_plan, scope_plan
@@ -112,6 +116,32 @@ class StoredSuccessorTests(unittest.TestCase):
                     "successor", [("left", 1), ("right", 1)], expected_revision=1,
                 )
             self.assertEqual(domain.JudgmentGraphTests._persistent_state(engine), before)
+
+    def test_another_writer_cannot_change_versions_between_validation_reads(self):
+        with tempfile.TemporaryDirectory() as directory:
+            database = Path(directory) / "concurrency.sqlite"
+            with NeuronGraphRAG(database) as engine:
+                self.populate(engine)
+                competing = sqlite3.connect(database, timeout=0.01)
+                require = engine.judgments._require
+                attempted = []
+
+                def read(connection, identity):
+                    row = require(connection, identity)
+                    if identity == "successor":
+                        with self.assertRaisesRegex(sqlite3.OperationalError, "locked"):
+                            competing.execute("UPDATE judgments SET updated_at='competing' WHERE judgment_id='left'")
+                        competing.rollback()
+                        attempted.append(identity)
+                    return row
+
+                try:
+                    with mock.patch.object(engine.judgments, "_require", side_effect=read):
+                        engine.judgments.reconcile_supersedes("successor", [("left", 1)], expected_revision=1)
+                    self.assertEqual(attempted, ["successor"])
+                    integrity(engine.store.connection)
+                finally:
+                    competing.close()
 
 
 class LatePredecessorImportTests(unittest.TestCase):
