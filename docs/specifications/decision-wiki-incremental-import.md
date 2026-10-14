@@ -6,7 +6,7 @@
 
 既存の judgment store（例: `~/.ngr/db/knowledge.db`）を作り直さずに、Li+ と NGR の Decision Structure Wiki のうち索引に載った判断の差分だけを取り込む。索引に載らないページは読まない。索引と identity の規則は [Decision Wiki pilot migration](../decision-wiki-pilot-migration.md) と同じで、identity は `<repository-name>:<slug>`。
 
-書き込みは MCP の `write_judgment` と同じ domain API（`JudgmentGraph.add` / `supersede` / `update` / `archive`）を通す。judgment、revision、relation と、検索に使う `nodes` / `edges` の projection は同じ transaction で更新される。DB ファイルはその場で開いて更新し、作り直しや差し替えはしない。存在しない DB は作らない。
+書き込みは MCP の `write_judgment` と同じ domain API（`JudgmentGraph.add` / `supersede` / `reconcile_supersedes` / `update` / `archive`）を通す。judgment、revision、relation と、検索に使う `nodes` / `edges` の projection は同じ transaction で更新される。DB ファイルはその場で開いて更新し、作り直しや差し替えはしない。存在しない DB は作らない。
 
 書く版の provenance は pilot と同じ `page_body`、`page_sha256`、`repository`、`source_state`、`wiki_commit`、`wiki_url` に、`import_mode: incremental` を加えたものとする。
 
@@ -20,7 +20,7 @@
 - **store にあり、wiki 側が変わった判断**（ページの hash または索引の resolution が取り込み記録と違う）→ store の現在の版が取り込み記録のままのときに限り、update で新しい版を足す。store 側で書き直されていれば書かず、`changed_on_both_sides` に出す。取り込み記録の無い判断も同じ一覧に出す。
 - 版を足す対象でも、`supersedes` の辺が store と違う、同じ計画で後継に置き換えられる、または store で inactive の場合は書かない。
 - update は store の relation を wiki の辺で置き換える。辺の対象が wiki にあってもこの計画で書かれない（blocked の判断など）ときは、その辺を落として今の relation を消さないよう、その判断に版を足さず `blocked` に出す。
-- **store にあり、wiki 側が変わっていないが、wiki の辺のうち store に無いものがある判断**（辺の読み方が後から増えた `relates to` など）→ `add_edges` で辺だけを足す。update で版を足すが、本文（statement / rationale）と provenance は store の現在の版のまま写す。書く relation は store の今の relation に足りない辺を加えた和集合で、store の relation は 1 本も落とさない。書くのは、store の現在の版が取り込み記録のままのとき、または store の relation がすべて wiki の辺に含まれるときに限る。どちらでもなければ書かず `blocked` に出す。store で inactive な判断も書かず `blocked` に出す。足りない辺のうち `supersedes` は置き換え（対象の archive）を伴わずに足せないため書かず、対象が無いか書かれない辺とともに `skipped_edges` に出す。
+- **store にあり、wiki 側が変わっていないが、wiki の辺のうち store に無いものがある判断**（辺の読み方が後から増えた `relates to` など）→ `add_edges` で辺だけを足す。update で版を足すが、本文（statement / rationale）と provenance は store の現在の版のまま写す。書く relation は store の今の relation に足りない辺を加えた和集合で、store の relation は 1 本も落とさない。書くのは、store の現在の版が取り込み記録のままのとき、または store の relation がすべて wiki の辺に含まれるときに限る。どちらでもなければ書かず `blocked` に出す。store で inactive な判断も書かず `blocked` に出す。足りない `supersedes` は通常の辺追加には含めず、`reconcile_supersedes` として後継と前任の版を固定し、前任の archive / superseded_by と後継の新 revision を同時に書く。新規前任を書いた後、索引 state による archive より先に接続する。既存後継の本文 / provenance / relation binding / 学習済み projection は保持する。inactive な後継、他の後継への置換、循環、前任の本文が双方で変わった競合は書かず理由を表示する。対象が無いか書かれない辺は `skipped_edges` に出す。
 - 索引から消えた取り込み済みの判断は `absent_from_index` に出す。それと page hash か resolution が一致する新しい identity は slug の変更とみなし、重複を作らないよう書かずに報告する。
 - 新しい判断で索引の state が archived / superseded、かつこの計画に後継が無いものは、add の後で archive する。それ以外の索引 state と store の lifecycle の食い違いは `lifecycle_mismatch` に出すだけで、書き込みはしない。
 
@@ -50,3 +50,5 @@ python tools/import_decision_wikis_incremental.py `
 - `--write` を付けたときだけ書く。書く操作が無ければ何もしない。書く操作がある場合は、SQLite の online backup API で DB と同じフォルダに `<DB名>.pre-wiki-increment-<UTC時刻>.db` を作り、その integrity を確認する。store を開くとき、`superseded_by` に UNIQUE 制約が残る古い schema はこの backup の後に作り直される（[Canonical SQLite judgment graph](../canonical-sqlite-judgment-graph.md)）。次に `BEGIN IMMEDIATE` の 1 transaction の中で計画を作り直して適用し、commit の前に `tools/judgment_graph.py integrity` と同じ検査を通す。どこかで失敗すれば全体を rollback する。
 - 書いた版は取り込み記録になるため、wiki が変わらない限り再実行しても何も書かない。
 - 本文の差分の判定はページの hash と索引の resolution だけで行う。辺の読み方が変わって（`relates to` の取り込みなど）ページの変わっていない判断に新しく読めた辺は、本文を変えずに `add_edges` で足す。足した後は store の relation が wiki の辺を含むため、再実行しても何も書かない。
+
+運用で対象を絞る場合は内部 helper `scope_plan(plan, judgment_ids)` を使える。指定した identity の操作と、その前任を結ぶ既存後継の `reconcile_supersedes` だけを選び、他の判断の `add_edges` は含めない。選択外の新規判断が必要な場合は範囲を広げず失敗する。backup の後、`BEGIN IMMEDIATE` の中で `build_plan` と `scope_plan` を再実行し、`apply_plan` と integrity 検査を同じ transaction で行う。公開 MCP schema や CLI の既定動作は変えない。

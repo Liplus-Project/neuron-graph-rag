@@ -206,6 +206,99 @@ class JudgmentGraph:
                 )
         return self.get(successor_id)
 
+    def reconcile_supersedes(
+        self,
+        successor_id: str,
+        predecessors: Iterable[tuple[str, int]],
+        *,
+        expected_revision: int,
+    ) -> dict[str, Any]:
+        """Attach late predecessors to a stored successor without replacing its content.
+
+        Existing canonical assertions and learned projection values stay untouched.
+        A complete retry is a no-op, after checking every expected revision.
+        """
+        successor_id = self._identity(successor_id)
+        expected: dict[str, int] = {}
+        for identity, revision in predecessors:
+            identity = self._identity(identity)
+            if identity == successor_id:
+                raise JudgmentContractError("self supersession is not allowed")
+            if identity in expected:
+                raise JudgmentContractError("duplicate predecessor")
+            expected[identity] = revision
+        if not expected:
+            raise JudgmentContractError("predecessors are required")
+        now = self._now()
+        with self.store.transaction() as connection:
+            successor = self._require(connection, successor_id)
+            if successor["current_revision"] != expected_revision:
+                raise JudgmentContractError("stale successor expected_revision")
+            if successor["lifecycle"] != "active" or successor["superseded_by"] is not None:
+                raise JudgmentContractError("successor must be current active")
+            pending = []
+            for identity, revision in expected.items():
+                old = self._require(connection, identity)
+                if old["current_revision"] != revision:
+                    raise JudgmentContractError("stale predecessor expected_revision")
+                claimed = connection.execute(
+                    "SELECT source_id FROM judgment_relations WHERE target_id = ? "
+                    "AND relation_type = 'supersedes' AND source_id <> ? LIMIT 1",
+                    (identity, successor_id),
+                ).fetchone()
+                if claimed is not None:
+                    raise JudgmentContractError("predecessor claimed by another successor")
+                existing = connection.execute(
+                    "SELECT 1 FROM judgment_relations WHERE source_id = ? "
+                    "AND target_id = ? AND relation_type = 'supersedes'",
+                    (successor_id, identity),
+                ).fetchone()
+                if old["lifecycle"] == "archived" and old["superseded_by"] == successor_id and existing:
+                    continue
+                if old["lifecycle"] != "active" or old["superseded_by"] is not None:
+                    raise JudgmentContractError("predecessor already inactive or superseded")
+                cycle = connection.execute(
+                    "WITH RECURSIVE reachable(identity) AS (SELECT ? UNION "
+                    "SELECT r.target_id FROM judgment_relations r JOIN reachable p "
+                    "ON r.source_id = p.identity WHERE r.relation_type = 'supersedes') "
+                    "SELECT 1 FROM reachable WHERE identity = ? LIMIT 1",
+                    (identity, successor_id),
+                ).fetchone()
+                if cycle:
+                    raise JudgmentContractError("supersedes cycle")
+                pending.append(identity)
+            if pending:
+                # Repeat the exact serialized payload; relation-only changes do not edit provenance.
+                connection.execute(
+                    "INSERT INTO judgment_revisions SELECT judgment_id, ?, statement, rationale, "
+                    "provenance_json, ? FROM judgment_revisions WHERE judgment_id = ? AND revision = ?",
+                    (expected_revision + 1, now, successor_id, expected_revision),
+                )
+                registry = connection.execute(
+                    "SELECT current_revision FROM judgment_relation_types WHERE relation_type = 'supersedes'"
+                ).fetchone()
+                binding = None if registry is None else registry["current_revision"]
+                for identity in pending:
+                    connection.execute(
+                        "INSERT OR IGNORE INTO judgment_relations "
+                        "(source_id, target_id, relation_type, relation_type_revision, assertion_kind, created_at) "
+                        "VALUES (?, ?, 'supersedes', ?, 'explicit', ?)",
+                        (successor_id, identity, binding, now),
+                    )
+                    connection.execute(
+                        "INSERT OR IGNORE INTO edges(source_id,target_id,edge_type,weight,factuality) "
+                        "VALUES (?,?,'supersedes',1.0,1.0)", (successor_id, identity),
+                    )
+                    connection.execute(
+                        "UPDATE judgments SET lifecycle = 'archived', superseded_by = ?, updated_at = ? "
+                        "WHERE judgment_id = ?", (successor_id, now, identity),
+                    )
+                connection.execute(
+                    "UPDATE judgments SET current_revision = ?, updated_at = ? WHERE judgment_id = ?",
+                    (expected_revision + 1, now, successor_id),
+                )
+        return self.get(successor_id)
+
     def archive(self, judgment_id: str, *, expected_revision: int) -> dict[str, Any]:
         return self._lifecycle(judgment_id, expected_revision, "archived")
 
