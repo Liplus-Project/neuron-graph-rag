@@ -354,12 +354,29 @@ def build_plan(
 
     # New judgments are written predecessor-first along supersedes, the only edge kind whose target
     # must exist when its source is written; a supersedes cycle among them cannot be, so it is blocked.
+    source_supersedes = {
+        identity: {target for kind, target, _ in entry.edges if kind == "supersedes"}
+        for identity, entry in entries.items()
+    }
+    cyclic = set()
+    for identity, targets in source_supersedes.items():
+        visited, pending_targets = set(), list(targets)
+        while pending_targets:
+            target = pending_targets.pop()
+            if target == identity:
+                cyclic.add(identity)
+                break
+            if target not in visited:
+                visited.add(target)
+                pending_targets.extend(source_supersedes.get(target, ()))
+    for identity in sorted(new_ids & cyclic):
+        blocked.append({"judgment_id": identity, "reason": "supersedes cycle among wiki judgments"})
     remaining = {
         identity: {
             target for kind, target, _ in entries[identity].edges
             if kind == "supersedes" and target in new_ids and target != identity
         }
-        for identity in new_ids
+        for identity in new_ids - cyclic
     }
     # Among the ready ones, prefer a judgment whose other targets are already placed, so a link
     # is needed only where those edges form a cycle.
@@ -396,6 +413,7 @@ def build_plan(
     # (an update carrying the full relation set) once every deferred target has been decided.
     deferred: dict[str, list[tuple[str, str, str]]] = {}
     full_relations: dict[str, list[dict[str, str]]] = {}
+    supersedes_targets = {identity: set(item.supersedes) for identity, item in store.items()}
 
     def link(source: str, late_reason: str = "relation target not written") -> None:
         added: list[dict[str, str]] = []
@@ -459,6 +477,7 @@ def build_plan(
                 "relations": relations,
             }
         operations.append(operation)
+        supersedes_targets[identity] = set(predecessors)
         state[identity] = ["active", None, 1]
         written.add(identity)
         if later:
@@ -487,22 +506,77 @@ def build_plan(
             "expected_revision": revise[identity],
             "relations": [{"target_id": target, "relation_type": kind} for kind, target, _ in edges],
         })
+        state[identity][2] += 1
+    # Late predecessors must be written before a stored successor can claim them, and before
+    # the source-index archive fallback runs. A relation-only update cannot perform this lifecycle.
+    conflicts = {item["judgment_id"] for item in both_changed}
+    for identity in sorted((*unchanged, *store_only_changed)):
+        missing = [
+            edge for edge in entries[identity].edges
+            if edge[0] == "supersedes" and edge[1] not in store[identity].supersedes
+        ]
+        if not missing:
+            continue
+        if identity in cyclic:
+            blocked.append({"judgment_id": identity, "reason": "supersedes cycle among wiki judgments"})
+            continue
+        resolved, unresolved = resolve(identity, missing, written)
+        lifecycle, successor, revision = state[identity]
+        if lifecycle != "active" or successor is not None:
+            blocked.append({"judgment_id": identity, "reason": "supersedes successor is not active"})
+            continue
+        predecessors = []
+        for _, target, line in resolved:
+            if target in conflicts:
+                unresolved.append((target, line, "supersedes target has a content conflict"))
+                continue
+            target_lifecycle, target_successor, target_revision = state[target]
+            if target_lifecycle != "active" or target_successor is not None:
+                detail = f"superseded by {target_successor}" if target_successor else target_lifecycle
+                unresolved.append((target, line, f"supersedes target is not active ({detail})"))
+                continue
+            reachable, pending_targets = set(), [target]
+            while pending_targets:
+                candidate = pending_targets.pop()
+                if candidate not in reachable:
+                    reachable.add(candidate)
+                    pending_targets.extend(supersedes_targets.get(candidate, ()))
+            other_claim = any(
+                target in targets for source, targets in supersedes_targets.items() if source != identity
+            )
+            if identity in reachable or other_claim:
+                reason = "supersedes cycle" if identity in reachable else "predecessor claimed by another successor"
+                unresolved.append((target, line, reason))
+                continue
+            if target not in {item["judgment_id"] for item in predecessors}:
+                predecessors.append({"judgment_id": target, "expected_revision": target_revision})
+        skip(identity, unresolved)
+        if predecessors:
+            operations.append({
+                "action": "reconcile_supersedes", "judgment_id": identity,
+                "expected_revision": revision, "predecessors": predecessors,
+            })
+            state[identity][2] += 1
+            for predecessor in predecessors:
+                target = predecessor["judgment_id"]
+                state[target][0:2] = ["archived", identity]
+                supersedes_targets[identity].add(target)
+
     # An unchanged page can still carry edges the store lacks: the edge reader learned a label
     # (``relates to``) after the page was imported. They are added without a content change, and
     # the relation set written is the stored one plus those edges, so no stored relation is dropped.
     for identity in sorted((*unchanged, *store_only_changed)):
         current = store[identity]
-        missing = [edge for edge in entries[identity].edges if (edge[0], edge[1]) not in current.relations]
+        missing = [
+            edge for edge in entries[identity].edges
+            if edge[0] != "supersedes" and (edge[0], edge[1]) not in current.relations
+        ]
         if not missing:
             continue
         resolved, unresolved = resolve(identity, missing, written)
         additions: list[tuple[str, str]] = []
-        for kind, target, line in resolved:
-            if kind == "supersedes":
-                # supersede archives its predecessor; an edge alone would leave it active.
-                unresolved.append((target, line, "supersedes edge cannot be added to a stored judgment"))
-            else:
-                additions.append((kind, target))
+        for kind, target, _ in resolved:
+            additions.append((kind, target))
         if additions:
             parsed = {(kind, target) for kind, target, _ in entries[identity].edges}
             lifecycle, successor, revision = state[identity]
@@ -525,7 +599,9 @@ def build_plan(
                 "expected_revision": revision,
                 "relations": [
                     {"target_id": target, "relation_type": kind}
-                    for kind, target in sorted(current.relations) + additions
+                    for kind, target in sorted(
+                        current.relations | {("supersedes", target) for target in supersedes_targets[identity]}
+                    ) + additions
                 ],
             })
             state[identity][2] += 1
@@ -550,6 +626,7 @@ def build_plan(
             "wiki_entries": len(entries),
             "add": actions["add"],
             "supersede": actions["supersede"],
+            "reconcile_supersedes": actions["reconcile_supersedes"],
             "revise": actions["revise"],
             "link": actions["link"],
             "add_edges": actions["add_edges"],
@@ -571,12 +648,77 @@ def build_plan(
         "lifecycle_mismatch": lifecycle_mismatch,
         "absent_from_index": absent_from_index,
         "_entries": entries,
+        "_store": store,
     }
 
 
 def public_plan(plan: dict[str, Any]) -> dict[str, Any]:
     """The plan without page bodies, for printing."""
     return {key: value for key, value in plan.items() if not key.startswith("_")}
+
+
+def scope_plan(plan: dict[str, Any], judgment_ids: Iterable[str]) -> dict[str, Any]:
+    """Select named decisions and only their necessary stored-successor reconciliation.
+
+    This internal operational helper does not pull unrelated edge additions into a run.
+    Missing selected decisions or dependencies outside the selection fail closed.
+    Rebuild and scope again under the caller's write transaction before applying.
+    """
+    selected = set(judgment_ids)
+    unknown = selected - plan["_entries"].keys()
+    if unknown:
+        raise DecisionWikiImportError("unknown scope identities: " + ", ".join(sorted(unknown)))
+    conflicts = selected & {
+        item["judgment_id"] for item in (*plan["blocked"], *plan["changed_on_both_sides"])
+        if item["judgment_id"] not in plan["_store"]
+        or plan["_store"][item["judgment_id"]].lifecycle == "active"
+    }
+    if conflicts:
+        raise DecisionWikiImportError("scope contains blocked decisions: " + ", ".join(sorted(conflicts)))
+    operations = []
+    for operation in plan["operations"]:
+        if operation["judgment_id"] in selected:
+            operations.append(dict(operation))
+        elif operation["action"] == "reconcile_supersedes":
+            predecessors = [item for item in operation["predecessors"] if item["judgment_id"] in selected]
+            if predecessors:
+                operations.append({**operation, "predecessors": predecessors})
+    claims = {
+        (item["judgment_id"], predecessor["judgment_id"])
+        for item in operations if item["action"] in {"supersede", "reconcile_supersedes"}
+        for predecessor in item["predecessors"]
+    }
+    for identity, entry in plan["_entries"].items():
+        if entry.lifecycle != "active":
+            continue
+        for kind, target, _ in entry.edges:
+            if kind != "supersedes" or target not in selected:
+                continue
+            old = plan["_store"].get(target)
+            successor = plan["_store"].get(identity)
+            complete = (
+                old is not None and old.lifecycle == "archived" and old.superseded_by == identity
+                and successor is not None and target in successor.supersedes
+            )
+            if not complete and (identity, target) not in claims:
+                raise DecisionWikiImportError(f"scope requires unresolved supersession: {identity} -> {target}")
+    written = set()
+    new_ids = {
+        item["judgment_id"] for item in plan["operations"] if item["action"] in {"add", "supersede"}
+    }
+    for operation in operations:
+        dependencies = {item["target_id"] for item in operation.get("relations", ())}
+        dependencies.update(item["judgment_id"] for item in operation.get("predecessors", ()))
+        missing = dependencies & new_ids - written
+        if missing:
+            raise DecisionWikiImportError("scope requires unselected or unwritten decisions: " + ", ".join(sorted(missing)))
+        if operation["action"] in {"add", "supersede"}:
+            written.add(operation["judgment_id"])
+    actions = Counter(item["action"] for item in operations)
+    counts = dict(plan["counts"])
+    for action in ("add", "supersede", "reconcile_supersedes", "revise", "link", "add_edges", "archive"):
+        counts[action] = actions[action]
+    return {**plan, "counts": counts, "operations": operations}
 
 
 def apply_plan(graph: JudgmentGraph, plan: dict[str, Any]) -> list[dict[str, Any]]:
@@ -591,6 +733,12 @@ def apply_plan(graph: JudgmentGraph, plan: dict[str, Any]) -> list[dict[str, Any
         action = operation["action"]
         if action == "archive":
             judgment = graph.archive(identity, expected_revision=operation["expected_revision"])
+        elif action == "reconcile_supersedes":
+            judgment = graph.reconcile_supersedes(
+                identity,
+                [(item["judgment_id"], item["expected_revision"]) for item in operation["predecessors"]],
+                expected_revision=operation["expected_revision"],
+            )
         elif action == "add_edges":
             # Edges only: the new revision repeats the current statement, rationale and provenance.
             current = graph.get(identity)

@@ -14,6 +14,8 @@ supersede は新しい stable identity を作り、旧判断を archive し、su
 
 `superseded_by` に UNIQUE 制約を持つ既存 database は、起動時に foreign key を外した 1 transaction で `judgments` を作り直して制約を外す。revision と relation はそのまま残る。
 
+既に保存済みの active な successor には `reconcile_supersedes(successor_id, predecessors, expected_revision=...)` で後から取り込んだ active predecessor を接続する。`predecessors` は `(identity, expected_revision)` の列で、後継と全前任の版、active 状態、自己参照、重複、supersedes 循環、別の後継による claim を同じ transaction で検査する。後継の現在の本文と provenance を新 revision に写し、足りない supersedes relation と projection edge だけを追加し、前任の lifecycle と superseded_by を更新する。既存の relation binding / 作成時刻、node confidence、edge weight / factuality、全 revision、使用 / feedback を保持する。既に同じ後継へ完全に接続された前任だけなら、版検査後に書き込み無しで成功する。archive や relation 追加だけではこの置換を代用できない。schema、export format、公開 MCP schema は変えない。
+
 archive は通常 retrieval から外す論理的忘却であり、revision、provenance、relation は監査 API から取得できる。hard delete は明示操作で、archived、revision 一致、inbound relation と successor history がない候補にだけ許可する。
 
 MCP の `write_judgment` は同じ domain API へ写像し、model に raw SQL を公開しない。既存 `search`、`record_source_use`、`record_outcome` の contract と既定値は変更しない。
