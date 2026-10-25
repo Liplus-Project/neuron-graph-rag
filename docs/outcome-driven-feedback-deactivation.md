@@ -54,7 +54,6 @@ mechanics test と result-free preflight の通過は、candidate の有用性�
 
 - [Requirements](requirements.md)
 - [Confirmed-outcome feedback reinforcement](confirmed-outcome-feedback-reinforcement.md)
-- [Baseline-aware soft-start snapshot evaluation](baseline-aware-soft-start-snapshot-evaluation.md)
 - [Optional MCP Feedback Interface](optional-mcp-interface.md)
 - [Decision Structure](Decision-Structure.md)
 - [Issue #111](https://github.com/Liplus-Project/neuron-graph-rag/issues/111)

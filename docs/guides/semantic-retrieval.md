@@ -28,10 +28,4 @@ with TemporaryDirectory() as directory:
 
 学習済み検索だけを比較する場合は `retriever.score(query, nodes)` の値を降順に並べる。接続後の `engine.search` は既存の疎検索とグラフも合成する。元に戻す場合は接続前の `engine.dense_retriever` を保存し、同じhelperへ渡す。
 
-診断を再実行する場合は出力に新しいパスを指定する。既存出力は上書きできない。
-
-```powershell
-.semantic-env/Scripts/python.exe tools/run_semantic_diagnostic.py --model-cache .semantic-model-cache --output artifacts/semantic-trial-new.json
-```
-
 [要件・制約](../specifications/semantic-retrieval.md)と[実測結果](../experiments/semantic-retrieval-cpu.md)を参照。

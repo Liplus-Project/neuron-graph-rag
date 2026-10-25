@@ -28,4 +28,3 @@ The MCP protocol tests cover default q1/s0 behavior, q3/s1 activation across thr
 
 - [Optional MCP Feedback Interface](optional-mcp-interface.md)
 - [Evidence-gated local feedback reinforcement](evidence-gated-local-feedback-reinforcement.md)
-- [Canonical evidence gate evaluation](canonical-evidence-gate-evaluation.md)

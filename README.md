@@ -168,38 +168,6 @@ python -m neuron_graph_rag benchmark \
 
 初回観測では relation 改善と説明経路・feedback isolation は支持されましたが、negative control の2件が悪化したため非対象の過剰押し上げ仮説は不支持でした。詳細値と適用限界は観測記録を参照してください。
 
-## Neural dynamics experiment
-
-正方向加算、有限活性 budget、側方抑制、query-conditioned transmission、反復競合の13 variants を、PR #10 の development set と非重複9-node holdout で比較しました。manifest、holdout、gold、選択規則、停止規則は result 観測前の commit `4f240dd` で固定しています。
-
-development では `budget-025` が relation MRR 0.3833 を維持し、negative-control MRR を 0.7083 から 1.0000 へ改善して選択されました。holdout を一度だけ開封した結果、direct / negative-control、path 3/3、feedback isolation は維持した一方、relation MRR が 0.3611 から 0.3254 へ退行しました。固定 stop rule に従って不採用とし、既定 strategy は `current_positive_additive` のままです。
-
-全13 variants の gate 不合格と tradeoff、選択理由、holdout 判定は [Neural dynamics experiment](docs/neural-dynamics-experiment.md) と versioned result JSON に保存しています。現在の holdout は再選択や parameter 調整に再利用しません。
-
-## Local recurrent competition experiment
-
-PR #12のglobal recurrent tradeoffを受け、競合を同じsourceのsibling neighborへ局所化し、query relevanceとactive path identityを独立に比較する6-variant experimentを定義しています。
-
-production D1から取得した新しいdevelopment / holdoutは、旧development、開封済み旧holdout、相互間でdoc pathとnode IDを分離しています。両provenance、contamination audit、二baseline gate、one-time holdout停止規則は[Local recurrent competition experiment](docs/neural-dynamics-local-competition-experiment.md)を参照してください。
-
-freeze後のdevelopmentでは、queryなしのlocal variantsがrelationを改善した一方でdirect / negative-controlを退行させ、query variantsはnegative-controlを維持した一方でbest prior recurrentのrelationを上回れませんでした。候補gate通過は0件だったためholdoutは開かず、既定strategyは`current_positive_additive`のままです。
-
-## Anchored BM25 and graph hybrid experiment
-
-entry retrievalを競合外のzero-hop anchorとして保持し、graph scoreを1 edge以上通過したmessageだけに限定するanchored local strategyを追加しました。BM25-onlyはdense encoderとgraph traversalを呼ばない真のablationです。
-
-production D1からread-only取得した新しい5-node development / holdoutは、過去4 fixturesの39 doc pathsおよび相互間から分離しています。固定した6 variants、raw / normalized score trace、contamination audit、候補gate、one-time holdout停止規則は[Anchored BM25 and graph hybrid experiment](docs/anchored-bm25-graph-hybrid-experiment.md)を参照してください。
-
-freeze後のdevelopmentでは、anchored 3 variantsがrelation MRRを`current`の0.5000から0.7500–1.0000へ改善しましたが、direct lookupとnegative-controlがともに退行しました。候補gate通過は0件だったためholdoutは開かず、既定strategyは`current_positive_additive`のままです。
-
-## Anchored fusion calibration experiment
-
-Issue #15で分離したentry anchorとedge-only graph signalは維持したまま、graph尺度とfinal fusionだけを比較します。graph normalizationは`max`、rawの`none`、`l1_mass`を選択でき、final fusionはlinearとpositive graph nodeだけを順位付けするbottom-centered weighted RRFを選択できます。
-
-production D1からread-only取得した新しい3-node development / holdoutは、既存7 fixturesの50 unique doc pathsおよび相互間から分離しています。固定6 variants、fusion formula、個別case non-regression gate、one-time holdout停止規則は[Anchored fusion calibration experiment](docs/anchored-fusion-calibration-experiment.md)を参照してください。
-
-freeze後のdevelopmentでは、unscaled linearとbalanced RRFがrelation MRRを0.4167から0.6667へ改善しましたがdirect / negative-controlを1.0000から0.7500へ退行させました。conservative linear、L1 mass、conservative RRFはcontrolsを維持した一方relationを改善しませんでした。候補0件のためholdoutは未開封で、既定strategyは`current_positive_additive`のままです。
-
 ## Public API
 
 ```python
@@ -235,8 +203,6 @@ with NeuronGraphRAG("knowledge.db") as rag:
 特定データ源の model は公開 API に含みません。GitHub、Decision Structure、Graphify などは、`add_document` と `add_edge` を呼ぶ将来の adapter として追加できます。
 
 GitHub の最小 read-only adapter 候補は、coreへGitHub clientを持ち込まず、固定snapshotをlocal indexへ接続する形で検証しています。[github-rag-mcp replacement compatibility spike](docs/github-rag-mcp-replacement-compatibility.md) は、public repository一つの取得、保存済み `search` capture との比較、one-document update follow-upだけを扱います。committed observation は github-rag-mcp の最小 doc 検索 path の候補に限り、production serviceやMCP replacementを主張するものではありません。
-
-hybrid document retrieval の successor 判定は [GitHub RAG / NGR retrieval parity benchmark](docs/github-retrieval-parity-benchmark.md) に分離しています。public repository の固定 commit と全 Markdown path、identity-disjoint な development / holdout、direct / semantic / relation / negative cohort、raw search / stored-content provenance、個別・cohort hard gateを結果前に固定します。本 freeze では登録 queryもlive github-rag-mcp searchも実行せず、merge後の別Issueでdevelopmentを一度だけ観測し、全gate通過時だけholdoutを一度開きます。
 
 既定 dense encoder は依存なしで再現可能な feature hashing です。実運用の埋め込みは callable を差し替えます。
 
@@ -324,25 +290,7 @@ for hit in channels.relation.hits:
 rag.record_success(channels.relation.trace_id, ["related-node"])
 ```
 
-callerは両laneを検査し、下流判断で実際に使用したlaneの`trace_id`と`node_id`をfeedbackへ渡します。channel文字列を後から自己申告せず、保存済みtrace provenanceがreinforcement有無を決めます。固定D1 split、4-case hard gate、one-time holdout規則は[Independent retrieval channels experiment](docs/independent-retrieval-channels-experiment.md)を参照してください。
-
-凍結後のdevelopmentではrelation MRR改善、lane parity、feedback帰属を含む10/12 gateが成立しましたが、rank-1 lexical controlとfrozen path-shape matcherの2 gateが不合格でした。停止規則に従ってholdoutは開かず、`search_channels()`へvalidated判定を付与していません。既存`search()`が引き続きdefaultです。
-
-次段のblind selection protocolは、二つのlaneを変更せず、答えを示すfieldとlane scoreを除いたpacketをfresh judge 3体へ渡します。actual LLM callはparent orchestratorに限定し、repositoryはpacket生成、trace / node所属検証、raw response保存、majority集約、path射影、v1 byte hash監査、development失敗時のholdout停止だけを実装します。
-
-実装・prompt・schema・gateをresult-free commit `062c131`としてpushした後、development packetを一度生成し、fresh judge 3体で観測しました。3件目が必須4 caseのうち1件を欠いたためresponse validationで停止し、retry、replacement、majority集約、accuracy計算を行っていません。development gateは不合格でholdout packetも生成せず、defaultとvalidated状態は変更していません。詳細は[Blind LLM channel selection experiment](docs/blind-llm-channel-selection-experiment.md)を参照してください。
-
-Linux CIとfresh Windows worktreeの間でv1 / v2 frozen text artifactにLF / CRLF checkout差が生じるため、raw hashを優先し、完全なLF / CRLF相互変換だけをalternate verificationとして許可しました。本文差分やmixed newlineは拒否し、観測artifactと結果は変更していません。
-
-Version 3のnode-first protocolは、一つのcase packetをfresh judge一体へ渡す12 independent invocationsとしてresponse completenessを構造化します。採否はchannelではなくnode IDの2/3 majorityで行い、同じnodeへlexical / relationの票が分かれてもcorrect evidenceとして扱います。channelは実traceのfeedback provenanceと補助分布として保持します。
-
-result-free freeze `1fa2001` 後のdevelopment / holdoutは各12 fresh responsesで全12 gateを通過しました。両splitの4 caseはexpected nodeでunanimous majorityとなり、developmentのselected-node MRRは0.875、holdoutは1.0でした。これは frozen minimal holdout 上のblind node-first selection を支持する観測であり、default、production router、`search_channels()`全体のvalidated状態は変更しません。v1 / v2 artifactとinvalid resultは変更せず、v3も再生成・再集約しません。詳細は[Node-first blind selection experiment](docs/node-first-blind-selection-experiment.md)を参照してください。
-
-Trace-credited feedback adaptationは、relation traceの`record_success`が後続relation retrievalをcontrolより改善するかを、同一frozen corpusとscheduleで比較します。controlもfeedback eventを記録しますがedgeを変更せず、treatmentだけがcredited pathを強化します。result-free manifestをpushした後はdevelopmentを一度だけ実行し、全gate通過時だけholdoutを一度開きます。既定API、router、production品質の主張は変更しません。詳細は[Trace-credited feedback adaptation experiment](docs/feedback-adaptation-experiment.md)を参照してください。
-
-独立reproductionはprior feedback-adaptation resultを選択入力にせず、新規D1 development / holdout splitで同じtrace-credit claimを検証します。relation pathはruntime fieldを除き、`source_id`、`target_id`、`edge_type`だけへ射影してgoldと比較します。prior fixtureは識別子だけのcontamination auditに使い、prior goldとresultは読みません。詳細は[Trace-credited feedback adaptation reproduction experiment](docs/feedback-adaptation-reproduction-experiment.md)を参照してください。
-
-Feedback rank elasticity runnerは、source SQLiteを変更せず、各累積feedback checkpointをfresh cloneから再生します。target rankだけでなくraw / normalized graph score、final-score margin、top-k rank delta、非対象churnを出力し、max-normalization ceiling、rank flip threshold、schedule全体のrank安定を区別します。これは診断専用であり、learning rate、fusion、normalization、既定値を変更しません。仕様と実行方法は[Feedback rank elasticity](docs/feedback-rank-elasticity.md)を参照してください。
+callerは両laneを検査し、下流判断で実際に使用したlaneの`trace_id`と`node_id`をfeedbackへ渡します。channel文字列を後から自己申告せず、保存済みtrace provenanceがreinforcement有無を決めます。
 
 Evidence-gated local feedback reinforcementは、credited edgeごとに異なるsuccess traceを永続evidenceとして数え、設定quorum到達後だけ既存bounded updateを一回ずつ適用するopt-in candidateです。`neuron_graph_rag.evidence_feedback` のclassから明示的に利用し、package rootと`.engine`のlegacy class identityは変更しません。既定quorumは`1`で現行動作を保ち、`2`以上では到達前のweightとsame-source siblingを変更しません。core / MCP receiptはcount、quorum、activationを返します。詳細は[Evidence-gated local feedback reinforcement](docs/evidence-gated-local-feedback-reinforcement.md)を参照してください。
 
@@ -351,16 +299,6 @@ Confirmed-outcome feedback reinforcementは、同じ candidate class の `confir
 Soft-start feedback reinforcementは、`soft_start_feedback_reinforcement=True`、`soft_start_feedback_ratio`、`confirmation_decay_ratio` を明示する別の default-off candidate です。credited relation edge の最初の新規 `used` は通常 bounded update の一部だけを provisional に適用し、最初の独立 `confirmed` が残りを補完します。後続 confirmation は既存 geometric decay に従い、same-source sibling normalization は `used` ではなく各 confirmation の actual delta だけへ適用します。confirmed-only candidate、hard quorum と同時には有効化できず、既存 q1/s0、q3/s1、confirmed-only、凍結評価 artifact と default fingerprint は変更しません。詳細は[Confirmed-outcome feedback reinforcement](docs/confirmed-outcome-feedback-reinforcement.md#soft-start-successor-candidate)を参照してください。
 
 Outcome-driven feedback deactivationは、soft-startへ `outcome_driven_feedback_deactivation=True` を追加した時だけ有効になるdefault-off candidateです。保存済みtrace / credited pathへ帰属できる`corrected`と`rolled_back`は、credited加算と同じcontributionのsame-source sibling normalizationを一体で正確に戻します。`superseded`はedgeと証拠を削除せずdormantにし、同じ保存済みpathの後続`confirmed`で再活性化します。lexical、zero-hop、別source、uncredited failure、基礎weight以下へのpunitive updateは変更しません。mechanicsとresult-free snapshot protocolだけを先にfreezeし、観測はmerge後のsuccessor Issueへ分離します。詳細は[Outcome-driven feedback deactivation](docs/outcome-driven-feedback-deactivation.md)を参照してください。
-
-local database上の比較は、[Soft-start snapshot evaluation](docs/soft-start-snapshot-evaluation.md)でtransaction-consistent private snapshot、固定4 arm、result-free manifest、one-time development、conditional holdout、privacy / mutation / rank hard gateとして分離しています。評価はsnapshotのfresh cloneだけを変更し、source database、live config、snapshot本体、private本文をpublic artifactへ含めません。支持結果も固定local snapshot上のcutover候補に限定し、このissue内でconfigやdefaultを変更しません。
-
-v1 developmentはsnapshot既存evidenceによりq3/s1がfresh `used_2`で発火し、空baseline由来の`used_3`を固定したboundary gateだけが不合格となりました。この不支持resultを変更せず、[Baseline-aware soft-start snapshot evaluation](docs/baseline-aware-soft-start-snapshot-evaluation.md)はfresh snapshotと別caseを使い、initial evidence stateからq3 first mutationを導出します。baseline不一致やcapacity不足ではregistered resultを作りません。v2はregistered output不在のfreeze-only PRとして固定し、squash merge後の別Issueでdevelopmentを一度だけ実行して、全gate通過時だけholdoutを一度開きます。
-
-後続の feedback policy comparison に使う public source は、[feedback-policy-comparison-v1](corpora/feedback-policy-comparison-v1/README.md) に corpus-only で固定しています。development / holdout 各二 cluster の明示 link topology、source-only manifest、raw SHA-256、LF 改行規則、provenance、既存 fixture との identity contamination audit だけを含み、評価の選択入力と観測物は含めません。この source merge commit を後続の別 issue が唯一の入力として扱います。
-
-この corpus を使う `used + q3 + sibling normalization 1.0` と `confirmed + decay 0.5 + sibling normalization 1.0` の比較は、[Feedback policy comparison evaluation](docs/feedback-policy-comparison-evaluation.md) に result-free protocol、one-time development、conditional holdout、exclusive observed result、再計算可能な hard gate を固定しています。controlled result は default adoption や production quality を意味しません。
-
-Canonical evidence gate evaluationは、quorum `3` と sibling normalization `1.0` の組合せを、fresh engine checkpoint、独立development / holdout identity、非アルファベット順canonical gate array、exclusive result writerで評価します。freeze前に登録外placeholderで実writer→verifier round-tripを証明し、development全gate通過時だけholdoutを一度開きます。既定値とvalidated状態は変更しません。詳細は[Canonical evidence gate evaluation](docs/canonical-evidence-gate-evaluation.md)を参照してください。
 
 ## Explanation model
 

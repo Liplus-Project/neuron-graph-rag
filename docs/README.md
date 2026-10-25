@@ -10,13 +10,11 @@
 
 ## 整理と凍結契約
 
-既存83ファイルのうち7ファイルを用途別フォルダへ移動し、76ファイルは元のパスとbytesを維持しています。
+既存83ファイルのうち7ファイルを用途別フォルダへ移動し、76ファイルは元のパスとbytesを維持していました。#309 で凍結済みの実験・観測 module、runner、テスト、fixture、証拠と、それらを対象とする文書を削除し、台帳に残る文書は18ファイル（移動2、元パス維持16）になりました。削除した文書と証拠は git 履歴に残ります。
 
-manifest内の各hash registryに67文書が直接登録されています。残る9文書はmanifest・凍結corpusの文書参照と維持文書からの参照を保護するために元パスを維持しています。凍結本文の書換えや互換本文の複製を避けています。各カテゴリの「元パス維持」が該当します。[分類台帳](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/documentation-layout.json)で各文書の移動先、登録元、維持文書からの参照を確認できます。
+文書を元パスに固定していた manifest 内の hash registry は、同じ変更で削除されたため残っていません。各カテゴリの「元パス維持」は、移動しなかった文書を示します。[分類台帳](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/documentation-layout.json)で各文書の移動先と維持文書からの参照を確認できます。
 
-fixture・manifest・観測証拠の内部パスは当時の識別子として維持します。古い実験の再実行や共有データベースへのアクセスは行いません。
-
-リポジトリ直下のREADME.mdも現行の凍結hash検証対象のため、案内リンクを追記していません。GitHubでdocsフォルダを開くと、このREADMEが文書入口になります。
+残した fixture・manifest・観測証拠の内部パスは当時の識別子として維持します。古い実験の再実行や共有データベースへのアクセスは行いません。
 
 ## Wiki
 
