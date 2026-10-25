@@ -417,4 +417,3 @@ objectのキーは `writer` と `source_refs` の2つです。writerは非空文
 ## License
 
 本プロジェクトは [Apache License 2.0](LICENSE) の下で提供されます。帰属情報は [NOTICE](NOTICE) を参照してください。
-
