@@ -100,7 +100,7 @@ class DatabaseHomeTest(unittest.TestCase):
                     start_second_write.wait(timeout=2)
                     with second.transaction() as connection:
                         connection.execute(
-                            "INSERT INTO nodes VALUES (?, ?, ?, ?)",
+                            "INSERT INTO nodes(node_id, text, metadata_json, confidence) VALUES (?, ?, ?, ?)",
                             ("second", "second writer", "{}", 1.0),
                         )
                 result.append("ok")
@@ -112,7 +112,7 @@ class DatabaseHomeTest(unittest.TestCase):
         self.assertTrue(second_ready.wait(timeout=2))
         first.connection.execute("BEGIN IMMEDIATE")
         first.connection.execute(
-            "INSERT INTO nodes VALUES (?, ?, ?, ?)",
+            "INSERT INTO nodes(node_id, text, metadata_json, confidence) VALUES (?, ?, ?, ?)",
             ("first", "first writer", "{}", 1.0),
         )
         start_second_write.set()

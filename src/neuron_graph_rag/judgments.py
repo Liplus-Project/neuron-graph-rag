@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from datetime import UTC, datetime
 from typing import Any, Iterable, Mapping
 
@@ -1008,8 +1009,8 @@ class JudgmentGraph:
     def _sync_retrieval(connection: Any, judgment_id: str, statement: str, rationale: str, provenance: dict[str, Any], relations: tuple[tuple[str, str], ...]) -> None:
         metadata = {"kind": "judgment", "provenance": provenance}
         connection.execute(
-            "INSERT INTO nodes VALUES (?, ?, ?, 1.0) ON CONFLICT(node_id) DO UPDATE SET text=excluded.text, metadata_json=excluded.metadata_json, confidence=1.0",
-            (judgment_id, f"{statement}\n\n{rationale}", json.dumps(metadata, sort_keys=True, ensure_ascii=False)),
+            "INSERT INTO nodes(node_id, text, metadata_json, confidence, created_at) VALUES (?, ?, ?, 1.0, ?) ON CONFLICT(node_id) DO UPDATE SET text=excluded.text, metadata_json=excluded.metadata_json, confidence=1.0",
+            (judgment_id, f"{statement}\n\n{rationale}", json.dumps(metadata, sort_keys=True, ensure_ascii=False), time.time()),
         )
         connection.execute("DELETE FROM edges WHERE source_id = ?", (judgment_id,))
         connection.executemany("INSERT INTO edges(source_id,target_id,edge_type,weight,factuality) VALUES (?,?,?,1.0,1.0)", [(judgment_id, target, kind) for target, kind in relations])

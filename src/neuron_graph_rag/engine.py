@@ -169,14 +169,53 @@ class NeuronGraphRAG:
         *,
         metadata: dict[str, object] | None = None,
         confidence: float = 1.0,
+        now: datetime | float | None = None,
     ) -> DocumentNode:
         if not node_id or not text.strip():
             raise ValueError("node_id and text are required")
         if not 0.0 <= confidence <= 1.0:
             raise ValueError("confidence must be between 0 and 1")
         node = DocumentNode(node_id, text, dict(metadata or {}), confidence)
-        self.store.upsert_node(node)
+        self.store.upsert_node(node, created_at=self._timestamp(now))
         return node
+
+    def expire_unused_nodes(
+        self,
+        max_age_days: float,
+        *,
+        now: datetime | float | None = None,
+        dry_run: bool = False,
+    ) -> dict[str, object]:
+        """Delete nodes not successfully used within ``max_age_days`` (opt-in).
+
+        A node's age is counted from ``last_used_at``, or from ``created_at`` when it
+        has never been used. Retrieval alone never resets the clock. Judgment nodes are
+        never expired here. An attached CPU / CUDA shortlist cache is pruned of the
+        expired node IDs after the database transaction commits.
+        """
+        if (
+            isinstance(max_age_days, bool)
+            or not isinstance(max_age_days, (int, float))
+            or not math.isfinite(max_age_days)
+            or max_age_days <= 0
+        ):
+            raise ValueError("max_age_days must be a positive finite number")
+        timestamp = self._timestamp(now)
+        result = self.store.expire_unused_nodes(
+            cutoff=timestamp - float(max_age_days) * 86_400.0,
+            now=timestamp,
+            dry_run=dry_run,
+        )
+        result["max_age_days"] = float(max_age_days)
+        pruned: dict[str, int] = {}
+        if not dry_run and result["expired_count"]:
+            expired_ids = [item["node_id"] for item in result["expired"]]
+            for name in ("_cpu_shortlist_retriever", "_cuda_shortlist_retriever"):
+                retriever = getattr(self, name, None)
+                if retriever is not None and hasattr(retriever, "prune_documents"):
+                    pruned[name.strip("_")] = retriever.prune_documents(expired_ids)
+        result["pruned_caches"] = pruned
+        return result
 
     def add_edge(
         self,

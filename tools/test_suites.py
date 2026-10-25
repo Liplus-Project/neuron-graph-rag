@@ -6,7 +6,7 @@ GROUPS = {
         "modules": """
 test_cli_and_eval test_confirmed_outcome_feedback test_database_home
 test_decision_wiki_import test_decision_wiki_incremental test_engine test_exclusion_intent
-test_feedback_ledger
+test_feedback_ledger test_node_expiry
 test_github_rag_compatibility test_judgments test_late_supersession test_mcp_adapter
 test_outcome_feedback_deactivation test_outcome_feedback_deactivation_interleaving
 test_sibling_relation_feedback test_soft_start_feedback test_semantic_retrieval

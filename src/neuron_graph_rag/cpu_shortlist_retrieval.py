@@ -518,6 +518,22 @@ class CpuShortlistRetriever:
             e5_seconds, time.monotonic() - started, _peak_rss_bytes(), fingerprint,
         )
 
+    def prune_documents(self, node_ids: Sequence[str]) -> int:
+        """Drop cached documents and chunks for node IDs removed from the corpus."""
+        if not node_ids or not self.cache_path.exists():
+            return 0
+        ids = list(dict.fromkeys(node_ids))
+        placeholders = ",".join("?" for _ in ids)
+        count_query = f"SELECT COUNT(*) FROM documents WHERE node_id IN ({placeholders})"
+        with closing(self._connect()) as connection, connection:
+            present = int(connection.execute(count_query, ids).fetchone()[0])
+            connection.executemany(
+                "DELETE FROM documents WHERE node_id = ?", [(node_id,) for node_id in ids]
+            )
+            if connection.execute(count_query, ids).fetchone()[0]:
+                raise RuntimeError("shortlist cache prune left expired documents behind")
+        return present
+
     def _validate_current_corpus(self, connection: sqlite3.Connection, nodes: Sequence[DocumentNode]) -> None:
         actual = dict(connection.execute("SELECT node_id, content_sha256 FROM documents"))
         expected = {node.node_id: _content_identity(node) for node in nodes}
