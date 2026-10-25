@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 import sqlite3
 import time
 from collections.abc import Callable, Iterable, Iterator
@@ -11,6 +12,29 @@ from pathlib import Path
 from typing import Any
 
 from .models import DocumentNode, FeedbackContractError, FeedbackReceipt, TypedEdge
+
+_SOURCE_REF = re.compile(
+    r"https://github[.]com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/"
+    r"(?:issues|pull)/[1-9][0-9]*/?"
+)
+
+
+def validate_node_provenance(metadata: dict[str, Any]) -> None:
+    """Validate the optional reserved key without interpreting judgment provenance."""
+    if "node_provenance" not in metadata:
+        return
+    value = metadata["node_provenance"]
+    if not isinstance(value, dict) or set(value) != {"writer", "source_refs"}:
+        raise ValueError("node_provenance must contain exactly writer and source_refs")
+    writer = value["writer"]
+    refs = value["source_refs"]
+    if not isinstance(writer, str) or not writer.strip():
+        raise ValueError("node_provenance.writer must be a non-empty string")
+    if not isinstance(refs, list) or not refs or any(
+        not isinstance(ref, str) or _SOURCE_REF.fullmatch(ref) is None for ref in refs
+    ):
+        raise ValueError("node_provenance.source_refs must be a non-empty list of HTTPS GitHub issue/PR URLs")
+
 
 FILE_BUSY_TIMEOUT_MILLISECONDS = 5_000
 
@@ -565,9 +589,26 @@ class SQLiteStore:
         finally:
             self.connection.execute("PRAGMA foreign_keys = ON")
 
-    def upsert_node(self, node: DocumentNode, *, created_at: float | None = None) -> None:
+    def upsert_node(
+        self, node: DocumentNode, *, created_at: float | None = None
+    ) -> DocumentNode:
         """Insert or update a node. ``created_at`` is kept from the first insert."""
+        validate_node_provenance(node.metadata)
+        # Detach caller-owned objects and reject unserializable metadata before writing.
+        metadata = json.loads(json.dumps(node.metadata, ensure_ascii=False))
         with self.transaction() as connection:
+            # The transaction helper alone defers BEGIN until the first DML statement.
+            # Acquire the writer lock before reading the reserved key.
+            if not connection.in_transaction:
+                connection.execute("BEGIN IMMEDIATE")
+            if "node_provenance" not in metadata:
+                row = connection.execute(
+                    "SELECT metadata_json FROM nodes WHERE node_id = ?", (node.node_id,)
+                ).fetchone()
+                if row is not None:
+                    previous = json.loads(row["metadata_json"])
+                    if "node_provenance" in previous:
+                        metadata["node_provenance"] = previous["node_provenance"]
             connection.execute(
                 """
                 INSERT INTO nodes(node_id, text, metadata_json, confidence, created_at)
@@ -580,11 +621,13 @@ class SQLiteStore:
                 (
                     node.node_id,
                     node.text,
-                    json.dumps(node.metadata, sort_keys=True, ensure_ascii=False),
+                    json.dumps(metadata, sort_keys=True, ensure_ascii=False),
                     node.confidence,
                     time.time() if created_at is None else float(created_at),
                 ),
             )
+
+            return DocumentNode(node.node_id, node.text, metadata, node.confidence)
 
     def node_usage(self, node_id: str) -> dict[str, float | None]:
         row = self.connection.execute(

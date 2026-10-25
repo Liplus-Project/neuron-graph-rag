@@ -176,8 +176,7 @@ class NeuronGraphRAG:
         if not 0.0 <= confidence <= 1.0:
             raise ValueError("confidence must be between 0 and 1")
         node = DocumentNode(node_id, text, dict(metadata or {}), confidence)
-        self.store.upsert_node(node, created_at=self._timestamp(now))
-        return node
+        return self.store.upsert_node(node, created_at=self._timestamp(now))
 
     def expire_unused_nodes(
         self,

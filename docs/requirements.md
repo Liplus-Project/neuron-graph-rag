@@ -17,6 +17,7 @@
 ## 3. Functional requirements
 
 1. 文書ノード、metadata、知識確信度を SQLite に永続化できる。
+   任意の予約キー `metadata.node_provenance` は、非空の文字列 `writer` と、1件以上の HTTPS GitHub issue/PR URL を含む文字列配列 `source_refs` だけを持つ object とする。URL は `https://github.com/{owner}/{repo}/issues/{positive-number}` または `/pull/{positive-number}`（末尾 `/` は任意、query/fragment は不可）とし、存在確認は行わない。writer は自己申告で認証済み身元ではない。不正入力（null/空objectを含む）は保存前に拒否する。再取り込みでキー省略時は既存の同キーだけを原子的に保持し、明示した有効objectで全体を置換する。他のmetadataは従来どおり置換し、API返却値はその書込みの保存内容に一致する。旧ノードへの推測補完、judgmentの `metadata.provenance` 変更、日時の更新、schema移行は行わない。既存Python APIで取り込み、MCP通常/CUDA検索のmetadataで返す。
 2. 型付きエッジ、結合重み、事実性を SQLite に永続化できる。
 3. BM25 と dense cosine similarity を正規化し、入口スコアへ統合できる。
 4. 上位入口ノードから、重み、事実性、hop decay を使って決定論的に活性を伝播できる。
