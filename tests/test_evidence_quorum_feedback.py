@@ -13,12 +13,6 @@ from neuron_graph_rag import (
 from neuron_graph_rag.engine import EngineConfig as LegacyEngineConfig
 from neuron_graph_rag.engine import NeuronGraphRAG as LegacyNeuronGraphRAG
 from neuron_graph_rag.evidence_feedback import EngineConfig, NeuronGraphRAG
-from neuron_graph_rag.sibling_normalization_evaluation import (
-    EngineConfig as FrozenEvaluationEngineConfig,
-)
-from neuron_graph_rag.sibling_normalization_evaluation import (
-    NeuronGraphRAG as FrozenEvaluationNeuronGraphRAG,
-)
 
 
 def _config(*, quorum: int = 3, sibling_ratio: float = 0.0) -> EngineConfig:
@@ -58,8 +52,6 @@ class EvidenceQuorumFeedbackTest(unittest.TestCase):
     def test_candidate_path_does_not_replace_frozen_engine_identity(self) -> None:
         self.assertEqual(LegacyEngineConfig.__module__, "neuron_graph_rag.engine")
         self.assertEqual(LegacyNeuronGraphRAG.__module__, "neuron_graph_rag.engine")
-        self.assertIs(FrozenEvaluationEngineConfig, LegacyEngineConfig)
-        self.assertIs(FrozenEvaluationNeuronGraphRAG, LegacyNeuronGraphRAG)
         self.assertEqual(EngineConfig.__module__, "neuron_graph_rag.evidence_feedback")
         self.assertEqual(NeuronGraphRAG.__module__, "neuron_graph_rag.evidence_feedback")
         with self.assertRaises(TypeError):

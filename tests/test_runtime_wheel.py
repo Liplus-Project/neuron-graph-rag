@@ -58,8 +58,8 @@ class RuntimeWheelTest(unittest.TestCase):
                 self.assertIn(relative, paths)
                 with zipfile.ZipFile(wheel) as archive:
                     self.assertEqual(archive.read(relative), (ROOT / "src" / relative).read_bytes())
-            self.assertNotIn("neuron_graph_rag/cross_encoder_precision_v8_evaluation.py", paths)
-            self.assertNotIn("neuron_graph_rag/real_task_shadow_v3.py", paths)
+            self.assertNotIn("neuron_graph_rag/decision_wiki_import.py", paths)
+            self.assertNotIn("neuron_graph_rag/github_source.py", paths)
             subprocess.run(
                 [sys.executable, "-m", "pip", "install", "--no-deps", "--target", str(installed), str(wheel)],
                 check=True, capture_output=True, text=True,
@@ -86,7 +86,7 @@ class RuntimeWheelTest(unittest.TestCase):
                 "assert 'torch' not in sys.modules and 'transformers' not in sys.modules; "
                 "assert LocalPinnedCudaV2M3('missing')._runtime is None")
             run("-c", "import importlib.util; assert importlib.util.find_spec("
-                "'neuron_graph_rag.real_task_shadow_v3') is None")
+                "'neuron_graph_rag.decision_wiki_import') is None")
             demo = json.loads(run("-m", "neuron_graph_rag", "demo"))
             self.assertEqual(demo["feedback_count"], 1)
             evaluation = json.loads(run("-m", "neuron_graph_rag", "eval"))

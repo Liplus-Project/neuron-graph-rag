@@ -18,7 +18,7 @@ evidence identity は `(source_id, target_id, edge_type, trace_id)` とする。
 - 同じ feedback が複数 edge を credit する場合、evidence と activation は edge identity ごとに判定する。
 - lexical trace、zero-hop success、credited path を持たない node は evidence を作らず、edge を変更しない。
 
-`rank_elasticity` や既存の result-free evaluation はこの candidate の採用値を決めない。quorum の default 変更は新しい固定 protocol と別判断を必要とする。
+既存の result-free evaluation はこの candidate の採用値を決めない。quorum の default 変更は新しい固定 protocol と別判断を必要とする。
 
 ## Local sibling normalization
 
@@ -53,7 +53,6 @@ synthetic regression は quorum `3` の 1 / 2 / 3 / 4 evidence 境界、同一 t
 
 ## Related
 
-- [Feedback rank elasticity](feedback-rank-elasticity.md)
 - [Sibling relation feedback normalization](sibling-relation-feedback-normalization.md)
 - [Optional MCP feedback interface](optional-mcp-interface.md)
 - [Decision Structure](Decision-Structure.md)

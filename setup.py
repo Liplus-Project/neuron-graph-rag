@@ -1,4 +1,4 @@
-"""Keep the checkout's experiment imports without shipping them in the runtime wheel."""
+"""Keep checkout-only tool modules out of the runtime wheel."""
 
 from setuptools import setup
 from setuptools.command.build_py import build_py

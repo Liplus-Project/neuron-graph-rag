@@ -154,13 +154,12 @@ class CpuShortlistTests(unittest.TestCase):
             with NeuronGraphRAG() as untouched:
                 self.assertFalse(hasattr(untouched, "search_cpu_shortlist"))
 
-    def test_source_grounded_fixture_is_independent_from_v5(self):
+    def test_source_grounded_fixture_is_self_contained(self):
         fixture_path = Path(__file__).parent / "fixtures" / "cpu_shortlist_source_grounded.json"
         fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
         encoded = fixture_path.read_bytes()
         self.assertEqual(encoded.decode("utf-8").encode("utf-8"), encoded)
         self.assertNotIn("holdout", encoded.decode("utf-8").lower())
-        self.assertNotIn("github_retrieval_parity_v5", encoded.decode("utf-8"))
         ids = {row["node_id"] for row in fixture["documents"]}
         self.assertTrue(all(row["expected_source_id"] in ids for row in fixture["queries"]))
 
