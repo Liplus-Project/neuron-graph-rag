@@ -41,8 +41,9 @@ entry score + graph activation --> ranked results + path explanation
 - `activation_state`: 検索時に生じた時間減衰する動的活性
 - `retrievals` / `retrieval_results`: 何が検索されたか
 - `success_feedback` / `success_nodes`: 何が実際に利用され成功したか
+- `nodes.created_at` / `nodes.last_used_at`: node を最初に取り込んだ時刻と、最後に利用され成功した時刻（UNIX 秒）
 
-活性が減衰しても、`confidence` と `factuality` は変更されません。検索だけでも `edge.weight` は変更されません。
+活性が減衰しても、`confidence` と `factuality` は変更されません。検索だけでも `edge.weight` と `last_used_at` は変更されません。
 
 ## Terminology
 
@@ -110,6 +111,29 @@ JSON 出力には次が含まれます。
 - retrieval record 数と success feedback record 数
 
 demo は `implementation` node が利用され成功したと申告します。最も寄与した `policy -> decision -> implementation` 経路だけが強化され、再検索時の説明に新しい edge weight が現れます。
+
+## Node expiry
+
+Li+ の Knowledge 層 Tier 2（エージェント間で共有するローカルの棚）として使うため、最後に利用されてから一定日数が過ぎた node を消せます。自動では消しません。明示したときだけ実行します。
+
+```bash
+# 消える node を確かめる（削除しない）
+python -m neuron_graph_rag expire-nodes --older-than-days 90 --dry-run
+
+# 実際に消す
+python -m neuron_graph_rag expire-nodes --older-than-days 90 --database ~/.ngr/db/knowledge.db
+```
+
+`--database` を省くと、MCP server と同じく `NGR_DATABASE`、設定ファイル、shared database home の順で解決します。存在しない database は作らずにエラーにします。
+
+- 期限は `last_used_at` から数えます。一度も利用されていない node は `created_at` から数えます。
+- `last_used_at` が進むのは、成功した利用を記録したときだけです（`record_success`、`record_source_use` の `used`、soft-start / evidence quorum の success feedback。confirmed-only でも `used` で進みます）。検索に当たっただけでは進みません。古い時刻の feedback で巻き戻ることもありません。
+- 削除は一つの SQLite transaction（`BEGIN IMMEDIATE`）で行います。途中で失敗したら全体を戻します。
+- node を消すと、その edge、activation、retrieval result、source-use、success / outcome の node 記録、edge に紐づく feedback 記録も cascade で消えます。BM25 と dense は検索のたびに `nodes` から計算するので、消した node はどちらの入口にも残りません。
+- judgment の node は対象外です。judgment は archive / hard delete の lifecycle で扱います。
+- library からは `rag.expire_unused_nodes(90, dry_run=True)` で呼べます。CPU / CUDA shortlist cache を attach している engine では、消した node を cache からも取り除きます。attach していない別 process の shortlist cache は、次の検索で stale として止まるので、`update_cache` で同期してください。
+
+既存の database は開いたときに列を追加します。追加前からある node と、列を書かない古い writer が入れた node の `created_at` は、そのとき開いた時刻で埋めます。そのため既存の node は、移行した時点から期限を数え始めます。
 
 ## Minimal eval
 

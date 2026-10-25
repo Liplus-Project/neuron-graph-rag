@@ -4,6 +4,7 @@ import hashlib
 import json
 import math
 import sqlite3
+import time
 from collections.abc import Callable, Iterable, Iterator
 from contextlib import contextmanager
 from pathlib import Path
@@ -99,7 +100,9 @@ class SQLiteStore:
                 node_id TEXT PRIMARY KEY,
                 text TEXT NOT NULL,
                 metadata_json TEXT NOT NULL,
-                confidence REAL NOT NULL CHECK(confidence BETWEEN 0.0 AND 1.0)
+                confidence REAL NOT NULL CHECK(confidence BETWEEN 0.0 AND 1.0),
+                created_at REAL,
+                last_used_at REAL
             );
 
             CREATE TABLE IF NOT EXISTS edges (
@@ -380,6 +383,7 @@ class SQLiteStore:
             """
         )
         self._allow_shared_successor()
+        self._add_node_usage_columns()
         relation_columns = {
             row["name"]
             for row in self.connection.execute("PRAGMA table_info(judgment_relations)")
@@ -474,6 +478,31 @@ class SQLiteStore:
             raise
         self.connection.commit()
 
+    def _add_node_usage_columns(self) -> None:
+        """Add and backfill the per-node usage clock (Li+ Knowledge Tier 2).
+
+        ``created_at`` is when this store first saw the node and ``last_used_at`` is
+        the latest successful use. Rows that predate the columns, or that an older
+        writer inserted without them, are stamped with the current time, so their
+        expiry age starts now instead of being guessed.
+        """
+        for column in ("created_at", "last_used_at"):
+            columns = {
+                row["name"] for row in self.connection.execute("PRAGMA table_info(nodes)")
+            }
+            if column in columns:
+                continue
+            try:
+                self.connection.execute(f"ALTER TABLE nodes ADD COLUMN {column} REAL")
+            except sqlite3.OperationalError as error:
+                # A concurrent opener may have added the column first.
+                if "duplicate column" not in str(error).lower():
+                    raise
+        self.connection.execute(
+            "UPDATE nodes SET created_at = ? WHERE created_at IS NULL", (time.time(),)
+        )
+        self.connection.commit()
+
     def _successor_is_unique(self) -> bool:
         for index in self.connection.execute("PRAGMA index_list(judgments)").fetchall():
             if index["unique"] and index["origin"] == "u":
@@ -536,12 +565,13 @@ class SQLiteStore:
         finally:
             self.connection.execute("PRAGMA foreign_keys = ON")
 
-    def upsert_node(self, node: DocumentNode) -> None:
+    def upsert_node(self, node: DocumentNode, *, created_at: float | None = None) -> None:
+        """Insert or update a node. ``created_at`` is kept from the first insert."""
         with self.transaction() as connection:
             connection.execute(
                 """
-                INSERT INTO nodes(node_id, text, metadata_json, confidence)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO nodes(node_id, text, metadata_json, confidence, created_at)
+                VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT(node_id) DO UPDATE SET
                     text = excluded.text,
                     metadata_json = excluded.metadata_json,
@@ -552,8 +582,95 @@ class SQLiteStore:
                     node.text,
                     json.dumps(node.metadata, sort_keys=True, ensure_ascii=False),
                     node.confidence,
+                    time.time() if created_at is None else float(created_at),
                 ),
             )
+
+    def node_usage(self, node_id: str) -> dict[str, float | None]:
+        row = self.connection.execute(
+            "SELECT created_at, last_used_at FROM nodes WHERE node_id = ?", (node_id,)
+        ).fetchone()
+        if row is None:
+            raise KeyError(f"Unknown node: {node_id}")
+        return {"created_at": row["created_at"], "last_used_at": row["last_used_at"]}
+
+    @staticmethod
+    def _mark_nodes_used(
+        connection: sqlite3.Connection, node_ids: Iterable[str], used_at: float
+    ) -> None:
+        """Advance last_used_at for nodes recorded as successfully used.
+
+        Called only from success-use writes, never from retrieval. The clock does not
+        move backwards when feedback arrives with an older timestamp.
+        """
+        connection.executemany(
+            """
+            UPDATE nodes SET last_used_at = ?
+            WHERE node_id = ? AND (last_used_at IS NULL OR last_used_at < ?)
+            """,
+            [(used_at, node_id, used_at) for node_id in node_ids],
+        )
+
+    def expire_unused_nodes(
+        self, *, cutoff: float, now: float, dry_run: bool = False
+    ) -> dict[str, Any]:
+        """Delete nodes whose last use (or first sight, if never used) is before cutoff.
+
+        Runs in one IMMEDIATE transaction so a concurrent success write cannot land
+        between selection and deletion. Judgment nodes are excluded; they have their own
+        archive / hard-delete lifecycle. Deleting a node cascades to its edges,
+        activation, retrieval results, source-use rows, success / outcome node rows and
+        every edge-keyed feedback table, so no retrieval surface in this database keeps
+        a copy. BM25 and dense scoring read nodes on every search and hold no index.
+        """
+        if not math.isfinite(cutoff) or not math.isfinite(now) or cutoff > now:
+            raise ValueError("cutoff must be finite and not later than now")
+        with self.transaction() as connection:
+            if not connection.in_transaction:
+                connection.execute("BEGIN IMMEDIATE")
+            if not dry_run:
+                connection.execute(
+                    "UPDATE nodes SET created_at = ? WHERE created_at IS NULL", (now,)
+                )
+            rows = connection.execute(
+                """
+                SELECT node_id, created_at, last_used_at FROM nodes
+                WHERE COALESCE(last_used_at, created_at, ?) < ?
+                  AND NOT EXISTS (
+                    SELECT 1 FROM judgments WHERE judgments.judgment_id = nodes.node_id
+                  )
+                ORDER BY node_id
+                """,
+                (now, cutoff),
+            ).fetchall()
+            expired = [
+                {
+                    "node_id": str(row["node_id"]),
+                    "created_at": row["created_at"],
+                    "last_used_at": row["last_used_at"],
+                }
+                for row in rows
+            ]
+            if not dry_run and expired:
+                expired_ids = [item["node_id"] for item in expired]
+                connection.executemany(
+                    "DELETE FROM nodes WHERE node_id = ?",
+                    [(node_id,) for node_id in expired_ids],
+                )
+                placeholders = ",".join("?" for _ in expired_ids)
+                remaining = connection.execute(
+                    f"SELECT COUNT(*) FROM nodes WHERE node_id IN ({placeholders})",
+                    expired_ids,
+                ).fetchone()[0]
+                if remaining:
+                    raise RuntimeError("node expiry left expired nodes behind")
+        return {
+            "cutoff": cutoff,
+            "now": now,
+            "dry_run": dry_run,
+            "expired_count": len(expired),
+            "expired": expired,
+        }
 
     def upsert_edge(self, edge: TypedEdge) -> None:
         with self.transaction() as connection:
@@ -1060,6 +1177,7 @@ class SQLiteStore:
                     """,
                     (feedback_id, node_id),
                 )
+                self._mark_nodes_used(connection, (node_id,), created_at)
             reinforced_increase_by_source: dict[str, float] = {}
             for source_id, target_id, edge_type, increment, maximum in edge_updates:
                 row = connection.execute(
@@ -1183,6 +1301,7 @@ class SQLiteStore:
                     """,
                     (feedback_id, node_id),
                 )
+                self._mark_nodes_used(connection, (node_id,), created_at)
             reinforced_increase_by_source: dict[str, float] = {}
             for source_id, target_id, edge_type, increment, maximum in updates:
                 row = connection.execute(
@@ -1325,6 +1444,7 @@ class SQLiteStore:
                     "INSERT INTO success_nodes(feedback_id, node_id) VALUES (?, ?)",
                     (feedback_id, node_id),
                 )
+                self._mark_nodes_used(connection, (node_id,), created_at)
             for source_id, target_id, edge_type, base_increment, maximum in updates:
                 duplicate = connection.execute(
                     """
@@ -1571,6 +1691,9 @@ class SQLiteStore:
                         """,
                         (trace_id, node_id, stage, created_at),
                     )
+            # The used stage is the success-use record even when the active policy
+            # (confirmed-only) defers reinforcement and writes no success_nodes row.
+            self._mark_nodes_used(connection, newly_used, created_at)
             if confirmation_candidate:
                 for node_id in newly_used:
                     connection.execute(
