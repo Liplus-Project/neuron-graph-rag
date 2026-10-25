@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from .models import DocumentNode, FeedbackContractError, FeedbackReceipt, TypedEdge
+from .node_provenance import validate_node_provenance
 
 FILE_BUSY_TIMEOUT_MILLISECONDS = 5_000
 
@@ -565,9 +566,26 @@ class SQLiteStore:
         finally:
             self.connection.execute("PRAGMA foreign_keys = ON")
 
-    def upsert_node(self, node: DocumentNode, *, created_at: float | None = None) -> None:
+    def upsert_node(
+        self, node: DocumentNode, *, created_at: float | None = None
+    ) -> DocumentNode:
         """Insert or update a node. ``created_at`` is kept from the first insert."""
+        validate_node_provenance(node.metadata)
+        # Detach caller-owned objects and reject unserializable metadata before writing.
+        metadata = json.loads(json.dumps(node.metadata, ensure_ascii=False))
         with self.transaction() as connection:
+            # The transaction helper alone defers BEGIN until the first DML statement.
+            # Acquire the writer lock before reading the reserved key.
+            if not connection.in_transaction:
+                connection.execute("BEGIN IMMEDIATE")
+            if "node_provenance" not in metadata:
+                row = connection.execute(
+                    "SELECT metadata_json FROM nodes WHERE node_id = ?", (node.node_id,)
+                ).fetchone()
+                if row is not None:
+                    previous = json.loads(row["metadata_json"])
+                    if "node_provenance" in previous:
+                        metadata["node_provenance"] = previous["node_provenance"]
             connection.execute(
                 """
                 INSERT INTO nodes(node_id, text, metadata_json, confidence, created_at)
@@ -580,11 +598,13 @@ class SQLiteStore:
                 (
                     node.node_id,
                     node.text,
-                    json.dumps(node.metadata, sort_keys=True, ensure_ascii=False),
+                    json.dumps(metadata, sort_keys=True, ensure_ascii=False),
                     node.confidence,
                     time.time() if created_at is None else float(created_at),
                 ),
             )
+
+            return DocumentNode(node.node_id, node.text, metadata, node.confidence)
 
     def node_usage(self, node_id: str) -> dict[str, float | None]:
         row = self.connection.execute(

@@ -562,3 +562,10 @@ MCP であることだけを理由に別 repository へ分離しない。次の�
 - core test、demo、eval が adapter なしで引き続き通る
 - relation type registry の read / validate が成功・失敗とも persistent table を変更せず、write が exact revision check と transaction rollback を守る
 - active / unknown / deprecated type の warning、strict input/output schema、tool annotation が契約に一致し、未知 / deprecated relation assertion が保存される
+
+### ノードの出典metadata
+
+通常の `search` と `search_cuda_shortlist` は、Pythonの `add_document` で保存した任意の `metadata.node_provenance` を、そのままhitのmetadataに返す。
+例: `{"node_provenance": {"writer": "Luna", "source_refs": ["https://github.com/Liplus-Project/neuron-graph-rag/issues/311"]}}`。
+writerは自己申告で認証済み身元ではなく、URLの存在確認も行わない。入力形式は [README](../README.md#ノードの書き手と出典) と [requirements](requirements.md) を参照する。
+再取り込み時のキー省略は既存出典のみ保持し、有効objectの明示で全体置換する。null/空objectによる削除は拒否する。新しい取り込みtool、検索フィルター、全編集履歴は提供しない。

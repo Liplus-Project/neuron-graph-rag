@@ -400,3 +400,20 @@ Canonical evidence gate evaluationは、quorum `3` と sibling normalization `1.
 ## License
 
 本プロジェクトは [Apache License 2.0](LICENSE) の下で提供されます。帰属情報は [NOTICE](NOTICE) を参照してください。
+
+### ノードの書き手と出典
+
+既存のPython APIで、任意の `metadata.node_provenance` を指定できます。
+
+```python
+rag.add_document("decision-311", "共有ノードの根拠", metadata={
+    "node_provenance": {
+        "writer": "Luna",
+        "source_refs": ["https://github.com/Liplus-Project/neuron-graph-rag/issues/311"],
+    },
+})
+```
+
+objectのキーは `writer` と `source_refs` の2つです。writerは非空文字列の自己申告で、認証済み身元ではありません。source_refsは1件以上のHTTPS GitHub issue/PR URLの配列で、`/issues/123` または `/pull/123` の形（末尾 `/` は任意、query/fragmentは不可）とし、URLの存在確認はしません。不正入力、null、空objectは保存前に拒否します。
+
+再取り込みでキーを省略すると、既存のnode_provenanceだけを原子的に保持します。有効objectを明示すると全体を置換し、他のmetadataは従来どおり置換します。返却ノードもその書込みの保存内容を返します。created_at / last_used_atは保持し、既存judgmentのmetadata.provenanceの契約は変更せず、旧ノードへの推測補完は行いません。新しいDB列や取り込みMCP toolは追加せず、既存MCP通常/CUDA検索のmetadataに出典を返します。

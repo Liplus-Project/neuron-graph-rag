@@ -15,6 +15,8 @@ import time
 import unittest
 from pathlib import Path
 
+NODE_PROVENANCE = {"writer": "Luna", "source_refs": ["https://github.com/Liplus-Project/neuron-graph-rag/issues/311"]}
+
 MCP_AVAILABLE = importlib.util.find_spec("mcp") is not None
 
 if MCP_AVAILABLE:
@@ -49,7 +51,7 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.database = Path(self.temporary.name) / "ngr.sqlite"
         with NeuronGraphRAG(self.database) as engine:
-            engine.add_document("decision", "cache invalidation decision")
+            engine.add_document("decision", "cache invalidation decision", metadata={"node_provenance": NODE_PROVENANCE})
             engine.add_document("implementation", "implementation detail")
             engine.add_document("alternate", "alternate approach")
             engine.add_edge("decision", "implementation", "implemented_by", weight=0.7)
@@ -129,6 +131,7 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         )
         self.assertFalse(result.is_error)
         self.assertEqual(json.loads(result.content[0].text), result.structured_content)
+        self.assertEqual(next(hit for hit in result.structured_content["hits"] if hit["node_id"] == "decision")["metadata"]["node_provenance"], NODE_PROVENANCE)
         self.assertIsNone(result.structured_content["trace_expires_at"])
         provenance = result.structured_content["effective_config_provenance"]
         self.assertEqual(provenance["search_surface"], "combined")
@@ -1102,7 +1105,7 @@ class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
         with tempfile.TemporaryDirectory() as directory:
             database = Path(directory) / "gpu.sqlite"
             with NeuronGraphRAG(database) as engine:
-                engine.add_document("decision", "cache invalidation decision")
+                engine.add_document("decision", "cache invalidation decision", metadata={"node_provenance": NODE_PROVENANCE})
 
             class FakeRetriever:
                 calls = 0
@@ -1126,6 +1129,7 @@ class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
                 })
                 first, second = await asyncio.gather(adapter.call_tool(None, params), adapter.call_tool(None, params))
                 self.assertFalse(first.is_error)
+                self.assertEqual(first.structured_content["hits"][0]["metadata"]["node_provenance"], NODE_PROVENANCE)
                 self.assertEqual(first.structured_content, second.structured_content)
                 self.assertEqual(retriever.calls, 2)
                 default = await adapter.call_tool(None, types.CallToolRequestParams(name="search", arguments={
