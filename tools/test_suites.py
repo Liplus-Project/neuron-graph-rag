@@ -18,14 +18,11 @@ test_shared_home test_native_registration test_shared_home_mcp
     "shared": {
         "reason": "製品engine、共通選択・監査・実験runtime契約を含むため、混在モジュールを丸ごと通常実行に残す。",
         "modules": """
-test_000_github_retrieval_parity_v5_routing test_000_historical_readme_routing
-test_historical_readme_bridge
 test_anchored_hybrid test_channels test_d1_fixture test_dynamics_experiment
 test_evidence_quorum_feedback test_fusion_calibration test_local_competition
 test_longitudinal_controlled_corpus_v3 test_precision_control
 test_precision_control_observation test_real_corpus_benchmark
 test_real_task_shadow_v2 test_real_task_shadow_v3
-test_source_grounded_relation_observation_v3_probe
 test_deduplicate_experiment_models test_suite_selection
 """.split(),
     },
