@@ -2,7 +2,7 @@
 
 ## 選ぶ版と導入
 
-v0.3.0 は共通ホーム対応の配布候補。通常は `NGR-<version>-windows-x64-cpu-setup.exe` を選ぶ。
+v0.3.1 は共通ホーム対応の配布候補。通常は `NGR-<version>-windows-x64-cpu-setup.exe` を選ぶ。
 NVIDIA GPU、対応 driver、固定モデルを配置して CUDA 検索を使う場合は CUDA 版を選ぶ。
 通常検索と共有 MCP は CPU 版で動く。モデル weight はどちらにも含まれない。
 
@@ -72,7 +72,7 @@ token は JSON、起動引数、診断ログに保存しない。
 旧版の EXE を再起動しない。
 
 1. 全 MCP クライアントを終了し、旧トレイの **Exit** で本体とトレイを終了する。
-2. v0.3.0 のセットアップでプログラムを更新する。DB をインストーラーで移動しない。
+2. v0.3.0 以降のセットアップでプログラムを更新する。DB をインストーラーで移動しない。
 3. 新 EXE を `NGR.exe --migrate-home --confirm-stopped` で実行する。
 4. 整合性確認済み `.ngr/db/knowledge.db` と `.ngr/backups/legacy-knowledge.db`、完了記録を確認する。
 5. **Configure MCP clients** で既存入口を退避して共通登録へ切り替え、クライアントを開き直す。
