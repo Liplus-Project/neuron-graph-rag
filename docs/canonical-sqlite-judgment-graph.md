@@ -2,7 +2,7 @@
 
 ## 正本境界
 
-NGR の新規 judgment は SQLite の `judgments`、`judgment_revisions`、`judgment_relations` を machine-readable 正本とする。relation label の意味は `judgment_relation_types` と `judgment_relation_type_revisions` を正本とする。`nodes` と `edges` は既存 retrieval contract を保つ検索 projection であり、判断の lifecycle や provenance の正本ではない。既存 Wiki entry の本番移行は fixture による import / export 検証後の別操作とし、この実装は自動移行しない。
+judgment store の新規 judgment は SQLite の `judgments`、`judgment_revisions`、`judgment_relations` を machine-readable 正本とする。これは store 内の正本境界であり、NGR 自身の Decision Structure の正本は GitHub Wiki である（[Decision Structure](Decision-Structure.md) の Source-of-truth boundary）。store へ取り込んだ NGR 自身の判断は Wiki の写しとして扱う。relation label の意味は `judgment_relation_types` と `judgment_relation_type_revisions` を正本とする。`nodes` と `edges` は既存 retrieval contract を保つ検索 projection であり、判断の lifecycle や provenance の正本ではない。既存 Wiki entry の本番移行は fixture による import / export 検証後の別操作とし、この実装は自動移行しない。
 
 ## Domain API
 
