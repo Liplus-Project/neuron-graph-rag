@@ -5,7 +5,7 @@ import unittest
 from collections import Counter
 from pathlib import Path
 
-from neuron_graph_rag.benchmark import read_gold, run_benchmark
+from neuron_graph_rag.benchmark import _cohort_metrics, read_gold, run_benchmark
 from neuron_graph_rag.d1_fixture import read_fixture
 from tools.acquire_d1_fixture import assert_connected
 
@@ -95,6 +95,32 @@ class RealCorpusBenchmarkContractTest(unittest.TestCase):
         self.assertTrue(all(item["matched"] for item in checked["explanations"]))
         self.assertEqual(checked["feedback"]["uncredited_edge_changes"], [])
         self.assertEqual(checked["feedback"]["non_target_rank_changes"], [])
+
+    def test_mrr_uses_sequential_addition_not_builtin_float_sum(self) -> None:
+        # Frozen relation cohort. Left-to-right binary64 addition gives
+        # 0.25833333333333336; the compensated built-in sum of Python 3.12+
+        # gives 0.2583333333333333. The canonical value is the former on
+        # every supported interpreter.
+        metrics = _cohort_metrics([{"rank": rank} for rank in (3, 3, 5, 6)])
+
+        self.assertEqual(metrics["mean_reciprocal_rank"], 0.25833333333333336)
+        self.assertEqual(metrics["hit_at_3"], 0.5)
+
+    def test_checked_mrr_equals_sequential_sum_of_checked_ranks(self) -> None:
+        checked = json.loads(RESULT.read_text(encoding="utf-8"))
+
+        for arm in ("baseline_hybrid", "graph_integrated"):
+            summaries = [checked["metrics"][arm]["overall"]]
+            summaries.extend(checked["metrics"][arm]["cohorts"].values())
+            for summary in summaries:
+                ranks = summary["ranks"]
+                total = 0.0
+                for rank in ranks:
+                    total += 1.0 / rank
+                with self.subTest(arm=arm, ranks=ranks):
+                    self.assertEqual(
+                        summary["mean_reciprocal_rank"], total / len(ranks)
+                    )
 
 
 if __name__ == "__main__":

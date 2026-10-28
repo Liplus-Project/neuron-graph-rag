@@ -4,7 +4,7 @@ import hashlib
 import json
 from collections import Counter
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 from .d1_fixture import load_fixture, read_fixture
 from .engine import EngineConfig, NeuronGraphRAG
@@ -310,10 +310,24 @@ def _cohort_metrics(results: list[dict[str, Any]]) -> dict[str, Any]:
     ranks = [int(result["rank"]) for result in results]
     return {
         "cases": len(ranks),
-        "mean_reciprocal_rank": sum(1.0 / rank for rank in ranks) / len(ranks),
+        "mean_reciprocal_rank": _sequential_float_sum(1.0 / rank for rank in ranks)
+        / len(ranks),
         "hit_at_3": sum(rank <= 3 for rank in ranks) / len(ranks),
         "ranks": ranks,
     }
+
+
+def _sequential_float_sum(values: Iterable[float]) -> float:
+    """Add floats left to right with plain IEEE-754 binary64 addition.
+
+    This is the canonical summation rule of the frozen benchmark result.
+    Built-in ``sum`` switched float summation to a compensated algorithm in
+    Python 3.12, so it reproduces that result only on Python 3.11.
+    """
+    total = 0.0
+    for value in values:
+        total += value
+    return total
 
 
 def _comparison_metrics(comparisons: list[dict[str, Any]]) -> dict[str, Any]:
