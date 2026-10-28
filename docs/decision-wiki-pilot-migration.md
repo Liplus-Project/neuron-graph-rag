@@ -27,4 +27,4 @@ The command refuses to overwrite any output. It builds all four outputs under te
 
 The committed `decision-wiki-pilot-manifest.json` records the completed pilot without committing the SQLite binary, backup, export, or Wiki clones.
 
-Later Wiki changes are applied to an existing store by the [incremental import](specifications/decision-wiki-incremental-import.md), not by re-running this pilot.
+Later Wiki changes are applied to an existing store by the [incremental import](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/specifications/decision-wiki-incremental-import.md), not by re-running this pilot.

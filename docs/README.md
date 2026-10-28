@@ -2,11 +2,11 @@
 
 仕様・設計・実験の用途別入口です。設計案と実装済み機能は各文書の状態を確認してください。
 
-- [製品仕様](specifications/README.md)
-- [利用・運用](guides/README.md)
-- [設計](architecture/README.md)
-- [実験・観測](experiments/README.md)
-- [意思決定・Wiki](decisions/README.md)
+- [製品仕様](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/specifications/README.md)
+- [利用・運用](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/guides/README.md)
+- [設計](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/architecture/README.md)
+- [実験・観測](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/experiments/README.md)
+- [意思決定・Wiki](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/decisions/README.md)
 
 ## 整理と凍結契約
 
