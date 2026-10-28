@@ -16,6 +16,8 @@
 
 ## 3. Functional requirements
 
+番号は詰めない。欠番は #313 で削除した研究用実験（評価 protocol、凍結 artifact、gate）の要件で、他文書や過去の issue / PR からの「要件 N」参照を壊さないため番号を残す。
+
 1. 文書ノード、metadata、知識確信度を SQLite に永続化できる。
    任意の予約キー `metadata.node_provenance` は、非空の文字列 `writer` と、1件以上の HTTPS GitHub issue/PR URL を含む文字列配列 `source_refs` だけを持つ object とする。URL は `https://github.com/{owner}/{repo}/issues/{positive-number}` または `/pull/{positive-number}`（末尾 `/` は任意、query/fragment は不可）とし、存在確認は行わない。writer は自己申告で認証済み身元ではない。不正入力（null/空objectを含む）は保存前に拒否する。再取り込みでキー省略時は既存の同キーだけを原子的に保持し、明示した有効objectで全体を置換する。他のmetadataは従来どおり置換し、API返却値はその書込みの保存内容に一致する。旧ノードへの推測補完、judgmentの `metadata.provenance` 変更、日時の更新、schema移行は行わない。既存Python APIで取り込み、MCP通常/CUDA検索のmetadataで返す。
 2. 型付きエッジ、結合重み、事実性を SQLite に永続化できる。
@@ -46,74 +48,57 @@
 27. success feedback 前後で edge weight と全 gold case の rank を比較し、credited path 外の edge 変更と非対象 case の rank 変更を明示する。
 28. 活性伝播は共通 interface の下で、現行正方向加算、有限活性 budget、側方抑制、query-conditioned transmission、反復競合を選択できる。
 29. 各検索 trace は strategy、伝播 step 数、展開数、活性総量、収束有無、停止理由を決定論的な diagnostics として保持する。
-30. neural dynamics experiment は development と doc path が重ならない connected holdout、gold、探索空間、最大 variant 数、選択規則、停止規則を結果観測前に固定する。
-31. 候補選択は development result だけで行い、relation MRR と negative-control MRR の Pareto gate、worst-cohort MRR、展開数、構造複雑度、variant ID の順で一意に決める。
-32. development gate を通る候補がない場合は holdout を開かず既定を変更しない。候補がある場合だけ holdout を一度評価し、cohort 退行、path 不一致、feedback 汚染のいずれかがあれば採用しない。
-33. experiment result は gate 不合格、Pareto 支配、holdout 不採用を含む全 variant を上書きせず versioned artifact として保存する。
+
+要件 30〜33 は欠番。
+
 34. recurrent activation は global inhibition に加え、同じ source の sibling neighbor だけを競合させる local strategy を選択できる。
 35. local recurrent strategy は query relevance と active path identity を独立に有効化でき、競合集合ごとに source、path identity、neighbor 数、query relevance、配分前後の message 総量を記録する。
-36. local recurrent experiment は production D1 から read-only 取得した新しい development / holdout を旧 development / 開封済み holdout および相互間で分離し、両 provenance と contamination audit を結果観測前に固定する。
-37. 旧 development result は family と baseline の探索的根拠だけに使用し、旧 holdout は fixture identifier の重複拒否以外では読み込まない。
-38. local recurrent experiment は `current`、`recurrent-balanced`、neighbor / query / path の4 ablationを合わせた6 variantsに固定し、parameter gridを追加しない。
-39. development候補はrelation MRRで両baselineを厳密に上回り、direct / negative-control MRRがcurrentから退行せず、全relation pathとfeedback isolationを満たす場合だけ選択する。
-40. development候補がある場合だけ、未観測holdoutで`current`、`recurrent-balanced`、選択候補を一度評価する。resultの再実行と上書きを拒否する。
-41. local recurrent strategyは未観測holdoutで同じgateを通過した場合だけ既定候補になり、それ以外では`current_positive_additive`を維持する。
+
+要件 36〜40 は欠番。
+
+41. `EngineConfig` の活性伝播 strategy の既定値は `current_positive_additive` とする。
 42. entry retrievalはgraph競合の外側にzero-hop anchorとして保持でき、競合前後で同一値であることをtrace diagnosticsで検証できる。
 43. anchored graph signalは少なくとも1 edgeを通ったmessageだけで構成し、zero-hop seed residualとzero-hop pathを含めない。
 44. dense retrievalとgraph propagationを独立に無効化でき、BM25-only ablationではdense encoderとgraph traversalを実行しない。
 45. explanationはBM25 / denseのraw・normalized値、競合前後のentry anchor、graphのraw・normalized値、final score、zero-hop / graph path種別を区別して保持する。
-46. anchored hybrid experimentはproduction D1からread-only取得した新development / holdoutを、過去39 doc pathsを含む4 fixturesおよび相互間で分離し、provenanceとcontamination auditを結果観測前に固定する。
-47. anchored hybrid experimentは`current`、`bm25-only`、BM25+現行graph、BM25+dense anchorのlocal/query local、BM25 anchorのlocalを合わせた6 variantsだけを比較する。
-48. development候補はrelation MRRがcurrentを厳密に上回り、direct / negative-controlが退行せず、relation path、feedback isolation、anchor invariant、edge-only graph signalをすべて満たす場合だけ選択する。
-49. 候補がある場合だけ未観測holdoutで`current`、`bm25-only`、選択候補を一度評価し、同じgateを通過した場合だけdefault変更候補とする。
+
+要件 46〜49 は欠番。
+
 50. graph activationは`max`、`none`、`l1_mass`を一般設定として選択でき、zero totalを決定論的に全0へ変換できる。
 51. final fusionは既存linearに加え、entry rankとpositive graph nodeだけのgraph rankを使うbottom-centered weighted RRFを選択できる。
 52. 各traceはentry / graph rank、entry / graph fusion component、normalization、fusion strategy、RRF k、positive graph node数を保持し、final orderingを機械的に再計算できる。
-53. fusion calibration experimentはproduction D1の新しい3-node development / holdoutを、既存7 fixturesの50 unique doc pathsおよび相互間から分離し、provenance、balanced gold、contamination audit、6 variantsを結果観測前に固定する。
-54. development候補はrelation MRRをcurrentから厳密に改善し、少なくとも1 relation caseを個別改善し、direct / negative-controlのcohort MRRと全個別rankを退行させず、path、feedback、anchor、edge-only graph、formula auditを満たす場合だけ選択する。
-55. development候補がある場合だけ未観測holdoutでcurrentと選択候補を一度評価し、同じgateを通過した場合だけdefault変更候補とする。
+
+要件 53〜55 は欠番。
+
 56. `search_channels`は同一queryからBM25 lexical laneとanchored edge-only relation laneを独立trace IDで同時返却し、cross-lane final score、combined rank、single winnerを生成しない。
 57. lexical laneはBM25だけで順位付けし、dense retrievalとgraph propagationをlane順位へ使用せず、保存hitへgraph pathを持たせない。
 58. relation laneはBM25+dense entryをseed選択だけに使い、`anchored_local_competition`で1 edge以上を通過したpositive graph nodeをraw activation降順・node ID昇順で順位付けする。
 59. channel provenanceはcallerのchannel自己申告でなく独立trace IDに保存し、default config の`record_success`はlexical traceでedgeを変更せず、relation traceでは保存済みcredited pathだけを強化する。
 60. 同一nodeが両laneに現れる場合も各rankと説明を保持し、片方のtraceに保存されていないnodeへのfeedbackをatomicに拒否する。
-61. independent-channel experimentはproduction D1からread-only取得した相互disjointな2-node / 1-edge developmentとholdoutを、既存9 fixturesの全node pathから分離し、各splitの4-case hard gate、provenance、contamination audit、lane規則、feedback規則、停止規則を結果観測前に固定する。
-62. developmentでlane parity、relation個別改善、edge-only path、独立trace、edge不変、feedback帰属、cross-lane拒否、決定性の全hard gateを通過した場合だけholdoutを一度開き、同じgateを全通過した場合だけ`search_channels`をvalidatedと記録する。
-63. blind channel-selection experimentはv1 fixture / gold / manifest / evaluator / runner / development resultをbyte hashで固定し、既存`search()`、`search_channels()`、default、feedback、v1 artifactを変更しない。
-64. blind packetはopaque case ID、query、lane semantics、独立trace、lane内rank、node本文とsource metadata、raw / projected relation path、agreementだけを含み、cohort、intended channel、期待node / rank / path、gate、過去結果、lane scoreを含めない。
-65. judge responseはpacketだけを受けるfresh agent 3体が独立生成し、trace / node所属を検証した後に`(channel, node)`のmajorityで集約する。actual LLM callはparent orchestratorだけが行い、core、runner、CIはjudgeを呼ばない。
-66. relation pathはraw stepを保存したままendpoint / edge typeへ射影して照合し、zero-hopを拒否する。judge raw response、parse結果、model、agent type、実行時刻をimmutable artifactへ保存する。
-67. development packet / response / resultはresult-free commitのpush後に各一度だけ生成し、全12 gate通過時だけholdout packetを一度生成して異なるfresh judge 3体で判定する。全観測artifactは上書きと再生成を拒否する。
-68. development gate通過前のholdoutではpacket生成、`search_channels()`実行、judge提示、v2 gold照合を禁止する。byte hash、schema、既存contract testの非表示process readはselectionに使わず、holdout open countへ含めない。
-69. v1 / v2 frozen text artifactのbyte hash監査はraw checkout bytesを最初に照合する。raw不一致時は全改行がLFまたはCRLFの一種類で、もう一方へのexact変換だけが固定hashと一致する場合に限ってcheckout変換を許可し、本文差分、mixed newline、bare CRを拒否する。
-70. node-first blind experimentはv1 / v2 manifest、prompt、packet、judge artifact、result、source、runner、tests、experiment docsをraw-firstかつLF / CRLFだけを許可するhash監査で固定し、v2 invalid responseをretry、補完、再集約しない。
-71. v3はv1のdirect / directional-negative queryを維持し、relation queryだけedge先targetを自然文で明示する固定overrideを使う。stage packetは4 caseを保持するが、judge用packetとresponseは一つのopaque caseだけを含む。
-72. developmentは4 case x fresh 3 judgesの12 independent invocationsとし、各agent contextを再利用せず、repo、web、tool、gold、他case、他judge、prior responseを渡さない。actual LLM invocationはparent orchestratorだけが行う。
-73. v3集約は`node_id`の2/3 majorityを採否の正本とし、同じnodeへ複数laneから投票した場合もnode correctnessを満たす。channel voteはtrace provenanceと分布だけに使い、gold channel gateを持たない。
-74. relation traceを選んだresponseはselected nodeのraw pathを保存し、endpoint / edge typeへの射影が固定relation pathと一致してzero-hopでないことを監査する。feedbackは実行せず、lexical / relation traceの強化provenanceだけを記録する。
-74a. node-first captureの前にmanifest、stage packet、およびstageが参照する全case packetのcase ID、path、実byte hashを照合する。いずれかが不一致ならjudge起動、raw response read、capture artifact write、aggregationを開始せず、unassessedのまま停止する。
-75. trace-credited feedback adaptation experimentは、同一のfrozen corpus、config、query schedule、limit、時刻規則でcontrolとtreatmentを比較し、controlはfeedbackを記録してedge mutationを適用せず、treatmentだけがrelation traceのcredited pathを強化する。
-76. feedback adaptationのdevelopment / holdout、feedback event、score query、expected path、gate、registered run count、hash、contamination audit、exclusive outputを結果観測前に固定し、development全gate通過時だけholdoutを一度開く。
-77. feedback adaptation reproductionはprior resultを選択入力にせず、prior fixtureとの識別子だけのcontamination auditを行う。raw relation stepは比較前に`source_id`、`target_id`、`edge_type`だけへ射影し、runtime fieldを含むsynthetic testでpath identityをfreeze前に検証する。
-78. 新規 feedback-adaptation experiment の primary relation gate は、baseline relation MRR が 1.0 未満ならtreatmentのstrict improvement、baseline relation MRR が 1.0 ならtreatmentのnon-regressionを要求する。いずれも endpoint/type projected path、direct lexical / directional-negative controls、credited-only mutation、deterministic replay、contamination、immutable output を含む全 safety gate を必須とする。ceiling case のnon-regression pass は追加の順位改善を示せないことを記録するだけで、generalization、default変更、production採用を許可しない。
-79. repository-native controlled corpus v3 の engine-backed trajectory experiment は、source commit、split / cluster identity、explicit-link edge、0 / 1 / 3 / 10 feedback schedule、query、used node、credited path、control / treatment、gate、manifest hash、exclusive output を観測前に固定する。control は relation trace と used node を記録して edge を変更せず、treatment だけが同じ schedule の relation trace ID を `record_success` に渡す。headroom は 0 から 10 で厳密改善し途中 checkpoint で退行せず、control case と ceiling case も退行せず、credited edge 以外が変化しない場合だけ development gate を通過する。development 全 gate 通過時だけ holdout を一度開き、観測後は evaluator、fixture、gold、schedule、manifest、gate、docs を変更しない。
+
+要件 61〜79 は欠番。
+
 80. sibling relation feedback normalization は、明示的に有効化された candidate config でのみ、relation trace の credited edge を強化し、その edge と同じ source から出る未 credit sibling だけを局所的に正規化できる。lexical trace、zero-hop、未関係 source、credited sibling は変更しない。candidate は synthetic isolation test と result-free development / holdout 相当の relation、direct、lexical、negative-control gate を通過するまで default にしない。
-81. sibling normalization controlled evaluation は、評価対象 source commit / hash、相互に identity-disjoint な development / holdout cluster、明示 edge、baseline `0.0` / treatment `1.0`、query、used node、credited path、mutation scope、rollback、係数 / 時刻 schedule、hard gate、exclusive output を観測前に固定する。実 `NeuronGraphRAG` の `search_channels` relation trace ID を `record_success` に渡し、headroom strict improvement、ceiling・direct・lexical・directional-negative non-regression、path・mutation・atomicity・determinism の全 development gate 通過時だけ holdout を一度開く。観測後は protocol artifact と docs を変更せず、既定値と external D1 claim を変更しない。
-82. frozen evaluation の historical source hash は、manifest path の初回追加 commit または manifest が明示する lowercase full 40-hex source / baseline / prior commit の exact blob bytes に対して検証する。後続の committed manifest rewrite、mutable ref / revision expression、未知 commit、非 ancestor commit、manifest bytes差、欠落 path、hash 不一致を fail closed にし、同名 path の current working tree を過去の evidence として扱わない。既存 protocol が明記する raw-first LF / CRLF whole-file alternate だけを維持し、本文差、mixed newline、bare CR、その他の byte 差を拒否する。
+
+要件 81〜82 は欠番。
+
 83. soft-start feedback reinforcement は明示 opt-in の relation-only candidate とし、最初の新規 `used` で通常 bounded increment の固定 ratio 分だけを credited path へ適用する。最初の独立 `confirmed` は同じ schedule の残量を一回分の通常 increment まで補い、後続 confirmation は固定 decay ratio で加算する。used 時は sibling normalization を行わず、confirmation の actual delta だけを同一 source の uncredited sibling へ配分する。duplicate、lexical、zero-hop、別 source、uncredited edge、negative outcome は変更せず、candidate mechanics の合格だけで default や local serving policy を変更しない。
-84. soft-start snapshot evaluation は、local source database を read-only URI と SQLite backup API で一度だけ transaction-consistent snapshot へ複製し、同じ snapshot のfresh clone上で `control`、`used_q3_s1`、`confirmed_r05_s1`、`soft_start_r025_r05_s1` の固定4 armを比較する。query、public node / edge identifier、outcome、3回のfresh trace schedule、checkpoint、metric、hard gate、exclusive output、snapshot / protocol hashを登録result生成前に固定する。source database、live config、snapshot本体、private本文、absolute private pathをpublic artifactへ含めず、developmentを一度だけ実行し、全hard gate通過時だけholdoutを一度開く。不支持または判定不能を保存してもprotocolを調整せず、local cutover、library default、external corpus、production qualityへ自動で一般化しない。
-85. baseline-aware soft-start snapshot evaluation は、v1のprotocol、gate、observed result、private snapshotを変更、再実行、再集計、入力再利用せず、fresh snapshot、新規namespace、新規output、v1 observed developmentと異なるcredited edge identityを使う。各relation caseのinitial weight、reinforced count、evidence count、confirmation countを結果前に登録し、q3/s1のfirst mutationを`max(1, quorum - initial evidence count)`で導出する。導出不能、baseline不一致、event budget内のquorum capacity不足はregistered resultを作らずfailure reportで停止する。v2 protocolはregistered output不在のfreeze-only PRで固定し、そのsquash merge後の別Issueでdevelopmentを一度だけ実行する。全8 hard gate通過時だけholdoutを一度開き、支持結果もlocal cutover候補に限定してsource database、live config、library defaultを変更しない。
+
+要件 84〜85 は欠番。
+
 86. outcome-driven feedback deactivation はsoft-startと同時にだけ有効化できるdefault-off candidateとする。provisional / confirmationごとにcredited加算と同時発生したsame-source sibling normalization減算を一つのsigned mutation journalへ永続化し、因果帰属できる`corrected` / `rolled_back`だけが未反転contributionを基礎weight未満へ下げずexact reversalする。`superseded`はedge、evidence、trace、outcomeを削除せずrelation edgeをdormantにして通常activationから除外し、同じ保存済みcredited pathの後続`confirmed`で再活性化する。duplicate、retry、restart、transaction failure、lexical、zero-hop、別source、uncredited edge、因果帰属不能outcomeは二重減算または局所外mutationを行わない。
-87. outcome-driven deactivation evaluation はcontrol / candidate、`corrected` / `rolled_back` / `superseded`、exact credited / sibling inverse、baseline floor、dormancy / reactivation、rank / locality、source isolation、exclusive outputを結果観測前に固定する。protocolはregistered output不在のfreeze-only PRで固定し、そのsquash merge後のsuccessor Issueでdevelopmentを一度だけ実行する。全hard gate通過時だけholdoutを一度開き、観測前後にquery、case、schedule、metric、gate、default、live configを変更しない。
+
+要件 87 は欠番。
+
 88. judgment store の新規 judgment graph は SQLite の stable identity、revision、lifecycle、provenance、typed relation を machine-readable 正本とする。NGR 自身の Decision Structure の正本は GitHub Wiki であり、store へ取り込んだ NGR 自身の判断は Wiki の写しとして扱う。add / update / supersede / archive / restore / hard-delete candidate は raw SQL でなく atomic domain API を通し、stale revision、dangling relation、部分更新、二重 successor を fail closed にする。archive は通常 retrieval から外す論理的忘却、hard delete は履歴参照のない archived candidate だけに許す物理削除として分離する。current graph の deterministic export / atomic import と SQLite backup / integrity-checked restore を維持し、既存 Wiki entry の本番移行は fixture 検証後に分離する。
 89. Li+ / NGR Decision Structure Wiki pilot は各 repository の index が列挙する entry だけを専用の新規 SQLite へ取り込み、repository namespace 付き identity、page 本文、Wiki URL、repository、取得 commit、source state、typed relation を保持する。duplicate identity、unknown relation target、parser ambiguity、partial publication、既存出力の上書きを fail closed にし、SQLite / supersession integrity、deterministic export、backup を検証する。Wiki、既存検索 DB、凍結済み feedback 実験 DB は変更せず、本 pilot だけで正本を切り替えない。
 90. judgment 専用 read API は `search_judgments`、`get_judgment`、`traverse_judgments` を提供し、current revision、lifecycle、statement、rationale、provenance、typed relation を返す。search は judgment の既存 node projection に同じ lexical / dense scorer と有効 weight を適用し、既定で active のみ、明示指定時だけ archived を含め、repository namespace で絞り込める。traversal は relation type、incoming / outgoing / both、1 以上の有限 hop を受け、cycle-safe な hop 優先・stable identity 順を維持する。三操作と対応 MCP tool は成功時・失敗時とも judgment、revision、relation、retrieval trace、feedback、node、edge、activation を永続変更せず、MCP は read-only annotation、未知 field を拒否する schema、既存 error envelope を持つ。既存 `search`、feedback、`write_judgment`、library default は変更しない。
 91. optional MCP server の永続 database path は明示 `--database`、`NGR_DATABASE`、`~/.ngr/config.json` の `database`、既定 `~/.ngr/db/knowledge.db` の順で解決し（未移行の旧 `~/.ngrdb/knowledge.db` があるときは既定解決を拒否し `--migrate-home --confirm-stopped` を求める）、同一端末・同一ユーザーの複数 AI client が client-neutral な user-owned 正本を共有できる。明示 path と core library の `:memory:` 既定を維持し、file-backed connection だけに WAL と 5 秒の bounded busy timeout を適用する。既存 database は自動移動・統合せず、source / destination / backup をすべて明示し、source integrity、SQLite backup、destination integrity、既存 output 上書き拒否を備えた一回性 migration だけを提供する。network drive、cloud sync、remote deployment は保証範囲外とする。
 92. judgment relation semantics は共有 SQLite の relation type registry、definition revision、namespace、provenance、active / deprecated lifecycle を正本とする。`depends_on`、`refines`、`supersedes`、`conflicts_with`、`informs` は `docs/Decision-Structure.md` と一致する revision 1 として決定的かつ冪等に登録し、既存 relation は内容を失わず `assertion_kind=explicit` と revision 1 binding へ移行する。新規 assertion は登録済み type の current revision を束縛し、未知 type は revision 未束縛の explicit assertion として保存する。active type は warning なし、未知 / deprecated type は structured advisory warning を返すが write を拒否しない。registry write は atomic domain API と `expected_revision` を要求し stale update を fail closed にする。read / validate は成功・失敗とも全 persistent table を変更しない。canonical `judgment_relations` は explicit assertion 専用とし、reasoner、推論結果、taxonomy、OWL / RDF / JSON-LD、query expansion、retrieval score / feedback / activation への意味接続を含めない。export / import、backup / restore、integrity check は registry revision と assertion binding を保持する。
-93. github-rag-mcp / NGR retrieval parity benchmark は、public repository の固定 commit と全 Markdown path、blob / content hash、source URL を共通 document surface とし、development / holdout の gold identity を分離する。direct、semantic、relation、directional negative cohort へ同一 query / filter / top-k を渡し、raw github-rag-mcp search / stored content、NGR rank / MRR / Hit@k / source / path explanation、更新追随を保存する。keyword / graph result は固定 repository / doc type / path surface 外を拒否し、keyword `vector_id` は一意でなければならない。capture、exact claim、result は各 stage 一回だけ exclusive-create し、claim / result の protocol、stage、freeze commit、capture hash、manifest hash registry、raw capture、全 hard gate shape を fail-closed に相互検証して、development の全 hard gate 通過時だけ holdout を開く。freeze commit は第一親に manifest がなく当該 commit で初導入された `origin/main` 上の commit だけを受理し、同じ artifact を含む後続 commit を拒否する。既存 #63 / #64 artifact は参照だけに留め、登録 result のない freeze merge commit を唯一の protocol input とする。latency / resource は初期 hard gate にせず、共有 DB、feedback、default、production service、repository integration を変更しない。
+
+要件 93 は欠番。
+
 94. Li+ Knowledge Tier 2 の node expiry は明示 opt-in の操作とし、自動では削除しない。各 node は nullable な `created_at`（初回取り込み時刻、再取り込みで変えない）と `last_used_at`（最後に成功した利用の時刻）を持つ。`last_used_at` は success feedback と source-use の `used` 記録でだけ進み、検索、`selected`、`validated` では進まず、古い時刻では巻き戻らない。expiry は `last_used_at`、未利用なら `created_at` が N 日より古い judgment 以外の node を一つの `BEGIN IMMEDIATE` transaction で削除し、edge、activation、retrieval result、source-use、success / outcome node、edge 依存の feedback 記録を cascade で除き、失敗時は全体を戻す。BM25 / dense の入口は検索ごとに `nodes` から計算し、attach 済み shortlist cache は commit 後に同じ node を除き、未同期の cache は stale として fail closed にする。既存 database は開いたときに列を追加し、列のない行の `created_at` をその時刻で埋める。CLI `expire-nodes` は `--dry-run` を持ち、存在しない database を作らない。
-75. v3 implementation、prompt、manifest、query override、schema、集約、path audit、hash規則、gate、stop rule、testsをresult-free commitでpushした後、development stage / 4 case packet / 12 responses / resultを各一度だけ生成する。
-76. development全12 gate通過時だけholdout stageを一度生成し、異なるfresh 12 judgesで同じgateを評価する。packet、response、resultの上書き、観測後の規則変更、実LLM品質値のCI再生成を拒否する。
 
 ## 4. Constraints
 
