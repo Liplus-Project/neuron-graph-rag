@@ -2,7 +2,7 @@
 
 ## 1. Status and purpose
 
-この文書は、MCP 対応 AI が Neuron Graph RAG（NGR）を検索し、実際に利用した source と後から判明した結果を返すための、既存 tool 契約を定義する。直接 local stdio に加え、共有ローカル Streamable HTTP と接続時起動 stdio の入口も実装済みである。追加 tool と運用境界は[共有ローカル MCP 仕様](specifications/shared-local-mcp.md)を参照する。
+この文書は、MCP 対応 AI が Neuron Graph RAG（NGR）を検索し、実際に利用した source と後から判明した結果を返すための、既存 tool 契約を定義する。直接 local stdio に加え、共有ローカル Streamable HTTP と接続時起動 stdio の入口も実装済みである。追加 tool と運用境界は[共有ローカル MCP 仕様](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/specifications/shared-local-mcp.md)を参照する。
 
 この契約は次を意味しない。
 
@@ -567,5 +567,5 @@ MCP であることだけを理由に別 repository へ分離しない。次の�
 
 通常の `search` と `search_cuda_shortlist` は、Pythonの `add_document` で保存した任意の `metadata.node_provenance` を、そのままhitのmetadataに返す。
 例: `{"node_provenance": {"writer": "Luna", "source_refs": ["https://github.com/Liplus-Project/neuron-graph-rag/issues/311"]}}`。
-writerは自己申告で認証済み身元ではなく、URLの存在確認も行わない。入力形式は [README](../README.md#ノードの書き手と出典) と [requirements](requirements.md) を参照する。
+writerは自己申告で認証済み身元ではなく、URLの存在確認も行わない。入力形式は [README](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/README.md#ノードの書き手と出典) と [requirements](requirements.md) を参照する。
 再取り込み時のキー省略は既存出典のみ保持し、有効objectの明示で全体置換する。null/空objectによる削除は拒否する。新しい取り込みtool、検索フィルター、全編集履歴は提供しない。
