@@ -1492,7 +1492,8 @@ def _build_parser() -> argparse.ArgumentParser:
         "--database",
         help=(
             "Path to the local SQLite database "
-            "(default: NGR_DATABASE or ~/.ngrdb/knowledge.db)"
+            "(default: NGR_DATABASE, then database in ~/.ngr/config.json, "
+            "then ~/.ngr/db/knowledge.db)"
         ),
     )
     parser.add_argument(
