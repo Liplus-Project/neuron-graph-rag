@@ -39,6 +39,8 @@ python -m neuron_graph_rag benchmark \
 
 CI は gold schema、fixture / provenance、metric 計算、path 照合、feedback isolation、固定 result の再生成一致を検証する。観測品質の数値自体は CI 合格閾値にしない。
 
+MRR の集計規則は、gold case 順に並んだ逆数 rank を左から順に binary64 の通常加算で足し、件数で1回割ることに固定する。組み込み `sum()` は Python 3.12 で float の加算 algorithm を補償加算へ変えたため、使うと同じ入力でも 3.11 と 3.12 以降で末尾の桁が変わる。固定 result はこの規則で生成した値と byte-identical であり、CI は 3.11 の full suite に加えて 3.12 と 3.14 でも固定 result の再生成一致を検証する。
+
 ## 観測結果
 
 gold / fixture / 判定規則を commit `befe245` で固定した後に初回実行した。機械可読な全結果は `tests/fixtures/d1_liplus_benchmark.result.json` に保存する。
