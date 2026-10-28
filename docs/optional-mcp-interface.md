@@ -14,7 +14,7 @@
 
 ### Shared database home
 
-stdio / HTTP CLI の database path 解決順は、明示 `--database`、`NGR_DATABASE`、`~/.ngrdb/knowledge.db` とする。`--database` と環境変数は `~` を user home へ展開する。最後の既定値を使うときだけ adapter が `~/.ngrdb` を作成する。明示 path を渡す既存起動は同じ path を使い、core library の `:memory:` 既定は変更しない。
+stdio / HTTP CLI の database path 解決順は、明示 `--database`、`NGR_DATABASE`、`~/.ngr/config.json` の `database`、既定 `~/.ngr/db/knowledge.db` とする。`--database` と環境変数は `~` を user home へ展開し、config の相対 path は `~/.ngr` 基準で解決する。未移行の旧 `~/.ngrdb/knowledge.db` が存在する場合、既定解決は拒否され `--migrate-home --confirm-stopped` を求める。最後の既定値を使うときだけ adapter が `~/.ngr/db` を作成する。明示 path を渡す既存起動は同じ path を使い、core library の `:memory:` 既定は変更しない。
 
 file-backed SQLite connection は `journal_mode=WAL` と `busy_timeout=5000` milliseconds を適用し、foreign key、schema initialization、transaction commit、failure rollback の既存保証を維持する。保証する共有範囲は同一端末・同一ユーザーの local filesystem だけであり、network drive、cloud sync、remote deployment、分散 write は含めない。`:memory:` connection と read-only snapshot acquisition はこの connection policy の対象外である。
 
