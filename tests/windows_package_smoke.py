@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from email.parser import Parser
 import http.client
 import hashlib
 import json
@@ -157,6 +158,22 @@ def _run(exe: Path, env: dict[str, str], *args: str) -> None:
         raise AssertionError(f"{args} failed: {result.stderr[-2000:]}")
 
 
+def _assert_installed_version(exe: Path, env: dict[str, str], version: str) -> dict:
+    install = exe.parent
+    manifest = json.loads((install / "package-manifest.json").read_text(encoding="utf-8-sig"))
+    assert manifest["schema"] == "ngr.windows-package/v1", manifest
+    assert manifest["version"] == version and manifest["flavor"] in {"cpu", "cuda"}, manifest
+    result = subprocess.run([str(exe), "--version"], env=env,
+                            capture_output=True, text=True, timeout=30)
+    assert result.returncode == 0 and result.stdout.strip() == manifest["version"], result
+    metadata_paths = sorted((install / "_internal").glob("neuron_graph_rag-*.dist-info"))
+    expected = install / "_internal" / f"neuron_graph_rag-{version}.dist-info"
+    assert metadata_paths == [expected] and expected.is_dir(), metadata_paths
+    metadata = Parser().parsestr((expected / "METADATA").read_text(encoding="utf-8"))
+    assert metadata["Name"] == "neuron-graph-rag" and metadata["Version"] == version, metadata
+    return manifest
+
+
 def main() -> None:
     if os.name != "nt":
         raise SystemExit("Windows only")
@@ -201,9 +218,7 @@ def main() -> None:
         exe = install / "NGR.exe"
         try:
             _assert_icons(exe)
-            version_result = subprocess.run([str(exe), "--version"], env=package_env,
-                                            capture_output=True, text=True, timeout=30)
-            assert version_result.returncode == 0 and version_result.stdout.strip() == version
+            manifest = _assert_installed_version(exe, package_env, version)
             legacy = data / ".ngrdb" / "knowledge.db"
             legacy.parent.mkdir()
             connection = sqlite3.connect(legacy)
@@ -221,7 +236,6 @@ def main() -> None:
             finally:
                 connection.close()
             _run(exe, package_env, "--migrate-home", "--confirm-stopped")
-            manifest = json.loads((install / "package-manifest.json").read_text(encoding="utf-8-sig"))
             _assert_licenses(install, manifest["flavor"])
             if manifest["flavor"] == "cuda":
                 _assert_cuda_model_modules(exe)
@@ -272,14 +286,46 @@ def main() -> None:
                 proxy.communicate(timeout=10)
             assert database.is_file(), "database not created"
             (data / "model-sentinel").write_text("keep", encoding="utf-8")
+            for old_version in ("0.1.0", "0.2.1"):
+                old_metadata = install / "_internal" / f"neuron_graph_rag-{old_version}.dist-info"
+                old_metadata.mkdir()
+                (old_metadata / "METADATA").write_text(
+                    f"Metadata-Version: 2.1\nName: neuron-graph-rag\nVersion: {old_version}\n\n",
+                    encoding="utf-8")
+            unrelated_files = []
+            for name in ("unrelated_smoke", "neuron_graph_rag_extra"):
+                metadata_dir = install / "_internal" / f"{name}-1.0.dist-info"
+                metadata_dir.mkdir()
+                metadata_file = metadata_dir / "METADATA"
+                metadata_file.write_text(
+                    f"Metadata-Version: 2.1\nName: {name.replace('_', '-')}\nVersion: 1.0\n\n",
+                    encoding="utf-8")
+                unrelated_files.append(metadata_file)
+            sentinels = {
+                data / ".ngr/user-sentinel": b"keep central home data\n",
+                data / "models/model-sentinel": b"keep model bytes\x00\xff",
+                data / ".codex/config.toml": b'[mcp_servers.other]\ncommand = "keep"\n',
+                data / ".claude.json": b'{"mcpServers":{"other":{"command":"keep"}}}\n',
+            }
+            for path, content in sentinels.items():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(content)
+            user_files = [database, config_dir / "config.json", data / "model-sentinel", *sentinels]
+            user_bytes = {path: path.read_bytes() for path in user_files}
+            unrelated_bytes = {path: path.read_bytes() for path in unrelated_files}
             update_result = subprocess.run([str(setup), "/VERYSILENT", "/ACCEPTVCRUNTIME=yes", "/SUPPRESSMSGBOXES",
                                             "/NORESTART", f"/DIR={install}"],
                                            capture_output=True, text=True, timeout=180)
             assert update_result.returncode == 0, f"Update failed: {update_result.returncode}"
-            assert database.is_file() and (data / "model-sentinel").is_file()
+            assert _assert_installed_version(exe, package_env, version) == manifest
+            for path, content in (user_bytes | unrelated_bytes).items():
+                assert path.read_bytes() == content, f"Update changed {path}"
+            _assert_licenses(install, manifest["flavor"])
+            print("UPGRADE_METADATA_AND_DATA=verified", flush=True)
             uninstaller = install / "unins000.exe"
             _run(uninstaller, package_env, "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART")
-            assert database.is_file() and (data / "model-sentinel").is_file()
+            for path, content in user_bytes.items():
+                assert path.read_bytes() == content, f"Uninstall changed {path}"
         finally:
             # A failed assertion should not leave the detached service on the runner.
             if exe.is_file():

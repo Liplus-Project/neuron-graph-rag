@@ -33,6 +33,9 @@ RestartApplications=no
 DisableProgramGroupPage=yes
 LicenseFile={#BundleDir}\licenses\Setup-LICENSE.txt
 
+[InstallDelete]
+Type: filesandordirs; Name: "{app}\_internal\neuron_graph_rag-*.dist-info"
+
 [Files]
 Source: "{#BundleDir}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion
 

@@ -10,6 +10,8 @@ Windows x64 の利用者が checkout と開発用 Python を用意せず、共�
 - 配布出力 `package-manifest.json` は `schema: ngr.windows-package/v1`, `version`, `flavor`, `setup_file`, `sha256`, `size`（bytes）、`bundle_size_bytes`（onedir の総 bytes）を持つ。配布許諾のゲートを通過した場合だけ CI artifact として upload する。インストール先の `NGR.exe` と同じディレクトリには `schema`, `version`, `flavor` を持つ manifest を置く。セットアップ自身の digest をセットアップ内 manifest に含める循環はしない。
 - `NGR.exe --version` と MCP 初期化時の server version は、実行形式に含めた配布 metadata の version を表示する。公開 GitHub Release への asset 添付と Latest の変更はこの workflow の範囲外。
 
+同じ導入先への更新では、インストーラーが所有する `{app}\_internal\neuron_graph_rag-*.dist-info` だけを `[InstallDelete]` でファイル配置前に除去する。現在版の metadata も含めて除去し、続く `[Files]` で新しい bundle の metadata を配置する。他 distribution の metadata、runtime、ユーザー DB、`.ngr`、モデル、token、native client 設定は削除対象に含めない。`_internal` 全体や `*.dist-info` 全般へ削除範囲を広げない。
+
 ## ビルドと実行境界
 
 通知領域と `NGR.exe` は、Issue #293 で指定された透過 PNG の同じ絵柄を使う。元 PNG はバイトを変更せず `neuron_graph_rag_mcp/assets/ngr.png` に保存し、Windows 用の `ngr.ico` は 16 / 20 / 24 / 32 / 40 / 48 / 64 / 128 / 256 px の透過画像を収める。両資産は wheel と PyInstaller に同梱する。PyInstaller はこの ICO を EXE アイコンにも指定する。トレイは通知領域の小アイコン寸法で ICO を読み込み、ポインター幅の HICON を保持する。共有ハンドルとして読み込まず、通知領域から削除した後に DestroyIcon で解放する。起動途中の失敗時にも解放し、読み込み失敗を既存の診断経路へ渡す。画像ライブラリを実行時依存へ追加しない。
@@ -39,6 +41,8 @@ CPython の Windows EXE / DLL / PYD にリンクされた Microsoft Distributabl
 v0.3.0 の共通ホーム・設定解決・明示移行・native 登録は [共通ホーム仕様](shared-home.md) を正本とする。操作は [Windows 導入ガイド](../guides/windows-installation.md) に記す。DB、管理ファイル、更新取得物、退避をユーザーの `.ngr` に集約する。インストーラーは DB、token、モデル、native 設定を自動移行・削除しない。
 
 ## CI 受け入れ
+
+CPU/CUDA 両方の package smoke は、クリーン導入の検査後に有効な Name/Version を持つ 0.1.0 と 0.2.1 の旧 NGR metadata を一時導入先に追加し、同じ setup を同じパスへ再導入する。更新後は installed manifest の schema/version/flavor、`--version`、現在版一件だけの NGR metadata の Name/Version を照合する。別 distribution と紛らわしい近接 prefix の metadata、ユーザー DB、中央 config、モデル、仮 client 設定はバイト比較で保持を確認する。実ユーザーの token や環境変数はこの検証で変更しない。
 
 PR と main の両方で CPU / CUDA を別 job でビルドし、インストールした `NGR.exe` に Python のない PATH を渡して version、中央 JSON の port・既定 `.ngr/db`、引数なしの初回 stdio MCP 接続、共有 identity、tool 一覧、トレイ状態、停止・再開、アンインストール後の DB 残存を検査する。CUDA 版では固定 Transformers 版のモデルモジュール一覧と EXE の収録内容も照合する。GPU を持たない runner では CUDA wheel の同梱と起動入口・モジュール収録まで確認し、実機 NVIDIA GPU の推論成功は検証範囲に含まれない。
 

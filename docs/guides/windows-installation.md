@@ -95,7 +95,8 @@ token は JSON、起動引数、診断ログに保存しない。
 
 更新の size / SHA-256 検証付き取得は [更新ガイド](windows-verified-updates.md) を参照する。
 全クライアントとトレイを終了して同じ導入先へ更新する。DB、token、cache、モデルを削除しない。
-`NGR.exe --version` または `package-manifest.json` で版を確認する。取得物を自動実行しない。
+更新時はプログラム領域 `_internal` 直下の `neuron_graph_rag-*.dist-info` だけを除去し、新しい配布 metadata を配置する。他の Python 配布物、ユーザーの `.ngr`、DB、モデル、token、native MCP 設定は削除対象に含めない。旧 metadata を手動で退避する必要はない。
+更新後は `NGR.exe --version` と導入先の `package-manifest.json` の `version` が一致することを確認する。取得物を自動実行しない。
 
 削除は全クライアントとトレイ終了後、Windows の **インストールされているアプリ** から実行する。
 `.ngr`、復旧用 `.ngrdb`、明示 DB、モデル、token / `NGR_MCP_EXE` 環境変数、native MCP 登録は残る。
