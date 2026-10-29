@@ -1146,6 +1146,66 @@ class MCPHttpTest(unittest.IsolatedAsyncioTestCase):
 class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
     TOKEN = "shared_proxy_test_token_0123456789abcdef"
 
+    def setUp(self) -> None:
+        from unittest.mock import patch
+        from neuron_graph_rag_mcp.shared_proxy import _state_dir
+
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.home = Path(temporary.name).resolve()
+        environment = {key: value for key, value in os.environ.items()
+                       if not key.startswith(("NGR_", "_NGR_"))}
+        environment.update({
+            "HOME": str(self.home), "USERPROFILE": str(self.home),
+            "HOMEDRIVE": self.home.drive,
+            "HOMEPATH": str(self.home)[len(self.home.drive):],
+            "APPDATA": str(self.home / "AppData" / "Roaming"),
+            "LOCALAPPDATA": str(self.home / "AppData" / "Local"),
+            "CODEX_HOME": str(self.home / ".codex"),
+            "TEMP": str(self.home / "temp"), "TMP": str(self.home / "temp"),
+            "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"),
+        })
+        for key in ("APPDATA", "LOCALAPPDATA", "TEMP"):
+            Path(environment[key]).mkdir(parents=True, exist_ok=True)
+        isolated = patch.dict(os.environ, environment, clear=True)
+        isolated.start()
+        self.addCleanup(isolated.stop)
+        self.assertEqual(Path.home(), self.home)
+        self.assertEqual(_state_dir(), self.home / ".ngr")
+        _state_dir().mkdir()
+        # Exercise the configured-home path, which does not create a legacy alias.
+        (_state_dir() / "config.json").write_text("{}\n", encoding="utf-8")
+
+    def _close_test_tray(self, port: int) -> None:
+        if os.name != "nt":
+            return
+        import ctypes
+        from ctypes import wintypes
+        from neuron_graph_rag_mcp.shared_proxy import _wait_process_exit
+
+        marker = self.home / ".ngr" / f"shared-local-mcp-{port}.tray.json"
+        try:
+            pid = json.loads(marker.read_text(encoding="utf-8"))["pid"]
+        except FileNotFoundError:
+            return
+        self.assertIs(type(pid), int)
+        self.assertGreater(pid, 0)
+        if _wait_process_exit(pid, 0):
+            return
+        user32 = ctypes.windll.user32
+        user32.FindWindowW.argtypes = (wintypes.LPCWSTR, wintypes.LPCWSTR)
+        user32.FindWindowW.restype = wintypes.HWND
+        user32.GetWindowThreadProcessId.argtypes = (wintypes.HWND, ctypes.POINTER(wintypes.DWORD))
+        user32.PostMessageW.argtypes = (wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes.LPARAM)
+        hwnd = user32.FindWindowW(f"NGRSharedMCPTray{port}", None)
+        self.assertTrue(hwnd, "test tray window is missing")
+        owner = wintypes.DWORD()
+        self.assertTrue(user32.GetWindowThreadProcessId(hwnd, ctypes.byref(owner)))
+        self.assertEqual(owner.value, pid, "tray window does not belong to the test marker PID")
+        self.assertTrue(user32.PostMessageW(hwnd, 0x0010, 0, 0))
+        self.assertTrue(_wait_process_exit(pid, 10), "test tray did not exit within 10 seconds")
+        self.assertFalse(marker.exists(), "test tray left its marker after exit")
+
     def test_existing_registration_never_echoes_client_output(self) -> None:
         from contextlib import redirect_stdout
         from io import StringIO
@@ -1402,6 +1462,8 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                 self.assertLess(time.monotonic() - started, 1)
 
     async def test_two_stdio_clients_start_one_service_and_survive_first_exit(self) -> None:
+        from neuron_graph_rag_mcp.shared_proxy import _state_dir
+
         with tempfile.TemporaryDirectory() as directory:
             database = Path(directory) / "shared.sqlite"
             with NeuronGraphRAG(database) as engine:
@@ -1487,7 +1549,7 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                 self.assertNotEqual(first, second)
                 self.assertEqual(first_pid, second_pid)
                 if os.name == "nt":
-                    tray_marker = Path.home() / ".ngrdb" / f"shared-local-mcp-{port}.tray.json"
+                    tray_marker = _state_dir() / f"shared-local-mcp-{port}.tray.json"
                     tray_pid = json.loads(tray_marker.read_text(encoding="utf-8"))["pid"]
                 await asyncio.sleep(1)
                 self.assertTrue(_probe(port, self.TOKEN, database.resolve(), {}))
@@ -1509,12 +1571,10 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                 _, pid = await asyncio.wait_for(connect_first(), 15)
                 self.assertNotEqual(pid, first_pid)
             finally:
-                stop_service()
-                if os.name == "nt":
-                    import ctypes
-                    hwnd = ctypes.windll.user32.FindWindowW(f"NGRSharedMCPTray{port}", None)
-                    if hwnd:
-                        ctypes.windll.user32.PostMessageW(hwnd, 0x0010, 0, 0)
+                try:
+                    stop_service()
+                finally:
+                    self._close_test_tray(port)
 
     @unittest.skipUnless(os.name == "nt", "Windows notification area")
     async def test_tray_stop_latches_until_resume(self) -> None:
@@ -1567,15 +1627,13 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                     _exit(args, self.TOKEN, database)
                 except (RuntimeError, OSError):
                     pass
-                if tray_pid is not None:
-                    import ctypes
-                    hwnd = ctypes.windll.user32.FindWindowW(f"NGRSharedMCPTray{port}", None)
-                    if hwnd:
-                        ctypes.windll.user32.PostMessageW(hwnd, 0x0010, 0, 0)
-                if previous is None:
-                    os.environ.pop(TOKEN_ENV, None)
-                else:
-                    os.environ[TOKEN_ENV] = previous
+                try:
+                    self._close_test_tray(port)
+                finally:
+                    if previous is None:
+                        os.environ.pop(TOKEN_ENV, None)
+                    else:
+                        os.environ[TOKEN_ENV] = previous
 
     def test_missing_token_and_foreign_port_fail_before_database_open(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
