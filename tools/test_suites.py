@@ -17,9 +17,9 @@ test_shared_home test_native_registration test_shared_home_mcp
 """.split(),
     },
     "shared": {
-        "reason": "製品のD1 fixture・benchmark経路と、テスト分類自身の検証。通常実行にも残す。",
+        "reason": "製品のD1 fixture・benchmark経路と、テスト分類自身およびdocs→Wiki同期のsource側検証。通常実行にも残す。",
         "modules": """
-test_d1_fixture test_real_corpus_benchmark test_suite_selection
+test_d1_fixture test_real_corpus_benchmark test_suite_selection test_wiki_sync_source
 """.split(),
     },
 }
