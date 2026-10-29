@@ -27,7 +27,7 @@ python tools/run_tests.py all
 | 役割 | 内容と理由 | 経路 |
 | --- | --- | --- |
 | product | 公開API、永続化、検索、feedback、CLI/MCPの直接回帰 | normal、all |
-| shared | 製品のD1 fixture・benchmark経路と分類自身の検証。通常実行にも残す | normal、experiments、all |
+| shared | 製品のD1 fixture・benchmark経路、分類自身、docs→Wiki 同期の source 側検証。通常実行にも残す | normal、experiments、all |
 
 通常の局所確認は `normal`。`experiments` は shared だけを選ぶ。engine、検索、共有runtime、fixture、依存関係、runner/分類自身の変更や影響範囲が不明な変更では `all` を使う。CI の全件検証は引き続き必要。凍結済みの実験・観測テストは #309 で削除した。
 

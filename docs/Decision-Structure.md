@@ -57,7 +57,8 @@ edge target は Decision Structure node slug とする。外部資料は `Edges`
 - NGR 自身の Decision Structure の正本は、Li+ の Decision Structure と同じく GitHub Wiki である（[wiki-canonical-decision-structure](https://github.com/Liplus-Project/neuron-graph-rag/wiki/wiki-canonical-decision-structure)）。判断の追加、更新、置換は Wiki entry と本索引の Lifecycle に従う。
 - ローカル SQLite の judgment store は NGR 自身の判断の正本ではない。store に取り込んだ判断は Wiki の写しとして扱い、store の内容で Wiki を書き換えない。store の機能と table 間の境界は [Canonical SQLite judgment graph](canonical-sqlite-judgment-graph.md) に置く。
 - `docs/Decision-Structure.md` は main repository における索引、format、vocabulary、所有境界、lifecycle の正本である。これは docs-owned であり、GitHub Wiki の `Decision-Structure.md` へ mirror する。
-- lowercase kebab-case の Decision Structure entry と `_Sidebar.md` は Wiki-only である。docs-to-Wiki synchronization は、`docs/` に対応物がないことを理由にこれらを create、overwrite、delete しない。
+- lowercase kebab-case の Decision Structure entry と、`_Sidebar.md` の `**判断構造**` 行から末尾までは Wiki-only である。docs-to-Wiki synchronization は、`docs/` に対応物がないことを理由にこれらを create、overwrite、delete しない。`_Sidebar.md` の `**判断構造**` 行より上の navigation head は `docs/wiki/_Sidebar-head.md` を正本とし、同期時にそこから再構築する。
+- top-level `docs/*.md` を追加、改名、削除する PR は同じ PR で `docs/wiki/_Sidebar-head.md` を更新する。Decision Structure entry の slug は top-level `docs/` の page 名と同じにしない。同名だと同期が docs-owned page で Wiki-only entry を上書きする。top-level `docs/*.md` 内の相対 link は top-level の `.md` page だけを指し、subfolder や Markdown 以外の文書は `blob/main` URL で指す。Wiki には subfolder がないためである。`tests/test_wiki_sync_source.py` がこれらを PR の CI で検査する。
 - 個別 Wiki entry は、その判断の current state の正本である。GitHub issue、pull request、commit、test output、fixture、gold、manifest、gate、result artifact は、それぞれの所有境界に従う根拠または契約であり、リンクしただけで Decision Structure entry にはならない。
 - `requirements.md`、実験文書、fixture、gold、manifest、gate、result artifact は、既存の source-of-truth boundary を維持する。
 
