@@ -10,7 +10,7 @@ from contextlib import closing
 from pathlib import Path
 from unittest.mock import patch
 
-from neuron_graph_rag.config_provenance import effective_config_provenance
+from neuron_graph_rag.config_provenance import effective_config_provenance, effective_search_surface
 from neuron_graph_rag.database_home import prepare_database, resolve_database
 from neuron_graph_rag.evidence_feedback import EngineConfig
 from neuron_graph_rag import home_migration as migration
@@ -83,7 +83,8 @@ class SharedHomeTest(unittest.TestCase):
     def test_feedback_policy_stays_default_off_without_explicit_config(self):
         default_provenance = effective_config_provenance(EngineConfig())
         for document in ({}, {"soft_start_feedback_reinforcement": False,
-                              "outcome_driven_feedback_deactivation": False}):
+                              "outcome_driven_feedback_deactivation": False,
+                              "sibling_feedback_normalization": 0}):
             write_config(document, home=self.home)
             resolved = resolve_shared(home=self.home, environ={})
             self.assertEqual(resolved.feedback, {})
@@ -112,6 +113,26 @@ class SharedHomeTest(unittest.TestCase):
         soft_only = resolve_shared(home=self.home, environ={})
         self.assertEqual(soft_only.feedback, self.SOFT_START)
         self.assertFalse(soft_only.engine_config().outcome_driven_feedback_deactivation)
+        self.assertEqual(soft_only.engine_config().sibling_feedback_normalization, 0.0)
+
+    def test_sibling_normalization_is_independent_of_soft_start(self):
+        for document, expected in (({"sibling_feedback_normalization": 1}, {"sibling_feedback_normalization": 1.0}),
+                                   ({"sibling_feedback_normalization": 0.5}, {"sibling_feedback_normalization": 0.5}),
+                                   ({**self.SOFT_START, "outcome_driven_feedback_deactivation": True,
+                                     "sibling_feedback_normalization": 1.0},
+                                    {**self.SOFT_START, "outcome_driven_feedback_deactivation": True,
+                                     "sibling_feedback_normalization": 1.0})):
+            with self.subTest(document=document):
+                write_config(document, home=self.home)
+                resolved = resolve_shared(home=self.home, environ={})
+                self.assertEqual(resolved.feedback, expected)
+                self.assertEqual(resolved.feedback_identity(), {"feedback": expected})
+                config = resolved.engine_config()
+                self.assertEqual(config.sibling_feedback_normalization, expected["sibling_feedback_normalization"])
+                provenance = effective_config_provenance(config)
+                self.assertEqual(provenance["effective_config"]["feedback"]["sibling_feedback_normalization"],
+                                 expected["sibling_feedback_normalization"])
+                self.assertEqual(effective_search_surface(config), "relation")
 
     def test_feedback_policy_is_read_from_config_only(self):
         environment = {"NGR_SOFT_START_FEEDBACK_REINFORCEMENT": "true", "NGR_SOFT_START_FEEDBACK_RATIO": "0.25",
@@ -137,6 +158,11 @@ class SharedHomeTest(unittest.TestCase):
             {**self.SOFT_START, "soft_start_feedback_ratio": "0.25"},
             {**self.SOFT_START, "confirmation_decay_ratio": -0.5},
             {**self.SOFT_START, "confirmation_decay_ratio": None},
+            {"sibling_feedback_normalization": -0.1},
+            {"sibling_feedback_normalization": 1.01},
+            {"sibling_feedback_normalization": True},
+            {"sibling_feedback_normalization": "1.0"},
+            {"sibling_feedback_normalization": None},
         )
         for document in invalid:
             with self.subTest(document=document):
@@ -149,7 +175,8 @@ class SharedHomeTest(unittest.TestCase):
         for text in ('{"soft_start_feedback_reinforcement": true, "soft_start_feedback_ratio": NaN, '
                      '"confirmation_decay_ratio": 0.5}',
                      '{"soft_start_feedback_reinforcement": true, "soft_start_feedback_ratio": 0.25, '
-                     '"confirmation_decay_ratio": Infinity}'):
+                     '"confirmation_decay_ratio": Infinity}',
+                     '{"sibling_feedback_normalization": NaN}'):
             config_path(self.home).write_text(text, encoding="utf-8")
             with self.assertRaises(ValueError):
                 resolve_shared(home=self.home, environ={})

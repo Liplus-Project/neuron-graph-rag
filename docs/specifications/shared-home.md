@@ -12,9 +12,12 @@ token はユーザー環境変数のみから読む。JSON、起動引数、ロ�
 
 共有 HTTP サービスの feedback policy は中央 JSON だけから読み、CLI と環境変数では上書きしない。
 `soft_start_feedback_reinforcement`（boolean）、`soft_start_feedback_ratio`、`confirmation_decay_ratio`
-（有限の `0 < value < 1`）、`outcome_driven_feedback_deactivation`（boolean）を受け付ける。
+（有限の `0 < value < 1`）、`outcome_driven_feedback_deactivation`（boolean）、
+`sibling_feedback_normalization`（有限の `0.0 <= value <= 1.0`）を受け付ける。
 soft-start は二つの ratio を必須とし、ratio と deactivation は soft-start なしでは拒否する。
-単体 stdio CLI と同じ規則であり、confirmed-only は JSON 項目に含めない。項目なしと `false` は default-off。
+sibling normalization は soft-start と独立に指定できる。
+単体 stdio CLI と同じ規則であり、confirmed-only と evidence quorum は JSON 項目に含めない。
+項目なし、`false`、sibling normalization `0` は default-off。
 有効値は共有サービスの `EngineConfig` と identity の `config.feedback` に入り、
 MCP `search` の effective-config provenance に現れる。設定を変えたら共有サービスを停止してから再接続する。
 

@@ -17,7 +17,7 @@ FIELDS = (*PATH_FIELDS, "port", "cuda_device")
 # Feedback policy is read from config.json only; CLI and environment do not override it.
 FEEDBACK_BOOLEAN_FIELDS = ("soft_start_feedback_reinforcement", "outcome_driven_feedback_deactivation")
 FEEDBACK_RATIO_FIELDS = ("soft_start_feedback_ratio", "confirmation_decay_ratio")
-FEEDBACK_FIELDS = (*FEEDBACK_BOOLEAN_FIELDS, *FEEDBACK_RATIO_FIELDS)
+FEEDBACK_FIELDS = (*FEEDBACK_BOOLEAN_FIELDS, *FEEDBACK_RATIO_FIELDS, "sibling_feedback_normalization")
 CONFIG_FIELDS = (*FIELDS, *FEEDBACK_FIELDS)
 
 
@@ -72,6 +72,12 @@ def validate_feedback(value: Mapping[str, Any]) -> None:
             if (isinstance(number, bool) or not isinstance(number, (int, float))
                     or not math.isfinite(number) or not 0.0 < number < 1.0):
                 raise ValueError(f"NGR {name} must be a number strictly between 0.0 and 1.0")
+    # Same closed interval as --sibling-feedback-normalization; independent of soft-start.
+    if "sibling_feedback_normalization" in value:
+        number = value["sibling_feedback_normalization"]
+        if (isinstance(number, bool) or not isinstance(number, (int, float))
+                or not math.isfinite(number) or not 0.0 <= number <= 1.0):
+            raise ValueError("NGR sibling_feedback_normalization must be a number from 0.0 through 1.0")
     soft_start = value.get("soft_start_feedback_reinforcement", False)
     if soft_start:
         if "confirmation_decay_ratio" not in value:
@@ -91,15 +97,18 @@ def validate_feedback(value: Mapping[str, Any]) -> None:
 def feedback_settings(value: Mapping[str, Any]) -> dict[str, Any]:
     """Return the EngineConfig keyword arguments that differ from the default-off policy."""
     validate_feedback(value)
-    if not value.get("soft_start_feedback_reinforcement", False):
-        return {}
-    settings: dict[str, Any] = {
-        "soft_start_feedback_reinforcement": True,
-        "soft_start_feedback_ratio": float(value["soft_start_feedback_ratio"]),
-        "confirmation_decay_ratio": float(value["confirmation_decay_ratio"]),
-    }
-    if value.get("outcome_driven_feedback_deactivation", False):
-        settings["outcome_driven_feedback_deactivation"] = True
+    settings: dict[str, Any] = {}
+    if value.get("soft_start_feedback_reinforcement", False):
+        settings.update(
+            soft_start_feedback_reinforcement=True,
+            soft_start_feedback_ratio=float(value["soft_start_feedback_ratio"]),
+            confirmation_decay_ratio=float(value["confirmation_decay_ratio"]),
+        )
+        if value.get("outcome_driven_feedback_deactivation", False):
+            settings["outcome_driven_feedback_deactivation"] = True
+    sibling = float(value.get("sibling_feedback_normalization", 0.0))
+    if sibling > 0.0:
+        settings["sibling_feedback_normalization"] = sibling
     return settings
 
 

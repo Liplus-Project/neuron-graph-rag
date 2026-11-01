@@ -40,18 +40,19 @@ CLI の `--stop` は従来どおり一回だけ本体を停止し、次の MCP �
 
 CUDA を使う場合は、両クライアントの `--shared` の後に同じ `--cuda-cache`、`--cuda-e5-snapshot`、`--cuda-v2-m3-snapshot` を指定する。モデル path の準備と tool の使い方は下記を参照。CUDA は明示指定した時だけ共有サービス内で読み込む。設定を変える場合は先に共有サービスを停止する。
 
-soft-start feedback reinforcement と outcome-driven feedback deactivation は、共有サービスでは `~/.ngr/config.json` にだけ書く。native 登録の `--shared` 引数は変えない。
+soft-start feedback reinforcement、outcome-driven feedback deactivation、sibling feedback normalization は、共有サービスでは `~/.ngr/config.json` にだけ書く。native 登録の `--shared` 引数は変えない。
 
 ```json
 {
   "soft_start_feedback_reinforcement": true,
   "soft_start_feedback_ratio": 0.25,
   "confirmation_decay_ratio": 0.5,
-  "outcome_driven_feedback_deactivation": true
+  "outcome_driven_feedback_deactivation": true,
+  "sibling_feedback_normalization": 1.0
 }
 ```
 
-deactivation が不要なら最後の行を省く。soft-start は二つの ratio を必須とし、ratio と deactivation だけの設定や範囲外の値は起動を拒否する。既存の項目（`database`、`port` など）と同じ JSON に並べる。書き換えたら共有サービスを停止し、次の接続で起動し直す。稼働中のサービスと設定が違う間は接続を拒否する。有効な値は `search` の `effective_config_provenance` で確認できる。
+deactivation や sibling normalization が不要ならその行を省く。sibling normalization は `0.0` から `1.0` で、soft-start なしでも指定できる。soft-start は二つの ratio を必須とし、ratio と deactivation だけの設定や範囲外の値は起動を拒否する。既存の項目（`database`、`port` など）と同じ JSON に並べる。書き換えたら共有サービスを停止し、次の接続で起動し直す。稼働中のサービスと設定が違う間は接続を拒否する。有効な値は `search` の `effective_config_provenance` で確認できる。
 
 ## 手動 HTTP サービスと従来 stdio
 

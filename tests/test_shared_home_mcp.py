@@ -42,7 +42,8 @@ class SharedHomeMCPTest(unittest.IsolatedAsyncioTestCase):
             self.assertTrue(database.parent.is_dir())
 
     FEEDBACK = {"soft_start_feedback_reinforcement": True, "soft_start_feedback_ratio": 0.25,
-                "confirmation_decay_ratio": 0.5, "outcome_driven_feedback_deactivation": True}
+                "confirmation_decay_ratio": 0.5, "outcome_driven_feedback_deactivation": True,
+                "sibling_feedback_normalization": 1.0}
 
     def test_proxy_identity_carries_config_feedback_policy(self):
         from neuron_graph_rag_mcp import shared_proxy
@@ -98,6 +99,7 @@ class SharedHomeMCPTest(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(provenance["search_surface"], "combined")
                     self.assertNotIn("soft_start_feedback_reinforcement", feedback)
                     self.assertNotIn("outcome_driven_feedback_deactivation", feedback)
+                    self.assertEqual(feedback["sibling_feedback_normalization"], 0.0)
 
     async def test_two_clients_use_central_database_from_an_unrelated_working_directory(self):
         import httpx2

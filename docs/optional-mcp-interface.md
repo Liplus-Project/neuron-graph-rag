@@ -73,7 +73,7 @@ neuron-graph-rag-mcp \
 
 帰属可能な`corrected` / `rolled_back`はcredited deltaと同一contributionのsibling normalization deltaを一体で逆適用し、`superseded`はedgeをdormantにする。後続`confirmed`は保存済みpathを再活性化する。MCP receiptは`deactivation_applied`、`reversed_contributions`、`dormancy_changes`、`reactivated_edges`をcoreと同じ形で返す。既定時のaudit-only動作とdescriptionは変更しない。詳細は[Outcome-driven feedback deactivation](outcome-driven-feedback-deactivation.md)を正本とする。
 
-共有 HTTP サービス（`--shared` が起動する `--http` と手動 `--http`）は上の CLI flag を受け取らず、soft-start と deactivation を `~/.ngr/config.json` の `soft_start_feedback_reinforcement`、`soft_start_feedback_ratio`、`confirmation_decay_ratio`、`outcome_driven_feedback_deactivation` から読む。検証規則は上の stdio CLI と同じで、confirmed-only と quorum / sibling normalization は設定項目に含めない。項目がない設定は default-off のままである。項目、検証、identity の規則は[共通ホーム仕様](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/specifications/shared-home.md)を正本とする。
+共有 HTTP サービス（`--shared` が起動する `--http` と手動 `--http`）は上の CLI flag を受け取らず、soft-start、deactivation、sibling normalization を `~/.ngr/config.json` の `soft_start_feedback_reinforcement`、`soft_start_feedback_ratio`、`confirmation_decay_ratio`、`outcome_driven_feedback_deactivation`、`sibling_feedback_normalization` から読む。検証規則は上の stdio CLI と同じで、sibling normalization は soft-start と独立に `0.0` から `1.0` を受け付ける。confirmed-only と evidence quorum は設定項目に含めない。項目がない設定は default-off のままである。項目、検証、identity の規則は[共通ホーム仕様](https://github.com/Liplus-Project/neuron-graph-rag/blob/main/docs/specifications/shared-home.md)を正本とする。
 
 ## 2. Protocol envelope
 
