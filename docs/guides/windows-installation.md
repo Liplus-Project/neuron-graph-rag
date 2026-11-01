@@ -2,7 +2,7 @@
 
 ## 選ぶ版と導入
 
-v0.3.1 は共通ホーム対応の配布候補。通常は `NGR-<version>-windows-x64-cpu-setup.exe` を選ぶ。
+v0.3.2 は共通ホーム対応の配布候補。通常は `NGR-<version>-windows-x64-cpu-setup.exe` を選ぶ。
 NVIDIA GPU、対応 driver、固定モデルを配置して CUDA 検索を使う場合は CUDA 版を選ぶ。
 通常検索と共有 MCP は CPU 版で動く。モデル weight はどちらにも含まれない。
 
