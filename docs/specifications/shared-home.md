@@ -10,6 +10,14 @@ JSON の相対 path は `.ngr` 基準。CUDA は三つの path が揃ったと�
 不正 JSON、不明な項目、型・範囲の誤りは起動を拒否する。
 token はユーザー環境変数のみから読む。JSON、起動引数、ログへ保存しない。
 
+共有 HTTP サービスの feedback policy は中央 JSON だけから読み、CLI と環境変数では上書きしない。
+`soft_start_feedback_reinforcement`（boolean）、`soft_start_feedback_ratio`、`confirmation_decay_ratio`
+（有限の `0 < value < 1`）、`outcome_driven_feedback_deactivation`（boolean）を受け付ける。
+soft-start は二つの ratio を必須とし、ratio と deactivation は soft-start なしでは拒否する。
+単体 stdio CLI と同じ規則であり、confirmed-only は JSON 項目に含めない。項目なしと `false` は default-off。
+有効値は共有サービスの `EngineConfig` と identity の `config.feedback` に入り、
+MCP `search` の effective-config provenance に現れる。設定を変えたら共有サービスを停止してから再接続する。
+
 旧 `.ngrdb/knowledge.db` が存在する未移行環境では既定起動を拒否する。
 `--migrate-home --confirm-stopped` は利用者が全クライアントと旧トレイを終了した後に
 実行する。実行中の NGR 本体・トレイ・プロキシおよび SQLite 書込みロックを検出した場合は拒否する。

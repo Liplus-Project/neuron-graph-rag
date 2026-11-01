@@ -481,6 +481,7 @@ def action_main(argv: list[str] | None = None) -> None:
             config = {name: str(Path(getattr(args, name)).expanduser().resolve())
                       for name in ("cuda_cache", "cuda_e5_snapshot", "cuda_v2_m3_snapshot")}
             config["cuda_device"] = args.cuda_device
+        config.update(resolved.feedback_identity())
         if args.action == "stop":
             _pause(args, token, database)
         elif args.action == "resume":

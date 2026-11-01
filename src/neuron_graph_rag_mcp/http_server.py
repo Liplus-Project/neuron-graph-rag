@@ -22,6 +22,7 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 from neuron_graph_rag.cpu_shortlist_retrieval import LocalPinnedE5
 from neuron_graph_rag.cuda_shortlist_retrieval import CudaShortlistRetriever, LocalPinnedCudaV2M3
 from neuron_graph_rag.database_home import DatabaseResolution, prepare_database
+from neuron_graph_rag.evidence_feedback import EngineConfig
 from neuron_graph_rag.user_config import resolve_shared
 
 from .server import create_server
@@ -57,13 +58,15 @@ class BearerTokenGate:
 
 def create_http_app(database: str | Path, *, port: int = DEFAULT_PORT,
                     cuda_retriever: Any = None, bearer_token: str,
-                    service_config: dict[str, Any] | None = None) -> Starlette:
+                    service_config: dict[str, Any] | None = None,
+                    engine_config: EngineConfig | None = None) -> Starlette:
     """Create one process-owned adapter and one session manager for all clients."""
     if not 1 <= port <= 65535:
         raise ValueError("port must be from 1 through 65535")
     # Validate before opening the database or allocating the optional retriever.
     _validate_bearer_token(bearer_token)
-    server, adapter = create_server(database, cuda_retriever=cuda_retriever, expose_cuda=True)
+    server, adapter = create_server(database, config=engine_config,
+                                    cuda_retriever=cuda_retriever, expose_cuda=True)
     manager = StreamableHTTPSessionManager(
         server, json_response=True,
         security_settings=TransportSecuritySettings(
@@ -129,6 +132,8 @@ def main(argv: list[str] | None = None) -> None:
     try:
         _validate_bearer_token(bearer_token)
         resolved = resolve_shared(args)
+        # Feedback policy comes from config.json only; build it before opening the database.
+        engine_config = resolved.engine_config()
         # Prepare before allocating GPU resources, preserving default-directory creation.
         database = prepare_database(DatabaseResolution(resolved.database, resolved.database_source))
         resolved.apply(args)
@@ -161,8 +166,10 @@ def main(argv: list[str] | None = None) -> None:
             "cuda_v2_m3_snapshot": str(Path(args.cuda_v2_m3_snapshot).expanduser().resolve()),
             "cuda_device": args.cuda_device,
         }
+    service_config.update(resolved.feedback_identity())
     app = create_http_app(database, port=args.port, cuda_retriever=retriever,
-                          bearer_token=bearer_token, service_config=service_config)
+                          bearer_token=bearer_token, service_config=service_config,
+                          engine_config=engine_config)
     print(f"NGR MCP: http://127.0.0.1:{args.port}/mcp/", flush=True)
     server = uvicorn.Server(uvicorn.Config(
         app, host="127.0.0.1", port=args.port, workers=1, timeout_graceful_shutdown=5,

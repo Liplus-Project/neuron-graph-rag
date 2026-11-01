@@ -110,7 +110,7 @@ def _probe(port: int, token: str, database: Path, config: dict[str, Any] | None)
     if not isinstance(identity, dict) or identity.get("service") != SERVICE_MARKER:
         raise RuntimeError(f"port {port} is occupied by a different service")
     if identity.get("database") != str(database) or (config is not None and identity.get("config") != config):
-        raise RuntimeError(f"port {port} has a different NGR database or CUDA configuration")
+        raise RuntimeError(f"port {port} has a different NGR database, CUDA or feedback configuration")
     pid = identity.get("pid")
     if isinstance(pid, bool) or not isinstance(pid, int) or pid <= 0:
         raise RuntimeError(f"port {port} returned an invalid service identity")
@@ -354,6 +354,7 @@ def main(argv: list[str] | None = None) -> None:
                 "cuda_v2_m3_snapshot": str(Path(args.cuda_v2_m3_snapshot).expanduser().resolve()),
                 "cuda_device": args.cuda_device,
             }
+        config.update(resolved.feedback_identity())
         _ensure_service(args, token, database, config)
         asyncio.run(_run_proxy(args.port, token))
     except (ValueError, RuntimeError, OSError) as error:

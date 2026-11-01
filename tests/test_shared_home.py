@@ -10,7 +10,9 @@ from contextlib import closing
 from pathlib import Path
 from unittest.mock import patch
 
+from neuron_graph_rag.config_provenance import effective_config_provenance
 from neuron_graph_rag.database_home import prepare_database, resolve_database
+from neuron_graph_rag.evidence_feedback import EngineConfig
 from neuron_graph_rag import home_migration as migration
 from neuron_graph_rag.user_config import config_path, ensure_config, ngr_home, read_config, resolve_shared, write_config
 
@@ -72,6 +74,87 @@ class SharedHomeTest(unittest.TestCase):
     def test_cuda_is_opt_in_and_must_be_complete(self):
         self.assertEqual(resolve_shared(home=self.home, environ={}).cuda_identity(), {})
         write_config({"cuda_cache": "cache.db"}, home=self.home)
+        with self.assertRaises(ValueError):
+            resolve_shared(home=self.home, environ={})
+
+    SOFT_START = {"soft_start_feedback_reinforcement": True, "soft_start_feedback_ratio": 0.25,
+                  "confirmation_decay_ratio": 0.5}
+
+    def test_feedback_policy_stays_default_off_without_explicit_config(self):
+        default_provenance = effective_config_provenance(EngineConfig())
+        for document in ({}, {"soft_start_feedback_reinforcement": False,
+                              "outcome_driven_feedback_deactivation": False}):
+            write_config(document, home=self.home)
+            resolved = resolve_shared(home=self.home, environ={})
+            self.assertEqual(resolved.feedback, {})
+            self.assertEqual(resolved.feedback_identity(), {})
+            self.assertEqual(resolved.engine_config(), EngineConfig())
+            self.assertEqual(effective_config_provenance(resolved.engine_config()), default_provenance)
+
+    def test_feedback_policy_is_enabled_by_config_and_reported_in_provenance(self):
+        write_config({**self.SOFT_START, "outcome_driven_feedback_deactivation": True}, home=self.home)
+        resolved = resolve_shared(home=self.home, environ={})
+        expected = {**self.SOFT_START, "outcome_driven_feedback_deactivation": True}
+        self.assertEqual(resolved.feedback, expected)
+        self.assertEqual(resolved.feedback_identity(), {"feedback": expected})
+        config = resolved.engine_config()
+        self.assertTrue(config.soft_start_feedback_reinforcement)
+        self.assertEqual(config.soft_start_feedback_ratio, 0.25)
+        self.assertEqual(config.confirmation_decay_ratio, 0.5)
+        self.assertTrue(config.outcome_driven_feedback_deactivation)
+        self.assertFalse(config.confirmed_outcome_reinforcement)
+        feedback = effective_config_provenance(config)["effective_config"]["feedback"]
+        for name, value in expected.items():
+            self.assertEqual(feedback[name], value)
+        self.assertNotEqual(effective_config_provenance(config)["feedback_config_fingerprint"],
+                            effective_config_provenance(EngineConfig())["feedback_config_fingerprint"])
+        write_config(self.SOFT_START, home=self.home)
+        soft_only = resolve_shared(home=self.home, environ={})
+        self.assertEqual(soft_only.feedback, self.SOFT_START)
+        self.assertFalse(soft_only.engine_config().outcome_driven_feedback_deactivation)
+
+    def test_feedback_policy_is_read_from_config_only(self):
+        environment = {"NGR_SOFT_START_FEEDBACK_REINFORCEMENT": "true", "NGR_SOFT_START_FEEDBACK_RATIO": "0.25",
+                       "NGR_CONFIRMATION_DECAY_RATIO": "0.5", "NGR_OUTCOME_DRIVEN_FEEDBACK_DEACTIVATION": "true"}
+        command_line = argparse.Namespace(**{name: True for name in self.SOFT_START})
+        self.assertEqual(resolve_shared(command_line, home=self.home, environ=environment).feedback, {})
+
+    def test_invalid_feedback_policy_is_rejected_like_the_stdio_cli(self):
+        invalid = (
+            {"soft_start_feedback_reinforcement": True, "soft_start_feedback_ratio": 0.25},
+            {"soft_start_feedback_reinforcement": True, "confirmation_decay_ratio": 0.5},
+            {"soft_start_feedback_ratio": 0.25},
+            {"confirmation_decay_ratio": 0.5},
+            {"outcome_driven_feedback_deactivation": True},
+            {**self.SOFT_START, "soft_start_feedback_reinforcement": False},
+            {**self.SOFT_START, "soft_start_feedback_reinforcement": "true"},
+            {**self.SOFT_START, "soft_start_feedback_reinforcement": 1},
+            {**self.SOFT_START, "outcome_driven_feedback_deactivation": "yes"},
+            {**self.SOFT_START, "soft_start_feedback_ratio": 0},
+            {**self.SOFT_START, "soft_start_feedback_ratio": 1},
+            {**self.SOFT_START, "soft_start_feedback_ratio": 1.5},
+            {**self.SOFT_START, "soft_start_feedback_ratio": True},
+            {**self.SOFT_START, "soft_start_feedback_ratio": "0.25"},
+            {**self.SOFT_START, "confirmation_decay_ratio": -0.5},
+            {**self.SOFT_START, "confirmation_decay_ratio": None},
+        )
+        for document in invalid:
+            with self.subTest(document=document):
+                with self.assertRaises(ValueError):
+                    write_config(document, home=self.home)
+                config_path(self.home).parent.mkdir(exist_ok=True)
+                config_path(self.home).write_text(json.dumps(document), encoding="utf-8")
+                with self.assertRaises(ValueError):
+                    resolve_shared(home=self.home, environ={})
+        for text in ('{"soft_start_feedback_reinforcement": true, "soft_start_feedback_ratio": NaN, '
+                     '"confirmation_decay_ratio": 0.5}',
+                     '{"soft_start_feedback_reinforcement": true, "soft_start_feedback_ratio": 0.25, '
+                     '"confirmation_decay_ratio": Infinity}'):
+            config_path(self.home).write_text(text, encoding="utf-8")
+            with self.assertRaises(ValueError):
+                resolve_shared(home=self.home, environ={})
+        config_path(self.home).write_text(json.dumps({"confirmed_outcome_reinforcement": True,
+                                                      "confirmation_decay_ratio": 0.5}), encoding="utf-8")
         with self.assertRaises(ValueError):
             resolve_shared(home=self.home, environ={})
 
