@@ -100,6 +100,8 @@
 
 94. Li+ Knowledge Tier 2 の node expiry は明示 opt-in の操作とし、自動では削除しない。各 node は nullable な `created_at`（初回取り込み時刻、再取り込みで変えない）と `last_used_at`（最後に成功した利用の時刻）を持つ。`last_used_at` は success feedback と source-use の `used` 記録でだけ進み、検索、`selected`、`validated` では進まず、古い時刻では巻き戻らない。expiry は `last_used_at`、未利用なら `created_at` が N 日より古い judgment 以外の node を一つの `BEGIN IMMEDIATE` transaction で削除し、edge、activation、retrieval result、source-use、success / outcome node、edge 依存の feedback 記録を cascade で除き、失敗時は全体を戻す。BM25 / dense の入口は検索ごとに `nodes` から計算し、attach 済み shortlist cache は commit 後に同じ node を除き、未同期の cache は stale として fail closed にする。既存 database は開いたときに列を追加し、列のない行の `created_at` をその時刻で埋める。CLI `expire-nodes` は `--dry-run` を持ち、存在しない database を作らない。
 
+95. 共有 HTTP サービス（`--shared` が起動する `--http` と手動 `--http`）の feedback policy は `~/.ngr/config.json` の `soft_start_feedback_reinforcement`、`soft_start_feedback_ratio`、`confirmation_decay_ratio`、`outcome_driven_feedback_deactivation`、`sibling_feedback_normalization` だけで明示 opt-in でき、CLI 引数・環境変数では上書きしない。項目がない、boolean が `false`、または sibling normalization が `0` の設定は従来の default-off と同じ `EngineConfig` と effective-config provenance を維持する。検証は単体 stdio CLI と同じ規則とし、soft-start は二つの ratio を必須、各 ratio は有限の `0 < value < 1`、ratio と deactivation は soft-start を必須とし、sibling normalization は soft-start と独立に有限の `0.0 <= value <= 1.0` とし、型・範囲・組合せの誤りは DB を開く前に起動を拒否する。confirmed-only は設定項目に含めないため soft-start と同時に選べない。有効な policy は共有サービスの `EngineConfig`、MCP `search` の effective-config provenance、認証済み identity の `config.feedback` に反映し、不一致のプロセスへは接続しない。core library、直接 stdio の既定値、native 登録の `--shared` 引数は変更しない。
+
 ## 4. Constraints
 
 - GNN 学習、自動正誤判定、分散実行、GitHub 専用 UI は対象外とする。

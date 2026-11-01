@@ -41,6 +41,66 @@ class SharedHomeMCPTest(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(seen, [(8912, database, {}), (8912, database, {})])
             self.assertTrue(database.parent.is_dir())
 
+    FEEDBACK = {"soft_start_feedback_reinforcement": True, "soft_start_feedback_ratio": 0.25,
+                "confirmation_decay_ratio": 0.5, "outcome_driven_feedback_deactivation": True,
+                "sibling_feedback_normalization": 1.0}
+
+    def test_proxy_identity_carries_config_feedback_policy(self):
+        from neuron_graph_rag_mcp import shared_proxy
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory).resolve()
+            write_config({"port": 8912, **self.FEEDBACK}, home=home)
+            seen = []
+            def ensure(args, token, db, config):
+                seen.append(config)
+            async def run(port, token):
+                pass
+            with patch("pathlib.Path.home", return_value=home), patch.dict(os.environ, {"NGR_MCP_HTTP_BEARER_TOKEN": self.TOKEN}, clear=True), patch.object(shared_proxy, "_ensure_service", side_effect=ensure), patch.object(shared_proxy, "_run_proxy", side_effect=run):
+                shared_proxy.main([])
+            self.assertEqual(seen, [{"feedback": self.FEEDBACK}])
+
+    async def test_http_service_builds_engine_config_and_identity_from_config(self):
+        from mcp import types
+        from neuron_graph_rag_mcp import http_server
+        from neuron_graph_rag_mcp.server import CONTRACT_VERSION
+
+        for document, identity in (({}, {}), (self.FEEDBACK, {"feedback": self.FEEDBACK})):
+            with self.subTest(document=document), tempfile.TemporaryDirectory() as directory:
+                home = Path(directory).resolve()
+                write_config({"port": 8913, **document}, home=home)
+                captured = {}
+                def create(database, **kwargs):
+                    captured.update(kwargs, database=database)
+                    raise SystemExit(0)
+                with patch("pathlib.Path.home", return_value=home), patch.dict(os.environ, {"NGR_MCP_HTTP_BEARER_TOKEN": self.TOKEN}, clear=True), patch.object(http_server, "create_http_app", side_effect=create):
+                    with self.assertRaises(SystemExit):
+                        http_server.main([])
+                self.assertEqual(captured["service_config"], identity)
+                database = captured.pop("database")
+                with NeuronGraphRAG(database) as engine:
+                    engine.add_document("decision", "cache invalidation decision")
+                    engine.add_document("implementation", "implementation detail")
+                    engine.add_edge("decision", "implementation", "implemented_by", weight=0.7)
+                app = http_server.create_http_app(database, **captured)
+                adapter = app.state.ngr_adapter
+                try:
+                    result = await adapter.call_tool(None, types.CallToolRequestParams(name="search", arguments={
+                        "contract_version": CONTRACT_VERSION, "query": "cache invalidation"}))
+                finally:
+                    adapter.close()
+                self.assertFalse(result.is_error)
+                provenance = result.structured_content["effective_config_provenance"]
+                feedback = provenance["effective_config"]["feedback"]
+                if document:
+                    self.assertEqual(provenance["search_surface"], "relation")
+                    for name, value in self.FEEDBACK.items():
+                        self.assertEqual(feedback[name], value)
+                else:
+                    self.assertEqual(provenance["search_surface"], "combined")
+                    self.assertNotIn("soft_start_feedback_reinforcement", feedback)
+                    self.assertNotIn("outcome_driven_feedback_deactivation", feedback)
+                    self.assertEqual(feedback["sibling_feedback_normalization"], 0.0)
+
     async def test_two_clients_use_central_database_from_an_unrelated_working_directory(self):
         import httpx2
         from mcp import ClientSession

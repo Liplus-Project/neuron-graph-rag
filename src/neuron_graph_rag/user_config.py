@@ -3,16 +3,22 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import tempfile
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 DEFAULT_PORT = 8765
 PATH_FIELDS = ("database", "cuda_cache", "cuda_e5_snapshot", "cuda_v2_m3_snapshot")
 FIELDS = (*PATH_FIELDS, "port", "cuda_device")
+# Feedback policy is read from config.json only; CLI and environment do not override it.
+FEEDBACK_BOOLEAN_FIELDS = ("soft_start_feedback_reinforcement", "outcome_driven_feedback_deactivation")
+FEEDBACK_RATIO_FIELDS = ("soft_start_feedback_ratio", "confirmation_decay_ratio")
+FEEDBACK_FIELDS = (*FEEDBACK_BOOLEAN_FIELDS, *FEEDBACK_RATIO_FIELDS, "sibling_feedback_normalization")
+CONFIG_FIELDS = (*FIELDS, *FEEDBACK_FIELDS)
 
 
 def ngr_home(home: str | Path | None = None) -> Path:
@@ -41,7 +47,7 @@ def read_config(home: str | Path | None = None) -> dict[str, Any]:
 
 
 def validate_config(value: Any) -> None:
-    if not isinstance(value, dict) or set(value) - set(FIELDS):
+    if not isinstance(value, dict) or set(value) - set(CONFIG_FIELDS):
         raise ValueError("NGR config.json has unsupported fields or is not an object")
     for name in PATH_FIELDS:
         if name in value and (not isinstance(value[name], str) or not value[name].strip()):
@@ -52,6 +58,58 @@ def validate_config(value: Any) -> None:
             if (type(number) is not int or number < minimum
                     or (maximum is not None and number > maximum)):
                 raise ValueError(f"NGR {name} has an invalid integer value")
+    validate_feedback(value)
+
+
+def validate_feedback(value: Mapping[str, Any]) -> None:
+    """Apply the standalone stdio CLI feedback rules to config.json fields."""
+    for name in FEEDBACK_BOOLEAN_FIELDS:
+        if name in value and type(value[name]) is not bool:
+            raise ValueError(f"NGR {name} must be a boolean")
+    for name in FEEDBACK_RATIO_FIELDS:
+        if name in value:
+            number = value[name]
+            if (isinstance(number, bool) or not isinstance(number, (int, float))
+                    or not math.isfinite(number) or not 0.0 < number < 1.0):
+                raise ValueError(f"NGR {name} must be a number strictly between 0.0 and 1.0")
+    # Same closed interval as --sibling-feedback-normalization; independent of soft-start.
+    if "sibling_feedback_normalization" in value:
+        number = value["sibling_feedback_normalization"]
+        if (isinstance(number, bool) or not isinstance(number, (int, float))
+                or not math.isfinite(number) or not 0.0 <= number <= 1.0):
+            raise ValueError("NGR sibling_feedback_normalization must be a number from 0.0 through 1.0")
+    soft_start = value.get("soft_start_feedback_reinforcement", False)
+    if soft_start:
+        if "confirmation_decay_ratio" not in value:
+            raise ValueError("NGR soft_start_feedback_reinforcement requires confirmation_decay_ratio")
+        if "soft_start_feedback_ratio" not in value:
+            raise ValueError("NGR soft_start_feedback_reinforcement requires soft_start_feedback_ratio")
+    else:
+        # confirmed-only is not selectable here, so soft-start is the only policy these values serve.
+        if "confirmation_decay_ratio" in value:
+            raise ValueError("NGR confirmation_decay_ratio requires soft_start_feedback_reinforcement")
+        if "soft_start_feedback_ratio" in value:
+            raise ValueError("NGR soft_start_feedback_ratio requires soft_start_feedback_reinforcement")
+        if value.get("outcome_driven_feedback_deactivation", False):
+            raise ValueError("NGR outcome_driven_feedback_deactivation requires soft_start_feedback_reinforcement")
+
+
+def feedback_settings(value: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the EngineConfig keyword arguments that differ from the default-off policy."""
+    validate_feedback(value)
+    settings: dict[str, Any] = {}
+    if value.get("soft_start_feedback_reinforcement", False):
+        settings.update(
+            soft_start_feedback_reinforcement=True,
+            soft_start_feedback_ratio=float(value["soft_start_feedback_ratio"]),
+            confirmation_decay_ratio=float(value["confirmation_decay_ratio"]),
+        )
+        if value.get("outcome_driven_feedback_deactivation", False):
+            settings["outcome_driven_feedback_deactivation"] = True
+    sibling = float(value.get("sibling_feedback_normalization", 0.0))
+    if sibling > 0.0:
+        settings["sibling_feedback_normalization"] = sibling
+    return settings
 
 
 def write_config(value: dict[str, Any], *, home: str | Path | None = None) -> None:
@@ -105,12 +163,22 @@ class SharedConfiguration:
     cuda_e5_snapshot: Path | None = None
     cuda_v2_m3_snapshot: Path | None = None
     cuda_device: int = 0
+    feedback: Mapping[str, Any] = field(default_factory=dict, hash=False)
 
     def cuda_identity(self) -> dict[str, Any]:
         if self.cuda_cache is None:
             return {}
         return {**{name: str(getattr(self, name)) for name in PATH_FIELDS[1:]},
                 "cuda_device": self.cuda_device}
+
+    def feedback_identity(self) -> dict[str, Any]:
+        """Service identity entry; empty under the default-off policy so old identities still match."""
+        return {"feedback": dict(self.feedback)} if self.feedback else {}
+
+    def engine_config(self) -> Any:
+        from .evidence_feedback import EngineConfig
+
+        return EngineConfig(**self.feedback)
 
     def apply(self, namespace: Any) -> None:
         for name in FIELDS:
@@ -152,4 +220,5 @@ def resolve_shared(command_line: Any = None, *, environ: Mapping[str, str] | Non
         raise ValueError("cuda_device requires CUDA path options")
     database = resolve_database(getattr(command_line, "database", None), environ=environment, home=root,
                                 configuration=document)
-    return SharedConfiguration(database.path.resolve(), database_source=database.source, **values)
+    return SharedConfiguration(database.path.resolve(), database_source=database.source,
+                               feedback=feedback_settings(document), **values)

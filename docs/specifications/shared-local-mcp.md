@@ -6,19 +6,19 @@ Windows の `--shared` は最初の接続時に、同じ OS ユーザーの通�
 
 トレイは稼働中・停止中・利用不能を示し、停止、再開、終了を提供する。停止はポート単位の停止状態をユーザー領域に記録してから認証済み HTTP 停止を送り、共有本体のプロセス終了まで待つ。これにより adapter、SQLite connection、CUDA retriever を閉じ、GPU memory を保持する本体プロセスを残さない。停止中の `--shared` は再起動せず、トレイでの再開を求める診断エラーを返す。接続済みクライアントのセッションは停止時に切れるので再接続が必要である。再開は停止状態を解除して共有本体を起動する。失敗した再開は停止状態へ戻す。終了は本体を止めてコントローラーを閉じ、停止状態を解除する。終了後の新たな接続では一組を再起動できる。
 
-停止状態はコントローラーの異常終了後も残り、次の `--shared` 接続はコントローラーを再起動して停止状態を守る。コントローラーは port・絶対 DB path・CUDA 設定・token の fingerprint を照合し、異なる設定の二重起動を拒否する。token とモデル path はトレイ表示やログに出さない。`--stop` は従来どおり一回の明示停止で、トレイの停止状態は設定しない。
+停止状態はコントローラーの異常終了後も残り、次の `--shared` 接続はコントローラーを再起動して停止状態を守る。コントローラーは port・絶対 DB path・CUDA 設定・feedback policy・token の fingerprint を照合し、異なる設定の二重起動を拒否する。token とモデル path はトレイ表示やログに出さない。`--stop` は従来どおり一回の明示停止で、トレイの停止状態は設定しない。
 
 トレイ子プロセスがアイコン登録前に終了した場合、共有入口はタイムアウトを待たずに失敗を返す。子プロセスは例外の種類とソース位置、該当する OS エラー番号だけをユーザー領域の port 別診断ログへ記録し、token、DB path、モデル path は記録しない。
 
 ## 接続時起動（Issue #259）
 
-`neuron-graph-rag-mcp --shared` は stdio MCP の入口であり、接続開始時に認証済みのローカル HTTP サービスを確認する。サービスが停止中なら一つのクライアントが起動し、同時接続の後続クライアントは同じプロセスに接続する。プロセス間の起動ロックは port 単位で、lock file に token を保存しない。認証済み identity は NGR のサービス種別、絶対 DB path、CUDA 設定と PID を返す。不一致、認証失敗、他サービスによる port 占有は中継を開始せず診断可能なエラーにする。
+`neuron-graph-rag-mcp --shared` は stdio MCP の入口であり、接続開始時に認証済みのローカル HTTP サービスを確認する。サービスが停止中なら一つのクライアントが起動し、同時接続の後続クライアントは同じプロセスに接続する。プロセス間の起動ロックは port 単位で、lock file に token を保存しない。認証済み identity は NGR のサービス種別、絶対 DB path、CUDA 設定、`~/.ngr/config.json` で有効化した feedback policy（`config.feedback`、既定では省略）と PID を返す。不一致、認証失敗、他サービスによる port 占有は中継を開始せず診断可能なエラーにする。
 
 stdio 入口は HTTP に tool 一覧と tool 呼び出しを中継し、既存 tool の公開内容と戻り値を変えない。接続ごとに stdio プロキシと HTTP MCP session は作るが、HTTP サービスの `FeedbackMCPAdapter`、SQLite connection と opt-in CUDA retriever は一つのまま。stdio プロキシの終了は共有サービスを停止しない。共有サービスの寿命は明示的な `--stop` または OS ログアウト／終了までである。`--stop` は token と DB path の一致を確認した後にサービスへ認証済み停止要求を送り、プロセス終了まで待つ。停止後、次の `--shared` 接続は再起動する。
 
 Windows では MCP クライアントが stdio プロキシを終了時に子プロセスごと強制終了する Job Object に入れる場合がある。共有サービスは Windows 標準の PowerShell と WMI から、その Job Object の外に起動する。追加の Python 依存は要求しない。サービスの起動時に token をコマンド引数へ展開せず、環境変数として引き渡す。
 
-token 未設定・不正値ならサービス起動前に拒否する。token は環境変数 `NGR_MCP_HTTP_BEARER_TOKEN` のみから渡し、設定本文、起動引数、ログには書かない。手動 `--http` と従来の token 不要 stdio は継続する。`--shared` の CUDA path 一式は opt-in で、稼働中のサービスと不一致なら接続を拒否する。
+token 未設定・不正値ならサービス起動前に拒否する。token は環境変数 `NGR_MCP_HTTP_BEARER_TOKEN` のみから渡し、設定本文、起動引数、ログには書かない。手動 `--http` と従来の token 不要 stdio は継続する。`--shared` の CUDA path 一式と中央設定の feedback policy は opt-in で、稼働中のサービスと不一致なら接続を拒否する。
 
 ## 手動 HTTP（Issue #257）
 
