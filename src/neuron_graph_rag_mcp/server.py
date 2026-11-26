@@ -104,7 +104,9 @@ DEACTIVATION_OUTCOME_DESCRIPTION = (
     "lexical, and zero-hop outcomes remain non-mutating."
 )
 JUDGMENT_SEARCH_DESCRIPTION = (
-    "Search only canonical SQLite judgments without creating a retrieval trace or changing "
+    "Use this read-only search to find decisions or handoff assumptions recorded by "
+    "other AI sessions on this PC. Search only canonical SQLite judgments without "
+    "creating a retrieval trace or changing "
     "activation, feedback, nodes, edges, revisions, lifecycle, or relations. Results include "
     "the current revision, lifecycle, statement, rationale, provenance, typed relations, "
     "and score explanation. Active judgments are the default; include archived judgments "
@@ -1427,6 +1429,9 @@ def create_server(
         "neuron-graph-rag",
         version=application_version(),
         instructions=(
+            "Neuron Graph RAG can store information shared by AI sessions on the same PC. "
+            "Use the read-only search_judgments tool when you need to check another session's "
+            "decisions or handoff assumptions. "
             "Search local Neuron Graph RAG sources, then report ordered source-use "
             "transitions and delayed outcomes with the returned trace_id."
         ),

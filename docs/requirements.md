@@ -36,6 +36,7 @@
 15. `corrected`、`rolled_back` などの delayed outcome を source-use と別に記録し、初期契約では edge weight を自動変更しない。
 16. MCP adapter は trace、node、enum、stage 順序、idempotency を境界で検証する。
 17. 各 MCP tool の model-facing description 自体が、feedback の呼び分けと reinforcement 条件を consuming AI へ伝える。
+   MCP 初期化時は、同じ PC の AI セッション間で情報を共有できることと、他のセッションの判断や引き継ぎの前提を確認する際に read-only の `search_judgments` を使えることを伝える。資料検索の `trace_id` を使う利用報告の案内も維持する。
 18. persistent core の trace は自動 expiry しない。retention を設ける deployment は `search` description と output に期限を明示し、expiry 後の feedback を `unknown_trace` とする。
 19. github-rag-mcp の D1 `search_docs` を正本として、repo / type / per-type limit と固定順から決定論的な小 fixture を生成できる。
 20. `search_docs.vector_id / content` を node ID / text へ、`doc_edges` の両端と `edge_kind` を typed edge へ変換し、欠損 endpoint は node を捏造せず除外理由を記録できる。
