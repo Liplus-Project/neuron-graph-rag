@@ -103,6 +103,11 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(tool.input_schema["additionalProperties"])
             self.assertFalse(tool.output_schema["additionalProperties"])
         self.assertTrue(listed.tools[3].annotations.destructive_hint)
+        judgment_search = next(tool for tool in listed.tools if tool.name == "search_judgments")
+        self.assertIn("read-only", judgment_search.description)
+        self.assertIn("decisions or handoff assumptions", judgment_search.description)
+        self.assertIn("other AI sessions on this PC", judgment_search.description)
+        self.assertIn("without creating a retrieval trace", judgment_search.description)
         self.assertFalse(listed.tools[3].input_schema["additionalProperties"])
         self.assertFalse(listed.tools[3].output_schema["additionalProperties"])
         for tool in listed.tools[4:8]:
@@ -747,6 +752,11 @@ class MCPAdapterTest(unittest.IsolatedAsyncioTestCase):
         ):
             initialized = await session.initialize()
             self.assertEqual(initialized.server_info.version, distribution_version("neuron-graph-rag"))
+            self.assertIn("AI sessions on the same PC", initialized.instructions)
+            self.assertIn("read-only search_judgments", initialized.instructions)
+            self.assertIn("decisions or handoff assumptions", initialized.instructions)
+            self.assertIn("source-use transitions and delayed outcomes", initialized.instructions)
+            self.assertIn("trace_id", initialized.instructions)
             listed = await session.list_tools()
             self.assertEqual(
                 [tool.name for tool in listed.tools],
@@ -1519,7 +1529,9 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                 async def connect_first():
                     async with stdio_client(parameters) as (reader, writer):
                         async with ClientSession(reader, writer) as client:
-                            await client.initialize()
+                            initialized = await client.initialize()
+                            self.assertIn("read-only search_judgments", initialized.instructions)
+                            self.assertIn("trace_id", initialized.instructions)
                             listed = await client.list_tools()
                             self.assertIn("search_cuda_shortlist", [tool.name for tool in listed.tools])
                             found = await client.call_tool("search", {

@@ -296,7 +296,7 @@ async def _run_proxy(port: int, token: str) -> None:
         async with streamable_http_client(url, http_client=http_client,
                                           terminate_on_close=False) as (remote_read, remote_write):
             async with ClientSession(remote_read, remote_write) as remote:
-                await remote.initialize()
+                initialized = await remote.initialize()
 
                 async def list_tools(_context: object, params: types.PaginatedRequestParams | None) -> types.ListToolsResult:
                     return await remote.list_tools(params=params)
@@ -316,6 +316,7 @@ async def _run_proxy(port: int, token: str) -> None:
                             capabilities=server.get_capabilities(
                                 notification_options=NotificationOptions(), experimental_capabilities={}
                             ),
+                            instructions=initialized.instructions,
                         ),
                     )
 
