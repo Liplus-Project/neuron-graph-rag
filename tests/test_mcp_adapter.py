@@ -1529,7 +1529,9 @@ class MCPSharedProxyTest(unittest.IsolatedAsyncioTestCase):
                 async def connect_first():
                     async with stdio_client(parameters) as (reader, writer):
                         async with ClientSession(reader, writer) as client:
-                            await client.initialize()
+                            initialized = await client.initialize()
+                            self.assertIn("read-only search_judgments", initialized.instructions)
+                            self.assertIn("trace_id", initialized.instructions)
                             listed = await client.list_tools()
                             self.assertIn("search_cuda_shortlist", [tool.name for tool in listed.tools])
                             found = await client.call_tool("search", {

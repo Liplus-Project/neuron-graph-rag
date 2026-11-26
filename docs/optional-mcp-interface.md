@@ -79,6 +79,8 @@ neuron-graph-rag-mcp \
 
 MCP の初期化時に、Neuron Graph RAG を同じ PC の AI セッション間で情報を共有するために使えることを案内する。別のセッションで決めた方針や引き継ぎの前提を確認する必要があるときは、読み取り専用の `search_judgments` を使う。この検索に定例の起動時手順は設けない。資料検索で得た `trace_id` は、既存の利用報告と後続の結果報告に使う。
 
+`--shared` の stdio プロキシは、共有 HTTP サービスの初期化応答に含まれる案内をクライアントに中継する。
+
 既存共通 tool 名は `search`、`record_source_use`、`record_outcome`、`write_judgment`、`search_judgments`、`get_judgment`、`traverse_judgments`、`read_relation_type_registry`、`write_relation_type_registry` とする。HTTP では CUDA 用の追加 tool がある。すべての input と成功 output は JSON Schema で宣言し、未知 field を受け付けない。
 
 成功時は MCP envelope の `resultType` を `complete` とし、機械処理用の `structuredContent` と、その同じ JSON を直列化した `TextContent` を返す。これは [MCP 2026-07-28 tools specification](https://modelcontextprotocol.io/specification/2026-07-28/server/tools) の tool result、structured content、後方互換性の指針に合わせる。
